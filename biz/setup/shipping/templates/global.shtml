@@ -1,0 +1,68 @@
+<!-- SETUP_TAB -->
+<br>
+<center>
+<table width='80%'>
+<tr><td>
+<font><b>Global Tuning </b>lets you to make final modifications which are applied to all available
+shipping methods. Use global tuning to calculate additional handling fees, or other preferences which should be applied to all shipping
+methods. Global preferences are applied after the rules based shipping calculation.</font>
+</td></tr>
+</table>
+</center>
+<Br>
+<center>
+<table width='95%'>
+<tr><td>
+<center>
+
+<table bgcolor='FFFFFF' cellpadding='3' cellspacing='0' border='0'>
+<tr>
+	<Td bgcolor='3366CC'><font style="font-size: 10pt; color: white; font-family: helvetica, arial">&nbsp;Domestic Tuning&nbsp;</td> 
+	<td><img src="/images/blank.gif" width="20"></td> 
+	<Td bgcolor='3366CC'><font style="font-size: 10pt; color: white; font-family: helvetica, arial">&nbsp;International Tuning&nbsp;</td> 
+</tr>
+<tr>
+	<td valign='top'>
+	<form action='global.cgi'>
+	<input type='hidden' name='ACTION' value='SAVE-WEIGHT'>
+	<input type='hidden' name='TYPE' value='DOM'>
+	Global Handling Fees Applied to All Shipping Methods by Weight: <!-- WT_DOM_BUTTON -->
+	<table nowrap>
+		<!-- WEIGHT_DOM_TABLE -->
+		<tr>
+		<td nowrap align='center'><input type='submit' style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Weight (oz):</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="MAXWT" size="8"></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Fee:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="PRICE" size="5"></td>
+		</tr>
+	</table>
+	</form>
+	</td>
+
+	<td><img src="/images/blank.gif" width="20"></td> 
+
+	<td valign='top'>
+	<form action='global.cgi'>
+	<input type='hidden' name='ACTION' value='SAVE-WEIGHT'>
+	<input type='hidden' name='TYPE' value='INT'>
+	Global Handling Fees Applied to All Shipping Methods by Weight: <!-- WT_INT_BUTTON -->
+	<table>
+		<!-- WEIGHT_INT_TABLE -->
+		<tr>
+		<td nowrap align='center'><input type='submit' style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Weight (oz):</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="MAXWT" size="8"></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Fee:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="PRICE" size="5"></td>
+		</tr>
+	</table>
+	</form>
+	</td>	
+</tr>
+</table>
+
+<form action='global.cgi' method='post' name='myFrm'>
+<input class='button100' type='button' onClick='window.location="index.cgi";' value='  Exit  '>
+</form>
+</center>
+</td></tr>
+</table>
+</center>
+</body>

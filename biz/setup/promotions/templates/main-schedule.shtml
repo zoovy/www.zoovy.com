@@ -1,0 +1,54 @@
+<html>
+<title>Promotions</title>
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<SCRIPT language="JavaScript">
+<!--//
+        function openWindow(url) {
+                termsWin = window.open(url, 'terms','status=no,width=638,height=400,menubar=yes,scrollbars=yes');
+                termsWin.focus(true);
+        }
+
+//-->
+</SCRIPT>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<!-- SETUP_TAB -->
+
+<center>
+<table width=600><tr><td>
+<b>Promotion Rule Editor: Schedule <!-- SID --></b><br>
+<br>
+<form name="frm2" action="index.cgi" method="POST">
+<input type='hidden' name='VERB' value='XX'>
+<input type='hidden' name='promotion_advanced' value='1'>
+<table cellpadding='1' cellspacing='0' border='0' bgcolor='3366CC' width='100%'><tr><td>
+<table cellspacing='0' cellpadding='3' border='0' bgcolor='FFFFFF' width='100%'>
+	<tr><td bgcolor='3366CC'><font face='arial' color='white'><b>Promotion Rules:</b></font></td></tr>
+	<tr>
+		<td>
+			<a href="javascript:openWindow('<!-- WEBDOC -->&POPUP=1');">[Help]</a></b></font>.<br>
+			<center>
+			<table border='1' bgcolor="FFFFFF" cellspacing="1" cellpadding="10">
+			<!-- EXISTING_RULES -->
+			<!-- ADDNEW --><br>
+			</table>
+			<br>
+			<table>
+			<tr>
+				<td valign='bottom'>
+				<input type='image' src='/images/bizbuttons/save.gif' border='0'> &nbsp;&nbsp;&nbsp;
+				<!-- CANCEL -->
+				<a href="index.cgi?method=<!-- METHOD -->"><img border="0" src="/images/bizbuttons/refresh.gif"></a>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</td></tr></table>
+<br>
+</font>	
+</form>
+
+</td></tr></table></center>

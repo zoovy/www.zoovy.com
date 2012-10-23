@@ -1,0 +1,9 @@
+Content-type: text/xml
+
+<?xml version="1.0"?>
+<RequestResponse>
+<Allowed>1</Allowed>
+<Count>2</Count>
+<Client Id="1" Name="Station 1" Resets="0"/>
+<Client Id="2" Name="Station 2" Resets="0"/>
+</RequestResponse>

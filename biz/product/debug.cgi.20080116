@@ -1,0 +1,213 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZOOVY;
+use DBINFO;
+use ZTOOLKIT;
+use GTOOLS;
+use CHANNEL;
+use CHANNEL::MERCHANT;
+use INVENTORY;
+use EXTERNAL;
+use strict;
+
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_P&2');
+if ($USERNAME eq '') { exit; }
+
+my $PID = $ZOOVY::cgiv->{'product'}; 
+$GTOOLS::TAG{'<!-- PRODUCT -->'} = $PID;
+
+if ($ZOOVY::cgiv->{'ACTION'} eq 'REFRESH') {
+	&INVENTORY::update_reserve($USERNAME,$PID,1+2+4+8);
+	$GTOOLS::TAG{'<!-- MESSAGE -->'} = &GTOOLS::std_box("Refreshed Inventory","Reserve Inventory for product $PID has been updated. <i>NOTE: if this changes any values, it indicates a critical error in the inventory system. Do not use this feature unless instructed by technical support.</i>");
+	}
+
+
+#mysql> desc INVENTORY_UPDATES;
+#+-----------+---------------+------+-----+---------+----------------+
+#| Field     | Type          | Null | Key | Default | Extra          |
+#+-----------+---------------+------+-----+---------+----------------+
+#| ID        | int(11)       |      | PRI | NULL    | auto_increment |
+#| USERNAME  | varchar(20)   | YES  | MUL | NULL    |                |
+#| LUSER     | varchar(20)   |      |     |         |                |
+#| TIMESTAMP | datetime      | YES  |     | NULL    |                |
+#| TYPE      | enum('U','I') | YES  |     | NULL    |                |
+#| PRODUCT   | varchar(20)   |      |     |         |                |
+#| SKU       | varchar(35)   |      |     |         |                |
+#| QUANTITY  | int(11)       | YES  |     | NULL    |                |
+#| APPID     | varchar(10)   |      |     |         |                |
+#| ORDERID   | varchar(16)   |      |     |         |                |
+#+-----------+---------------+------+-----+---------+----------------+
+#10 rows in set (0.02 sec)
+
+my $dbh = &DBINFO::db_zoovy_connect();
+my $c = '';
+
+## OTHER RESERVE
+my $detailref = &INVENTORY::list_other(undef,$USERNAME,$PID,0);
+foreach my $iref (@{$detailref}) {
+	$c .= "<tr><td>$iref->{'APPKEY'}</td><td>$iref->{'LISTINGID'}</td><td>$iref->{'SKU'}</td><td>$iref->{'QTY'}</td><td>".&ZTOOLKIT::pretty_date($iref->{'EXPIRES_GMT'})."</td></tr>";
+	}
+if ($c eq '') { $c .= "<tr><td><i>None</i></td></tr>"; } else {
+	$c = "<tr><td><b>Application</b></td><td><b>Listing</b></td><td><b>SKU</b></td><td><b>QTY</b></td><td><b>Expires</b></td></tr>".$c; 
+	}
+$GTOOLS::TAG{'<!-- OTHER_RESERVE -->'} = $c;
+
+## INCOMPLETE RESERVE
+$c = '';
+my $pstmt = "select ID,MARKET_ID,CREATED from EXTERNAL_ITEMS where MID=$MID and PRODUCT=".$dbh->quote($PID)." and STAGE in ('A','I','V','W')";
+my $sth = $dbh->prepare($pstmt);
+$sth->execute();
+while ( my ($CLAIM,$MARKETID,$CREATED) = $sth->fetchrow() ) {
+	$c .= "<tr><td>$CLAIM</td><td>$MARKETID</td><td>$CREATED</td></tr>";
+	}
+if ($c eq '') { $c .= "<tr><td><i>None</i></td></tr>"; } else {
+	$c = "<tr><td><b>Claim</b></td><td><b>Market Id</b></td><td><b>Created</b></td></tr>".$c;
+	}
+$sth->finish();
+$GTOOLS::TAG{'<!-- INCOMPLETE_RESERVE -->'} = $c;
+
+## CHANNELS
+$c = '';
+my $channels = &CHANNEL::MERCHANT::fetch_channelref($USERNAME,$PID);
+foreach my $channel (keys %{$channels}) {
+	next if ($channels->{$channel}->{'STATE'} eq 'D');
+	next if ($channels->{$channel}->{'STATE'} eq 'C');
+	next if ($channels->{$channel}->{'STATE'} eq 'E');
+	$c .= "<tr>";
+	$c .= "<td><a target=\"channelmgr\" href=\"/biz/manage/channels/edit.cgi?EXIT=POPUP&ID=$channel\">$channel</td>";
+	$c .= "<td>".$CHANNEL::LOOKUP{$channels->{$channel}->{'STATE'}}."</td>";
+	$c .= "<td>$channels->{$channel}->{'PORTAL'}.$channels->{$channel}->{'TEMPLATE'}</td>";
+	$c .= "<td>$channels->{$channel}->{'QTY_RESERVED'}</td>";
+	$c .= "<td><table>";
+	foreach my $trk (keys %{ $channels->{$channel}->{'TRACKING'} }) {
+		$c .= "<tr>";
+		if ($channels->{$channel}->{'TRACKING'}->{$trk}->{'URL'}) {
+			$c .= "<td><a href=\"javascript:openWindow('$channels->{$channel}->{'TRACKING'}->{$trk}->{'URL'}');\">$channels->{$channel}->{'TRACKING'}->{$trk}->{'TRACKING'}</a></td>";
+			}
+		else {
+			$c .= "<td>$channels->{$channel}->{'TRACKING'}->{$trk}->{'TRACKING'}</td>";
+			}
+		
+		$c .= "<td>$channels->{$channel}->{'TRACKING'}->{$trk}->{'STATUS'}</td>";
+		$c .= "</tr>";
+		}
+	$c .= "</table></td>";
+	}
+if ($c ne '') {
+	$c = "<tr><td><b>ID</b><td><b>STATE</td><td><b>MARKETPLACE</td><td><b>QTY</td><td><b>STATUS MESSAGES</td></tr>".$c;
+	}
+else {
+	$c = "<Tr><td><i>Sorry, no channels found.</i></td></tr>";
+	}
+$GTOOLS::TAG{'<!-- CHANNEL_RESERVE -->'} = $c;
+
+
+## INVENTORY DEBUG LOG
+my $pdbh = &DBINFO::db_products_connect();
+my ($LOGTB) = &INVENTORY::resolve_tb($USERNAME,$MID,'INVENTORY_LOG');
+
+$c = '';
+#$pstmt = "select * from $LOGTB where MID=$MID and PID=".$pdbh->quote($PID)." and FINALIZED_GMT>".(time()-(86400*14))." order by ID asc";
+$pstmt = "select * from $LOGTB where MID=$MID and PID=".$pdbh->quote($PID)." order by ID desc limit 20";
+
+print STDERR $pstmt."\n";
+$sth = $pdbh->prepare($pstmt);
+$sth->execute();
+
+## wanted the 20 latest entries ordered from earliest to latest
+my $logref = ();
+while ( my $hashref = $sth->fetchrow_hashref() ) { 
+	$logref->{$hashref->{'FINALIZED_GMT'}} = $hashref;
+	}
+
+foreach my $finalized_gmt (sort keys %{$logref}) {
+	my $APP = $logref->{$finalized_gmt}->{'APP'};
+	$c .= qq~
+	<tr>
+		<td>~.&ZTOOLKIT::pretty_date($logref->{$finalized_gmt}->{'POSTED_GMT'},1).qq~</td>
+		<td>$logref->{$finalized_gmt}->{'LUSER'}</td>
+		<td>$logref->{$finalized_gmt}->{'INV_OPT'}</td>
+		<td align='center'>$logref->{$finalized_gmt}->{'WAS'}</td>
+		<td align='center'>$logref->{$finalized_gmt}->{'COMMENT'}</td>
+		<td align='center'>$logref->{$finalized_gmt}->{'NOW'}</td>
+		<td>$APP</td>
+		<td>$logref->{$finalized_gmt}->{'DEBUG'}</td>
+		<td>~.&ZTOOLKIT::pretty_date($finalized_gmt,1).qq~</td>
+	</tr>
+	~;
+	}
+
+$pstmt = "select LUSER,TIMESTAMP,TYPE,PRODUCT,SKU,QUANTITY,APPID,ORDERID from INVENTORY_UPDATES where USERNAME=".$pdbh->quote($USERNAME)." and PRODUCT=".$pdbh->quote($PID)." order by ID asc";
+print STDERR $pstmt."\n";
+$sth = $pdbh->prepare($pstmt);
+$sth->execute();
+while ( my $hashref = $sth->fetchrow_hashref() ) {
+	$c .= qq~
+	<tr>
+		<td>~.&ZTOOLKIT::pretty_date(&ZTOOLKIT::mysql_to_unixtime($hashref->{'TIMESTAMP'}),1).qq~</td>
+		<td>$hashref->{'LUSER'}</td>
+		<td>$hashref->{'SKU'}</td>
+		<td>-</td>
+		<td>$hashref->{'TYPE'}=$hashref->{'QUANTITY'}</td>
+		<td>-</td>
+		<td>$hashref->{'APPID'}</td>
+		<td>$hashref->{'ORDERID'}</td>
+		<td>-- FINALIZATION PENDING --</td>
+	</tr>
+	~;
+	}
+$sth->finish();
+&DBINFO::db_products_close();
+	
+if ($c eq '') { 
+	$c .= "<tr><td><i>No inventory events have been recorded.</i></td></tr>"; 
+	}
+else {
+	$c = "<tr><td><b>WHEN</td><td><b>USER</td><td><b>OPTION</td><td><b>WAS</b></td><td><b>COMMENT</b></td><td><b>NOW</b></td><td><b>APP</b></td><td><b>DEBUG</td><td><b>FINALIZED</b></td></tr>".$c; 
+	}
+&DBINFO::db_zoovy_close();
+
+
+#+---------------+-----------------------+------+-----+---------+----------------+
+#| Field         | Type                  | Null | Key | Default | Extra          |
+#+---------------+-----------------------+------+-----+---------+----------------+
+#| ID            | int(10) unsigned      |      | PRI | NULL    | auto_increment |
+#| MID           | int(11)               |      | MUL | 0       |                |
+#| LUSER         | varchar(20)           |      |     |         |                |
+#| POSTED_GMT    | mediumint(8) unsigned |      |     | 0       |                |
+#| FINALIZED_GMT | mediumint(8) unsigned |      | MUL | 0       |                |
+#| PID           | varchar(20)           |      |     |         |                |
+#| INV_OPT       | varchar(15)           |      |     |         |                |
+#| COMMENT       | varchar(30)           |      |     |         |                |
+#| DEBUG         | varchar(25)           |      |     |         |                |
+#| APP           | varchar(10)           |      |     |         |                |
+#| WAS           | mediumint(9)          | YES  |     | 0       |                |
+#| NOW           | mediumint(9)          |      |     | 0       |                |
+#+---------------+-----------------------+------+-----+---------+----------------+
+
+$GTOOLS::TAG{'<!-- INVENTORY_LOG -->'} = $c;
+
+if (1) {
+	my $c = '';
+	my $ref = &ZOOVY::fetchproduct_as_hashref($USERNAME,$PID);
+	foreach my $k (sort keys %{$ref}) {
+		$c .= "<tr><td valign='top'><b>$k</b></td><td>".&ZOOVY::incode($ref->{$k})."</td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- PROD_DATA -->'} = $c; 
+	}
+
+
+&GTOOLS::output('file'=>'debug.shtml',header=>1,popup=>1,head=>qq~
+<script name="javascript">
+<!--
+
+function openWindow(url) {
+	var popupWin = window.open(url,'popupWin','status=yes,resizable=yes,width=638,height=450,menubar=yes,scrollbars=yes')
+   popupWin.focus(true);
+	}
+
+//-->
+</script>
+~);
+

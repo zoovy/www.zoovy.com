@@ -1,0 +1,55 @@
+[%- page_title = 'eBay Category Browser' -%]
+
+[%- IF CATID %]
+[%-	INSERT '_round_corners_top.tt2'; %]
+<div id="category-tree">
+<p>
+	Current category: <a href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% CATID %]">[% CATID %]</a>
+</p>
+</div>
+[%-	INSERT '_round_corners_bottom.tt2'; %]
+[%- END %]
+
+[% IF last_categories %]
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="user-block">
+  <p class="thinner">Last visited leaf categories:</p>
+  <ul>
+  [% count = 0 %]
+  [% FOREACH category = last_categories %]
+    <li>[% count = count+1; count%]. <a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %]</a></li>
+  [% END %]
+  </ul>
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+[%- END %]
+
+
+[%- INSERT '_round_corners_top.tt2' %]
+  <div id="category-tree">
+  <h3><a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories" style="text-decoration: underline;">Browse eBay Categories</a></h3>
+
+    <br/>
+	<p>This tool allows to choose right eBay category for your item and additionally to specify Item Attributes, 
+Custom Specifics (categories, with CS mark - 
+<a target="_blank" href="http://developer.ebay.com/DevZone/XML/docs/WebHelp/ItemSpecifics-About_Item_Specifics.html">read more</a>) 
+and Return Policy - that will help buyers understand more about the item you are listing. 
+<br>In addition, items listed with Item Specifics receive on average 20% more bids per listing and successfully 
+sell 10% more often (according to information from eBay)</p>
+	<p>'leaf' category is a place where item can be listed</p>
+    <!--p>Some categories has one-attribute search form - that's ability to find items similar to one you are selling - 
+for example <a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=29792">Books</a> 
+section (Title, Author, ISBN search).</p>
+
+    <p>Some categories has product finder form - allows to search similar items by Manufacturer/Product features - 
+for example <a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=32233">'Cell Phones & PDAs'->'Smartphones'</a> 
+(Phone Brand, Carrier or Manufactirer Part Number (MPN) search)</p-->
+
+  </div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="suggest-form-block">
+[% INCLUDE '_suggest_categories_form.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]

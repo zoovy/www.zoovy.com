@@ -1,0 +1,37 @@
+<!-- REPORT_TAB -->
+<center>
+<table width='500'><tr><Td>
+<font face='Arial'>
+<form action="index.cgi" method="post" name="thisFrm">
+<input type="hidden" name="ACTION" value="RANGE-SAVE">
+<input type="hidden" name="DATA" value="<!-- DATA -->">
+<font class='title'>Modify Product Power Tool</font><br>
+<br>
+<b>Select Range of Products</b><br>
+<i>NOTE: Products are sorted alphanumerically (e.g. 1, 100, 101, 2, 3, 4, 40, 41, 42, A123, B001)</i><br>
+<br>
+<table>
+	<tr>
+		<td>First Product:</td>
+		<td><input type='textbox' name='RSTART'></td>
+	</tr>
+	<tr>
+		<td>Last Product:</td>
+		<td><input type='textbox' name='REND'></td>
+	</tr>
+</table>
+<br>
+<center>
+<table>
+<tr>
+	<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+	<Td><a href='..'><img width='81' height='31' src='/images/bizbuttons/exit.gif' border='0'></a></font></td>
+</tr>
+</table>
+</center>
+</form>
+</td></tr></table>
+</center>
+
+</body>
+

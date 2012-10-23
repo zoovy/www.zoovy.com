@@ -1,0 +1,83 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="650"><tr><td>
+
+<table class="zoovytable" width=100%>
+	<tr>
+		<td colspan=2 class="zoovytableheader">
+		Current Status
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Profile:</td></td>
+		<td valign="top" ><!-- PROFILE --></td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Domain:</b></td>
+		<td valign="top" ><!-- DOMAIN --></td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Last Update:</b></td>
+		<td valign="top" ><!-- LAST_UPDATE --></td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Provider/FeedID:</b></td>
+		<td valign="top" ><!-- PROVIDER --></td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Status:</b></td>
+		<td valign="top" ><!-- STATUS --></td>
+	</tr>
+	<tr>
+		<td valign="top"  nowrap><b>Data File:</b></td>
+		<td valign="top" ><!-- FILENAME --></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<br>
+<form method="post" action="index.cgi">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<input type="hidden" name="PROVIDER" value="<!-- PROVIDER -->">
+<input type="hidden" name="VERB" value="SAVE">
+<table class="zoovytable" width=100%>
+	<tr>
+		<td colspan=2 class="zoovytableheader">
+		Configuration
+		</td>
+	</tr>
+	<!-- INPUT -->
+   <tr>
+      <td valign="top" >Pricing Schedule:</td>
+      <td valign="top" ><select name="SCHEDULE"><!-- SCHEDULE --></select> <i>(Requires Wholesale Bundle)</i><br></td>
+   </tr>
+	<tr>
+		<td valign="top"  colspan='2'>
+		<div class="hint">
+		<!-- HINT -->
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+<br>
+<center>
+<table>
+	<tr>
+		<td valign="top" >
+		<input class="button" type="submit" value=" Save Settings  ">
+		</td><td valign="top" >
+		<input onClick="document.location='index.cgi';" class="button" type="button" value=" Exit ">
+		</td></tr>
+	</tr>
+</table>
+</center>
+<br>
+
+	</td></tr>
+</table>
+</form>
+
+</center>
+</body>

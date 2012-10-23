@@ -1,0 +1,288 @@
+<!-- ORDER_TAB -->
+
+
+<SCRIPT language="JavaScript">
+<!--
+	function printMe() {
+		popupWin.focus(false);
+		popupWin.print();
+		popupWin.close();
+	}
+	function prWindow(location) {
+		popupWin = window.open(location,"x","status=0,width=640,height=480,directories=0,toolbar=1,menubar=1,resizable=1,scrollbars=2,location=0");
+		popupWin.focus(false);
+		return(false);
+	};
+	function openWindow(location) {
+		popupWin = window.open(location,"x","status=0,width=640,height=480,directories=1,toolbar=1,menubar=1,resizable=1,scrollbars=1,location=0");
+		popupWin.focus(false);
+		return(false);
+	};
+	function openWindowNR(location) {
+		popupWin = window.open(location,"x","status=0,width=640,height=480,directories=1,toolbar=1,menubar=1,resizable=1,scrollbars=1,location=0");
+		popupWin.focus(true);
+	};
+//-->
+</SCRIPT>
+
+
+<script type="text/javascript">
+<!--
+
+
+//
+function handleResponse(txt) {
+
+   if (txt == '') {
+      // empty response, must have been a set only
+      }
+   else if (txt.indexOf('?') == 0) {
+      // NOTE: multiple ? can be returned.
+      // ?k1=v1 (NOT XML)
+      var txtLines = new Array();
+      txtLines = txt.split('?');    // split the txt into lines (separated by ?)
+      for (var i = 0;i<txtLines.length;i++) {
+         var params = kvTxtToArray('?' + txtLines[i]);
+         // alert('i['+i+']='+txtLines[i]);
+         // alert(i+' '+params['m']);
+         if (txtLines[i] == '') {}  // blank line (probably the first record)
+         else if (params['m'] == 'loadcontent') {
+            $(params['div']).innerHTML = params['html'];
+            }
+         else {
+            // unknown request handler!
+            }
+         // end of each line.
+         }
+      }
+   else {
+      alert('unknown data format sent to handleResponse: '+txt);
+      }
+   }
+
+//
+//
+function changeState(panel) {
+	var state = $(panel+'!state');
+	var icon = $(panel+'!stateicon');
+	var content = $(panel+'!content');
+	var oid = $('_oid').value;
+
+	// alert('changing state for: '+panel+' current state is: '+state.value);
+	if (state.value=='0') {
+		// currently closed
+		icon.src = "/biz/ajax/navcat_icons/minidown.gif";
+		state.value = '1';
+		content.innerHTML = 'Loading, please wait..';
+
+		var postBody = 'm=ORDERS/Load&_panel='+panel+'&_oid='+oid
+		new Ajax.Request('/biz/ajax/prototype.pl/ORDERS/Load', 
+			{ postBody: postBody,asynchronous: 1,onComplete: function(request){handleResponse(request.responseText);} } ) ;
+
+		}	
+	else {
+		// currently open
+		icon.src = "/biz/ajax/navcat_icons/miniup.gif";
+		state.value = '0';
+		savePanel(panel,'Close');
+		content.innerHTML = '';
+		}
+
+	}
+
+
+
+
+// changes the status (selects a new tab)
+function changeTo(status) {
+	// alert('loading '+status);
+
+	// new Effect.SlideUp('orderz!zoovytableframe');
+	new Effect.SwitchOff('orderz!zoovytableframe');
+	// new Effect.DropOut('orderz!zoovytableframe');
+	// new Effect.Shake('orderz!zoovytableframe');
+	// $('orderz!zoovytableframe').style.height = '1px';
+	
+	
+	var postBody = 'm=ORDERS/Tab&tab='+status;
+	new Ajax.Request('/biz/ajax/prototype.pl/ORDERS/Tab', { postBody: postBody, asynchronous: 1,onComplete: function(request){ handleResponse(request.responseText);} } ) ;			
+	Element.hide('panel!body');
+
+	// alert('finished');
+	return(undefined);
+	};
+ 	
+function hideOrder() {
+	$('order').hide();
+	};
+
+function editOrder(oid,type) {
+	alert('editing: '+oid+' type: '+type);
+	}
+	
+
+//
+// i 1=show,0=hide,2=switch (toggle)
+
+function togglePanel(i) {
+	if (i == undefined) { i = 0; }
+	if (i == 2) {
+		if (Element.visible('panel!body')) { i = 0; } else { i = 1; }
+		}
+
+	if (i == 0) {
+		$('orderz!zoovytableframe').style.height = '300px'; 
+		Element.hide('panel!body');
+		}
+	else {
+		$('orderz!zoovytableframe').style.height = '120px'; 
+		$('panel!body').innerHTML = '<center><img src="/biz/loading.gif"></center>';
+		Element.show('panel!body');
+		}
+	return(Element.visible('panel!body'));
+	}	
+
+ 	
+function loadPanel(panel,oid,data) {
+	// alert('showing order' + oid);
+	
+	if (panel == 'email') {
+		var v = '';
+		v = v + '<center><table><tr><td><h2>Add Custom Text To Email:</h2>';
+		v = v + '<font class="hint">Enter custom text that will appear in the %NOTES% variable of the email you have selected.</font></td></tr>';
+		v = v + '<tr><td><textarea rows=10 cols=70 name="custom_email"></textarea><br>';
+		v = v + '<input id="sendEmailBtn2" class="button" type=button value=" Send "></td></tr></table>';
+		$('panel!body').innerHTML = v;
+
+		// copy the code from the other email onclick button
+		$('sendEmailBtn2').onclick = $('sendEmailBtn').onclick;
+		}
+	else if (panel == 'changepool') {
+		if (togglePanel(1)) {	
+			var postBody = 'm=ORDERS/ChangePool&cmd=changepool&pool='+data+'&oid='+oid;
+			new Ajax.Request('/biz/ajax/prototype.pl/ORDERS/ChangePool', { postBody: postBody, asynchronous: 1,onComplete: function(request){ handleResponse(request.responseText);} } ) ;			
+			}
+		}
+	else {	
+		if (togglePanel(1)) {	
+			var postBody = 'm=ORDERS/View&oid='+oid;
+			new Ajax.Request('/biz/ajax/prototype.pl/ORDERS/View', { postBody: postBody, asynchronous: 1,onComplete: function(request){ handleResponse(request.responseText);} } ) ;			
+			}
+		}
+	}
+
+
+
+
+function grabOrders() {
+	var x = grabList('orders','order!');
+	alert(x);
+	return(x);
+	}
+
+function editOrder(oid) {
+	togglePanel(1);
+	$('panel!body').innerHTML = '<center><img src="/biz/loading.gif"></center>';
+	window.document.orders.VERB.value = 'ORDER_EDIT';
+	window.document.orders.DATA.value = oid;
+	window.document.orders.submit();
+	}
+
+
+//-->
+</script>
+
+
+
+<center>
+<form name="orders" id="orders" action="#">
+<input type="hidden" name="VERB" value="">
+<input type="hidden" name="DATA" value="">
+<input type="hidden" name="POOL" value="<!-- POOL -->">
+<table>
+<tr>
+	<td valign='top' rowspan="2">
+	<table width="120" cellspacing=0 class="zoovytable">
+
+
+		<tr><td class="zoovytableheader">Order Status</td></tr>		
+		<tr>
+			<td>			
+				<select style="font-size: 7pt;" name="move_pool">
+					<!-- POOLS -->
+				</select>
+			<input type="button" class="button" value=" Go "
+					onClick="var frm = $('orders'); frm.DATA.value = grabOrders(); if (frm.DATA.value=='') { alert('please select some orders first!'); } else {  frm.VERB.value = 'MOVE'; frm.submit(); }" >
+			</td>
+		</tr>
+		<tr><td><br></td></tr>
+
+		<tr><td class="zoovytableheader">Email</td></tr>		
+		<tr>
+			<td>
+				<select style="font-size: 7pt;" name="email_msg">
+					<option value="ocreate">Order Created</option>
+					<option value="oremind">Pay Reminder</option>
+					<option value="ocustom1">Order Custom</option>
+				</select>
+				<input id="sendEmailBtn" type="button" class="button" value=" Go "
+					onClick="var frm = $('orders'); frm.DATA.value = grabOrders(); if (frm.DATA.value=='') { alert('please select some orders first!'); } else {  frm.VERB.value = 'EMAIL'; frm.submit(); }" ><br>
+				<input 
+					onClick="
+					var frm = $('orders');
+					if (togglePanel((frm.email_customize.checked)?1:0)) {
+						loadPanel('email','');
+						}
+					"
+					type="checkbox" name="email_customize"> Customize<br>
+			</td>
+		</tr>
+		<tr><td><br></td></tr>
+
+		<tr><td class="zoovytableheader">Search</td></tr>		
+		<tr>
+			<td>
+				<input type="textbox" name="search">
+				<input type="checkbox" name="statusonly"> All Orders<br>
+				<input
+					onClick="var frm = $('orders'); frm.VERB.value = 'FIND'; frm.submit(); "
+					type="button" class="button" value=" Find ">
+			</td>
+		</tr>
+		<tr><td><br></td></tr>
+		
+
+		<tr><td class="zoovytableheader">Utilities</td></tr>		
+		<tr>
+			<td>
+				<input type="button" style="width: 120px;" class="button" value=" Capture Payment "
+					onClick="var frm = $('orders'); frm.DATA.value = grabOrders(); if (frm.DATA.value=='') { alert('please select some orders first!'); } else {  frm.VERB.value = 'CAPTURE'; frm.submit(); }" >
+		<!--
+				<input type="button" style="width: 120px;" class="button" value=" Show Dashboard "
+					onClick="var frm = $('orders'); frm.DATA.value = grabOrders(); frm.VERB.value = 'DASHBOARD'; frm.submit();" >
+		-->
+			</td>
+		</tr>
+		<tr><td><br></td></tr>
+		
+	</table>
+	</td>
+	<td valign='top'>
+		<div id="order_table">
+		<!-- ORDER_TABLE -->
+		</div>
+	</td>
+</tr>
+<tr>
+	<td valign='top'>
+		<div id="panel!body" style="display: none;">
+		<!-- ORDER APPEARS HERE -->
+		</div>
+	</td>
+</tr>
+</table>
+</center>
+</form>
+
+
+<!-- FOOTER -->

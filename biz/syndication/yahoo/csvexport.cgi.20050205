@@ -1,0 +1,57 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZOOVY;
+use DBINFO;
+use ZWEBSITE;
+use Text::CSV;
+use ZTOOLKIT;
+
+
+$dbh = &DBINFO::db_zoovy_connect();
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/syndication",2,'_P&16');
+if ($USERNAME eq '') { exit; }
+
+	@products = &ZOOVY::fetchproduct_list_by_merchant($USERNAME);
+	print "Content-type: text/csv\n\n";
+	print "Path,Name,Code,Price,Sale-price,Options,Headline,Caption,Abstract,Ship-weight\n\r";
+	$csv = Text::CSV->new();
+	foreach my $prod (sort @products) {
+		my $data = &ZOOVY::fetchproduct_as_hash($USERNAME,$prod);
+
+		print STDERR "PROD: $prod\n";
+	   if (not defined $data->{'yahoostore:sku'}) { $data->{'yahoostore:sku'} = "$prod"; }
+		if (not defined $data->{'yahoostore:base_weight'}) { $data->{'yahoostore:base_weight'} = $data->{'zoovy:base_weight'}; }
+		if (not defined $data->{'yahoostore:base_price'}) { $data->{'yahoostore:base_price'} = $data->{'zoovy:base_price'}; }
+		if (not defined $data->{'yahoostore:sale_price'}) {
+			if (defined $data->{'zoovy:msrp'}) { 
+				$data->{'yahoostore:base_price'} = $data->{'zoovy:msrp'}; 
+				$data->{'yahoostore:sale_price'} = $data->{'zoovy:base_price'}; 
+				}
+			}
+		if (not defined $data->{'yahoostore:prod_name'}) { $data->{'yahoostore:prod_name'} = $data->{'zoovy:prod_name'}; }
+		if (not defined $data->{'yahoostore:caption'}) { $data->{'yahoostore:caption'} = $data->{'zoovy:prod_desc'}; }
+	
+      $data->{'zoovy:category'} =~ s/W+//g ;
+      $data->{'yahoostore:storename'} =~ s/W+//g ;
+      $data->{'yahoostore:sku'} =~ s/W+//g ;
+      $data->{'yahoostore:base_price'} =~ s/W+//g ;
+      $data->{'yahoostore:sale_price'} =~ s/W+//g ;
+		$data->{'yahoostore:options'} =~ s/W+//g ;
+      $data->{'yahoostore:headline'} =~ s/W+//g ;
+		$data->{'yahoostore:caption'} =  ZTOOLKIT::htmlstrip($data->{'yahoostore:caption'});
+		$data->{'yahoostore:caption'} =~ s/[^\w\d_\ \!\?\.\%\']//g;
+		$data->{'yahoostore:abstract'} =~ s/W+//g ;
+		$data->{'yahoostore:base_weight'} =~ s/\#//g ;
+
+		@columns = ($data->{'zoovy:category'},$data->{'yahoostore:prod_name'},$data->{'yahoostore:sku'},$data->{'yahoostore:base_price'},
+			$data->{'yahoostore:sale_price'},$data->{'yahoostore:options'},$data->{'yahoostore:headline'},$data->{'yahoostore:caption'},
+			$data->{'yahoostorex:abstract'},$data->{'yahoostore:base_weight'});
+
+		if ($status = $csv->combine(@columns)) {
+         print $csv->string()."\r\n";
+			}
+
+		}
+
+&DBINFO::db_zoovy_close();

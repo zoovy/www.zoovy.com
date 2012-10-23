@@ -1,0 +1,106 @@
+<!-- SETUP_TAB -->
+
+
+<center>
+<br>
+<div  style="width:700px; text-align:left;">
+<h1>Syndication:</h1> <i>Click the logo of the marketplace you wish to access.</i><br>
+<table cellspacing=5 width="100%" cellpadding=0 border=0 style='margin-top:10px;'>
+<tr>
+	<td colspan=4 class="zoovytableheader">
+	Recommended Marketplaces
+	</td>
+</tr>
+<tr>
+	<td colspan=4>
+	<div style='align: center; width:100%; overflow:auto;'>
+	<!-- RECOMMENDED -->
+	</div>
+	</td>
+</tr>
+
+<tr><td colspan='4'><br></td></tr>
+<tr>
+	<td class="zoovytableheader" colspan=4>
+	Recommended CPC
+	</td>
+</tr>
+<tr>
+	<td valign='top' align='center'>
+	<!-- CPC -->
+	</td>
+</tr>
+
+<tr><td colspan='4'><br></td></tr>
+<tr>
+	<td class="zoovytableheader" colspan=4>
+	Other Integrations
+	</td>
+</tr>
+
+<tr>
+	<td valign='top' align='center'>
+	<!-- OTHER -->
+	</td>
+</tr>
+</table>
+
+<br><br>
+<i>Profile management has moved to <a href="/biz/setup/" target="_top">Setup</a> &#187; <a href="/biz/setup/profiles" target="_top">Profiles</a>.</i>
+
+
+<hr>
+
+<br><br>
+<table cellspacing=5 width="100%" cellpadding=0 border=0 style='margin-top:10px;'>
+<tr><td class="zoovysub1header">Current Promotions:</td></tr>
+<tr><td>
+
+<b>Amazon Syndication</b>
+<br>
+Amazon signup is now easier and less expensive. Add the Amazon bundle to
+your account and then go to the Sign Up page below for detailed information
+on our "1 month waived subscription fees" Promotion:<br>
+<a href="/biz/setup/amazon/index.cgi?VERB=SIGNUP">Click here to Sign Up!!</a>
+
+<br><br> 
+
+
+<b>PriceGrabber Syndication</b>
+<br>
+Zoovy has arranged an exclusive introductory offer with PriceGrabber that
+let's Zoovy merchants sign up for only $25 deposit (rather than the usual
+$50).<br><br>
+To benefit from this offer Zoovy merchants must use the following link to
+set up their PriceGrabber account...<br>
+<a href="https://partner.pricegrabber.com/mss_main.php/sec=3/rfid=111"
+target="_blank">https://partner.pricegrabber.com/mss_main.php/sec=3/rfid=111</a>
+<br><br>
+If you require assistance with syndicating your products
+after setting up your PriceGrabber account please schedule time with your
+Zoovy trainer.<br><br>
+</table>
+
+</div>
+<!--
+<tr>
+<td align="left">
+<a href="/biz/syndication/yahoo">Yahoo Stores</a>
+Manage your Yahoo Store from Here! <a href="http://webdoc.zoovy.com/webmgr/index.php?GOTO=topic/yahoo.php">[More Info]</a>
+</td>
+</tr>
+-->
+<!--
+<tr>
+<td align="left"><a href="#" onClick="window.open('http://www.zoovy.com/helper?DEFINITION=zoovy.freesubmit&TYPE=G','Zoovy', 'location=no,status=no, height=500, width=600, scrollbars=yes'); return false;">Search&nbsp;Engine Registration</a></td>
+<td align="left">Get your store registered with a variety of search engines. <a href="http://webdoc.zoovy.com/webmgr/index.php?GOTO=detail/searchengine.php">What is this?</a></td>
+</tr>
+--><!-- <tr>
+<a href="javascript:openWindow('zoovy','http://www.zoovy.com/helper?DEFINITION=zoovy.freesubmit&TYPE=G');">
+<td align="left"><a href="javascript:openWindow('http://www.zoovy.com/helper?DEFINITION=zoovy.shops&TYPE=G');">Zoovy Shops</a></td>
+<td align="left">Get your store registered in Zoovy Shops and potentially become a features Zoovy Shopkeeper.  <a href="http://webdoc.zoovy.com/">What is this?</a></td>
+</tr> -->
+
+
+
+<!-- FOOTER -->

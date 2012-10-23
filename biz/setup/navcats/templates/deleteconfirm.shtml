@@ -1,0 +1,29 @@
+<!-- SETUP_TAB -->
+<center>
+<table>
+<tr><td>
+<b>Delete <!-- TYPE -->: <!-- PRETTYCAT --></b><br>
+<br>
+<font size='2' color='red'><b>Warning!</b><br></font>
+<br>
+You are about to delete <!-- TYPE -->: <!-- PRETTYCAT --><br>
+<form action='index.cgi' method='GET'>
+<input type="hidden" name="MODE" value="<!-- MODE -->">
+<input type='hidden' name='EXIT' value='<!-- EXIT -->'>
+<input type='hidden' name='ACTION' value='DELETE-CONFIRM'>
+<input type='hidden' name='PATH' value="<!-- PATH -->">
+<br>
+
+<table>
+<tr>
+	<td><input type='image' src='/images/bizbuttons/okay.gif'></td>
+	<td><a href='index.cgi'><img src='/images/bizbuttons/cancel.gif' border='0'></a></td>
+</tr>
+</table>
+</center>
+
+</form>
+</td></tr>
+</table>
+</center>
+</body>

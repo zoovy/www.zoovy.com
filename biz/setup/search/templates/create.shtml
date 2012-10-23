@@ -1,0 +1,73 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width=80%><tr><td>
+
+<form name='addfrm' action='index.cgi' method='post'>
+<input type='hidden' name='ACTION' value='ADD'>
+<input type="FORMAT" value="ELASTIC">
+
+<table class='zoovytable' width=600 cellspacing=0>
+
+	<tr class='zoovytableheader'>
+		<td colspan='2'>Create a New Catalog </td>
+	</tr>
+	<tr>
+		<td width="100" valign='top' align="left">
+			Catalog Code:
+			<a href="#" onClick="$('#help-catalog').toggle();">[?]</a><Br>
+		</td>
+		<td valign='top' align="left">
+			<input type='textbox' id='CATALOG' name='CATALOG' size='15' class="formed">
+			<div id="help-catalog" style="display: none;"><div>
+			<b>Catalog Code:</b> is an alphanumeric code that will be used by you to uniquely identify this catalog.
+			Later on when you are asked to select a catalog for a particular wrapper or page layout you will be able to choose 
+			from a list of codes. Usually the first catalog in a store is named "DEFAULT" but really any text will do.
+			</div></div>
+		</td>
+	</tr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+
+		Attributes: <textarea name='FULLTEXT_ATTRIBS' rows="5" cols="70" class="formed"></textarea>
+
+		<table><tr><td>
+		<b>Help using Website Product Catalogs</b><br>
+		<i>Parameters should be a comma separated list of attributes</i><br>
+		Frequently Used Attributes:<br>
+		<table>
+			<tr>
+				<td>id</td>
+				<td>Product ID (PID)</td>
+			</tr>
+			<tr>
+				<td>zoovy:prod_name</td>
+				<td>Product Title / Name</td>
+			</tr>
+			<tr>
+				<td>zoovy:prod_desc</td>
+				<td>Product Description</td>
+			</tr>
+			<tr>
+				<td>zoovy:prod_mfg</td>
+				<td>Product Manufacturer</td>
+			</td>
+			<tr>
+				<td>zoovy:prod_mfgid</td>
+				<td>Manufacturer ID</td>
+			</tr>
+		</table>
+		</div>		
+
+		<input type='submit' value='Add New Catalog'>
+		</td>
+	</tr>
+	</table>
+</form>
+<br>
+<br>
+
+</td></tr></table>
+</center>

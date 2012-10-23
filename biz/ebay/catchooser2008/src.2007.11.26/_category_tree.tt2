@@ -1,0 +1,13 @@
+<h4><a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories">eBay Categories</a></h4>
+[% FOREACH parent_category = parent_categories.reverse -%]
+<div class="parent">
+<p><a id="category-[% parent_category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% parent_category.id %]">[% parent_category.name %] [[%- IF parent_category.leaf %]leaf[% ELSE %][% parent_category.categories.size || 0 %][% END %][% IF parent_category.item_specifics_enabled %], Custom Item Specs Enabled[% END %]]</a></p>
+[% END -%]
+<ul>
+  [% FOREACH category = categories -%]
+  <li><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %] [[% IF category.leaf %]leaf[% ELSE %][% category.categories.size || 0 %][% END %][% IF category.item_specifics_enabled %], Custom Item Specs Enabled[% END %]]</a></li>
+  [% END -%]
+</ul>
+[% FOREACH parent_category = parent_categories -%]
+</div>
+[% END -%]

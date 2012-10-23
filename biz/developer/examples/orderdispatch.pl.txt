@@ -1,0 +1,184 @@
+#!/usr/bin/perl
+
+#############################################################################
+##  orderdispatch.cgi	v1.0
+##
+##  By: Brian Horakh <brian@zoovy.com>
+##
+##  This script and it's contents are copyright Zoovy, Inc. 2002
+##	 You may modify and distribute this code freely, however it must always
+##	 retain this header at the top of the file.
+##
+##	 No warranty is given, or implied. Use this script at your own risk.
+##  This script is simply an example, and should not be used in production,
+##	 no technical support will be provided.
+##
+#############################################################################
+#
+# Purpose: receives an order and logs the contents, to a storable file
+#				in the /tmp directory
+#
+# Operational Theory:
+#				receives parameters via HTTP multipart Post which is RFC 1867 
+#				(uses CGI.pm to decode it so it's still relatively easy)
+#				splits apart the XML encoded data using a regex library
+#
+# Usage: 
+#				you probably ought to enable order dispatch in the Setup area, and
+#				point it at the URL where this script is stored. In addition you'll
+#				probably want to have it be an HTTPS url if you intend on passing
+#				payment information.
+#
+# Script Installation:
+# 	install to any UNIX host, which has Perl, CGI.pm, and Storable.pm
+#
+use CGI;
+use LWP;
+use Data::Dumper;
+use XML::Parser;
+use XML::Parser::EasyTree;
+$q = new CGI;
+
+## contents is the raw XML data
+my $CONTENTS = $q->param('CONTENTS');
+
+## merchant is the zoovy username
+my $MERCHANT = $q->param('MERCHANT');
+
+## orderid is the order number assigned by Zoovy.
+my $ORDERID = $q->param('ORDERID');
+
+if ($contents eq '') {
+   print "Content-type: text/error\n\n";
+   print "<error>no contents received.</error>";
+   exit;
+   }
+
+# an example of what to do if the database is down, or something
+if ($ORDERID ne '') {
+   print "Content-type: text/retry\n\n";
+   print "<error>could not determine order id.</error>";
+   }
+
+
+## keep a raw copy of the order, for debugging.
+## PLEASE NOTE: /tmp is not a safe place to store things with credit cards.
+## but we know that it's writable, so we'll stuff it there.
+open F, ">/tmp/$MERCHANT.$ORDERID.raw";
+print F $CONTENTS;
+close F;
+
+
+## this will parse the order into usable data
+my ($ORDERID,$orderref,$contentsref,$eventsref,$virtualdata) = &parse_order($CONTENTS);
+
+
+## this is what we do if we're successful .. essentially thanks and buh-bye!
+print "Content-type: text/success\n\n";
+
+## this is what we could do if we wanted to append something to the order notes in
+## the source end on at Zoovy
+print "Content-type: text/update\n\n";
+print "<?xml version=\"1.0\"?>\n";
+print "<order_notes>Got it, saved to record 123!<\/order_notes>";
+
+
+##
+## takes a BUFFER which is formatted <ORDER ...>...</ORDER>
+## returns three things:
+##    orderref = contains a reference to a hash that contains all keys in order
+##		productref = contains a reference to a hash keyed by product id where the value is a hashref 
+##						contains a list of contents for the product (note: 'contents' is the the product name)
+## 	eventref = contains a reference to an array, all fields are present ('event' is the contents of the event)
+##
+## Bugs: contents in product is assumed not to be an attribute, also event in event, 
+##			(if they are they will overwrite, which probably isn't critical) - this breaks spec but simplifies everything considerably
+##
+sub parse_order {
+	my ($BUFFER) = @_;
+
+#	print STDERR "parse_order BUFFER IS: ".length($BUFFER)." bytes\n";
+
+#	if ($DEBUG) {
+#		open F, ">>/tmp/parseorder.txt.".time();
+#		print F $BUFFER;
+#		close F;
+#		}
+
+	my %ORDERINFO = ();
+	my %CONTENTS = ();
+	my %VIRTUALMAPS = ();
+	my @EVENTS = ();
+
+	$XML::Parser::Easytree::Noempty=1;
+	my $p=new XML::Parser(Style=>'EasyTree');
+	
+	my $tree=$p->parse($BUFFER);	
+
+	my $ORDERID = $tree->[0]->{'attrib'}->{'ID'};
+	print "ORDERID is: $ORDERID\n";
+
+	foreach $node (@{$tree->[0]->{'content'}}) {
+		next if ($node->{'type'} ne 'e');
+		if ($DEBUG) { print STDERR Dumper($node); }
+
+		if ($node->{'name'} eq 'CONTENTS') {
+			foreach $product (@{$node->{'content'}}) {
+				next if ($product->{'type'} ne 'e');
+				next if ($product->{'name'} ne 'product');
+				
+				$productid = $product->{'attrib'}->{'id'};
+				delete $product->{'attrib'}->{'id'};
+				$product->{'attrib'}->{'contents'} = $product->{'content'}->[0]->{'content'};
+				$CONTENTS{$productid} = $product->{'attrib'};
+				}
+			}
+		elsif ($node->{'name'} eq 'VIRTUALMAPS') {
+			foreach $product (@{$node->{'content'}}) {
+				## <map product="@ALIENVID" url="http://www.alldropship.com/zoovy/order.cgi/SID=21/SELLER=brian/SKU=ALIENVID"/>
+				next if ($product->{'type'} ne 'e');
+				next if ($product->{'name'} ne 'map');
+				
+				$productid = $product->{'attrib'}->{'product'};
+				$VIRTUALMAPS{$productid} = $product->{'attrib'}->{'url'};
+				}
+			}
+		elsif ($node->{'name'} eq 'contents') {
+			die("ORDER::parse_order does not support encoded products.");
+			}
+		elsif ($node->{'name'} eq 'events') {
+			# Lower case events are encoded inside the data, uppercase EVENTS aren't.
+			my $p=new XML::Parser(Style=>'EasyTree');
+			my $tree = $p->parse('<events>'.$node->{'content'}->[0]->{'content'}.'</events>');
+
+			foreach $event (@{$tree->[0]->{'content'}}) {
+				next if ($event->{'type'} ne 'e');
+				next if ($event->{'name'} ne 'event');
+				
+				$event->{'attrib'}->{'event'} = $event->{'content'}->[0]->{'content'};
+				push @EVENTS, $event->{'attrib'};
+				}
+			
+			}
+		elsif ($node->{'name'} eq 'EVENTS') {
+			foreach $event (@{$node->{'content'}}) {
+				next if ($event->{'type'} ne 'e');
+				next if ($event->{'name'} ne 'event');
+				
+				$event->{'attrib'}->{'event'} = $event->{'content'}->[0]->{'content'};
+				push @EVENTS, $event->{'attrib'};
+				}
+			
+			}
+		else {
+			$ORDERINFO{$node->{'name'}} = $node->{'content'}->[0]->{'content'};
+			}
+
+		}
+	
+
+	return($ORDERID,\%ORDERINFO,\%CONTENTS,\@EVENTS,\%VIRTUALMAPS);
+}
+
+
+

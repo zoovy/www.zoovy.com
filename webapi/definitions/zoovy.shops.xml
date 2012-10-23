@@ -1,0 +1,63 @@
+<DEFINITION NAME="shops">
+
+<LIST TYPE="TEXT" NAME="CATEGORY">
+	<OPTION VALUE="" PROMPT="Not Selected"></OPTION>
+	<OPTION VALUE="17" PROMPT="Automotive"></OPTION>
+	<OPTION VALUE="18" PROMPT="Avionics"></OPTION>
+	<OPTION VALUE="1" PROMPT="Antiques &amp; Art"></OPTION>
+	<OPTION VALUE="2" PROMPT="Books, Music, Movies"></OPTION>
+	<OPTION VALUE="3" PROMPT="Collectibles"></OPTION>
+	<OPTION VALUE="4" PROMPT="Computers &amp; Internet"></OPTION>
+	<OPTION VALUE="21" PROMPT="Consumer Electronics"></OPTION>
+	<OPTION VALUE="5" PROMPT="Crafts"></OPTION>
+	<OPTION VALUE="6" PROMPT="Dolls &amp; Bears"></OPTION>
+	<OPTION VALUE="7" PROMPT="Fashion"></OPTION>
+	<OPTION VALUE="8" PROMPT="Food &amp; Drink"></OPTION>
+	<OPTION VALUE="9" PROMPT="Gifts &amp; Flowers"></OPTION>
+	<OPTION VALUE="10" PROMPT="Health &amp; Beauty"></OPTION>
+	<OPTION VALUE="11" PROMPT="Home &amp; Garden"></OPTION>
+	<OPTION VALUE="20" PROMPT="Jewelry &amp; Precious Stones"></OPTION>
+	<OPTION VALUE="12" PROMPT="Pets &amp; Animals"></OPTION>
+	<OPTION VALUE="13" PROMPT="Services"></OPTION>
+	<OPTION VALUE="14" PROMPT="Sports, Fitness &amp; Recreation"></OPTION>
+	<OPTION VALUE="15" PROMPT="Toys &amp; Games"></OPTION>
+	<OPTION VALUE="19" PROMPT="Web Design &amp; Programming"></OPTION>
+	<OPTION VALUE="22" PROMPT="Wholesale Opportunties"></OPTION>
+	<OPTION VALUE="16" PROMPT="Other"></OPTION>
+</LIST>
+
+<DIV NAME="ALPHA" TITLE="Create New Listing">
+	<META TYPE="TITLE">Zoovy Shops Setup</META>
+	<META TYPE="DESCRIPTION">
+Please enter the following information about your company, select up to three categories for your store to be placed in. 
+Please place your store in only appropriate categories.
+In order to be considered for inclusion in this directory, you must have the Zoovy Logo and link to the Zoovy site on the URL which you provide.  
+If you have questions about this policy please email support@zoovy.com
+	</META>
+
+	<BUTTON TYPE="NEXT" PROMPT="Review and Save"></BUTTON>
+	<INPUT MANDATORY="Y" TYPE="TEXTBOX" NAME="merchant:zoovy:company_name" PROMPT="Company Name" COLS="50"></INPUT>
+	<INPUT MANDATORY="Y" TYPE="TEXTBOX" NAME="merchant:zoovy:website_url" PROMPT="Website URL" COLS="50" HELP="This URL must have the Zoovy logo, and a link to the Zoovy site on it"></INPUT>
+	<INPUT TYPE="IMAGE" VALUE="" PROMPT="Company Logo (75x75)" NAME="merchant:zoovy:company_logo75x75" LOADFROM="merchant:zoovy:company_logo" WIDTH="75" HEIGHT="75"></INPUT>	
+	<INPUT MANDATORY="Y" TYPE="TEXTAREA" ROWS="5" COLS="80" NAME="merchant:zoovy:company_about" PROMPT="Description (1000 Characters Max)"></INPUT>
+<INPUT MANDATORY="Y" VALUE="" TYPE="RADIO" LIST="CATEGORY" PROMPT="Primary Category" NAME="merchant:zoovy:category1"></INPUT>
+<INPUT TYPE="RADIO" VALUE="" LIST="CATEGORY" PROMPT="Secondary Category" NAME="merchant:zoovy:category2"></INPUT>
+<INPUT TYPE="RADIO" VALUE="" LIST="CATEGORY" PROMPT="Trinary Category" NAME="merchant:zoovy:category3"></INPUT>
+<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Save"></BUTTON>
+</DIV>
+
+<DIV NAME="OMEGA" TITLE="Save">
+	<META TYPE="TITLE">Zoovy Shops Configuration</META>
+	<META TYPE="DESCRIPTION">
+Please verify all the information below is correct. 
+NOTE: Any changes you make here will also take effect in your store.
+	</META>
+	<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+	<BUTTON TYPE="SUBMIT" PROMPT="Submit my Store to Zoovy Shops"></BUTTON>
+
+<DISPLAY TYPE="BYPROMPT" NAME="merchant:zoovy:category1" PROMPT="Primary Category" LIST="CATEGORY" ERROR="Not Selected"></DISPLAY>
+<DISPLAY TYPE="BYPROMPT" NAME="merchant:zoovy:category2" PROMPT="Secondary Category" LIST="CATEGORY" ERROR="Not Selected"></DISPLAY>
+<DISPLAY TYPE="BYPROMPT" NAME="merchant:zoovy:category3" PROMPT="Trinary Category" LIST="CATEGORY" ERROR="Not Selected"></DISPLAY>
+</DIV>
+
+</DEFINITION>

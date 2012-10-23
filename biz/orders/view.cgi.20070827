@@ -1,0 +1,410 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use CGI;
+use GTOOLS;
+require ZOOVY;
+require DBINFO;
+require ORDER;
+require CUSTOMER;
+require INVENTORY;
+require ZTOOLKIT;
+require CART::VIEW;
+require SITE::URLS;
+require CART;
+require ZWEBSITE;
+require TOXML;
+use strict;
+
+&DBINFO::db_zoovy_connect();
+
+&ZOOVY::init();
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_O&2');
+if ($USERNAME eq '') { exit; }
+
+my $webdb = &ZWEBSITE::fetch_website_dbref($USERNAME);
+
+my ($t) = TOXML->new('WRAPPER','default');
+$t->initConfig();
+my $TH = $SITE::CONFIG->{'%THEME'};
+$SITE::URL = SITE::URLS->new($USERNAME,secure=>1);
+
+#
+# ZPAY::bill_order
+#
+
+##
+## passed: cgi parameter ID=200x-0x-xxxxxx
+##
+
+my $a = "";   # this is used throughout the program as scratch
+my $ts = time();
+my $template_file = '';
+
+my $CMD = uc($ZOOVY::cgiv->{"CMD"});
+my $ID = $ZOOVY::cgiv->{'ID'};
+$GTOOLS::TAG{"<!-- ID -->"} = $ID;
+
+my $cname = &ZTOOLKIT::htmlstrip(&ZOOVY::fetchmerchant_attrib($USERNAME,"zoovy:company_name"));
+if (length($cname)<1) { $cname = $USERNAME; }
+$GTOOLS::TAG{"<!-- COMPANY_NAME -->"} = $cname;
+
+if ($ID eq '') { 
+	print "Content-type: text/plain\n\n";
+	print "<html><b>This form requires an ORDER ID be passed to it!</b></html>";
+	exit;
+	}
+(my $o, my $error) = ORDER->new($USERNAME, $ID);
+my $CUSTOMER = undef;
+
+if ($FLAGS =~ /,CRM,/) {
+	require CUSTOMER;
+	($CUSTOMER) = CUSTOMER->new($USERNAME,EMAIL=>$o->get_attrib('bill_email'),INIT=>33);
+	if ($CUSTOMER->{'_CID'} == -1) { $CUSTOMER = undef; }
+	}
+
+
+my $status = $o->get_attrib('pool');
+my $created = $o->get_attrib('created');
+
+if (($CMD eq 'SAVENOTE') && (defined $CUSTOMER)) {
+	$CMD = '';
+	if ($ZOOVY::cgiv->{'NOTE'} ne '') {
+		$CUSTOMER->save_note($LUSER,$ZOOVY::cgiv->{'NOTE'});
+		}
+	}
+
+$GTOOLS::TAG{'<!-- CREATED -->'} = &ZTOOLKIT::pretty_date($created);
+if (!defined($status)) { $status = 'RECENT'; }
+$GTOOLS::TAG{'<!-- RETURN -->'} = lc($status).'.shtml';
+if (defined $ZOOVY::cgiv->{'EXIT'}) {
+	$GTOOLS::TAG{'<!-- RETURN -->'} = $ZOOVY::cgiv->{'EXIT'};
+	}
+elsif ($ENV{'REQUEST_URI'} =~ /popup/) {
+	$GTOOLS::TAG{'<!-- RETURN -->'} = "javascript:window.close();";
+	}
+
+	my $ORDERREF = $o->get_attribs();
+	if ($ORDERREF->{'payment_status'} =~ /^0/) {
+		$GTOOLS::TAG{'<!-- PAID -->'} = &ZTOOLKIT::pretty_date($ORDERREF->{'paid_date'});	
+		$GTOOLS::TAG{'<!-- PAYMENT_METHOD -->'} = $ORDERREF->{'payment_method'};
+		}
+	else {
+		$GTOOLS::TAG{'<!-- PAID -->'} = ' ** UNPAID ** ';
+		}
+
+
+	if ($ORDERREF->{'ship_country'} eq 'United States') { $ORDERREF->{'ship_country'} = ''; }
+	if ($ORDERREF->{'ship_country'} eq 'USA') { $ORDERREF->{'ship_country'} = ''; }
+	if ($ORDERREF->{'ship_country'} eq 'US') { $ORDERREF->{'ship_country'} = ''; }
+	if ($ORDERREF->{'bill_country'} eq 'United States') { $ORDERREF->{'bill_country'} = ''; }
+	if ($ORDERREF->{'bill_country'} eq 'USA') { $ORDERREF->{'bill_country'} = ''; }
+	if ($ORDERREF->{'bill_country'} eq 'US') { $ORDERREF->{'bill_country'} = ''; }
+
+	# $GTOOLS::TAG{"<!-- SHIP_NAME -->"} = ($ORDERREF->{"ship_fullname"})?($ORDERREF->{"ship_fullname"}):($ORDERREF->{"ship_firstname"}." ".$ORDERREF->{"ship_lastname"});
+	$GTOOLS::TAG{"<!-- SHIP_NAME -->"} = $ORDERREF->{"ship_firstname"}." ".$ORDERREF->{"ship_lastname"};	
+   $GTOOLS::TAG{"<!-- SHIP_COMPANY -->"} = ($ORDERREF->{"ship_company"})?($ORDERREF->{"ship_company"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- SHIP_ADDRESS1 -->"} = ($ORDERREF->{"ship_address1"})?($ORDERREF->{"ship_address1"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- SHIP_ADDRESS2 -->"} = ($ORDERREF->{"ship_address2"})?($ORDERREF->{"ship_address2"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- SHIP_CITY -->"} = ($ORDERREF->{"ship_city"})?($ORDERREF->{"ship_city"}.", "):"";
+   $GTOOLS::TAG{"<!-- SHIP_STATE -->"} = ($ORDERREF->{"ship_state"})?($ORDERREF->{"ship_state"}." "):"";
+
+   if ($ORDERREF->{"ship_country"} eq '')
+		{ $GTOOLS::TAG{"<!-- SHIP_ZIP -->"} = ($ORDERREF->{"ship_zip"})?($ORDERREF->{"ship_zip"}." "):""; }
+	else { $GTOOLS::TAG{'<!-- SHIP_ZIP -->'} = $ORDERREF->{'ship_province'}.', '.$ORDERREF->{"ship_int_zip"}.'<br>'.$ORDERREF->{'ship_country'}; }
+
+   $GTOOLS::TAG{"<!-- SHIP_PHONE -->"} = ($ORDERREF->{"ship_phone"})?($ORDERREF->{"ship_phone"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- SHIP_EMAIL -->"} = ($ORDERREF->{"ship_email"});	
+
+	# $GTOOLS::TAG{"<!-- BILL_NAME -->"} = ($ORDERREF->{"bill_fullname"})?($ORDERREF->{"bill_fullname"}):($ORDERREF->{"bill_firstname"}." ".$ORDERREF->{"bill_lastname"});
+	$GTOOLS::TAG{"<!-- BILL_NAME -->"} = $ORDERREF->{"bill_firstname"}." ".$ORDERREF->{"bill_lastname"};	
+   $GTOOLS::TAG{"<!-- BILL_COMPANY -->"} = ($ORDERREF->{"bill_company"})?($ORDERREF->{"bill_company"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- BILL_ADDRESS1 -->"} = ($ORDERREF->{"bill_address1"})?($ORDERREF->{"bill_address1"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- BILL_ADDRESS2 -->"} = ($ORDERREF->{"bill_address2"})?($ORDERREF->{"bill_address2"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- BILL_CITY -->"} = ($ORDERREF->{"bill_city"})?($ORDERREF->{"bill_city"}.", "):"";
+   $GTOOLS::TAG{"<!-- BILL_STATE -->"} = ($ORDERREF->{"bill_state"})?($ORDERREF->{"bill_state"}." "):"";
+
+   if ($ORDERREF->{"bill_country"} eq '')
+		{ $GTOOLS::TAG{"<!-- BILL_ZIP -->"} = ($ORDERREF->{"bill_zip"})?($ORDERREF->{"bill_zip"}." "):""; }
+	else { $GTOOLS::TAG{'<!-- BILL_ZIP -->'} = $ORDERREF->{'bill_province'}.', '.$ORDERREF->{"bill_int_zip"}.'<br>'.$ORDERREF->{'bill_country'}; }
+
+   $GTOOLS::TAG{"<!-- BILL_PHONE -->"} = ($ORDERREF->{"bill_phone"})?($ORDERREF->{"bill_phone"}."<br>"):"";
+   $GTOOLS::TAG{"<!-- BILL_EMAIL -->"} = ($ORDERREF->{"bill_email"});	
+
+	if (&CUSTOMER::customer_exists($USERNAME,$ORDERREF->{'bill_email'})) {		
+		$GTOOLS::TAG{'<!-- CUSTOMER_EDIT -->'} = "<a href=\"javascript:openWindowNR('/biz/manage/customer/index.cgi?ACTION=EDIT&EMAIL=$ORDERREF->{'bill_email'}&POPUP=1&ts=$ts&O=$ID\');\">Edit Customer Account</a>";
+		}
+
+	if ($ORDERREF->{'payment_method'} eq 'PAYPAL') {
+		$GTOOLS::TAG{'<!-- PAYMENTINFO -->'} = qq~
+		<tr><td><br>Paypal Account: $ORDERREF->{'paypal_acct'} &nbsp; &nbsp; Transaction Id: $ORDERREF->{'payment_authorization'}</td></tr>
+		~;
+		}
+
+	if (defined($ORDERREF->{'order_notes'})) {
+		$GTOOLS::TAG{'<!-- NOTES -->'} = "<tr><td><font size='2'><b>Order Notes:</b><br>".&ZOOVY::incode($ORDERREF->{'order_notes'})."<br></font></td></tr>\n";
+		
+		require ZWEBSITE;
+		if (&ZWEBSITE::fetch_website_attrib($USERNAME,'order_notes_print') == 1) {
+			$GTOOLS::TAG{'<!-- ORDERNOTES -->'} = "<center><table width='95%'><tr><Td>$GTOOLS::TAG{'<!-- NOTES -->'}</td></tr></table></center>"; 
+			}
+	
+		}
+
+
+
+if ($CMD eq "INVOICE" || $CMD eq 'PACKSLIP') {
+	require ZWEBSITE;
+	require IMGLIB::Lite;
+	my $out;
+	my ($width,$height) = split('x',&ZWEBSITE::fetch_website_attrib($USERNAME,'logoinvoice'));
+	if (!defined($height)) { $height = 100; }
+	if (!defined($width)) { $width = 300; }
+	$GTOOLS::TAG{'<!-- WIDTH -->'} = $width;
+	$GTOOLS::TAG{'<!-- HEIGHT -->'} = $height;
+	my $logo = &ZOOVY::fetchmerchant_attrib($USERNAME,"zoovy:logo_invoice");
+	if ($logo eq '') { $logo = &ZOOVY::fetchmerchant_attrib($USERNAME,"zoovy:invoice_logo"); }
+	$GTOOLS::TAG{"<!-- COMPANY_LOGO -->"} = &IMGLIB::Lite::url_to_image($USERNAME,$logo,$width,$height,'ffffff');
+
+	# my $MERCHREF = &ZOOVY::attrib_handler_ref(&ZOOVY::fetchmerchant($USERNAME));	
+	my $merchantref = &ZOOVY::fetchmerchant_ref($USERNAME);
+	$GTOOLS::TAG{"<!-- COMPANY_ADDRESS1 -->"} = ($merchantref->{"zoovy:address1"})?($merchantref->{"zoovy:address1"}."<br>"):"";
+	$GTOOLS::TAG{"<!-- COMPANY_ADDRESS2 -->"} = ($merchantref->{"zoovy:address2"})?($merchantref->{"zoovy:address2"}."<br>"):"";
+	$GTOOLS::TAG{"<!-- COMPANY_CITY -->"} = ($merchantref->{"zoovy:city"})?($merchantref->{"zoovy:city"}.", "):"";
+	$GTOOLS::TAG{"<!-- COMPANY_STATE -->"} = ($merchantref->{"zoovy:state"})?($merchantref->{"zoovy:state"}." "):"";
+	$GTOOLS::TAG{"<!-- COMPANY_ZIP -->"} = ($merchantref->{"zoovy:zip"})?($merchantref->{"zoovy:zip"}." "):"";
+	$GTOOLS::TAG{"<!-- COMPANY_SUPPORT_PHONE -->"} = ($merchantref->{"zoovy:support_phone"});
+	$GTOOLS::TAG{"<!-- COMPANY_SUPPORT_EMAIL -->"} = ($merchantref->{"zoovy:support_email"});	
+	$GTOOLS::TAG{"<!-- COMPANY_URL -->"} = ($merchantref->{"zoovy:website_url"});
+
+	my $TAXRATE = $ORDERREF->{"tax_rate"};
+	my $SHIPPING = $ORDERREF->{"shp_total"};
+	
+	if ($CMD eq 'PACKSLIP') {
+		$out = &build_packslip($USERNAME,$o);
+		$template_file = 'packslip.shtml';
+		}
+	elsif ($CMD eq 'INVOICE') {
+		
+		$out = &CART::VIEW::as_html($o,'PRINT_INVOICE',$webdb,undef);
+		$template_file = "invoice.shtml";
+		}
+
+	if (length($out)<1) { $out .= "<br><font color='red'>No contents found!</font>"; }
+	if ($ORDERREF->{'meta'} ne '') { $out .= "<br>META: $ORDERREF->{'meta'}<br>\n"; }
+
+	$GTOOLS::TAG{"<!-- DISPLAY_CONTENTS -->"} = "$out";
+	} 
+
+
+if ($CMD eq "DELETE") {
+	$template_file = "delete-confirm.shtml";
+	my $TAXRATE = $ORDERREF->{"tax_rate"};
+	my $SHIPMETHOD = $ORDERREF->{"shp_method"};
+	my $SHIPPING = $ORDERREF->{"shp_total"};
+	$a = &CART::VIEW::as_html($o,'INVOICE',$webdb,undef);
+	if (length($a)<1) { $a .= "No contents found!"; }
+	$GTOOLS::TAG{"<!-- DISPLAY_CONTENTS -->"} = "$a";
+	}
+
+# DEFAULT CMD displays the edit.shtml
+if (!$CMD) { 
+	$a = &CART::VIEW::as_html($o,'INVOICE',$webdb,undef);
+	&build_buttons('VIEW',$USERNAME,$o);
+
+   if (length($a)<1) { $a .= "No contents found!"; }
+	if ($ORDERREF->{'meta'} ne '') { $a = "META: $ORDERREF->{'meta'}<br>\n$a"; }
+	if ($ORDERREF->{'sdomain'} ne '') { $a = "CHECKOUT DOMAIN: $ORDERREF->{'sdomain'}<br>\n$a"; }
+
+   $GTOOLS::TAG{"<!-- DISPLAY_CONTENTS -->"} = "$a";
+   $template_file = "view.shtml";
+
+	if (defined $CUSTOMER) {
+		my $NOTES = '';
+		
+		foreach my $note (@{$CUSTOMER->fetch_notes()}) {
+			$NOTES .= "<tr><td valign='top' nowrap>".&ZTOOLKIT::pretty_date($note->{'CREATED_GMT'},-1)." $note->{'LUSER'}</td><td valign='top'>&nbsp; - &nbsp; </td><td valign='top'>$note->{'NOTE'}</td></tr>";
+			}
+
+		$GTOOLS::TAG{'<!-- CRMNOTES -->'} = qq~
+		<table bgcolor="#000000" cellspacing=1 cellpadding=3 width="100%">
+		<tr>
+			<td bgcolor='FFFFFF'>
+				<b>Customer Notes</b> 
+				<i>(Reminder: customer notes are shared across all orders - they are never displayed to the customer.)</i><br>
+			<table cellpadding='0' cellspacing='0'>
+				$NOTES
+			</table>
+			<table cellpadding='0' cellspacing='0'><tr><td nowrap>
+				Add Note: <input maxlength="80" type="textbox" size="80" name="NOTE"> <input onClick="document.thisFrm.CMD.value='SAVENOTE'; document.thisFrm.submit();" type="button" value=" Add ">	
+			</td></tr></table>
+			</td>
+		</tr>
+		</table>
+		~;	
+		}
+	}
+
+
+&GTOOLS::output(file=>$template_file,header=>1);
+
+&DBINFO::db_zoovy_close();
+
+exit;
+
+sub build_payment_status {
+	my ($ORDERREF) = @_;
+	
+	my $c = "";
+	my $ps = substr($ORDERREF->{"payment_status"},0,1);
+	if ($ps eq "0") { $c .= "PAYMENT_STATUS: paid in full<br>"; }
+	elsif ($ps eq "1") { $c .= "PAYMENT_STATUS: pending<br>"; }
+	elsif ($ps eq "2") { $c .= "PAYMENT_STATUS: denied<br>"; }
+	elsif ($ps eq "3") { $c .= "PAYMENT_STATUS: order cancelled<br>"; }
+	elsif ($ps eq "4") { $c .= "PAYMENT_STATUS: review requested<br>"; }
+	$c .= "PAYMENT METHOD: ".$ORDERREF->{"payment_method"}."<br>";
+  
+	if ($ORDERREF->{"payment_method"} eq "CREDIT") {
+     # $ORDERREF->{"payment_cc_status"}
+     # -1 unavailable, 0 success, 1 declined, 2 pending - voice authorization, 3 bad data
+     # 4 disallowed - invalid card type? not supported, 5 unrecognized - processor bank didn't recognize merchant_info
+     # 6 critical - internal inconsistency, 7 unknown - catch all
+     $c .= "PAYMENT_CC_STATUS: ".$ORDERREF->{"payment_cc_status"}."<br>";
+
+     # Ignore this, its not really used.   
+     # $ORDERREF->{"payment_cc_types"}
+     # AMEX, VISA, MC, NOVUS
+     # $c .= "PAYMENT_CC_TYPES: ".$ORDERREF->{"payment_cc_types"}."<br>";
+     
+     # $ORDERREF->{"payment_cc_results"}
+     $c .= "PAYMENT_CC_RESULTS: ".$ORDERREF->{"payment_cc_results"}."<br>";
+
+     # $ORDERREF->{"payment_cc_processor"}
+     $c .= "PAYMENT_CC_PROCESSOR: ".$ORDERREF->{"payment_cc_processor"}."<br>";
+     }
+
+  return ($c);  
+}
+
+
+
+##
+## MODE: - "VIEW" the primary invoice view
+##
+sub build_buttons {
+	my ($MODE,$USERNAME, $o) = @_;
+
+	# print out the print invoice
+	my $ts = time();
+	my $ID = $ZOOVY::cgiv->{'ID'};
+
+	$GTOOLS::TAG{'<!-- CORESTR -->'} = qq~
+		<table border='0' cellpadding='0' cellspacing='0'>
+			<tr>
+			<td><input type='button' onClick="document.location='track.cgi?ID=$ID&ts=$ts';" value=" Tracking Info "></td>
+			<td><input type='button' onClick="document.location='payment.cgi?ID=$ID&ts=$ts';" value=" Payment Status "></td>
+			<td><input type='button' onClick="return(prWindow('view.cgi?CMD=INVOICE&ID=$ID&ts=$ts'));" value=" Print Invoice "></td>
+			<td><input type='button' onClick="return(prWindow('view.cgi?CMD=PACKSLIP&ID=$ID&ts=$ts'));" value=" Packing Slip "></td>
+			<td><input type='button' onClick='return(openWindow("notes.cgi?ID=$ID&ts=$ts"));' value=" Edit Order Notes "></td>
+			</tr>
+		</table>
+	~;
+
+	$GTOOLS::TAG{'<!-- OPTIONSTR -->'} = qq~
+		<table border='0' cellpadding='0' cellspacing='0'>
+			<tr>
+				<td>
+				<input type='button' onClick=\"document.location='edit.cgi?CMD=EDIT&ID=$ID&ts=$ts';\" value=\"  Edit Contents \">
+				<input type='button' onClick=\"document.location='view.cgi?CMD=DELETE&ID=$ID&ts=$ts';\" value=\"  Delete Order \">
+				<input type='button' onClick=\"document.location='move.cgi?CMD=EMAIL&order-$ID=on';\" value=\"  Send Email \">
+				<input type='button' onClick=\"document.location='move.cgi?CMD=EXPORT&order-$ID=on';\" value=\"  Export \">
+				</td>
+			</tr>
+		</table>
+	~;
+
+	}
+
+
+
+##
+##
+## parameters: MODE, USERNAME, ID, TAXRATE, SHIPPRICE, SHIPMETHOD
+##   MODE is what type of invoice to print currently only "NORM" is supported
+##   ID is the order ID
+##   TAXRATE is the tax rate for the other (if applicable) in non-decimal format (10 = %10 tax rate)
+##   SHIPPRICE is the price of shipping
+##   SHIPMETHOD is the text of the method we are shipping
+##
+sub build_packslip {
+	my ($USERNAME,$o) = @_;
+
+	my $out = "";
+
+	my $SHIPMETHOD = $o->get_attrib('shp_method');
+	my $stuff = $o->stuff();
+	my %hash = %{$stuff->make_contents()};
+
+	my $BGCOLOR = '3366CC';
+	$out .= "<table cellspacing='0' cellpadding='5' width='100%'><tr>";
+	$out .= "<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: FFFFFF'><b>LOCATION</b></font></td>";
+	$out .= "<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: FFFFFF'><b>SKU</b></font></td>";
+	$out .= "<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: FFFFFF'><b>PRODUCT</b></font></td>";
+	$out .= "<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: FFFFFF'><b><center>&nbsp;&nbsp;QTY&nbsp;&nbsp;</center></b></font></td>";
+	$out .= "</tr>";
+
+
+	my ($qtyref,$resref,$locref) = (undef,undef,undef);
+	my @prods = ();
+	foreach my $p (keys %hash) {
+		if (index($p,'*')>=0) { $p = substr($p,index($p,'*')+1); }
+		push @prods, $p;
+		}
+		
+	($qtyref,$resref,$locref) = &INVENTORY::fetch_qty($USERNAME,\@prods,undef);
+
+	my $counter = 0;
+	my ($footer,$x) = ('','');
+	foreach my $key (sort keys %hash) {
+		next if ((substr($key,0,1) eq '!') && (uc($key) ne '!DISC') && (uc($key) ne '!PAYFEE'));
+		my $SKU = $key;
+		if ($SKU =~ /^(.*?)\//) { $SKU = $1; }	# strip off non-inventoriable options
+		
+		if ($counter++ % 2) { $BGCOLOR="FFFFFF"; } else { $BGCOLOR='E0E0E0'; }
+		my ($price,$qty,$weight,$tax,$description) = split(',',$hash{$key},5); 
+		my $extended = sprintf("\$%.2f",$price * $qty);
+		$weight =~ s/[^0-9\.\#\-]//g;
+		$x = "<tr>";
+
+		my $pullsku = $SKU;
+		if (index($pullsku,'*')>=0) { $pullsku = substr($pullsku,index($pullsku,'*')+1); }
+		$x .= "<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: #000000'>$locref->{$pullsku}</font></td>";
+
+		$x .= qq~
+<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: #000000'>$SKU</font></td>
+<td bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: #000000'>$description</font></td>
+<td nowrap bgcolor='$BGCOLOR'><font style='font-family: sans-serif, helvetica, arial; font-size: 8pt; color: #000000'><center>$qty</center></font></td>
+~;
+		$x .= "</tr>";
+
+		if (substr($key,0,1) eq '!') {
+			$footer .= $x;
+			}
+		else {
+			$out .= $x;
+			}
+		}
+	$out .= $footer;
+
+	$out .= "<tr><td colspan='3' align='right' bgcolor='FFFFFF'><font style='font-family: sans-serif, helvetica, arial; font-size: 10pt; color: #3366CC'>Shipping: <B>$SHIPMETHOD</b></font></td></tr>\n";
+
+	$BGCOLOR = '33333';
+
+
+
+	$out .= "</table>";
+	return($out);
+}
+
+undef $SITE::CONFIG;
+

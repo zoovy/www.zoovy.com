@@ -1,0 +1,107 @@
+<!-- SETUP_TAB -->
+<center>
+<!-- MYTODO -->
+<!-- MESSAGE -->
+</center>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="MANUAL-SAVE">
+<input type="hidden" name="TAB" value="CREDIT">
+
+<center>
+<table width="80%">
+<tr><td>
+
+<br>
+<font face="Arial, Helevetica">
+<center><font face="Helvetica, Arial, Verdana" size="3"><b><strong>Manual Processing Options</b></strong></font></center>
+<br>
+
+<table>
+<tr>
+	<td>Credit Card Acceptance Policy:</td>
+	<td>
+<select name="pay_credit">
+<option <!-- PAY_CREDIT_0_SELECTED --> value="0">Do not allow customers to choose this payment type</option>
+<option <!-- PAY_CREDIT_1_SELECTED --> value="1">Allow for United States Destinations Only</option>
+<option <!-- PAY_CREDIT_3_SELECTED --> value="3">Allow for United States and Canada</option>
+<option <!-- PAY_CREDIT_7_SELECTED --> value="7">Allow for United States + Low Risk International Destinations</option>
+<option <!-- PAY_CREDIT_15_SELECTED --> value="15">Allow United States + Low & High Risk International Destinations</option>
+</select>
+	</td>
+</tr>
+<tr>
+	<td><b>CVV/CID:</b></td>
+	<td><font face="arial" size="2">
+	<select name="cc_cvvcid">
+		<option <!-- CC_CVVCID_0 --> value="0">Ignore (do not request)</option>
+	</select>
+	</font></td>
+</tr>
+<tr>
+	<td colspan="2">
+	<font size="1">
+Please note: capturing and storing of the CVV/CID # is strictly prohibited by most merchant agreements.
+The CVV/CID should be supplied by the cardholder at the time of the transaction to increase security by ensuring the physical card is present.
+If CVV/CID is stored, then it can be copied - and subsequently stolen (which defeats the purpose of the entire CVV/CID security system). 
+Consequently capturing this information could result in you being liable for any fraud that occurs as a result of your negligence.
+You should contact your merchant account provider BEFORE enabling this setting.
+	</font>
+	</td>
+</tr>
+</table>
+<br>
+Accepted Cards and Fees:<br>
+<table>
+	<tr>
+		<td><b>Accept/Allow</b></td>
+		<td><b>Transaction Type</b></td>
+		<td><b>Transaction Fee</b></td>
+		<td><b>Discount Rate (%)</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp</td>
+		<td>Gateway/Terminal Fees</td>
+		<td>$<input type="textbox" name="CC_TRANSFEE" value="<!-- CC_TRANSFEE -->" size="5"></td>
+		<td>%<input type="textbox" name="CC_DISCRATE" value="<!-- CC_DISCRATE -->" size="5"></td>
+	</tr>
+	<tr>
+		<td align="center"><input <!-- CC_TYPE_VISA_CHECKED --> type="checkbox" name="cc_type_visa"></td>
+		<td>Visa</td>
+		<td>$<input type="textbox" name="VISA_TRANSFEE" value="<!-- VISA_TRANSFEE -->" size="5"></td>
+		<td>%<input type="textbox" name="VISA_DISCRATE" value="<!-- VISA_DISCRATE -->" size="5"></td>
+	</tr>
+	<tr>
+		<td align="center"><input <!-- CC_TYPE_MC_CHECKED -->  type="checkbox" name="cc_type_mc"></td>
+		<td>Mastercard</td>
+		<td>$<input type="textbox" name="MC_TRANSFEE" value="<!-- MC_TRANSFEE -->" size="5"></td>
+		<td>%<input type="textbox" name="MC_DISCRATE" value="<!-- MC_DISCRATE -->" size="5"></td>
+	</tr>
+	<tr>
+		<td align="center"><input <!-- CC_TYPE_AMEX_CHECKED -->  type="checkbox" name="cc_type_amex"></td>
+		<td>American Express</td>
+		<td>$<input type="textbox" name="AMEX_TRANSFEE" value="<!-- AMEX_TRANSFEE -->" size="5"></td>
+		<td>%<input type="textbox" name="AMEX_DISCRATE" value="<!-- AMEX_DISCRATE -->" size="5"></td>
+	</tr>
+	<tr>
+		<td align="center"><input <!-- CC_TYPE_NOVUS_CHECKED -->  type="checkbox" name="cc_type_novus"></td>
+		<td>Discover/Novus</td>
+		<td>$<input type="textbox" name="NOVUS_TRANSFEE" value="<!-- NOVUS_TRANSFEE -->" size="5"></td>
+		<td>%<input type="textbox" name="NOVUS_DISCRATE" value="<!-- NOVUS_DISCRATE -->" size="5"></td>
+	</tr>
+</table>
+
+<br>
+Processing options:<br>
+<input <!-- CC_EMULATE_GATEWAY --> type="checkbox" name="cc_emulate_gateway"> Emulate Payment Gateway: Always return Success/PAID 005 for capture requests (advanced users only)<br>
+<br>
+</td></tr></table>
+
+<center>
+<table>
+<tr><td><input type="image" width="81" height="31" alt="Save Settings" width="81" height="31" src="/images/bizbuttons/save.gif" border="0"></td>
+<td><a target="_top" href=".."><img border="0" width="81" height="31" alt="Exit" width="81" height="31" src="/images/bizbuttons/exit.gif"></td></tr>
+</table>
+</center>
+
+</form>
+<!-- FOOTER -->

@@ -1,0 +1,103 @@
+<!-- UTILITIES_TAB -->
+
+<script language="JavaScript" src="/biz/js/calendar/calendar2.js"></script><!-- Date only with year scrolling -->
+
+<br>
+<form name="thisFrm" method="POST" action="index.cgi">
+<input type="hidden" name="GCID" value="<!-- GCID -->">
+<input type="hidden" name="VERB" value="SAVECARD">
+
+<div align='center'>
+
+<!-- RESULT -->
+<table cellspacing=0 cellpadding='4' class="zoovytable" width='600'>
+	<tr>
+		<td colspan='2' class="zoovytableheader"><!-- TITLE --></td>
+	</tr>
+	<tr <!-- HIDE -->>
+		<td <!-- HIDE --> nowrap valign="top"><font color='blue'><b>Card Code:</b></td>
+		<td <!-- HIDE --> nowrap valign="top"><font color='blue'><b><!-- CODE --></b></td>
+	</tr>
+	<tr <!-- HIDE -->>
+		<td <!-- HIDE --> nowrap valign="top">Created:</td>
+		<td <!-- HIDE --> nowrap valign="top"><!-- CREATED --> (by <!-- CREATED_BY --> on partition#<!-- PRT -->)</td>
+	</tr>
+	<tr <!-- HIDE -->>
+		<td <!-- HIDE --> nowrap valign="top">Last Order:</td>
+		<td <!-- HIDE --> nowrap valign="top"><!-- LAST_ORDER --> (Transaction Count: <!-- TRANSCNT -->)</td>
+	</tr>
+	<tr>
+		<td nowrap valign="top">Customer Email:</td>
+		<td nowrap valign="top"><input size="65" maxlength="65" type="text" value="<!-- EMAIL -->" name="email"><br>
+			<div class="hint">Email is optional, but allows your customer to lookup a giftcard online if lost.</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<input type="checkbox" name="sendemail"> Send Email to Customer
+		</td>
+	</tr>
+	<tr>
+		<td nowrap valign='top'>Expires:</td>
+		<td valign="top">
+			<input type="text" value="<!-- EXPIRES -->" name="expires" maxlength="10">
+			<a href="javascript:cal2.popup();"><img src="img/cal.gif" width="16" height="16" border="0" alt="Click Here to Pick up the date"></a><br>
+			<div class='hint'>HINT: Leave expires empty for "never".</div>
+			<div class='hint'>HINT: Many states require you do not expire gift cards if you sell them for cash value.
+However gift cards that you include discounted, or free with an order are usually exempt. 
+</div>
+		</td>
+	</tr>
+	<tr>
+		<td nowrap valign="top">Note:</td>
+		<td valign="top"><input size="60" type="text" name="note" value="<!-- NOTE -->">
+		<div class='hint'>HINT: This field is public and viewable by your customers.</div></td>
+	</tr>
+	<tr>
+		<td nowrap valign="top">Balance ($): </td>
+		<td valign="top"><input size="5" type="text" value="<!-- BALANCE -->" name="balance"></td>
+	</tr>
+	<tr>
+		<td valign="top">Card Type:</td>
+		<td>
+			<!-- CARDTYPE -->
+		</td>
+	</tr>
+	<tr>
+		<td align=center colspan=2>
+		<center>
+		<table><tr>
+		<td align='center'><input type="submit" class="button" value=" Save "></td>
+		<td align='center'><input type="button" onClick="document.location='index.cgi';" class="button" value=" Exit "></td>
+		</tr></table>
+		</center>
+		</td>
+	</tr>
+	<!-- QUANTITY -->
+</table>
+</div>
+ 
+</form>
+<script language="JavaScript">
+<!-- // create calendar object(s) just after form tag closed
+             // specify form element as the only parameter
+            var cal2 = new
+calendar2(document.forms['thisFrm'].elements['expires']);
+            cal2.year_scroll = true;
+            cal2.time_comp = false;
+//-->
+</script>
+
+<br>
+<div align="center">
+<table cellspacing=0 class="zoovytable" width="600">
+	<tr class="zoovytableheader">
+		<td colspan=10>Transaction Log</td>
+	</tr>
+	<!-- TRANSACTION_LOG -->
+</table>
+</div>
+
+
+</body>
+

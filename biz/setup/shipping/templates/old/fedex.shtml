@@ -1,0 +1,102 @@
+<head>
+<title>Fedex Configuration</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor='FFFFFF'>
+<center>
+<table width="85%">
+<tr><td>
+<center>
+<!-- MESSAGE -->
+</center>
+
+<center>
+<table><tr><td>
+<font face="Arial, Helevetica">
+
+<form action="fedex.cgi" method="POST" target="main">
+<input type="hidden" name="ACTION" value="SAVE">
+<br>
+<b>MANDATORY:</b>
+In order to use this feature you MUST have a Federal Express Account number. If you do not put in an account number
+then Zoovy will default to a location of Cardiff by the Sea, CA.<br>
+<br>
+Origin Location Fedex Account Number: <input type="textbox" name="fedex_acct" value="<!-- FEDEX_ACCT -->"><br>
+<br>
+<b>USAGE:</b><font size='2'>
+&nbsp;
+Please select the method(s) of Federal Express shipping you want to offer to your customers. During checkout the 
+price will be derived from Federal Express based on your account number and 
+the total weight of the order, making the assumption that the contents will fit into a standard box size. 
+Your company address MUST be configured in your <a target="_blank" href="/biz/setup/account">account setup</a> for this
+method to accurately calculate shipping from your origin to the customers destination address. 
+The handling fee (if any) will be added to the Federal Express quoted rates. <Br>
+</font>
+<br>
+
+
+<b>Fedex Domestic Settings</B><br>
+<table border="1" width='95%'>
+<tr><td>
+<font face="Arial" size='2'>
+<input type="checkbox" <!-- FEDEX_DOM_ENABLED --> name="fedex_dom" value="on"> Enable Fedex Domestic Shipping Support<br>
+<br>
+<table width='100%' border='0' cellspacing='0' cellpadding='0'>
+<tr bgcolor='C7C7C7'>
+	<td><input type="checkbox" <!-- DOM_NEXTDAY --> name="fedex_dom_nextday" value="1"></td>
+	<td>Next Day Priority</td>
+	<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedex_dom_nextday">Edit/View Advanced Rules</a></td>
+</tr>
+<tr>
+	<td><input type="checkbox" <!-- DOM_NEXTNOON --> name="fedex_dom_nextnoon" value="1"></td>
+	<td>Next Day Saver</td>
+	<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedex_dom_nextnoon">Edit/View Advanced Rules</a></td>
+</tr>
+<tr bgcolor='C7C7C7'>
+	<td><input type="checkbox" <!-- DOM_2DAY --> name="fedex_dom_2day" value="1"></td>
+	<td>Two Day Express</td>
+	<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedex_dom_2day">Edit/View Advanced Rules</a></td>
+</tr>
+<tr>
+	<td><input type="checkbox" <!-- DOM_3DAY --> name="fedex_dom_3day" value="1"></td>
+	<td>Three Day Express</td>
+	<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedex_dom_3day">Edit/View Advanced Rules</a>
+</tr>
+</table>
+
+<br>
+Simple Additional Handling Charge: <input size='6' type="textbox" name="fedex_dom_handling" value="<!-- FEDEX_DOM_HANDLING -->"><br>
+Note: having a simple handling charge will DISABLE all rule processing, if you have no rules and want faster shipping calculation then
+set this field to 0 (zero).
+
+</td></tr>	
+</table>
+<br>
+
+<!-- FEDEX_HIDE_INT_BEGIN -->
+<Br>
+<B>FedEx International Settings</B><br>
+<table border="1" width='95%'>
+<tr><td>
+<input type="checkbox" <!-- FEDEX_INT_ENABLED --> name="fedex_int" value="on"> Enable Fedex International Shipping Support<br>
+<br>
+<!-- FEDEX_INT_WEIGHT -->
+</td></tr>
+</table>
+<!-- FEDEX_HIDE_INT_END -->
+<br>
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-FEDEX">
+<a href="main.cgi" target="main"><img border="0" src="/images/bizbuttons/exit.gif"></a><br>
+<!-- TAB_FOOTER -->
+</center>
+
+</form>
+</font>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+</center>
+</body>

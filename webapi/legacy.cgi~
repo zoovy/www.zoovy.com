@@ -1,0 +1,265 @@
+#!/usr/bin/perl
+
+use strict;
+
+my %ERRORS = (
+	'1' => 'Generic Error... shit happened!',
+	'995' => 'Internal Zlib decomrpession error. Could not decompress data.',
+	'996' => 'Internal Gzip decompression error. Could not decompress data.',
+	'997' => 'Internal Bzip2 decompression error. Could not decompress data.',
+	'998' => 'Internal Error - cannot determine server name.',
+	'999' => 'Internal Error - cannot connect to database!',
+	'1000' => 'X-ZOOVY-USERNAME was not found in header.',
+	'1001' => 'X-ZOOVY-SECURITY was not found in header.',
+	'1002' => 'X-LENGTH was not found in header.',
+	'1003' => 'X-ZOOVY-API was not found in header.',
+	'1004' => 'X-ZOOVY-REQUEST was not found in header.',
+	'1005' => 'X-TIME was not found in header.',
+	'1006' => 'X-COMPRESS is missing or contains an invalid value, please pick one: NONE|BZIP2|GZIP.',
+	'2000' => 'Length of content does not match X-Length.',
+	'2001' => 'X-ZOOVY-REQUEST appears to be blank.',
+	'2002' => 'Deviation of X-TIME too large.',
+	'2003' => 'Variable X-ZOOVY-API was received, but is blank.',
+	'2004' => 'Invalid API called.',
+	'2005' => 'Security Digests do not match - probably invalid password.',
+	'2006' => 'Received legacy X-ZOOVY-PASSWORD variable, but it did not match password on file.',
+);
+
+
+use lib "/httpd/modules";
+require ZOOVY;
+require WEBAPI;
+use Digest::MD5;
+use Compress::Bzip2;
+use Compress::Zlib;
+
+my $dbh = &DBINFO::db_zoovy_connect();
+my $MID = 0;
+my $USERNAME = '';						# the X-ZOOVY-USERNAME variable
+my $SERVER = &ZOOVY::servername();		
+my $DATA = '';								# the actual DATA received from the post.
+my $LENGTH = -1;							# the X-LENGTH variable
+my $XREQUEST = '';						# the X-ZOOVY-REQUEST variable
+my $XTIME = -1;							# the X-TIME variable
+my $XAPI = '';								# the API name as it was passed X-ZOOVY-API
+my $ACTUALMD5 = ''; 						# the computed MD5 value
+my $XSECURITY = '';						# the X-ZOOVY-SECURITY variable
+my $API = ''; 								# the actual API (before the params)
+my @APIPARAMS = ();						# the parameters (delimited by /)
+my $EC = 0;									# Error Code 
+my $XCOMPRESS	= '';						# the type of compress specified by X-COMPRESS
+
+
+my $q = undef;
+$::LEGACY = 0;
+if ($ENV{'SCRIPT_NAME'} =~ /legacy\.cgi$/) { 
+	$::LEGACY = 1; 
+	$q = new CGI;
+	}
+
+# $EC = 1; // for testing!
+
+if ($EC==0) { if ($SERVER eq '') { $EC = 998; } }
+if ($EC==0) { if (not defined $dbh) { $EC = 999; } }
+
+## Verify user exists!
+if ($EC==0) {
+	$USERNAME = $ENV{'HTTP_X_ZOOVY_USERNAME'};
+	if ($::LEGACY) { $USERNAME = $q->param('X-ZOOVY-USERNAME'); }
+	$MID = &ZOOVY::resolve_mid($USERNAME);
+	if ($USERNAME eq '') { $EC = 1000; }
+	}
+
+## Read in Data and Check Length
+if ($EC==0) {
+	if ($::LEGACY) {
+		if (defined $q->param('CONTENT')) { $DATA = $q->param('CONTENT'); }
+		elsif (defined $q->param('FILENAME')) {
+		   my $filename = $q->param('FILENAME');
+	  		$/ = undef; $DATA = <$filename>; $/ = "\n";
+			}
+		$LENGTH = length($DATA);
+		}
+	else {
+		if (defined $ENV{'HTTP_X_LENGTH'}) { $LENGTH = int($ENV{'HTTP_X_LENGTH'}); }
+		if ($LENGTH < 0) { $EC = 1002; }
+	
+		$DATA = ''; $/ = undef; $DATA = <STDIN>; $/ = "\n";
+		if (length($DATA)!=$LENGTH) {
+			$EC = 2000;
+			$ERRORS{$EC} = "Uh-oh: Length of content ".length($DATA)." received does not match X-LENGTH ($LENGTH).";
+			}
+	
+		} # end if else elgacy
+
+	if (defined $ENV{'HTTP_X_ZOOVY_API'}) { $XAPI = $ENV{'HTTP_X_ZOOVY_API'}; } 
+	elsif ($::LEGACY) { $XAPI = $q->param('X-ZOOVY-API'); }
+	else { $EC = 1003; }
+
+	if ( ($EC==0) && ($XAPI eq '') ) { $EC = 2003; }
+	($API,@APIPARAMS) = split(/\//,$XAPI);
+	if ( ($EC==0) && (not defined $WEBAPI::APIS{$API})) { $EC = 2004; $ERRORS{$EC} = "Unknown/Invalid API [$API] called."; }
+	}
+
+## check for X-ZOOVY-REQUEST and X-TIME
+if (($EC==0) && (!$::LEGACY)) {
+	if (defined $ENV{'HTTP_X_ZOOVY_REQUEST'}) { $XREQUEST = $ENV{'HTTP_X_ZOOVY_REQUEST'}; } else { $EC = 1004; }
+	if (($EC==0) && ($XREQUEST eq '')) { $EC = 2001; }
+	if (defined $ENV{'HTTP_X_TIME'}) { $XTIME = $ENV{'HTTP_X_TIME'}; } else { $EC = 1005; }
+
+	my $t = time();
+#	if (($EC==0) && (($XTIME > $t+300) || ($XTIME<$t-300))) { 
+#		$EC = '2002';
+#		$ERRORS{$EC} = "Deviation of X-TIME too large. received=[$XTIME] server=[$t] difference=".($t-$XTIME),
+#		}
+	}
+
+## verify security 
+if ($EC==0) {
+	$XSECURITY = $ENV{'HTTP_X_ZOOVY_SECURITY'};
+	my $XPASS = undef;
+	if ($::LEGACY) { 
+		$XSECURITY = $q->param('X-ZOOVY-SECURITY'); 
+		$XPASS = $q->param('X-ZOOVY-PASSWORD'); 
+		}
+	elsif ($XSECURITY eq '') { $EC = 1001; }
+
+	if ($EC==0) {
+		my $pstmt = "select PASSWORD from ZUSERS where MID=$MID and USERNAME=".$dbh->quote($USERNAME);
+		my $sth = $dbh->prepare($pstmt);
+		$sth->execute();
+		my ($PASSWORD) = $sth->fetchrow();
+		$sth->finish();
+
+		if (defined $XPASS) {
+			if (uc($PASSWORD) ne uc($XPASS)) { $EC = '2006'; }
+			}
+		else {
+			$ACTUALMD5 = Digest::MD5::md5_hex( $USERNAME . $PASSWORD . $XAPI . $XREQUEST . $XTIME . $DATA );
+			if ($ACTUALMD5 ne $XSECURITY) {
+				$EC = '2005';
+				}
+			}
+		}
+	}
+
+## Handle Compression
+if ($EC==0) {
+	$XCOMPRESS = $ENV{'HTTP_X_COMPRESS'};
+	if ($::LEGACY) { $XCOMPRESS = $q->param('X-COMPRESS'); }
+
+	if ($DATA eq '') {
+		## no data, don't try to decompress!
+		}
+	elsif ($XCOMPRESS eq 'NONE') {
+		## no compress!
+		}
+	elsif ($XCOMPRESS eq 'BZIP2') {
+		my $TMP = $DATA;
+		$DATA = Compress::Bzip2::decompress($TMP,20);
+		if (not defined $DATA) { $DATA = Compress::Bzip2::decompress($TMP,100); }
+		if (not defined $DATA) { $EC = 997; }
+		}
+	elsif ($XCOMPRESS eq 'GZIP') {
+		# $dest = Compress::Zlib::memGzip($buffer) ;
+      $DATA = Compress::Zlib::memGunzip($DATA);
+		if (not defined $DATA) { $EC = 996; }
+		}
+	elsif ($XCOMPRESS eq 'ZLIB') {
+		$DATA = Compress::Zlib::uncompress($DATA);
+		if (not defined $DATA) { $EC = 995; }
+		}
+	else {
+		$EC = 1006;
+		}
+	}
+
+my $DEBUG = qq~<Debug>
+	<x-request>$XREQUEST</x-request>
+	<x-username>$USERNAME</x-username>
+	<x-mid>$MID</x-mid>
+	<x-api>$XAPI</x-api>
+	<x-time>$XTIME</x-time>
+	<x-security>$XSECURITY</x-security>
+	<x-realsecurity>$ACTUALMD5</x-realsecurity>
+</Debug>~;
+
+if ($::LEGACY) {
+	$XREQUEST = 'legacy';
+	print STDERR "LEGACY: EC[$EC] USERNAME: $USERNAME XAPI: $XAPI XREQUEST: $XREQUEST DATA: $DATA\n";
+
+	my ($PickupTime,$xmlOut) = (undef,undef);
+	if ($EC==0) {
+		($PickupTime,$xmlOut) = $WEBAPI::APIS{$API}->($USERNAME,$XAPI,$XREQUEST,$DATA);
+		}
+
+	if ($EC!=0) {
+		$xmlOut = "<Errors><Error Id=\"$XREQUEST\" Code=\"$EC\">$ERRORS{$EC}</Error></Errors>\n";
+		}
+	elsif ($PickupTime<0) {	
+		$xmlOut = "<Errors><Error Id=\"$XREQUEST\" Code=\"$PickupTime\">$xmlOut</Error></Errors>\n";
+		}
+
+	if (($XCOMPRESS ne 'NONE') && ($XCOMPRESS ne '')) {
+		print "Content-type: text/xml\n\n";
+		}
+	else {
+		print "Content-type: application/x-".lc($XCOMPRESS)."\n\n";
+		}
+	print STDERR "xmlOut: $xmlOut\n";
+	print &WEBAPI::doCompress($XCOMPRESS,$xmlOut);
+	}
+else {
+	## NOT LEGACY
+	print "Content-type: text/xml\n\n";
+	print "<Response>\n";
+	print "<Time>".(time())."</Time>\n";
+
+	if ($EC!=0) {
+		print $DEBUG;
+		print "<Errors>\n";
+		if ($XREQUEST eq '') { $XREQUEST = -1; }
+		print "<Error Id=\"$XREQUEST\" Code=\"$EC\">$ERRORS{$EC}</Error>\n";
+		print "</Errors>\n";
+		}
+	elsif ((not $::LEGACY) && ($EC==0)) {
+		print $DEBUG;
+		print "<Api>$API</Api>\n";
+		my ($PickupTime,$xmlOut) = $WEBAPI::APIS{$API}->($USERNAME,$XAPI,$XREQUEST,$DATA);
+		if ($PickupTime<0) {
+			print "<Errors><Error Id=\"$XREQUEST\" Code=\"$PickupTime\">$xmlOut</Error></Errors>\n";
+			}
+		else {
+			print &WEBAPI::addRequest($XCOMPRESS,$XREQUEST,$PickupTime,$xmlOut);
+			print qq~<SysInfo>~;
+			print qq~<Info type="html" show="60"><![CDATA[<html><b>Please visit <a href="http://proshop.zoovy.com">proshop.zoovy.com</a> to buy great stuff!</b>]]></Info>~;
+			print qq~</SysInfo>~;
+			}
+		}
+
+	print "</Response>\n";
+	}
+
+
+#create table API_REQUESTS (
+#	ID integer unsigned default 0 not null auto_increment,
+#
+#	USERNAME varchar(20) default '' not null,
+#	MID integer unsigned default 0 not null,
+#	CLIENTID integer default 0 not null,
+#	COMPRESSION enum('NONE','BZIP2','GZIP') default 'NONE',
+#
+#	CREATED_GMT integer unsigned default 0 not null,
+#	PROCESSED_GMT integer unsigned default 0 not null,
+#
+#	FUNCTION varchar(20) default '' not null,
+#	METHOD varchar(20) default '' not null,	
+#
+#	DATA mediumtext default '' not null,
+#
+#	primary key(ID)
+#);
+
+		# $dest = Compress::Bzip2::compress($source, [$level]);
+
+

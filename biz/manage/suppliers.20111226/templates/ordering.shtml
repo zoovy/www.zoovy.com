@@ -1,0 +1,100 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+<h1>Order Delivery</h1>
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE-GENERIC-ORDERING">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table>
+	<tr>
+		<td>CODE: <!-- CODE --></td>
+	</tr>
+	<tr>
+		<td><!-- RESULT --></td>
+	</tr>
+</table>
+<br>
+<b>Ordering:</b><br>
+<br>
+<!-- ORDERING_SETUP -->
+
+<ul>
+Transmission Format: <br>
+<table>
+	<tr>
+		<td><input align='middle' type='radio' name='GEN_ORDERTYPE' value="1" <!-- GEN_ORDERTYPE_1 -->>Email:</td>
+		<td><input type='text' class="formed" size=45 name='GEN_ORDEREMAIL' value='<!-- GEN_ORDEREMAIL -->'></td>
+	</tr>
+	<tr>
+		<td><input align='middle' type='radio' name='GEN_ORDERTYPE' value="2" <!-- GEN_ORDERTYPE_2 -->>*Fax:</td>
+		<td><input type='text' class="formed" size=45 name='GEN_ORDERFAX' value='<!-- GEN_ORDERFAX -->'></td>
+	</tr>
+</table>
+
+
+<br>
+Source Email address:<br>
+<!-- GEN_ORDEREMAIL_SRC --><br><br>
+<input type="hidden" name="GEN_ORDEREMAIL_SRC" value="<!-- GEN_ORDEREMAIL_SRC -->">
+<br>
+Order subject:<br>
+<input type='text' class="formed" name='GEN_ORDERSUBJECT' size=65 maxsize=100 value='<!-- GEN_ORDERSUBJECT -->'><br>
+
+<br>
+Order body:<br>
+<textarea max="255"  class="formed" rows="3" cols="50" name='GEN_ORDERBODY' wrap="virtual"><!-- GEN_ORDERBODY --></textarea>
+<br>
+
+<br>
+Order attachment format:<br>
+<select name='GEN_ORDERATTACH' rows=2 class="dropdown">
+<option value="1" <!-- GEN_ORDERATTACH_1 -->> HTML
+<option value="2" <!-- GEN_ORDERATTACH_2 -->> TEXT
+<option value="3" <!-- GEN_ORDERATTACH_3 -->> XML
+</select>
+<br>
+
+<br>
+Supplier Confirmation Required?:<br>
+<i>Supplier is required to confirm placed order by submitting a form on <a target="_new" href="<!-- CONFIRMATION_PAGE -->"><!-- CONFIRMATION_PAGE --></a>.<br>Orders that are not confirmed will be resent on a daily basis.</i>
+<br>
+<input type="checkbox" name="GEN_ORDERCONF" value="1" <!-- GEN_ORDERCONF --> >
+
+</ul>
+
+
+<br>
+<!--
+ADD AT LATER DATE
+input type="radio" name="ordering" Stocked: Automatically create orders
+for my approval when it meets ANY of the following criteria:
+- minimum order:  (many wholesalers require a minimum dollar order)
+- how long i've had an order for items i don't have in stock.
+- how long i've been lower on my inventory than my reorder levels
+
+<input type="textbox"> average fulfillment time (in days)
+
+todo: add module to warehouse manager to receive orders and verify that what
+is received, is what was ordered. 
+-->
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi?VERB=GENERIC-EDIT&CODE=<!-- CODE -->">
+		<img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+	</tr>
+</table>
+</center>
+
+<i>Note: a $0.10 charge will be applied to your monthly minimum fee per successful facsimile. 
+This fee does not affect accounts that exceed their monthly minimum sales requirement. 
+If you have any questions regarding this policy please contact billing@zoovy.com.</i><br>
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

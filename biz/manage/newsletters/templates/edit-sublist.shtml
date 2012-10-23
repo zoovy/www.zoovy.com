@@ -1,0 +1,57 @@
+<!-- UTILITIES_TAB -->
+<center>
+
+<form name="thisFrm" action="index.cgi" method="POST">
+	<input type="hidden" name="VERB" value="SAVE_SUBLIST">
+	<input type="hidden" name="ID" value="<!-- ID -->">
+
+
+<br>
+
+<!-- SIZING TABLE  -->
+<table class="zoovytable" width="600" cellspacing=0 cellpadding=0>
+	<tr><td class="zoovytableheader">Customize Subscription List</td></tr>
+
+	<tr>
+	<td>
+	<table>
+		<tr><td><!-- MSG --></td></tr>
+		<tr><td colspan='2' valign='top'>Id #: <!-- ID --></td></tr>
+		<tr>
+			<td valign='top'>
+				List Name: <input class=formed type="textbox" maxlength="30" size="30" value="<!-- NAME -->" name="NAME">
+				<div class="hint">The list title should (if possible) inform the customer of the list content, or the frequency of the list. For example "Daily Coupons" or "Hot Deals from XYZ".</div>			
+			</td>
+		</tr>
+		<tr>	
+			<td colspan="3" valign='top'>
+			Description/Execute Summary: (255 character max)<br>
+			<textarea class=formed name="desc" rows="3" maxlength="255" cols="60"><!-- EXEC_SUMMARY --></textarea>
+			<div class="hint">Give a more detailed description which specifically states the frequency, 
+			so customers are aware how often they will be contacted if they are on this list. 
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td valign='top' colspan='3'>
+			<b>Subscription Style:</b><br>
+			<input type="radio" <!-- MODE_1 --> value="1" name="mode"> <b>Opt-Out</b> - anytime a customer requests any subscription - add them to this as well.<br>
+			<input type="radio" <!-- MODE_2 --> value="2" name="mode"> <b>Opt-In</b>  - Allow customers to select during checkout (selection must be checked.).<br>
+			<input type="radio" <!-- MODE_0 --> value="0" name="mode"> <b>Private</b> - do not let customers signup during checkout.<br>			
+			</td>
+		</tr>			
+	</table>
+	
+	</td>
+	</tr>
+	<tr>
+		<td align="center">
+		<br>
+		<input type="submit" name="BUTTON" value="Save" class="button" onClick="thisFrm.submit();">
+		&nbsp;&nbsp;
+        <input type="button" name="BUTTON" value="Cancel" class="button" onClick="location='index.cgi?VERB=SUBSCRIBER-LISTS';">
+		</td>
+	</tr>
+</table>
+
+</form>

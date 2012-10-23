@@ -1,0 +1,494 @@
+#!/usr/bin/perl -w 
+
+use strict;
+use lib "/httpd/modules";
+use ZOOVY;
+use POGS;
+use SEARCH;
+use ZWEBSITE;
+use GTOOLS;
+use ZTOOLKIT;
+use strict;
+use Tie::DB_Lock(VERBOSE=>1);
+use CDB_File;
+use LUSER;
+
+
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_S&2');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+my ($udbh) = DBINFO::db_user_connect($USERNAME);
+&ZOOVY::init();
+&ZWEBSITE::init();
+
+my $template_file = '';
+my $VERB = $ZOOVY::cgiv->{'ACTION'};
+
+
+if ($FLAGS !~ /,WEB,/) { $VERB = 'DENY';  }
+
+
+if ($VERB eq 'ADD') {
+	
+	my $CATALOG = $ZOOVY::cgiv->{'CATALOG'};
+	my $FORMAT = '';
+	my $ATTRIBS = '';
+	my $DICTDAYS = 0;
+	if ($ZOOVY::cgiv->{'FORMAT'} eq 'SUBSTRING') {
+		## cannot add more than one substring CATALOG
+		}
+	elsif ($ZOOVY::cgiv->{'FORMAT'} eq 'FULLTEXT') {
+		$FORMAT = 'FULLTEXT';
+		$ATTRIBS = $ZOOVY::cgiv->{'FULLTEXT_ATTRIBS'}; 
+		$DICTDAYS = int($ZOOVY::cgiv->{'DICTDAYS_DAYS'});
+		}
+	elsif ($ZOOVY::cgiv->{'FORMAT'} eq 'FINDER') {
+		$FORMAT = 'FINDER';
+		}
+	elsif ($ZOOVY::cgiv->{'FORMAT'} eq 'EBAY') {
+		$FORMAT = 'EBAY';
+		$ATTRIBS = $ZOOVY::cgiv->{'EBAY_ATTRIBS'};
+		}
+
+	$ATTRIBS =~ s/ //g;
+	&SEARCH::add_catalog($USERNAME,$CATALOG,$ATTRIBS,$FORMAT,0,$DICTDAYS);
+	$LU->log("SETUP.SEARCH.ADD","CATALOG=$CATALOG FORMAT=$FORMAT ATTRIBS=$ATTRIBS",'INFO');
+	$VERB = '';
+	}
+
+
+if ($VERB eq 'ADDDEFAULT') {
+	&SEARCH::del_catalog($USERNAME,'DEFAULT');
+	&SEARCH::add_catalog($USERNAME,'DEFAULT','id,zoovy:prod_name,zoovy:prod_desc','FULLTEXT');
+	$LU->log("SETUP.SEARCH.ADD","Created Default Fulltext Catalog",'INFO');
+	$VERB = '';
+	}
+
+if ($VERB eq 'MAKEPRIMARY') {
+	my ($webdbref) = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
+	$webdbref->{'search_primary'} = $ZOOVY::cgiv->{'CATALOG'};
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref,$PRT);
+	# &ZWEBSITE::save_website_attrib($USERNAME,'search_primary',$ZOOVY::cgiv->{'CATALOG'});
+	$LU->log("SETUP.SEARCH.SET","Set primary $ZOOVY::cgiv->{'CATALOG'} on PRT:$PRT",'INFO');
+	$VERB = '';
+	}
+
+if ($VERB eq 'RESET') {
+	## MOVED TO BATCH
+	my $GUID = time();
+	my $FORMAT = $ZOOVY::cgiv->{'FORMAT'};
+	my $CATALOG = $ZOOVY::cgiv->{'CATALOG'};
+	print "Location: /biz/batch/index.cgi?VERB=ADD&GUID=$GUID&EXEC=UTILITY&APP=CATALOG_REBUILD&.format=$FORMAT&.catalog=$CATALOG\n\n";
+	}
+
+if ($VERB eq 'DELETE') {
+	&SEARCH::del_catalog($USERNAME,$ZOOVY::cgiv->{'CATALOG'});
+	$LU->log("SETUP.SEARCH.NUKE","Deleted catalog $ZOOVY::cgiv->{'CATALOG'}",'INFO');
+	$VERB = '';
+	}
+
+
+if ($VERB eq 'CREATE') {
+	$template_file = 'create.shtml';
+	}
+
+if ($VERB eq 'LOG-DELETE') {
+	my $path = &ZOOVY::resolve_userpath($USERNAME).'/IMAGES';
+	my $file = $ZOOVY::cgiv->{'FILE'};
+	$file =~ s/[\.]+/./g;	# remove multiple periods.
+	$file =~ s/[\/\\]+//gs;	# remove all slashes
+	unlink("$path/$file");
+	$VERB = 'LOGS';
+	}
+
+
+
+if ($VERB eq 'LOGS') {
+	##
+	my $c = '';
+	require BATCHJOB;
+	my $GUID = &BATCHJOB::make_guid();
+	my $path = &ZOOVY::resolve_userpath($USERNAME).'/IMAGES';
+	my $D = undef;
+	opendir $D, $path;
+	while ( my $file = readdir($D) ) {
+		next if (substr($file,0,1) eq '.');
+		my $CATALOG = '';
+		if ($file =~ /^SEARCH-(.*?)\.(log|csv)$/) {
+			$CATALOG = $1;
+			if ($CATALOG eq '') { $CATALOG = 'N/A'; }
+			my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($path.'/'.$file);
+			$c .= "<tr><td>$CATALOG</td><td>$file</td><td>".&ZTOOLKIT::pretty_date($mtime,1)."</td>";
+			$c .= "<td nowrap>";
+			$c .= "<a target=\"_blank\" href=\"http://static.zoovy.com/merchant/$USERNAME/$file\">[View]</a> ";
+			$c .= " <a href=\"index.cgi?ACTION=LOG-DELETE&FILE=$file\">[Delete]</a>";
+			$c .= " <a href=\"/biz/batch/index.cgi?VERB=NEW&GUID=$GUID&EXEC=REPORT&REPORT=SEARCHLOG_SUMMARY&.file=$file\">[Report]</a>";
+			$c .= " </td></tr>\n";
+			}
+		}
+	closedir $D;
+	if ($c eq '') { $c .= "<tr><td colspan=3><i>Sorry, no log files are available yet. Try performing a search on your website.</td></tr>"; }
+	$GTOOLS::TAG{'<!-- LOG_FILES -->'} = $c;
+	$template_file = 'logs.shtml';
+	}
+
+
+if ($VERB eq 'DEBUG') {
+	$GTOOLS::TAG{'<!-- DEBUG_OUT -->'} = "<i>No debug output.</i>";
+	}
+
+if ($VERB eq 'EXPLODE-DEBUG') {
+	my $c = '';
+	my $explode = $ZOOVY::cgiv->{'EXPLODE'};
+	if ($explode eq '') { 
+		$c = "<div class='error'>No sku/model # for explosion was passed</div>";
+		}
+	else {
+		my $results = &SEARCH::explode($explode);
+		$c .= "<b>Keyword explosion for $explode:</b><br>".$results;
+		}
+	
+	$GTOOLS::TAG{'<!-- DEBUG_OUT -->'} = $c;
+	$VERB = 'DEBUG';
+	}
+
+
+
+
+##
+##
+if ($VERB eq 'DEBUG-RUN') {
+	use Data::Dumper;
+	my $log = '';
+
+	my ($CATALOG) = $ZOOVY::cgiv->{'CATALOG'};
+	my ($SEARCHFOR) = $ZOOVY::cgiv->{'SEARCHFOR'};
+	my ($PID) = $ZOOVY::cgiv->{'PRODUCT'};
+	$SEARCHFOR =~ s/^[\s]+//g; # strip leading whitespace
+	$SEARCHFOR =~ s/[\s]+$//g;	# strip trailing whitespace
+
+	$LU->set('setup.search.debug.catalog',$CATALOG);
+	$LU->set('setup.search.debug.root',$ZOOVY::cgiv->{'SITE'});
+	$LU->save();
+
+	my ($xPRT,$ROOT) = split(/-/,$ZOOVY::cgiv->{'SITE'});
+
+	if ($PID ne '') {
+		$log .= "<tr><td valign=top>Debug Product: $PID</td></tr>";
+		}
+
+	my %params = (MODE=>'',KEYWORDS=>$SEARCHFOR,CATALOG=>$CATALOG,TRACEPID=>$PID,debug=>1,ROOT=>$ROOT,PRT=>$xPRT);
+	my $ref = &ZTOOLKIT::parseparams($ZOOVY::cgiv->{'ELEMENT'});
+	foreach my $k (keys %{$ref}) {
+		$params{$k} = $ref->{$k};
+		}
+
+	my ($outref,$prodsref,$tracelog) = SEARCH::search($USERNAME,%params);
+
+	foreach my $line (@{$tracelog}) {
+		$log .= "<tr><td valign=top>$line</td></tr>";
+		}
+	
+	$GTOOLS::TAG{'<!-- DEBUG_OUT -->'} = "Searching for: $SEARCHFOR<br><br>Element Parameters: ".Dumper(\%params)."<br><br>Trace Log:<br>".
+	"<table>$log</table>".
+	"<hr>Output:<br><pre>".Dumper(SHORT_RESULTS=>$outref,PRODUCT_INFO=>$prodsref)."</pre>";
+
+	$VERB = 'DEBUG';
+	}
+
+##
+##
+if ($VERB eq 'DEBUG') {
+	my $catalogref = &SEARCH::list_catalogs($USERNAME);
+	my $c = '';
+
+	my $FOCUS_CATALOG = $ZOOVY::cgiv->{'CATALOG'};
+	if (not defined $FOCUS_CATALOG) {
+		$FOCUS_CATALOG = $LU->get('setup.search.debug.catalog');
+		}
+	my $FOCUS_SITE = $ZOOVY::cgiv->{'SITE'};
+	if (not defined $FOCUS_SITE) {
+		$FOCUS_SITE = $LU->get('setup.search.debug.root');
+		}
+
+	foreach my $cat (keys %{$catalogref}) {
+		my $hashref = $catalogref->{$cat};
+		my $selected = ($FOCUS_CATALOG eq $hashref->{'CATALOG'})?'selected':'';
+		$c .= "<option $selected value='$hashref->{'CATALOG'}'>$hashref->{'CATALOG'}</option>\n";
+		}
+	$GTOOLS::TAG{'<!-- CATALOGS -->'} = $c;
+	$GTOOLS::TAG{'<!-- SEARCHFOR -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'SEARCHFOR'});
+	$GTOOLS::TAG{'<!-- ELEMENT -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'ELEMENT'});
+	
+	$c = '';
+	my $i = 0;
+	require DOMAIN::TOOLS;
+	foreach my $prt (@{&ZWEBSITE::list_partitions($USERNAME)}) {
+		my ($prtinfo) = &ZWEBSITE::prtinfo($USERNAME,$i);
+		my ($PROFILE) = $prtinfo->{'profile'};
+		my ($root) = &ZOOVY::fetchmerchantns_attrib($USERNAME,$PROFILE,'zoovy:site_rootcat');
+		if ($root eq '') { $root = '.'; }
+
+		my $value = "$i-$root";
+		my ($selected) = ($value eq $FOCUS_SITE)?'selected':'';
+
+		$c .= "<option disabled></option>";
+		$c .= "<option $selected value=\"$value\">PRT:$prt [profile=$PROFILE] [root=$root]</option>";
+
+		my @DOMAINS = &DOMAIN::TOOLS::domains($USERNAME,PRT=>$prt,DETAIL=>1);
+		foreach my $dref (@DOMAINS) {
+			my ($nsref) = &ZOOVY::fetchmerchantns_ref($USERNAME,$dref->{'PROFILE'});
+			my $root = $nsref->{'zoovy:site_rootcat'};
+			my $value = "$i-$root";
+			my ($selected) = ($value eq $FOCUS_SITE)?'selected':'';
+			$c .= "<option $selected value=\"$value\">- DOMAIN: $dref->{'DOMAIN'} [prt=$prt] [profile=$PROFILE] [root=$root]</option>";
+			}
+
+
+		$i++;
+		}
+	$GTOOLS::TAG{'<!-- PARTITIONS -->'} = $c;
+
+	
+
+	$template_file = 'debug.shtml';
+	}
+
+if ($VERB eq 'CONFIG-SAVE') {
+	my ($CATALOG) = $ZOOVY::cgiv->{'CATALOG'};
+	&DBINFO::insert($udbh,'SEARCH_CATALOGS',{
+		'MID'=>$MID,
+		'CATALOG'=>$CATALOG,
+		'ATTRIBS'=>$ZOOVY::cgiv->{'ATTRIBS'},
+		'REPLACEMENTS'=>$ZOOVY::cgiv->{'REPLACEMENTS'},
+		'REWRITES'=>$ZOOVY::cgiv->{'REWRITES'},
+		'KILLWORDS'=>$ZOOVY::cgiv->{'KILLWORDS'},
+		'ISOLATION_LEVEL'=>int($ZOOVY::cgiv->{'ISOLATION_LEVEL'}),
+		'USE_EXACT'=>(defined $ZOOVY::cgiv->{'USE_EXACT'})?1:0,
+		'USE_WORDSTEMS'=>(defined $ZOOVY::cgiv->{'USE_WORDSTEMS'})?1:0,
+		'USE_INFLECTIONS'=>(defined $ZOOVY::cgiv->{'USE_INFLECTIONS'})?1:0,
+		'USE_SOUNDEX'=>(defined $ZOOVY::cgiv->{'USE_SOUNDEX'})?1:0,
+		'USE_ALLWORDS'=>(defined $ZOOVY::cgiv->{'USE_ALLWORDS'})?1:0,
+		},key=>['MID','CATALOG'],debug=>1);
+	$VERB = 'CONFIG';
+	}
+
+##
+##
+##
+if ($VERB eq 'CONFIG') {
+	$template_file = 'config.shtml';
+	my ($CATALOG) = $ZOOVY::cgiv->{'CATALOG'};
+	
+	my ($ref) = &SEARCH::fetch_catalog($USERNAME,$CATALOG);
+	$GTOOLS::TAG{'<!-- KILLWORDS -->'} = &ZOOVY::incode($ref->{'KILLWORDS'});
+	$GTOOLS::TAG{'<!-- REWRITES -->'} = &ZOOVY::incode($ref->{'REWRITES'});
+	$GTOOLS::TAG{'<!-- REPLACEMENTS -->'} = &ZOOVY::incode($ref->{'REPLACEMENTS'});
+
+	my $i = 0;
+	my @ERRORS = ();
+	require PRODUCT::FLEXEDIT;
+	foreach my $k (split(/[,\n\r]+/,$ref->{'ATTRIBS'})) {
+		next if ($k eq '');
+		$k =~ s/^[\s]+//g;
+		$k =~ s/[\s]+$//g;
+		if ($k eq 'id') {
+			$i++;
+			}
+		elsif ($PRODUCT::FLEXEDIT::fields{ $k }) {
+			$i++;
+			}
+		elsif ($k =~ /^$USERNAME\:/) {
+			$i++;
+			}
+		else {
+			push @ERRORS, "<div><font color='red'>Unknown/Invalid attribute: $k</font></div>";
+			}
+		}
+	if ($i==0) {
+		push @ERRORS, "<div><font color='red'>No Attributes found.</font></div>";
+		}
+	$GTOOLS::TAG{'<!-- ATTRIBS_WARNING -->'} = join('',@ERRORS);
+
+	$GTOOLS::TAG{'<!-- ATTRIBS -->'} = &ZOOVY::incode($ref->{'ATTRIBS'});
+
+	$GTOOLS::TAG{'<!-- ISO_0 -->'} = ($ref->{'ISOLATION_LEVEL'}==0)?'checked':'';
+	$GTOOLS::TAG{'<!-- ISO_5 -->'} = ($ref->{'ISOLATION_LEVEL'}==5)?'checked':'';
+	$GTOOLS::TAG{'<!-- ISO_10 -->'} = ($ref->{'ISOLATION_LEVEL'}==10)?'checked':'';
+
+	$GTOOLS::TAG{'<!-- USE_INFLECTIONS -->'} = ($ref->{'USE_INFLECTIONS'})?'checked':'';
+	$GTOOLS::TAG{'<!-- USE_WORDSTEMS -->'} = ($ref->{'USE_WORDSTEMS'})?'checked':'';
+	$GTOOLS::TAG{'<!-- USE_SOUNDEX -->'} = ($ref->{'USE_SOUNDEX'})?'checked':'';
+	$GTOOLS::TAG{'<!-- USE_EXACT -->'} = ($ref->{'USE_EXACT'})?'checked':'';
+	$GTOOLS::TAG{'<!-- USE_ALLWORDS -->'} = ($ref->{'USE_ALLWORDS'})?'checked':'';
+
+	$GTOOLS::TAG{'<!-- CATALOG -->'} = $CATALOG;
+	}
+
+
+if ($VERB eq '') { 
+	my $catalogref = &SEARCH::list_catalogs($USERNAME);
+	my $c = '';
+	my $cat;
+	my $lasttime;
+	my $catalogcount = 0;
+
+	my $primary = &ZWEBSITE::fetch_website_attrib($USERNAME,'search_primary',$PRT);
+	if ($primary eq '') { $primary = 'SUBSTRING'; }
+	$catalogref->{'SUBSTRING'} = { 
+		'CATALOG'=>'SUBSTRING',
+		'FORMAT'=>'SUBSTRING',
+		'ATTRIBS'=>'** performs substring match **',
+		LASTINDEX=>0,
+		DIRTY=>0
+		};
+
+	$GTOOLS::TAG{'<!-- SUBSTRING_NOT_AVAILABLE -->'} = '';
+	my ($gref) = &ZWEBSITE::fetch_globalref($USERNAME);
+	if (defined $gref->{'%tuning'}) {
+		## tuning parameters can alter behaviors here.
+		if (defined $gref->{'%tuning'}->{'disable_substring'}) {
+			delete $catalogref->{'SUBSTRING'};
+			$GTOOLS::TAG{'<!-- SUBSTRING_NOT_AVAILABLE -->'} = '[NOT AVAILABLE]';
+			}
+		}
+	
+	
+	require BATCHJOB;
+	my ($GUID) = BATCHJOB::make_guid();
+
+	foreach $cat (keys %{$catalogref}) {
+		my $hashref = $catalogref->{$cat};
+
+		$catalogcount++;
+		my $row = "r".($catalogcount%2);
+
+		$c .= "<tr>";
+		$c .= "<td nowrap valign=top class='$row'>";
+		$c .= "ID: $hashref->{'CATALOG'}<br>";
+		$c .= "TYPE: $hashref->{'FORMAT'}<br>";
+		if ($primary eq $hashref->{'CATALOG'}) {
+			$c .= "<font color='blue'>**PRIMARY**</font><br>";
+			}
+		$c .= "</td>";
+
+		if ($hashref->{'FORMAT'} eq 'FINDER') {
+			$c .= "<td valign=top class='$row'>zoovy:pogs xml</td>";
+			}
+		else {
+			$hashref->{'ATTRIBS'} =~ s/,[\s]*/, /g;
+			$c .= "<td valign=top class='$row'>$hashref->{'ATTRIBS'}</td>";
+			}
+		$c .= "<td valign=top class='$row' nowrap>";
+
+		if ($hashref->{'FORMAT'} eq 'FINDER') {
+			$c .= '[<a href="index.cgi?ACTION=DELETE&CATALOG='.$hashref->{'CATALOG'}.'">DELETE</a>]<br>';
+			}
+		elsif ($hashref->{'FORMAT'} eq 'SUBSTRING') {
+			$c .= '[<a href="index.cgi?ACTION=DELETE&CATALOG='.$hashref->{'CATALOG'}.'">DELETE</a>]<br>';
+			}
+		else {
+			$c .= '[<a href="index.cgi?ACTION=CONFIG&CATALOG='.$hashref->{'CATALOG'}.'">CONFIG</a>]<br>';
+			}
+
+		$lasttime = &ZTOOLKIT::mysql_to_unixtime($hashref->{'LASTINDEX'});
+		if ($hashref->{'FORMAT'} eq 'SUBSTRING') {
+			## can't reset finders.
+			}
+		else {
+			if (int($lasttime) <= 0) {
+				$lasttime = "Never";
+				}
+			else {
+				$lasttime = &ZTOOLKIT::pretty_time_since($lasttime,time());
+				}
+			$c .= " [<a class='smlink' href=\"/biz/batch/index.cgi?VERB=ADD&GUID=$GUID&EXEC=UTILITY&APP=CATALOG_REBUILD&.format=$hashref->{'FORMAT'}&.catalog=$hashref->{'CATALOG'}\">RESET</a>]<br>";
+			}
+
+
+		$c .= "</td>";
+
+		if ($hashref->{'DIRTY'}>0) { $c .= "<td valign=top class='$row'>NOT-CURRENT</td>"; } else { $c .= "<td valign=top class='$row'>OKAY</td>"; }
+		$c .= "<td valign=top class='$row'>$lasttime</td>"; 
+		my %AR;
+		my $file = &ZOOVY::resolve_userpath($USERNAME)."/SEARCH-$hashref->{'CATALOG'}.cdb";
+		my $cdb = tie %AR, 'CDB_File', $file;
+		my $keycount = -1;
+		if (defined $cdb) {
+			$keycount = scalar(keys %AR);
+			$cdb = undef;
+			untie(%AR);	
+			}
+		$c .= "<td valign=top class='$row'>".$keycount."</td>";
+		if ($hashref->{'FORMAT'} ne 'FULLTEXT') { $c .= "<td valign=top class='$row'>N/A</td>"; }
+		elsif ($hashref->{'FORMAT'} == -1) { $c .= "<td valign=top class='$row'>Disabled</td>"; }
+		elsif ($hashref->{'FORMAT'} == 0) { $c .= "<td valign=top class='$row'>All Days</td>"; }
+		else { $c .= "<td valign=top class='$row'>$hashref->{'DICTIONARY_DAYS'} days</td>"; }
+		$c .= "</tr>";
+		}
+
+	if ($c ne '') {
+		$c = qq~
+		<tr class="zoovytableheader">
+			<td>Name</td>
+			<td>Attributes</td>
+			<td>&nbsp;</td>
+			<td>Status</td>
+			<td>Index</td>
+			<td>Keys</td>
+			<td>Dict.</td>
+		</tr>~.$c;
+		} 
+	else {
+		$c .= "<tr><td><i>No catalogs currently exist, create the default catalog first.</i></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- CATALOG_LIST -->'} = $c;
+	$c = '';
+
+	
+	my $sogsref = &POGS::list_sogs($USERNAME);
+	if (defined $sogsref) {
+		foreach my $id (keys %{$sogsref}) {
+			$c .= "<option value=\"$id\">[$id] ".$sogsref->{$id}."</option>\n";
+			}
+		}
+	$GTOOLS::TAG{'<!-- AVAILABLE_SOGS -->'} = $c;
+	$c = '';
+
+	$c = '';
+	$template_file = 'index.shtml';
+	}
+
+
+if ($VERB eq 'DENY') {
+	$template_file = 'deny.shtml';
+	}
+
+&DBINFO::db_user_close();
+
+
+my @TABS = ();
+push @TABS, { name=>"Existing", selected=>($VERB eq '')?1:0, link=>"index.cgi?ACTION="  };
+push @TABS, { name=>"Create New", selected=>($VERB eq 'CREATE')?1:0, link=>"index.cgi?ACTION=CREATE"  };
+push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"index.cgi?ACTION=LOGS"  };
+push @TABS, { name=>"Debug", selected=>($VERB eq 'DEBUG')?1:0, link=>"index.cgi?ACTION=DEBUG"  };
+
+
+&GTOOLS::output(
+   'title'=>'Setup : Advanced Site Search',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>'#50345',
+	'js'=>6,
+   'tabs'=>\@TABS,
+   'bc'=>[
+      { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
+      { name=>'Advanced Site Search',link=>'http://www.zoovy.com/biz/setup/search','target'=>'_top', },
+      ],
+   );
+
+

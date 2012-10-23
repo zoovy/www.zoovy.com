@@ -1,0 +1,96 @@
+<!-- UTILITIES_TAB -->
+
+<br>
+<center>
+<form method="POST" id="thisFrm" name="thisFrm" action='index.cgi'>
+<input type="hidden" name="VERB" value="<!-- VERB -->">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table class="zoovytable" width=600>
+<tr>
+	<td colspan=2 class="zoovytableheader"><!-- HEADER --></td>
+</tr>
+<tr>
+	<td nowrap valign=top>Warehouse Code:</td>
+	<td nowrap valign=top><!-- WAREHOUSE_CODE --></td>
+</tr>
+<tr>
+	<td nowrap valign=top>Zone Code:</td>
+	<td nowrap valign=top>
+		<input type="textbox" size=3 maxlength=3 name="ZONE_CODE" value="<!-- ZONE_CODE -->">
+	</td>
+</tr>
+<tr>
+	<td nowrap valign=top>Zone Type:</td>
+	<td nowrap valign=top><!-- ZONE_TYPES --></td>
+</tr>
+<tr>
+	<td nowrap valign=top>Zone Title:</td>
+	<td nowrap valign=top>
+		<input type="textbox" size=50 maxlength=50 name="ZONE_TITLE" value="<!-- ZONE_TITLE -->">
+	</td>
+</tr>
+<tr>
+	<td nowrap valign=top>Zone Preference:</td>
+	<td nowrap valign=top>
+		<input type="textbox" size=3 maxlength=3 name="ZONE_PREFERENCE" value="<!-- ZONE_PREFERENCE -->">
+		<div class="hint">Zones with a higher preference are picked from first.</div>
+	</td>
+</tr>
+<tr>
+	<td nowrap colspan=2>
+	<!-- BUTTON -->
+	</td>
+</tr>
+</table>
+
+
+<table class="zoovytable" width="600">
+<tr>
+	<td colspan=4 class="zoovytableheader">Create Locations</td>
+</tr>
+<tr>
+	<td colspan=4>
+	<div class="hint">
+	</div>
+	</td>
+</tr>
+<tr>
+	<td>Begin</td>
+	<td>Row: <input name="begin-row" type="textbox" size="3" maxlength="3"> (ex: 1A)</td>
+	<td>Shelf: <input name="begin-shelf" type="textbox" size="3" maxlength="3"> (ex: S1)</td>
+	<td>Slot: <input name="begin-slot" type="textbox" size="3" maxlength="3"> (ex: 00)</td>
+</tr>
+<tr>
+	<td>End</td>
+	<td>Row: <input name="end-row" type="textbox" size="3" maxlength="3"> (ex: 1B)</td>
+	<td>Shelf: <input name="end-shelf" type="textbox" size="3" maxlength="3"> (ex: S9)</td>
+	<td>Slot: <input name="end-slot" type="textbox" size="3" maxlength="3"> (ex: 99)</td>
+</tr>
+<tr>
+	<td colspan=4>
+	<input type="button" onClick="thisFrm.VERB.value='ZONE-CREATE-LOCATIONS'; thisFrm.submit();" name="button" class="button" value=" Create ">	
+	<div class="hint">Note: warehouse positions are sorted/picked alphanumerically
+(ex: 1-11 would be sorted: 1,10,11,2,3,4,5,6,7,8,9)
+so it is often better to use leading zeros (ex. 001 instead of 1) to make sorting easier.</div>
+	</td>
+</tr>
+</table>
+
+
+<table class="zoovytable" width="600">
+<tr>
+	<td colspan=4 class="zoovytableheader">Existing Locations</td>
+</tr>
+<tr>
+	<td colspan=4>
+	<div class="hint">
+	</div>
+	</td>
+</tr>
+	<!-- LOCATIONS -->
+</table>
+
+
+
+</form>
+</center>

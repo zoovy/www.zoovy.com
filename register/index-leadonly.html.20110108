@@ -1,0 +1,241 @@
+% my $menu;
+% $menu = 'no_form';
+
+<&| /globalincludes/header.html, title => 'Thank you', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<br>
+<br>
+
+
+% use CGI;
+% use ZTOOLKIT;
+% use DBINFO;
+
+% ## create a persistant handle
+% my $q = new CGI;
+% my $PACKAGE = 'ONE'; 
+
+% ## Source Tracking, pass source= or set cookie ZOOVY_LEAD
+% ## see /httpd/htdocs/track.cgi for more info on how the ZOOVY_LEAD cookie is formatted
+% ##
+% my $SOURCE = undef;
+% if (not defined $SOURCE) { $SOURCE = $q->cookie('ZOOVY_LEAD'); }
+% if ( (not defined $SOURCE) && (defined $q->cookie('ZOOVY_AFFILIATE')) ) { 
+%		$SOURCE = "WEB|".$q->cookie('ZOOVY_AFFILIATE');  ## the ZOOVY_AFFILIATE cookie predated the ZOOVY_LEAD so we reformat it.
+%		} 
+% if (not defined $SOURCE) { $SOURCE = $q->param('ZOOVY_LEAD'); }
+% if (not defined $SOURCE) { $SOURCE = $q->param('source'); }
+% if ((not defined $SOURCE) && ($ENV{'HTTP_REFERER'} ne '')) { 
+%	## this is a method of last resort so at least we have SOME data.
+%	if ($ENV{'HTTP_REFERER'} =~ /fedex/i) { $SOURCE = 'WEB|FEDEX'; }
+%	if ($ENV{'HTTP_REFERER'} =~ /ups/i) { $SOURCE = 'WEB|UPS'; }
+%	if ($ENV{'HTTP_REFERER'} =~ /amazon/i) { $SOURCE = 'WEB|AMAZON'; }
+%	}
+% if (not defined $SOURCE) { $SOURCE = 'UWEB'; }  ## UWEB - undefined web.  That way if blank is set elsewhere from 
+% ## some other lead source, we at least know this came in from the web.
+% my ($src,$opid,$meta) = split(/\|/,$SOURCE,3); 
+%
+
+% my $ACTION = $q->param('ACTION');
+% my $company = $q->param('company');
+% $company =~ s/^http\:\/\///g;
+
+% my $firstname = $q->param('firstname'); 	$firstname =~ s/[\"\>\<]+//gs;
+% my $lastname = $q->param('lastname');  $lastname =~ s/[\"\>\<]+//gs;
+% my $phone = $q->param('phone');  $phone =~ s/[\"\>\<]+//gs; $phone =~ s/[^\d]+//gs;
+% my $email = $q->param('email'); if (not defined $email) { $email = ''; } $email =~ s/[\"\>\<]+//gs;
+% my $url = $q->param('url'); if (not defined $url) { $url = ''; }  $url =~ s/[\"\>\<]+//gs;
+
+% my @errors = ();
+% if ($ACTION eq 'SAVE') { 
+%	 if (!defined($phone)) { $ACTION = ''; }
+% 	 elsif ($company =~ /<.*?>/) { push @errors, "Sorry, no HTML allowed in company name"; }
+% 	 elsif ($url =~ /<.*?>/) { push @errors, "Sorry, no HTML allowed in URL"; }
+% 	 elsif ($firstname =~ /<.*?>/) { push @errors, "Sorry, no HTML allowed in Firstname"; }
+% 	 elsif ($lastname =~ /<.*?>/) { push @errors, "Sorry, no HTML allowed in Lastname"; }
+% 	 elsif ($firstname =~ /[\d]+/) { push @errors, "Sorry, numbers are not allowed in your first name"; }
+% 	 elsif ($lastname =~ /[\d]+/) { push @errors, "Sorry, numbers are not allowed in your last name"; }
+%	 elsif ($phone =~ /^0/) {
+%		push @errors, "Sorry, Zoovy does not provide services for non US Businesses at this time.";
+%		}
+%	 elsif ( 
+%		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/) || 
+%		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/) || 
+%		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/)) {
+%		push @errors, "Wow! Thats a pretty amazing phone number, are you sure it's correct? (Try again)";
+%		}
+%	 elsif ($phone =~ /5551212$/) {
+%		push @errors, "Please supply a valid phone number.";
+%		}
+% 	elsif (not &ZTOOLKIT::validate_phone($phone,'')) {
+%		push @errors, "Phone number missing or invalid.";
+% 		}
+
+%	 if ($firstname eq '' || $lastname eq '') {
+%		push @errors, "Please supply a first and last name.";
+%		} 
+
+%	 if ($email eq '') {
+%		push @errors, 'Please supply a valid email address.';
+%		} 
+% 	elsif (!&ZTOOLKIT::validate_email($email)) {
+%		push @errors, 'Email address appears invalid. Please try again.';
+%		} 
+% 	else {
+%		# email okay
+%		}
+%
+%	if (scalar(@errors)>0) { $ACTION = ''; }
+% 	}
+
+
+
+% if ($ACTION eq 'SAVE') {
+%	# only reached if @errors is empty
+%
+%	my $dbh = &DBINFO::db_zoovy_connect();
+%	if (not defined $opid) { $opid = 'NONE'; }
+%	if (not defined $src) { $src = 'WEB'; }
+%	if (not defined $firstname) { $firstname = ''; }
+%	if (not defined $lastname) { $lastname = ''; }
+%	if (not defined $meta) { $meta = ''; }
+%	if (not defined $phone) { $phone = ''; }
+%	if (not defined $url) { $url = ''; }
+%	if (not defined $email) { $email = ''; }
+%	my $ipaddress = $ENV{'REMOTE_ADDR'};
+%
+%	my $pstmt = DBINFO::insert($dbh,'LEADS',{ 
+% 		SRC=>$src,OPERATORID=>$opid,CREATED=>&ZTOOLKIT::mysql_from_unixtime(time()),
+% 		COMPANY_NAME=>$company,CONTACT_FIRSTNAME=>$firstname,CONTACT_LASTNAME=>$lastname,
+%		META=>$meta,
+%		IPADDRESS=>$ipaddress,
+%		PHONE_NUMBER=>$phone,WEBSITE=>$url,EMAIL=>$email},debug=>2);
+%	print STDERR $pstmt."\n";
+%
+%	if ($phone eq '13 255 645 135') { $pstmt = ''; }
+%
+%	if ($pstmt ne '') {
+%		$dbh->do($pstmt);
+%		}
+%	&DBINFO::db_zoovy_close();
+%		
+<h1>Thank You!</h1>
+<!-- <h2>
+<a href='/pdf/multi_channel_selling-unleash_your_sales.pdf'>Click here</a> to download your free whitepaper.
+</h2> -->
+
+<h3>A member of the Zoovy team will be contacting you within one business day.</h3>
+
+<p>If it is during regular business hours, you can <b>call toll free</b> right now: 877.966.8948</p>
+<p>For additional information, you can continue browsing Zoovy.com or our support documentation site <a href='http://webdoc.zoovy.com' target='webdoc'>http://webdoc.zoovy.com</a></p>
+
+<!-- Google Code for lead Conversion Page -->
+<script language="JavaScript" type="text/javascript">
+<!--
+var google_conversion_id = 1072354289;
+var google_conversion_language = "en_US";
+var google_conversion_format = "1";
+var google_conversion_color = "FFFFFF";
+if (1) {
+  var google_conversion_value = 1;
+}
+var google_conversion_label = "lead";
+//-->
+</script>
+<script language="JavaScript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<img height=1 width=1 border=0 src="http://www.googleadservices.com/pagead/conversion/1072354289/imp.gif?value=1&label=lead&script=0">
+</noscript>
+
+<!-- Begin OrangeSoda Tracking Code -->
+<script language="javascript" type="text/javascript">
+var cid = 65264;
+var amt = 0.00;
+var qty = 0;
+var t = 'c';
+var tid = '';
+</script>
+<script language="javascript" src="http://otracking.com/js/Tracking.js" type="text/javascript"></script>
+<!-- End OrangeSoda Tracking Code -->
+
+
+% 	}
+
+
+% if ($ACTION eq '') {
+
+<h1>Unleash the power of your online business</h1>
+<p>Fill out the form below and an e-commerce consultant will contact you within one working day.  You can also call us toll free at <strong>1.877.966.8948</strong></p>
+
+%	if (scalar(@errors)>0) {
+%		print "<font color='red'><b>Some required information was missing:</b></font><br>"; 
+%		foreach my $err (@errors) { print "<li> <font color='red'>$err</font>"; }
+%	   }
+%	else{
+
+
+%	}
+<table width='100%'>
+<tr>
+	<td valign='top'>
+<form action="/thankyou/index.html">
+	<input type="hidden" name="ACTION" value="SAVE">
+<table>
+	<tr>
+		<td>First Name</td>
+		<td><input type="text" value="<% $firstname %>" name="firstname" class="formed"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Last Name</td>
+		<td><input type="text" value="<% $lastname %>" name="lastname" class="formed"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Phone #:</td>
+		<td><input type="text" value="<% $phone %>" name="phone" class="formed"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Email:</td>
+		<td><input type="text" value="<% $email %>" name="email" class="formed"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Company:</td>
+		<td><input type="text" value="<% $company %>" name="company" class="formed"></td>
+		<td><span class='small'>optional</span></td>
+	</tr>
+	<tr>
+		<td>URL:</td>
+		<td><input type="text" value="<% $url %>" name="url" class="formed"></td>
+		<td><span class='small'>optional</span></td>
+	</tr>
+	<tr>
+		<td colspan='3' align='right' style='padding-right:35px;'><input type="submit" value="submit" style='font-size:8pt;'></td>
+	</tr>
+</table>
+</form></td>
+	<td valign='top' align="right"></td>
+</tr>
+</table>
+<!-- Begin OrangeSoda Tracking Code -->
+<script language="javascript" type="text/javascript">
+var cid = 65264;
+var amt = 0.00;
+var qty = 0;
+var t = 'h';
+var tid = '';
+</script>
+
+<script language="javascript" src="http://otracking.com/js/Tracking.js" type="text/javascript"></script>
+<!-- End OrangeSoda Tracking Code -->
+
+% }
+
+% # Do not touch anything below this line.
+<&| /globalincludes/footer.html, menu => $menu &></&>
+
+<!-- end of page -->

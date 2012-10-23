@@ -1,0 +1,27 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+img_link1_off = new Image(); img_link1_off.src = "images/general_green.gif"; 
+img_link1_on = new Image(); img_link1_on.src = "images/general_purple.gif";
+img_link2_off = new Image(); img_link2_off.src = "images/credit_green.gif"; 
+img_link2_on = new Image(); img_link2_on.src = "images/credit_purple.gif";
+
+function donothing() {}
+ function mousein(num) { document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_on.src"); }
+ function mouseout(num) { document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_off.src"); }
+
+//-->
+</SCRIPT>
+
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<!-- BEGIN JAVSCRIPT TAB -->
+<table width='100%' bgcolor='330099' cellpadding='1' cellspacing='0' border='0'><tr><td valign='top'>
+<center>
+
+</td></tr></table>
+<!-- END JAVASCRIPT TAB -->
+</body>

@@ -1,0 +1,24 @@
+<!-- SETUP_TAB -->
+
+
+<form action="index.cgi">
+	<input type="hidden" name="VERB" value="DEBUG-RUN">
+
+<h1>Checkout Code Debugger</h1>
+<br>
+
+Profile: <select name="PROFILE">
+<!-- PROFILES -->
+</select>
+<br>
+Meta: <input type="textbox" name="meta" value="<!-- META -->"><br>
+<br>
+
+SKU1: <input type="textbox" name="sku1" value="<!-- SKU1 -->"><br>
+SKU2: <input type="textbox" name="sku2" value="<!-- SKU2 -->"><br>
+SKU3: <input type="textbox" name="sku3" value="<!-- SKU3 -->"><br>
+<br>
+<input type="submit" value=" Debug ">
+
+</form>
+<!-- DEBUG_OUT -->

@@ -1,0 +1,103 @@
+<!--  
+*** Zoovy Marketing Services v4.0 *** 
+This modified google analytics code is supported by zoovy only 
+for clients with an existing marketing services agreement.
+-->
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+// ***************************************************************
+// change the line below to a 0 if the site uses ssl.zoovy.com
+var idLikeToUseMySSLCertificatePlease = 1; 	
+var idLikeToUseMoreThanOneDomainWithThisAccount = 0; // NOT including subdomains
+
+// IMPORTANT: change this to users account #. then delete this line.
+// ***************************************************************
+_gaq.push(['_setAccount', 'XXXXX']);
+_gaq.push(['_setDomainName', '.%DOMAIN%']);
+_gaq.push(['_setAllowLinker', true]);
+_gaq.push(['_setAllowHash', false]);
+
+
+// http://code.google.com/apis/analytics/docs/tracking/gaTrackingSite.html
+// NOTE: any form which links to checkout must use:
+// <form name="f" method="post" onsubmit="_gaq.push(['_linkByPost',this]);">
+// any HREF LINK which begins checkout must pass a cookie as follows:
+// <a href="http://www.my-example-blogsite.com/intro.html" onclick="_gaq.push(['_link', 'http://www.my-example-blogsite.com/intro.html']); return false;">
+
+// user defined variable for a/b SIDE.
+if ("<% loadurp("CART::multivarsite"); print(); %>" == "A") { 
+	_gaq.push(['_setCustomVar',1,"Site","A",1]);
+	} 
+else { 
+	_gaq.push(['_setCustomVar',1,"Site","B",1]);
+	}
+
+var pageVar = null;
+// check out flow goals
+if ("<% loadurp("FLOW::PG"); default(""); print(); %>" == "*checkout") {
+	// this will override the URL in checkout to refelct the stage
+	// stages: PREFLIGHT, BILLING_LOCATION, SHIPPING_LOCATION, 
+	// ORDER_CONFIRMATION PAYMENT_INFORMATION, INVOICE_DISPLAY
+	pageVar = '/checkout/' + '<% loadurp("SREF::+stage"); default(""); print(); %>';
+	}
+if ("<% loadurp("FLOW::PG"); default(""); print(); %>" == "*missing404") {
+	// we emulate 404's so they are easy to search.
+	pageVar = "/404.html?page=" +
+		document.location.pathname + document.location.search + "&from=" +
+		document.referrer;
+	}
+
+if (idLikeToUseMySSLCertificatePlease) {
+	// secure.domain.com
+	_gaq.push(['_setDomainName',".%DOMAIN%"]);
+	if (idLikeToUseMoreThanOneDomainWithThisAccount) {
+		_gaq.push(['_setAllowHash',false]);
+		}
+	_gaq.push(['_addIgnoredRef',"www.%DOMAIN%"]);
+	_gaq.push(['_addIgnoredRef',"secure.%DOMAIN%"]);	
+	}
+else {
+	// ssl.zoovy.com
+	_gaq.push(['_addIgnoredRef',"www.%DOMAIN%"]);
+	_gaq.push(['_addIgnoredRef',"ssl.zoovy.com"]);
+	_gaq.push(['_setDomainName',"none"]);
+	}
+
+_gaq.push(['_addIgnoredRef',"www.paypal.com"]);	
+_gaq.push(['_setCampNameKey',"meta"]);	
+_gaq.push(['_setAllowAnchor',true]);
+
+// these might work if you show them a little love:
+// _gaq.push('_setCampNOKey',"noo"]);
+// _gaq.push('_setCampSourceKey',"meta"]);				
+// _gaq.push('_setCampTermKey',"metacpg"]);			
+// var meta = '<% loadurp("VAR::meta"); %>';
+// if (meta == 'VERUTA') { pageVar = pageVar+"?metamedium=Remarketing"; }
+// if (meta == 'SHOPPINGCOM') { pageVar = pageVar+"?metamedium=CPC"; }
+// if (meta == 'CJUNCTION') { pageVar = pageVar+"?metamedium=Affiliate"; }
+// pageTracker._setCampMediumKey("metamedium");
+// pageTracker._setCampContentKey("META");
+
+_gaq.push(['_trackPageview',pageVar]);
+
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript';
+	ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(ga, s);
+	})();
+
+function PleaseTrackClick(id,value) {
+	// this code is ga version agnostic and is used to record a click.
+	_gaq.push(['_trackEvent', id, value]);
+	if ("<% loadurp("CART::+sandbox"); %>") {
+		alert("i am tracking id:"+id+" value:"+value);
+		}
+	}
+
+</script>
+
+

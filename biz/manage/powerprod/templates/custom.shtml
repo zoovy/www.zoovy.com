@@ -1,0 +1,31 @@
+<head>
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- REPORT_TAB -->
+<center>
+<table width='500'><tr><Td>
+<font face='Arial'>
+<form action="index.cgi" method="post" name="thisFrm">
+<input type="hidden" name="ACTION" value="CUSTOM-SAVE">
+<input type="hidden" name="DATA" value="<!-- DATA -->">
+<font class='title'>Modify Product Power Tool</font><br>
+<br>
+Please Upload products separated by either commas, or hard returns.<br>
+<textarea rows="10" cols="60" name="PRODUCTS"></textarea><br>
+<i>HINT: You can also specify navigation categories or lists using the
+safename of the category (one per line)<br>
+<br>
+<center>
+<table>
+<tr>
+	<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+	<Td><a href='..'><img width='81' height='31' src='/images/bizbuttons/exit.gif' border='0'></a></font></td>
+</tr>
+</table>
+</center>
+</form>
+</td></tr></table>
+</center>
+
+</body>
+

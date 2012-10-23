@@ -1,0 +1,108 @@
+<%args>
+$menu
+</%args>
+
+
+
+
+% ## On the homepage, the right column isn't needed.  Every other page, the menu loads from the menu var.
+% if ($menu eq "home") {
+%	print("<!-- we are on the homepage -->");
+%	}
+% else	{
+%	print("</td><td valign='top' width='222' align='right' style='padding-top:20px; height:100%;'>");
+<&| "/includes/footer-20090707/$menu.html", menu => 'home' &></&>
+%	print("</td></tr></table>");
+
+	
+% ## the video testimonial code was all stripped out.  Go to the footer backup from 20081125 for all the code
+
+<div style='position:relative; height:114px; width:710px;'>
+
+
+
+
+<!-- text testimonial thumbnail div -->
+	<div style="float:left; width:220px; height:114px; border:1px solid #AFAFD1; background-image:url(//www.zoovy.com/images/zoovy/box_bg-230x114.jpg); text-align:center;"><img src="//www.zoovy.com/images/testimonials/txt_greatlookz-210x104.gif" width="210" height="104" border="0" name='SlideShow' alt='' style="margin-top:4px;" /></div>
+
+<!-- call to action graphic div -->
+	<div style="float:right; width:217px; height:114px; border:1px solid #E0C2A8; background-image:url(//www.zoovy.com/images/zoovy/box_bg-230x114.jpg);  vertical-align:middle; text-align:center;"><a href='/1'><img src="//www.zoovy.com/images/zoovy/zoovy1_b-210x104.gif" width="210" height="104" border="0" alt='Click here to receive a whitepaper on multi-channel selling.' style="margin-top:4px;"  /></a></div>
+
+</div>
+%	}
+	</div>
+</div>
+
+
+	</td>
+</tr>
+<tr>
+  <td colspan='2' align="center">
+
+
+	<!--
+        @footer_logos = (
+            { logo=>"amazon", link=>"/amazon/", alt=>"Amazon.com Logo" },
+            { logo=>"", link=>"", alt=>"" },
+            );
+        print footer_logo_block(@footer_logos);
+        -->
+  	<!-- START LOGO BLOCK -->
+    <div name="footer_logo_block" style='border:1px solid #EAEAEB; width:724px; height:59px; margin-top:7px; padding:3px' id='partnerlogomap'>
+        <div style="float:left; background-color:#ffffff; margin:2px;"><a href="/amazon/"><img src="http://static.zoovy.com/img/proshop/H15-Bffffff/zoovy/logos/amazon" alt="Amazon.com Logo" border="0"></a>
+        </div>
+        <div style="float:left; background-color:#ffffff; margin:2px;"><a href="/fedex/"><img src="http://static.zoovy.com/img/proshop/H15-Bffffff/zoovy/logos/fedex" alt="FedEx Logo" border="0"></a>
+        </div>
+        <div style="float:left; background-color:#ffffff; margin:2px;"><a href="/intuit/"><img src="http://static.zoovy.com/img/proshop/H15-Bffffff/zoovy/logos/intuit" alt="Intuit Logo" border="0"></a>
+        </div>
+    <!-- END LOGO BLOCK -->
+
+	</div></td>
+</tr>
+<tr>
+	<td align='right' colspan='2' style="background-color:#F0F0F1; border-top:1px solid #E4E4E5;"><div style='margin-right:32px; font-size:8pt;'>
+<a href='/company/' class='menu'>Company</a> | <a href='/company/pressreleases' class='menu'>News &amp; Press Releases</a> | <a href='http://www.zoovydocs.com' target='_blank' class='menu'>Help</a> | <a href='/legal/'class='menu'>Legal</a> | <a href="/legal/privacy/" class='menu'>Privacy</a> | <a href='/sitemap/index.html' class='menu'>Sitemap</a>
+	</div></td>
+</tr>
+<tr>
+	<td colspan='2' align="right" style="height:50%;" valign="top">
+	<div style='margin-right:32px; font-size:7pt; color:#828282;'>Copyright &copy; 2009, Zoovy Inc.  All Rights Reserved.</div>
+	</td>
+</tr>
+</table>
+</div>
+</div>
+
+% # This is here until we can figure out how to get the hitbox code to do what we want.
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
+"http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost +
+"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-885015-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+<script type="text/javascript">
+// used on some partner pages to hide the footer (paypal doesn't want google showing up).  value of hideDiv is the div id to be hidden.
+if(window.hideDiv === undefined)	{}
+else if	(window.hideDiv != null)	{
+	document.getElementById(hideDiv).style.display='none';
+	}
+</script>
+
+<script type="text/javascript">
+document.write(unescape("%3Cscript src='" + "//www.veruta.com/scripts/trackmerchant.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+ var v_merchantID = 1391654617;
+ v_trackPage();
+</script>
+
+<!-- end of page -->
+</body>
+</html>

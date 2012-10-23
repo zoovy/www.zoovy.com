@@ -1,0 +1,117 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<title>Welcome to Zoovy Merchant!</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+ img_link1_off = new Image(); img_link1_off.src = "images/downloads.gif"; 
+  img_link1_on = new Image(); img_link1_on.src = "images/downloads2.gif";
+
+ img_link2_off = new Image(); img_link2_off.src = "images/yourwebsite.gif"; 
+  img_link2_on = new Image(); img_link2_on.src = "images/yourwebsite2.gif";
+
+ img_link3_off = new Image(); img_link3_off.src = "images/merchanttips.gif"; 
+  img_link3_on = new Image(); img_link3_on.src = "images/merchanttips2.gif";
+
+ img_link4_off = new Image(); img_link4_off.src = "images/specialoffers.gif"; 
+  img_link4_on = new Image(); img_link4_on.src = "images/specialoffers2.gif";
+
+ function mousein(num) { document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_on.src"); }
+ function mouseout(num) { document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_off.src"); }
+
+//-->
+</SCRIPT>
+
+</head>
+<body bgcolor="FFFFFF" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" onLoad="this.focus();">
+<center>
+<table cellpadding="5" border="0" cellspacing='0' width='100%' valign='top' height='0%'>
+
+<colgroup>
+<col width="160">
+<col width="*">
+</colgroup>
+
+<tr>
+	<td bgcolor="FFFFFF" width="160" valign='top'>
+	<img src="/images/blank.gif" width='160' height='1'>
+		<table width='100%' border='0' bgcolor='3366CC' cellspacing='0' cellpadding='1'><tr><td>
+	<table width='100%' border='0' bgcolor='ffffff' cellspacing='0' cellpadding='4'><Tr><td>
+
+<!-- LEFT PURPLE BLOCK BEGIN -->
+<CENTER>
+<font face="Verdana, Arial, Helvetica" color="blue">
+<br>
+
+<table cellpadding="0" width="100%">
+	<tr>
+		<Td colspan="2" bgcolor="#FFFFFF"><font style="font-size: 10pt; font-family: Arial, Helvetica; color: #000000"><strong>User Mode:</font></strong></td>
+</tr>
+<Tr>
+	<td colspan='2' align="left"><font size='2' face='Arial, helvetica' color='black'>
+<form target="_top" action="/biz/index.cgi">
+<input type='hidden' name='ACTION' value='FEATURESET'>
+<table><tr><td>
+<input <!-- LEVEL_1_CHECKED --> type='radio' name='LEVEL' value='1'> Beginner<br>
+<input <!-- LEVEL_0_CHECKED --> type='radio' name='LEVEL' value='0'> Advanced<br><br>&nbsp;&nbsp;<input type='submit' value='  Save '>
+</td></tr></table></center>
+
+	
+
+</form>
+	</td>
+</tr>
+<tr>
+	<Td colspan="2" align='left'><font style="font-size: 10pt; font-family: Arial, Helvetica; color: black"><strong>Quick Links:</font></strong></td>
+</tr>
+<tr>
+	<td colspan='2'><font size='2' face='Arial, Helvetica' color='blue'>
+<br>&nbsp;&nbsp;
+<a target="_top" href="http://www.zoovy.com/biz/wizard/framethis.shtml"><font color='blue'>Configuration Wizard</a><br>
+<br>&nbsp;&nbsp;
+<a target="_top" href="http://www.zoovy.com/biz/downloads"><font color='blue'>Client Downloads</a><br>
+<br>&nbsp;&nbsp;
+<a target="_top" href="http://www.zoovy.com/biz/manage/channels"><font color='blue'>Channel Manager</a><br>
+<br>&nbsp;&nbsp;
+<a target="_top" href="http://www.zoovy.com/biz/manage/customer"><font color='blue'>Customer Manager</a><br>
+<br>
+</td></tr></table>
+</CENTER>
+<!-- LEFT PURPLE BLOCK END -->
+</td></tr></table>	
+</td></tr></table>
+
+</td><td valign="top" width="100%">
+
+<table cellspacing='10' width='100%' valign='top' height='100%' >
+<tr><td valign='top' >
+<font face='arial, helvetica'><b>Recent News</b></font><Br>
+
+<table cellpadding="5" cellspacing="0" border="0">
+<colgroup>
+<col width="30">
+<col width="10">	
+<col width="*">
+</colgroup>
+
+<!-- RECENT_NEWS -->
+</table>
+
+
+</td></tr>
+</table>
+
+<table width="100%">
+<tr><Td>
+</td></tr>
+
+
+</table>
+
+<!-- OUTER RIGHT WHITE BLOCK END -->
+</td></tr>
+</table>
+
+</font>
+</center>
+</body><!-- TEMPLATE ./biz/templates/index.shtml -->

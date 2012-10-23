@@ -1,0 +1,40 @@
+<head>
+<title>Zoovy: create product</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body bgcolor="FFFFFF"   marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<br>
+<form name="thisFrm" action="create.cgi" method="post">
+<input type="hidden" name="catalog" value="<!-- CATALOG -->">
+<input type="hidden" name="prod_id" value="<!-- PROD_ID -->">
+<input type="hidden" name="ACTION" value="LOAD_CATALOG">
+Catalog Results:<br>
+<table border="0" cellspacing="0" cellpadding="0">
+	<!-- RESULTS -->
+</table>
+</form>
+<br>
+<form name="thisFrm" action="create.cgi">
+<input type="hidden" name="ACTION" value="SEARCH_CATALOG">
+<input type="hidden" name="prod_id" value="<!-- PROD_ID -->">
+<input type="hidden" name="catalog" value="<!-- CATALOG -->">
+<table>
+<tr>
+	<td><b>Search <!-- CATALOG --> Again:</b></td>
+	<td><select name="SEARCH">
+		<option value="SKU">UPC/ISBN</option>
+		<option value="KEYWORD">Keyword</option>
+		</select>
+	</td>
+	<td><Input type="textbox" name="TEXT"></td>
+	<td><input type="submit" value="Search Again"></td>
+</tr>
+</table>
+</form>
+<br>
+<form name="thisFrm" action="create.cgi">
+<input type="hidden" name="prod_id" value="<!-- PROD_ID -->">
+<input type="submit" value="Return to Add New Product">
+</form>
+
+</body>

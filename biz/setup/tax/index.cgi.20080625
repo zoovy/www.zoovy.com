@@ -1,0 +1,290 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+use CGI;
+require GTOOLS;
+require ZOOVY;
+require ZWEBSITE;	
+
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_S&8');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+
+my $webdbref = ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
+if (index($FLAGS,'LITE')!=-1) {
+	$GTOOLS::TAG{'<!-- LITE_HIDE_ON -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- LITE_HIDE_OFF -->'} = '-->';
+	$webdbref->{'sales_tax'} = 'state';	
+	}
+
+my $q = new CGI;
+
+
+my $ACTION = $q->param('ACTION');
+if ($q->param('ACTION-SAVE.x')>0)
+	 { $ACTION = "SAVE"; }
+
+my $template_file = "index.shtml";
+	
+if ($ACTION eq "SAVE") {
+
+	$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table border='2' width='80%' align='center'><tr><td><center><font color='red' size='4' face='helvetica'><b>Changes Saved!</b></font></center></td></tr></table><br>";
+
+	if ($q->param('did-step1')) {
+		if ($q->param("sales_tax")) { 
+			$webdbref->{"sales_tax"} = $q->param("sales_tax"); 
+			} 
+		else { 
+			$webdbref->{"sales_tax"} = "off"; 
+			}
+		}
+
+	if ($q->param('did-step2')) {
+		if ($q->param("local_tax"))
+			 {
+			 $webdbref->{"local_tax"} = $q->param("local_tax"); 
+			 } else {
+			 $webdbref->{"local_tax"} = "off";
+			 }	 
+	
+		# ZIP Span Calculation, and modification.
+		$RATE = $q->param('state_rate');
+		$STATE = $q->param('state');
+
+		# append the new rate to the end of the current state taxes.
+		$str = '';
+		$str = ",$STATE"."=".$RATE;
+		$val = 0;
+		if ($q->param('SHIPPING')) { $val += 1; }
+		if ($q->param('HANDLING')) { $val += 2; }
+		if ($q->param('INSURANCE')) { $val += 4; }
+		if ($q->param('SPECIAL')) { $val += 8; }
+		$webdbref->{'state_tax'} .= ','.$str;
+		$webdbref->{'state_tax_other'} .= ','.$STATE.'='.$val;
+
+		## STATE TAX
+		# now split the states up by their commas, if we have a blank result its okay
+		my @ar	= split(",",$webdbref->{"state_tax"});	
+		my %tmphash = ();
+		foreach $line (@ar) {
+				my ($key,$value) = split('=',$line);
+				$value = int($value);
+				if ($value < 0) { $value = 0; }
+			
+				# strip blank and invalid values.
+				if ($value==0) { delete($tmphash{"$key"}); }	
+				if ($key && $value<100 && $value>0	) { $tmphash{"$key"}=$value; }
+				}
+		$webdbref->{"state_tax"} = ""; 
+		foreach $key (sort keys %tmphash) { 
+				$webdbref->{"state_tax"} .= uc($key."=".$tmphash{"$key"}.",");
+				}
+
+		## STATE_TAX_OTHER
+		@ar	= split(",",$webdbref->{"state_tax_other"});	
+		%tmphash = ();
+		foreach $line (@ar) {
+				my ($key,$value) = split('=',$line);
+				$value = int($value);
+				if ($value < 0) { $value = 0; }
+
+				# strip blank and invalid values.
+				if ($value==0) { delete($tmphash{"$key"}); }	
+				if ($key && $value<100 && $value>0	) { $tmphash{"$key"}=$value; }
+				}
+		$webdbref->{"state_tax_other"} = ""; 
+		foreach $key (sort keys %tmphash) { 
+				$webdbref->{"state_tax_other"} .= uc($key."=".$tmphash{"$key"}.",");
+				}
+
+		 # remove the trailing comma for asthetics.
+		chop($webdbref->{"state_tax"});
+		chop($webdbref->{'state_tax_other'});
+		}
+
+
+	if ($q->param('did-step3')) {
+		 if ($q->param('zip_to') && $q->param('zip_from'))
+			 {
+			 $zipspans = $webdbref->{"tax_zip"};
+			 $zipspans .= ",".$q->param('zip_from')."-".$q->param('zip_to')."=".$q->param('tax_zip')."=".$q->param('tax_zone');
+			 my @spans = split(",",$zipspans);
+			 my %tmphash = ();
+			 foreach $line (@spans) {
+				($FROMTO,$AMOUNT,$ZONE) = split('=',$line);
+				($FROM, $TO) = split('-',$FROMTO);
+			 	$tmphash{"$FROM-$TO"} = $AMOUNT.'='.$ZONE;
+				}
+			 $zipspans = '';
+			 foreach $line (keys %tmphash) {
+				 if ($tmphash{$line}>0 && $line) { $zipspans .= $line."=".$tmphash{$line}.","; } }
+				 chop($zipspans);
+				 $webdbref->{"tax_zip"} = $zipspans;
+			 	 }
+			}
+
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref,$PRT);
+	}
+
+
+my $AREA_REFERENCE = "index.cgi";
+
+# 
+$GTOOLS::TAG{"<!-- SCRIPT_NAME -->"} = $AREA_REFERENCE;	
+$GTOOLS::TAG{"<!-- BEGIN_ASK_STATE_TAX -->"} = "<!--";
+$GTOOLS::TAG{"<!-- END_ASK_STATE_TAX -->"} = "-->";
+$GTOOLS::TAG{"<!-- BEGIN_ASK_LOCAL_TAX -->"} = "<!--";
+$GTOOLS::TAG{"<!-- END_ASK_LOCAL_TAX -->"} = "-->";
+$GTOOLS::TAG{'<!-- BEGIN_CHARGE_SHIPPING -->'} = '<!--';
+$GTOOLS::TAG{'<!-- END_CHARGE_SHIPPING -->'} = '-->';
+
+$GTOOLS::TAG{"<!-- EXISTING LOCAL TAX -->"} = &build_current_zipspan($webdbref->{"tax_zip"});
+
+sub build_current_zipspan {
+	($SPAN) = @_;
+	@ar = split(",",$SPAN);
+	$RESULT = "";
+	%SPECIFIED = ();
+	foreach my $x (sort @ar) {
+		my ($FROMTO,$AMOUNT,$ZONE) = split('=',$x);
+		my ($FROM, $TO) = split('-',$FROMTO);
+		if ($FROM && $TO && $AMOUNT) { 
+			$RESULT .= "<tr><td valign='top'><font align='right' size='1' face='Arial,Helevetica'>$FROM</td>";
+			$RESULT .= "<td valign='top'><font size='1' align='right' face='Arial, Helevetica'>$TO</td>";
+			$RESULT .= "<td valign='top'><font size='1' align='right' face='Arial, Helevetica'>\%$AMOUNT</td>";
+			$RESULT .= "<td valign='top'><font size='1' align='right' face='Arial, Helevetica'>$ZONE</td>";
+			$RESULT .= "<td><font color='red'>";
+			foreach my $y ($FROM..$TO) {
+				if (defined $SPECIFIED{$y}) { $RESULT .= "WARNING: $y already specified in $SPECIFIED{$y}<br>"; }
+				else { $SPECIFIED{$y} = $FROMTO; }
+				}
+			$RESULT .= "</font></td></tr>"; 
+			} 
+		}
+
+	if ($RESULT) {
+		$RESULT = "<tr><td width=50><font size='2' align='right' face='Arial, Helvetica'>From</td><td width='50'><font size='2' align='right' face='Arial, Helvetica'>To</td><td width='50'><font size='2' align='right' face='Arial, Helvetica'>Amount</td><td width='50'><font size='2' align='right' face='Arial, Helvetica'>Tax Zone</td></tr>".$RESULT;
+		$RESULT = "<font size='2'><i>*Hint: To remove an entry, simply re-enter the FROM and TO zip codes with a rate of ZERO<i></font><br><table>$RESULT</table>";
+		}	 
+
+	return($RESULT);
+	}
+
+
+
+
+
+if ($webdbref->{"sales_tax"} eq "state" || $webdbref->{"sales_tax"} eq "zip") {
+	my $state_tax = ();
+	foreach $kv (split(/,/,$webdbref->{"state_tax"})) {
+		next if ($kv eq '');
+		my ($k,$v) = split(/=/,$kv);
+		$state_tax{$k} = $v;
+		}
+	my $state_tax_other = ();
+	foreach $kv (split(/,/,$webdbref->{"state_tax_other"})) {
+		next if ($kv eq '');
+		my ($k,$v) = split(/=/,$kv);
+		$state_tax_other{$k} = $v;
+		}
+
+
+	my $out = '<table>';
+	$out = qq~
+		<table>
+			<tr>
+				<td><b>STATE</b></td>
+				<td><b>RATE</b></td>
+				<td><b>Shipping</b></td>
+				<td><b>Handling</b></td>
+				<td><b>Insurance</b></td>
+				<td><b>Speciality</b></td>
+			</tr>
+		~;
+
+	foreach $state (keys %state_tax) {
+		$out .= "<tr><td>$state</td><td>$state_tax{$state}\%</td>";
+		$out .= "<td align='center'>".((($state_tax_other{$state} & 1)==1)?'Yes':'No').'</td>';
+		$out .= "<td align='center'>".((($state_tax_other{$state} & 2)==2)?'Yes':'No').'</td>';
+		$out .= "<td align='center'>".((($state_tax_other{$state} & 4)==4)?'Yes':'No').'</td>';
+		$out .= "<td align='center'>".((($state_tax_other{$state} & 8)==8)?'Yes':'No').'</td>';
+		$out .= "</tr>";
+		}
+	$out .= "</table>";
+	
+	 $GTOOLS::TAG{"<!-- EXISTING STATE TAX -->"} = $out;
+	 } 
+else {
+	 $GTOOLS::TAG{"<!-- EXISTING STATE TAX -->"} = "None Defined";
+	 }
+
+
+if ($webdbref->{"sales_tax"} eq "state")
+	 {
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_STATE_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- END_ASK_STATE_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_OFF -->"} = "";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_STATE -->"} = " CHECKED ";
+	$GTOOLS::TAG{"<!-- SALES_TAX_ZIP -->"} = "";
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_LOCAL_TAX -->"} = " <!-- ";
+	 $GTOOLS::TAG{"<!-- END_ASK_LOCAL_TAX -->"} = " --> ";
+	 } 
+elsif ($webdbref->{"sales_tax"} eq "zip") {
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_STATE_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- END_ASK_STATE_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_LOCAL_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- END_ASK_LOCAL_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_OFF -->"} = "";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_STATE -->"} = "";
+	$GTOOLS::TAG{"<!-- SALES_TAX_ZIP -->"} = " CHECKED ";
+	} 
+else {
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_STATE_TAX -->"} = "<!--";
+	 $GTOOLS::TAG{"<!-- END_ASK_STATE_TAX -->"} = "-->";
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_LOCAL_TAX -->"} = " <!-- ";
+	 $GTOOLS::TAG{"<!-- END_ASK_LOCAL_TAX -->"} = " --> ";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_OFF -->"} = " CHECKED ";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_STATE -->"} = "";
+	 $GTOOLS::TAG{"<!-- SALES_TAX_ZIP -->"} = " ";
+	 }
+
+
+if ($webdbref->{"sales_tax"} eq "zip")
+	 {
+	 $GTOOLS::TAG{"<!-- BEGIN_ASK_LOCAL_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- END_ASK_LOCAL_TAX -->"} = "";
+	 $GTOOLS::TAG{"<!-- LOCAL_TAX_CHECKED -->"} = " CHECKED ";
+	 } else {
+	 }
+
+$GTOOLS::TAG{'<!-- TAXSHIP_STATES -->'} = $webdbref->{'taxship_states'};
+# handle general parameters.
+
+
+# disabled novice mode
+#if (($webdbref->{"novice_mode"} eq "on") && !$q->param('novice-completed'))
+#{ $template_file = "novice.shtml";	}
+
+
+&GTOOLS::output(
+   'title'=>'Setup : Tax',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>'#50710',
+   'tabs'=>[
+      ],
+   'bc'=>[
+      { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
+      { name=>'Tax',link=>'http://www.zoovy.com/biz/setup/tax','target'=>'_top', },
+      ],
+   );
+
+
+
+
+exit;
+

@@ -1,0 +1,1140 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use strict;
+require ZOOVY;
+require GTOOLS;
+require Data::Dumper;
+require strict;
+require ZWEBSITE;
+require TOXML;
+require TOXML::UTIL;
+require TOXML::COMPILE;
+
+$::logos = {
+	'visa' => 'Visa',
+	'mc' => 'Mastercard',
+	'amex' => 'American Express',
+	'disc' => 'Discover',
+	'zoovy' => 'Zoovy',
+	'ppbig' => 'Paypal (Big Logo)',
+	'ups' => 'UPS',
+	'fedex' => 'Federal Express',
+	'usps' => 'US Postal Service',
+	'thawte' => 'Thawte SSL Secure (Zoovy)',
+	'bbbonlineh' => 'BBB Online Seal (horizontal)',
+	'bbbonlinev' => 'BBB Online Seal (vertical)',
+	'bbbonlinevm' => 'BBB Online Seal (vert small)',
+	'bidpay' => 'Western Union Bidpay',
+	'epubliceye' => 'ePublicEye Seal',
+	'ebaylogo' => 'eBay Logo',
+	'ebaypowerseller' => 'eBay Powerseller Logo (Large)',
+	'ebaypowersellerm' => 'eBay Powerseller Logo (Med)',
+	'ebaypowersellers' => 'eBay Powerseller Logo (Small)',
+	'ebaystores' => 'eBay Stores Logo',
+	'shopebay' => 'Shop @ eBay Logo',
+	'paypal' => 'Paypal (small logo)',
+	'internetsafeseal' => 'Safe Shopping Seal',
+	'sslsecure' => 'Secure Shopping',
+	'usflag' => 'US Flag',
+	'buysafe' => 'Buysafe Seal HTML',
+	'pricegrabber' => 'PriceGrabber User Ratings',
+#miniacard.gif
+
+	};
+
+
+
+my $dbh = &DBINFO::db_zoovy_connect();
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_S&2');
+if ($USERNAME eq '') { exit; }
+
+$SITE::merchant_id = $USERNAME;
+
+my $NS = $ZOOVY::cgiv->{'NS'};
+$GTOOLS::TAG{'<!-- NS -->'} = $NS;
+my $SUBTYPE = $ZOOVY::cgiv->{'SUBTYPE'};
+$GTOOLS::TAG{'<!-- SUBTYPE -->'} = $SUBTYPE;
+
+my @BC = ();
+push @BC, { name=>"Setup", link=>"/biz/setup" };
+push @BC, { name=>"Site Builder", link=>"/biz/setup/builder" };
+push @BC, { name=>"Profile [$NS]" };
+push @BC, { name=>"Theme Chooser" };
+
+## General Help on Themes
+my $help = "#50270";
+
+$GTOOLS::TAG{'<!-- MENUPOS -->'} = 1;
+my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME);
+if ($webdbref->{'branding'}>0) {
+	delete($WRAPPER::logos->{'thawte'});
+	}
+
+my $template_file = '';
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my @THEMES = ();
+if ((defined $ZOOVY::cgiv->{'category'}) || (defined $ZOOVY::cgiv->{'color'})) { $VERB = 'SEARCH'; }
+
+if ($VERB eq '') {
+	$VERB = 'MYTHEMES';
+	}
+
+
+if (1) {
+	my $c = '';
+	foreach my $cat (sort {$a<=>$b} keys %TOXML::BW_CATEGORIES) {	
+		next if ($TOXML::BW_CATEGORIES{$cat} eq '');
+		$c .= "<option value=\"$cat\">$TOXML::BW_CATEGORIES{$cat}</option>\n";
+		}
+	my $CATS = $c;
+
+	$c = '';
+	foreach my $color (sort {$a<=>$b} keys %TOXML::BW_COLORS) {
+		next if ($TOXML::BW_COLORS{$color} eq '');
+		$c .= "<option value=\"$color\">$TOXML::BW_COLORS{$color}</option>\n";
+		}
+	my $COLORS = $c;
+	my $left = qq~
+
+<form name="thisFrm" action="index.cgi">
+<input type="hidden" name="NS" value="$NS">
+<table cellspacing="2" cellpadding="0" width="170" border="0"><tr>
+	<td width="1%"><img
+src="http://www.zoovy.com/biz/images/tabs/themes/themes.gif" width="30"
+height="30"></td>
+	<td width="99%"><h3>Theme List</h3></td>
+</tr>
+<tr>
+	<td colspan="2" align="left">
+	<table width="100%" cellspacing=4 cellpadding=0>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img1" id="img1" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=MYTHEMES&SUBTYPE=$SUBTYPE&NS=$NS">My Themes</td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img2" id="img2" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=FAVORITES&SUBTYPE=$SUBTYPE&NS=$NS">Community Favorites</a></td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img3" id="img3" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=RECENT&SUBTYPE=$SUBTYPE&NS=$NS">Recently Added</a></td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img4" id="img4" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=STAFF&SUBTYPE=$SUBTYPE&NS=$NS">Staff Favorites</a></td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=RANKED&SUBTYPE=$SUBTYPE&NS=$NS">Best Ranked</a></td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=SHOWALL&SUBTYPE=$SUBTYPE&NS=$NS">Show All</a></td>
+	</tr>
+~;
+
+$left .= qq~
+	</table>
+	<br>
+	</td>
+</tr>
+~;
+
+
+	if ($SUBTYPE eq 'P') {
+		## hmm..
+		}
+	else {
+		$left .= qq~
+<tr>
+	<td><img src="http://www.zoovy.com/biz/images/tabs/themes/advanced.gif" width="30" height="30"></td>
+
+	<td><h3>Customize</h3></td>
+</tr><tr>
+	<td colspan="2"><table width="100%" cellspacing=4 cellpadding=0><tr>
+		<td width="10"><img width="10" height="10" name="img6" id="img6" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=SIDEBAR&SUBTYPE=$SUBTYPE&NS=$NS">Sidebar / Header</a></td>
+	</tr>
+	<tr>
+		<td width="10"><img width="10" height="10" name="img9" id="img9" src="/images/blank.gif"></td>
+		<td align="left"><a href="index.cgi?VERB=SITEMAP&SUBTYPE=$SUBTYPE&NS=$NS">Google SiteMap</a></td>
+	</tr>
+	
+	</table><br></td>
+</tr><tr>
+	<td>
+		<img src="http://www.zoovy.com/biz/images/tabs/themes/search.gif" width="30" height="30">
+	</td>
+	
+	<td><h3>Find A Theme</h3></td>
+</tr>
+	<tr>
+	<td colspan="2" align="left"><table><tr>
+		<td width="10" rowspan="6"></td>
+		<td align="left"><strong>Category:</strong></td>
+	</tr><tr>
+		<td align="left">
+		<select name="category" id="category" class="dropdown">
+			<option value=""> - Any - </option>
+			$CATS
+		</select>
+		</td>
+	</tr><tr>
+		<td><strong>Color:</strong></td>
+	</tr><tr>
+		<td align="left">
+		<select name="color" id="color" class="dropdown">
+			<option value="0"> - Any - </option>
+			$COLORS 
+	 		</select>
+	 	</td>
+	</tr><tr>
+		<td><strong>Features:</strong></td>
+
+	</tr><tr>
+		<td>
+<input type="checkbox" value="1" name="minicart" id="minicart">&nbsp;Minicart<br>
+<input type="checkbox" value="1" name="sidebar" id="sidebar">&nbsp;Sidebar<br>
+<input type="checkbox" value="1" name="subcats" id="subcats">&nbsp;Subcats<br>
+<input type="checkbox" value="1" name="embed_search" id="embed_search">&nbsp;Embed Search<br>
+<input type="checkbox" value="1" name="embed_subscribe" id="embed_subscribe">&nbsp;Embed
+Subscribe<br>
+<input type="checkbox" value="1" name="embed_login" id="embed_login">&nbsp;Embed Login<br>
+<input type="checkbox" value="1" name="imagecats" id="imagecats">&nbsp;Image Navcats<br></td>
+
+	</tr>
+<tr>
+	<td align="center" colspan="2">
+		<input type="button" onClick="thisFrm.submit();" value="Search" class="button">
+	</td>
+</tr></table></td>
+</tr>
+	~;
+	}
+
+$left .= qq~
+	</table>
+	</form>
+	~;
+
+	$GTOOLS::TAG{'<!-- LEFT -->'} = $left;
+	}
+
+
+
+
+##########################################################################################################
+##				S I D E B A R 		F U N C T I O N S
+##########################################################################################################
+
+
+
+## saves the logo choices
+if ($VERB eq 'SAVE-SIDEBAR') {
+	$webdbref->{'selected_logos'} = $ZOOVY::cgiv->{'listorder'};
+	print STDERR "LISTORDER: $ZOOVY::cgiv->{'listorder'}\n";
+
+	my $ERRORS = '';
+	$webdbref->{'sidebar_showssl'} = 0;
+	$webdbref->{'head_nonsecure'} = '';
+	$webdbref->{'head_secure'} = '';
+	if ($FLAGS =~ /,WEB,/) {
+		if ($ZOOVY::cgiv->{'sidebar_showssl'}) {	$webdbref->{'sidebar_showssl'} = 1;	}
+		$webdbref->{'head_nonsecure'} = $ZOOVY::cgiv->{'head_nonsecure'};
+		$webdbref->{'head_secure'} =  $ZOOVY::cgiv->{'head_secure'};
+		}
+	if ($webdbref->{'head_nonsecure'} eq '') { delete $webdbref->{'head_nonsecure'}; }
+	if ($webdbref->{'head_secure'} eq '') { delete $webdbref->{'head_secure'}; }
+
+
+	if (defined $ZOOVY::cgiv->{'BUYSAFE'}) {
+		$webdbref->{'buysafe_sealhtml'} = $ZOOVY::cgiv->{'buysafe_sealhtml'};
+		}
+
+	if (defined $ZOOVY::cgiv->{'BBBONLINEID'}) {
+		&ZOOVY::savemerchant_attrib($USERNAME,'bbbonline:id',$ZOOVY::cgiv->{'BBBONLINEID'});
+		}
+
+	if (defined $ZOOVY::cgiv->{'EPUBLICEYEID'}) {
+		&ZOOVY::savemerchant_attrib($USERNAME,'epubliceye:id',$ZOOVY::cgiv->{'EPUBLICEYEID'});
+		}
+
+	if (defined $ZOOVY::cgiv->{'EBAYUSER'}) {
+		&ZOOVY::savemerchant_attrib($USERNAME,'ebay:username',$ZOOVY::cgiv->{'EBAYUSER'});
+		}
+
+	if (defined $ZOOVY::cgiv->{'EBAYSTORE'}) {
+		&ZOOVY::savemerchant_attrib($USERNAME,'ebaystores:storename',$ZOOVY::cgiv->{'EBAYSTORE'});
+		}
+	if (defined $ZOOVY::cgiv->{'PRICEGRABBERID'}) {
+		&ZOOVY::savemerchant_attrib($USERNAME,'pricegrabber:id',$ZOOVY::cgiv->{'PRICEGRABBERID'});
+		}
+	
+
+	my $c = '';
+	# my $c = "<center><table cellpadding='0' cellspacing='0' border='0'><tr><td><center>";
+	my $count=0;
+	foreach my $logo (split(/\|/,$ZOOVY::cgiv->{'listorder'})) {
+		$count++;
+		if ($logo eq '') {
+			$c .= "%pre%<img width='3' height='3' src=\"http://www.zoovy.com/images/blank.gif\"><br>%post%\n";
+			}
+		elsif ($logo eq 'visa') {
+			$c .= "%pre%<img height='38' width='59' src=\"http://www.zoovy.com/images/paymentlogos/VISA.gif\">%post%\n";
+			}
+		elsif ($logo eq 'mc') {
+			$c .= "%pre%<img height='38' width='59' src=\"http://www.zoovy.com/images/paymentlogos/MC.gif\">%post%\n";
+			}
+		elsif ($logo eq 'amex') {
+			$c .= "%pre%<img height='38' width='59' src=\"http://www.zoovy.com/images/paymentlogos/AMEX.gif\">%post%\n";
+			}
+		elsif ($logo eq 'disc') {
+			$c .= "%pre%<img height='38' width='59' src=\"http://www.zoovy.com/images/paymentlogos/NOVUS.gif\">%post%\n";
+			}
+		elsif ($logo eq 'zoovy') {
+			$c .= "%pre%<a href=\"http://www.zoovy.com/track.cgi?P=$USERNAME\"><img border='0' height='31' width='88' src=\"http://static.zoovy.com/graphics/general/poweredby.gif\"></a>%post%\n";
+			}
+		elsif ($logo eq 'ppbig') {
+			$c .= "%pre%<img width='109' height='35' src=\"http://static.zoovy.com/graphics/general/paypal_logo.gif\">%post%\n";
+			}
+		elsif ($logo eq 'ups') {
+			$c .= "%pre%<img border='0' height='50' width='45' src=\"http://static.zoovy.com/graphics/general/ups.gif\">%post%\n";
+			}
+		elsif ($logo eq 'fedex') {
+			$c .= "%pre%<img width='120' height='30' src=\"http://static.zoovy.com/graphics/general/fedex.gif\">%post%\n";
+			}
+		elsif ($logo eq 'usps') {
+			$c .= "%pre%<img width='120' height='30' src=\"http://static.zoovy.com/graphics/general/usps.gif\">%post%\n";
+			}
+		elsif ($logo eq 'paypal') {
+			$c .= "%pre%<img width='88' height='33' src=\"http://static.zoovy.com/graphics/general/paypal-small.gif\">%post%\n";
+			}
+		elsif ($logo eq 'bidpay') {
+			$c .= "%pre%<img width='88' height='31' src=\"http://static.zoovy.com/graphics/general/wubidpay.gif\">%post%\n";
+			}
+		elsif ($logo eq 'internetsafeseal') {
+			$c .= "%pre%<img width='80' height='81' src=\"http://static.zoovy.com/graphics/general/internetsafeseal.jpg\">%post%\n";
+			}
+		elsif ($logo eq 'sslsecure') {
+			$c .= "%pre%<img width='87' height='38' src=\"http://static.zoovy.com/graphics/general/generic-ssl-secure.gif\">%post%\n";
+			}
+		elsif ($logo eq 'usflag') {
+			$c .= "%pre%<img width='68' height='50' src=\"http://static.zoovy.com/graphics/general/usflag.gif\">%post%\n";
+			}
+		elsif ($logo eq 'buysafe') {
+			$c .= "%pre%$webdbref->{'buysafe_sealhtml'}%post%";
+			}
+
+#miniacard.gif
+		
+		elsif ($logo eq 'thawte') {
+			if ($webdbref->{'branding'}>0) {
+				$ERRORS .= "Cannot add ZOOVY Thawte logo when branding is disabled.<br>";
+				}
+			else {
+				$c .= "%pre%<a href=\"https://ssl.zoovy.com/$USERNAME/cart.cgis\"><img width='199' border='0' height='37' src=\"http://static.zoovy.com/graphics/general/thawte.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'bbbonlineh') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'bbbonline:id');
+			if ($tmp eq '') {
+				$ERRORS .= "BBB ID not set, logo is not clickable.";
+				$c .= "%pre%<img src=\"http://static.zoovy.com/graphics/general/bbbonline-horiz.gif\">%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://www.bbbonline.org/cks.asp?id=$tmp\"><img border=0 src=\"http://static.zoovy.com/graphics/general/bbbonline-horiz.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'bbbonlinev') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'bbbonline:id');
+			if ($tmp eq '') {
+				$ERRORS .= "BBB ID not set, logo is not clickable.";
+				$c .= "%pre%<img src=\"http://static.zoovy.com/graphics/general/bbbonline-vert.gif\">%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://www.bbbonline.org/cks.asp?id=$tmp\"><img border=0 src=\"http://static.zoovy.com/graphics/general/bbbonline-vert.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'bbbonlinevm') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'bbbonline:id');
+			if ($tmp eq '') {
+				$ERRORS .= "BBB ID not set, logo is not clickable.";
+				$c .= "%pre%<img src=\"http://static.zoovy.com/graphics/general/bbbonline-vertmini.gif\">%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://www.bbbonline.org/cks.asp?id=$tmp\"><img border=0 src=\"http://static.zoovy.com/graphics/general/bbbonline-vertmini.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'epubliceye') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'epubliceye:id');
+			if ($tmp eq '') {
+				$ERRORS .= "EPUBLICEYE ID not set, logo is not clickable.";
+				$c .= "%pre%<img src=\"http://static.zoovy.com/graphics/general/epubliceye.gif\">%post%\n";
+				}
+			else {
+				$c .= "<a target=\"_blank\" href=\"http://pe.epubliceye.com/fl/report.cfm?key=$tmp&lang=english\"><img border=0 src=\"http://static.zoovy.com/graphics/general/epubliceye.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'ebaylogo') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username');
+			if ($tmp eq '') {
+				$ERRORS .= "ebay:username not set, logo goes to Zoovy gallery.";
+				$c .= "%pre%<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebay\"><img border=0 src=\"http://static.zoovy.com/graphics/general/ebaylogo.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://cgi6.ebay.com/ws/eBayISAPI.dll?ViewSellersOtherItems&userid=$tmp\"><img border=0 src=\"http://static.zoovy.com/graphics/general/ebaylogo.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'ebaypowerseller') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username');
+			if ($tmp eq '') {
+				$ERRORS .= "ebay:username not set, logo goes to Zoovy gallery.";
+				$c .= "%pre%<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebay\"><img border=0 height='93' width='110' src=\"http://static.zoovy.com/graphics/general/ebaypowerseller.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://cgi6.ebay.com/ws/eBayISAPI.dll?ViewSellersOtherItems&userid=$tmp\"><img height='93' width='110' border=0 src=\"http://static.zoovy.com/graphics/general/ebaypowerseller.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'ebaypowersellerm') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username');
+			if ($tmp eq '') {
+				$ERRORS .= "ebay:username not set, logo goes to Zoovy gallery.";
+				$c .= "%pre%<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebay\"><img border=0 height=63 width=75 src=\"http://static.zoovy.com/graphics/general/ebaypowerseller_medium.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://cgi6.ebay.com/ws/eBayISAPI.dll?ViewSellersOtherItems&userid=$tmp\"><img height=63 width=75 border=0 src=\"http://static.zoovy.com/graphics/general/ebaypowerseller_medium.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'ebaypowersellers') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username');
+			if ($tmp eq '') {
+				$ERRORS .= "ebay:username not set, logo goes to Zoovy gallery.";
+				$c .= "%pre%<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebay\"><img border=0 width=55 height=47 src=\"http://static.zoovy.com/graphics/general/ebaypowerseller_small.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://cgi6.ebay.com/ws/eBayISAPI.dll?ViewSellersOtherItems&userid=$tmp\"><img  border=0 width=55 height=47  src=\"http://static.zoovy.com/graphics/general/ebaypowerseller_small.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'ebaystores') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebaystores:storename');
+			if ($tmp eq '') {
+				$ERRORS .= "eBay store name not set, logo goes to Zoovy gallery.";
+				$c .= "<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebaystores\"><img border=0  width=125 height=39  src=\"http://static.zoovy.com/graphics/general/ebaystores.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://www.stores.ebay.com/$tmp\"><img border=0 width=125 height=39 src=\"http://static.zoovy.com/graphics/general/ebaystores.gif\"></a>%post%\n";
+				}
+			}
+		elsif ($logo eq 'shopebay') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username');
+			if ($tmp eq '') {
+				$ERRORS .= "ebay:username not set, logo goes to Zoovy gallery.";
+				$c .= "%pre%<a href=\"http://$USERNAME.zoovy.com/gallery.cgis?market=ebay\"><img border=0 src=\"http://static.zoovy.com/graphics/general/shopebay.gif\"></a>%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://cgi6.ebay.com/ws/eBayISAPI.dll?ViewSellersOtherItems&userid=$tmp\"><img border=0 src=\"http://static.zoovy.com/graphics/general/shopebay.gif\"></a>%post%\n";
+				}
+			}
+		## added 10-12-2006 - patti
+		elsif ($logo eq 'pricegrabber') {
+			my $tmp = &ZOOVY::fetchmerchant_attrib($USERNAME,'pricegrabber:id');
+			if ($tmp eq '') {
+				$ERRORS .= "Pricegrabber id not set, logo is not clickable.";
+				$c .= "%pre%<img border=0 src=\"http://ah.pricegrabber.com/merchant_rating_image.php\">%post%\n";
+				}
+			else {
+				$c .= "%pre%<a target=\"_blank\" href=\"http://www.pricegrabber.com/rating_getreview.php/retid=$tmp\">".
+						"<img border=0 src=\"http://ah.pricegrabber.com/merchant_rating_image.php?retid=$tmp\" ".
+						"alt=\"PriceGrabber User Ratings\"></a>%post%\n";
+				}
+			}
+		}
+			
+
+	$GTOOLS::TAG{'<!-- ERRORS -->'} = "<font color='red'>$ERRORS</font>";
+
+	my $before = '';
+	if ($webdbref->{'dev_sidebar_html'} =~ /^(.*?)\<\!\-\- SB_BEGIN \-\-\>/) { $before = $1; }
+	elsif ($webdbref->{'dev_sidebar_html'} !~ /<!-- SB_BEGIN -->/) { $before = $webdbref->{'dev_sidebar_html'}; }
+	my $after = '';
+	if ($webdbref->{'dev_sidebar_html'} =~ /^(.*?)\<\!\-\- SB_END \-\-\>/) { $after = $1; }
+	$webdbref->{'dev_sidebar_issecure'} = 0;
+	if ($webdbref->{'sidebar_showssl'}) {
+		$GTOOLS::TAG{'<!-- SIDEBAR_SHOWSSL -->'} = 'checked';
+		}
+	else {
+		$GTOOLS::TAG{'<!-- SIDEBAR_SHOWSSL -->'} = '';
+		}
+
+	if ($count == 0) { $c = ''; }
+
+	$webdbref->{'dev_sidebar_html'} = "$before<!-- SB_BEGIN -->\n$c\n<!-- SB_END -->$after";
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref);
+	$VERB = 'SIDEBAR';
+	}
+
+
+if ($VERB eq 'SIDEBAR') {
+	$help = "#50720";
+	&do_sidebar();
+	$template_file = 'body-sidebar.shtml';
+	}
+
+
+
+
+
+
+########################################################################################################
+## 				D E V E L O P E R 	F U N C T I O N S
+########################################################################################################
+
+
+##
+## save the wrapper, and return them to the main screen
+##		HEY: this is used by both "developer" mode and the regular save-wrapper mode.
+##
+if (($VERB eq 'SAVE-WRAPPER') || ($VERB eq 'SAVE-POPUP')) {
+	my $wrapper = defined($ZOOVY::cgiv->{'selected'}) ? $ZOOVY::cgiv->{'selected'} : '';
+	if ($wrapper eq '') { $wrapper = $ZOOVY::cgiv->{'wrapper'}; }	
+
+	my $TYPE = $ZOOVY::cgiv->{'TYPE'};
+	# this is if they choose a default theme from the main menu, we should reset both the category and product
+	if ($TYPE eq '') {
+		delete $webdbref->{'sitewrapper_p'};
+		delete $webdbref->{'sitewrapper_c'};
+		$TYPE = 'SITE';
+		}
+
+	my $src = '';
+	if (substr($wrapper,0,1) eq '~') {
+		$wrapper =~ s/\W//gis;
+		$wrapper = '~'.$wrapper;
+		$src = 'CUSTOM';
+		}
+	else {
+		$wrapper =~ s/\W//gis;
+		}
+
+	## clear out the old values from the legacy system
+	delete $webdbref->{'website_theme'};
+	delete $webdbref->{'website_layout'};
+	
+	if ($SUBTYPE eq '') {
+		$webdbref->{'sitewrapper'} = $wrapper;
+		&ZOOVY::savemerchantns_attrib($USERNAME,$NS,'zoovy:site_wrapper',$wrapper);
+		}
+	elsif ($SUBTYPE eq 'P') {
+		$webdbref->{'sitewrapper_n'} = $wrapper;		# set shipping calculator this as well.
+		&ZOOVY::savemerchantns_attrib($USERNAME,$NS,'zoovy:popup_wrapper',$wrapper);
+		}
+
+	if ($NS eq 'DEFAULT') {
+		&ZWEBSITE::save_website_dbref($USERNAME,$webdbref);
+		}	
+
+	$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<center><font face='helvetica, arial' color='red' size='5'><b>Successfully Saved!</b></font></center><br><br>";;
+
+	TOXML::UTIL::remember($USERNAME,'WRAPPER',$wrapper,0);
+	$VERB = 'MYTHEMES';
+	}
+
+
+
+if ($VERB eq 'SAVE-SITEMAP') {
+	# Saves changes to the sitemap
+	my $ERRORS = 0;
+
+	my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME);
+	require DOMAIN::TOOLS;
+	my (@domains) = DOMAIN::TOOLS::domains($USERNAME);
+	my $info = &ZTOOLKIT::parseparams($webdbref->{'googlesitemaps'});
+
+	foreach my $domain ($USERNAME.'.zoovy.com',sort @domains) {
+		if (defined($ZOOVY::cgiv->{$domain})) {
+			## save sitemap to webdb.bin
+			## require ZWEBSITE;
+			## my ($ERRORS) = ZWEBSITE::save_website_attrib($USERNAME, "domain_", $ZOOVY::cgiv->{$domain}); 
+
+			$info->{$domain} = $ZOOVY::cgiv->{$domain};
+			
+			#$GTOOLS::TAG{'<!-- MESSAGE -->'} = $ZOOVY::cgiv->{$domain}."<br>"; 
+			}
+		}
+	$webdbref->{'googlesitemaps'} = &ZTOOLKIT::buildparams($info,1);
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref);
+
+	if ($ERRORS == 0) {
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} .= "<center><font face='helvetica, arial' color='red' size='5'><b>Successfully Saved!</b></font></center><br><br>";
+		}
+	else {
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} .= "<center><font face='helvetica, arial' color='red' size='5'><b>Unable to SiteMaps!</b></font></center><br><br>"; 
+		}
+	$VERB = 'SITEMAP';
+	}
+
+
+if ($VERB eq 'SITEMAP') {
+	$template_file = 'body-sitemap.shtml';
+	$help = "#50596";
+
+	$GTOOLS::TAG{'<!-- TS -->'} = time();
+	my $out = '';
+	require DOMAIN::TOOLS;
+	my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME);
+	my $maps = &ZTOOLKIT::parseparams($webdbref->{'googlesitemaps'});
+	my (@domains) = DOMAIN::TOOLS::domains($USERNAME, PROFILE=>$NS);
+	foreach my $domain (sort @domains) {
+		## get value for webdb.bin
+		my $value = '';
+		$value = &ZOOVY::incode($maps->{$domain});
+		
+		$out .= "<tr>";
+		$out .= "<td>$domain</td>";
+		$out .= qq~<td><input type="text" name="$domain" value="$value" size=80></td>~;
+		$out .= "</tr>\n"; 
+		}
+
+	$GTOOLS::TAG{'<!-- DOMAINS -->'} = $out;
+	## not used
+	## $GTOOLS::TAG{'<!-- HELP_WRAPPER -->'} = &GTOOLS::help_link('Google SiteMap Help','detail/sitemaps.php','dev');
+		
+	}
+
+
+##########################################################################################################
+##				T H E M E 	C H O O S E R 		F U N C T I O N S
+##########################################################################################################
+
+#mysql> desc THEME_RANKS;
+#+-------------+-------------------------+------+-----+---------+----------------+
+#| Field       | Type                    | Null | Key | Default | Extra          |
+#+-------------+-------------------------+------+-----+---------+----------------+
+#| ID          | int(10) unsigned        |      | PRI | NULL    | auto_increment |
+#| CREATED_GMT | int(11)                 |      |     | 0       |                |
+#| MID         | int(11)                 |      | MUL | 0       |                |
+#| MERCHANT    | varchar(20)             |      |     |         |                |
+#| WRAPPER     | varchar(30)             |      | MUL |         |                |
+#| TYPE        | enum('','DEV','CUSTOM') |      |     |         |                |
+#| SELECTED    | tinyint(4)              |      |     | 0       |                |
+#+-------------+-------------------------+------+-----+---------+----------------+
+#7 rows in set (0.01 sec)
+
+
+
+
+if ($VERB eq 'REMEMBER-WRAPPER') {
+	
+	my $WRAPPER = $ZOOVY::cgiv->{'wrapper'};
+	require TOXML::UTIL;
+	&TOXML::UTIL::remember($USERNAME,'WRAPPER',$WRAPPER,1);
+
+	$VERB = 'MYTHEMES';
+	}
+
+if ($VERB eq 'FORGET-WRAPPER') {
+	
+	my $WRAPPER = $ZOOVY::cgiv->{'wrapper'};
+	require TOXML::UTIL;
+	&TOXML::UTIL::forget($USERNAME,'WRAPPER',$WRAPPER);
+
+	$VERB = 'MYTHEMES';
+	}
+
+
+#mysql> desc THEMES;
+#+-----------------+------------------+------+-----+---------+----------------+
+#| Field           | Type             | Null | Key | Default | Extra          |
+#+-----------------+------------------+------+-----+---------+----------------+
+#| ID              | int(11)          |      | PRI | NULL    | auto_increment |
+#| NAME            | varchar(30)      |      |     |         |                |
+#| CODE            | varchar(15)      |      | UNI |         |                |
+#| RANK_POPULARITY | int(10) unsigned |      |     | 0       |                |
+#| RANK_REMEMBER   | int(10) unsigned |      |     | 0       |                |
+#| CREATED_GMT     | int(11)          |      |     | 0       |                |
+#| BW_CATEGORIES   | int(10) unsigned |      |     | 0       |                |
+#| BW_COLORS       | int(10) unsigned |      |     | 0       |                |
+#| BW_PROPERTIES   | int(10) unsigned |      |     | 0       |                |
+#| IS_POPUP        | tinyint(4)       |      |     | 0       |                |
+#+-----------------+------------------+------+-----+---------+----------------+
+
+my $pstmt = '';
+if ($VERB eq '') { $VERB = 'MYTHEMES'; }
+if ($VERB eq 'MYTHEMES') {
+	## Show the themes a user has marked as favorite.
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'My Favorites';
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 1;
+
+
+	$pstmt = "select TX.* from TOXML TX, TOXML_RANKS TR where TR.MID=$MID and TR.DOCID=TX.DOCID and TR.FORMAT='WRAPPER' and TX.CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " order by TR.ID desc";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my $hashref = $sth->fetchrow_hashref() ) {
+		push @THEMES, $hashref;
+		}
+
+	# my $result = &TOXML::UTIL::listDocs($USERNAME,'WRAPPER',SUBTYPE=>(($SUBTYPE eq '')?undef:$SUBTYPE));
+	my $result = &TOXML::UTIL::listDocs($USERNAME,'WRAPPER');
+	if (defined $result) {
+		foreach my $ref (@{$result}) {
+			next if ($ref->{'MID'}==0);
+			$ref->{'WRAPPER_CATEGORIES'} = 1;
+			push @THEMES, $ref;
+			}
+		}
+
+	if (scalar(@THEMES)==0) {
+		$template_file = 'body-welcome.shtml';
+		}
+	else {
+		$template_file = 'body-menu.shtml';
+		}
+
+	## NOTE: we need pass down MYTHEMES action so we know to add the 'REMOVE' 
+	##	$VERB = 'OUTPUT-FAVORITES';
+	}
+
+if ($VERB eq 'SEARCH') {
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'Search Results';
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 1;
+	
+	my $PROPERTIES = 0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'minicart'})?(1<<0):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'sidebar'})?(1<<1):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'subcats'})?(1<<2):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'embed_search'})?(1<<3):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'embed_subscribe'})?(1<<4):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'embed_login'})?(1<<5):0;
+	$PROPERTIES += (defined $ZOOVY::cgiv->{'imagecats'})?(1<<6):0;
+	## 1<<9 = wiki text
+	## 1<<10 = ajax 
+
+	my $CATEGORIES = int($ZOOVY::cgiv->{'category'});
+	my $COLORS = int($ZOOVY::cgiv->{'color'});
+
+	$pstmt = ' FORMAT=\'WRAPPER\' and MID in (0,'.$MID.') ';	
+	if ($PROPERTIES>0) { $pstmt .= (($pstmt ne '')?' and ':'')."(PROPERTIES&$PROPERTIES)=$PROPERTIES "; }
+	if ($CATEGORIES>0) { $pstmt .= (($pstmt ne '')?' and ':'')."(WRAPPER_CATEGORIES&$CATEGORIES)>0 "; }
+	if ($COLORS>0) { $pstmt .= (($pstmt ne '')?' and ':'')."(WRAPPER_COLORS&$COLORS)>0 "; }
+
+	if ($pstmt eq '') {
+		## they didn't select anything. FUCKERS!
+		}
+	else {
+		$pstmt = "select * from TOXML where CREATED_GMT>0 and $pstmt";
+		}
+
+	print STDERR $pstmt."\n";
+
+	$VERB = 'QUERY';
+	}
+
+
+if ($VERB eq 'FAVORITES') {
+	## Show user favorites (rank remember)
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'Community Favorites (Currently in Use)'; 
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 2;
+	$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " and MID in (0,$MID) order by RANK_SELECTED desc,CREATED_GMT desc limit 0,25";
+	$VERB = 'QUERY';
+	}
+
+if ($VERB eq 'RECENT') {
+	## RECENTLY ADDED
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'Recently Added'; 
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 3;
+	$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " and MID in (0,$MID) order by CREATED_GMT desc limit 0,25";
+	$VERB = 'QUERY';
+	}
+
+if ($VERB eq 'STAFF') {
+	## Staff Favorites??
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'Zoovy Favorites'; 
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 4;
+	$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " and MID in (0,$MID) order by CREATED_GMT desc limit 15,25";
+	$VERB = 'QUERY';
+	}
+
+if ($VERB eq 'SHOWALL') {
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'All Available'; 
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 4;
+	$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " and MID in (0,$MID) order by CREATED_GMT desc";
+	$VERB = 'QUERY';
+	}
+
+if ($VERB eq 'RANKED') {
+	## RANK REMEMBER
+	$GTOOLS::TAG{'<!-- MENU_TITLE -->'} = 'Best Ranked (Most Remembered)'; 
+	$GTOOLS::TAG{'<!-- MENUPOS -->'} = 5;
+	$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 ";
+	if ($SUBTYPE ne '') { $pstmt .= " and SUBTYPE=".$dbh->quote($SUBTYPE); }
+	$pstmt .= " and MID in (0,$MID) order by RANK_REMEMBER desc,CREATED_GMT desc limit 0,25";
+	$VERB = 'QUERY';
+	}
+
+if ($VERB eq 'QUERY') {
+
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my $hashref = $sth->fetchrow_hashref() ) {
+		push @THEMES, $hashref;
+		}
+	$VERB = 'OUTPUT';
+	}
+
+
+if (($VERB eq 'OUTPUT') || ($VERB eq 'OUTPUT-FAVORITES') || ($VERB eq 'MYTHEMES')) {
+	##
+	## Build a menu!
+	##
+	my $out = '';
+	my $counter = 0;
+	foreach my $t (@THEMES) {
+		next if ($t->{'WRAPPER_CATEGORIES'}==0);
+		next if (($SUBTYPE eq '') && ($t->{'SUBTYPE'} ne '_') && ($t->{'SUBTYPE'} ne ''));
+		next if ($t->{'DOCID'} eq '');
+		
+		$out .= &format($t,$VERB,$counter++,$FLAGS);
+		}
+	if ($out eq '') { $out = qq~<table><tr><td>Sorry, but no matching themes could be found based on your search parameters.</td></tr></table>~; }
+
+	if (($VERB eq 'OUTPUT-FAVORITES') || ($VERB eq 'MYTHEMES')) {
+		## display the currently selected theme.
+
+		#print STDERR "SITEWRAPPER: $webdbref->{'sitewrapper'}\n";
+		#print STDERR Dumper(\%webdb);
+
+		my $wrapper = &ZOOVY::fetchmerchantns_attrib($USERNAME,$NS,'zoovy:site_wrapper');
+		if ($NS eq 'DEFAULT') { $wrapper = $webdbref->{'sitewrapper'}; }
+		
+		my $popwrapper = &ZOOVY::fetchmerchantns_attrib($USERNAME,$NS,'zoovy:popup_wrapper');
+		if ($NS eq 'DEFAULT') { $popwrapper = $webdbref->{'sitewrapper_n'}; }
+
+		$out = qq~
+			<table>
+				<tr><td><b>Currently Selected Site Theme:</b><br>~.&format(&lookup_theme($wrapper),'SELECTED',-1,$FLAGS).qq~</td></tr>				
+				~.(($webdbref->{'sitewrapper_n'} ne '')?("<tr><td><b>Selected Popup Theme:</b><br>".&format(&lookup_theme($popwrapper),'SELECTED',-1,$FLAGS)."</td></tr>"):'').qq~
+			</table>
+			<br><br>
+			<b>Remembered Themes:</b><br>
+		~.$out;
+		}
+	
+	$GTOOLS::TAG{'<!-- THEMELIST -->'} = $out; $out = undef;
+	$template_file = 'body-menu.shtml';
+	## 
+	}
+
+
+
+sub lookup_theme {
+	my ($wrapper) = @_;
+	my $t = {};
+
+	if ($wrapper eq '') {
+		$t->{'TITLE'} = 'Theme Not Set';
+		}
+	elsif (substr($wrapper,0,1) eq '~') {
+		## Custom Theme
+		$t->{'TITLE'} = 'Custom Theme: '.$wrapper;
+		$t->{'DOCID'} = $wrapper;
+		$t->{'RANK_SELECTED'} = 100;
+		$t->{'RANK_REMEMBER'} = 100;
+		$t->{'CREATED_GMT'} = time();
+		}
+	else {
+		my $dbh = &DBINFO::db_zoovy_connect();
+		$pstmt = "select * from TOXML where FORMAT='WRAPPER' and CREATED_GMT>0 and MID in (0,$MID) and DOCID=".$dbh->quote($wrapper);
+		my $sth = $dbh->prepare($pstmt);
+		$sth->execute();
+		if ($sth->rows()>0) {
+			$t = $sth->fetchrow_hashref();
+			}
+		else {
+			$t->{'TITLE'} = 'Unknown Theme: '.$wrapper;
+			$t->{'DOCID'} = $wrapper;
+			}
+		$sth->finish();
+		&DBINFO::db_zoovy_connect();
+		}
+
+	return($t);
+	}
+
+
+
+##########################################################################################################
+##				G E N E R A L 		F U N C T I O N S
+##		(wouldn't these be better suited for WRAPPERS.pm)
+##########################################################################################################
+
+
+sub format {
+	my ($t,$VERB,$counter,$FLAGS) = @_;
+
+	my $out = '';
+	my $thumburl = 'http://static.zoovy.com/graphics/wrappers/'.$t->{'DOCID'}.'/preview.jpg';
+	if ($t->{'MID'}== $MID) {
+		$thumburl = 'http://www.zoovy.com/biz/images/setup/custom_theme.gif'; 
+		}
+
+	my $bgcolor = (($counter%2)?'table_top':'table_head');
+	if ($counter==-1) { $bgcolor = 'table_head'; }
+
+	if ($t->{'TITLE'} eq '') { $t->{'TITLE'} = $t->{'DOCID'}; }
+	
+	$out .= "<table cellspacing=0 cellpadding=0 border=0 width=\"90%\" class=\"$bgcolor\">";
+	$out .= "<tr><td>";
+	$out .= "<table cellspacing=1 cellpadding=0 border=0 width=\"100%\"><tr>";	
+
+	$out .= "<td bgcolor=\"#FFFFFF\" valign=\"top\" width=\"1%\">";
+	if ($t->{'DOCID'} ne '') {
+		$out .= "<img width=140 height=100 src=\"$thumburl\"></td>";
+		}
+	$out .= "</td>";
+	$out .= "<td bgcolor=\"#FFFFFF\" valign=\"top\" width=\"99%\" align=\"left\" style=\"padding: 4px;\"><strong>$t->{'TITLE'}</strong><br>";
+
+	if (($FLAGS =~ /,EBAY,/) && (defined $t->{'BW_PROPERTIES'})) {
+		$out .= "Matching Wizard: ".( (($t->{'BW_PROPERTIES'}&(1<<13))>0)?'Yes':'No' )."<br>";
+		}
+
+	if ($t->{'RANK_REMEMBER'}>0) { $out .= "Popularity: $t->{'RANK_REMEMBER'}<br>\n"; }
+
+	my $list = '';
+	foreach my $i (0..13) { 
+		if (($t->{'PROPERTIES'} & (1<<$i))>0) { $list .= ' '.$TOXML::BW_PROPERTIES{1<<$i}.','; } 
+		}
+	chop($list);
+	if ($list eq '') { $list = 'None'; }
+	$out .= "Features: $list<br>"; 
+
+	if (($VERB eq 'MYTHEMES') || ($VERB eq 'SELECTED')) {
+		if ($t->{'SUBTYPE'} eq 'P') {
+			$out .= "<font color='red'>*** THIS IS A POPUP WRAPPER ***<br></font>";
+			}
+		}
+
+	$list = '';
+	foreach my $i (0..15) {	
+		if (($t->{'WRAPPER_CATEGORIES'} & (1<<$i))>0) { $list .= ' '.$TOXML::BW_CATEGORIES{1<<$i}.','; } 		
+		}
+	chop($list);
+	if ($list eq '') { $list = 'None'; }
+	$out .= "Categories: $list<br>";
+	
+	# $out .= "<pre>".Dumper($t)."</pre>";
+	$out .= "</td></tr></table>";
+	$out .= "</td></tr>\n";
+
+	if ($t->{'DOCID'} ne '') {
+		$out .= qq~<tr>
+			<td><table width="100%"><tr>
+				<td NOWRAP><span class="light_text">
+				<a target="_preview" href="http://www.zoovy.com/biz/preview.cgi?url=http://$USERNAME.zoovy.com/%3Fwrapper=$t->{'DOCID'}" class="light_text">Preview</a> 
+			~;
+
+		if ($VERB eq 'MYTHEMES') {
+			$out .= qq~
+			| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=FORGET-WRAPPER&wrapper=$t->{'DOCID'}" class="light_text">Forget</a>
+			~;
+			}
+
+		if ($VERB ne 'SELECTED') {
+			## selected is when we are showing a box for a selected theme.
+			if ($SUBTYPE eq 'P') {
+				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-POPUP&wrapper=$t->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
+				}
+			else {
+				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-WRAPPER&wrapper=$t->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
+				}
+			}
+
+		if ($VERB eq 'OUTPUT') {
+			## don't offer to remember a them when we are already showing remembered themes.
+			$out .= qq~
+			| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=REMEMBER-WRAPPER&wrapper=$t->{'DOCID'}" class="light_text">Remember</a>
+			~;
+			}
+	
+#		if ($FLAGS =~ /,WEB,/) {
+#			## only show the View XML option to web developers
+#			$out .= qq~| <a href="body.cgi?VERB=VIEWHTML&wrapper=$t->{'DOCID'}" class="light_text">View HTML</a>~;
+#			}
+
+#		if ($t->{'MID'} == $MID) {
+#			## only show the View HTML option to web developers
+#			$out .= qq~| <a href="body.cgi?VERB=DEVELOPER-EDITWRAPPER&wrapper=$t->{'DOCID'}" class="light_text">Edit HTML</a>~;
+#			}
+
+		$out .= qq~
+			<!--
+			| <a href="" class="light_text">Download</a> 
+			| <a href="" class="light_text">Show Similar</a></span>
+			-->
+			</td>
+			<td align="right">
+			<!--
+			<select name="rank" class="formed">
+				<option value="">Rank It!</option>
+				</select>
+			-->
+			</td>
+			</tr></table></td>
+			</tr></table><br>
+			~;	
+		}
+
+	return($out);
+	}
+
+
+
+&GTOOLS::output(
+	file=>$template_file,
+	header=>1,
+	bc=>\@BC,
+	help=>$help,
+	title=>"Theme Chooser",
+	);
+&DBINFO::db_zoovy_close();
+
+
+
+
+
+
+
+
+
+
+sub do_sidebar {
+	my $c = '';
+	my %exists = ();
+
+	my ($toxml) = TOXML->new('WRAPPER',$webdbref->{'sitewrapper'},USERNAME=>$USERNAME,MID=>$MID);
+	my ($sidebarEL) = $toxml->findElements('SIDEBAR');
+	
+	if ($webdbref->{'sitewrapper'} eq '') {
+		$GTOOLS::TAG{'<!-- SIDEBAR_WARNING -->'} = "<font color='red'>Please use the folders on the left to select a wrapper for your website and checkout process.</font>";
+		}
+	elsif (not defined $sidebarEL) {
+		$GTOOLS::TAG{'<!-- SIDEBAR_WARNING -->'} = "<font color='red'>The selected site wrapper (".$webdbref->{'sitewrapper'}.") is not compatible with the sidebar logo feature.</font><br>";
+		}
+
+	foreach my $logo (split(/\|/,$webdbref->{'selected_logos'})) {
+		print STDERR "LOGO: $logo\n";
+		if ($logo eq '') {
+			$c .= "<option value=\"\">Empty Line</option>\n";
+			}
+		elsif (not defined $::logos->{$logo}) {
+			}
+		else {
+			$c .= "<option value=\"$logo\">$::logos->{$logo}</option>\n";
+			$exists{$logo}++;
+			}
+		}
+	$GTOOLS::TAG{'<!-- LIST2 -->'} = $c;
+
+	$c = '';
+	foreach my $logo (sort keys %{$::logos}) {
+		next if (defined $exists{$logo});
+		$c .= "<option value=\"$logo\">$::logos->{$logo}</option>\n";
+		}
+	$c .= qq~
+		<option value="">Empty Line</option>
+		<option value="">Empty Line</option>
+		<option value="">Empty Line</option>
+	~;
+
+	$GTOOLS::TAG{'<!-- LIST1 -->'} = $c;
+
+	my $OPTIONS = '';
+	if ($FLAGS =~ /,WEB,/) {
+
+		$OPTIONS .= qq~
+		<b>Regular (Non-Secure) &lt;HEAD&gt; Code:</b><br>
+		<textarea rows="3" cols="80" name="head_nonsecure">$webdbref->{'head_nonsecure'}</textarea><br>
+		<br>
+		<b>Secure &lt;HEAD&gt; Code: </b>
+		<textarea rows="3" cols="80" name="head_secure">$webdbref->{'head_secure'}</textarea><br>
+		REMINDER1: Secure urls MUST be https:// instead of http:// or users will receive SSL errors during checkout!<br>
+		REMINDER2: Referencing external javascript files or images to track visitors/traffic by linking to files hosted on other sites will negatively impact your website performance.<br>
+		<br>
+		~;
+
+		if ($webdbref->{'branding'}==0) {
+			$OPTIONS .= qq~<input type='checkbox' name='sidebar_showssl'~;
+			if ($webdbref->{'sidebar_showssl'}) { $OPTIONS .= " checked"; }
+			$OPTIONS .= qq~>Show Thawte Authentic SSL Certificate for ssl.zoovy.com on secure pages. </font><br>~;
+			}
+		}
+	else {
+		$OPTIONS .= qq~<a target="_top" href="/biz/configurator?VERB=VIEW&PACKAGE=WEB">Upgrade your account to add your own custom website designs</a><br>~;
+		}
+
+	if ($exists{'buysafe'}) {
+		$OPTIONS .= qq~Buysafe SEAL HTML:<br><textarea name="buysafe_sealhtml">~.&ZOOVY::incode($webdbref->{'buysafe_sealhtml'}).qq~</textarea><br>~;
+		}
+
+	if ($exists{'bbbonlinev'} || $exists{'bbbonlineh'} || $exists{'bbbonlinevm'}) {
+		$OPTIONS .= qq~BBB Online ID: <input type=textbox name="BBBONLINEID" value='~.&ZOOVY::fetchmerchant_attrib($USERNAME,'bbbonline:id').qq~'><br>~;
+		}
+	if ($exists{'epubliceye'}) {
+		$OPTIONS .= qq~ePublicEye Key ID: <input type=textbox name="EPUBLICEYEID" value='~.&ZOOVY::fetchmerchant_attrib($USERNAME,'epubliceye:id').qq~'><br>~;
+		}
+	if ($exists{'ebaylogo'} || $exists{'ebaypowerseller'} || $exists{'shopebay'}) {
+		$OPTIONS .= qq~eBay User: <input type=textbox name="EBAYUSER" value='~.&ZOOVY::fetchmerchant_attrib($USERNAME,'ebay:username').qq~'><br>~;
+		}
+	if ($exists{'ebaystores'}) {
+		$OPTIONS .= qq~eBay Storename: <input type=textbox name="EBAYSTORE" value='~.&ZOOVY::fetchmerchant_attrib($USERNAME,'ebaystores:storename').qq~'><br>~;
+		}
+	if ($exists{'pricegrabber'}) {
+		$OPTIONS .= qq~PriceGrabber Online ID: <input type=textbox name="PRICEGRABBERID" value='~.&ZOOVY::fetchmerchant_attrib($USERNAME,'pricegrabber:id').qq~'><br>~;
+		}
+
+	$OPTIONS .= qq~<br><a href="http://proshop.zoovy.com/" target="_blank">Purchase unique website designs at http://proshop.zoovy.com</a><br>~;
+
+	$GTOOLS::TAG{'<!-- OPTIONS -->'} = $OPTIONS;
+	}
+
+sub strip_filename
+{
+   my ($filename) = @_;
+
+	my $ext = "";
+	my $name = "";
+	print STDERR "upload.cgi:strip-filename says filename is: $filename\n";
+	my $pos = rindex($filename,'.');
+	print STDERR "upload.cgi:strip_filename says pos is: $pos\n";
+	if ($pos>0)
+		{
+		$name = substr($filename,0,$pos);
+		$ext = substr($filename,$pos+1);
+		
+		# lets strip name at the first / or \ e.g. C:\program files\zoovy\foo.gif becomes "foo.gif"
+		$name =~ s/.*[\/|\\](.*?)$/$1/;
+		# allow periods, alphanum, tildes and dashes to pass through, kill any other special characters
+		$name =~ s/[^\w\-\.~]+/_/g;
+		# now, remove duplicate periods
+		$name =~ s/[\.]+/\./g;
+		
+		} else {
+		# very bad filename!! ?? what should we do!
+		}
+
+	# we should probably do a bit more sanity on the filename right here
+
+	print STDERR "upload.cgi:strip_filename says name=[$name] extension=[$ext]\n";
+	return($name,$ext);
+}

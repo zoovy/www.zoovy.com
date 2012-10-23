@@ -1,0 +1,626 @@
+<menus>
+<!--
+-->
+
+<!--
+<menu area="ups" title="UPS">
+	<doc title="Airbill Printing"/>
+	<doc title="Rating"/>
+	<doc title="Worldship Integration"/>	
+</menu>
+
+<menu area="fedex" title="FedEx">
+</menu>
+
+<menu area="syndication" title="Syndication">
+</menu>
+
+<menu area="google" title="google">
+	
+</menu>
+-->
+
+<menu title="General Information" area="info">
+
+	<menu title="Getting Started">
+		<doc title="Creating Channels" file="info/guide/channels"/>
+		<doc title="CRM Overview" file="info/guide/crmoverview"/>
+		<doc title="Merchant Account" file="info/guide/merchantaccount"/>
+		<doc title="eBay Special Features" file="info/guide/ebayfeatures"/>
+		<doc title="Contacting Zoovy" file="info/detail/contactus"/>
+	</menu>
+	<menu title="Business Tutorials">
+		<doc title="Auction Etiquette" file="info/guide/auctionetiquette"/>
+		<doc title="Improving Sales" file="info/guide/improvesales"/>
+		<doc title="Selling Internationally" file="info/guide/internationalsales"/>
+		<doc title="Payment Gateway Overview" file="info/guide/paymentgateway"/>
+		<doc title="Search Engine Ranking" file="info/guide/searchengines"/>
+		<doc title="Learning HTML" file="info/guide/learnhtml"/>
+		<doc title="HTML Cheat sheet" file="info/guide/htmlcheat"/>
+		<doc title="Powerlister Guide" file="info/guide/powerlister"/>
+	</menu>
+	<menu title="Marketplaces" file="info/topics/marketplaces">
+		<menu title="Auctions">
+			<doc title="eBay.com Listing" file="info/detail/ebay-auction"/>
+			<doc title="eBay Powerlister" file="info/detail/ebay-powerlister"/>
+			<doc title="eBay Motors Listing" file="info/detail/ebaymotors-auction"/>
+			<doc title="Overstock" file="info/detail/overstock-listing"/>
+		</menu>
+		<menu title="Fixed Price">
+			<doc title="eBay Stores Listing" file="info/detail/ebaystores-listing"/>
+			<doc title="AOL Classifieds" file="info/detail/aol-listing"/>
+		</menu>
+		<menu title="CPC">
+			<doc title="Froogle" file="info/detail/froogle-listing"/>
+			<doc title="Shopping.com" file="info/detail/dealtime-listing"/>
+			<doc title="BizRate/ShopZilla" file="info/detail/bizrate-listing"/>
+			<doc title="NexTag" file="info/detail/nextag-listing"/>
+			<doc title="MySimon" file="info/detail/mysimon-listing"/>
+		</menu>
+		<doc title="eBay Unpaid Items" file="info/detail/ebay-unpaid"/>
+		<doc title="Google Sitemap" file="info/detail/google-sitemap"/>
+		<doc title="Google Analytics" file="info/detail/google-analytics"/>
+		<doc title="Google Base" file="info/detail/google-base"/>
+	</menu>
+	<menu title="Zoovy Services" file="info/topic/services">
+		<doc title="Account Types and Pricing" file="info/topic/services"/>
+		<doc title="Technical Support" file="info/detail/services-techsupport"/>
+		<doc title="Zoovy Mail" file="info/detail/services-zoovymail"/>
+		<doc title="Transactional Fees" file="info/detail/services-fees"/>
+		<doc title="Change Name Fee" file="info/detail/services-changename"/>
+		<doc title="Wholesale Bundle" file="info/detail/bundle-wholesale"/>
+		<doc title="CRM Bundle" file="info/detail/bundle-crm"/>
+	</menu>
+	<menu title="Switching Services">
+		<doc title="Andale" file="info/guide/convert-andale"/>
+		<doc title="AuctionWorks" file="info/guide/convert-auctionworks"/>
+		<doc title="Yahoo Stores" file="info/guide/convert-yahoostore"/>
+		<doc title="Channel Advisor" file="info/guide/convert-channeladvisor"/>
+		<doc title="eBay Turbo Lister" file="info/guide/convert-turbolister"/>
+		<doc title="eBay Sellers Assistant Pro" file="info/guide/convert-sapro"/>
+		<doc title="eBay.com / Sell Your Item" file="info/guide/convert-ebay"/>
+	</menu>
+	<menu title="Tutorials">
+		<menu title="Order Processing">
+			<doc title="Order Status" file="info/detail/orderstatus"/>
+			<doc title="Archive Orders" file="info/detail/order-archive"/>
+			<doc title="Getting Paid" file="info/detail/gettingpaid"/>
+		</menu>
+		<menu title="Auction Management">
+			<doc title="Launching Auctions" file="info/guide/launchingauctions"/>
+			<doc title="eBay for Beginner's" file="info/guide/ebay-beginnersguide"/>
+			<doc title="Using eBay Checkout" file="info/guide/ebaycheckout"/>
+		</menu>
+		<menu title="Concepts">
+			<doc title="Site Navigation" file="info/detail/navcats"/>
+			<doc title="Lists" file="info/guide/concept-lists"/>
+			<doc title="Image Library Technical Detail" file="info/guide/imglibtech"/>
+			<doc title="Inventory" file="info/detail/inventory"/>
+			<doc title="Incomplete Items" file="info/detail/incomplete"/>
+			<doc title="Navigation Categories" file="info/detail/navcats"/>
+			<doc title="Option Groups" file="info/detail/ogs"/>
+			<doc title="WikiText" file="info/detail/wikitext"/>
+		</menu>
+		<doc title="International Support" file="info/guide/internationalsellers"/>	
+		<doc title="Affiliate Program Support" file="info/guide/affiliate"/>
+		<doc title="Shopping Cart Details" file="info/detail/shoppingcart"/>
+		<doc title="Accounting Features" file="info/guide/accounting"/>
+		<doc title="Reoccuring Billing" file="info/guide/repetitivebilling"/>
+		<doc title="Gift Certificates" file="info/guide/giftcertificates"/>
+		<doc title="Donations" file="info/guide/donations"/>
+		<doc title="Troubleshooting" file="info/detail/trouble-sysinfo"/>
+		<doc title="Customer Login" file="info/guide/customerlogin"/>
+	</menu>
+</menu>
+
+<!--
+Warehouse Manager	
+-->
+<menu title="Warehouse Manager" area="zwm">
+	<menu  title="Guides">
+		<doc title="Installation" file="zwm/guide/installation"/>
+		<doc title="Licensing" file="zwm/guide/licensing"/>
+		<doc title="Features" file="zwm/guide/features"/>
+		<doc title="Whats New" file="zwm/guide/recentchanges"/>
+		<doc title="Troubleshooting" file="zwm/guide/troubleshooting"/>
+	</menu>
+	<menu  title="Product Management">
+		<doc title="Info" file="zwm/detail/products"/>
+	</menu>
+	<menu  title="Image Management">
+		<doc title="Info" file="zwm/detail/images"/>
+	</menu>
+	<menu  title="Inventory">
+		<doc title="Info" file="zwm/detail/inventory"/>
+	</menu>
+</menu>
+
+<!--
+-->
+<menu title="Developer" area="dev">
+	<menu  title="Guides">
+		<doc title="Channel Developer Survival Guide" file="dev/guide/channels"/>
+	</menu><menu  title="Unified Syntax for Developers">
+		<doc title="Beginners Guide" file="dev/detail/development-beginners"/>
+		<doc title="Theme and Sitebuttons" file="dev/detail/wrappers-config"/>
+		<doc title="Reference - Code Snippets" file="dev/detail/development-snippets"/>
+		<doc title="Advanced Guide" file="dev/detail/development-advanced"/>
+		<doc title="Flash Objects" file="dev/detail/htmlwiz-flash"/>
+	</menu>
+<!-- 	<menu  title="Wrappers">
+		<doc title="Beginner Guide" file="dev/detail/wrappers"/>
+		<doc title="Reference - The Basics" file="dev/detail/wrappers-basics"/>
+		<doc title="Reference - Configuration" file="dev/detail/wrappers-config"/>
+		<doc title="Reference - Categories" file="dev/detail/wrappers-categories"/>
+		<doc title="Reference - Advanced" file="dev/detail/wrappers-advanced"/>
+	</menu>
+	<menu  title="Page Layouts">
+		<doc title="Beginner Guide" file="dev/detail/flows"/>
+		<doc title="Reference - The Basics" file="dev/detail/flows-basics"/>
+		<doc title="Reference - Product Specific" file="dev/detail/flows-product"/>
+		<doc title="Reference - Category Specific" file="dev/detail/flows-category"/>
+		<doc title="Reference - Galleries" file="dev/detail/flows-gallery"/>
+		<doc title="Reference - Advanced" file="dev/detail/flows-advanced"/>
+	</menu>
+-->	<menu  title="Features" file="dev/topic/features">
+		<doc title="Overview" file="dev/detail/overview"/>
+		<doc title="Developer Settings" file="dev/detail/configuration"/>
+		<doc title="Exporting Orders" file="dev/guide/exportorder"/>
+		<doc title="Testing Tricks" file="dev/guide/testing"/>
+		<doc title="Order Dispatching" file="dev/detail/orderdispatch"/>
+		<doc title="Shipping API" file="dev/detail/shippingapi"/>
+		<doc title="Promotion API" file="dev/detail/promotionapi"/>
+		<doc title="Inventory API" file="dev/detail/inventoryapi"/>
+		
+		<doc title="Shipping Calculator" file="dev/detail/shipquote"/>
+		<doc title="Multi Site Cart" file="dev/detail/multisitecart"/>
+		<doc title="Buy Me Buttons" file="dev/detail/buymebuttons"/>
+		<doc title="3rd Party Software Compatibility" file="dev/detail/compatibility"/>
+		<doc title="Custom SSL Certificates" file="dev/detail/customssl"/>
+		<doc title="Image Library" file="dev/detail/imglib"/>
+		<doc title="Navigation Category" file="dev/detail/navcat"/>
+	</menu>
+	<menu  title="Attributes">
+		<doc title="Custom Attributes" file="dev/guide/customattribs"/>
+		<doc title="Zoovy" file="dev/detail/owner-zoovy"/>
+	</menu>
+	<menu  title="WebAPI" file="dev/topic/webapi">
+		<doc title="Overview" file="dev/topic/webapi"/>
+		<doc title="ZML Concepts" file="dev/guide/learnzml"/>
+		<doc title="Encoding Rules" file="dev/guide/encoding"/>
+
+		<menu title="Channels and Incomplete">		
+			<doc title="definitionlist.xml" file="dev/detail/webapi-definitionlist"/>
+			<doc title="channellist.cgi" file="dev/detail/webapi-channellist"/>
+			<doc title="externalsync.cgi" file="dev/detail/webapi-externalsync"/>
+			<doc title="channelstatussync.cgi" file="dev/detail/webapi-channelstatussync"/>
+			<doc title="fetchchannel.cgi" file="dev/detail/webapi-fetchchannel"/>
+			<doc title="syncschedule.cgi" file="dev/detail/webapi-syncschedule"/>
+			<doc title="channelsyncv2.cgi" file="dev/detail/webapi-channelsyncv2"/>
+			<doc title="fetchtemplate.cgi" file="dev/detail/webapi-fetchtemplate"/>
+		</menu>
+		<menu title="Products and Images">
+			<doc title="ogsync.cgi" file="dev/detail/webapi-ogsync"/>
+			<doc title="imagelist.cgi" file="dev/detail/webapi-imagelist"/>
+			<doc title="imglib.cgi" file="dev/detail/webapi-imglib"/>
+			<doc title="navcatsync.cgi" file="dev/detail/webapi-navcatsync"/>
+			<doc title="productsync.cgi" file="dev/detail/webapi-productsync"/>
+			<doc title="dumpinventory.cgi" file="dev/detail/webapi-dumpinventory"/>
+			<doc title="skulist.cgi" file="dev/detail/webapi-skulist"/>
+			<doc title="syncinventory.cgi" file="dev/detail/webapi-syncinventory"/>
+		</menu>
+		<menu title="Customers and Orders">
+			<doc title="orderpost.cgi" file="dev/detail/webapi-orderpost"/>
+			<doc title="calcshipping.cgi" file="dev/detail/webapi-calcshipping"/>
+			<doc title="fullordersync.cgi" file="dev/detail/webapi-fullordersync"/>
+			<doc title="ordersync.cgi" file="dev/detail/webapi-ordersync"/>
+			<doc title="fetchorderblock.cgi" file="dev/detail/webapi-fetchorderblock"/>
+			<doc title="paymentmgr.cgi" file="dev/detail/webapi-paymentmgr"/>
+			<doc title="createorder.cgi" file="dev/detail/webapi-createorder"/>
+			<doc title="paymentprocess.cgi" file="dev/detail/webapi-paymentprocess"/>
+			<doc title="save_requests.cgi" file="dev/detail/webapi-save_requests"/>
+			<doc title="fullcustomersync.cgi" file="dev/detail/webapi-fullcustomersync"/>
+			<doc title="customersync.cgi" file="dev/detail/webapi-customersync"/>
+			<doc title="subscribe.cgi" file="dev/detail/webapi-subscribe"/>
+		</menu>
+		<menu title="Special Purpose">
+			<doc title="consigner" file="dev/detail/webapi-consigner"/>
+			<doc title="briefcase.cgi" file="dev/detail/webapi-briefcase"/>
+			<doc title="flows.zip" file="dev/detail/webapi-flowszip"/>
+			<doc title="paymentmethod" file="dev/detail/webapi-paymentmethod"/>
+			<doc title="themelist.shtml" file="dev/detail/webapi-themelist"/>
+			<doc title="merchantsync.cgi" file="dev/detail/webapi-merchantsync"/>
+			<doc title="versioncheck.cgi" file="dev/detail/webapi-versioncheck"/>
+			<doc title="flows.txt" file="dev/detail/webapi-flowstxt"/>
+			<doc title="websitesync.cgi" file="dev/detail/webapi-websitesync"/>
+			<doc title="searchxml.cgi" file="dev/detail/webapi-searchxml"/>
+		</menu>
+	</menu>
+	<menu  title="Special Features">
+		<doc title="Worldpac" file="dev/guide/worldpac"/>
+		<doc title="Mighty Mouse Search" file="dev/guide/mightymouse"/>
+	</menu>
+</menu>
+
+
+<!--
+	Order Manager Menu	
+-->
+<menu title="Order Manager" area="ordermgr">	
+
+	<menu  title="Guides">
+		<doc title="Introduction" 	file="ordermgr/guide/intro"/>
+		<doc title="Whats New" 		file="ordermgr/guide/whatsnew"/>
+		<doc title="Installation"		file="ordermgr/guide/installation"/>
+	</menu>
+	<menu  title="Configuration">
+		<doc title="Setup" file="ordermgr/detail/setup"/>
+		<doc title="Network Setup" file="ordermgr/detail/networksetup"/>
+		<menu title="Tools">
+			<doc title="Scale Setup" file="ordermgr/detail/tools-scalesetup"/>
+		</menu>
+		<menu title="Admin Menu">		
+			<doc title="Preferences and Settings" file="ordermgr/detail/ompreferences"/>
+			<doc title="Database Management" file="ordermgr/detail/omdatabase"/>
+			<doc title="Payment Utilities" file="ordermgr/detail/ompayment"/>
+			<doc title="Tech support Debug Tools" file="ordermgr/detail/omdebug"/>
+			<doc title="Sub Pools" file="ordermgr/detail/subpools"/>
+		</menu>
+	</menu>
+	<menu  title="Email">
+		<menu title="Configuration">
+			<doc title="SMTP Authentication" file="ordermgr/detail/smtpauthentication"/>
+			<doc title="SMTP Error Codes" file="ordermgr/detail/smtperrorcode"/>
+			<doc title="Zoovy Mail" file="ordermgr/detail/zmail"/>
+		</menu>
+		<menu title="Email Manager">
+			<doc title="Sending an Email" file="ordermgr/detail/omsendemail"/>
+			<doc title="Bulk Email" file="ordermgr/detail/bulkemail"/>
+			<doc title="Email Templates" file="ordermgr/detail/omemailtemplates"/>
+			<doc title="Paypal Payment Links" file="ordermgr/detail/ompaypallinks"/>
+		</menu>
+	</menu>
+	<menu  title="Manage Customer Data">
+		<doc title="Overview" file="ordermgr/detail/customer"/>
+		<doc title="Edit Customer" file="ordermgr/detail/editcustomer"/>
+		<doc title="Export Customer" file="ordermgr/detail/exportcustomer"/>
+		<doc title="Customer History" file="ordermgr/detail/customerhistory"/>
+		<doc title="Deleting Customers" file="ordermgr/detail/deletecustomer"/>
+		<doc title="Bulk Email" file="ordermgr/detail/bulkemail"/>
+	</menu>
+	<menu  title="Reports">
+		<doc title="Dashboards" file="ordermgr/detail/reports-dashboards"/>
+		<doc title="Filters" file="ordermgr/detail/reports-filters"/>
+	</menu>
+	<menu  title="Database Management">
+		<!-- NOT YET IMPLEMENTED -->
+		<!-- <advice title="Advice"/> -->
+		<!-- ORIGINAL TITLE: Why backup, how often, what is a database, what can I do with it, etc. -->
+		<doc title="Backup" file="ordermgr/detail/ombackup"/>
+		<doc title="Restore" file="ordermgr/detail/omrestore"/>
+		<doc title="Comparing" file="ordermgr/detail/omcompare"/>
+		<doc title="Compacting" file="ordermgr/detail/omcompact"/>
+		<doc title="Resetting" file="ordermgr/detail/omreset"/>
+	</menu>
+	<menu  title="Order Management">
+		<menu title="Managing Orders" file="ordermgr/topic/manageorders">
+			<doc title="Order Status" file="ordermgr/detail/omorderstatus"/>
+			<doc title="Creating Orders" file="ordermgr/detail/createorder"/>
+			<doc title="Editing Invoices" file="ordermgr/detail/omeditinvoice"/>
+			<doc title="Combining Orders" file="ordermgr/detail/combineorder"/>
+			<doc title="Splitting Orders" file="ordermgr/detail/omsplitorders"/>
+			<doc title="Synchronization" file="ordermgr/detail/synchronize"/>
+			<doc title="Restoring Claims" file="ordermgr/detail/restoreclaim"/>
+			<doc title="Inventory" file="ordermgr/detail/inventory"/>
+		</menu>
+		<menu title="Shipping" file="ordermgr/topic/shipping">
+			<doc title="Shipment Tracking" file="ordermgr/detail/trackshipping"/>
+			<doc title="Editing Shipping Charges" file="ordermgr/detail/editshipping"/>
+			<doc title="Endicia Integration" file="ordermgr/detail/omendicia"/>
+			<doc title="UPS Airbill Printing" file="ordermgr/detail/ship-ups"/>
+			<doc title="FedEx Airbill Printing" file="ordermgr/detail/ship-fedex"/>
+			<doc title="USPS Label Printing" file="ordermgr/detail/uspsdelivery"/>
+		</menu>
+		<menu title="Payment">
+			<doc title="Changing Payment Status" file="ordermgr/detail/changepayment"/>
+			<doc title="Payment Status Guide" file="ordermgr/detail/paymentstatus"/>
+			<doc title="Change Payment Type" file="ordermgr/detail/editpaymenttype"/>
+		</menu>
+		<menu title="Searching">
+			<doc title="Customers" file="ordermgr/detail/omsearchcust"/>
+			<doc title="Invoices" file="ordermgr/detail/omsearchinvoice"/>
+			<doc title="Incomplete" file="ordermgr/detail/omsearchincomp"/>			
+			<!-- 
+				NOT IMPLEMENTED: 
+					[Advice] Using search to figure out stuff
+			-->
+		</menu>
+		<menu title="Printing">
+			<doc title="Invoices" file="ordermgr/detail/omprintinvoice"/>
+			<doc title="Packing Slips" file="ordermgr/detail/omprintpacking"/>
+			<doc title="Shipping Labels" file="ordermgr/detail/omshippinglabel"/>
+	
+		</menu>
+	</menu>
+	<menu  title="3rd Party Integration">
+		<doc title="Quickbooks" file="ordermgr/detail/quickbooks"/>
+		<doc title="Quickbooks Legacy" file="ordermgr/detail/quickbooksiif"/>
+		<doc title="Endicia" file="ordermgr/detail/omendicia"/>
+		<doc title="UPS Worldship" file="ordermgr/detail/worldship"/>
+		<doc title="Airborne Libra" file="ordermgr/detail/airborne"/>
+		<doc title="FedEx Quickship" file="ordermgr/detail/fedexquickship"/>
+		<doc title="FedEx Ship Manager Cafe" file="ordermgr/detail/fedexcafe"/>
+		<doc title="Postal Package Partner" file="ordermgr/detail/postal"/>
+		<!-- NOT IMPLEMENTED:
+					[Advice] Getting the best shipping rates
+					[Advice] Using Quickbooks with Zoovy
+			-->
+		<doc title="Packager" file="ordermgr/detail/packager"/>
+	</menu>
+	<menu  title="Reporting">
+		<doc title="Affiliate Report" file="ordermgr/detail/affiliate"/>
+		<doc title="Paid Pending" file="ordermgr/detail/pending"/>
+		<doc title="Products by SKU" file="ordermgr/detail/skuproducts"/>
+		<doc title="Products by Invoice" file="ordermgr/detail/productbyinv"/>
+	</menu>	
+	<menu  title="Troubleshooting">
+			<doc title="SMTP Authentication" file="ordermgr/detail/smtpauthentication"/>
+			<doc title="SMTP Error Codes" file="ordermgr/detail/smtperrorcode"/>
+			<doc title="Common Questions" file="ordermgr/detail/omfaq"/>
+			<doc title="Synchronization Errors" file="ordermgr/detail/omtroubleshoot"/>
+			<doc title="Contacting Support" file="ordermgr/detail/omsupport"/>
+			<doc title="Incorrect Password" file="ordermgr/detail/login"/>
+			<doc title="Antivirus/Firewall Software" file="ordermgr/detail/firewall"/>
+		<doc title="MDAC 2.8 issues" file="ordermgr/guide/mdac"/>
+	</menu>
+
+</menu>
+
+<!--
+
+-->
+<menu title="ZoovyMail" area="webmail">	
+	<menu  title="Features">
+		<doc title="General" file="webmail/detail/general"/>
+		<doc title="Feature Q&amp;A" file="webmail/detail/features"/>
+		<doc title="Mail Rules" file="webmail/detail/mailrules"/>
+		<doc title="Fused Accounts" file="webmail/detail/fused"/>
+		<doc title="RSS Feeds" file="webmail/detail/rss"/>
+	</menu>
+	<menu  title="Email Software">
+		<doc title="Outlook" file="webmail/guide/outlook"/>
+		<doc title="Outlook Express" file="webmail/guide/outlookex"/>
+		<doc title="Thunderbird" file="webmail/guide/thunderbird"/>
+		<doc title="Eudora" file="webmail/guide/eudora"/>
+	</menu>
+	<menu  title="New Users">
+		<doc title="How to Start" file="webmail/guide/howtostart"/>		
+<!--
+		<doc title="Useful Advice" file="webmail/detail/advice"/>	
+-->
+	</menu>
+</menu>
+<!--
+
+-->
+
+<menu title="Enterprise" area="enterprise">
+
+	<menu  title="General Info">
+		<doc title="Sales Overview" file="enterprise/detail/salesoverview"/>
+		<doc title="Hardware Requirements" file="enterprise/detail/hardware"/>
+		<doc title="System Security Policy" file="enterprise/detail/securedata"/>
+		<doc title="System Architecture" file="enterprise/detail/systemarchitecture"/>
+		<doc title="Data Interchange" file="enterprise/guide/interchange"/>
+		<doc title="Guide to Zoovy Jargon" file="enterprise/guide/vocabulary"/>
+	</menu>
+	<menu  title="Feature Guides">
+		<doc title="Barcoding" file="enterprise/guide/barcoding"/>
+		<doc title="MM Search" file="enterprise/guide/mightymouse"/>
+		<doc title="File Distribution" file="enterprise/guide/filedist"/>
+		<doc title="JIT Order Processing" file="enterprise/guide/jitprocessing"/>
+		<doc title="Media Edition FAQ" file="enterprise/guide/mediafaq"/>
+	</menu>
+	<menu  title="Usage">
+		<doc title="Editing Listings" file="enterprise/detail/mm-edit"/>
+		<doc title="Cancelling Listings" file="enterprise/detail/mm-cancel"/>
+		<doc title="Copying Listings" file="enterprise/detail/mm-clone"/>
+		<menu title="Tools">
+			<doc title="CSV Tool" file="enterprise/detail/tools-csv"/>
+			<doc title="Order Import" file="enterprise/detail/tools-orderimport"/>
+		</menu>
+	</menu>
+	<menu  title="Configuration">
+    	<doc title="Getting Started" file="enterprise/detail/getstart"/>
+		<doc title="Zoovy Wireless Client" file="enterprise/detail/zewc"/>
+		<doc title="Product Manager Enterprise" file="enterprise/detail/zpm"/>
+		<doc title="Order Manager Enterprise" file="enterprise/detail/zom"/>
+		<doc title="UPS Worldship" file="enterprise/detail/worldship"/>
+		<doc title="Launching Station" file="enterprise/guide/launchstation"/>
+		<doc title="Channel Hackers Guide" file="enterprise/guide/channelhack"/>
+	</menu>
+	<menu  title="Troubleshooting">
+		<doc title="Symbol SP1846 Maintenance Guide" file="enterprise/detail/spt1846"/>
+	</menu>
+	<menu  title="Code Examples">
+		<doc title="INPUT TYPE=SKU: getsku.cgi" file="enterprise/detail/code-getsku"/>
+		<doc title="Catalog Format" file="enterprise/detail/code-catalog"/>
+	</menu>
+</menu>
+
+
+<!--
+-->
+<menu title="Web Manager" area="webmgr">	
+	<menu  title="Guides">
+		<doc title="Planning" file="webmgr/guide/planning"/>
+	</menu>
+	<menu  title="Store Setup">
+		<doc title="Overview" file="webmgr/guide/beginneroverview"/>
+		<menu title="Account Settings">
+			<doc title="Company Info" file="webmgr/detail/companyinfo"/>
+			<doc title="Company Logo" file="webmgr/detail/companylogo"/>
+			<doc title="Change Password" file="webmgr/detail/changepassword"/>
+			<doc title="Billing History" file="webmgr/detail/billing"/>
+			<doc title="Domain Redirection" file="webmgr/detail/domain"/>
+			<doc title="User Manager" file="webmgr/detail/usermanager"/>
+		</menu>
+		<menu title="Your Storefront" file="webmgr/topic/websitesdesign">
+			<doc title="Choosing a Theme" file="webmgr/detail/themewrapper"/>
+			<doc title="Page Editor" file="webmgr/detail/pageeditor"/>
+			<doc title="Categories" file="webmgr/detail/builder-navigation"/>
+			<doc title="Gallery Page" file="webmgr/detail/builder-gallery"/>
+			<doc title="Cart Page" file="webmgr/detail/builder-cart"/>
+			<doc title="Search Page" file="webmgr/detail/builder-search"/>
+			<doc title="Tricks and Tips" file="webmgr/detail/builder-tips"/>
+			<menu title="Images">	
+				<doc title="Image Library" file="webmgr/guide/imglibquickstart"/>
+				<doc title="Upload from Hard Disk" file="webmgr/detail/imglibuploadfromdisk"/>
+				<doc title="Upload from URL" file="webmgr/detail/imglibuploadfromurl"/>
+				<doc title="Multiple Image Upload" file="webmgr/detail/multiimage"/>
+				<doc title="Tips" file="webmgr/guide/imglib"/>
+			</menu>
+			<doc title="Custom Files" file="webmgr/detail/customfiles"/>
+			<doc title="Advanced Site Search" file="webmgr/detail/sitesearch"/>
+			<doc title="Email Messages" file="webmgr/detail/email"/>
+			<doc title="Promotions" file="webmgr/detail/promotions"/>
+			<doc title="Rules Based Promotions" file="webmgr/detail/promotionrules"/>
+			<doc title="Search Engines" file="webmgr/detail/searchengine"/>
+		</menu>
+		<menu title="Tax and Payment">
+			<doc title="Sales Tax" file="webmgr/detail/tax"/>
+			<doc title="Payment Overview" file="webmgr/detail/payment-general"/>
+			<doc title="Paypal" file="webmgr/detail/payment-paypal"/>
+			<menu title="Credit Cards">	
+				<doc title="Overview" file="webmgr/detail/payment-creditcard"/>
+				<doc title="Cardservice Linkpoint" file="webmgr/detail/payment-cardservice"/>
+				<doc title="Authorize.Net" file="webmgr/detail/payment-authorize"/>
+				<doc title="Verisign Payflow Pro" file="webmgr/detail/payment-verisign"/>
+				<doc title="PRI Transaction Central" file="webmgr/detail/payment-tc"/>
+				<doc title="openECHO" file="webmgr/detail/payment-echo"/>
+				<doc title="SkipJack" file="webmgr/detail/payment-skipjack"/>
+<doc title="Quickbooks Merchant Services" file="webmgr/detail/payment-qbms"/>
+			</menu>
+		</menu>
+		<menu title="Shipping" file="webmgr/topic/shipping">
+			<doc title="Overview" file="webmgr/topic/shipping"/>
+			<doc title="Fixed Shipping" file="webmgr/detail/ship_simplemulti"/>
+			<doc title="Price Based Shipping" file="webmgr/detail/ship_price"/>
+			<doc title="Customer Pickup" file="webmgr/detail/ship_pickup"/>
+			<doc title="Local Delivery" file="webmgr/detail/ship_delivery"/>
+			<doc title="Simple Weight Based" file="webmgr/detail/ship_weight"/>
+			<doc title="FedEx" file="webmgr/detail/ship_fedex"/>
+			<doc title="US Postal Service" file="webmgr/detail/ship_usps"/>
+			<doc title="UPS" file="webmgr/detail/ship_upsonline"/>
+			<doc title="External API Shipping" file="webmgr/detail/ship_externalapi"/>
+			<doc title="Shipping Rules" file="webmgr/detail/ship_rules"/>
+			<doc title="Shipping Tricks and Tips" file="webmgr/detail/ship_advanced"/>
+			<doc title="Troubleshooting" file="webmgr/detail/ship_troubleshooting"/>
+			<doc title="LEGACY Fixed Shipping" file="webmgr/detail/ship_fixed"/>
+			<doc title="LEGACY Simple Shipping" file="webmgr/detail/ship_simple"/>
+			<doc title="Special Handling" file="webmgr/detail/ship_handling"/>
+			<doc title="Special Insurance" file="webmgr/detail/ship_insurance"/>
+		</menu>
+		<menu title="Checkout Properties">
+			<doc title="General" file="webmgr/detail/checkoutproperties"/>
+			<doc title="Checkout Messages" file="webmgr/detail/checkoutmessages"/>
+		</menu>
+	</menu>
+	<menu  title="Products">
+		<doc title="Product Overview" file="webmgr/guide/productoverview"/>
+		<doc title="Creating Products" file="webmgr/detail/productcreate"/>
+		<doc title="Editing Products" file="webmgr/detail/productedit"/>
+		<doc title="Design Web Page" file="webmgr/detail/productpages"/>
+		<doc title="Using Options" file="webmgr/detail/productoption"/>
+		<doc title="Product Notes" file="webmgr/detail/productnotes"/>
+		<doc title="Navigation Categories" file="webmgr/detail/productnavcat"/>
+		<doc title="Removing" file="webmgr/detail/productremove"/>
+		<doc title="Export Properties" file="webmgr/detail/productexportprop"/>
+		<doc title="HTML Wizards" file="webmgr/detail/htmlwizards"/>
+		<menu title="Inventory">
+			<doc title="Overview" file="webmgr/detail/inventory-general"/>
+			<doc title="Inventory Setup" file="webmgr/detail/inventory-setup"/>
+			<doc title="Product Setup" file="webmgr/detail/inventory-product"/>
+			<doc title="Inventory and Channels" file="webmgr/detail/inventory-channels"/>
+			<doc title="Updating Inventory" file="webmgr/detail/inventory-updates"/>
+			<doc title="Inventory Reports" file="webmgr/detail/report-inventory"/>
+			<doc title="HOWTO: Inventory with Multiple Sites" file="webmgr/guide/inventory-multisite"/>
+		</menu>
+	</menu>
+	<menu  title="Syndication and Channels">
+		<menu title="Yahoo Store Management" topic="topic/yahoo">
+			<doc title="Order Synchronization" file="webmgr/detail/yahoo-ordersync"/>
+			<doc title="Shipping Synchronization" file="webmgr/detail/yahoo-shippingsync"/>
+			<doc title="Product Export" file="webmgr/detail/yahoo-prodsync"/>
+			<doc title="Inventory Synchronization" file="webmgr/detail/yahoo-inventorysync"/>
+		</menu>
+		<doc title="Froogle Feeds" file="webmgr/detail/setup-froogle"/>
+		<doc title="GoogleBase Feeds" file="webmgr/detail/setup-googlebase"/>
+		<doc title="Bizrate Feeds" file="webmgr/detail/setup-bizrate"/>
+		<doc title="Yahoo Shopping Feeds" file="webmgr/detail/setup-yahooshop"/>
+		<doc title="Shopping.com Feeds" file="webmgr/detail/setup-dealtime"/>
+		<menu title="Amazon @Merchant">
+			<doc title="Overview" file="webmgr/detail/setup-amazon"/>
+			<doc title="Config" file="webmgr/detail/amazon-config"/>
+			<doc title="Thesaurus" file="webmgr/detail/amazon-thesaurus"/>
+			<doc title="Browse Tree" file="webmgr/detail/amazon-browsetree"/>
+			<doc title="Orders" file="webmgr/detail/amazon-orders"/>
+			<doc title="Reports" file="webmgr/detail/amazon-reports"/>
+		</menu>
+		<doc title="eBay Stores" file="webmgr/detail/setup-ebaystores"/>
+		<doc title="PriceGrabber Feeds" file="webmgr/detail/setup-pricegrabber"/>
+		<doc title="Channel Manager" file="webmgr/detail/channelmanager"/>
+		<doc title="Channel Summary" file="webmgr/detail/channelsummary"/>
+		<doc title="Full Channel List"/>
+		<doc title="Batch Channel Editor" file="webmgr/detail/channel-batchedit"/>
+		<doc title="Channel Import"/>
+		<doc title="Channel Scheduler" file="webmgr/detail/channel-scheduler"/>
+	</menu>
+	<menu  title="Orders">
+		<doc title="Orders Overview" file="webmgr/guide/orderoverview"/>
+		<doc title="Incomplete Items" file="webmgr/detail/order-incomplete"/>
+		<doc title="Creating Orders" file="webmgr/detail/order-create"/>
+		<doc title="Editing Orders" file="webmgr/detail/order-edit"/>
+		<doc title="Changing Status" file="webmgr/detail/paymentstatus"/>
+		<doc title="Restoring Claims" file="webmgr/detail/webrestoreclaim"/>
+		<doc title="Site Automation" file="webmgr/detail/automation"/>
+		<doc title="Order Dispatching" file="webmgr/detail/orderdispatch"/>
+	</menu>
+	<menu  title="Reports">
+		<doc title="Site Tracking" file="webmgr/topic/statistics"/>
+		<doc title="Popular Categories" file="webmgr/detail/manage-popularcategory"/>
+		<doc title="Popular Products" file="webmgr/detail/manage-popularproducts"/>
+		<doc title="Traffic Reporting" file="webmgr/detail/manage-trafficreport"/>
+		<doc title="Sales Reporting" file="webmgr/detail/manage-salesreport"/>
+		<doc title="Inventory Report" file="webmgr/report-inventory"/>
+	</menu>
+	<menu  title="Utilities">
+		<doc title="Wholesale" file="webmgr/detail/utilities-wholesale"/>
+		<menu title="Supply Chain">
+			<doc title="Overview" file="webmgr/detail/utilities-supplychain"/>
+			<doc title="Setup" file="webmgr/detail/sc-setup"/>
+			<doc title="Inventory" file="webmgr/detail/sc-inventory"/>
+			<doc title="Shipping" file="webmgr/detail/sc-shipping"/>
+			<doc title="Orders" file="webmgr/detail/sc-orders"/>
+			<doc title="Products" file="webmgr/detail/sc-products"/>
+		</menu>
+		<doc title="Newsletter" file="webmgr/detail/utilities-newsletter"/>
+		<doc title="Launchgroups" file="webmgr/detail/utilities-launchgroups"/>
+
+		<doc title="Imports Overview" file="webmgr/detail/import"/>
+		<doc title="Product Import" file="webmgr/detail/import-product"/>
+		<doc title="Category Import" file="webmgr/detail/import-navcat"/>
+		<doc title="Customer Import" file="webmgr/detail/import-customer"/>
+		<doc title="eBay Auction Import" file="webmgr/detail/import-ebay"/>
+		<doc title="eBay PowerLister" file="webmgr/detail/manage-powerlister"/>
+		<doc title="Customer Manager" file="webmgr/detail/manage-customers"/>
+		<doc title="Product Export" file="webmgr/detail/manage-productexport"/>
+		<doc title="Image Associations" file="webmgr/detail/manage-imageassoc"/>
+		<doc title="Product Power Tool" file="webmgr/detail/manage-powertool"/>
+		<doc title="Non Paying Bidder Tool" file="webmgr/detail/manage-npb"/>
+	</menu>
+</menu>
+
+
+
+</menus>

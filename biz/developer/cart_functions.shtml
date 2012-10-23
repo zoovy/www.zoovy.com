@@ -1,0 +1,2146 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List
+href="./Zoovy%20Developer%20Cart%20Functions_files/filelist.xml">
+<title>Zoovy Developer Integration</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Anthony Kilna</o:Author>
+  <o:LastAuthor>Anthony Kilna</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>317</o:TotalTime>
+  <o:Created>2001-08-21T00:59:00Z</o:Created>
+  <o:LastSaved>2001-08-21T00:59:00Z</o:LastSaved>
+  <o:Pages>10</o:Pages>
+  <o:Words>2007</o:Words>
+  <o:Characters>11445</o:Characters>
+  <o:Company>Zoovy, Inc.</o:Company>
+  <o:Lines>95</o:Lines>
+  <o:Paragraphs>22</o:Paragraphs>
+  <o:CharactersWithSpaces>14055</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="64" DLLVersion="131077"
+   NLCheck="1">1</w:ActiveWritingStyle>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:"Arial Black";
+	panose-1:2 11 10 4 2 1 2 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+@font-face
+	{font-family:"Arial Narrow";
+	panose-1:2 11 5 6 2 2 2 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+@font-face
+	{font-family:"Lucida Console";
+	panose-1:2 11 6 9 4 5 4 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:647 0 0 0 31 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:10.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Courier New";
+	mso-font-kerning:0pt;}
+h2
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Courier New";
+	font-style:italic;}
+h3
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	border:none;
+	mso-border-alt:solid windowtext .5pt;
+	padding:0in;
+	mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt;
+	font-size:12.0pt;
+	font-family:"Arial Narrow";
+	mso-bidi-font-family:Arial;}
+h4
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	border:none;
+	mso-border-alt:solid windowtext .5pt;
+	padding:0in;
+	mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt;
+	font-size:12.0pt;
+	font-family:"Arial Narrow";
+	color:navy;
+	font-weight:normal;
+	text-decoration:underline;
+	text-underline:single;}
+h5
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:8.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Arial Narrow";
+	mso-bidi-font-family:Arial;
+	font-weight:normal;
+	font-style:italic;}
+h6
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:6;
+	border:none;
+	mso-border-alt:solid windowtext .5pt;
+	padding:0in;
+	mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Lucida Console";
+	mso-bidi-font-family:Arial;
+	font-weight:normal;
+	font-style:italic;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:8.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Arial Narrow";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1403064262;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1076968166 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:1946882450;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1278081126 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:2071222723;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1278081126 67698695 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F071;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	mso-ansi-font-size:8.0pt;
+	font-family:Wingdings;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<center>
+<table width='85%'><tr><td>
+<div class=Section1>
+
+<h1><span style='font-size:18.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Black"'>Zoovy
+Developer Cart Functions<o:p></o:p></span></h1>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Using the HTML code in the
+examples below, you can allow users browsing a site on any server on the
+internet to add items to a shopping cart in your Zoovy store.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>In the HTML examples below,
+anywhere you see a <b>bold</b> number, this should be replaced with the product
+id for that product (this is the unique identifier for the product in the Zoovy
+system, which is not necessarily the same as your product’s name).<span
+style="mso-spacerun: yes">  </span>You can find a product’s id by logging into
+your Zoovy account and selecting the product in the product management
+section.<span style="mso-spacerun: yes">  </span>The product id will follow the
+word “Product: “ at the top of the page.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Anywhere you see
+“merchant_id”, exchange that for your Zoovy login.<span style="mso-spacerun:
+yes">  </span>All of the HTML examples shown are case-sensitive (capitalization
+matters) so make sure to use the forms exactly as show (but feel free to change
+anything that appears in <i>italics </i>to suit your tastes).<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Product Options<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Product options (or “pogs”)
+in the Zoovy system allows you to manage different versions of the same product
+easily.<span style="mso-spacerun: yes">  </span>If you have something like a
+tee-shirt, which has different colors and different sizes, pogs are an easy way
+to keep track of things.<span style="mso-spacerun: yes">  </span>You can create
+and edit product options by logging in to the Zoovy system, going to the
+product management section, and selecting the “Manage Options” button for the
+product you’d like to change.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial;color:red'>IMPORTANT
+INFORMATION IF YOUR’E USING PRODUCT OPTIONS:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>If you have product options
+for configured for an item you’re selling, the HTML form you choose below <i>MUST</i>
+include the product options, or it will not be added to the cart!<span
+style="mso-spacerun: yes">  </span>Our system has safeguards that prevent bogus
+products from being entered.<span style="mso-spacerun: yes">  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>You’ll need some extra
+information from Zoovy to do an “Add to Cart” for any product with Pogs.<span
+style="mso-spacerun: yes">  </span>To get to this information, log in to the
+Zoovy web site and go to the product management section and select “Buy Me
+Button” for the product you wish to use.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>For any “pogs” or “pogs:<b>0001</b>”
+field, you <i>MUST</i> use the value from the “pogs” input tag.<span
+style="mso-spacerun: yes">  </span>For every “pog_pogname” selection you see in
+the “Buy Me Button” section, you <i>MUST </i>include it in the following forms
+as per the example. Be aware that you MUST have the options configured in the
+Zoovy system if you include the “pogs”, ”pogs:<b>0001</b>”, “pog_pogname” or
+“pog_pogname:<b>0001</b>” fields in the form, and if you ever change your
+product options in the Zoovy system you <i>MUST</i> change your HTML to match
+the new setup!<o:p></o:p></span></p>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item Link<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h4>Add Product 0001 to Cart</h4>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+8.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;a href=”http://merchant_id.zoovy.com/cart.cgis?add=yes&amp;quantity=1&amp;product_id=<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+8.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Add Product 0001 to Cart!<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+8.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/a&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<h5>Note: You can include any valid HTML between the a href tag, including
+image links</h5>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item Button<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-family:
+"Arial Narrow";background:gray;mso-highlight:gray'>Add Product 0001 to Cart</span></b><span
+style='font-family:"Arial Narrow"'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com</span><span
+style='font-size:8.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";
+mso-bidi-font-family:Arial'>/cart.cgis</span><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>” method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity” value=”1”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add Product 0001 to Cart!</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item Variable Quantity<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow"'>Product 0001 Quantity: <span style='background:silver;
+mso-highlight:silver'>[ 1 ]</span> <b><span style='background:gray;mso-highlight:
+gray'>Add to Cart</span></b><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com</span><span
+style='font-size:8.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";
+mso-bidi-font-family:Arial'>/cart.cgis</span><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>” method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Product 0001 Quantity: </span></i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”text” name=”quantity” value=”1” size=”3”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item with Drop-Down Product Options<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Make SURE to read the
+section on Product Options above, it includes important information on how to
+make this work correctly!<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Color:<span style="mso-spacerun: yes"> 
+</span><span style='background:silver;mso-highlight:silver'>[ Black ]</span></span><u><span
+style='font-family:Wingdings;mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:
+"Arial Narrow";background:gray;mso-highlight:gray;mso-char-type:symbol;
+mso-symbol-font-family:Wingdings;font-weight:normal'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>ê</span></span></u><span
+style='background:gray;mso-highlight:gray;font-weight:normal'><o:p></o:p></span></h3>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Size: <span style='background:silver;
+mso-highlight:silver'>[ Small ]</span></span><u><span style='font-family:Wingdings;
+mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:"Arial Narrow";
+background:gray;mso-highlight:gray;mso-char-type:symbol;mso-symbol-font-family:
+Wingdings;font-weight:normal'><span style='mso-char-type:symbol;mso-symbol-font-family:
+Wingdings'>ê</span></span></u><span style='background:gray;mso-highlight:gray;
+font-weight:normal'><o:p></o:p></span></h3>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Product Description for product 0001!&lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity” value=”1”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”pogs” value=”Color,Size”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Color: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;select name=”pog_Color”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”blk”&gt;Black<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”wht”&gt;White<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/select&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Size: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;select name=”pog_Size”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”sm”&gt;Small<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”md”&gt;Medium<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”lg”&gt;Large<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/select&gt;<i>&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add to Cart!</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item with Notes<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Notes: <span style='background:silver;
+mso-highlight:silver'>[ Type in a detailed description of<span
+style="mso-spacerun: yes">  </span>how you’d like to personalize your product
+0001 here! ]</span></span><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt;
+background:gray;mso-highlight:gray'><o:p></o:p></span></h3>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add Product 0001 to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Product Description for product 0001!&lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;&lt;br&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity” value=”1”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”notes_prompt” value=”<i>Notes</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Notes: </span></i><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input type=”text”
+name=”notes” value=”<i>Type in a detailed description of how you’d like to
+personalize your product 0001 here!</i>”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add Product 0001 to Cart!</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-Item with Radio Button Product Options<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoBodyText>Only use<span style="mso-spacerun: yes">  </span>this if
+you’re knowledgible in HTML forms and are familiar with the section on Product
+Options above, it includes important information on how to make this work
+correctly!<span style="mso-spacerun: yes">  </span>Make sure that at least one
+of the radio buttons with the same name has a “checked” by it (this will default
+it to being turned on)</p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Color:<o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+Wingdings;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>¤</span></span><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'> Black<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+Wingdings;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>¢</span></span><span style='font-family:
+"Arial Narrow"'> White<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Size:<o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+Wingdings;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>¤</span></span><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'> Small<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+Wingdings;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>¢</span></span><span style='font-family:
+"Arial Narrow"'> Medium<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+Wingdings;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Wingdings'>¢</span></span><span style='font-family:
+"Arial Narrow"'> Large<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”pogs” value=”Color,Size”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Product Description for product 0001!&lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity” value=”1”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Color: &lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Color” value=”blk” checked&gt;<i>Black&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Color” value=”wht”&gt;<i>White&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Size: &lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Size” value=”sm” checked&gt;<i>Small&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Size” value=”md”&gt;<i>Medium&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Size” value=”lg”&gt;<i>Large&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add to Cart!</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Single-item Combination Form<o:p></o:p></span></p>
+
+<p class=MsoBodyText><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoBodyText>This is an example of a combination form using all of the
+elements described above.<span style="mso-spacerun: yes">  </span>It should
+only be attempted by those with a thorough knowledge of HTML forms and the way
+Zoovy accepts form variables.<span style="mso-spacerun: yes">  </span>As above,
+make sure that at least one of the radio buttons with the same name has a
+“checked” by it (this will default it to being turned on)</p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Color: </span><span style='font-family:
+Wingdings;mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:"Arial Narrow";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings;font-weight:normal'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>¤</span></span><span
+style='font-weight:normal'> Black </span><span style='font-family:Wingdings;
+mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:"Arial Narrow";
+mso-char-type:symbol;mso-symbol-font-family:Wingdings;font-weight:normal'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>¢</span></span><span
+style='font-weight:normal'> White<o:p></o:p></span></h3>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='font-weight:normal'>Size: <span style='background:silver;
+mso-highlight:silver'>[ Small ]</span></span><u><span style='font-family:Wingdings;
+mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:"Arial Narrow";
+background:gray;mso-highlight:gray;mso-char-type:symbol;mso-symbol-font-family:
+Wingdings;font-weight:normal'><span style='mso-char-type:symbol;mso-symbol-font-family:
+Wingdings'>ê</span></span></u><span style='background:gray;mso-highlight:gray;
+font-weight:normal'><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h3><span style='font-weight:normal'>Notes: <span style='background:silver;
+mso-highlight:silver'>[ Type in a detailed description of<span
+style="mso-spacerun: yes">  </span>how you’d like to personalize your product
+0001 here! ]</span></span><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt;
+background:gray;mso-highlight:gray'><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h3><span style='font-weight:normal'>Quantity: <span style='background:silver;
+mso-highlight:silver'>[ 3 ]</span> <o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”pogs” value=”Color,Size”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Product Description for product 0001!&lt;br&gt;<o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”product_id” value=”<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity” value=”1”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Color: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Color” value=”blk” checked&gt;<i>Black<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”radio” name=”pog_Color” value=”wht”&gt;<i>White&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Size: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;select name=”pog_Size”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”sm”&gt;Small<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”md”&gt;Medium<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;option value=”lg”&gt;Large<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/select&gt;<i>&lt;br&gt;<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Notes: </span></i><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input type=”text”
+name=”notes” value=”<i>Type in a detailed description of how you’d like to
+personalize your product 0001 here!</i>”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>Quantity: </span></i><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input
+type=”text” name=”quantity” value=”3” size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Multiple-Item with Quantity<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Quantity: <span style='background:
+silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product 000</span><span
+style='font-family:"Arial Narrow"'>2</span><span style='font-family:"Arial Narrow";
+mso-bidi-font-family:Arial'>!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Quantity: <span style='background:
+silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product 000</span><span
+style='font-family:"Arial Narrow"'>3</span><span style='font-family:"Arial Narrow";
+mso-bidi-font-family:Arial'>!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Quantity: <span style='background:
+silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add Items to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0001!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>Quantity: </span></i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>&lt;input type=”hidden” name=”product_id:</span><span
+style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";
+mso-bidi-font-family:Arial'>0001</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console";mso-bidi-font-family:Arial;font-weight:
+normal'>” value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”text” name=”quantity:<b>0001</b>” value=”0” size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0002!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>Quantity: </span></i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>&lt;input type=”hidden” name=”product_id:</span><span
+style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";
+mso-bidi-font-family:Arial'>0002</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console";mso-bidi-font-family:Arial;font-weight:
+normal'>” value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”text” name=”quantity:<b>0002</b>” value=”0” size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0003!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>Quantity: </span></i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial;font-weight:normal'>&lt;input type=”hidden” name=”product_id:</span><span
+style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";
+mso-bidi-font-family:Arial'>0003</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console";mso-bidi-font-family:Arial;font-weight:
+normal'>” value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”text” name=”quantity:<b>0003</b>” value=”0” size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add Items to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Multiple-Item with Checkbox<o:p></o:p></span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0001!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Add To Cart </span><span
+style='font-family:Wingdings;mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:
+"Arial Narrow";mso-bidi-font-family:Arial;mso-char-type:symbol;mso-symbol-font-family:
+Wingdings'><span style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>¨</span></span><span
+style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product 0002!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Add To Cart </span><span
+style='font-family:Wingdings;mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:
+"Arial Narrow";mso-bidi-font-family:Arial;mso-char-type:symbol;mso-symbol-font-family:
+Wingdings'><span style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>þ</span></span><span
+style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Product Description for product
+0003!<o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow";mso-bidi-font-family:Arial'>Add To Cart </span><span
+style='font-family:Wingdings;mso-ascii-font-family:"Arial Narrow";mso-hansi-font-family:
+"Arial Narrow";mso-bidi-font-family:Arial;mso-char-type:symbol;mso-symbol-font-family:
+Wingdings'><span style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>¨</span></span><span
+style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add Checked Items to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0001!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h6>Add to Cart</h6>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”checkbox” name=”product_id:<b>0001</b>” value=”1”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity:<b>0001</b>” value=”1” &gt;<o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0002!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h6>Add to Cart</h6>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”checkbox” name=”product_id:<b>0002</b>” value=”1”
+checked&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity:<b>0002</b>” value=”1” &gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+mso-bidi-font-family:Arial;font-weight:normal'>Product Description for product
+0003!&lt;br&gt;<o:p></o:p></span></h2>
+
+<h6>Add to Cart</h6>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”checkbox” name=”product_id:<b>0003</b>” value=”1”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”hidden” name=”quantity:<b>0003</b>” value=”1” &gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;input type=”submit” value=”<i>Add Checked Items to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Note: You can pre-select
+an item to be checked by using the “checked” option as per product 0002 in the
+example above <o:p></o:p></span></i></p>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Multiple-Item with a Drop-Down Option and Variable Quantity</span><i><span
+style='font-size:8.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";
+mso-bidi-font-family:Arial'><o:p></o:p></span></i></p>
+
+<p class=MsoBodyText><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoBodyText>This example should only be attempted by those with a
+thorough knowledge of HTML forms and the way Zoovy accepts form variables.</p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Browser:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow"'>Product Description for product 0001!<span style="mso-spacerun:
+yes">  </span>Color: <span style='background:silver;mso-highlight:silver'>[
+Black ]</span></span><u><span style='font-family:Wingdings;mso-ascii-font-family:
+"Times New Roman";mso-hansi-font-family:"Times New Roman";background:gray;
+mso-highlight:gray;mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>ê</span></span></u><b>
+</b><span style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Qty: <span
+style='background:silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow"'>Product Description for product 0002!<span style="mso-spacerun:
+yes">  </span>Color: <span style='background:silver;mso-highlight:silver'>[
+Black ]</span></span><u><span style='font-family:Wingdings;mso-ascii-font-family:
+"Times New Roman";mso-hansi-font-family:"Times New Roman";background:gray;
+mso-highlight:gray;mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>ê</span></span></u><b>
+</b><span style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Qty: <span
+style='background:silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:
+"Arial Narrow"'>Product Description for product 0003!<span style="mso-spacerun:
+yes">  </span>Color: <span style='background:silver;mso-highlight:silver'>[
+Black ]</span></span><u><span style='font-family:Wingdings;mso-ascii-font-family:
+"Times New Roman";mso-hansi-font-family:"Times New Roman";background:gray;
+mso-highlight:gray;mso-char-type:symbol;mso-symbol-font-family:Wingdings'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Wingdings'>ê</span></span></u><b>
+</b><span style='font-family:"Arial Narrow";mso-bidi-font-family:Arial'>Qty: <span
+style='background:silver;mso-highlight:silver'>[ 0 ]</span><o:p></o:p></span></p>
+
+<h3><span style='font-size:3.0pt;mso-bidi-font-size:12.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h3>
+
+<h3><span style='background:gray;mso-highlight:gray'>Add Items to Cart</span></h3>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+5.0pt;mso-bidi-font-size:12.0pt;font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Arial Narrow";mso-bidi-font-family:Arial'>HTML:<o:p></o:p></span></i></p>
+
+<div style='border:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;form action=”http://merchant_id.zoovy.com/cart.cgis”
+method=”post”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”hidden” name=”add” value=”yes”&gt;<o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'>Product Description for product 0001!<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>&lt;input
+type=”hidden” name=”product_id:</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console"'>0001</span><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>”
+value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”hidden” name=”pogs:<b>0001</b>”
+value=”Color”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>Color: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;select name=”pog_Color:<b>0001</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”blk”&gt;Black<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”wht”&gt;White<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;/select&gt;<o:p></o:p></span></p>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>Qty:
+</span></i><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:
+"Lucida Console";font-weight:normal'><o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”text” name=”quantity:<b>0001</b>” value=”0”
+size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'>Product Description for product 0002!<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>&lt;input
+type=”hidden” name=”product_id:</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console"'>0002</span><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>”
+value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”hidden” name=”pogs:<b>0002</b>”
+value=”Color”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>Color: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;select name=”pog_Color:<b>0002</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”blk”&gt;Black<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”wht”&gt;White<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;/select&gt;<o:p></o:p></span></p>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>Qty:
+</span></i><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:
+"Lucida Console";font-weight:normal'><o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”text” name=”quantity:<b>0002</b>” value=”0”
+size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'>Product Description for product 0003!<o:p></o:p></span></h2>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>&lt;input
+type=”hidden” name=”product_id:</span><span style='font-size:9.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Lucida Console"'>0003</span><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>”
+value=”1”&gt;<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”hidden” name=”pogs:<b>0003</b>”
+value=”Color”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>Color: <o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;select name=”pog_Color:<b>0003</b>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”blk”&gt;Black<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;option value=”wht”&gt;White<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;/select&gt;<o:p></o:p></span></p>
+
+<h1 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><i><span style='font-size:9.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Lucida Console";font-weight:normal'>Qty:
+</span></i><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;font-family:
+"Lucida Console";font-weight:normal'><o:p></o:p></span></h1>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”text” name=”quantity:<b>0003</b>” value=”0”
+size=”3”&gt;<i>&lt;br&gt;</i><o:p></o:p></span></p>
+
+<h2 style='border:none;mso-border-alt:solid windowtext .5pt;padding:0in;
+mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-family:"Lucida Console";
+font-weight:normal'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h2>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;input type=”submit” value=”<i>Add Items to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'>&lt;/form&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='border:none;mso-border-alt:solid windowtext .5pt;
+padding:0in;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span style='font-size:
+9.0pt;mso-bidi-font-size:12.0pt;font-family:"Lucida Console";mso-bidi-font-family:
+"Courier New"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Using Product Options / Notes with Multiple-Item Forms</span><span
+style='font-family:Arial'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Multiple add to cart forms
+are made to act much like the single add to cart forms, and can have all of the
+same things like product options and notes.<span style="mso-spacerun: yes"> 
+</span>There are some changes that need to happen when you create the form for
+it to work properly:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><span style="mso-spacerun:
+yes"> </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo3;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol;
+mso-bidi-font-family:Arial'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-family:Arial'>The input names will be
+in the form of “field:<b>0001</b>” instead of just “field”.<span
+style="mso-spacerun: yes">  </span>For example, “pogs” turns into “pogs:<b>0001</b>”
+for product id 0001, and “pog_Size” will be “pog_Size:<b>0001</b>”,
+“notes_prompt” will be “notes_prompt:<b>0001</b>”, etc.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;mso-list:l0 level1 lfo3;
+tab-stops:list .25in'><![if !supportLists]><span style='font-family:Symbol;
+mso-bidi-font-family:Arial'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-family:Arial'>The “product_id” field
+is replaced by the “product_id:<b>0001</b>” field.<span style="mso-spacerun:
+yes">  </span>The value for this field should always be “1”, instead of the
+product’s id.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Submit Buttons</span><span style='font-family:Arial'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Anywhere you see an input
+type=”submit” (like the following):<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input
+type=”submit” value=”<i>Add Checked Items to Cart</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>You can use the following
+syntax instead to use an image instead of a grey HTML form button:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input type=”image”
+src=”http://your_image_url”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Where
+“http://your_image_url” is the URL to the image you want to use.<span
+style="mso-spacerun: yes">  </span>If you know the width and height of the
+image being used, you can specify them there as well:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input type=”image”
+src=”http://your_image_url” width=”200” height=”50”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Also, you can include as
+many “submit” or “image” buttons as you want in the form tags, they will all
+cause the same thing to happen.<span style="mso-spacerun: yes">  </span>This is
+handy if you want to have a way to add checked items to the cart at both the
+top of the page and the bottom of the page, or next to every product in a
+multiple-product list.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<span style='font-size:12.0pt;font-family:"Arial Black";mso-fareast-font-family:
+"Times New Roman";mso-bidi-font-family:Arial;mso-ansi-language:EN-US;
+mso-fareast-language:EN-US;mso-bidi-language:AR-SA'><br clear=all
+style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Product Notes</span><span style='font-family:Arial'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Every “notes” field must
+have the “notes_prompt” field accompanying it as shown in the examples
+above…<span style="mso-spacerun: yes">  </span>this lets the Zoovy system know
+what to put in the description in front of the text the user entered.<span
+style="mso-spacerun: yes">  </span>You can make a large textbox instead of a
+single-line textbox by changing the following:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input type=”text”
+name=”notes” value=”Default Text”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Into this (adjust the “cols”
+and “rows” to make the box bigger or smaller):<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;textarea cols=”50”
+rows=”10” name=”notes” wrap=”soft”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>Default Text<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;/textarea&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Changing Quantities</span><span style='font-family:Arial'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>You can change the values of
+inputs with a name of “quantity” or “quantity:<b>0001</b>” to your liking.<span
+style="mso-spacerun: yes">  </span>For instance if you have a checkbox add to
+cart, changing the value= attribute part of the “quantity” input tag will
+change the quantity of that item that will be added to the cart when that product
+is checked.<span style="mso-spacerun: yes">  </span>If you have a form that
+allows the user to input a quantity, changing the value will result in the form
+saying something other than “0” when its displayed.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Black";mso-bidi-font-family:
+Arial'>Meta information<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Corporate customers who
+retrieve data from the Zoovy system can add information into the order that you
+can be checked for later on (like an identifier for who referred the customer,
+etc) by parsing the product through the developer API.<span
+style="mso-spacerun: yes">  </span>To add meta information into the cart, add
+the following inside the form tags to the HTML:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Lucida Console";mso-bidi-font-family:Arial'>&lt;input
+type=”hidden” name=”meta” value=”<i>secret info</i>”&gt;<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Arial Narrow";mso-bidi-font-family:
+Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>The information “secret
+info” will be stored as an invisible item in the shopping cart named !META that
+can then be retrieved later.<span style="mso-spacerun: yes">  </span>This
+feature is not recommended for non-programmers who do not want to edit or view
+their orders through their own programs.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+</td></tr>
+</table>
+
+</body>
+
+</html>

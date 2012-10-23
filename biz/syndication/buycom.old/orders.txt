@@ -1,0 +1,147 @@
+Field Name
+Comments
+SellerShopperNumber
+
+Your seller number assigned to your account by Buy.com.
+Example: 4782351002
+NOTE: This number will be used to reference your seller account. 
+Receipt_ID
+
+This is the order number used to reference the all items in a single order.
+
+Examples: 26757141
+
+Note: The same order number can be used for multiple items since 1 order
+number is assigned to all items at check out.
+Receipt_Item_ID
+
+A unique number assigned to each line in an order.
+Example: 53376153 
+ListingID
+
+The listing ID is the number assigned to your Marketplace listing at the
+time the inventory was posted.
+Example: 747932
+Date_Entered
+
+The date and time that the order was made.
+Example: 2/28/2006 11:24:00 AM
+Sku
+
+Buy.com SKU number. 
+
+Example: 328745421
+ReferenceId
+
+The seller.s internal sku that was provided in the listing file.
+Example: 0142000280-11-LPTY
+Quantity
+
+The number of items orders for a given sku.
+Example: 1
+Qty_Shipped
+
+The number of items marked as shipped for a given sku.
+Examples: 1
+Qty_Cancelled
+
+The number or items marked as cancelled for a given sku.
+Example: 1
+Title
+
+The name of the sold sku.
+Example: The New 8-Week Cholesterol Cure
+Price
+The price of the sku provided in the listing file. No dollar sign.
+
+Examples: 11.14
+Product_Rev
+The price of the sku times the number sold. No dollar sign.
+Example: 22.28
+Shipping_Cost
+
+The price paid by the buyer for shipping. No dollar sign.
+Example: 3.49
+ProductOwed
+
+The price of a sku minus the commission charged to the seller. No dollar
+sign.
+Example: 9.46
+ShippingOwed
+
+The amount owed to the seller for shipping.  Shipping buyer paid minus any
+holdback. No dollar sign.
+Example: 3.25
+Commission
+
+The amount of commission charged to a seller based on the price of an item.
+No dollar sign.
+Example: 2.42
+ShippingFee
+
+The shipping holdback. No dollar sign.
+Examples: .85
+PerItemFee
+
+The per item fee charged on each item sold through Marketplace. No dollar
+sign.
+Example: .99
+Tax_Cost
+
+Tax collected from buyer for transaction. No dollar sign.
+
+Example: 2.49
+Bill_To_Comany
+Bill to Company Name
+
+Example: Buy.com
+Bill_To_Phone
+Bill to telephone
+
+Example: 2135551214
+Bill_To_Fname
+Bill to first name
+
+Example: John
+Bill_To_Lname
+Bill to last name
+
+Example: Smith
+Email
+
+The buyer.s email address
+
+Example: Smith@noemail.com
+Ship_To_Name
+Ship to full name
+
+Example: John Smith
+Ship_Company_Name
+The company name in the ship address.  This field might be blank.
+
+Example: Buy.com
+Ship_To_Street1
+
+The first line of the address.
+Example: 1120 North Main Street
+Ship_To_Street2
+
+The second line of the address.
+Example: Apt. #24B
+Ship_To_City
+
+The ship to city name.
+Example: Hartford
+Ship_To_State
+
+The ship to state.
+Example: CT
+Ship_To_Zip
+
+The ship to zip code.
+Examples: 02358
+ShippingMethodId
+
+The type of shipping chosen.  1 = standard and 2 = expedited.
+Example: 1
+

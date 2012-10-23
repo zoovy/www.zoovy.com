@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+##
+## framethis.cgi
+## Copyright 2001 Zoovy, Inc.
+##
+## Purpose: accepts a ID parameter for the auction claim page, and then frame the document and load the claim page.
+##
+## Example:
+##		in your auction email change the claim location to the URL of this script and pass an ID parameter.
+##		e.g.: Please visit http://www.mydomain.com/framethis.cgi?ID=%ID%
+##	
+##	the %ID% will be replaced with the current users claim ID, the user will access this CGI which will create a frameset
+## and load the navigation bar in the left hand side (navbar.html in this example), and then pass the ID number to the
+## claim form on Zoovy's site. Although there is a lot of magic happening behind the scenes, the whole process should be
+## fairly transparent to the customer.
+##
+
+use CGI;
+
+$ZOOVY_USERNAME = "yourname";			# hardcode your Zoovy username here.
+
+
+$q = new CGI;
+
+$ID = $q->param('ID');
+$ZOOVY_CLAIM_URL = "http://$ZOOVY_USERNAME.zoovy.com/claim/$ID";
+
+print "<frameset frameborder=\"0\" framespacing=\"0\" border=\"0\" cols=\"180,*\" rows=\"*\">\n";
+print "<frame marginwidth=\"0\" marginheight='0' src=\"navbar.html\" name=\"title\" noresize scrolling=\"no\">\n";
+print "<frame marginwidth=\"0\" marginheight='0' src=\"$ZOOVY_CLAIM_URL\" name=\"title\" noresize scrolling=\"yes\">\n";
+print "</frameset>\n";
+

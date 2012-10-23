@@ -1,0 +1,37 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Turnkey Ecommerce Websites | Growing your eBusiness - Inventory Control', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+% ## this include will put the new top level navigation bar across the top so that users can jump between pages easily.
+<&| /includes/navbar-20100514/index.html, highlight=>'whyitworks' &></&>
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+
+<!-- Spot 0: Inventory control -->
+
+<div id="inventory" class="tabset_content">
+
+<h2>Track inventory across multiple sales channels</h2>		
+<p><strong>Zoovy enables you to gain full control over your inventory with powerful common inventory functions</strong></p>
+
+<img src="/images/zoovy/how_inventory_2010-462x388.jpg" width="462" height="388" alt='Inventory Control' border='0' />
+
+<p>Separate sales channels pull their inventory and product information from one database which remains up-to-date in real time, avoiding the need to track multiple sets of inventory.</p>
+
+<p>Items flagged for sale on auction sites are automatically reserved in your inventory so they don’t accidentally get sold by another
+	sales channel.</p>
+
+<p>Control product levels with ‘Low stock’ or ‘Out of stock’ automatic warning messages and other customizable rules that allow you to have faith in your inventory reports no matter how complex your sales model.</p>
+
+</div>
+
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

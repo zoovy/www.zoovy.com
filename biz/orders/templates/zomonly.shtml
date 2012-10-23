@@ -1,0 +1,17 @@
+<html>
+<!-- ORDER_TAB -->
+<br>
+<br>
+<br>
+<center>
+<table class="zoovytable">
+	<tr><td>
+	<b>Sorry</b><br>
+	Your account is now configured to only allow processing of orders via
+Zoovy's Order Manager desktop client. 
+	</td></tr>
+</table>
+</center>
+
+</html>
+

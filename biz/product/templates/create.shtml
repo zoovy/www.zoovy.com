@@ -1,0 +1,90 @@
+<!-- HEADER_ONLY -->
+
+<body bgcolor="FFFFFF"   marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<center>
+<!-- MYTODO -->
+</center>
+
+<!-- general information table -->
+<form name="thisFrm" action="edit.cgi" method="POST" ENCTYPE='multipart/form-data'>
+<table class="zoovytable" width="585" class="border_top border_right border_bottom border_left" cellpadding="5" cellspacing="0">
+	<tr>
+		<td class="zoovytableheader" colspan="2">Add Product</td>
+	</tr>
+	<tr>
+		<td class="divider bold" colspan="2">Required Fields:</td>
+	</tr>
+	<tr>
+		<td>
+		<div id="create!content">
+			<!-- CREATE_PANEL -->
+			<table>
+			<tr>
+			<td class="data"><!-- ERR_PROD_ID -->Product ID/SKU:</td>
+			<td align="left"><font class="norm"><input type="text" name="prod_id" SIZE="20" MAXLENGTH="20" VALUE="<!-- PRODUCT_ID -->"></font></td>
+			</tr>			
+			<!-- CATALOGS -->
+			<tr>
+				<td class="data">Product Name:</td>
+				<td align="left"><font class="norm">
+					<INPUT TYPE="text" NAME="prod_name" SIZE="55" maxlength="55" VALUE="<!-- PRODUCT_NAME -->">
+				</font></td>
+			</tr>
+			<tr>
+				<td class="data"><!-- ERR_BASE_PRICE -->Sell For Price:</font></td>
+				<td align="left"><font class="norm">$<INPUT TYPE="text" size=6 NAME="base_price" VALUE="<!-- BASE_PRICE -->" SIZE="15"></font></td>
+			</tr>
+			</table>		
+			<font color='red'><!-- ERROR_MSG --></font>
+			<!-- END_CREATE_PANEL -->	
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="divider bold" colspan="2">Recommended Data:</td>
+	</tr>
+	<tr>
+		<td>
+		
+		<table>
+		<tr>
+			<td class="data"><!-- ERR_BASE_COST -->Your Cost:</font></td>
+			<td align="left"><font class="norm">$<INPUT TYPE="text" size=6 NAME="base_cost" VALUE="<!-- BASE_COST -->" SIZE="15"></font></td>
+		</tr>
+		<tr>
+			<td valign='top' class="data">Inventory Qty:</td>
+			<td nowrap align="left">
+			<input type="textbox" name="INVENTORY" size="5" value="<!-- INVENTORY -->"> &nbsp; (<input type="checkbox" name="INV_UNLIMITED"> Unlimited Qty)
+			</td
+		</tr>
+		<tr>
+			<td valign='top' class="data">Product Description:</td>
+			<td align="left"><font class="norm"><TEXTAREA NAME="prod_desc" COLS=40 ROWS=5><!-- PRODUCT_DESCRIPTION --></TEXTAREA></font></td>
+		</tr>
+		<tr>
+			<td class="data"><!-- ERR_BASE_WEIGHT -->Base Weight:</font></td>
+			<td align="left"><font class="norm"><INPUT TYPE="text" NAME="base_weight" VALUE="<!-- BASE_WEIGHT -->" SIZE="8">
+				<font size="1">ounces (use # for pounds)</font></td>
+		</tr>
+		<tr>
+			<td class="data">Is product taxable?:</td>
+		 	<td align="left"><font class="norm"><INPUT TYPE='radio' NAME='taxable' VALUE='Y' <!-- TAXABLE -->>&nbsp;Yes
+        <INPUT TYPE='radio' NAME='taxable' VALUE='N' <!-- NOT_TAXABLE -->>&nbsp;No</font></td>
+       </tr>
+		</table>
+		
+<center>
+<input type="hidden" name="VERB" value="CREATE-SAVE">
+<table cellpadding='5'>
+	<tr>
+	<td valign='bottom'><input type="button" value=" Save " class='savebutton' onClick='thisFrm.VERB.value="CREATE-SAVE"; thisFrm.submit();' border='0'></td>
+	</tr>
+</table>
+<br>
+		
+		</td>
+	</tr>		
+</table>
+
+</form>
+</body>

@@ -1,0 +1,44 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+
+<form action="zephyrsports.cgi" name="myform">
+<table width=500>
+<tr>
+	<td colspan=2><center><h2><!-- VERB --> Location</h2></center></td>
+</tr>
+<tr>
+	<td valign=top>SKU(s):</td>
+	<td valign=top>
+	<textarea cols=35 rows=10 name="items"><!-- ITEMS --></textarea><br>
+	<div class="hint">Enter one SKU per line</div>
+	</td>
+</tr>
+<tr>
+	<!-- LOCATION_FIELD -->
+</tr>
+
+<tr>
+	<td>&nbsp;&nbsp;</td>
+	<td colspan=2 halign=center>
+<input type="submit" name="VERB" value="<!-- VERB -->">
+	</td>
+</tr>
+</form>
+
+<script type="text/javascript">
+	document.myform.items.focus();
+</script>
+ 
+</center>
+</table>
+
+<br><br><br>
+<table width=500>
+
+<!-- OUTPUT -->
+</table>
+<br><br><br><br><br><br>
+<center>
+Switch to <a href="<!-- COUNTER_VERB_URL -->"><!-- COUNTER_VERB --></a> Location
+</center>

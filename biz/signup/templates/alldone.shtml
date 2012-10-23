@@ -1,0 +1,24 @@
+<body bgcolor="DDDDDD" onLoad="this.focus();">
+<center>
+
+
+<table bgcolor='330066' cellspacing='0' cellpadding='1' border='0'>
+<tr><td><font size='2' face='arial, helvetica' color='white'>&nbsp;&nbsp;&nbsp;<b>Thank You!</b></font></td></tr>
+<tr><td>
+
+<table bgcolor="FFFFFF" cellspacing='0' cellpadding='8' border='0'><tr><td>
+</tr><td>
+<font face="verdana, helvetica, arial">
+<font size="+2"><b>Setup Complete</b></font><br>
+<br>
+Thank your completing setup. If you have any questions please contact support at 877-ZOOVY4U, or email us at support@zoovy.com<br>
+<br>
+<br>
+<a target="_top" href="https://www.zoovy.com/login/?sendto=/biz&login=<!-- USERNAME -->&password=<!-- PASSWORD -->&authenticate=true">Click Here to Login</a>
+<br>
+</font>
+</td></tr></table>
+</td></tr></table>
+</center>
+
+</body>

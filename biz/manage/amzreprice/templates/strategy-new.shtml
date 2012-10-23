@@ -1,0 +1,37 @@
+<!-- UTILITIES_TAB -->
+
+<!-- DEBUG -->
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="STRATEGY-NEW-CREATE">
+<center>
+<table class="zoovytable" width=600>
+<tr class="zoovytableheader">
+<td colspan=2>
+	Add/Update a Repricing Strategy
+</td>
+</tr>
+<tr>
+	<td valign=top>Marketplace:</td>
+	<td>
+		<select name="dst">
+			<option selected value="AMZ">Amazon</option>
+		</select>
+	</td>
+	
+</tr>
+<tr>
+	<td valign=top>Strategy ID:</td>
+	<td>
+		<input type="textbox" maxlength="10" size="10" name="STRATEGY_ID" value="<!-- STRATEGY_ID -->">
+		<div class="hint">A 3 to 10 digit alphanumeric code which you will use to 
+		identify this strategy and associate it to products. Ex: "DEFAULT"</div>
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><input class="button" type="submit" value=" Create "></td>
+</tr>
+</table>
+
+
+</form>
+</center>

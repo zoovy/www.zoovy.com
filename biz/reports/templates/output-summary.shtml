@@ -1,0 +1,34 @@
+<!-- REPORT_TAB -->
+
+<script Lanugage="Javascript">
+<!--//
+
+function openWindow(url) {
+   popupWin = window.open(url, 'popup','status=yes,resizable=yes,width=320,height=200,menubar=yes,scrollbars=yes');
+   popupWin.focus(true);
+	};
+
+-->
+</script>
+
+
+
+<div align="center">
+<div style="width: 700px;">
+
+
+<table cellspacing=0 cellpadding=0 border=0 width="100%" class="ztable_border">
+<tr class="controls">
+	<td align="right">
+	<!-- TOOLBAR_HEADER -->
+	</td>
+</tr>
+<tr>
+	<td>
+	<!-- HTMLTABLE -->
+	</td>
+</tr>
+</table>
+
+</div>
+</div>

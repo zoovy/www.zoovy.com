@@ -1,0 +1,30 @@
+<!-- NO_TAB -->
+<br>
+<div align="center">
+<form action="index.cgi" method="POST" name="signupFrm">
+<input type="hidden" name="VERB" value="PROCESS_SALE">
+<input type="hidden" name="PKG" value="<!-- PACKAGE_ID -->">
+<!-- ERRORS -->
+<!-- EMAIL_ERROR -->
+<table cellspacing="0" cellpadding="0" width="645" border="0" style="border-style: solid; border-color: #3366CC; border-width: 1px;">
+<tr>
+	<td class="tablebox" height="16"><span class="tablehead">&nbsp;Payment Information</span></td>
+</tr>
+<tr>
+	<td>
+	<table cellpadding='2'><tr><td>
+	<b>Thank You!</b><br>
+	<br>
+	Your account will be provisioned and be online in the next 24 hours. 
+	In the meantime if you have any questions or concerns please don't hesitate to contact your account manager at 1-877-966-8948 x 2.<br>
+	<br>
+	You will receive an email when the changes have been made to your account.<br>
+	</td></tr></table>
+	</td>
+</tr>
+</form>
+
+</table>
+</div>
+</body>
+</html>

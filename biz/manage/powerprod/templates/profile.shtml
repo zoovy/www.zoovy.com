@@ -1,0 +1,27 @@
+<!-- REPORT_TAB -->
+<center>
+<table width='500'><tr><Td>
+<font face='Arial'>
+<form action="index.cgi" method="post" name="thisFrm">
+<input type="hidden" name="ACTION" value="PROFILE-SAVE">
+<input type="hidden" name="DATA" value="<!-- DATA -->">
+<font class='title'>Select Products by Profile</font><br>
+<br>
+<table>
+	<!-- PROFILES -->
+</table>
+<br>
+<center>
+<table>
+<tr>
+	<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+	<Td><a href='..'><img width='81' height='31' src='/images/bizbuttons/exit.gif' border='0'></a></font></td>
+</tr>
+</table>
+</center>
+</form>
+</td></tr></table>
+</center>
+
+</body>
+

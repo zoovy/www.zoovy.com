@@ -1,0 +1,30 @@
+<head>
+<SCRIPT language="JavaScript">
+<!--//
+var tState = false;
+function toggleAll() {
+	tState = !tState;
+	for (i=0,n=document.myForm.elements.length;i<n;i++) {
+		if (document.myForm.elements[i].name.indexOf('product-') !=-1) {
+			document.myForm.elements[i].checked = tState;
+			}
+		}
+	}
+//-->
+</SCRIPT>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor='FFFFFF'>
+<!-- REPORT_TAB -->
+<font face='arial'>
+<center>
+<table width='95%'>
+<Tr><td>
+<form action='index.cgi' method='POST'>
+<!-- OUTPUT -->
+<input type='submit' value=' save selections '>
+</form>
+</td></tr>
+</table>
+</form>
+</font>
+</body>

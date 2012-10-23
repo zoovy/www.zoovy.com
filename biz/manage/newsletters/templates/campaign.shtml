@@ -1,0 +1,101 @@
+<!-- UTILITIES_TAB -->
+<center>
+
+<br>
+<form id="thisFrm" name="thisFrm" action="index.cgi" method="POST">
+        <input type="hidden" name="VERB" value="CAMPAIGN-SAVE">
+        <input type="hidden" name="ID" value="<!-- ID -->">
+
+<!-- SIZING TABLE  -->
+
+   <table cellspacing=0 cellpadding=0 border=0 width="800" class="zoovytable">
+   <tr>
+      <td class='zoovytableheader'>Step 1: Configure Campaign (<!-- ID -->)</td>
+   </tr>
+   <tr>
+	<td>
+	<table>
+		<tr>
+			<td colspan=2><!-- MSG --><br></td>
+		</tr>
+		<tr>
+			<td nowrap valign="top">Name:</td>
+			<td valign='top'>
+				<input size=30 class=formed type="textbox" name="NAME" value="<!-- NAME -->"><br>
+				<div class="hint">Please provide a name you will use to refer to this campaign.</div>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap valign="top">Source Domain:</td>
+			<td valign='top'>
+				<select name="SENDER">
+					<!-- SENDER -->
+				</select> 
+				<div class="hint">To properly track bounces the "From" on each email will be customized to a sender.</div>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap valign="top">Subject:</td>
+			<td valign='top'>
+				<input class=formed type="textbox" size=60 maxlength=100 name="SUBJECT" value="<!-- SUBJECT -->"><br>
+				<div class="hint">The subject of the message that will be sent to the newsletter subscribers.</div>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap valign="top">Coupon Code:</td>
+			<td valign='top'>
+				<select name="COUPON">
+					<!-- COUPONS -->
+				</select>
+			[ <a target="coupon" href="/biz/setup/promotions">Add New</a> ]
+ 			<br><div class="hint">Requires XSell bundle. Links in the
+newsletter will automatically have tracking codes appended. 
+Customers clicking those links can be automatically have a limited use 
+coupon placed in their cart.</div>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap valign="top">Recipients:</td>
+			<td valign='top'>
+			<select id="RECIPIENTS" name="RECIPIENT">
+				<!-- RECIPIENTS -->
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Template/Layout:</td>
+			<td>
+			<select onChange="jQuery('#thisFrm').showLoading(); thisFrm.submit();" id="LAYOUTS" name="LAYOUT">
+				<!-- LAYOUTS -->
+			</select>
+			</td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+   <tr>
+      <td class='zoovytableheader'>Step 2: Edit Content</td>
+   </tr>
+	<tr>
+	<td>
+	<!-- EDITOR -->
+	</td>
+	</tr>
+   <tr>
+      <td class='zoovytableheader'>Step 3: Test/Save </td>
+   </tr>
+	<tr>
+		<td class='table_top' align="center">
+		<input type="button" name="BUTTON" value="Exit" class="button" onClick="jQuery('#thisFrm').showLoading(); document.location='index.cgi';">
+		&nbsp;&nbsp;
+		<input type="SUBMIT" name="BUTTON" value="Save Progress" class="button" onClick="jQuery('#thisFrm').showLoading();">
+		&nbsp;&nbsp; 
+		<input type="button" name="BUTTON" value="Next: Approve/Send" class="button" onClick="jQuery('#thisFrm').showLoading(); thisFrm.VERB.value='CAMPAIGN-GENERATE'; thisFrm.submit();">
+	</td>
+	</tr>
+	</table>
+<br>
+<br>
+</form>
+<!-- FOOTER -->
+

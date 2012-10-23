@@ -1,0 +1,31 @@
+<html>
+<body>
+<font><b>HTML Editor: <!-- PRODUCT --></b></font><br>
+<br>
+<form action="/biz/product/htmledit/index.cgi" name="edit" id="edit" method="POST">
+<input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
+<input type="hidden" name="ACTION" value="SAVE">
+
+<textarea id="ta" name="ta" style="width:100%" rows="24" cols="80">
+<!-- HTMLCONTENT -->
+</textarea>
+
+<input type="submit" value="Save">
+
+<p />
+
+<input type="image" src="/images/bizbuttons/submit.gif" name="ok" value="  submit  " />
+<a href="/biz/product/modify_product.cgi?product=<!-- PRODUCT -->"><img src="/images/bizbuttons/quit.gif" border="0"></a>
+<BR>
+<font size='2'><b>Additional Functions:</b></font><br>
+<input type="button" name="ins" value="  insert html  " onclick="return insertHTML();" />
+<input type="button" name="hil" value="  highlight text  " onclick="return highlight();" />
+
+<!-- HELPER -->
+
+</form>
+</td></tr></table>
+</center>
+
+</body>
+</html>

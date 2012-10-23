@@ -1,0 +1,54 @@
+
+*** Modified files in JOE when it aborted on Tue Jun  5 05:51:56 2012
+*** JOE was aborted by signal 15
+
+*** File '(Unnamed)'
+/httpd/any-htdocs/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+/httpd/htdocs/register/index.html
+
+*** File '(Unnamed)'
+1
+1
+
+*** File '(Unnamed)'
+CALLME
+Verify
+$src
+src
+SAVE
+Location
+redirect
+Call
+
+*** Modified files in JOE when it aborted on Sat Jun 23 03:54:49 2012
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Sat Jun 23 03:54:49 2012
+*** JOE was aborted by signal 1
+
+*** File '(Unnamed)'
+sub new
+die
+
+*** File '(Unnamed)'
+/httpd/modules/SITE/Vstore.pm
+/httpd/modules/SITE/Vstore.pm
+/httpd/modules/SITE/URLS.pm
+/httpd/modules/SITE/Vstore.pm
+/httpd/modules/SITE/Vstore.pm
+/httpd/modules/SITE/Vstore.pm
+/httpd/modules/SITE/Vstore.pm
+
+*** File '(Unnamed)'
+2815
+1
+1

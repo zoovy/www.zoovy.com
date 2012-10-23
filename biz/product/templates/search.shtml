@@ -1,0 +1,46 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body>
+<br>
+<br>
+<center>
+<form action='search.cgi'>
+
+<center>
+<table width="500" class="zoovytable" cellpadding='0' cellspacing='0'>
+<tr><td class="zoovytableheader"> Search </td></tr>
+<tr><td>
+<table cellspacing=2><tr><td>
+
+<input type='hidden' name='ACTION' value='SEARCH'> 
+Search For: <input type='textbox' value="<!-- VALUE -->" name='VALUE'> &nbsp; <input class="button" type='submit' value='Search Now'><br>
+<br>
+<input <!-- SEARCHTYPE_FAST --> type='radio' name="searchtype" value='FAST'> Product ID or product title keyword<br>
+<input <!-- SEARCHTYPE_UPC --> type='radio' name="searchtype" value='zoovy:prod_upc'> UPC<br>
+<input <!-- SEARCHTYPE_SUPPLIERID --> type='radio' name="searchtype" value='zoovy:prod_supplierid'> Supplier ID<br>
+<input <!-- SEARCHTYPE_MFGID --> type='radio' name="searchtype" value='zoovy:prod_mfgid'> Manufacturer ID<br>
+<!--
+<input type='radio' name="searchtype" value='DETAIL'> FullText Search<br>
+<input type='radio' name="searchtype" value='WEBSITE'> Website "DEFAULT" Catalog Search<br>
+-->
+<input type='radio' name="searchtype" value='EBAY'> eBay Item #<br>
+<!-- CATALOGS -->
+<!--
+<input type='radio' name="searchtype" value='OS'> Overstock #<br>
+-->
+<br>
+<div class="hint">
+<a href='listall.cgi?ACTION=SEARCH&searchtype=LISTALL'>List all products</a>
+</div>
+
+</td></tr></table>
+</td></tr></table>
+</center>
+
+</form>
+<!-- RESULTS -->
+
+<!-- PARAMS -->
+</center></body>
+

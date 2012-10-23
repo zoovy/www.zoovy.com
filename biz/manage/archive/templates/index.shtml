@@ -1,0 +1,45 @@
+<!-- REPORT_TAB -->
+<center>
+<table width=600 class="zoovytable">
+	<tr>
+	<td class="zoovytableheader" align="left">Archive Orders</td>
+	</tr>
+	<tr>
+	<td>
+	
+<br>
+<form method="get" action="/biz/batch/index.cgi">
+<input type="hidden" name="VERB" value="NEW">
+<input type="hidden" name="EXEC" value="UTILITY">
+<input type="hidden" name="APP" value="ORDERS_ARCHIVE">
+<input type="hidden" name="GUID" value="<!-- GUID -->">
+
+<br>
+<!-- MESSAGE -->
+Please select a range of orders you want to hide.
+This tool will only interact with orders that are set to COMPLETED status.<br>
+<br>
+<table>
+<tr>
+	<td><b>Range: </b></td>
+	<td>
+	<select name=".year">
+	<option selected value="2008">Anything older than January 1st, 2008</option>
+	<option value="2007">Anything older than January 1st, 2007</option>
+	<option value="2006">Anything older than January 1st, 2006</option>
+	<option value="2005">Anything older than January 1st, 2005</option>
+	<option value="2004">Anything older than January 1st, 2004</option>
+	<option value="2003">Anything older than January 1st, 2003</option>
+	<option value="2002">Anything older than January 1st, 2002</option>
+	<option value="2001">Anything older than January 1st, 2001</option>
+	<option value="*">Everything in completed</option>
+	</select>
+	</td>
+	<td><input type="submit" class="button" value=" Archive Orders "></td>
+</tr>
+</table>
+
+</form>
+</td></tr>
+</table>
+

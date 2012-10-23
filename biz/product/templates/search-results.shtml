@@ -1,0 +1,38 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body>
+<center>
+<!-- HIDESEARCH_BEGIN -->
+<br>
+<form action='search.cgi'>
+<table bgcolor='3366CC' cellpadding='1' cellspacing='0'><tr><td>
+<table bgcolor='ffffff' cellpadding='10' cellspacing='0'><tr><td>
+<input type='hidden' name='ACTION' value='SEARCH'>
+<font face='arial, helvetica'>
+Search For: <input type='textbox' name='VALUE'><br>
+</font>
+<center>
+<input type='submit' value='Search Now'>
+</center>
+</td></tr></table>
+</td></tr></table>
+</form>
+
+<br>
+<!-- HIDESEARCH_END -->
+<a name='top'>
+<font face='helvetica, arial' color='blue' size='5'><b><!-- MESSAGE --></b></font>
+<Br>
+<!-- COUNTER -->
+
+<table cellspacing='0' cellpadding='4'>
+<!-- RESULTS -->
+</table>
+<br>
+<br>
+<a href='#top'>Return to Top</a><br>
+<br>
+<br>
+</center>
+</body>

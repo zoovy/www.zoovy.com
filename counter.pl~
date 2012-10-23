@@ -1,0 +1,266 @@
+#!/usr/bin/perl
+
+use strict;
+use CGI;
+use lib "/httpd/modules";
+require ZOOVY;
+require DBINFO;
+
+#drop table STAT_LISTINGS;
+#create table STAT_LISTINGS (
+#  ID integer unsigned not null auto_increment,
+#  MID mediumint unsigned default 0 not null,
+#  PID varchar(20) default '' not null,
+#  UUID bigint unsigned default 0 not null,
+#  STYLE enum ('CHANNEL','LISTING','UUID'),
+#  CNT integer unsigned default 0 not null,
+##  LISTING_ID bigint unsigned default 0 not null,
+#  UPDATED_GMT integer unsigned default 0 not null,
+#
+#  unique (MID,PID,LISTING_ID),
+#  index(UPDATED_GMT),
+#  primary key (ID)
+#);
+
+
+
+# /counter.cgi?MID=2749&MERCHANT=usfreight&PRODUCT=1398U&UUID=113641908810453&TS=1136419088&CHANNEL=3193767&STYLE=blank 
+my $q = new CGI;
+
+my $MERCHANT = $q->param('MERCHANT');
+if ( (!defined($MERCHANT)) || ($MERCHANT eq '') ) { $MERCHANT = 'zoovy'; }
+
+my $PID = $q->param('PRODUCT');
+
+print 'Expires: ' . &CGI::expires('+24h') . "\n";    # Set the expiration time
+print "Content-type: image/gif\n\n";
+# print STDERR "PRODUCT: $$ $PID\n";
+my $AUCTION = $q->param('AUCTION');
+my $CHANNEL = $q->param('CHANNEL');
+my $COUNTER = $q->param('STYLE');
+my $MID = $q->param('MID');
+my $UUID = $q->param('UUID');
+my $PG = $q->param('PG');
+my $TS = $q->param('TS');
+
+# now replace all underscores with dashes
+if ($MERCHANT) { 
+	$MERCHANT =~ s/_/-/g; 
+	$MERCHANT =~ s/\W+//g;
+	$MERCHANT =~ s/-/_/g; 
+	}
+## at this point the MERCHANT name is clean.
+## sanitize the auction
+if ($AUCTION) { $AUCTION =~ s/\W+/_/g; }
+# sanitize misc other data
+if ($CHANNEL) { $CHANNEL =~ s/[^0-9]//g; }
+if ($PID) { $PID =~ s/[\W]+//g; }
+
+if ((not defined $PID) && ($PG)) { $PG =~ s/[^\w\.]+//g; $PID = $PG; }
+if (not defined $PID) { $PID = ''; }
+
+my $DEBUG = 0;
+
+
+## lookup well known referrers
+if ($ENV{'HTTP_REFERER'} =~ /ebay\.com/) {
+	if ($ENV{'HTTP_REFERER'} =~ /item=([\d]+)/) { $AUCTION = $1; }
+	}
+
+##
+## /httpd/counters
+## /httpd/zoovy/counters
+if ($MID<=0) { $MID = &ZOOVY::resolve_mid($MERCHANT); }
+if (($MERCHANT eq '') && ($MID>0)) { 
+	$MERCHANT = &ZOOVY::resolve_merchant_from_mid($MID);
+	warn "resolved MID=$MID to USER:$MERCHANT\n";
+	}
+
+if ($MID<=0) {
+	print "Content-type: text/plain\n\n";
+	print "UNKNOWN MERCHANT/MID\n";
+	}
+
+
+# /counter.pl?MID=2749&MERCHANT=usfreight&PRODUCT=1398U&UUID=113641908810453&TS=1136419088&CHANNEL=3193767&STYLE=blank 
+#create table STAT_LISTINGS (
+#  ID integer unsigned default 0 not null auto_increment,
+#  MID mediumint unsigned default 0 not null,
+#  PID varchar(20) default '' not null,
+#  STYLE enum ('CHANNEL','LISTING','UUID'),
+#  LISTING_ID bigint unsigned default 0 not null,
+#  UPDATED_GMT integer unsigned default 0 not null, 
+#  
+#  unique (MID,PID,LISTING_ID),
+#  index(UPDATED_GMT),
+#  primary key (ID)
+#);
+
+my $STYLE = '';
+my $VALUE = 0;
+if ($UUID>0) { $STYLE = 'UUID'; $VALUE = $UUID; }
+if ($CHANNEL>0) { $STYLE = 'CHANNEL'; $VALUE = $CHANNEL; }
+
+
+##
+##
+my $udbh = &DBINFO::db_user_connect($MERCHANT);
+$MID = int($MID);
+if (not defined $PID) { $PID = ''; }
+my $qtPID = $udbh->quote($PID);
+my $qtVALUE = $udbh->quote(int($VALUE));
+my $pstmt = "select CNT from STAT_LISTINGS where MID=$MID and PID=$qtPID and UUID=$qtVALUE";
+my $sth = $udbh->prepare($pstmt);
+$sth->execute();
+my ($count) = $sth->fetchrow();
+$sth->finish();
+
+if (($count==0) && ($STYLE ne 'UUID') && ($UUID>0)) {
+	$pstmt = "update STAT_LISTINGS set PID=$qtPID,STYLE='UUID',UUID=$qtVALUE where PID='' and STYLE='CHANNEL' and UUID=$CHANNEL and MID=$MID";
+	# print STDERR $pstmt."\n";
+	$udbh->do($pstmt);
+
+	$pstmt = "select CNT from STAT_LISTINGS where MID=$MID and PID=$qtPID and UUID=$qtVALUE";
+	$sth = $udbh->prepare($pstmt);
+	$sth->execute();
+	($count) = $sth->fetchrow();
+	$sth->finish();
+	}
+
+
+my $ts = time();
+if ($count>0) {
+	## exists .. update it
+	$pstmt = "update STAT_LISTINGS set CNT=CNT+1,UPDATED_GMT=$ts where MID=$MID and PID=$qtPID and UUID=$qtVALUE";
+	$count++;
+	}
+else {
+	my $qtSTYLE = $udbh->quote($STYLE);
+	$pstmt = "insert into STAT_LISTINGS (MID,PID,STYLE,UUID,UPDATED_GMT,CNT) values ($MID,$qtPID,$qtSTYLE,$qtVALUE,$ts,1)";
+	$count=1; 
+	}
+# print STDERR $pstmt."\n";
+$udbh->do($pstmt);
+&DBINFO::db_user_close();
+
+##
+## SANITY: from here on out $count has the number we ought to generate.
+##
+
+my $facount = sprintf("%04d", $count);
+
+##this is the first two digits of the count, used to find the directory that the correct immage is in.
+my $twodigimg= substr($facount,0,2);
+
+my %CHAR = ();
+my $pathtoimg = "/httpd/counters/";
+if ( $count < 1300 ) { 
+	my $V = $pathtoimg . $COUNTER . "/" . $twodigimg . "/" . $COUNTER . $count . ".gif";
+	open F, "<$V"; $/ = undef;
+	my $out = <F>;
+	close F;
+	if ($out eq '') { open F, "</httpd/htdocs/images/blank.gif"; $out = <F>; close F; }
+	$/ = "\n";
+	print $out;
+	}
+else {
+	my $digit_dir =  "/httpd/counters/$COUNTER/original";
+	my $flyprog = "/httpd/track-htdocs/fly -q";
+	my $fly_temp ="/tmp/fly_temp.txt";
+
+   ### IMAGE SETTINGS ###
+
+		########################################################################################
+		##find image height and width
+
+#		my $filename="/httpd/counters/" . $COUNTER . "/original/0.gif";
+#
+#		my $im = Image::Magick->new();
+#		$im->Read($filename);
+#
+#		my $width = $im->Get('width');	
+#		my $height= $im->Get('height');
+#
+#		print STDERR "width and height are $width:$height\n";
+		my $width = -1; my $height = -1;
+		open F, "</httpd/counters/$COUNTER/info.txt"; $/ = undef; my $buf = <F>; close F; $/ = "\n";
+		foreach my $kv (split(/\&/s,$buf)) {
+			my ($k,$v) = split(/=/,$kv);
+			if ($k eq 'w') { $width = $v; }
+			if ($k eq 'h') { $height = $v; }
+			}
+
+		my $tp = "1";
+		my $il = "1";
+
+	# Done 
+	##############################################################################
+	######### create the series directory
+
+	#BAM -- total length -- Determines the total length of the final graphic
+	my $glength = 4;
+
+   # Determine Length of Counter Number
+	my $length;
+   my $num = $length = length($count);
+
+   # Set Individual Counter Numbers Into Associative Array
+   my $tmpcount = $count;
+   while ($num>0) {
+      $CHAR{$num} = chop($tmpcount);
+      $num--;
+      }
+
+   # BH Figure out which directory we ought to be in.
+   # BH Right justify directory name
+
+	my $dir = sprintf("%s/%d",$COUNTER,int($count /100));
+
+   # Determine the Height and Width of the Image
+   my $img_width = ($width * $glength); 
+   my $img_height = ($height);
+	my $insert_width = 0;
+	my $insert_height = 0;
+   
+   # Open the In-File for Commands
+   open(FLY,">$fly_temp") || die "Can't Open In File For FLY Commands: $!\n";
+
+   # Create New Counter Image
+   print FLY "new\n";
+   print FLY "size $img_width,$img_height\n";
+
+   ## BAM -- this should make zeros in front of the number.
+   my $gh =  $glength - $length;
+   while ($gh > 0) {
+      	print FLY "copy $insert_width,$insert_height,-1,-1,-1,-1,$digit_dir/0.gif\n";
+      	$insert_width = ($insert_width + $width); 
+      	$gh--;
+	   	}
+
+   # Copy Individual Counter Images Commands to In-File
+   my $j = 1;
+   while ($j <= $length) {
+      	print FLY "copy $insert_width,$insert_height,-1,-1,-1,-1,$digit_dir/$CHAR{$j}\.gif\n";
+      	$insert_width = ($insert_width + $width); 
+      	$j++;
+   	}
+
+   # If they want a color transparent, make it transparent
+   if ($tp ne "X" && $tp =~ /.*,.*,.*/) 	
+		{
+      	print FLY "transparent $tp\n";
+   	}
+
+   # If they want the image interlaced, make it interlaced
+   if ($il == 1) 
+		{
+      	print FLY "interlace\n";
+   	}
+
+   # Close FLY
+   close(FLY);
+
+	my $output = `$flyprog -i $fly_temp`;
+	print "$output";
+	}
+

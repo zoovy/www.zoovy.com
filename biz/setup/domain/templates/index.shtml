@@ -1,0 +1,56 @@
+<!-- SETUP_TAB -->
+<center>
+<br>
+
+<!-- ERROR_MSG -->
+
+<table bgcolor='FFFFFF' cellpadding='3' width='80%'><tr><td>
+	<center><font color='red' size='4'><b><!-- MESSAGE --></b></font></center>
+	<center>
+
+		<table class="zoovytable" cellspacing='0' cellpadding='1' border='0' width='100%'>
+		<tr><td class="zoovytableheader">Mail Hosting</td></tr>
+		<tr><td>
+		<!-- ZOOVYMAIL -->
+		</td></tr>
+		</table>
+		<br>
+		
+		<table class="zoovytable" bgcolor='ffffff' cellspacing='0' cellpadding='3' border='0' width='100%'>
+		<tr><td class="zoovytableheader">
+			<table border=0 cellspacing=0 cellpadding=0 width="100%"><tr>
+			<td>Your Domains</td>
+			<td align="right"><input align="right" class="button" type="button" onClick="document.location='index.cgi?ACTION=NEW';" value=" Add New "></td>
+			</tr></table>
+			</td>
+		</tr>
+		<tr><td>
+		<table width=100%>
+
+		<!-- EXISTING_DOMAINS -->
+	
+		</table>
+		</tr></td>
+		</table>
+		
+	</center>
+	<br>
+	<br>
+
+	<center>
+	<input class="button" type="button" onClick="document.location='/biz/setup';" value=" Exit ">
+	<input class="button" type="button" onClick="document.location='index.cgi';" value=" Refresh ">
+	
+	</center>
+<br>
+NOTE: If you need to register a domain name <a target="_blank" href="http://www.zoovy.com/biz/setup/redir/register/main.html">please click here</a> 
+to purchase a domain name for only $15 per year.<br>
+<br>
+<br>
+
+</td></tr></table>
+
+
+
+</center>
+</body>

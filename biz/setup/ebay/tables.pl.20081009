@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+use Data::Dumper;
+use XML::Simple;
+use Storable;
+
+use lib "/httpd/modules";
+use EBAY::API;
+use YAML;
+
+my $USERNAME = 'becky';
+$USERNAME = 'hotnsexymama';
+$USERNAME = 'nyciwear';
+my %hash = ();
+
+if (1) {
+
+	foreach $CALL ('ReturnPolicyDetails','UnitOfMeasurementDetails','PaymentOptionDetails','ItemSpecificDetails','ShippingLocationDetails','ShippingPackageDetails','ShippingServiceDetails') {
+
+		print "CALL: $CALL\n";
+		$hash{'Version'} = 666;
+		$hash{'DetailName'} = $CALL;
+		my ($r) = EBAY::API::doRequest($USERNAME,'','GeteBayDetails',\%hash,xml=>1);
+		my $ssdref = XMLin($r->{'.XML'},ForceArray=>0);
+		$ssdref = $ssdref->{$CALL};
+
+		open F, ">$CALL.xml";
+		print F $r->{'.XML'};
+		close F;
+
+		open F, ">$CALL.dmp";
+		print F Dumper($ssdref);
+		close F;
+
+		open F, ">$CALL.yaml";
+		print F YAML::Dump($ssdref);	
+		close F;
+
+		store $ssdref, "$CALL.bin";
+		}
+
+
+	#	my %ShippingPackages = ();
+	#	foreach my $ssd (@{$ssdref}) {
+	#		next unless (ref($ssd->{'ShippingPackage'}) eq 'ARRAY');
+	#		foreach my $sp (@{$ssd->{'ShippingPackage'}}) { $ShippingPackages{$sp}++; }
+	#		}
+	#	my @ShippingPackages = sort keys %ShippingPackages;
+	#	print Dumper('ShippingPackages'=>\@ShippingPackages);
+	
+	
+	# print Dumper($ssdref);
+	}
+
+
+
+if (0) {
+	my ($r) = EBAY::API::doRequest($USERNAME,'','GetShippingDiscountProfiles',\%hash,xml=>1);
+	my $ref = XMLin($r->{'.XML'},ForceArray=>0);
+	print Dumper($ref);
+	}

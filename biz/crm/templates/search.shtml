@@ -1,0 +1,42 @@
+<!-- UTILITIES_TAB -->
+
+<br>
+<center>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="EXEC-SEARCH">
+<!-- ERRORS -->
+<table width=500 class="zoovytable">
+	<tr>
+		<td colspan=2 class="zoovytableheader"> Search Ticket:</td>
+	</tr>
+	<tr>
+		<td>Ticket #:</td>
+		<td><input type="textbox" name="ticket" value="<!-- TICKET -->"></td>
+	</tr>
+	<tr>
+		<td>Order #:</td>
+		<td><input type="textbox" name="orderid" value="<!-- ORDERID -->"></td>
+	</tr>
+	<tr>
+		<td>Email:</td>
+		<td><input type="textbox" name="email" value="<!-- EMAIL -->"></td>
+	</tr>
+	<tr>
+		<td>Phone:</td>
+		<td><input type="textbox" name="phone" value="<!-- PHONE -->"></td>
+	</tr>
+	<tr>
+		<td colspan=2 align=center>
+			<input class="button" type="submit" value=" Search ">
+		</td>
+	</tr>
+</table>
+
+<!-- RESULTS -->
+
+
+</form>
+</center>
+
+
+<!-- FOOTER -->

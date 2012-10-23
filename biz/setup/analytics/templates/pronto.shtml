@@ -1,0 +1,39 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<!-- DISCLAIMER -->
+
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Pronto (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="PRONTO-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<br>
+<input type="checkbox" <!-- CHK_FILTER --> name="filter"> Enable Output Filter<br>
+<div class='hint'>Enabling the output filter will attempt to display this javascript only to visitors who were sent from Pronto 
+(this minimizes the chances of javascript compatibility errors).</div>
+<br>
+JavaScript Conversion Tracking Code:<br>
+<textarea cols="70" onFocus="this.rows=25;"  rows="3" name="checkout_code"><!-- CHECKOUT_CODE --></textarea><br>
+<div class="hint">This is the javascript which Pronto tells you to include on your site
+at the checkout page</div>
+
+<!--
+<div class="hint">
+GOOGLE TRACKING PIXEL:
+https://www.bizrate.com/roi/index.xpml?cust_type=1&mid=**YOURMID**&[order_id]=[order-id]&order_value=[order-subtotal]
+</div>
+-->
+
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</form>
+</td></tr>
+</table>

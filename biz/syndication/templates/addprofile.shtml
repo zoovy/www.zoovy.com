@@ -1,0 +1,25 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table cellpadding=4 cellspacing=0>
+<tr>
+	<td bgcolor="#ffffff" valign="top">
+	<b>Add Profile:</b> 
+	<form action="index.cgi">
+		<input type="hidden" name="ACTION" value="CREATE_PROFILE">
+	<!-- MESSAGE -->	
+	<table>
+		<tr>
+			<td>Code:</td>
+			<td><input type="textbox" size="8" name="CODE"></td>
+			<td><i>Code is an 8 character alphanumeric code you will use to refer to this
+profile in the future.</i></td>
+		</tr>
+	</table>
+	<input type="submit" value=" Create Profile "><br>
+	</form>	
+	</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

@@ -1,0 +1,427 @@
+<html>
+<head>
+<title>Zoovy Domain Registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="dpone.css" type="text/css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="789">
+  <tr valign="top"> 
+    <td height="142"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="136">
+        <tr> 
+          <td width="35%"> 
+            <table border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="355">
+                    <tr> 
+                      <td background="images/midtop.gif">
+                        <div align="center"><img src="images/transfill.gif" width="300" height="1"><br>
+                          <span class="companyname">Zoovy</span></div>
+                      </td>
+                      <td><img name="midtop" src="images/midtop.gif" width="55" height="63" border="0"></td>
+                    </tr>
+                  </table>
+                </td>
+                <td><img name="rightop" src="images/rightop.gif" width="245" height="63" border="0"></td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="355">
+                    <tr> 
+                      <td><img name="leftmid" src="images/leftmid.gif" width="300" height="56" border="0"></td>
+                      <td><img name="midmid" src="images/midmid.gif" width="55" height="56" border="0"></td>
+                    </tr>
+                  </table>
+                </td>
+                <td background="images/rightmid.gif"> 
+                  <div align="right"> 
+                    <form name="DomainSearch" method="get" action="https://www.registerapi.com/rapi/style1/Registration/Step_01/CheckDomain.asp">
+                      <input type="hidden" name="siteid" value="14691">
+                      <input type="text" name="DomainName" size="15">
+                      <input type="submit" name="Submit" value="Search">
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="355">
+                    <tr> 
+                      <td><a href="http://www.zoovy.com"><img name="home" src="images/home.gif" width="66" height="17" border="0"></a></td>
+                      <td><a href="https://www.registerapi.com/rapi/style1/Register/default.asp?siteid=14691"><img name="adpt" src="images/adpt.gif" width="156" height="17" border="0"></a></td>
+                      <td><a href="https://www.registerapi.com/rapi/style1/Transfer/default.asp?siteid=14691"><img name="sprt" src="images/sprt.gif" width="133" height="17" border="0"></a></td>
+                    </tr>
+                  </table>
+                </td>
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="245">
+                    <tr> 
+                      <td><a href="http://www.zoovy.com/"><img name="default_r3_c5" src="images/default_r3_c6.gif" width="81" height="17" border="0"></a></td>
+                      <td><a href="https://www.registerapi.com/rapi/style1/Support/default.asp?siteid=14691"><img name="default_r3_c6" src="images/default_r3_c6.gif" width="75" height="17" border="0"></a></td>
+                      <td><a href="http://www.zoovy.com/pressroom/body.shtml"><img name="rightbot" src="images/rightbot.gif" width="89" height="17" border="0"></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="65%" background="https://www.registerapi.com/irtemplates/template13/images/topbkg.gif">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td valign="top" height="543"> 
+      <table width="1176" border="0" cellspacing="0" cellpadding="0" height="542">
+        <tr> 
+          <td width="17" height="19"><img src="images/transfill.gif" width="15" height="10"></td>
+          <td width="190" height="19">&nbsp; </td>
+          <td width="17" height="19"><img src="images/transfill.gif" width="15" height="10"></td>
+          <td width="934" height="19">&nbsp;</td>
+          <td width="18" height="19"><img src="images/transfill.gif" width="15" height="10"></td>
+        </tr>
+        <tr> 
+          <td width="17" height="504">&nbsp;</td>
+          <td valign="top" width="190" height="504"> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" height="432" bgcolor="#000000">
+              <tr> 
+                <td height="38"> 
+                  <div align="center"> 
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#663399" bordercolor="#000000">
+                      <tr> 
+                        <td> 
+                          <div align="center" class="hdlbold">Zoovy Domain 
+                            Pricing<br>
+                            <span class="sidelite">.com, .net, .org</span></div>
+                        </td>
+                      </tr>
+                    </table>
+                    <img src="images/transfill.gif" width="15" height="5"></div>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="4" cellspacing="1" width="95%" align="center" bordercolor="#000000">
+                    <tr bgcolor="#999999"> 
+                      <td> <font size="1" color="#FFFFFF" face="Arial, Helvetica, sans-serif">YRS</font></td>
+                      <td><font size="1" color="#FFFFFF" face="Arial, Helvetica, sans-serif">NSI</font></td>
+                      <td> <font size="1" color="#FFFFFF" face="Arial, Helvetica, sans-serif"><b>Zoovy</b></font></td>
+                      <td> <font size="1" color="#FFFFFF" face="Arial, Helvetica, sans-serif">You 
+                        Save</font></td>
+                    </tr>
+                    <tr bgcolor="#FFFFFF"> 
+                      <td><font size="1">1</font></td>
+                      <td><font size="1" color="#000000"><b>$35</b></font></td>
+                      <td><font size="1" color="#000000"><b>$15.00</b></font></td>
+                      <td><font size="1" color="#FF0000"><b>$20.00</b></font></td>
+                    </tr>
+                    <tr bgcolor="#FFFFFF"> 
+                      <td><font size="1">2</font></td>
+                      <td><font color="#000000" size="1">$<b>63</b></font></td>
+                      <td><font size="1" color="#000000"> <b>$30.00</b></font></td>
+                      <td><font size="1" color="#FF0000"><b>$33.00</b></font></td>
+                    </tr>
+                    <tr bgcolor="#FFFFFF"> 
+                      <td><font size="1">5</font></td>
+                      <td><font color="#000000" size="1">$<b>140</b></font></td>
+                      <td><font size="1" color="#000000"><b>$75.00</b></font></td>
+                      <td><font size="1" color="#FF0000"><b>$65.00</b></font></td>
+                    </tr>
+                    <tr bgcolor="#FFFFFF"> 
+                      <td><font size="1">10</font></td>
+                      <td><font color="#000000" size="1">$<b>210</b></font></td>
+                      <td><font size="1" color="#000000"><b>$150.00</b></font></td>
+                      <td><font size="1" color="#FF0000"><b>$60.00</b></font></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td height="2"><img src="images/transfill.gif" width="15" height="5"></td>
+              </tr>
+              <tr> 
+                <td height="27"> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#663399" bordercolor="#000000">
+                    <tr> 
+                      <td height="22"> 
+                        <div align="center" class="hdlbold">Domain Management</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td valign="top"> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" bordercolor="#000000">
+                    <tr> 
+                      <td height="32"> 
+                        <div align="center"> 
+                          <p><a href="https://www.registerapi.com/rapi/style1/Account/default.asp?siteid=14691">Account 
+                            Log In</a><br>
+                            <a href="https://www.registerapi.com/rapi/style1/Help/default.asp?siteid=14691">Help</a><br>
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#663399" bordercolor="#000000">
+                    <tr> 
+                      <td height="2"> 
+                        <div align="center" class="hdlbold">Products &amp; Services</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" bordercolor="#000000">
+                    <tr> 
+                      <td height="60"> 
+                        <div align="center"> 
+                          <p><a href="https://www.registerapi.com/rapi/style1/Register/default.asp?siteid=14691">Domain 
+                            Registration </a><br>
+                            <a href="https://www.registerapi.com/rapi/style1/Multilingual/default.asp?siteid=14691">Multilingual 
+                            Domain Registration</a><br>
+                            <a href="https://www.registerapi.com/rapi/style1/Transfer/default.asp?siteid=14691">Registrar 
+                            Transfer</a><br>
+                            <a href="https://www.registerapi.com/rapi/style1/Register/ExpiredDomains/default.asp?siteid=0000">Expired 
+                            Domains</a><br>
+                            <a href="https://www.registerapi.com/rapi/style1/Register/NameSpin/default.asp?siteid=0000">NameSpin</a><br>
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#663399" bordercolor="#000000">
+                    <tr> 
+                      <td height="2"> 
+                        <div align="center" class="hdlbold">Whois</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td height="102"> 
+                  <div align="center"> 
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" bordercolor="#000000">
+                      <tr> 
+                        <td height="2"> 
+                          <div align="center"> 
+                            <p><a href="https://www.registerapi.com/rapi/style1/Whois/default.asp?siteid=14691">Whois 
+                              Search</a><br>
+                              <a href="https://www.registerapi.com/rapi/style1/Help/default.asp?siteid=14691">Help</a><br>
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#663399" bordercolor="#000000">
+                      <tr> 
+                        <td height="4"> 
+                          <div align="center" class="hdlbold">Help Section</div>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" bordercolor="#000000">
+                      <tr> 
+                        <td height="2"> 
+                          <div align="center"> 
+                            <p><a href="https://www.registerapi.com/rapi/style1/Help/default.asp?siteid=14691">General 
+                              Help</a><br>
+                              <a href="http://www.zoovy.com/pressroom/body.shtml">About 
+                              US</a><br>
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="17" height="504">&nbsp;</td>
+          <td width="934" valign="top" height="504"> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td valign="top" height="253"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bordercolor="0">
+                    <tr> 
+                      <td> 
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#000000" bgcolor="#663399">
+                          <tr> 
+                            <td><span class="headline">&nbsp;Domain Registration</span></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="236"> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td height="127">A domain name, such as Company Name.com, 
+                              signifies your own address on the Internet. As no 
+                              two parties may ever hold identical domain names, 
+                              it is truly a unique identifier of you or your company. 
+                              It is how your customers will remember you and find 
+                              you among the millions of other Web sites on the 
+                              Internet. <br>
+                              <br>
+                              <br>
+                              The Six-Step Registration Process: 
+                              <p>1) Select Your Domain Name(s) <br>
+                                2) Domain Options <br>
+                                3) Define Your Domain Contacts <br>
+                                4) Define Your Name Server(s) <br>
+                                5) Define Your Billing Information <br>
+                                6) Registration Confirmation</p>
+                            </td>
+                          </tr>
+                          <tr> 
+                            <td height="2" align="right"><a href="https://www.registerapi.com/rapi/style1/Register/default.asp?siteid=14691"><img src="images/clickhere.gif" width="100" height="29" border="0"></a></td>
+                          </tr>
+                            <td height="2"> 
+                              <div align="right"><img src="images/transfill.gif" width="15" height="10"></div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td height="2"> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#000000" bgcolor="#663399">
+                    <tr> 
+                      <td class="headline">&nbsp;Registrar Transfer</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td height="40"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td height="34">What's the point of paying $35.00 for your 
+                        domain name every year? Transfer to Company Name and SAVE 
+                        as much as $60.00 on multi-year registrations.<br>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td align="right"><a href="https://www.registerapi.com/rapi/style1/Transfer/default.asp?siteid=14691"><img src="images/clickhere.gif" width="100" height="29" border="0"></a></td>
+                    </tr>
+                    <tr> 
+                      <td height="2"> 
+                        <div align="right"><img src="images/transfill.gif" width="15" height="10"></div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#000000" bgcolor="#663399">
+                    <tr> 
+                      <td class="headline">&nbsp;Expired Domains</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td height="36"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td>View the list of all the domain names which have recently 
+                        expired...<br>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="2" align="right"><a href="https://www.registerapi.com/rapi/style1/Register/ExpiredDomains/default.asp?siteid=14691">
+								<img src="images/clickhere.gif" width="100" height="29" border="0"></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#000000" bgcolor="#663399">
+                    <tr> 
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="18" height="504">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td width="17" height="19">&nbsp;</td>
+          <td width="190" height="19">&nbsp;</td>
+          <td width="17" height="19">&nbsp;</td>
+          <td width="934" height="19">&nbsp;</td>
+          <td width="18" height="19">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="104"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100">
+        <tr> 
+          <td width="36%"> 
+            <table border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="600">
+                    <tr> 
+                      <td><a href="https://www.registerapi.com/rapi/style1/Register/NameSpin/default.asp?siteid=14691"><img name="footer_r1_c1" src="images/footer_r1_c1.gif" width="100" height="24" border="0"></a></td>
+                      <td><a href="https://www.registerapi.com/rapi/style1/Multilingual/default.asp?siteid=14691"><img name="footer_r1_c2" src="images/footer_r1_c2.gif" width="160" height="24" border="0"></a></td>
+                      <td><a href="https://www.registerapi.com/rapi/style1/Register/ExpiredDomains/default.asp?siteid=14691"><img name="footer_r1_c4" src="images/footer_r1_c4.gif" width="143" height="24" border="0"></a></td>
+                      <td><img name="footer_r1_c6" src="images/footer_r1_c6.gif" width="197" height="24" border="0"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td> 
+                  <table border="0" cellpadding="0" cellspacing="0" width="600" height="77">
+                    <tr> 
+                      <td background="images/footer_r2_c5.gif" width="197" height="77"><a href="https://www.registerapi.com/rapi/style1/Account/default.asp?siteid=14691" class="headline">
+									<img name="footer_r2_c1" src="images/footer_r2_c1.gif" width="197" height="76" border="0"></a></td>
+                      <td background="images/footer_r2_c5.gif" width="79" height="77">&nbsp;</td>
+                      <td valign="top" background="images/footer_r2_c5.gif" width="324" height="77">&nbsp; 
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="64%" background="images/gif.gif">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

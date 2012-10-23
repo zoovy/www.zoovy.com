@@ -1,0 +1,18 @@
+<head>
+<SCRIPT>
+<!--//
+
+function closer()
+{
+	var x = opener.location;
+	opener.location = x;
+	window.close();
+}
+
+//-->
+</SCRIPT>
+</head>
+<body onLoad='closer();'>
+this window should close itself, and reload the parent.
+If you can read this message, your computer is very slow.
+</body>

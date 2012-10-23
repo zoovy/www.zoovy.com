@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+	<META http-equiv="Content-type" content="text/html; charset=ISO-8859-1">
+	<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</HEAD>
+<body bgcolor="#FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+
+<table align="center"><tr><td align="center">
+
+<font face="Arial, Helevetica">
+
+<FORM METHOD="POST" ENCTYPE="multipart/form-data" ACTION="edit.cgi">
+<input type="hidden" name="ID" value="<!-- ID -->">
+<input type="hidden" name="CMD" value="HIT-SAVE-TAX">
+
+<!-- DEFINE_POPUP -->
+
+<br>
+<b>Order <!-- ID --></b>
+<br>
+<br>
+(The correct tax rate is %<!-- CORRECT_STATE_RATE --> state, %<!-- CORRECT_LOCAL_RATE --> local.)
+<br>
+State Rate: %<INPUT TYPE="text" name="STATE_RATE" size="4" value="<!-- CURRENT_STATE_RATE -->"><br>
+Local Rate: %<INPUT TYPE="text" name="LOCAL_RATE" size="4" value="<!-- CURRENT_LOCAL_RATE -->"><br>
+<br> HINT: A value of 5 means %5, whereas if you entered .5 it would mean
+%0.5!<br>
+<br>
+
+<INPUT TYPE="submit" value="  Save  ">
+<input type="button" onClick="self.close(true);" value="  Exit  "> 
+
+</FORM>
+
+</font>
+
+</td></tr></table>
+
+</BODY>
+</HTML>
+<!-- TEMPLATE ./biz/setup/account/templates/replacelogo_review.shtml -->

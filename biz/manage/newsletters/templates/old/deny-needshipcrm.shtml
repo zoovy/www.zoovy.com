@@ -1,0 +1,33 @@
+<!-- SETUP_TAB -->
+<center>
+<br>
+<br>
+<font face='verdana, arial, helvetica' color='red' size='5'><b>Sorry - You don't have access to this feature</b></font><br>
+<br>
+<table table='80%'>
+<tr><td>
+<font face='sans-serif, arial' size='2'>
+
+<b>Minimum Access Required: CRM + SHIP FEATURE BUNDLES</b><br>
+<a href="/biz/configurator?VERB=VIEW&BUNDLE=CRM">Add CRM Functionality</a><br>
+<a href="/biz/configurator?VERB=VIEW&BUNDLE=SHIP">Add SHIP Functionality</a><br>
+<br>
+<br>
+The Newsletter Automation Manager provides you with the ability to configure
+automated tasks using shipping/promotion rules to select which recipients receive emails.
+<br>
+Zoovy automatically handles the opt-out, unsubscribe and bounced email messages.<br>
+<br>
+<br>
+<br>
+
+<!-- WEBDOC --> 
+
+<br>
+<br>
+</font>
+</td></tr>
+</table>
+
+</center>
+</body>

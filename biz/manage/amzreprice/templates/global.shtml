@@ -1,0 +1,73 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="GLOBAL-SAVE">
+<div style="width:600px">
+<!-- MESSAGE -->
+</div>
+<br>
+
+<table class="zoovytable" width=600>
+<tr>
+	<td>
+	<div class="bigexperimental">
+<a href="http://webdoc.zoovy.com/doc/50635">** This area is experimental **
+</a><br>
+<div class="hint">
+This area is new to the Zoovy platform.
+We have provided access to it as a preview, and to solict user feedback/comments before we proceed further 
+with development.  There is no charge to use this feature while it is in experimental mode.
+</div>
+	</div></td>
+</tr>
+<tr class="zoovytableheader">
+	<td>Global Configuration</td>
+</tr>
+<tr>
+	<td>
+	Your Company name as it appears on Amazon or graphic alt tag: 
+	<input type="textbox" name="amz_merchantname" value="<!-- AMZ_MERCHANTNAME -->"><br>
+	<div class="hint">NOTE: This must be set *exactly* to your amazon merchant name.</div>
+	</td>
+</tr>
+<tr>
+	<td>
+	Your seller id:
+	<input type="textbox" name="amz_sellerid" value="<!-- AMZ_SELLERID -->"><br>
+	<div class="hint">A 10-15 digit identifier that Amazon uses to reference your account.
+Usually this will be the seller= variable in URL's that reference your Amazon.com Storefront (e.g. Shipping Details).
+(optional)</div>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="checkbox" <!-- CHK_ENABLED --> name="enable"> Enable Repricing Panel<br>
+	<input class="button" type="submit" value=" SAVE ">
+	</td>
+</tr>
+<tr>
+	<td>
+	<div class="hint">
+	NOTICE: By checking the box above, you are agreeing to the zoovy repricing terms 
+	amendment to our service level guarantee. 
+	Enabling repricing will override certain default behaviors in our Amazon interface.
+	Depending on the type of account you have, Zoovy may impose additional fees now or in the future.
+	
+	
+	These features are experimental, and because they are based on "scraping" interface they are
+	inheriently unrelible and fragile (subject to break anytime Amazon updates or changes the design, 
+	architecture or layout of the amazon.com site).
+	Failure to reprice does not consititute a high priority issue, or a failure in Zoovy's overall quality of service. 
+	Zoovy assumes no liabiity or responsibility for the fitness of this feature 
+	or the frequency or decision logic unless such terms/warranties are explicitly stated in a contract addendum. 
+	Zoovy reserves the right to change these terms of service without notice.
+	If this is not acceptable please do not enable this feature. 
+	</div>
+	</td>
+</tr>
+</table>
+</form>
+</center>
+<!-- FOOTER -->
+

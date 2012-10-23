@@ -1,0 +1,146 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<script language=JavaScript src="/biz/js/colorpicker/picker.js"></script>
+
+</head>
+<body bgcolor="#FFFFFF"  marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" onLoad="parent.left.setImage(7);">
+<div align="center">
+
+<!-- MESSAGE -->
+
+<form action="body.cgi" name="scheme" method="post">
+		<input type="hidden" name="ACTION" value="DEVELOPER-SAVESCHEME">
+		<input type="hidden" name="file" value="<!-- FILE -->">
+		<br>
+		<span style="font-size: large;"><b>Editing Properties of <!-- FILE --></b></span><br>
+		<table width="400"><tr><td align="left">
+		<b>Wrapper Color Scheme</b><br>
+		<i>This is the color scheme used</i><br>
+		<br>
+		
+		<table class="zoovytable">
+			<tr><td class="zoovytableheader" colspan="3">General</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Name:</td>
+			<td><input type="textbox" value="<!-- name -->" name="name"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Pretty:</td>
+			<td><input type="textbox" value="<!-- pretty -->" name="pretty"></td></tr>
+			<tr><td class="zoovytableheader" colspan="3">Content</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Background Color</td>
+			<td><input type="textbox" name="content_background_color" size="6" maxlength="6"  value="<!-- content_background_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['content_background_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Font Face</td>
+			<td><input type="textbox" name="content_font_face" value="<!-- content_font_face -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Font Size</td>
+			<td><input type="textbox" name="content_font_size" value="<!-- content_font_size -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Text Color</td>
+			<td><input type="textbox" name="content_text_color" size="6" maxlength="6"  value="<!-- content_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['content_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td class="zoovytableheader" colspan="3">Table</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Heading Background Color</td>
+			<td><input type="textbox" name="table_heading_background_color" size="6" maxlength="6"  value="<!-- table_heading_background_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['table_heading_background_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Heading Font Face</td>
+			<td><input type="textbox" name="table_heading_font_face" value="<!-- table_heading_font_face -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Heading Font Size</td>
+			<td><input type="textbox" name="table_heading_font_size" value="<!-- table_heading_font_size -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Heading Text Color</td>
+			<td><input type="textbox" name="table_heading_text_color" size="6" maxlength="6"  value="<!-- table_heading_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['table_heading_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Listing Background Color</td>
+			<td><input type="textbox" name="table_listing_background_color" size="6" maxlength="6"  value="<!-- table_listing_background_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['table_listing_background_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Listing Background Color Alternate</td>
+			<td><input type="textbox" name="table_listing_background_color_alternate" size="6" maxlength="6" value="<!-- table_listing_background_color_alternate -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['table_listing_background_color_alternate'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" size="6" maxlength="6"  src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Listing Font Face</td>
+			<td><input type="textbox" name="table_listing_font_face" value="<!-- table_listing_font_face -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Listing Font Size</td>
+			<td><input type="textbox" name="table_listing_font_size" value="<!-- table_listing_font_size -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Listing Text Color</td>
+			<td><input type="textbox" name="table_listing_text_color" size="6" maxlength="6"  value="<!-- table_listing_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['table_listing_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td class="zoovytableheader" colspan="3">Link</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Active Text Color</td>
+			<td><input type="textbox" name="link_active_text_color" size="6" maxlength="6"  value="<!-- link_visited_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['link_active_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Text Color</td>
+			<td><input type="textbox" name="link_text_color" size="6" maxlength="6"  value="<!-- link_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['link_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Visited Text Color</td>
+			<td><input type="textbox" name="link_visited_text_color" size="6" maxlength="6"  value="<!-- link_visited_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['link_visited_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td class="zoovytableheader" colspan="3">Alert</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Color</td>
+			<td><input type="textbox" name="alert_color" size="6" maxlength="6"  value="<!-- alert_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['alert_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td class="zoovytableheader" colspan="3">Disclaimer</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Background Color</td>
+			<td><input type="textbox" name="disclaimer_background_color" size="6" maxlength="6"  value="<!-- disclaimer_background_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['disclaimer_background_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Font Face</td>
+			<td><input type="textbox" name="disclaimer_font_face" value="<!-- disclaimer_font_face -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Font Size</td>
+			<td><input type="textbox" name="disclaimer_font_size" value="<!-- disclaimer_font_size -->"></td></tr>
+			<tr><td>&nbsp; &nbsp;</td>
+			<td>Text Color</td>
+			<td><input type="textbox" name="disclaimer_text_color" size="6" maxlength="6"  value="<!-- disclaimer_text_color -->">
+				<a href="javascript:TCP.popup(document.forms['scheme'].elements['disclaimer_text_color'],1)">
+				<img width="15" height="13" border="0" alt="Click Here to Pick up the color" src="/biz/js/colorpicker/img/sel.gif"></a>
+				</td></tr>
+		</table>
+
+		
+
+		<br>
+		<input type="submit" value="Save Theme Properties">
+		</td></tr></table>
+</form>
+
+</div>
+</body>

@@ -1,0 +1,55 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<title>Amazon @Merchant Syndication</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<br>
+<table width="600" cellspacing='0' cellpadding='0' align='center'><tr><td>
+<!-- MESSAGE -->
+
+<h1>Amazon Categories:</h1>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="CATEGORIES-SAVE">
+
+<table class='zoovytable' cellspacing='0' cellpadding='4'>
+<tr>
+	<td colspan='2' class='zoovytableheader'>Map Categories</td>
+</tr>
+<tr>
+	<td colspan='2' class='hint'>
+Rather than specifying categories for each product you can map the
+categories on your website to Amazon properties.
+These categories will be used in the event a specific category is not
+specified in the actual product.
+	
+	</td>
+</tr>
+
+<!-- CATEGORIES -->
+
+<tr>
+	<td colspan='2'>
+
+
+<div class='zbutton_group'>
+<input type=image src="/images/bizbuttons/save.gif">
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif">
+</div>
+	
+	
+	</td>
+</tr>
+</table>
+<br>
+
+</form>
+</td></tr>
+</table>
+
+</body>

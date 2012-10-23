@@ -1,0 +1,60 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy offers instant display ads with iPromote', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","IPROMOTE");
+</script>
+
+<!-- <img src='/images/partner_pages/amazon_header-462x85.gif' height="85" width="462" border='0' alt='Listing and selling on Amazon made easy'
+/>-->
+
+<img src='ipromote_header-462x85.gif' border='0' alt='Display advertising made easy' />
+
+<div id="ipromote_content" style="width:462px">
+  <div style="width:462px; height:131px; margin-bottom:40px">
+		<img src="ipromote_content_01.gif" width="462" height="74" alt="" style="width:462px; height:74px; display:block; margin:0px; border:none; padding:0px;" />
+		<img src="ipromote_content_02.gif" width="339" height="35" alt="" style="width:339px; height:35px; display:block; margin:0px; border:none; padding:0px; float:left" />
+		
+		<img src="ipromote_content_04.gif" width="462" height="22" alt="" style="width:462px; height:22px; display:block; margin:0px; border:none; padding:0px; clear:both; margin-bottom:20px" />
+        <a href="http://zoovy.ipromote.com" title="Try It Now" target="_blank" style="width:123px; height:35px; display:block; border:none; float:left">
+			<img src="ipromote_content_03.gif" width="123" height="35" alt="" style="display:block; margin:0px; border:none; padding:0px;" />
+		</a>
+	</div>
+	<img src="ipromote_content_06.jpg" width="462" height="413" alt="" style="width:462px; height:413px; display:block; margin-bottom:40px; border:none; padding:0px;" />
+	<img src="ipromote_content_07.jpg" width="462" height="313" alt="" style="width:462px; height:313px; display:block; margin-bottom:40px; border:none; padding:0px;" />
+	<img src="ipromote_content_08.jpg" width="462" height="345" alt="" style="width:462px; height:345px; display:block; margin-bottom:40px; border:none; padding:0px;" />
+	<a href="http://zoovy.ipromote.com" title="Try It Now" target="_blank" style="width:123px; height:35px; display:block; border:none; margin:0px auto">
+		<img src="ipromote_content_03.gif" width="123" height="35" alt="" style="display:block; margin:0px; border:none; padding:0px;" />
+	</a>
+</div>
+<br>
+
+
+<div class="box" style="padding:5px; width:446px; margin-top:20px; margin-bottom:20px;">		
+
+<div><img src="/images/partner_pages/download_more_info.gif" alt='download more information' width="317" height="35"></div>
+
+<p>
+<a href="/pdf/sheet_amazon_syndication.pdf" target="_blank"><img alt="BuySAFE Integration" src="/images/partner_pages/buysafe_dl_icon-102x119.gif" width="102" height="119" BORDER="0" align='left'></a>
+
+<a href="/pdf/sheet_amazon_syndication.pdf" target="_blank">Download</a> a free full-color information sheet covering important points about Amazon integration in Zoovy 1.</p>
+				
+<p class='hint'>(To download to your desktop, right-click on the download link and choose 'Save Target As....)</p>
+			
+<div align='right'><a href="http://www.adobe.com/products/acrobat/readstep2.html" target="_blank"><img alt="Download Acrobat Reader" src="/images/partner_pages/acrobat_logo.gif" width="119" height="35" BORDER="0"></a></div>
+
+
+</div>	
+
+
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

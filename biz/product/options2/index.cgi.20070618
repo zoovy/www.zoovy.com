@@ -1,0 +1,1490 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZOOVY;
+use Data::Dumper;
+use GTOOLS;
+use ZTOOLKIT;
+use POGS;
+use URI::Escape qw (uri_escape);
+use strict;
+use ZWEBSITE;
+use Digest::MD5;
+
+
+&ZOOVY::init();
+my $DEBUG = 0;
+my $template_file = '';
+my ($USERNAME,$FLAGS);
+
+#print STDERR Dumper($ZOOVY::cgiv);
+
+my $PRODUCT = $ZOOVY::cgiv->{'PRODUCT'};
+if (not defined $PRODUCT) { 
+	$PRODUCT = $ZOOVY::cgiv->{'product'}; 
+	}
+
+$GTOOLS::TAG{'<!-- MODE -->'} = '';
+
+$::MODE = '';
+$::AUTH = '';
+if ($ZOOVY::cgiv->{'MODE'} eq 'TOKEN') {
+	## IN TOKEN MODE, YOU PASS:
+	##		MD5(TS + TOKEN)   and TS and CLIENT (which is the one the token was issued for)
+	##
+	$USERNAME = $ZOOVY::cgiv->{'USERNAME'};
+	my $TS = $ZOOVY::cgiv->{'TS'};
+	my $TOKEN = $ZOOVY::cgiv->{'TOKEN'};
+	my $CLIENT = $ZOOVY::cgiv->{'CLIENT'};
+
+	my ($REALTOKEN) = &ZWEBSITE::fetch_website_attrib($USERNAME,'token_'.lc($CLIENT));
+	my $REALTHASH = Digest::MD5::md5_hex( $USERNAME . $CLIENT . $REALTOKEN . $TS );
+
+	if ($REALTHASH eq $TOKEN) {
+		$TS = time();
+		$TOKEN = Digest::MD5::md5_hex( $USERNAME . $CLIENT . $REALTOKEN . $TS );
+		$ZOOVY::cgiv->{'MODE'} = "THASH:$USERNAME:$CLIENT:$TOKEN:$TS";
+
+		my $CONTENT = $ZOOVY::cgiv->{'CONTENT'};
+#		print STDERR "CONTENT: $CONTENT\n";
+		if ($CONTENT =~ /<PRODUCT(.*?)>(.*?)<\/PRODUCT>/s) {
+			my $TMP = $1;
+			my $hashref = &ZOOVY::attrib_handler_ref($2);
+			if ($TMP =~ / NAME="(.*?)"/) { $PRODUCT = $1; }
+			foreach my $k (keys %{$hashref}) {
+				&saveproduct_attrib($USERNAME,$PRODUCT,$k,$hashref->{$k});
+				}
+			}
+		}
+	else {
+		$ZOOVY::cgiv->{'MODE'} = "THASH:$USERNAME:$CLIENT:$TOKEN:$TS";
+		}
+
+	}
+elsif ($ZOOVY::cgiv->{'MODE'} eq 'XML') {
+	## Product Manager pass MODE=XML -- but when we loop on ourselves we pass XML:USERNAME
+	require ZAUTH;
+
+	$USERNAME = $ZOOVY::cgiv->{'USERNAME'};
+	if ($ZOOVY::cgiv->{'PASSWORD'} ne '') {
+		## old product manager code
+		$ZOOVY::cgiv->{'MODE'} = 'XML:'.$USERNAME.':'.&ZAUTH::md5_convert($USERNAME,$ZOOVY::cgiv->{'PASSWORD'});
+		}
+
+	}
+
+if ($ZOOVY::cgiv->{'MODE'} =~ /^THASH:(.*?)\:(.*?)\:(.*?)\:(.*?)$/) {
+	$USERNAME = $1; my $CLIENT = $2; my $TOKEN = $3; my $TS = $4;
+
+	# if ($CLIENT eq 'zwm') { $CLIENT = 'zpm'; }
+
+	my $REALTOKEN = &ZWEBSITE::fetch_website_attrib($USERNAME,'token_zwm');
+	my $REALTHASH = Digest::MD5::md5_hex( $USERNAME . $CLIENT . $REALTOKEN . $TS );
+	
+	if ($REALTHASH eq $TOKEN) {
+		$TS = time();
+		$TOKEN = Digest::MD5::md5_hex( $USERNAME . $CLIENT . $REALTOKEN . $TS );
+		$ZOOVY::cgiv->{'MODE'} = "THASH:$USERNAME:$CLIENT:$TOKEN:$TS";
+		$::MODE = $ZOOVY::cgiv->{'MODE'};
+		$FLAGS = '';
+		$GTOOLS::TAG{'<!-- MODE -->'} = $ZOOVY::cgiv->{'MODE'};
+		}
+	else {		
+		print "Content-type: text/plain\n\n";
+		print "Sorry, but we could not authenticate $USERNAME\n";
+		print "TOKEN ID=$ZOOVY::cgiv->{'MODE'}\n";
+		print "Please close this window, verify your password, and try again.\n";
+		print "TOKEN IN WEBDB: $REALTOKEN\nREALHASH: $REALTHASH\nBASED ON: $USERNAME$CLIENT$REALTOKEN$TS\n";
+		print "KEY IS: token_".lc($CLIENT)."\n";
+		exit;
+		}
+
+	$::AUTH = $ZOOVY::cgiv->{'MODE'};
+	}
+elsif ($ZOOVY::cgiv->{'MODE'} =~ /^XML:(.*?):(.*?)$/) {
+	## XML MODE is used by product manager, we save all products and settings and junk to a product called ZPMTESTPROD
+	##		(which later on will really be a file on a disk, not necessarily a product)
+	$USERNAME = $1; my $MD5PASS = $2;
+	require ZAUTH;
+	if (&ZAUTH::md5_check($USERNAME,$MD5PASS)==0) {
+		$::MODE = $ZOOVY::cgiv->{'MODE'};
+		$FLAGS = '';
+		$GTOOLS::TAG{'<!-- MODE -->'} = 'XML:'.$USERNAME.':'.$MD5PASS; 
+		}
+	else {
+		print "Content-type: text/plain\n\n";
+		print "Sorry, but we could not authenticate $USERNAME\n";
+		print "SESSION ID=$MD5PASS\n\n";
+		print "Please close this window, verify your password, and try again.\n";
+		exit;
+		}
+	$::AUTH = $USERNAME.':'.$MD5PASS;
+	}
+else {
+	## This is a normal session, just process the login.
+	($USERNAME,$FLAGS) = &ZOOVY::authenticate(undef,1);
+	}
+
+
+if ((not defined $USERNAME) || ($USERNAME eq '')) {
+	print "Content-type: text/plain\n\n";
+	print "USERNAME not set.\n";
+	exit; 
+	}
+
+sub saveproduct_attrib {
+	my ($USERNAME,$PRODUCT,$ATTRIB,$VALUE) = @_;
+	&ZOOVY::saveproduct_attrib($USERNAME,$PRODUCT,$ATTRIB,$VALUE);
+	}
+
+sub fetchproduct_attrib {
+	my ($USERNAME,$PRODUCT,$ATTRIB) = @_;
+
+	my $value = undef;	
+	$value = &ZOOVY::fetchproduct_attrib($USERNAME,$PRODUCT,$ATTRIB);
+
+	return($value);
+	}
+
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+$GTOOLS::TAG{'<!-- POG -->'} = $ZOOVY::cgiv->{'POG'};
+$GTOOLS::TAG{'<!-- SOG -->'} = $ZOOVY::cgiv->{'SOG'};
+$GTOOLS::TAG{'<!-- TS -->'} = $ZOOVY::cgiv->{'TS'};
+$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+my $SOGID = '';
+
+## moves a POG (designed by CGI param POG) up one position
+if ($VERB eq 'PROMOTE' || $VERB eq 'DEMOTE') {
+	my $CODE = $ZOOVY::cgiv->{'POG'};
+	my $pogstr = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs');
+	my @pogs = &POGS::text_to_struct($USERNAME,$pogstr,0);
+	my $pos = -1; my $count = 0;
+	foreach my $pog (@pogs) {
+		if ($pog->{'id'} eq $CODE) { $pos = $count; }
+		$count++;
+		}
+	## SANITY: at this point $pos is -1 if failure occurred, 
+	## 			or the position in the @pogs array for the item we should promote/demote
+	if (($VERB eq 'DEMOTE') && ($pos<$count)) {
+		my $tmp = $pogs[$pos+1]; $pogs[$pos+1] = $pogs[$pos]; $pogs[$pos] = $tmp; 
+		}
+	elsif (($VERB eq 'PROMOTE') && ($pos>0)) {
+		my $tmp = $pogs[$pos-1]; $pogs[$pos-1] = $pogs[$pos]; $pogs[$pos] = $tmp; 
+		}
+	&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+	$VERB = '';
+	}
+
+
+
+if ($VERB eq 'COPYSWOG') {
+	&POGS::import_swog($USERNAME,$ZOOVY::cgiv->{'ID'});
+	$VERB = '';
+	}
+
+
+## Associates a SOG to the current product
+if ($VERB eq 'ADDSOG') {
+	my $pogstr = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs');
+	my @pogs = &POGS::text_to_struct($USERNAME,$pogstr,0);
+	my $ERROR = 0;
+	my $ID = $ZOOVY::cgiv->{'SOG'};
+	my $INVCOUNT = 0;
+	foreach my $pog (@pogs) {
+		if ($pog->{'inv'}>0) { $INVCOUNT++; }
+		if ($pog->{'id'} eq $ID) {
+			$ERROR++;
+			$GTOOLS::TAG{'<!-- OUTPUT -->'} = '<br><b><font color="red">Sorry, the store option group '.$ID.' is already associated!</font></b><br>'; 
+			}
+		}
+
+	if (not $ERROR) {
+		my $soglistref = &POGS::list_sogs($USERNAME);
+		my $NAME = $soglistref->{$ID};
+		
+		## now we load the SOG struct into memory so we can figure out if it's inventoriable
+		my @sog = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$ID,$NAME));
+		my $INV = $sog[0]->{'inv'};
+
+		## now we add a stub POG as text
+		my $output = "<pog type=\"sog\" id=\"$ID\" inv=\"$INV\" sog=\"$ID-$NAME\"></pog>";
+#		print STDERR "OUTPUT: $output\n";
+
+		if (($INV>0) && ($INVCOUNT>=3)) { 
+			$output = ''; 
+			$ERROR++;
+			$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<font color='red'>ERROR: You may have a maximum of 3 inventoriable option groups per product.</font>"; 
+			}
+		
+		if ($output ne '') {
+			## load the POG back into memory as an array.
+			my @pog = &POGS::text_to_struct($USERNAME,$output,1);
+
+			## now, if this is global.. we need to re-import it without any options
+			if ($pog[0]->{'global'}) { @pog = &POGS::text_to_struct($USERNAME,$output,0); }
+			$pog[0]->{'id'} = $ID;
+			push @pogs, $pog[0];
+			&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+			}
+		}
+	$VERB = '';
+	}
+
+
+##
+##
+##
+
+if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
+	## NOTE: if we encounter an error we simply reset VERB to "CREATE"
+	my $output = '';
+	my $TYPE = $ZOOVY::cgiv->{'TYPE'};
+	my $ERROR = 0;
+
+	if (length($ZOOVY::cgiv->{'PROMPT'})<4) {
+		$ERROR++;
+		$GTOOLS::TAG{'<!-- PROMPT_ERROR -->'} = "<font color='red'>ERROR: Prompt is a required field and cannot be left blank.</font><br>";
+		}
+
+	$output = "<pog prompt=\"".&ZOOVY::incode($ZOOVY::cgiv->{'PROMPT'})."\"";
+	
+
+	if (defined $ZOOVY::cgiv->{'FINDER'}) { $output .= ' inv="0" global="0" '; $TYPE = 'attribs';}
+	else {
+		if ($ZOOVY::cgiv->{'ASSEMBLY'}) { $ZOOVY::cgiv->{'INV'} += 2; }
+		if (defined $ZOOVY::cgiv->{'INV'}) { $output .= ' inv="'.$ZOOVY::cgiv->{'INV'}.'"'; }
+		if (defined $ZOOVY::cgiv->{'GLOBAL'}) { $output .= ' global="'.$ZOOVY::cgiv->{'GLOBAL'}.'"'; }
+		}
+		
+	if (defined $ZOOVY::cgiv->{'AMZ'}) { $output .= ' amz="'.$ZOOVY::cgiv->{'AMZ'}.'"'; }
+
+	if ($TYPE eq 'text') {
+		$output .= ' type="text">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with text fields.</font><br>"; }
+#		print STDERR "$output\n";
+		}
+	elsif ($TYPE eq 'cb') {		
+		$output .= ' type="cb">';
+		$output .= '<option v="NO" m="">Not Checked</option>';
+		$output .= '<option v="ON" m="">Checked</option>';
+		}
+	## HIDDEN
+	elsif ($TYPE eq 'hidden') {
+		$output .= ' type="hidden">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with text fields.</font><br>"; }
+		}
+	## FINDER
+	elsif ($TYPE eq 'attribs') {
+		$output .= ' type="attribs">';
+		}	
+	elsif ($TYPE eq 'select') {
+		$output .= ' type="select">';
+		}
+	elsif ($TYPE eq 'radio') {
+		$output .= ' type="radio">';
+		}
+	elsif ($TYPE eq 'textarea') {
+		$output .= ' type="textarea" cols="80" rows="3">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with textarea fields.</font><br>"; }
+		}
+	elsif ($TYPE eq 'number') {
+		$output .= ' type="number">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with number fields.</font><br>"; }
+		}
+	elsif ($TYPE eq 'biglist') {
+		$output .= ' type="biglist">';
+		}
+	elsif ($TYPE eq 'imgselect') {
+		$output .= ' type="imgselect" width="75" height="75" zoom="1">';
+		}
+	elsif ($TYPE eq 'imggrid') {
+		$output .= ' type="imggrid" width="50" height="50" cols="8" zoom="1">';
+		}
+	elsif ($TYPE eq 'calendar') {
+		$output .= ' type="calendar" flags="255">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with calendar fields.</font><br>"; }
+		}
+	elsif ($TYPE eq 'readonly') {
+		$output .= ' type="readonly" default="Type your Text/Instructions Here!">';
+		if ($ZOOVY::cgiv->{'INV'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with readonly fields.</font><br>"; }
+		}
+	else { 
+		$ERROR++;
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>ERROR: Unknown type: $TYPE</font><br>";
+		}
+	$output .= '</pog>';
+
+	my $SOGNAME = lc($ZOOVY::cgiv->{'PROMPT'});
+	$SOGNAME =~ s/[^\w]+/_/g;
+
+#	print STDERR "VERB: $VERB - output: $output\n";
+
+	## if we are creating a SOG
+	if ($VERB eq 'SAVE-CREATESOG') {
+		my $listref = &POGS::list_sogs($USERNAME);
+		foreach my $k (keys %{$listref}) {
+			if ($listref->{$k} eq $SOGNAME) {
+				$ERROR++;
+				$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A SOG named $SOGNAME already exists [ID=$k].</font><br>";
+				}
+			}
+
+		my $CODE = '';	
+		if ($ERROR) {
+			$VERB = 'CREATESOG';
+			}
+		else {
+			## SOGS are so simple
+			($CODE,$output) = &POGS::register_sog($USERNAME,undef,$SOGNAME,$output);
+			$VERB = 'EDITSOG';
+	
+#			print STDERR "REGISTER_SOG: CODE=$CODE output=$output\n";
+	# This automatically adds the SOG to the product.		
+	#		if ($PRODUCT) {
+	#			my $pogstr = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs');
+	#			@pogs = &POGS::text_to_struct($USERNAME,$pogstr,0);
+	#			@pog = &POGS::text_to_struct($USERNAME,$output,1);
+	#			$pog[0]->{'id'} = $CODE;
+	#			push @pogs, $pog[0];
+	#			&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+	#			}
+			}
+		}
+
+	## if we didn't have an error we ALWAYS save PRODUCT
+	if ($VERB eq 'SAVE-CREATEPOG') {
+		my $pogstr = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs');
+
+		## step2: parse the pogs into memory
+		my @pogs = &POGS::text_to_struct($USERNAME,$pogstr,0);
+		my $INVCOUNT = 0;
+		foreach my $pog (@pogs) {
+			if ($pog->{'inv'}>0) { $INVCOUNT++; }
+			if ($pog->{'iname'} eq $ZOOVY::cgiv->{'INAME'}) {
+				$ERROR++;
+				$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A POG iname=[$ZOOVY::cgiv->{'INAME'}] already exists [ID=$pog->{'id'}] - cannot create another one! (hint: you probably just pressed refresh on the browser)</font><br>";
+				}
+			}
+
+		if (($ZOOVY::cgiv->{'INV'}>0) && ($INVCOUNT>=3)) {
+			$ERROR++;
+			$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A single product may not have more than 3 inventoriable option groups associated with it.</font><br>";
+			}
+
+		if ($ERROR) {
+			$VERB = 'CREATEPOG';
+			}
+		else {
+			## POGS aren't as simple! 
+			## step1: load the pogs from the product.
+			## step4: load the new POG into memory, and set the ID to the next ID
+			my @pog = &POGS::text_to_struct($USERNAME,$output,1);
+#			print STDERR Dumper(\@pog);
+			$pog[0]->{'id'} = &POGS::find_next_available_id(\@pogs);
+			$pog[0]->{'iname'} = $ZOOVY::cgiv->{'INAME'};
+			$ZOOVY::cgiv->{'POG'} = $pog[0]->{'id'};
+
+			## step5: push the option to the end of the product.
+			push @pogs, $pog[0];
+
+			## step6: store the pogs back into the product.
+			&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+			$VERB = 'EDITPOG';
+			}
+		}
+	}
+
+
+#######################################
+if ($VERB eq 'SAVEPOG') {
+	my $POGID = $ZOOVY::cgiv->{'POG'};
+	my $SOGID = $ZOOVY::cgiv->{'SOG'};
+	my @pogs = ();
+	my $pog = undef;
+
+	if ($POGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+		$pog = &POGS::find_pog_in_pogs(\@pogs,$POGID);
+		$pog->{'id'} = $POGID;
+		}
+	if ($SOGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$SOGID));
+		$pog = $pogs[0];
+		$pog->{'id'} = $SOGID;
+		}
+
+	if (defined $ZOOVY::cgiv->{'PROMPT'}) { $pog->{'prompt'} = $ZOOVY::cgiv->{'PROMPT'}; }
+	if (defined $ZOOVY::cgiv->{'INV'}) { $pog->{'inv'} = $ZOOVY::cgiv->{'INV'}; }
+	if (defined $ZOOVY::cgiv->{'GLOBAL'}) { $pog->{'global'} = $ZOOVY::cgiv->{'GLOBAL'}; }
+	if (defined $ZOOVY::cgiv->{'HINT'}) { $pog->{'hint'} = $ZOOVY::cgiv->{'HINT'}; }
+	if (defined $ZOOVY::cgiv->{'AMZ'}) { $pog->{'amz'} = $ZOOVY::cgiv->{'AMZ'}; }
+
+	if ($pog->{'type'} eq 'imgselect' || $pog->{'type'} eq 'imggrid') {
+		$pog->{'width'} = $ZOOVY::cgiv->{'WIDTH'};
+		$pog->{'height'} = $ZOOVY::cgiv->{'HEIGHT'};
+		$pog->{'zoom'} = $ZOOVY::cgiv->{'ZOOM'};
+		if ($pog->{'type'} eq 'imggrid') {
+			$pog->{'cols'} = $ZOOVY::cgiv->{'COLS'};
+			}
+		}
+
+	if ($pog->{'type'} eq 'calendar') {
+		$pog->{'flags'} = 0;
+		$pog->{'fee_rush'} = sprintf("%.2f",$ZOOVY::cgiv->{'FEE_RUSH'});
+		$pog->{'rush_msg'} = $ZOOVY::cgiv->{'RUSH_MSG'};
+		$pog->{'rush_prompt'} = $ZOOVY::cgiv->{'RUSH_PROMPT'};
+		$pog->{'rush_days'} = int($ZOOVY::cgiv->{'RUSH_DAYS'});
+		}
+
+	if ($pog->{'type'} eq 'text' || $pog->{'type'} eq 'textarea' || $pog->{'type'} eq 'number' 
+			|| $pog->{'type'} eq 'readonly' || $pog->{'type'} eq 'hidden') {
+		$pog->{'default'} = $ZOOVY::cgiv->{'DEFAULT'};
+		$pog->{'maxlength'} = $ZOOVY::cgiv->{'MAXLENGTH'};
+		if ($pog->{'type'} eq 'textarea') {
+			$pog->{'cols'} = $ZOOVY::cgiv->{'COLS'};
+			$pog->{'rows'} = $ZOOVY::cgiv->{'ROWS'};
+			}
+		if ($pog->{'type'} eq 'number') {
+			$pog->{'min'} = $ZOOVY::cgiv->{'MIN'};
+			$pog->{'max'} = $ZOOVY::cgiv->{'MAX'};
+			}
+		else {
+			$pog->{'fee_line'} = sprintf("%.2f",$ZOOVY::cgiv->{'FEE_LINE'});
+			$pog->{'fee_word'} = sprintf("%.2f",$ZOOVY::cgiv->{'FEE_WORD'});
+			$pog->{'fee_char'} = sprintf("%.2f",$ZOOVY::cgiv->{'FEE_CHAR'});
+			}
+		}
+	$pog->{'options'} = [];
+
+	my %ids = ();	# tracks id's already in use!
+	my @needid = ();
+	foreach my $kvs (split(/[\n\r]+/,$ZOOVY::cgiv->{'listorder'})) {
+		my %opt = ();
+		foreach my $kvss (split(/\|/,$kvs)) {
+#			print STDERR "kvs: $kvs KVSS: $kvss\n";
+			my ($k,$v) = split(/=/,$kvss,2);
+			if ($v eq '') { }
+			elsif ($k eq 'id') { 
+				if (length($v)==2) {
+					$opt{'v'} = uc($v); $ids{uc($v)}++; 
+					}
+				}
+			elsif ($k eq 'pt') { $opt{'prompt'} = $v; }
+			elsif ($k eq 'html') { $opt{'html'} = $v; }
+			else { $opt{'m'} = $opt{'m'}. ((defined $opt{'m'})?'|':''). "$k=$v"; }
+			}
+		push @{$pog->{'options'}}, \%opt;
+		## NOTE: remember that needid contains a ref to the same data structure as $pog->{'options'} 
+		## this means we can recurse @needid later and change $pog->{'options'} - if you don't understand this, don't muck with it!
+		if ($opt{'v'} eq '') { push @needid, \%opt; }
+		}
+	
+	if ($pog->{'type'} eq 'biglist') {
+		foreach my $line (split(/[\n\r]+/,$ZOOVY::cgiv->{'biglist_contents'})) {
+#			print STDERR "LINE: $line\n";
+			next if ($line eq '');
+			my %opt = ();
+			my ($opt1,$opt2) = split(/\|/,$line);
+			$opt{'m'} = '';
+			$opt{'prompt'} = "$opt1|$opt2";
+			push @{$pog->{'options'}}, \%opt;
+			push @needid, \%opt;			# needid is simply a reference into @{$pog->{'options'}} for options which need values!
+			}
+		}
+
+#	print STDERR Dumper(\@needid);
+
+	## assign ID's to any option that doesn't have one!
+	my $counter = -1;
+	foreach my $opt (@needid) {
+		while (defined $ids{ &POGS::base36( ++$counter) }) {
+			## do nothing!
+			};
+		$opt->{'v'} = &POGS::base36($counter);
+		$ids{ &POGS::base36($counter) }++;
+		}
+
+	# print "Content-type: text/html\n\n"; print "<pre>".&ZOOVY::incode(Dumper($pog))."</pre>"; exit;
+	if ($POGID) {
+#		print STDERR &POGS::struct_to_text(\@pogs)."\n"; 
+		
+     my $inv_enable = &ZOOVY::fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:inv_enable');
+      $inv_enable -= ($inv_enable & 5);
+
+      &saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+      if (&POGS::use_inventory(\@pogs)) {
+         ## has inventory - so enable inv w/options!
+         &saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:inv_enable',$inv_enable+5);
+         }
+      else {
+         ## no inventory options
+         &saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:inv_enable',$inv_enable+1);
+         }
+      }
+
+	if ($SOGID) {
+		use Data::Dumper;
+		print STDERR "[register_sog] $SOGID ".Dumper(@pogs);
+		&POGS::register_sog($USERNAME,$SOGID,$pog->{'prompt'},&POGS::struct_to_text(\@pogs));
+		}
+
+	$VERB = '';
+	}
+
+
+
+
+#######################################
+if ($VERB eq 'KILLPOG') {
+	my $POGID = $ZOOVY::cgiv->{'POG'};
+	my $SOGID = $ZOOVY::cgiv->{'SOG'};
+
+	if ($POGID) {
+		my @pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+		my @new = ();
+		for (my $x = 0; $x < scalar(@pogs); $x++) {
+			if ($pogs[$x]->{'id'} ne $POGID) { push @new, $pogs[$x]; }
+			}
+		&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@new));
+		}
+
+	$VERB = '';
+	if ($SOGID) {
+		$VERB = 'WARNKILLSOG';
+		}
+	}
+
+#######################################
+if ($VERB eq 'WARNKILLSOG') {
+	$template_file = 'warnkillsog.shtml';
+	}
+
+
+#######################################
+if ($VERB eq 'KILLSOG') {
+	my $SOGID = $ZOOVY::cgiv->{'SOG'};
+#	print STDERR "USERNAME: $USERNAME SOG: $SOGID\n";
+	if ($SOGID) { &POGS::kill_sog($USERNAME,$SOGID); }
+	$VERB = '';
+	}
+
+
+#######################################
+if ($VERB eq 'SAVEGRID') {
+	my $POGID = $ZOOVY::cgiv->{'POG'};
+	my @pogs = ();
+	my $optionsref = undef;
+	my $pog = undef;
+	my $sogref = undef;
+	if ($POGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+		$pog = &POGS::find_pog_in_pogs(\@pogs,$POGID);
+		$optionsref = $pog->{'options'};
+		}
+
+	if ($pog->{'sog'}) {
+		my ($sogid,$sogname) = split(/-/,$pog->{'sog'});
+		my @sogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$sogid,$sogname),0);
+		$sogref = pop @sogs;
+		$optionsref = $sogref->{'options'};
+		}
+
+	##
+	## SANITY:
+	##		at this point $optionsref is populated with the list of options from the sog
+	##
+
+	my $c = '';
+	my @saveoptions = ();
+	foreach my $opt (@{$optionsref}) {
+		my $v = $opt->{'v'};
+		next unless (defined $ZOOVY::cgiv->{'check-'.$v});
+#		print STDERR "PARSING: $v\n";
+		$opt->{'prompt'} = $ZOOVY::cgiv->{'prompt-'.$v};
+		my $metaref = &POGS::parse_meta($opt->{'m'});
+		$metaref->{'p'} = $ZOOVY::cgiv->{'price-'.$v};
+		$metaref->{'w'} = $ZOOVY::cgiv->{'weight-'.$v};
+		$opt->{'m'} = &POGS::encode_meta($metaref);
+		push @saveoptions, $opt;
+		}
+	$pog->{'options'} = \@saveoptions;
+
+#	print STDERR "DUMPER: ".Dumper(\@pogs);
+#	print STDERR "OUTPUT: ".&POGS::struct_to_text(\@pogs);
+#	print STDERR "OPTIONS: ".Dumper(\@saveoptions);
+
+	if ($POGID) {
+		# print STDERR &POGS::struct_to_text(\@pogs)."\n"; exit;
+		&saveproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs',&POGS::struct_to_text(\@pogs));
+		}
+
+	$VERB = 'GRIDEDIT';
+	}
+
+
+
+
+
+
+#######################################
+if ($VERB eq 'GRIDEDIT') {
+	my $POGID = $ZOOVY::cgiv->{'POG'};
+	my @pogs = ();
+	my $pog = undef;
+	my $sogref = undef;
+	my $optionsref = undef;
+	my %INCLUDED = ();			# a hash of included options, along with modifiers, etc.
+	if ($POGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+		$pog = &POGS::find_pog_in_pogs(\@pogs,$POGID);
+		$optionsref = $pog->{'options'};
+		foreach my $opt (@{$optionsref}) {
+			$INCLUDED{$opt->{'v'}} = $opt;
+			}
+		}
+
+	if ($pog->{'sog'}) {
+		my ($sogid,$sogname) = split(/-/,$pog->{'sog'});
+		my @sogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$sogid,$sogname),0);
+		$sogref = pop @sogs;
+		# print STDERR Dumper($pog,$sogref);
+		$optionsref = $sogref->{'options'};
+		}
+
+#	print STDERR "INCLUDED: ".Dumper(\%INCLUDED);
+
+	##
+	## SANITY:
+	##		$sogref is undef if we are editing a pog, otherwise it's the complete sog
+	##		$pog is a reference to the pog we're editing
+	##		$optionslist is the full list of options available
+	##		%INCLUDED is a hash keyed by value with the data the merchant has customized
+	##
+	$GTOOLS::TAG{'<!-- PROMPT -->'} = $pog->{'prompt'};
+	$GTOOLS::TAG{'<!-- TYPE -->'} = $pog->{'type'};
+	$GTOOLS::TAG{'<!-- POG -->'} = $POGID;
+	$GTOOLS::TAG{'<!-- SOG -->'} = $SOGID;
+
+	my $c = '';	
+	my $checked = '';
+	my $differs = '';
+	foreach my $opt (@{$optionsref}) {
+		my $v = $opt->{'v'};
+		# $c .= "<tr><td colspan='5'>".Dumper($opt)."</td></tr>";
+		$c .= "<tr>";
+		if (defined $INCLUDED{$v}) { 
+			$checked = 'checked'; 
+			## compare the prompt and meta to see if they are different between sog and pog.
+			if (($opt->{'prompt'} ne $INCLUDED{$v}->{'prompt'}) || ($opt->{'m'} ne $INCLUDED{$v}->{'m'})) {
+				my $tmpmetaref = &POGS::parse_meta($opt->{'m'});
+				$differs = qq~
+					<a border="0" onClick="
+					document.forms[0].elements['price-$v'].value = '$tmpmetaref->{'p'}';
+					document.forms[0].elements['weight-$v'].value = '$tmpmetaref->{'w'}'; 
+					document.images['recover$v'].src='/images/blank.gif';
+					" href="#">
+					<img name="recover$v" border="0" src="restore.gif"></a>~;
+				}
+			else {
+				$differs = '';
+				}
+			} 
+		else { 
+			$differs = '';
+			$checked = ''; 
+			}
+
+
+		$c .= "<td align='center'>$v &nbsp; $differs</td>";
+		$c .= "<td align='center'><input type=\"checkbox\" $checked name=\"check-$v\"></td>";
+		$c .= "<td><input type='textbox' name='prompt-$v' value=\"".&ZOOVY::incode($opt->{'prompt'})."\"></td>";
+		my $metaref = &POGS::parse_meta($INCLUDED{$v}->{'m'});
+		$c .= "<td align='center'><input size='5' type='textbox' name='price-$v' value=\"".&ZOOVY::incode($metaref->{'p'})."\"></td>";
+		$c .= "<td align='center'><input size='5' type='textbox' name='weight-$v' value=\"".&ZOOVY::incode($metaref->{'w'})."\"></td>";
+		$c .= "</tr>";
+		}
+	$GTOOLS::TAG{'<!-- GRID -->'} = $c;
+
+	$template_file = 'gridedit.shtml';
+	}
+
+
+#######################################
+if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
+
+	if ($VERB eq 'EDITPOG') {
+		}
+
+	if ($VERB eq 'EDITSOG') {
+		$GTOOLS::TAG{'<!-- PRODUCT -->'} = "";
+		}
+
+	my $POGID = $ZOOVY::cgiv->{'POG'};
+	my $SOGID = $ZOOVY::cgiv->{'SOG'};
+
+#	print STDERR "$VERB - SOGID: $SOGID\n";
+	my @pogs = ();
+	my $pog = undef;
+	if ($POGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+		$pog = &POGS::find_pog_in_pogs(\@pogs,$POGID);
+		}
+	if ($SOGID) {
+		@pogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$SOGID));
+		$pog = $pogs[0];
+		$pog->{'sog'} = $SOGID;
+		}
+
+	# print "Content-type: text/plain\n\n"; print Dumper($pog); exit;
+	$GTOOLS::TAG{'<!-- ASSEMBLY_MODIFIER -->'} = '';
+	$GTOOLS::TAG{'<!-- PROMPT -->'} = $pog->{'prompt'};
+	$GTOOLS::TAG{'<!-- TYPE -->'} = $pog->{'type'};
+	$GTOOLS::TAG{'<!-- POG -->'} = $POGID;
+	$GTOOLS::TAG{'<!-- SOG -->'} = $SOGID;
+
+
+
+	$GTOOLS::TAG{'<!-- IMAGE_MODIFIER -->'} = '<input type="hidden" name="img" value=""><input name="imgimg" type="image" src="/images/blank.gif" width=1 height=1>';	 	## blank is not saved.
+	$GTOOLS::TAG{'<!-- HIDE_BIGLIST_START -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- HIDE_BIGLIST_END -->'} = '-->';
+	$GTOOLS::TAG{'<!-- BIGLIST_CONTENTS -->'} = '';
+	$GTOOLS::TAG{'<!-- HIDE_SELECT_START -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- HIDE_SELECT_END -->'} = '-->';
+	$GTOOLS::TAG{'<!-- HIDE_TEXTAREA_START -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- HIDE_TEXTAREA_END -->'} = '-->';
+	$GTOOLS::TAG{'<!-- HIDE_READONLY_START -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- HIDE_READONLY_END -->'} = '-->';
+	$GTOOLS::TAG{'<!-- HIDE_TEXTBOX_START -->'} = '<!--';
+	$GTOOLS::TAG{'<!-- HIDE_TEXTBOX_END -->'} = '-->';
+	$GTOOLS::TAG{'<!-- NUMBER_FIELDS -->'} = '';						# this is replaced with min, max if a number
+	$GTOOLS::TAG{'<!-- TEXT_FIELDS -->'} = '';						# this is replaced with min, max if a number
+	$GTOOLS::TAG{'<!-- SELECT_OPTS -->'} = '';
+	$GTOOLS::TAG{'<!-- REMOVE -->'} = '';
+	$GTOOLS::TAG{'<!-- DEFAULT -->'} = $pog->{'default'};
+	$GTOOLS::TAG{'<!-- MAXLENGTH -->'} = $pog->{'maxlength'};
+	$GTOOLS::TAG{'<!-- FEE_LINE -->'} = $pog->{'fee_line'};
+	$GTOOLS::TAG{'<!-- FEE_CHAR -->'} = $pog->{'fee_char'};
+	$GTOOLS::TAG{'<!-- FEE_WORD -->'} = $pog->{'fee_word'};
+	$GTOOLS::TAG{'<!-- COLS -->'} = $pog->{'cols'}; 
+	$GTOOLS::TAG{'<!-- ROWS -->'} = $pog->{'rows'}; 
+
+	$GTOOLS::TAG{'<!-- INV_CHECKED -->'} = ($pog->{'inv'})?'checked':'';
+
+	$template_file = 'editpog.shtml';
+
+	if ($pog->{'type'} eq 'textarea') {
+		$GTOOLS::TAG{'<!-- HIDE_TEXTAREA_START -->'} = '';
+		$GTOOLS::TAG{'<!-- HIDE_TEXTAREA_END -->'} = '';
+		}
+
+	if ($pog->{'type'} eq 'readonly') {
+		$GTOOLS::TAG{'<!-- HIDE_READONLY_START -->'} = '';
+		$GTOOLS::TAG{'<!-- HIDE_READONLY_END -->'} = '';
+		}
+
+	if ($pog->{'type'} eq 'text' || $pog->{'type'} eq 'number' || $pog->{'type'} eq 'hidden') {
+		$GTOOLS::TAG{'<!-- HIDE_TEXTBOX_START -->'} = '';
+		$GTOOLS::TAG{'<!-- HIDE_TEXTBOX_END -->'} = '';
+		if ($pog->{'type'} eq 'number') {
+			$GTOOLS::TAG{'<!-- NUMBER_FIELDS -->'} = qq~
+				<tr><td colspan='2'><b>Number Specific Fields:</b></td></tr>
+				<tr><td>Minimum Number:</td><td><input type="textbox" size="10" name="MIN" value="$pog->{'min'}"></td></tr>
+				<tr><td>Maximum Number:</td><td><input type="textbox" size="10" name="MAX" value="$pog->{'max'}"></td></tr>
+			~;
+			}
+		}
+
+	#$GTOOLS::TAG{'<!-- TEXT_FIELDS -->'} = 'asdf';
+	if (($pog->{'type'} eq 'text') || ($pog->{'type'} eq 'textarea') || ($pog->{'type'} eq 'hidden')) {
+		$pog->{'fee_char'} = sprintf("%.2f",$pog->{'fee_char'});
+		$pog->{'fee_word'} = sprintf("%.2f",$pog->{'fee_word'});
+		$pog->{'fee_line'} = sprintf("%.2f",$pog->{'fee_line'});
+		$GTOOLS::TAG{'<!-- TEXT_FIELDS -->'} = qq~
+	<tr>
+		<td>Fee Per Character: \$<input type="textbox" name="FEE_CHAR" size="6" value="$pog->{'fee_char'}"></td>
+	</tr>
+	<tr>
+		<td>Fee Per Word: \$<input type="textbox" name="FEE_WORD" size="6" value="$pog->{'fee_word'}"></td>
+	</tr>
+			~;
+		if ($pog->{'type'} eq 'textarea') {
+		$GTOOLS::TAG{'<!-- TEXT_FIELDS -->'} .= qq~
+		<tr>
+			<td>Fee Per Line: \$<input type="textbox" name="FEE_LINE" size="6" value="$pog->{'fee_line'}"></td>
+		</tr>
+		~;
+			}
+		}
+
+	if ($pog->{'type'} eq 'calendar') {
+		$pog->{'fee_rush'} = sprintf("%.2f",$pog->{'fee_rush'});
+		$pog->{'rush_days'} = int($pog->{'rush_days'});
+		$pog->{'rush_prompt'} = $pog->{'rush_prompt'};
+		$pog->{'rush_msg'} = $pog->{'rush_msg'};
+		$GTOOLS::TAG{'<!-- CALENDAR_FIELDS -->'} = qq~
+		<tr>
+			<td>
+			<b>Rush Fees:</b><br>	
+			Add a fee of \$<input size="6" type="textbox" name="FEE_RUSH" value="$pog->{'fee_rush'}"> 
+			for orders within <input size="3" type="textbox" name="RUSH_DAYS" value="$pog->{'rush_days'}"> days.<br>
+			<br>
+			Rush Prompt: <input type="textbox" name="RUSH_PROMPT" value="~.&ZOOVY::incode($pog->{'rush_prompt'}).qq~"> (what appears on the invoice)<br>
+			Rush Message:<br>
+			<textarea name="RUSH_MSG">~.&ZOOVY::incode($pog->{'rush_msg'}).qq~</textarea>
+			<br>
+			</td>
+		</tr>
+		~;
+		}
+
+
+	if ($pog->{'type'} eq 'radio' || $pog->{'type'} eq 'cb' 
+   || $pog->{'type'} eq 'select' || $pog->{'type'} eq 'attribs'
+	|| $pog->{'type'} eq 'imgselect' || $pog->{'type'} eq 'imggrid') {
+		## select, radio, cb
+		$GTOOLS::TAG{'<!-- HIDE_SELECT_START -->'} = '';
+		$GTOOLS::TAG{'<!-- HIDE_SELECT_END -->'} = '';
+		my $out = '';
+		foreach my $opt (@{$pog->{'options'}}) {
+			$out .= "<option value=\"pt=$opt->{'prompt'}|id=$opt->{'v'}|$opt->{'m'}";
+			if ($opt->{'html'}) { $out .= "|html=".$opt->{'html'}; }
+			if ($opt->{'inv'} & 2) { $out .= "|asm=".$opt->{'asm'}; }
+ 			$out .= "\">$opt->{'prompt'}</option>\n";
+			}
+		$GTOOLS::TAG{'<!-- SELECT_OPTS -->'} = $out;
+
+		if ($pog->{'type'} ne 'cb') {
+			$GTOOLS::TAG{'<!-- REMOVE -->'} = qq~<input class="button" type="button" value=" Remove " onclick="dropItem();">~;
+			}
+
+		if ($pog->{'type'} eq 'imgselect' || $pog->{'type'} eq 'imggrid') {
+			$GTOOLS::TAG{'<!-- HIDE_IMGSELECT_START -->'} = '';
+			$GTOOLS::TAG{'<!-- HIDE_IMGSELECT_END -->'} = '';
+			$GTOOLS::TAG{'<!-- HIDE_SELECT_START -->'} = '';
+			$GTOOLS::TAG{'<!-- HIDE_SELECT_END -->'} = '';
+			my $t = time();
+			my %serialref = ('ATTRIB'=>'img','SRC'=>'','PROMPT'=>'Select List Image','DIV'=>'thisFrm',AUTH=>$::AUTH);
+			my $passthis = &ZTOOLKIT::fast_serialize(\%serialref,1);
+			$GTOOLS::TAG{'<!-- IMAGE_MODIFIER -->'} = qq~
+				<table bgcolor="CFCFCF">
+					<tr>
+					<td bgcolor="CFCFCF">
+						<img src="/images/image_not_selected.gif" width="75" height="75" name="imgimg">
+					</td>
+					<td bgcolor="CFCFCF">
+						Selected Image: <input onChange="document.thisFrm.imgimg.src=imglib(document.thisFrm.img.value,50,50,'FFFFFF',0,'jpg');" type="textbox" name="img" size="20"><br>
+						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="javascript:openWindow('/biz/setup/media/popup.cgi?mode=pogchooser&SERIAL=$passthis&$t');">
+					</td>
+					</tr>
+				</table>
+				<br>
+				~;
+
+			my $zoom_checked = ($pog->{'zoom'})?'checked':'';
+			$GTOOLS::TAG{'<!-- IMAGE_OPTIONS -->'} = qq~
+				Thumbnail Height: <input size="3" type="textbox" name="HEIGHT" value="$pog->{'height'}"> (pixels)<br>
+				Thumbnail Width: &nbsp;<input size="3" type="textbox" name="WIDTH" value="$pog->{'width'}"> (pixesl)<br>
+				<input type="checkbox" $zoom_checked name="ZOOM"> Enable Click to Zoom on Images<br>
+				~;
+			if ($pog->{'type'} eq 'imggrid') {
+				$GTOOLS::TAG{'<!-- IMAGE_OPTIONS -->'} .= qq~Image Columns: <input size="3" type="textbox" name="COLS" value="$pog->{'cols'}"><br>~;
+				}
+			}
+			
+		if ((index($FLAGS,',AMZ,')>=0) && $SOGID ne '' ) {
+			## this hash is created by app1:/httpd/servers/amazon/build_variation_thms.pl 
+			my @options = get_amz_options();
+			$GTOOLS::TAG{'<!-- AMAZON_OPTIONS -->'} = qq~Amazon Variation Keyword [ ~.
+				qq~<a target=_new href="http://webdoc.zoovy.com/index.cgi?VERB=DOC&DOCID=50391">?</a> ]: ~.
+				qq~\n<select name="AMZ" >\n<option value=''>None</option>\n~;
+			
+			foreach my $option (sort @options) {
+				my $selected = '';			
+				if ($option eq $pog->{'amz'}) { $selected = "selected"; }
+				$GTOOLS::TAG{'<!-- AMAZON_OPTIONS -->'} .= qq~<option value="$option" $selected>$option</option>\n~;
+				} 
+			$GTOOLS::TAG{'<!-- AMAZON_OPTIONS -->'} .= "</select>";
+			}
+		
+
+
+		if ($DEBUG) { $GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} = "<pre>".Dumper($pog)."</pre>"; }
+		if ($pog->{'inv'}) {
+			$GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} .= qq~<font color='blue'><li> This group affects inventory<li> 100 options max.</font><br>~;
+			if (($pog->{'inv'} & 2)==2) {
+				$GTOOLS::TAG{'<!-- ASSEMBLY_MODIFIER -->'} = qq~<tr><td>Assembly:</td><td><input type="textbox" value="" name="asm"></td></tr>~;		
+				}
+			else {
+				$GTOOLS::TAG{'<!-- ASSEMBLY_MODIFIER -->'} = qq~<input type="hidden" name="asm">~;
+				}
+			}
+		else {
+			$GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} .= qq~<input type="hidden" name="asm"><font color='blue'><li> Group does not affect Inventory<li> 1296 options max.</font><br>~;
+			}
+		} # end if inventoriable type (based on select)
+
+
+	if ($pog->{'sog'}) {
+		$GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} .= qq~<font color='blue'><li> This is a store option group</font><br>~;
+		if ($pog->{'global'}>0) { 
+			$GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} .= qq~<font color='blue'><li> Managed Globally</font><br>~;		
+			}
+		else { 
+			$GTOOLS::TAG{'<!-- INVENTORY_OPTIONS -->'} .= qq~<font color='blue'><li> Managed Individually</font><br>~;	 
+			}
+		}
+
+
+	if ($pog->{'type'} eq 'biglist') {
+		$GTOOLS::TAG{'<!-- HIDE_BIGLIST_START -->'} = '';
+		$GTOOLS::TAG{'<!-- HIDE_BIGLIST_END -->'} = '';
+		my $out = '';
+		foreach my $opt (@{$pog->{'options'}}) {
+			$out .= "$opt->{'prompt'}\n";
+			}
+		$GTOOLS::TAG{'<!-- BIGLIST_CONTENTS -->'} = $out;
+		}
+
+	}
+
+
+##
+## Chooser: select type of option, and the name.
+##
+if ($VERB eq 'CREATESOG' || $VERB eq 'CREATEPOG') {
+
+	$GTOOLS::TAG{'<!-- VERB -->'} = $VERB;
+	if ($VERB eq 'CREATEPOG') {
+		$GTOOLS::TAG{'<!-- HEADER -->'} = qq~<b>Create Product Option Group</b>~;
+		}
+	if ($VERB eq 'CREATESOG') {
+		$GTOOLS::TAG{'<!-- HEADER -->'} = qq~<b>Create Store Option Group</b>~;
+		$GTOOLS::TAG{'<!-- PRODUCT -->'} = 'N/A';
+		}
+
+	$GTOOLS::TAG{'<!-- TYPE_SELECT -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_RADIO -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_CB -->'} = '';
+
+	$GTOOLS::TAG{'<!-- TYPE_TEXT -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_TEXTAREA -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_NUMBER -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_READONLY -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_HIDDEN -->'} = '';
+
+	$GTOOLS::TAG{'<!-- TYPE_IMGSELECT -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_BIGLIST -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_SOG_PTR -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_SOG_VAR -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_FILEUPLOAD -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_DYNAMIC -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_IMGSELECT -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_IMGGRID -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_CALENDAR -->'} = '';
+	$GTOOLS::TAG{'<!-- TYPE_ASSEMBLY -->'} = '';
+
+	$GTOOLS::TAG{'<!-- TYPE_'.uc($ZOOVY::cgiv->{'TYPE'}).' -->'} = 'checked';
+	$GTOOLS::TAG{'<!-- PROMPT_VAL -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'PROMPT'});
+	$GTOOLS::TAG{'<!-- CB_INV -->'} = (defined $ZOOVY::cgiv->{'INV'})?'checked':'';
+
+	$GTOOLS::TAG{'<!-- AMZ_OPTIONS -->'} = "";
+	if ((index($FLAGS,',AMZ,')>=0) && ($VERB eq 'CREATESOG')) {
+		my @options = get_amz_options();
+		$GTOOLS::TAG{'<!-- AMZ_OPTIONS -->'} .= qq~Amazon Variation Keyword: \n<select name="AMZ" >\n<option value=''>None</option>\n~;
+			
+		foreach my $option (sort @options) {
+			$GTOOLS::TAG{'<!-- AMZ_OPTIONS -->'} .= qq~<option value="$option">$option</option>\n~;
+			} 
+		$GTOOLS::TAG{'<!-- AMZ_OPTIONS -->'} .= "</select>";
+
+		$GTOOLS::TAG{'<!-- AMZ_OPTIONS -->'} .= qq~
+	<a href="#" onClick="if (Element.visible('!help-amzvariation')) { new Effect.SlideUp('!help-amzvariation'); } else { new Effect.SlideDown('!help-amzvariation'); }">[Info]</a><br>
+	<div id="!help-amzvariation" style="display: none"><div>
+Amazon requires options be mapped to a "variation keyword". A variation keyword  
+this is a term that Amazon will use to distinguish properties of the product such as size, color, etc. 
+Variation themes are critical when buyers search for a specific size, color, clarity, etc. on the Amazon site.<br>
+<br>
+If you do not match up your options to Amazon properly then your items will still be purchasable but they 
+will NOT appear in search and are therefore MUCH less likely to be found/purchased.<br>
+<br>
+We'll use Apparel as an example of how Zoovy's options correspond to Amazons variation keywords. 
+For the Apparel product type Amazon has three variation keywords: Size, Color, or ColorAndSize<br>
+<Br>
+Depending on how you choose to setup your products on Zoovy you could implement either a single option group 
+called size,  and another called color, or just create one option group called "Color and Size" 
+(when you'd put in combined options like Small/White). You can then apply whichever zoovy option groups 
+are appropriate for your particular product. 
+<br>
+If the product being sold only comes in "blue" then you could set the color in the product, and only map the Size 
+option group to the product. In otherwords as long as you set the right Variation Themes, and you design your options
+to work around Amazon's you have a lot of flexability. Zoovy automatically manages the parentage relations between
+master products and their respective lineage in the Amazon system.<br>
+<br>
+Just remember that in each respective option group you must set the appropriate Amazon Variation Keyword.
+You can create as many option groups as you want and map them all to the same variation keywords (e.g. 
+Sweater Size, and Pant Size can both map to Amazon variation keyword "Size").
+<br>
+NOTE: In some cases (ex: jewelry) Amazon will restrict the possible values of the particular variation theme. 
+In this case the option prompts for your option group MUST match the Amazon variation theme values. A complete 
+list of possible values will be given to you by Zoovy, AND MAY CHANGE OVER TIME as Amazon changes their schema. 
+Zoovy will attempt (but not necessarily guarantee) to maintain backward compatibility.<br>
+<br>
+As a rule you should always try and use industry accepted terms for best compatibility e.g. "Navy Blue" instead of "Royal
+Midnight" since Amazon probably won't know that Royal Midnight is the same as Navy blue. If you cannot adhere to well
+used industry terms then make sure you contact your Amazon account manager and let them know they will need to map
+your variation data to the Amazon thesaurus. 
+<br>
+	</div></div><br>
+		~;
+		}
+
+	if ($VERB eq 'CREATESOG') {
+		## SOG SPECIFIC OPTIONS
+		my $SOGID = &POGS::next_available_sogid($USERNAME);
+		$GTOOLS::TAG{'<!-- SOG_OPTIONS -->'} = qq~
+			<input type='hidden' name='SOG' value='$SOGID'>
+			<b>Store Option Group Behavior:</b> 
+			<a href="#" onClick="if (Element.visible('!help-sogbehavior')) { new Effect.SlideUp('!help-sogbehavior'); } else { new Effect.SlideDown('!help-sogbehavior'); }">[Info]</a><br>
+			<div id="!help-sogbehavior" style="display: none"><div>
+			<b>About Behavior:</b>
+			There are two behaviors available when new options are added to the store option group - the new options can
+either be automatically added to all products using that group, OR manually added to each product.<br>
+			<br>
+			Automatic Store Option groups cannot select different options on a product by product basis. 
+			When changes are made in an automatic group, they are instantly added to all products associated to the group. 
+			When changes are made to manual groups it is necessary to add the new option to each product, 
+			but of course then it is also possible to choose which specific options are applicable to the product.<Br>
+			<br>
+			Useing Automatic groups with inventoriable store option groups is HIGHLY discouraged since inventory for the items
+			will be out of stock (zero) when the new item code is created.  Automatic groups are really best suited for situations 
+			where (for example) you have a line of products made by a common manufacturer and the options available/unavailable to
+			the line of products doesn't change. As new options are added they are available for all products.<br>
+			<br> 	
+			If you're still in doubtas to which type of option group to use, we recommend manual since it offers the highest degree of flexability.
+			<br>
+			</div></div>
+			<input type="radio" checked name="GLOBAL" value="0"> <b>MANUAL:</b> I need to select options, and customize modifiers on a product by product basis.<br>
+			<input type="radio" name="GLOBAL" value="1"> <b>AUTOMATIC:</b> Any changes should automatically affect all products using this group.<br>
+			~;
+
+
+		$GTOOLS::TAG{'<!-- FINDER_OPTION -->'} = qq~
+			<input type="checkbox" name="FINDER"> <b>Properties Only (Used with Finders)</b> 
+			<a href="#" onClick="if (Element.visible('!help-finder')) { new Effect.SlideUp('!help-finder'); } else { new Effect.SlideDown('!help-finder'); }">[Info]</a><br>
+			<div id="!help-finder" style="display: none"><div>
+			<b>Properties Only: </b> is used to specify that the store option group data should ONLY be used
+to compile search data. With a "Properties Only" style option group the customer will never be prompted to 
+select this option while purchasing. 
+A "Properties Only" group is not compatible with Inventoriable Options or Assemblies, but is compatible with a
+special type of search catalog known as a "Finder" which can be used to let customers find matching products based
+on either their options or properties.<br>
+<br>
+Frequent examples of "Properties Only" options include: 
+"Genre", "Year", or even "Price Range". For example if a DVD Is a romantic comedy, 
+it could have the Genre option "Romance" and "Comedy" checked, the customer doesn't need to choose between
+the Comedy and Romance version, the product is both Comedy and Romance at the same time. <br>
+<br>
+Other examples include:
+	<li> Make/Model: manufacturers of carts, boats, planes, etc. regularly make parts which span multiple 
+makes, models and years. 
+(NOTE: due to limitations in the number of options per group (1296) it is not possible
+to create a single group for "Make/Model/Year" 
+	<li> Price Range: setting up price ranges for $1-$25, $26-$50, and $51-$100 lets you provide customers
+an easy way to locate products in their price range.
+			</div></div><br>
+		~;
+
+		}
+	else {
+		## POG SPECIFIC OPTIONS
+		$GTOOLS::TAG{'<!-- SOGPOG -->'} = qq~~;
+		}
+	$template_file = 'create.shtml';
+	}
+
+
+if ($VERB eq 'XML_END') {
+	my $pogs = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs');
+
+	my $inv_enable = &fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:inv_enable');
+	my @pogs = &POGS::text_to_struct($USERNAME,$pogs,1);
+	$inv_enable = ($inv_enable & 4);
+	if (&POGS::use_inventory(\@pogs)) { $inv_enable += 4; }
+	
+	$pogs = &ZOOVY::incode($pogs);
+	
+	print "Content-type: text/html\n\n";
+	print qq~
+<body>
+<!--//
+<SESSION_TERMINATED>
+<input type="hidden" name="set-zoovy:inv_enable" value="$inv_enable">
+<input type="hidden" name="set-zoovy:pogs" value="$pogs"/>
+<input type="hidden" name="del-$USERNAME:pogs" value=""/>
+<input type="hidden" name="del-zoovy:notes_default" value=""/>
+<input type="hidden" name="del-zoovy:notes_prompt" value=""/>
+<input type="hidden" name="del-zoovy:notes_display" value=""/>
+</SESSION_TERMINATED>
+//-->
+</body>
+~;
+	exit;
+	}
+
+
+## this is the main menu (will probably never be used)
+if ($VERB eq '') {
+
+	## remove 2.0 options
+	if ($::MODE eq '') {
+		my $prodref = &ZOOVY::fetchproduct_as_hash($USERNAME,$PRODUCT);
+		if ($prodref->{'zoovy:notes_prompt'}) {	
+			delete $prodref->{'zoovy:notes_default'};
+			delete $prodref->{'zoovy:notes_prompt'};
+			delete $prodref->{'zoovy:notes_display'};
+			&ZOOVY::saveproduct_from_hash($USERNAME,$PRODUCT,$prodref);
+			}
+		}
+	##
+
+
+	my @pogs = &POGS::text_to_struct($USERNAME,&fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:pogs'),0);
+	my %pogids = ();
+	if (not scalar(@pogs)) {
+		$GTOOLS::TAG{'<!-- POG_OUTPUT -->'} = "<tr><Td colspan='5'>This product currently has no options.</td></tr>";
+		}
+	else {
+		my $c = '';
+		my $last = scalar(@pogs);
+		my $count = 0;
+		foreach my $pog (@pogs) {
+			$pogids{$pog->{'id'}}++;
+			$c .= "<tr>";
+			$c .= "<td valign='top' nowrap>";
+	
+			my $sogref = undef;
+			$pog->{'_editable'} = 1;					# this is something that is implicity on, unless a sog turns it off.
+			if ($pog->{'sog'} ne '') {
+				my ($sogid,$sogname) = split(/-/,$pog->{'sog'});
+				my @sogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$sogid,$sogname),0);
+				$sogref = pop @sogs;
+#				print STDERR Dumper($sogref);
+				if ($sogref->{'global'}) { $pog->{'_editable'} = 0; }
+				}
+
+			if ($count++>0) {
+				$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=PROMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_up-13x13.gif\" height=13 width=13 border=0></a>";
+				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
+
+			if ($count<$last) {
+				$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=DEMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_down-13x13.gif\" border=0></a>";
+				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
+
+			if ($pog->{'_editable'}) {
+				if ($pog->{'sog'}) {
+					$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
+					}
+				else {
+					$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=EDITPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
+					}
+				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
+		
+			if ($pog->{'sog'}) {
+				$c .= "  <a href=\"index.cgi?MODE=$::MODE&VERB=KILLPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_right-13x13.gif\" border=0></a>";
+				}
+
+			$c .= "</td>";
+
+			if ((defined $pog->{'sog'}) && ($pog->{'sog'} eq '')) { delete $pog->{'sog'}; }
+
+			if ($pog->{'sog'} ne '') {
+				$c .= "<td>$sogref->{'prompt'}</td>";
+				$c .= "<td nowrap>$sogref->{'type'}<br>INV: $sogref->{'inv'}<br>GLOBAL: $sogref->{'global'}";
+				if ($DEBUG) { $c .= "<pre>".Dumper($sogref)."</pre>"; } 
+				$c .= "</td>";
+				if (defined($sogref->{'global'}) && $sogref->{'global'}) {
+					if (defined $sogref->{'options'}) {
+						$c .= "<td>".(scalar(@{$sogref->{'options'}}))."</td>"; 
+						}
+					else {	
+						## note: global text areas don't have options
+						$c .= "<td>n/a</td>";
+						}
+					}
+				elsif (defined $pog->{'options'}) { 
+					$c .= "<td>".(scalar(@{$pog->{'options'}}))."</td>"; 
+					}
+				else {
+					$c .= "<td>0</td>";
+					}
+				
+				}
+			else {
+				$c .= "<td valign='top'>$pog->{'prompt'} </td>";
+				$c .= "<td valign='top'>$pog->{'type'} </td>";
+				if (($pog->{'type'} eq 'text') || ($pog->{'type'} eq 'textarea') || ($pog->{'type'} eq 'number') || 
+					 ($pog->{'type'} eq 'readonly') || ($pog->{'type'} eq 'calendar') || ($pog->{'type'} eq 'hidden')) {
+					$c .= "<td valign='top'>n/a</td>";
+					}
+				elsif ((not defined $pog->{'options'}) || (scalar(@{$pog->{'options'}}) == 0)) {
+					$c .= "<td valign='top'><font color='red'>0 options - CORRUPT!</font></td>";
+					}
+				else {
+					$c .= "<td valign='top'>".scalar(@{$pog->{'options'}})." options ";
+					if ( (scalar(@{$pog->{'options'}})>1) && (($pog->{'type'} eq 'select') || ($pog->{'type'} eq 'attrib') || ($pog->{'type'} eq 'radio')) ) {
+						$c .= "  <a href=\"index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".uri_escape($pog->{'id'})."\">[View]</a>";
+						}
+					$c .= "</td>";
+					}
+				}
+			$c .= "<td valign='top'>$pog->{'id'} </td>";
+			$c .= "</tr>";
+			}
+		$GTOOLS::TAG{'<!-- POG_OUTPUT -->'} = $c;
+		}
+
+	##
+	## OUTPUT LIST OF AVAILABLE SOGS
+	##	
+	my $listref = &POGS::list_sogs($USERNAME);
+	my $out = '';
+	my $counter = 0;
+	foreach my $id (reverse sort keys %{$listref}) {
+		my @sogs = &POGS::text_to_struct($USERNAME,&POGS::load_sog($USERNAME,$id),0);
+		my $sogref = pop @sogs;
+		my $row = ($counter++%2);
+		$out .= "<tr><td class='r$row'><table><tr>";
+		if ((not defined $pogids{$id}) && ($PRODUCT ne '')) {
+			$out .= "<a href=\"index.cgi?MODE=$::MODE&VERB=ADDSOG&PRODUCT=$PRODUCT&SOG=".&uri_escape($id)."\"><img src=\"/biz/images/arrows/blue_left-13x13.gif\" border=0></a>";
+			} 
+		else { 
+			$out .= "<td><img src=\"/images/blank.gif\" width=13 height=13 border=0></td>"; 
+			}
+
+		if ($PRODUCT eq '') {
+			$out .= "<td><a href=\"index.cgi?MODE=$::MODE&VERB=EDITSOG&PRODUCT=$PRODUCT&SOG=".$id."\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a></td>";
+			}
+
+		$out .= "</tr></table></td>";
+		# $DEBUG = 1;
+		if ($DEBUG) {  $out .= "<td><pre>".Dumper($sogref)."</pre></td>"; }
+		$out .= "<td class='r$row'>$id: $listref->{$id}</a></td>";
+		$out .= "</tr>";
+		}
+
+	if ($out eq '') {
+		$out .= "<tr><td colspan='3'><font color='blue'>There are currently no store option groups</font></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- SOGS_OUTPUT -->'} .= $out;
+	$GTOOLS::TAG{'<!-- TS -->'} = time();
+
+
+	$template_file = 'index.shtml';
+	if ($PRODUCT eq '') { 
+		my $out = '';
+		my $count=0;
+		my $swogsref = &POGS::list_swogs($USERNAME);
+		foreach my $id (keys %{$swogsref}) {
+			if ($count==0) { $count = 1; } else { $count = 0; }
+			$out .= "<tr><td class=\"r$count\"><a href=\"index.cgi?VERB=COPYSWOG&ID=$id\"><img width=13 height=13 border=0 src=\"/biz/images/arrows/blue_left-13x13.gif\"></a>&nbsp; </td><td class=\"r$count\">$id: $swogsref->{$id}</td></tr>";
+			}
+		$GTOOLS::TAG{'<!-- SWOGS_OUTPUT -->'} = $out;
+
+		$template_file = 'indexsog.shtml'; 
+		}
+
+	$GTOOLS::TAG{'<!-- EXIT_URL -->'} = '../edit.cgi?PID='.$PRODUCT;
+	if ($::MODE =~ /^XML:/) {
+		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
+		}
+	elsif ($::MODE =~ /^THASH:/) {
+		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
+		}
+	}
+
+$GTOOLS::TAG{'<!-- PRODUCT -->'} = $PRODUCT;
+&GTOOLS::output(title=>'',js=>2+4,file=>$template_file,header=>1);
+
+
+## this array is generated from app1:/httpd/servers/amazon/build_variation_thms.pl
+sub get_amz_options {
+
+	my @options = (
+		"APPAREL: Size",
+		"APPAREL: Color",
+#		"APPAREL: SizeColor",
+		"JEWELRY: Length",
+		"JEWELRY: MetalType",
+#		"JEWELRY: Length-MetalType",
+		"JEWELRY: RingSize",
+#		"JEWELRY: MetalType-RingSize",
+		"JEWELRY: SizePerPearl",
+		"JEWELRY: TotalDiamondWeight",
+#		"JEWELRY: Length-TotalDiamondWeight",
+#		"JEWELRY: Length-SizePerPearl",
+#		"JEWELRY: MetalType-TotalDiamondWeight",
+#		"JEWELRY: MetalType-SizePerPearl",
+#		"JEWELRY: RingSize-TotalDiamondWeight",
+#		"JEWELRY: RingSize-SizePerPearl",
+		"FOOD: Size",
+		"FOOD: Color",
+		"HEALTH: Size",
+		"HEALTH: Color",
+		"HEALTH: Count",
+		"HEALTH: Scent",
+		"HEALTH: Flavor",
+#		"HEALTH: Size-Color",
+#		"HEALTH: Flavor-Count",
+#		"HEALTH: Flavor-Size",
+#		"HEALTH: Size-Scent",
+		"HOME: Size",
+		"HOME: Color",
+		"HOME: Scent",
+#		"HOME: Size-Color",
+#		"HOME: Size-Scent",
+		"SPORTS: AgeGenderCategory",
+		"SPORTS: Amperage",
+		"SPORTS: BikeRimSize",
+#		"SPORTS: BikeRimSizeMaterial",
+		"SPORTS: BootSize",
+#		"SPORTS: BootSizeCalfSize",
+		"SPORTS: CalfSize",
+		"SPORTS: Caliber",
+#		"SPORTS: CaliberRounds",
+		"SPORTS: Capacity",
+		"SPORTS: Color",
+#		"SPORTS: ColorDesign",
+#		"SPORTS: ColorFlavor",
+#		"SPORTS: ColorItemThickness",
+#		"SPORTS: ColorLength",
+#		"SPORTS: ColorLensColor",
+#		"SPORTS: ColorQuantity",
+#		"SPORTS: ColorRounds",
+#		"SPORTS: ColorShaftMaterial",
+#		"SPORTS: ColorShaftType",
+#		"SPORTS: ColorShape",
+#		"SPORTS: ColorSize",
+#		"SPORTS: ColorStyle",
+#		"SPORTS: ColorTensionLevel",
+#		"SPORTS: ColorWattage",
+#		"SPORTS: ColorWeight",
+#		"SPORTS: ColorWheelSize",
+#		"SPORTS: ColorWidth",
+		"SPORTS: Curvature",
+#		"SPORTS: CurvatureHand",
+		"SPORTS: Design",
+#		"SPORTS: DesignFlavor",
+#		"SPORTS: DesignLength",
+#		"SPORTS: DesignLensColor",
+#		"SPORTS: DesignShaftMaterial",
+#		"SPORTS: DesignShaftType",
+#		"SPORTS: DesignShape",
+#		"SPORTS: DesignSize",
+#		"SPORTS: DesignStyle",
+#		"SPORTS: DesignTensionLevel",
+#		"SPORTS: DesignWeight",
+#		"SPORTS: DesignWheelSize",
+#		"SPORTS: DesignWidth",
+		"SPORTS: Diameter",
+		"SPORTS: DivingHoodThickness",
+#		"SPORTS: FencingPommelType",
+#		"SPORTS: FencingPommelTypeGripType",
+		"SPORTS: Flavor",
+#		"SPORTS: FlavorSize",
+		"SPORTS: GolfFlex",
+#		"SPORTS: GolfFlexGolfLoft",
+#		"SPORTS: GolfFlexMaterial",
+#		"SPORTS: GolfFlexShaftMaterial",
+		"SPORTS: GolfLoft",
+#		"SPORTS: GolfLoftShaftMaterial",
+		"SPORTS: GripSize",
+#		"SPORTS: GripSizeGripType",
+#		"SPORTS: GripSizeHeadSize",
+		"SPORTS: GripType",
+		"SPORTS: Hand",
+#		"SPORTS: HandLength",
+#		"SPORTS: HandSize",
+#		"SPORTS: HandTensionLevel",
+#		"SPORTS: HandWeight",
+		"SPORTS: HeadSize",
+#		"SPORTS: HeadSizeShape",
+		"SPORTS: Height",
+#		"SPORTS: HeightSize",
+#		"SPORTS: HeightStyle",
+#		"SPORTS: HeightWeight",
+#		"SPORTS: HeightWidth",
+		"SPORTS: ItemThickness",
+		"SPORTS: Length",
+#		"SPORTS: LengthLineCapacity",
+#		"SPORTS: LengthLineWeight",
+#		"SPORTS: LengthMaterial",
+#		"SPORTS: LengthShaftType",
+#		"SPORTS: LengthSize",
+#		"SPORTS: LengthStyle",
+#		"SPORTS: LengthWeight",
+#		"SPORTS: LengthWeightSupported",
+#		"SPORTS: LengthWidth",
+		"SPORTS: LensColor",
+#		"SPORTS: LensColorMaterial",
+#		"SPORTS: LensColorShape",
+		"SPORTS: LineCapacity",
+#		"SPORTS: LineCapacitySize",
+#		"SPORTS: LineCapacityWeight",
+		"SPORTS: LineWeight",
+#		"SPORTS: LineWeightSize",
+		"SPORTS: Material",
+#		"SPORTS: MaterialShape",
+#		"SPORTS: MaterialSize",
+#		"SPORTS: MaterialStyle",
+#		"SPORTS: MaterialTensionLevel",
+#		"SPORTS: MaterialWeight",
+#		"SPORTS: MaterialWheelSize",
+#		"SPORTS: MaterialWidth",
+		"SPORTS: Quantity",
+#		"SPORTS: QuantityShape",
+#		"SPORTS: QuantitySize",
+#		"SPORTS: QuantityWeight",
+		"SPORTS: Rounds",
+#		"SPORTS: RoundsSize",
+		"SPORTS: ShaftMaterial",
+#		"SPORTS: ShaftMaterialShaftType",
+		"SPORTS: ShaftType",
+		"SPORTS: Shape",
+#		"SPORTS: ShapeSize",
+#		"SPORTS: ShapeTensionLevel",
+#		"SPORTS: ShapeWeight",
+		"SPORTS: Size",
+#		"SPORTS: SizeStyle",
+#		"SPORTS: SizeTensionLevel",
+#		"SPORTS: SizeWattage",
+#		"SPORTS: SizeWeight",
+#		"SPORTS: SizeWeightSupported",
+#		"SPORTS: SizeWheelSize",
+#		"SPORTS: SizeWidth",
+		"SPORTS: Style",
+#		"SPORTS: StyleTensionLevel",
+#		"SPORTS: StyleWeight",
+#		"SPORTS: StyleWheelSize",
+#		"SPORTS: StyleWidth",
+		"SPORTS: TemperatureRating",
+#		"SPORTS: TemperatureRatingColor",
+#		"SPORTS: TemperatureRatingDesign",
+#		"SPORTS: TemperatureRatingHand",
+#		"SPORTS: TemperatureRatingLength",
+#		"SPORTS: TemperatureRatingMaterial",
+#		"SPORTS: TemperatureRatingShape",
+#		"SPORTS: TemperatureRatingSize",
+		"SPORTS: TensionLevel",
+#		"SPORTS: TensionLevelWeight",
+#		"SPORTS: TensionLevelWeightSupported",
+		"SPORTS: Wattage",
+		"SPORTS: Weight",
+		"SPORTS: WeightSupported",
+#		"SPORTS: WeightWidth",
+		"SPORTS: WheelSize",
+#		"SPORTS: WheelSizeWeight",
+		"SPORTS: Width",
+		);
+	return(@options);
+	}

@@ -1,0 +1,67 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<!-- SIZING TABLE  -->
+<table class="zoovytable" width="800" cellspacing=0 cellpadding=0>
+<tr><td>
+
+		<tr><td class="zoovytableheader">Step 4: Preview/Send your Newsletter</td></tr>
+		<tr class="white_bg">
+      	<td><br>
+			Below is a preview that shows what this email *might* look like in both an HTML email, 
+			and plain-text browser. 
+			Zoovy encodes the messages so that they are displayed based on the preferred email format the user is using.</font>
+
+			<br>
+			<!-- MSG -->
+			<br>
+
+			<h2>HTML Preview:</h2>
+
+			<iframe id="iFrameHTML" width=600 height=250 src="#"></iframe>
+
+			<br>
+			<h2>Text Preview:</h2>
+			<iframe id="iFrameTXT" width=600 height=250 src="#"></iframe>
+
+
+<script type="text/javascript">
+
+//note: htmlcontent txtcontent are populated via GTOOLS::JSON
+
+iFrame = $('#iFrameHTML');
+var iFrameDoc = iFrame[0].contentDocument || iFrame[0].contentWindow.document;
+iFrameDoc.write(htmlcontent);
+iFrameDoc.close();
+
+iFrame = $('#iFrameTXT');
+var iFrameDoc = iFrame[0].contentDocument || iFrame[0].contentWindow.document;
+iFrameDoc.write(txtcontent);
+iFrameDoc.close();
+
+</script>
+
+			<br><br>
+			<b>Test Recipient Email:</b>
+			<form action="index.cgi">
+			<input type="hidden" name="VERB" value="SEND_TEST_EMAIL">
+			<input type="hidden" name="ID" value="<!-- ID -->">
+			<input class=formed type="textbox" size=50 name="EMAIL" value="<!-- EMAIL -->">
+			<input type="submit" class="button" value="  Send a Test Newsletter w/Approval Link ">
+			</form>
+			<br>
+			<!-- SUPPORT_APPROVE -->
+			</td>
+		</tr>
+		<tr>
+			<td class='table_top' align="center">
+			<input type="submit" name="BUTTON" value="Back" class="showLoadingModal button" onClick="document.location='index.cgi?VERB=CAMPAIGN-EDIT&ID=<!-- ID -->';">
+			&nbsp;&nbsp;
+			<input type="submit" name="BUTTON" value="Exit" class="showLoadingModal button" onClick="document.location='index.cgi?VERB=CAMPAIGNS';">
+			</td>
+		</tr>
+	</table>
+
+
+</center>
+</body>

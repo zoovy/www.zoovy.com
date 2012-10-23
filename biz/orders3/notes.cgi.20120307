@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+use CGI;
+use lib "/httpd/modules";
+require GTOOLS;
+require ORDER;
+require ZOOVY;
+
+
+$q = new CGI;
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_O&4');
+if ($USERNAME eq '') { exit; }
+
+$CMD = $q->param('CMD');
+$ID = $q->param('ID');
+$GTOOLS::TAG{'<!-- ID -->'} = $ID;
+
+my ($o) = ORDER->new($USERNAME,$ID);
+
+
+if ($CMD eq 'SAVE') {
+	## removed check to see if 'notes' was ''
+	## ie allow deletions - patti - 2007-01-15
+	$o->set_attribs('order_notes',$q->param('order_notes'));
+	$o->set_attribs('private_notes',$q->param('private_notes'));
+	$o->save();
+	&GTOOLS::output(file=>'close-popup.shtml',header=>1);
+	}
+
+if ($CMD eq '') {
+	$GTOOLS::TAG{'<!-- ORDER_NOTES -->'} = &ZOOVY::incode($o->get_attrib('order_notes'));
+	$GTOOLS::TAG{'<!-- PRIVATE_NOTES -->'} = &ZOOVY::incode($o->get_attrib('private_notes'));
+
+	&GTOOLS::output(file=>'notes.shtml',header=>1);
+	}
+
+

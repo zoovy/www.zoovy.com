@@ -1,0 +1,153 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<title>Change Payment Information</title>
+<style>
+<!--
+font { font-family: arial, sans-serif; font-size: 8pt; }
+font.title { font-family: helvetica, arial; font-size: 12pt; font-weight: bold; }
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" onLoad="window.resizeTo(640,480);">
+<center>
+
+
+
+<font size='3' face='helvetica' class='title'>Account Payment Method</font><br>
+<font color='red' size='5'><!-- MESSAGE --></font>
+
+<form action='change.cgi' method="POST">
+
+<table cellpadding='0' cellspacing='1' border='0' width='600' class='zoovytable'>
+	<tr><td class='zoovytableheader'>&nbsp; Required Billing Information</td></tr>
+	<tr><td bgcolor='FFFFFF'>
+<table border=0 cellspacing=3 cellpadding=1>
+<tr><td valign="top" align="right" ><font face="Arial, Helevetica" size="1">Company Name: </td><td valign="top" align="left" >
+   <input type="textbox" name="zoovy:company_name" size="50" value="<!-- COMPANY_NAME -->"></td></tr>
+
+<tr><td valign="top" align="right" ><font face="Arial, Helevetica" size="1">Name: (First Lastname)</td><td valign="top" align="left" >
+  <input type="textbox" size="15" name="zoovy:firstname" value="<!-- ZOOVY_FIRSTNAME -->">
+  <input type="textbox" size="15" name="zoovy:lastname" value="<!-- ZOOVY_LASTNAME -->"></td></tr>
+
+<tr><td valign="top" align="right" ><font face="Arial, Helevetica" size="1">Account Contact Email: </td><td valign="top" align="left" >
+   <input type="textbox" name="zoovy:email" value="<!-- ZOOVY_EMAIL -->"><font face="Arial, Helevetica" size="1" color="blue">(for Zoovy use only)</font></td></tr>
+
+<tr><td valign="top" align="right" ><font face="Arial, Helevetica" size="1">Account Contact Phone: </td><td valign="top" align="left" >
+   <input type="textbox" name="zoovy:phone" value="<!-- ZOOVY_PHONE -->"><font face="Arial, Helevetica" size="1" color="blue">(for Zoovy use only)</font></td></tr>
+
+<tr><td valign="top" align="right" ><font face="Arial, Helevetica" size="1">Email Invoices To: </td><td valign="top" align="left" >
+   <input type="textbox" name="zoovy:bill_email" value="<!-- ZOOVY_BILLEMAIL -->"><font face="Arial, Helevetica" size="1" color="blue">(for Zoovy use only)</font></td></tr>
+
+</table>
+</td></tr></table>
+
+<br>
+<table cellpadding='0' cellspacing='1' border='0' width='600' class='zoovytable'>
+	<tr><td class='zoovytableheader'>&nbsp; Configured Billing Methods:</td></tr>
+	<tr><td class='zoovytablebody'>
+
+<table>
+	<!-- METHODS -->
+</table>
+
+	</td></tr>
+</table>
+
+
+<br>
+<table cellpadding='0' cellspacing='1' border='0' width='600' class='zoovytable'>
+	<tr><td class='zoovytableheader'> &nbsp; Add a new Payment Method:</td></tr>
+	<tr><td bgcolor='FFFFFF'>
+	
+	<input type='hidden' name='ACTION' value='SAVE'>
+	<table>
+	<tr>
+		<td>Type:</td>
+		<td>
+			<select name="PAYMETHOD">
+				<!-- PAYMETHODS -->
+			</select>
+		</td>
+	</tr>
+	</table>
+
+	<table>
+		<tr>
+			<td valign='top' width=50%>		
+			<b>Credit Card</b>
+			<table><tr>
+				<td><img src="/images/paymentlogos/CCVISAMC.gif"></td>
+				<td><img src="/images/paymentlogos/CCAMEX.gif"></td>
+			</tr></table>
+	
+			<table>
+			<tr>
+	 			<td>New Card Number:</td>
+				<td><input value="<!-- CC_NUM -->" type="textbox" name="cc_num" size="16"></td>
+			</tr>
+			<tr>
+				<td>Exp. Month: </td>
+				<td>
+					<select name="exp_mo">
+					<option <!-- MON_01 --> value="01">January (1)</option>
+					<option <!-- MON_02 -->  value="02">February (2)</option>
+					<option <!-- MON_03 -->  value="03">March (3)</option>
+					<option <!-- MON_04 -->  value="04">April (4)</option>
+					<option <!-- MON_05 -->  value="05">May (5)</option>
+					<option <!-- MON_06 -->  value="06">June (6)</option>
+					<option <!-- MON_07 -->  value="07">July (7)</option>
+					<option <!-- MON_08 -->  value="08">August (8)</option>
+					<option <!-- MON_09 -->  value="09">September (9)</option>
+					<option <!-- MON_10 -->  value="10">October (10)</option>
+					<option <!-- MON_11 -->  value="11">November (11)</option>
+					<option <!-- MON_12 -->  value="12">December (12)</option>
+					</select> 
+				</td>
+			</tr>
+			<tr>
+				<td>Exp Year: </td>
+				<td>
+					<select name="exp_yr">
+					<option <!-- YEAR_08 --> value="08">2008</option>
+					<option <!-- YEAR_09 --> value="09">2009</option>
+					<option <!-- YEAR_10 --> value="10">2010</option>
+					<option <!-- YEAR_11 --> value="11">2011</option>
+					<option <!-- YEAR_12 --> value="12">2012</option>
+					<option <!-- YEAR_13 --> value="13">2013</option>
+					<option <!-- YEAR_14 --> value="14">2014</option>
+					<option <!-- YEAR_15 --> value="15">2015</option>
+					<option <!-- YEAR_16 --> value="16">2016</option>
+					<option <!-- YEAR_17 --> value="17">2017</option>
+					<option <!-- YEAR_18 --> value="18">2018</option>
+					</select>
+				</td>
+			</tr>
+			</table>
+		
+			<!-- End of credit card table -->
+			</td>
+			<td valign='top' width=50%>
+
+				<b>E-Check:</b><br>
+				<table>
+					<tr><td>Bank Name:</td><td><input type="textbox" name="ECHECK_BANK" value="<!-- ECHECK_BANK -->"></td></tr>
+					<tr><td>Account #:</td><td><input type="textbox" name="ECHECK_CHECKING" value="<!-- ECHECK_CHECKING -->"></td></tr>
+					<tr><td>Routing:</td><td><input type="textbox" name="ECHECK_ROUTING" value="<!-- ECHECK_ROUTING -->"></td></tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<center>
+	<input type='image' src='/images/bizbuttons/save.gif' border='0' height='31' width='88'>
+	<a href="javascript:window.close();"><img width='88' height='31' src='/images/bizbuttons/exit.gif' border='0'></a>
+	</center>
+	</form>
+
+	</td>
+</tr>
+</table>
+
+
+</center>
+</body>

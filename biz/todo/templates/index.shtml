@@ -1,0 +1,137 @@
+<!-- NO_TAB -->
+
+
+<ol id="interactions"></ol>
+
+<script type="text/javascript">
+
+$('#interactions').change(function() {
+  alert('Handler for .change() called.');
+  });
+
+$("#interactions").bind("interact",
+	function(e,myName,myValue){ 
+		$("#interactions").append("<li class=\"interaction\"><span id=\"name\">"+myName+"</span><span id=\"value\">"+myValue+"</span></li>");
+		$("#interactions").queue(function(next){
+			var $id = $("#interactions :first-child");
+			// alert(id);
+			console.log("removing: "+$id[0].innerHTML);
+			$id.remove();
+			
+			next();
+			});
+		}
+		);
+
+$("#interactions").trigger("interact", [ "test", "testvalue" ] );
+
+</script>
+<input class="button" type="button" onClick='$("#interactions").trigger("interact",["key","value"]);'>
+
+<ul id="taskRightClick" class="contextMenu">
+	<!-- CONTEXTMENUOPTIONS -->
+</ul>
+
+<center>
+<table width=800><tr><td>
+
+<table width="100%" class="zoovytable" cellspacing=0>
+	<tr>
+		<td align="left" class="zoovytableheader">
+			Add a Custom Task: 
+		</td>
+		<td align="right" class="zoovytableheader">
+			<a href="#learn_format_catalog" onClick="$('#addnew').toggle();">More</a>			
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+<div id="addnew" style="display: none">
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="CREATE">
+<input type="hidden" name="TAB" value="<!-- TAB -->">
+<table>
+	<tr>
+		<td><b>Task Name:</b></td>
+		<td><input type="textbox" size="50" name="NAME"></td>
+	</tr>
+	<tr>
+		<td><b>Priority:</b></td>
+		<td><select name="PRIORITY">
+			<option value="1">1 (Highest)</option>
+			<option value="2">2 (Medium)</option>
+			<option value="3">3 (Low)</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Assign To:</b></td>
+		<td>
+			<select name="ASSIGNTO">
+				<!-- ASSIGNTO -->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'><b>Link</b></td>
+		<td valign='top'><input size="50" type="textbox" name="LINK">
+			[<a href="#" onClick="$('#help-link').toggle();">Info</a>]
+		<div id="help-link" style="display: none">
+		<br>
+		In the link field you can either specify a url, or use any of the following shortcuts:
+			<table>
+				<tr>
+					<td>order:2004-01-1234</td><td>&nbsp;&nbsp;</td><td>channel:12345</td>
+				</tr>
+				<tr>
+					<td>product:your_product_id</td><td>&nbsp;&nbsp;</td><td>customer:user@domain.com</td>
+				</tr>
+				<tr>
+					<td>claim:1234</td><td>&nbsp;&nbsp;</td><td>ticket:1234</td>
+				</tr>	
+			</table>
+		Using a shortcut will allow you to easily jump straight to a specific record.
+		</div>
+		</td>
+	</tr>
+</table>
+<input class="button" type="submit" value=" Save Task ">
+</form>
+</div>
+		</td>
+	</tr>
+</table>
+<br>
+
+
+<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="TAB" value="<!-- TAB -->">
+<table width=100% cellspacing=0 cellpadding=0>
+	<tr>
+		<td align="left"><b>Existing Tasks:</b></td>
+		<td align="right"><!-- ACTIONS --></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+<table width="100%" cellspacing=0 class="zoovytable">
+<!-- LIST -->
+</table>
+		</td>
+	</tr>
+</table>
+</form>
+
+
+
+
+</td></tr></table>
+</center>
+
+<!-- FOOTER -->
+
+
+<!-- NEEDED for ALTTXT feature -->
+<script type="text/javascript">
+$('.tooltip').qtip();
+$('a').qtip();
+</script>

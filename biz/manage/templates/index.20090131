@@ -1,0 +1,157 @@
+<!-- REPORT_TAB -->
+
+<div align="center"><br>
+<table cellspacing="5" cellpadding="0" width="90%">
+<tr>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/customer"></a><img src="/biz/images/utilities/customer.gif" width="54" height="53" border="0"></td>
+		<td width="49%" align="left"><a href="/biz/manage/customer">Customer Manager</a><br>Find or create a customer record for your website.</td>
+		
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/suppliers"><img src="/biz/images/utilities/supplychain.gif" width="47" height="42" border="0"></a></td>
+		<td width="49%" align="left"><a href="/biz/manage/suppliers">Supply Chain Management</a><br>Track inventory, pricing and orders with your suppliers.</td>
+</tr>
+<tr>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/giftcard"><img src="/biz/images/utilities/giftcard-54x54.gif" width="54" height="54" border="0"></a></td>
+		<td width="49%" align="left"><a href="/biz/manage/giftcard">GiftCard Manager</a><br>Create / Manage GiftCards</td>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/coupon"><img src="/biz/images/utilities/coupons-54x54.gif" width="54" height="54" border="0"></a></td>
+		<td width="49%" align="left"><a href="/biz/setup/promotions?VERB=COUPON">Coupon Manager</a><br>Create / Manage Coupon/Offers</td>
+</tr>
+<tr>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/schedules"></a><img src="/biz/images/utilities/wholesale.gif" width="47" height="42" border="0"></td>
+		<td align="left"><a href="/biz/manage/schedules">Wholesale Pricing Schedules</a><br>Create separate price lists for your wholesale customers.</td>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/newsletter"></a><img src="/biz/images/utilities/newsletter.gif" width="47" height="47" border="0"></td>
+		<td align="left"><a href="/biz/manage/newsletter">Newsletter Manager</a><br>Create subscription lists and then setup Campaigns to send newsletters to your subscribers.</td>
+</tr>
+<tr>		
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/reviews"><img src="/biz/images/utilities/reviews.gif" width="47" height="42" border="0"></a></td>
+		<td align="left"><a href="/biz/manage/reviews">Reviews</a><br>Approve customer reviews of your products.</td>
+		<td valign='top' width="1%" align="center"><a href="/biz/manage/faqs"><img src="/biz/images/utilities/faqs.gif" width="47" height="42" border="0"></a></td>
+		<td align="left"><a href="/biz/manage/faqs">Frequently Asked Questions</a><br>
+		The ability to easily create and manage faqs on your store.
+		</td>
+
+	
+<!--	
+	<td valign='top' width="1%"><a href="/biz/manage/email"><img src="/biz/images/utilities/email.gif" width="52" height="49" border="0"></a></td>
+	<td align="left"><a href="/biz/manage/email">Email Marketing/Newlsetter</a><br>Create separate price lists for your wholesale customers.</td>
+-->
+	</tr>
+	<tr>
+		<td valign="top" width="1%" align="center"><img src="/biz/images/utilities/ebay_manager.gif" width="49" height="49" border="0"></td>
+		<td align="left"><b>eBay Integration</b><br>
+		<table>
+		<tr>
+			<td valign='top' height="15" width="15"><a href="/biz/manage/powerlister"><img border='0' name="img12" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left"><a href="/biz/manage/powerlister">PowerLister Manager</a><br>Track, and update your eBay PowerLister Channels.</td>
+		</tr>
+		</table>
+		</td>
+
+	</tr>
+</table>
+<br>
+
+
+
+
+<table cellspacing=5 cellpadding=0 border=0 width="90%">
+<tr>
+<!-- channel tools column -->		
+	<td valign="top" width="50%">
+
+
+	<table class="zoovytable" cellpadding="2" cellspacing="0" border="0" width='100%'>
+	<tr>
+		<td class="zoovytableheader" align="left"><span class="header">Channel Tools</span></td>
+	</tr>
+	<tr>
+		<td>
+
+		<table cellspacing=2 cellpadding=1 width='100%'>
+		<!--
+		<tr>
+			<td valign='top' height="15" width="15"><img border='0' name="img12" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left">Listing Manager<br>
+			&nbsp; <a href="/biz/manage/listings/index.cgi?MODE=EBAY"> eBay.com</a>
+			&nbsp; <a href="/biz/manage/listings/index.cgi?MODE=OS"> Overstock.com</a>
+			</td>
+		</tr>
+		-->
+		<!--
+		<tr>
+			<td valign='top' height="15" width="15"><a href="/biz/manage/launchgroups"><img border='0' name="img12" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left"><a href="/biz/manage/launchgroups">Launch Groups Manager</a>
+			<br>Prepare groups of products to be submitted to marketplaces.</td>
+		</tr>
+		-->
+		<tr>
+			<td valign='top' height="15" width="15"><a href="/biz/manage/channels"><img border='0' name="img12" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left"><a href="/biz/manage/channels">Channel Manager</a><br>Track, and update your marketing channels</td>
+		</tr>
+		<tr>
+			<td valign='top' height="15" width="15"><a href="/biz/manage/channellist"><img border='0' name="img20" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left"><a href="/biz/manage/channellist">Full Channel List</a><br>Track, and update your marketing channels.</td>
+		</tr>
+		<tr>
+			<td valign='top' height="15" width="15"><a href="/biz/manage/batch"><img border='0' name="img39" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+			<td align="left"><a href="/biz/manage/batch">Batch Channel Editor</a><br>Perform operations on multiple channels at once.</td>
+		</tr>
+		</table>
+
+
+	
+		</td>
+	</tr></table>
+	</td>
+<!-- Account Utilities column  -->
+		<td valign="top" width="50%">
+		<table class="zoovytable" cellpadding="2" cellspacing="0" border="0" width='100%'>
+		<tr>
+			<td class="zoovytableheader" align="left"><span class="header">Account Utilities</span></td>
+		</tr>
+		<tr>
+			<td>
+
+<table cellspacing=2 cellpadding=1 width='100%'>
+<tr>
+	<td valign='top' height="15" width="15"><a
+href="/biz/reports/output.cgi?ACTION=NEW&REPORT=IMAGE_ASSOC"><img border='0' name="img10" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a
+href="/biz/reports/output.cgi?ACTION=NEW&REPORT=IMAGE_ASSOC">Image Associations</a><br>View a list of images, and the products they are associated with</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/csvexport"><img border='0' name="img22" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/csvexport">Product Export</a><br>Exports products into a CSV file.</td></tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/powerprod"><img border='0' name="img42" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/powerprod">Product Power Tool</a><br>Modify multiple product attributes in mass.</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/powersog"><img border='0' name="img42" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/powersog">Option Power Tool</a><br>Modify multiple product
+Store Option values in mass.</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/archive"><img border='0' name="img40" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/archive">Archive Orders</a><br>Hide completed orders.</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/diskspace"><img border='0' name="img95" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/diskspace">Disk Space Manager</a><br>Manage the amount of disk space in use by your account.</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/manage/paypal"><img border='0' name="img43" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/manage/paypal">Paypal IPN Processor</a><br>Check the status of Paypal transactions.</td>
+</tr>
+<tr>
+	<td valign='top' height="15" width="15"><a href="/biz/syndication/sitemap"><img border='0' name="img43" src="/biz/images/tabs/graphics/b.gif" height="15" width="15"></a></td>
+	<td align="left"><a href="/biz/syndication/sitemap">Static Google SiteMap</a><br>Configure nightly generation of a static sitemap file.</td>
+</tr>
+</table>
+
+
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table></div>

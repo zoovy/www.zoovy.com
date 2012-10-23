@@ -1,0 +1,49 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--//
+function openWindow(url) {	
+	var adviceWin = window.open(url,'advice','status=no,width=638,height=400,menubar=yes,scrollbars=yes');
+	adviceWin.focus(true);
+}
+//-->
+</SCRIPT>
+<title>eBay Store Feeds</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<center>
+<font face="Arial, Helevetica">
+<center>
+<!-- SETUP_TAB -->
+</center>
+<form name="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="SAVE-CATEGORY">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<table align='center' width="900"><tr><td>
+
+<div style='margin:3px 0;'>Please map the navigation categories on your website to your eBay store categories. 
+The eBay category is optional, but recommended for maximum exposure:</div>
+
+<table cellpadding='2' cellspacing='0' border='0' class='zoovytable'>
+<tr class='zoovytableheader'>
+	<td><b>Website Category</b></td>
+	<td><b>eBay Store Category</b></td>
+	<td colspan='3'><b>eBay Category</b></td>
+</tr>
+
+<!-- CATEGORIES -->
+</table>
+
+<div class='zbutton_group'>
+<input type="image" src="/images/bizbuttons/save.gif" value=" Save Settings  ">
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+</div>
+
+<br>
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

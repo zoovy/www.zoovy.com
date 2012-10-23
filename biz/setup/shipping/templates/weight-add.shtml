@@ -1,0 +1,90 @@
+<!-- SETUP_TAB -->
+<SCRIPT>
+<!--
+
+// returns a filtered string.
+function validated(valid,string) {
+     for (var i=0, output=''; i<string.length; i++)
+        if (valid.indexOf(string.charAt(i)) != -1)
+           output += string.charAt(i)
+     return output;
+ }
+
+// validates that the string has nothing more than the allowed characters
+function validate(string,Chars) {
+     if (!string) return false;
+
+     for (var i = 0; i < string.length; i++) {
+        if (Chars.indexOf(string.charAt(i)) == -1)
+           return false;
+     }
+     return true;
+}
+
+// takes: name of the form field, value of the form field.
+function calc_weight(varname,value)
+{
+
+  if (!validate(value,'0123456789#.')) { value = '0'; alert('Invalid Entry, field reset'); }
+  if (value.indexOf('#')>=0)
+      {
+      value = validated('0123456789.',value);
+      value = value * 16;
+      }
+  // value = Math.round(value);
+  eval('document.forms[0].'+varname+'.value = "'+value+'"');
+  return(true);
+}
+
+//-->
+</script>
+<title>Zoovy: Simple shipping setup</title>
+</head>
+<body bgcolor='FFFFFF' marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<table width="85%">
+<tr><td>
+<center>
+</center>
+<form action="weight.cgi" method="POST">
+<input type="hidden" name='TYPE' value='<!-- TYPE -->'>
+<input type="hidden" name="ACTION" value="SAVE-ADD">
+<center>
+<table width='624'><tr><td>
+<font face="Arial, Helevetica" size='2'>
+<br>
+&nbsp;&nbsp;&nbsp; 
+Please enter a price, shipping description and maximum weight. The weight should be the maximum weight allowed 
+for this shipping method (in ounces) at the specified price. For example a 10 ounce envelope 
+can be mailed for 33 cents, so you would put 10 in the weight, 0.33 in the price, then some text like "USPS Letter" 
+in the description field. The description will be shown as the customer choice during checkout.
+<br>
+<table>
+<tr><td>Description:</td><td><input type='textbox' name='description' size='25'> (25 letters maximum)</td></tr>
+<tr><td>Weight:</td><td><input onChange="calc_weight('weight',this.value)" type="textbox" NAME="weight" size="10"> (ounces)</td></tr>
+<tr><td>Price:</td><td><input type='textbox' name='price' size='10'></td></tr>
+</table>
+<br>
+<!--
+Apply this method to:<br>
+<table><tr>
+<td><input type='checkbox' name='domestic'>Domestic</td>
+<td><input type='checkbox' name='canada'>Canada</td>
+<td><input type='checkbox' name='int'>International (Other)</td>
+</tr></table>
+<hr>
+-->
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-SIMPLE">
+<a href="weight.cgi" target="_top"><img border="0" src="/images/bizbuttons/exit.gif"></a><br>
+</center>
+
+</form>
+</font>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+</center>
+</body>

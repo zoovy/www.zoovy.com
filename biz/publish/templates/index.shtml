@@ -1,0 +1,38 @@
+<!-- PUBLISH_TAB -->
+
+<br>
+<form name="thisFrm" id="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="PUBLISH">
+<center>
+
+<!-- MESSAGE -->
+
+<table width=660 class="zoovytable" border=0 cellspacing=0>
+	<tr><td class="zoovytableheader">Recent Publishes</td></tr>
+	<tr><td>
+	<table width=100%>
+	<!-- PUBLISHES -->
+	</table>
+	</td></tr>
+</table>
+
+<br>
+<br>
+<table width=660 class="zoovytable" border=0 cellspacing=0>
+	<tr><td class="zoovytableheader">Publish Site</td></tr>
+	<tr><td>
+	Press the button below to push the most recent version of your site to
+our production servers. Please avoid making changes for 5 minutes while the
+site is published. Publishing your site allows us to serve your website
+from multiple servers at blazing fast speeds.<br>
+<br>
+<input class="button" type="submit" value=" Publish Site ">
+<input class="button" type="button" onClick="document.thisFrm.VERB.value='HALT'; document.thisFrm.submit();" value=" Remove/Halt ">
+<input class="button" type="button" onClick="document.thisFrm.VERB.value='RELOAD'; document.thisFrm.submit();" value=" Refresh Page ">
+	</td></tr>
+</table>
+
+</center>
+</form>
+
+<!-- FOOTER -->

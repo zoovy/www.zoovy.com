@@ -1,0 +1,93 @@
+<!-- SETUP_TAB -->
+<center>
+
+<!-- MESSAGE -->
+
+<form action="usps.cgi" method="POST" target="_top">
+<input type="hidden" name="ACTION" value="SAVE">
+
+
+<!--
+#$VAR1 = 'USPS: First-Class  International (Varies)';
+
+#$VAR1 = 'USPS: Priority  International Flat Rate Envelope (6 - 10 Days)';
+#$VAR1 = 'USPS: Priority  International Flat Rate Box (6 - 10 Days)';
+#$VAR1 = 'USPS: Priority  International (6 - 10 Days)';
+#$VAR1 = 'USPS: Express  International (EMS) Flat Rate Envelope (3 - 5 Days)';
+#$VAR1 = 'USPS: Express  International (EMS) (3 - 5 Days)';
+
+#$VAR1 = 'USPS: Global Express Guaranteed (1 - 3 Days)';
+#$VAR1 = 'USPS: Global Express Guaranteed Non-Document Non-Rectangular (1 - 3 Days)';
+#$VAR1 = 'USPS: Global Express Guaranteed Non-Document Rectangular (1 - 3 Days)';
+-->
+
+<br>
+
+<table class="zoovytable" width="600">
+	<tr class="zoovytableheader">
+		<td valign="top"></td>
+		<td valign="top" align="center">DOMESTIC</td>
+		<td valign="top" align="center">INTERNATIONAL</td>
+	</tr>
+	<tr class='r0'>
+		<td valign="top">ENABLE:</td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_DOM --> name="usps_dom" value="1"></td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_INT --> name="usps_int" value="1"></td>		
+	</tr>
+	<tr class='r1'>
+		<td valign="top">FIRST CLASS:</td>
+		<td valign="top" align="center"></td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_INT_PARCELPOST --> name="usps_int_parcelpost" value="1"></td>
+	</tr>
+	<tr>
+		<td valign="top">PARCEL POST:</td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_DOM_BULKRATE --> name="usps_dom_bulkrate" value="1"></td>
+		<td valign="top" align="center"></td>
+	</tr>
+	<tr class='r1'>
+		<td valign="top">PRIORITY MAIL:(6-10 days)</td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_DOM_PRIORITY --> name="usps_dom_priority" value="1"></td>
+		<td valign="top" align="left">
+			<input type="checkbox" <!-- USPS_INT_PRIORITY_1 --> name="usps_int_priority_1" value="1"> Other Pkg.<br>
+			<input type="checkbox" <!-- USPS_INT_PRIORITY_2 --> name="usps_int_priority_2" value="2"> Flat Box.<br>
+			<input type="checkbox" <!-- USPS_INT_PRIORITY_4 --> name="usps_int_priority_4" value="4"> Flat Env.<br>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">EXPRESS MAIL:<br>(3-5 days)</td>
+		<td valign="top" align="center"><input type="checkbox" <!-- USPS_DOM_EXPRESS --> name="usps_dom_express" value="1"></td>
+		<td valign="top" align="left">
+			<input type="checkbox" <!-- USPS_INT_EXPRESS_1 --> name="usps_int_express_1" value="1"> Other Pkg.<br>
+			<input type="checkbox" <!-- USPS_INT_EXPRESS_2 --> name="usps_int_express_2" value="2"> Flat Env.<br>
+		</td>
+	</tr>
+	<tr class='r1'>
+		<td valign="top">GLOBAL EXPRESS GUARANTEED:<br>(1-3 days)</td>
+		<td valign="top" align="left"></td>
+		<td valign="top" align="left">
+			<input type="checkbox" <!-- USPS_INT_EXPRESSG_1 --> name="usps_int_expressg_1" value="1"> Other Pkg.<br>
+			<input type="checkbox" <!-- USPS_INT_EXPRESSG_2 --> name="usps_int_expressg_2" value="2"> Rectangular.<br>
+			<input type="checkbox" <!-- USPS_INT_EXPRESSG_4 --> name="usps_int_expressg_4" value="4"> Non-Rectangular.<br>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">RULES</td>
+		<td valign="top" align="center">[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=USPS_DOM">Rules</a>]</td>
+		<td valign="top" align="center">[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=USPS_INT">Rules</a>]</td>
+	</tr>
+	<tr>
+		<td align=center colspan=3>
+<input type=submit class=button name="ACTION-SAVE-USPS" value=" Save ">
+<input type=button class=button onClick="document.location='index.cgi';" value=" Exit ">
+		</td>
+	</tr>
+</table>
+<br>
+
+</form>
+
+</center>
+<br>
+<br>
+<br>
+</body>

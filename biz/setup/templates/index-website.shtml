@@ -1,0 +1,65 @@
+<!-- SETUP_TAB -->
+<br>
+<table cellspacing=0 cellpadding=4 border=0 width="100%"><tr>
+<!-- SITE BUILDER -->
+	<td valign="top" width="4%"><a href="/biz/setup/builder" class="big_link"><img src="/biz/images/tabs/icons/builder.gif" width="100" height="100" alt="" border=0></a></td>
+	<td valign="top" width="45%" align="left"><a href="/biz/setup/builder" class="big_link">Website Design</a><br>
+<p>Build the content for your storefront.  Select page layouts and add product to categories and lists.</p>
+ - <a href="/biz/setup/builder">Site Builder</a><br>
+<!--
+ - <a href="index.php?section=website-builder-prodlist">Global Product List</a><br>
+ - <a href="index.php?section=website-builder-catflow">Global Category Page Layout</a><br>
+--></td>
+
+
+	<td valign="top" width="2%"><img src="/biz/images/tabs/blank.gif" height=1 width=20></td>
+
+
+
+<!-- THEME CHOOSER -->
+	<td valign="top" width="4%"><a href="/biz/setup/themes" class="big_link"><img src="/biz/images/tabs/icons/theme_chooser.gif" width="100" height="100" border=0></a></td>
+	<td valign="top" width="45%" align="left"><a href="/biz/setup/themes" class="big_link">Theme Chooser</a><br>
+<p>Choose the basic look and feel of your website.  Choose from a variety of prebuilt
+themes or build your own.</p>
+ - <a href="/biz/setup/themes">Choose Theme</a><br>
+ - <a target="_blank" href="http://proshop.zoovy.com/category/htmlwrappers/">View/Purchase Custom Themes</a><br>
+ - <a target="_blank" href="http://proshop.zoovy.com/category/branding_packages/">View/Purchase Branding Packages</a><br>	
+	</td>
+
+</tr><tr>
+	<td colspan=5>&nbsp;</td>
+</tr><tr>
+
+<!-- MEDIA MANAGER -->
+	<td valign="top"><a href="/biz/setup/media" class="big_link"><img src="/biz/images/tabs/icons/media.gif" width="100" height="100" border=0></a></td>
+	<td valign="top" align="left"><a href="/biz/setup/media" class="big_link">Media Library</a><br>
+<p>Upload and manage your images, sounds, movies, documents and flash.</p>
+ - <a href="/biz/setup/media/">Upload New Image</a><br>
+ - <a href="/biz/setup/bulkupload">Upload Multiple Images</a><br>
+ - <a href="/biz/setup/customfiles">Custom Files Library</a><br></td>
+	<td></td>
+<td valign="top"><img src="/biz/images/tabs/icons/custom.gif" width="100" height="100"></td>
+	<td valign="top" align="left"><span class="big_link">Store & Auction Customization</span><br>
+
+<p>Upload/Manage custom templates in your account.</p>
+ - <a href="toxml/index.cgi?ACTION=HELP">Help</a><br>
+ - <a href="toxml/index.cgi?MODE=WRAPPER">Site Wrappers</a><br>
+ - <a href="toxml/index.cgi?MODE=LAYOUT">Page Layouts</a><br>
+ - <a href="toxml/index.cgi?MODE=WIZARD">Auction HTML Wizards</a><br>
+ </td>
+
+</tr><tr>
+	<td colspan=5>&nbsp;</td>
+</tr><tr>
+	<td valign="top"><img src="/biz/images/tabs/icons/cat_lists.gif" width="100" height="100"></td>
+	<td valign="top" align="left"><a href="/biz/setup/navcats" class="big_link">Add/Rename/Remove Categories & Lists</a><br>
+
+<p>Build your store category tree or add product lists.</p>
+ - <a href="/biz/setup/navcats?MODE=NAVCAT">Add New Category</a><br>
+ - <a href="/biz/setup/navcats?MODE=LIST">Add New List</a><br>
+</td>
+	<td></td>
+	
+</tr></table>
+
+<!-- FOOTER -->

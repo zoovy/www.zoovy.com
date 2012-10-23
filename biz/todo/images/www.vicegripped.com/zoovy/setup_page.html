@@ -1,0 +1,106 @@
+<link rel="STYLESHEET" type="text/css" href="http://www.zoovy.com/biz/standard.css">
+
+
+<!-- feel free to change my class names -->
+
+
+<style type='text/css'>
+
+div.available	{font-family:inherit;}  /* this doesn't do anything, but having it gives us options */
+div.unavailable, div.unavailable a	{color: #cccccc;}
+
+.todo	{background:url(todo-34x11.gif) no-repeat right center; padding-right:40px;}  /* if you use the other todo graphic (no star) set reduce the right padding */
+
+
+div.todo_list	{margin-bottom:10px;}
+div.todo_list table	{border:1px solid #cccccc;}
+
+
+div.undone	{padding-left:30px; background:url(todo_unchecked_grey-19x16.gif) no-repeat left bottom;}  /* there is also an unchecked (no _grey) image if you prefer. it's orange. */
+div.done	{padding-left:30px; background:url(todo_checked-19x16.gif) no-repeat left bottom;}
+</style>
+
+<body style='margin:50px;'>
+
+
+
+
+<div class='todo_list'>
+<table cellspacing='0' cellpadding='2' align='center' width='700'>
+<tr>
+	<td width='240'><img src="thingstodo-220x47.gif"></td>
+	<td>
+	<div class='undone'>you need to give JT a helicopter.  [ <a href='#'>help</a> ]</div>
+	<div class='undone'>you need to give JT a jetpack.  [ <a href='#'>help</a> ]</div>
+	<div class='done'>you need to give JT a car.  [ <a href='#'>help</a> ]</div>
+	</td>
+</tr>
+</table>
+</div>
+
+
+<div id="manage!max">
+
+<img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > <a href="/biz/setup/builder">Site Builder</a><br />
+
+<div class="subtitle0">Build the content for your storefront.  Select page layouts and add product to categories and lists.</div>
+
+
+<!-- this is pretty much what it looks like now:  -->
+
+ - <a href="/biz/setup/builder/index.cgi?ACTION=COMPANYEDIT&NS=DEFAULT">Company Information</a><br>
+<div class="subtitle1">Put in Logo, Address, Policies, etc.</div>
+
+ - <a href="/biz/setup/builder/themes/index.cgi?NS=DEFAULT">Pick Site Theme</a><br>
+<div class="subtitle1">Select the graphics, buttons and navigation which will be used for this site.</div>
+
+
+<!-- should look like this:  -->
+
+<div class='available'>
+ - <a href="/biz/setup/builder/index.cgi?ACTION=INITEDIT&NS=DEFAULT&FS=%21&FORMAT=WRAPPER&">Customize Site Theme</a><br>
+<div class="subtitle1">Tune customizable features in the selected theme.</div>
+</div>
+
+<div class='available'>
+ - <a href="/biz/setup/builder/themes/index.cgi?VERB=SIDEBAR&amp;NS=DEFAULT">Customize Site SideBar</a><br>
+<div class="subtitle1">Enhance your site with 3rd party logos.</div>
+</div>
+
+
+<div class='unavailable'>
+ - <a href="/biz/setup/builder/themes/index.cgi?NS=DEFAULT&SUBTYPE=E" class='todo'>Select Email Theme</a><br>
+<div class="subtitle1">Pick a style for a header and footer for an email.</div>
+</div>
+
+
+<div class='available'>
+ - <a href="/biz/setup/builder/emails/index.cgi?VERB=EDIT&NS=DEFAULT">Edit Email Messages</a><br>
+<div class="subtitle1">Customize the emails that are sent to customers.</div>
+</div>
+
+
+<!-- unavailable can be used around a specific menu item or an entire section -->
+
+<div class='unavailable'>
+<img src="b_off.gif" width="15" height="15" > <a href="/biz/setup/media/index.cgi">Media Library</a><br />
+<div class="subtitle0">Upload and manage your images, sounds, movies, documents and flash.</div>
+
+ - <a href="/biz/setup/media/">Upload New Image</a><br>
+ - <a href="/biz/setup/customfiles">Public Files Library</a><br>
+
+<div class="subtitle1_margin"><div class="subtitle1"></div></div><img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > <a href="/biz/setup/navcats">Categories &amp; Lists</a><br />
+
+<div class="subtitle0">Build your store category tree or add product lists.</div>
+<img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > <a href="/biz/setup/analytics/index.cgi">Analytics &amp; Plugins</a><br />
+<div class="subtitle0">Integrate approved 3rd party applications with your site.</div>
+<img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > <a href="/biz/setup/rss/index.cgi">RSS Feeds</a><br />
+<div class="subtitle0">Create RSS Feeds to easily share your product lists with affiliate sites.</div>
+
+</div>
+
+<div class="subtitle1_margin"></div>
+</div>
+
+
+</body>

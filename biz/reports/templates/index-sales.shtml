@@ -1,0 +1,102 @@
+<!-- REPORT_TAB -->
+<center>
+<font face='Arial'>
+<br>
+
+<!--
+<form name='myfrm'>
+<table border='1'>
+<tr><td>
+Show invoices in:<br>
+<input type='checkbox' checked name='RECENT'> Recent &nbsp; 
+<input type='checkbox' checked name='PENDING'> Pending &nbsp; 
+<input type='checkbox' checked name='APPROVED'> Approved &nbsp; 
+<input type='checkbox' checked name='COMPLETED'> Completed &nbsp; 
+<input type='checkbox' name='DELETED'> Deleted
+</td></tr></table>
+</form>
+-->
+
+<form method="get" id="thisFrm" name="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="">
+
+<table width=500 class="zoovytable">
+<tr><td class="zoovytableheader">Report Type:<br></td></tr>
+<tr><td>
+Output Format:
+<!-- MESSAGE -->
+<br>
+<input checked type="radio" name="REPORT" value="SALES"> Order Details<br>
+<input type="radio" name="REPORT" value="SALE_SUMMARY"> Order Summary<br>
+<input type="radio" name="REPORT" value="SALES_SKU_RANK"> Sales by SKU Ranking<br>
+<input type="radio" name="REPORT" value="SALES_PRODUCT_RANK"> Sales by Product Ranking<br>
+<input type="radio" name="REPORT" value="SALES_SOG_RANK"> Sales by Store Option Group Ranking<br>
+<input type="radio" name="REPORT" value="SALES_BY_SCHEDULE"> Sales by Pricing Schedule<br>
+
+<!--
+<input type="radio" name="REPORT" value="SALES_UNSOLD_INVENTORY"> Sales - Unsold Inventory<br>
+<span class="hint">
+* Unsold Inventory Warning: this report uses current inventory levels for items which are in
+stock TODAY and were created PRIOR to the report start period. 
+However if an item was out of stock during the report period, and in stock today it will still appear in the report 
+because the Zoovy platform does not maintain a database table of historical inventory levels.
+</span>
+-->
+
+</td></tr>
+<tr><td class="zoovytableheader">Report Options:</td></tr>
+<tr><td>
+
+<input type="checkbox" name="include_deleted"> Gross Sales: Include Cancelled Orders<br>
+<br>
+<br>
+<b>Sales Reports by Month:</b><br>
+<select name="month">
+<!-- MONTHS -->
+</select>
+<select name="year">
+<!-- YEARS -->
+</select><br>
+<input type="button" class="button" 
+	onClick="document.thisFrm.VERB.value='SALES-BYMONTH'; document.thisFrm.submit();" 
+	value="  Report by Month  "><br>
+<br>
+
+<b>Sales Report by Period:</b><br>
+<table cellpadding='0' cellspacing='0'>
+	<tr><td>Begins:</td><td><input size='8' maxlength='8' type='textbox' name='begins'> MM/DD/YY</td></tr>
+	<tr><Td>Ends:</td><td><input size='8' maxlength='8' type='textbox' name='ends'> MM/DD/YY</td></tr>
+</table>
+<input type="button" class="button" 
+	onClick="document.thisFrm.VERB.value='SALES-BYPERIOD'; document.thisFrm.submit();" 
+	value="  Report by Period  "><br>
+
+<br>
+<b>Speciality Reports:</b><br>
+<select name='PERIOD'>
+	<option value='today'>Today Only</option>
+	<option value='thismonth'>Month to Date</option>
+	<option value='4week'>Last 4 Weeks</option>
+	<option value='all'>All Orders</option>
+</select><br>
+<input type="button" class="button" 
+	onClick="document.thisFrm.VERB.value='SALES-QUICK'; document.thisFrm.submit();" 
+	value="  Report Timeframe  "><br>
+<br>
+
+<b>Sales Report by Starting/Ending Invoice #:</b><br>
+<table cellpadding='0' cellspacing='0'>
+	<tr><td>First Invoice:</td><td><input size='15' maxlength='15' type='textbox' name='startinv'> ####-##-####</td></tr>
+	<tr><Td>Last Invoice:</td><td><input size='15' maxlength='15' type='textbox' name='endinv'> ####-##-####</td></tr>
+</table>
+<input type="button" class="button" 
+	onClick="document.thisFrm.VERB.value='SALES-BYINVOICE'; document.thisFrm.submit();" 
+	value="  Report by Invoice  "><br>
+
+</td></tr>
+</table>
+</center>
+</form>
+
+</body>
+

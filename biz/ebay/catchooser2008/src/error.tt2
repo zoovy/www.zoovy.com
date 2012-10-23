@@ -1,0 +1,12 @@
+[%- page_title = 'Error happened' -%]
+
+<script type="text/javascript">
+<!--
+
+window.opener.document.forms['[%- FRM -%]'].elements['[%- V -%]'].value='[%- CATID -%]'; 
+
+//-->
+</script>
+
+<a href="#" onClick="window.close();">Close [%- CATID %]</a></p>
+

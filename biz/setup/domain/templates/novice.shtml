@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</HEAD>
+<CENTER>
+<BODY bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB --><form action="<!-- SCRIPT_NAME -->" method="POST">
+<input type="hidden" name="novice-completed" value="1">
+<!-- SETUP_TAB -->
+<h2>(Novice Mode)</h2>
+<br>
+<br>
+	If you would like your e-mail or your website redirected to another
+area. This is the place to do it. Here you will be able to take and have
+your customer's e-mail from your Zoovy store, redirected to your home e-mail
+address or your work e-mail address, or whatever you prefer. This will allow
+you to receive your mail from anywhere in the world as long as you have
+e-mail access. It does not matter what account you have you can just have
+the e-mail redirected to you.
+	If you are looking to expand your business and have purchased a URL
+lately and would like the people that go to that site, redirected to your
+Zoovy business, then you will have to enter the proper information here, in
+the Domain name. This will allow all your traffic to go to your Zoovy store,
+and then Zoovy can redirect your mail to you.
+
+<br>
+Tell them what they are going to do in the next portion<br>
+<br>
+If they need a merchant account, then tell them to click here.<br>
+<br>
+<input type="image" border="0" src="/images/bizbuttons/proceed.gif">
+<a href=".."><img src="/images/bizbuttons/exit.gif" width="81" height="31" border="0"></a>
+</form>
+<!-- TAB_FOOTER -->
+</center>
+</BODY>
+</HTML>
+
+<!-- TEMPLATE ./biz/setup/redir/templates/novice.shtml -->

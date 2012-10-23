@@ -1,0 +1,5 @@
+VERB=
+	DETAIL - show the details of a package, including which licenses they already have.
+
+PACKAGE
+	ZPM - product manager

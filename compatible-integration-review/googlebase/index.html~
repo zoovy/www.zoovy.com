@@ -1,0 +1,43 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy offers exceptional integration with Amazon', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","AMAZON");
+</script>
+
+
+<img src='/images/partner_pages/googlebase_header-462x85.gif' height="85" width="462" border='0' alt='Listing and selling on Amazon made easy' />
+
+<p><b>Unlike other e-commerce platforms, Zoovy 1 has built-in syndication </b> with leading comparison shopping engines such as Google
+Base allowing merchants to easily access and leverage the huge buying power of these established markets with minimal effort.</p>
+
+<h3>What is Google Base? </h3>
+<div style="border-top: 2px solid #C8D8EC;"></div>
+<p>Google Base is a place where you can easily submit all types of online and offline content, which we'll make searchable on Google (if your content isn't online yet, we'll put it there). You can describe any item you post with <em>attributes</em>, which will help people find it when they do related searches. In fact, based on your items' relevance, users may find them in their results for searches on <a href="http://froogle.google.com" target="_blank">Froogle</a>, <a href="http://maps.google.com" target="_blank">Google Maps</a> and even our main <a href="http://www.google.com" target="_blank">Google web search</a>.</p>
+
+<div id='facts'>
+<h3>Quick Facts about Google Base</h3>
+<div style="border-top: 2px solid #C8D8EC;"></div>
+<ul>
+	<li><strong>Languages:</strong> Google Base is currently available in English and German interfaces. </li>
+	<li><strong> Reach:</strong> Items you submit to Google Base might be found on Google properties like <a href="http://www.google.com">Google</a>, <a href="http://froogle.google.com">Froogle</a>, and <a href="http://maps.google.com"  target="_blank">Google Maps</a>. </li>
+	<li><strong> How it's different:</strong> Google Base enables you to add <em>attributes</em> describing your content, so that searchers can easily find it. The more popular individual attributes become, the more often we'll suggest them when others post the same items. Similarly, items that become more popular will show up as suggested item types in the <strong>Choose an existing item type</strong> drop-down menu. </li>
+</ul>
+</div>
+
+<br>
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+% ## Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>
+</li></font></ul>

@@ -1,0 +1,40 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<title></title>
+</head>
+<body bgcolor="FFFFFF" onLoad="this.focus();">
+
+<center>
+
+<table bgcolor='3366CC' cellspacing='0' cellpadding='1' border='0' width='95%'>
+<tr><td><font size='2' face='arial, helvetica' color='white'>&nbsp;&nbsp;&nbsp;<b>Please Review Your Account Charges</b></font></td></tr>
+<tr><td>
+<table bgcolor="FFFFFF" cellpadding='7' cellspacing='1' border='0' width='100%'><tr><td>
+<center>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="NOWSAVE">
+<input type="hidden" name="KEY" value="<!-- KEY -->">
+<font face="verdana, helvetica">
+<center>
+Please review the following information:<br>
+<font color="RED"><!-- ERRMESSAGE --></font>
+<br>
+<b><!-- REQUESTED_USERNAME --> Billing Summary<br>
+
+<table cellspacing='0' cellpadding='2' border='0'>
+<!-- SETUPFEES -->
+<!-- MONTHLYBILL -->
+</table>
+<br>
+</center>
+<font size='2'>Just provide a credit card, and you're ready to rock and roll!</font>
+<center>
+<!-- PAYMENTINFO --><br>
+<input type="submit" value="  Continue >> ">
+<input type='button' value='  Go Back  ' onClick="document.location='index.cgi?ACTION=<!-- BACK -->&KEY=<!-- KEY -->';">
+</form>
+</center>
+</td></tr></table>
+</td></tr></table>
+</center>
+</body>

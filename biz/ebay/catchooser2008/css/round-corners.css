@@ -1,0 +1,10 @@
+.round-corners-container { border:1px solid #CCCCCC; text-align:left; valign:top; width: 550px; margin: 7px 0 7px 0;}
+.round-corners-container .n .e,
+.round-corners-container .n .w,
+.round-corners-container .s .e,
+.round-corners-container .s .w { display:block; font-size:0; line-height:0%; height:8px; position:relative; margin:0; }
+.round-corners-container .n .w { background:url(/biz/ebay/catchooser2008/images/corner_tl.gif) no-repeat top left; top:0px; left:-2px; }
+.round-corners-container .n .e { background:url(/biz/ebay/catchooser2008/images/corner_tr.gif) no-repeat top right; top:-1px; right:-1px; }
+.round-corners-container .s .e { background:url(/biz/ebay/catchooser2008/images/corner_br.gif) no-repeat bottom right; bottom:-1px; right:-1px; }
+.round-corners-container .s .w { background:url(/biz/ebay/catchooser2008/images/corner_bl.gif) no-repeat bottom left; left:-2px; bottom:0px; }
+

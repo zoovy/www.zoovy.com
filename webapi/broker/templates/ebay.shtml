@@ -1,0 +1,28 @@
+<head>
+<title>EBAY Preview</TITLE>
+</head>
+<body bgcolor='FFFFFF' onLoad='this.focus()'>
+
+<center>
+<!-- PRETTY -->
+</center>
+<center>
+
+<hr>
+<table><tr><td>
+<font size="4" face="arial, helvetica, arial"><b>Ebay Picture:</b></font>
+</td><td>
+<font size="4" face="arial, helvetica, arial"><b>
+<!-- IMAGE -->
+</b></font>
+</td></tr>
+<tr><td>
+<font face='arial' size='4'><b>
+Gallery Image:
+</b></font>
+</td><td><!-- GALLERY --></td></tr>
+</table>
+</center>
+
+
+</body>

@@ -1,0 +1,32 @@
+<!-- SETUP_TAB -->
+<center>
+<br>
+<br>
+<font face='verdana, arial, helvetica' color='red' size='5'><b>Sorry - You can't use this feature</b></font><br>
+<br>
+<table table='80%'>
+<tr><td>
+<font face='sans-serif, arial' size='2'>
+
+At this time you have configuration errors in your account which prevent you
+from utilizing this feature. Please correct these errors before accessing
+this tool.<br>
+<br>
+A complete list of errors follows:<br>
+<!-- ERRORS -->
+
+<br>
+<br>
+<!-- WEBDOC -->
+<br>
+If you are missing company information you need to go to: 
+<a href="/biz/setup/builder">Website Builder</a> to enter it.<br>
+
+<br>
+<br>
+</font>
+</td></tr>
+</table>
+
+</center>
+</body>

@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+<table width='500'>
+<tr><Td>
+<span class="alert">Sorry - you don't have access to this feature</span><hr>
+<b>Advanced Site Search</b><br>
+<br>
+<a href="/biz/configurator?VERB=VIEW&BUNDLE=WEB">Advanced Site Search</a><br>
+<br>
+<b>What is possible?</b><br>
+By default all Zoovy stores can do title, and product id searches.<br>
+Advanced Site Search - lets you enable searching on any field, even custom ones you create for your products. 
+This includes the ability to search product descriptions, detailed descriptions, product options, and even custom 
+fields such as Manufacturer Part number, UPC, etc.<br>
+<br>
+<b>How does this work?</b><br>
+Unlike the default title search, the Advanced Site Search builds an index which is MUCH faster and search thousands of products
+in just seconds. To do this Zoovy pre-calculates every possible search and stores the results in a fast lookup format (called at Catalog). 
+Then every time you make a change to a product, Zoovy re-computes the index within 24 hours so that it can be searched. You can
+also have multiple catalogs, so you can have exact searches that match specific product properties.<br>
+<br>
+<center><a href='/biz/setup/'><img src='/images/bizbuttons/exit.gif' border='0'></a></center>
+</td></tr>
+</table>

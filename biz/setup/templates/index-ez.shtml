@@ -1,0 +1,102 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">  
+<title>Zoovy Merchant Setup</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+
+var img_link_off = new Image(); img_link_off.src = "images/p.gif";
+var img_link_on = new Image(); img_link_on.src = "images/g.gif";
+
+
+function mout(num) {
+  document.images[eval("\"img"+num+"\"")].src = img_link_off.src;
+}
+
+function mon(num) {
+  document.images[eval("\"img"+num+"\"")].src = img_link_on.src;
+}
+
+function openWindow(url) {
+adviceWin = window.open(url, 'advice','status=no,width=638,height=400,menubar=yes,scrollbars=yes')
+adviceWin.focus(true);
+}
+
+//--></SCRIPT>
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<!-- SETUP_TAB -->
+<br>
+<table width='600'>
+	<tr>	
+		<td><table bgcolor='#AAAADD' cellspacing='2' cellpadding='0' border='0'><tr>
+		<td height='10' valign='middle' bgcolor='#330099' align='center' width='180' style="color: white;"><b><font color='white'>WEBSITE</b></td>
+		</tr></table></td>
+		<td valign='middle' width='30'><img src='/images/blank.gif' height='10' width='30'></td>
+		<td><table bgcolor='#AAAADD' cellspacing='2' cellpadding='0' border='0'><tr>
+		<td height='10' valign='middle' bgcolor='#330099' align='center' width='180' style="color: white;"><b><font color='white'>CHECKOUT</b></td>
+		</tr></table></td>
+		<td valign='middle' width='30'><img src='/images/blank.gif' height='10' width='30'></td>
+		<td><table bgcolor='#AAAADD' cellspacing='2' cellpadding='0' border='0'><tr>
+		<td height='10' valign='middle' bgcolor='#330099' align='center' width='180' style="color: white;"><b><font color='white'>ACCOUNT SETTINGS</b></td>
+		</tr></table></td>
+	</tr>
+	<tr>
+		<td valign='top' width='180'><table>
+<!-- WEBSITE TAB -->
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('12')" onMouseOut="mout('12')" href="themes"><img border='0' name="img12" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('12')" onMouseOut="mout('12')" href="themes"><font class="mout">Theme Chooser<br>
+<font class='teenygrey'>Select a Design for your Pages</a> <!-- THEME_TODO --></font></td></tr>
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('11')" onMouseOut="mout('11')" href="builder"><img border='0' name="img11" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('11')" onMouseOut="mout('11')" href="builder"><font class="mout">Website Builder<br>
+<font class='teenygrey'>Customize Pages on your Website</a><!-- WEBSITE_TODO --></font></td></tr>
+		<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('20')" onMouseOut="mout('20')" href="imglib"><img border='0' name="img20" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('20')" onMouseOut="mout('20')" href="imglib"><font class="mout">Image Library<br>
+<font class='teenygrey'>Add / Remove Pictures in your Account</font></a></td></tr>
+		</table></td>
+		<td valign='top' width='30'><img src='/images/blank.gif' width='30'></td>
+		<td valign='top' width='180'><table>
+<!-- CHECKOUT TAB -->
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('13')" onMouseOut="mout('13')" href="shipping"><img border='0' name="img13" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('13')" onMouseOut="mout('13')" href="shipping"><font class="mout">Shipping<br>
+<font class='teenygrey'>Determine how shipping will be calculated for your products</font></a></td></tr>
+
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('14')" onMouseOut="mout('14')" href="tax"><img border='0' name="img14" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('14')" onMouseOut="mout('14')" href="tax"><font class="mout">Sales Tax<br>
+<font class='teenygrey'>Configure state and local tax collection amounts</font></a></td></tr>
+
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('15')" onMouseOut="mout('15')" href="https://www.zoovy.com/biz/setup/payment/index.cgi"><img border='0' name="img15" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('15')" onMouseOut="mout('15')" href="https://www.zoovy.com/biz/setup/payment/index.cgi"><font class="mout">Payment<br>
+<font class='teenygrey'>Configure which payment methods you will accept from customers</font></a></td></tr>
+		</table></td>
+		<td valign='top' width='30'><img src='/images/blank.gif' width='30'></td>
+		<td valign='top' width='180'><table>
+<!-- GENERAL TAB -->
+		<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('8')" onMouseOut="mout('8')" href="account"><img border='0' name="img8" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('8')" onMouseOut="mout('8')" href="account"><font class="mout">Company Information</font><br>
+<font class='teenygrey'>Setup your company name, address, email, and phone</font></a></td></tr>
+
+			<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('25')" onMouseOut="mout('25')" href="logotool"><img border='0' name="img25" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('25')" onMouseOut="mout('25')" href="logotool"><font class="mout">Company Logo<br>
+<font class='teenygrey'>Customize your company logo</font></a></td></tr>
+
+		<tr><td valign='top' height="24" width="25"><a class="mout" onMouseOver="mon('10')" onMouseOut="mout('10')" href="password"><img border='0' name="img10" src="images/p.gif" height="24" width="25"></a></td>
+<td><a class="mout" onMouseOver="mon('10')" onMouseOut="mout('10')" href="password"><font class="mout">Change Password<br>
+<font class='teenygrey'>Change your Account Password</font></a> <!-- PASSWORD_TODO --></td></tr>
+		</table></td>
+	</tr>
+
+
+		</table></td></tr>
+<tr><td colspan='8'>
+<center>
+<br><table><tr><td><a href="/biz/index.cgi?goto=/biz/wizard" class='mout'><img src="http://www.zoovy.com/images/wizdude.gif" border=0></a></td>
+<td align=center><a href="/biz/index.cgi?goto=/biz/wizard" class='mout'>Click me to use the<br>Zoovy setup wizard!</a></td></tr></table>
+<br><br>
+</center>
+</td></tr>
+</table>
+
+
+</body>

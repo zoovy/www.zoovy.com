@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use WEBAPI;
+
+$XAPI = 'FULLORDERSYNC/SINCE/0';
+$DATA = '';
+
+($pickup,$XML) = &WEBAPI::fullOrderSync('brian',$XAPI,time(),$DATA);
+
+print "PICKUP: $pickup\n";
+print "XML:\n$XML\n";

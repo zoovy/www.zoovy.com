@@ -1,0 +1,75 @@
+<HEAD>
+<title>Zoovy: Online Product Management - Merchant</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<!-- HEADER_ONLY -->
+</HEAD>
+<body>
+<!-- MSGS -->
+
+<center>
+<br>
+<table border=0 cellspacing=0 class="zoovytable" width='550'>
+<tr>
+	<td class="zoovytableheader">
+	<b>Store Option Groups</b><br>
+	</td><td colspan="2" align="right" class="zoovytableheader">
+	</td>
+</tr>	
+<tr>
+	<td colspan="3">
+	<!-- MESSAGE -->
+	<!-- OUTPUT -->
+	</td>
+</tr>	
+<tr>
+	<td colspan="3">
+	
+<form method="post" action="index.cgi">
+<!-- MESSAGE -->
+		
+		<br>
+<table width=100%><tr><td valign="top">
+	
+		<table width="300" class="zoovytable">
+			<thead><tr><th class="zoovysub1header" colspan=2>Available Store Option Groups</th></tr></thead>
+			<tbody>
+			<!-- SOGS_OUTPUT -->
+			<tr>
+				<td colspan="2">
+				<input type="button" class="button" value=" Create New " onClick="document.location='index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->';"><br>
+				</td>
+			</tr>
+			</tbody>
+		</table>	
+		
+</td><td valign="top">
+
+		<table width="300" class="zoovytable">
+			<thead><tr><th class="zoovysub1header" colspan=2>System Wide Groups</th></tr></thead>
+			<tbody>
+			<!-- SWOGS_OUTPUT -->
+			</tbody>
+		</table>
+
+</td></tr>
+</table>
+
+		<div class="hint">
+		Explanation: Store option groups are a shared set of properties that have common selections across multiple products. 
+		System Wide Option groups are lists of commonly used options that are provided by Zoovy.
+		Max: 936 per store.
+		</div>
+		
+		<br>
+	</td>
+</tr>
+</table>
+<br>
+<br>
+<br>
+</form>
+
+<!-- BEGIN_FOOTER -->
+</td></tr></table>
+</center>
+</body>

@@ -1,0 +1,98 @@
+<!-- SETUP_TAB -->
+<script type="text/javascript" src="http://www.zoovy.com/biz/zoovy.js"></script>
+<script type="text/javascript">
+
+function initJS() {
+	<!-- INITJS -->
+	}
+
+
+// validation functions go here
+function checkForm() {
+	<!-- CHECKFORM -->
+	return(true); 
+	}
+
+</script>
+
+<center>
+<table cellpadding=4 cellspacing=0>
+<tr>
+	<td bgcolor="#ffffff" valign="top">
+	<b>Edit Profile:</b> 
+	<form method="POST" name="thisFrm" action="index.cgi">
+		<input type="hidden" name="ACTION" value="PROFILE-COMPANYSAVE">
+		<input type="hidden" name="MKT" value="<!-- MKT -->">
+		<input type="hidden" name="NS" value="<!-- NS -->">
+		<input type="hidden" name="_SREF" value="<!-- _SREF -->">
+		<!-- MESSAGE -->	
+	<table>
+		<tr>
+			<td>Code:</td><td><!-- NS --></td>
+		</tr>
+   <tr>
+   <tr>
+ 	   <td><!-- MKT --> Template:</td>
+      <td>
+  		<!-- TEMPLATE --> <input type="button" value=" Change " onClick="thisFrm.ACTION.value='PROFILE-CHOOSE_WIZARD'; thisFrm.submit();">
+  		<input type="hidden" name="<!-- TEMPLATEATTRIB -->" value="<!-- TEMPLATE -->">
+      </td>
+   </tr>
+	</table>
+	
+	<table>
+		<!-- CONTENTS -->
+	</table>
+	
+	
+	<input type="button" onClick="thisFrm.ACTION.value='PROFILE-PREVIEWSAVE'; thisFrm.submit();" value=" Save / Preview ">
+	<input type="submit" value=" Save / Exit ">
+	<br>
+	</form>	
+	</td>
+</tr>
+<tr>
+<td>
+
+<center><br>
+<table width="100%" bgcolor="330099">
+<tr><td><font face="arial" color="white" size="2"><b>&nbsp; Profile Preview:</b></font><br>
+<iframe src="/biz/product/channel2/hitrefresh.html" FRAMEBORDER="1" name="iframe" height="250" width="100%">
+This is the content inside the Iframe
+</iframe>
+
+<script>
+<!--
+
+function doPreview(btn) {
+
+	var thisFrm = document.thisFrm;
+	var str = '';
+	var i = thisFrm.elements.length;
+	while (--i>=0) {
+		if (thisFrm.elements[i].name != '') {
+			str = str + escape(thisFrm.elements[i].name) + '=' + escape(thisFrm.elements[i].value) + '&';
+			}
+		}
+
+	document.previewFrm.DATA.value = str;
+	document.previewFrm.submit();
+	}
+
+//-->
+</script>
+
+</td></tr></table></center>
+<form NAME='previewFrm' target='iframe' action='/biz/setup/ebay/wizardpreview.cgi' method="POST" encoding="form-data">
+<input type="button" value=" Refresh Preview " onClick="doPreview();">
+<input type='hidden' name='DATA' value="">
+</form>
+
+</table><br>
+</center>
+<!-- AUTOLOAD_PREVIEW -->
+</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

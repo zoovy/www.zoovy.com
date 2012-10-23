@@ -1,0 +1,33 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Growing your Business - Wholesale and Supply Chain', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+
+<!-- Spot 3: Wholesale & supply chain -->
+<div id="wholesale" class="tabset_content">
+<h2>Wholesale functionality - stop losing bulk sale opportunities</h2>
+<p><strong>Offer different prices to different customers on the SAME web store by utilizing the dynamic pricing functions of the Zoovy Wholesale tools</strong></p>
+
+<p>Create usergroups and individual accounts that instantly see different pricing of your products when they log in to your Zoovy store.</p>
+
+<p>Offer special pricing on ‘per-box/pallet’ purchases and ‘multiple order’ discounts with user-configurable price rules.</p>
+
+<p>Support supply-chain functionality for your wholesale clients and your suppliers by importing and exporting product database information.</p>
+	
+</div>
+
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

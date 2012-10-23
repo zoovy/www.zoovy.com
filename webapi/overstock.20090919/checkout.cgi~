@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+
+use OVERSTOCK::LISTING;
+use OVERSTOCK::API;
+
+use lib "/httpd/modules";
+use GTOOLS;
+use CGI;
+
+use ZOOVY;
+use Data::Dumper;
+
+use strict;
+
+my $ERROR = '';
+my $q = new CGI;
+my ($MERCHANT) = $q->param('MERCHANT');
+if ($MERCHANT eq '') { $ERROR = 'Undefined MERCHANT parameter'; }
+
+my ($OSID) = $q->param('OSID');
+if (not defined $OSID) { $OSID = $q->param('UUID'); }
+
+my $MARKETID = $q->param('MARKETID');
+my $EMAIL = $q->param('EMAIL');
+my $CLAIM = '';
+
+if ($OSID ne '') {
+	my ($l) = OVERSTOCK::LISTING->new('OVERSTOCK',$MERCHANT,ooid=>$OSID);
+	if (not defined $l) { $ERROR = "Could not find listing OSID:$OSID"; }
+
+	if (defined $l) {
+		my $osdbh = &OVERSTOCK::API::db_overstock_connect();
+		my $pstmt = "select CLAIM from OVERSTOCK_WINNERS where MERCHANT=".$osdbh->quote($MERCHANT)." and MARKETID=".$osdbh->quote($l->{'MARKETID'});
+		my $sth = $osdbh->prepare($pstmt);
+		$sth->execute();
+		($CLAIM) = $sth->fetchrow();	
+		$sth->finish();
+
+		if ($CLAIM eq '') {	
+			## no claim yet, why not process listings?
+			$l->closeItem();
+			$MARKETID = $l->{'MARKETID'};
+			$MERCHANT = $l->{'MERCHANT'};
+			}
+		&OVERSTOCK::API::db_overstock_close();
+		}
+	}
+
+if ($CLAIM ne '') {
+	## whoop, already got the claim!
+	}
+elsif (($MARKETID ne '') && ($EMAIL ne '')) {
+	## attempt to lookup the buyer in the list of winners
+	my $osdbh = &OVERSTOCK::API::db_overstock_connect();
+	my $pstmt = "select CLAIM from OVERSTOCK_WINNERS where MERCHANT=".$osdbh->quote($MERCHANT)." and EMAIL=".$osdbh->quote($EMAIL)." order by CLAIM desc";
+	print STDERR $pstmt."\n";
+	my $sth = $osdbh->prepare($pstmt);
+	$sth->execute();
+	($CLAIM) = $sth->fetchrow();	
+	$sth->finish();
+	&OVERSTOCK::API::db_overstock_close();
+	
+	if ($CLAIM eq '') {
+		$ERROR = "Could not find listing, please check your email address.";
+		}
+	}
+
+if ($CLAIM ne '') {
+	print "Location: http://$MERCHANT.zoovy.com/claim/$CLAIM\n\n";
+	}
+else {
+	if ($ERROR ne '') { $GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'><br><b>$ERROR</b><br></font>"; }
+	$GTOOLS::TAG{'<!-- MERCHANT -->'} = $MERCHANT;
+	$GTOOLS::TAG{'<!-- MARKETID -->'} =  $MARKETID;
+	&GTOOLS::output(
+		file=>'index.shtml',
+		header=>1,
+		);
+	}
+
+

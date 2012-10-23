@@ -1,0 +1,80 @@
+<head>
+<title>Zoovy: External Sales</title>
+<SCRIPT language="JavaScript">
+<!--//
+
+var tState = false;
+function toggleAll() {
+	tState = !tState;
+	for (i=0,n=window.document.myForm.elements.length;i<n;i++) {
+		if (window.document.myForm.elements[i].name.indexOf('*ID-') !=-1) {
+			window.document.myForm.elements[i].checked = tState;
+			}
+		}
+	}
+
+function submitIt(stage,action,frmaction,redir) {
+	window.document.myForm.STAGE.value=stage;
+	window.document.myForm.action = frmaction;
+	window.document.myForm.XCMD.value=action;
+	window.document.myForm.REDIRECT.value=redir;
+	window.document.myForm.submit();
+	}
+
+//-->
+</SCRIPT>
+
+<STYLE>
+TD.a { vertical-align: middle; text-align: left; text-indent: 2px; font-family: verdana, arial, helvetica; font-size: 12px; }
+
+A.title { text-index: 2px; font-family: arial,helvetica; font-size: 10pt; font-weight: bold; color: black; }
+
+TR.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+TR.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+TD.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+TD.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+TD.title { font-size: 10pt; font-family: helvetica, arial; background-color: #000000; font-style: bold; }
+FONT.TITLE { color: white; font-size: 16pt; font-face: helvetica, arial; }
+</STYLE>
+
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0"
+bgcolor='FFFFFF'>
+<center>
+<form name="myForm" target="body" action="main.cgi">
+
+<input type='hidden' name='STAGE' value=''>
+<input type='hidden' name='XCMD' value=''>
+<input type='hidden' name='REDIRECT' value='main.cgi'>
+
+<font face="Arial, Helevetica">
+<font face='Arial, Helevetica' color='red'><!-- MESSAGE --></font><br>
+
+<table width='95%'><tr><td>
+<!-- BREAKOUT_PAGES -->
+<table width='100%' cellspacing='0' cellpadding='1' border='0' bgcolor='3366CC'>
+<tr><td><font class='title'><font color='white' face='helvetica'><b>&nbsp; <!-- WHICH --> Incomplete Items</b></font></td></tr>
+<tr><Td>
+<table width='100%' cellspacing='0' cellpadding='2' border='0' bgcolor='FFFFFF'>
+<tr bgcolor='CCCCCC'>
+	<td nowrap><a class='title' href='main.cgi?SORTBY=ID&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'><font size='1'>Claim #</font></a></td>
+	<td align='center'><a href='#' onClick='toggleAll();'><img border='0' width='18' height='18' src='/biz/orders/images/green_check.gif'></a></td>
+	<td><a class='title' href='main.cgi?SORTBY=PORTAL,MARKET_ID&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Market</td>
+	<td><a class='title' href='main.cgi?SORTBY=PRODUCT&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Product</td>
+	<td><a class='title' href='main.cgi?SORTBY=PRICE&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Price</td>
+	<td><a class='title' href='main.cgi?SORTBY=BUYER_EMAIL&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Customer</td>
+	<td><a class='title' href='main.cgi?SORTBY=CREATED&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Created</td>
+	<td><a class='title' href='main.cgi?SORTBY=STAGE&XCMD=<!-- CMD -->&ORDERBY=<!-- ORDERBY -->'>Status</a></td>
+</tr>
+<!-- CONTENT -->
+</table>
+</td></tr></table>
+<br>
+<!-- BREAKOUT_PAGES -->
+</td></tr></table>
+</center>
+<Br>
+<Br>
+</font>
+</form>
+</body>

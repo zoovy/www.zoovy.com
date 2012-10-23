@@ -1,0 +1,319 @@
+#!/usr/bin/perl -w
+#
+# Install (a modified version of) this program in your webserver's cgi-bin directory.
+# 
+# This demo program prints the order into /tmp/yahoo-order; you will probably want
+# to do something more interesting with it. Replace the function handle_order
+# It also puts the raw key-value fields into /tmp/yahoo-order.raw
+#
+# Order fields are:
+#
+# ID
+#   A unique order identifier including the Y! Store account name, such as acme-451
+#   
+# Date
+#   Standard date format, in GMT
+# 
+# {Ship,Bill}-Name, -Firstname, -Lastname
+#   These fields are always defined. If your store is configured to have separate first and last
+#   name fields on the order page, then -Name will be the concatenation of them. If it is configured to have
+#   a single entry field, then the split into Firstname and Lastname will be a guess.
+#
+#   If you have custom fields, they will appear here too. The field names look like "Ship-Pack in dry ice"
+#   for an extra shipping field, and similarily for a billing field.
+#
+# {Ship,Bill}-Address1, -Address2, -City, -State, -Zip, -Country, -Phone, -Email
+#   The shipping and billing address. Both will be filled in, and will be the same if the
+#   user only gave one address
+#
+# Card-Name, -Number, -Expiry
+#   Credit card info
+#
+# Item-Id-N, -Code-N, -Quantity-N, -Unit-Price-N, -Description-N, -Url-N,
+#   For values of N from 1 to Item-Count, the relevant attributes of each item are given.
+#   This script contains code to separate these into an @items array.
+#   Code is from the "Code" field when editing the item, typically an SKU or ISBN
+#   Unit-Price takes any quantity pricing into account
+#
+# Tax-Charge, Shipping-Charge, Total
+#   Extra charges, and the order total
+# 
+
+require 5.001;
+use strict;
+
+##
+## Logging data --
+##
+open(RAW,">/tmp/yahoo-order.raw.".time());
+
+
+if ($ENV{'REQUEST_METHOD'} ne "POST") {
+	print "Content-type: text/html\n\n";
+	print "You are not using this correctly, you must post an order.\n";
+	die("Expecting a POST, bailing");
+}
+
+use lib "/httpd/modules";
+use ZOOVY;
+use ZWEBSITE;
+use INVENTORY;
+use DBINFO;
+require ORDER;
+use Data::Dumper;
+my $USERNAME = 'def'; 
+my $PASS = 'def';
+
+
+my $URI = $ENV{'REQUEST_URI'}.'/';	# make sure we have a trailing /
+
+## make sure we have credentials
+if ($URI =~ /user\=(.*?)\//s) {
+	$USERNAME = $1;
+	} else {
+	print "Status: 400\n";
+	print "Content-type: text/plain\n";
+	print "argh. no username $ENV{'HTTP_REFERER'} \n";
+	exit;
+	}
+if ($URI =~ /pass\=(.*?)\//s) {
+	$PASS = $1;
+	} else {
+	print "Status: 400\n";
+	print "Content-type: text/plain\n";
+	print "argh. no pass\n";
+	exit;
+	}
+
+my ($yordersync,$yorderpass,$ycustomer,$yoptin,$yprocess,$ynotify,$yorderid) = split(',',&ZWEBSITE::fetch_website_attrib($USERNAME,'yahoo_ordersync'));
+if ($PASS ne $yorderpass) {
+	print "Status: 400\n";
+	print "Content-type: text/plain\n";
+	print "argh. username [$USERNAME] order pass [$PASS] is invalid - should be [$yorderpass]\n";
+	exit;
+	}
+
+my $o;
+read(STDIN,$o,$ENV{'CONTENT_LENGTH'});
+print RAW $o;
+
+my $dbh = &DBINFO::db_zoovy_connect();
+my $pstmt = "insert into YAHOOSTORE_QUEUE (USERNAME,CREATED,DATA,PROCESSED_GMT) values (".$dbh->quote($USERNAME).",now(),".$dbh->quote($o).",".time().")";
+$dbh->do($pstmt);
+&DBINFO::db_zoovy_close();
+
+
+my %o;
+for (split(/&/,$o)) {
+    $_ =~ s/\+/ /g;
+    my($key,$val) = split(/=/,$_,2);
+    for ($key,$val) {
+        $_ =~ s/%([0-9a-fA-F][0-9a-fA-F])/chr(hex($1))/ge;
+    }
+    $o{$key} = $val;
+}
+
+my @bitems;
+my $bi;
+
+for ($bi=1; $bi<=$o{'Item-Count'}; $bi++) {	
+	my $c = '';
+	foreach my $k (keys %o) {
+		if ($k =~ /Item\-Option\-$bi\-(.*?)$/) {
+			$c .= " ".$1."=".$o{$k}."\n";
+			}
+		}
+	$o{"Item-Options-$bi"} = $c;
+	}
+
+for ($bi=1; $bi<=$o{'Item-Count'}; $bi++) {
+	$o{"Item-Price-$bi"} = $o{"Item-Unit-Price-$bi"}
+	}
+
+my @items;
+my $i;
+for ($i=1; $i<=$o{'Item-Count'}; $i++) {
+	push(@items,{map {($_,$o{"Item-$_-$i"})} qw(Id Code Quantity Price Description Url Options)});
+	}
+
+&handle_order(\%o,@items);
+
+# A successful delivery is indicated by a good HTTP result code.
+print "Status: 200 OK\n";
+print "\n";
+
+##
+## Closing Logging
+##
+close(RAW);
+
+
+exit(0);
+
+
+######################################################################
+# Replace this function with something that does what you want
+#   $info gets a hash ref of all the order fields, like Ship-Name.
+#   @items gets an array of hash refs, one for each item.
+
+sub handle_order {
+	my($info,@items)=@_;
+	my $orderref = {};
+
+   open(OUT,">/tmp/yahoo-order");
+
+	if ((not defined $yorderid) || ($yorderid eq '')) { $yorderid = 0; }
+	my $ORDERID = '';
+	if ($yorderid == 0 || $yorderid == 1) {
+		$ORDERID = $info->{'ID'};
+		$ORDERID =~ s/\W+//g;
+		$ORDERID =~ s/\D+//g;
+		if ($yorderid == 0) {
+			$ORDERID = $ORDERID + 10000;
+			}
+		$ORDERID = &whatis_yearmon()."-".$ORDERID;
+		}
+	else {
+		$ORDERID = &ORDER::next_id($USERNAME,1);
+		}
+
+	my ($c) = CART->new($USERNAME);
+	
+
+
+	$orderref->{'order_id'} = $ORDERID;
+	my $o = ORDER->new($USERNAME,'*');
+	$o->{'order_id'} = $ORDERID;
+
+	$orderref->{'ship_firstname'} = $info->{'Ship-Firstname'};
+	$orderref->{'ship_lastname'} = $info->{'Ship-Lastname'};
+	$orderref->{'bill_firstname'} = $info->{'Bill-Firstname'};
+	$orderref->{'bill_lastname'} = $info->{'Bill-Lastname'};
+	
+	$orderref->{'ship_fullname'} = $info->{'Ship-Name'};
+	$orderref->{'ship_address1'} = $info->{'Ship-Address1'};
+	$orderref->{'ship_address2'} = $info->{'Ship-Address2'};
+	$orderref->{'ship_city'} = $info->{'Ship-City'};
+	$orderref->{'ship_state'} = $info->{'Ship-State'};
+	$orderref->{'ship_zip'} = $info->{'Ship-Zip'};
+	$orderref->{'ship_country'} = $info->{'Ship-Country'};
+	$orderref->{'ship_phone'} = $info->{'Ship-Phone'};
+
+	$orderref->{'bill_fullname'} = $info->{'Bill-Name'};
+	$orderref->{'bill_address1'} = $info->{'Bill-Address1'};
+	$orderref->{'bill_address2'} = $info->{'Bill-Address2'};
+	$orderref->{'bill_city'} = $info->{'Bill-City'};
+	$orderref->{'bill_state'} = $info->{'Bill-State'};
+	$orderref->{'bill_zip'} = $info->{'Bill-Zip'};
+	$orderref->{'bill_country'} = $info->{'Bill-Country'};
+	$orderref->{'bill_phone'} = $info->{'Bill-Phone'};
+	$orderref->{'bill_email'} = $info->{'Bill-Email'};
+
+	$orderref->{'shp_method'} = $info->{'Shipping'};
+	if (defined $info->{'Card-Name'}) {
+		$orderref->{'card_name'} = $info->{'Card-Name'};				# I don't think we need this, but lets save it anyway!
+		$orderref->{'card_number'} = $info->{'Card-Number'};
+		my @a = split(/\//,$info->{'Card-Expiry'}); 
+		$orderref->{'card_exp_month'} = $a[0];
+		$orderref->{'card_exp_year'} = $a[1];
+		$orderref->{'payment_status'} = '100';
+		$orderref->{'payment_method'} = 'CREDIT';
+		}
+	else {
+		$orderref->{'payment_method'} = 'OTHER'; ## hmm..!
+		}
+
+	if ($info->{'Tax-Charge'}) {
+		$orderref->{'tax_total'} = $info->{'Tax-Charge'};
+		## <total_taxable>15.50</total_taxable><tax_rate>7.75</tax_rate>
+
+#		$orderref->{'tax_subtotal'} = $info->{'Total'};
+#		$orderref->{'tax_rate'} = (($info->{'Total'} - $info->{'Shipping-Charge'} - $info->{'Tax-Charge'}) / $info->{'Total'});
+#		$orderref->{'tax_rate'} = (sprintf("%.2f", ($orderref->{'tax_rate'} * 10));
+
+		$orderref->{'tax_subtotal'} = ($info->{'Total'} - $info->{'Shipping-Charge'} - $info->{'Tax-Charge'});
+		$orderref->{'state_tax_rate'} = ( $info->{'Tax-Charge'} / ($orderref->{'tax_subtotal'}));
+		$orderref->{'state_tax_rate'} = (sprintf("%.3f", ($orderref->{'state_tax_rate'} * 100)));
+		$orderref->{'tax_rate'} = $orderref->{'state_tax_rate'};
+
+		if (chop($orderref->{'tax_rate'}) > 4) {
+##			print "\n chomp worked\n";
+			$orderref->{'tax_rate'} += .01;
+			}
+
+		$orderref->{'yahoo_tax'} = 'Y';
+		} else {
+		$orderref->{'yahoo_tax'} = 'N';
+		}
+	
+	if ($orderref->{'bill_country'} eq 'US United States') {
+		$orderref->{'bill_country'} = '';
+		print RAW "\n\n\n bill country not equal to US United States [$orderref->{'bill_country'}]\n\n\n";
+		}
+	if ($orderref->{'ship_country'} eq 'US United States') {
+		$orderref->{'ship_country'} = '';
+		print RAW "\n\n\n ship country not equal to US United States [$orderref->{'ship_country'}]\n\n\n";
+		}
+
+    printf(OUT "  %-15s %-40s %6s %8s %8s\n",
+           "Code","Desc","Qty","Each","Total");
+
+	my $c = '';
+	my $item;
+	for $item (@items) {
+		$item->{'Code'} =~ s/[^\w\-]+//g;
+		if ($item->{'Options'} ne '') { $item->{'Description'} .= "\n".$item->{'Options'}; }
+		&INVENTORY::add_incremental($USERNAME,$item->{'Code'},'I',0-$item->{'Quantity'}); 
+
+		$item->{'Description'} = &ZOOVY::dcode($item->{'Description'}); # make sure we don't double encode [decoding an already decoded buffer is safe]
+		$c .= "<product id=\"$item->{Code}\" tax=\"$orderref->{'yahoo_tax'}\" price=\"$item->{Price}\" qty=\"$item->{Quantity}\">".&ZOOVY::incode($item->{'Description'})."</product>\n";
+		}
+
+	# Gift Wrapping Option
+	if ($info->{'Gift-Wrap'} eq 'on') {
+		$c .= "<product id=\"%GIFTWRAP\" tax=\"N\" price=\"$info->{'Gift-Wrap-Charge'}\" qty=\"1\">Gift Wrapping Service</product>\n";
+		}
+
+	# Coupons (not tested)
+	if ($info->{'Coupon-Value'} ne '') {
+		$c .= "<product id=\"%DISC\" tax=\"N\" price=\"$info->{'Coupon-Value'}\" qty=\"1\">".$info->{'Coupon-Description'}."</product>\n";
+		}
+	$orderref->{'contents'} = $c;
+
+	# order notes
+	$orderref->{'order_notes'} = "Yahoo Order ID: ".$info->{'ID'}." \n".$info->{'Comments'};
+
+	$orderref->{'shipping_total'} = $info->{'Shipping-Charge'};
+	$orderref->{'order_total'} = $info->{'Total'};
+
+	print RAW Dumper($orderref)."\n";
+	print RAW Dumper($info)."\n";
+
+	$orderref->{'mkt'} = 4096;
+
+	$o->set_attribs(%{$orderref});
+	$o->stuff()->legacy_xmlcontents_to_stuff($USERNAME,$o->get_attrib('contents'));
+	$o->save(1);
+
+	if ($yprocess) {
+		require ZPAY;
+		$o->pay_init();		# hmm.. does this work?
+		# &ZPAY::initialize_order($USERNAME,$ORDERID,$orderref->{'payment_method'});
+		}
+
+	if ($ynotify) {
+		require ORDER::EMAIL;
+		&ORDER::EMAIL::customer_email($USERNAME,$ORDERID,'OCREATE',undef,0,$o);
+		}
+
+    close(OUT);
+
+}
+
+
+
+sub whatis_yearmon
+{
+	my (undef,undef,undef,undef,$mon,$year,undef,undef,undef) = localtime();
+	return (&ZTOOLKIT::zeropad(4,($year + 1900)) . '-' . &ZTOOLKIT::zeropad(2,($mon + 1)));
+}

@@ -1,0 +1,109 @@
+<DEFINITION NAME="MarketBoy_Listing">
+<!--
+
+MarketBoy Template v1.1
+by Brian Horakh (brian@zoovy.com)
+edited by Martin Bogomolni (martin@zoovy.com)
+
+-->
+	<DIV NAME="ALPHA" TITLE="MarketBoy Listing">
+		<META TYPE="TITLE">
+			</META>
+		<META TYPE="DESCRIPTION">This channel is currently under development.  For more information please visit http://www.zoovy.com/biz/help/marketplaces/marketboy.shtml
+			</META>
+		<BUTTON TYPE="EXIT"  PROMPT="Exit"></BUTTON>
+
+		<DISPLAY TYPE="TITLE">Required Information</DISPLAY>
+
+
+<!--
+Below you will find all of the field descriptions to complete this 
+file.
+SKU - This is the code that YOU use in your systems whenever you refer 
+to this product.
+-->
+
+<!--
+ManufacturerSKU - This is the manufacturer's code for this product.
+-->
+<INPUT TYPE="TEXTBOX" NAME="product:zoovy:mfgsku" PROMPT="Manufacturers SKU"></INPUT>
+
+<!--
+ManufacturerName - The name of the manufacturer, such as Sony, 
+Panasonic, etc. This is not case-sensitive.
+-->
+<INPUT TYPE="TEXTBOX" NAME="product:zoovy:manufacturer" PROMPT="Manufacturers Name" HINT="example: Sony"></INPUT>
+
+<!--
+PricePerUnit - This is the price you are offering for one unit, 
+excluding any taxes or shipping charges.
+-->
+<INPUT TYPE="NUMBER" PRECISION="2" NAME="product:zoovy:base_price" PROMPT="Price Per Unit"></INPUT>
+
+<!--
+Quantity- This is the amount you want our system to offer for you, as 
+distinct from the total amount you have in stock. For example, if you 
+have 200 Palm V's in stock but you only want to offer them out 10 at a 
+time, your CurrentStock would be 200 and your Quantity would be 10.
+-->
+<INPUT TYPE="TEXTBOX" NAME="product:marketboy:qty" INVENTORY="1" PROMPT="Quantity" DEFAULT="1"></INPUT>
+
+<!--
+CurrentStock - This is the number of units that you would like to sell 
+on MarketBoy (though not necessarily the same as the amount that you 
+want to reveal to the MarketBoy community - see Quantity)
+-->
+<INPUT TYPE="TEXTBOX" NAME="product:marketboy:inventory" PROMPT="Inventory on Hand"></INPUT>
+
+<!--
+ShortDescription - (Can be blank, but should be included for clarity.) 
+This helps us make sure there's no confusion about which product is 
+which.
+-->
+<INPUT TYPE="TEXTBOX" COLS="60" NAME="product:zoovy:prod_name" PROMPT="Short Name"></INPUT>
+
+<!--
+ShortDescription - (Can be blank, but should be included for clarity.) 
+This helps us make sure there's no confusion about which product is 
+which.
+-->
+<INPUT TYPE="TEXTAREA" ROWS="5" COLS="60" NAME="product:zoovy:prod_desc" PROMPT="Short Description"></INPUT>
+
+<!--
+ImageURL - (Can be blank) allow marketboy to quickly list an item with an image if one was not available
+-->
+
+<INPUT TYPE="BLANK"></INPUT>
+<DISPLAY TYPE="TITLE">Marketboy Associated Image</DISPLAY>
+<DISPLAY TYPE="LABEL">Product image used for Marketboy listing.</DISPLAY>
+
+<INPUT TYPE="IMAGE" LOADFROM="product:zoovy:prod_image1" NAME="product:marketboy:prod_image1" COLS="45" PROMPT="Marketboy associated picture."></INPUT>
+
+<!--
+Shipping Weight - In pounds. We need to know this so we can calculate 
+shipping charges for your goods, assuming your shipping charges depend 
+on weight (e.g., UPS, FedEx, or custom formula). If your shipping 
+charges don't depend on weight (e.g. "free" shipping, per-item shipping
+charges), it doesn't matter what you put in this field.
+-->
+<DISPLAY TYPE="TITLE">Shipping Profile</DISPLAY>
+
+<INPUT TYPE="NUMBER" NAME="product:zoovy:base_weight" PROMPT="Weight" HELP="Ounces, for Lbs. include a #"></INPUT>
+
+<INPUT TYPE="SELECT" NAME="product:marketboy:shiptype" LIST="SHIPTYPE" PROMPT="Please select a Shipping Type"></INPUT>
+<INPUT TYPE="NUMBER" NAME="product:marketboy:ground" PROMPT="Ground Shipping Modifier" HELP="Leave Blank to Disable"></INPUT>
+
+<DISPLAY TYPE="TITLE">Marketboy user information</DISPLAY>
+<INPUT TYPE="TEXTBOX" COLS="30" NAME="product:marketboy:username" PROMPT="Marketboy username"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="30" NAME="product:marketboy:password" PROMPT="Marketboy password"></INPUT>
+
+		<BUTTON TYPE="SUBMIT" PROMPT="Launch Listing Now"></BUTTON>
+	</DIV>
+
+<LIST TYPE="TEXT" NAME="SHIPTYPE">
+<OPTION VALUE="FIXED" PROMPT="Offer Fixed Shipping Ground Only"></OPTION>
+<OPTION VALUE="FEDEX" PROMPT="Federal Express"></OPTION>
+<OPTION VALUE="UPS" PROMPT="United Parcel Service"></OPTION>
+</LIST>
+
+</DEFINITION>

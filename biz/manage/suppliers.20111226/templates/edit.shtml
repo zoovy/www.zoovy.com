@@ -1,0 +1,50 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+
+<h1>Supplier Setup</h1>
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE-EDIT">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+
+<!-- RESULT -->
+<br>
+<table cellspacing="0" cellpadding="2" width="100%" class="zoovytable">
+	<tr>
+		<td colspan=2 class="zoovytableheader">Supplier: <!-- CODE --> (<!-- MODE -->)</span></td>
+	</tr>
+	<!-- FIELDS -->	
+	<tr>
+		<td colspan=2>
+<table>
+	<!-- LINKS -->
+</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi"><img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+		<td><a href="index.cgi?VERB=REMOVE&CODE=<!-- CODE -->"><img border=0 src="/images/bizbuttons/delete.gif"></a></td>
+	</tr>
+</table>
+</center>
+		</td>
+	</tr>
+</table>
+
+
+<br>
+
+
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+
+

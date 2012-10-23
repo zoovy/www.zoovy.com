@@ -1,0 +1,83 @@
+<!-- SETUP_TAB -->
+
+<center>
+
+<form method="post" action="index.cgi">
+<input type="hidden" name="VERB" value="ADD">
+<table width=700 class="zoovytable">
+<tr><td colspan=2 class="zoovytableheader">Add New Event</td></tr>
+<tr>
+	<td colspan=2>
+	Event Type:
+	<select name="type">
+		<option value="product.save">product.save</option>
+		<option value="product.sold">product.sold</option>
+		<option value="order.create">order.create</option>
+		<option value="order.paid">order.paid</option>
+		<option value="order.ship">order.ship</option>
+		<option value="customer.new">customer.new</option>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td valign=top>Hint:</td>
+	<td valign=top>
+	<input type="textbox" name="hint" size="70">
+	<div class="hint">Please describe what this rule is supposed to do, so that you will remember later.</div>
+	</td>
+</tr>
+<tr>
+	<td valign=top>If (Perl):</td>
+	<td valign=top><textarea cols=70 rows=3 name="if"></textarea></td>
+</tr>
+<tr>
+	<td valign=top>Then (Perl):</td>
+	<td valign=top><textarea cols=70 rows=3 name="then"></textarea></td>
+</tr>
+<!--
+<tr>
+	<td>
+	If Input: 
+	<input type="textbox" name="input">
+	<select name="action">
+		<option value="eq">matches</option>
+		<option value="has">contains</option>
+		<option value="gt">greater than</option>
+		<option value="lt">less than</option>
+	</select> &nbsp; 
+	Value: <input type="textbox" name="value">
+	</td>
+</tr>
+<tr>
+	<td>
+	Then:
+	<select name="then">
+		<option value="run">run command</option>
+	</select>
+	Command: <input type="textbox" name="command"><br>
+	</td>
+</tr>
+-->
+<tr>
+	<td colspan=2>
+	<input class="button" type="submit" value=" Save ">
+	</td>
+</tr>
+</table>
+</form>
+
+<br>
+<table width=700 class="zoovytable">
+<tr><td class="zoovytableheader">Existing Events</td></tr>
+<tr><td>
+
+<form method="post" action="index.cgi">
+<table>
+<!-- EVENTS -->
+</table>
+
+</td></tr>
+</table>
+
+</form>
+</center>

@@ -1,0 +1,98 @@
+// for boxes
+TABLE { padding: 1px; margin: 0px; }
+TABLE.boxoutside { padding: 0px; margin: 0px; border-width: 0px; border: 0px; padding: 0px; spacing: 0px; cellpadding: 0px; cellspacing: 0px; background-color: #313370; }
+//TD:outer { padding: 1px; margin: 0px; border-width: 0px; border: 0px; padding: 0px; spacing: 0px; cellpadding: 1px; cellspacing: 0px; background-color: #313370; }
+TABLE.boxinside { padding: 10px; margin: 0px; border-width: 0px; border: 0px; padding: 0px; spacing: 0px; cellpadding: 1px; cellspacing: 10px; background-color: #FFFFFF; }
+//TD:inner { padding: 10px; margin: 0px; border-width: 0px; border: 0px; padding: 0px; spacing: 0px; cellpadding: 1px; cellspacing: 10px; background-color: #FFFFFF; }
+
+// general stuff
+BODY { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+TD { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+FONT { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+INPUT { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+SELECT { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+TEXTAREA { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+BUTTON.button { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; width: 100px; }
+
+// titles, changing of font sizes, etc:
+FONT.smallnote { font-size: 8pt; font-weight: fancy; color: black; }
+FONT.small { font-size: 8pt; font-weight: normal; color: black; }
+FONT.smalltitle { font-size: 8pt; font-weight: bold; color: black; }
+FONT.teeny { font-size: 8pt; font-weight: normal; color; black; }
+FONT.teenygrey { font-size: 8pt; font-weight: normal; color: #444444; text-decoration: none; }
+FONT.bigtitle { font-size: 14pt; font-weight: bold; color: black; }
+FONT.title { font-family: arial; font-size: 10pt; font-weight: bold; }
+FONT.sub { font-family: arial; font-size: 10pt; font-weight: normal; }
+TD.col1 { font-family: arial; font-size: 10pt; font-weight: bold; }
+TD.col2 { font-family: arial; font-size: 8pt; font-weight: normal; }
+
+FONT.boxtitle { font-size: 8pt; color: white; font-weight: bold; }
+
+// old setup stuff
+FONT.mon   { font-size: 10pt; font-family: arial, sans-serif, Verdana, Arial, Helvetica; text-decoration: none; color: #330066; }
+FONT.mout   { font-size: 8pt; font-family: arial, sans-serif, Verdana, Arial, Helvetica; text-decoration: underline; color: blue; }
+
+A { color: blue; font-size: 10pt; }
+A.smlink { font-size: 8pt; font-family: arial, sans-serify, verdana, arial; text-decoration: none; color: blue; }
+// A.:visited { font-size: 10pt; font-family: arial, sans-serif, Verdana, Arial, Helvetica; text-decoration: none; color: blue; }
+// A:active  { font-size: 10pt; font-family: arial, sans-serif, Verdana, Arial, Helvetica; text-decoration: none; color: red; }
+// A { color: blue; }
+// A.link { color: blue; }
+// A.hover { color:1111FF; font-weight: bold; }
+// A.visited { color: blue; }
+// TD.bod { font-size: 8pt; font-family: arial, helvetica; }
+
+// imglib stuff
+FONT.norm {
+	vertical-align: middle;
+	font-family: verdana, arial, helvetica;
+	text-align: center;
+	color: black;
+	font-size: 10px;
+	text-align: center;
+}
+
+FONT.NOTFOLDER {
+	color: #777777;
+	font-family: helvetica, arial;
+	vertical-align: middle;
+	font-size: 14px;
+}
+A.FOLDER { 
+	color: blue;
+	font-family: helvetica, arial;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: strong, bold;
+	font-size: 16px;
+}
+FONT.SELECTED { 
+	color: white;
+	font-family: helvetica, arial;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: strong, bold;
+	font-size: 16px;
+}
+
+// used in shipping rules??
+		TD.B {
+			background-color: #330066;
+			vertical-align: middle;
+			text-align: left;
+			font-family: Verdana, Arial, Helvetica;
+			font-size: 12px;
+			text-indent: 2px;
+			color: white;
+		}
+		TD.A {
+			background-color: white;
+			color: black;
+			text-align: left;
+			font-family: Verdana, Arial, Helvetica;
+			font-size: 10px;
+			font-weight: bold;
+		}
+
+// used in HTML email messages
+TD.av { vertical-align: top; font-size: 8pt; valign: top; }

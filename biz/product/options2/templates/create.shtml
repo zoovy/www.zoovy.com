@@ -1,0 +1,238 @@
+<HEAD>
+<title>Zoovy: Online Product Management - Merchant</title>
+<!-- HEADER_ONLY -->
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</HEAD>
+<body>
+<!-- MSGS -->
+<center>
+<br>
+<table border=0 cellspacing=0 class="zoovytable" width='550'>
+<tr>
+	<td class="zoovytableheader">
+	<b>Product Option Manager: <!-- HEADER --></b><br>
+	</td><td colspan="2" align="right" class="zoovytableheader">
+	Product: <!-- PRODUCT -->
+	</td>
+</tr>	
+<tr>
+	<td colspan="3">
+	<!-- MESSAGE -->
+	<!-- OUTPUT -->
+	</td>
+</tr>	
+<tr>
+	<td colspan="3">
+	
+	
+<form name="thisFrm" method="post" action="index.cgi" onSubmit="">
+<input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
+<input type="hidden" name="listorder" value="">
+<input type="hidden" name="VERB" value="SAVE-<!-- VERB -->">
+<input type="hidden" name="MODE" value="<!-- MODE -->">
+<input type="hidden" name="TS" value="<!-- TS -->">
+<!-- ERROR -->
+<b>Specify a Type</b><br>
+<table>
+	<tr>
+		<td nowrap valign='top' width='33%'>
+			<input type="radio" name="TYPE" <!-- TYPE_SELECT --> value="select"> Select Box (Drop Down)
+			<a href="#" onClick="if (Element.visible('!help-type-select')) { new Effect.SlideUp('!help-type-select'); } else { new Effect.SlideDown('!help-type-select'); }">[?]</a><Br>
+
+			<input type="radio" name="TYPE" <!-- TYPE_RADIO --> value="radio"> Radio Buttons
+			<a href="#" onClick="if (Element.visible('!help-type-radio')) { new Effect.SlideUp('!help-type-radio'); } else { new Effect.SlideDown('!help-type-radio'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_CB --> value="cb"> Checkbox
+			<a href="#" onClick="if (Element.visible('!help-type-cb')) { new Effect.SlideUp('!help-type-cb'); } else { new Effect.SlideDown('!help-type-cb'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_HIDDEN --> value="hidden"> Hidden Attributes
+			<a href="#" onClick="if (Element.visible('!help-type-attrib')) { new Effect.SlideUp('!help-type-attrib'); } else { new Effect.SlideDown('!help-type-attrib'); }">[?]</a><Br>
+
+			<input type="radio" name="TYPE" <!-- TYPE_ASSEMBLY --> value="assembly"> Base Assembly 
+			<a href="#" onClick="if (Element.visible('!help-type-assembly')) { new Effect.SlideUp('!help-type-assembly'); } else { new Effect.SlideDown('!help-type-assembly'); }">[?]</a><Br>
+
+		</td>
+		<td valign='top' width='33%'>
+			<input type="radio" name="TYPE" <!-- TYPE_TEXT --> value="text"> Free-Form TextBox
+			<a href="#" onClick="if (Element.visible('!help-type-text')) { new Effect.SlideUp('!help-type-text'); } else { new Effect.SlideDown('!help-type-text'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_NUMBER --> value="number"> Free-Form Number
+			<a href="#" onClick="if (Element.visible('!help-type-number')) { new Effect.SlideUp('!help-type-number'); } else { new Effect.SlideDown('!help-type-number'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_TEXTAREA -->  value="textarea"> Multi-Line Text Area
+			<a href="#" onClick="if (Element.visible('!help-type-textarea')) { new Effect.SlideUp('!help-type-textarea'); } else { new Effect.SlideDown('!help-type-textarea'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_READONLY --> value="readonly"> Readonly Instructions
+			<a href="#" onClick="if (Element.visible('!help-type-readonly')) { new Effect.SlideUp('!help-type-readonly'); } else { new Effect.SlideDown('!help-type-readonly'); }">[?]</a><Br>
+ 
+		</td>
+		<td valign='top' width='33%'>
+			<input type="radio" name="TYPE" <!-- TYPE_BIGLIST --> value="biglist"> Dynamic "BIG" List
+			<a href="#" onClick="if (Element.visible('!help-type-biglist')) { new Effect.SlideUp('!help-type-biglist'); } else { new Effect.SlideDown('!help-type-biglist'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_IMGSELECT --> value="imgselect"> Image Select List
+			<a href="#" onClick="if (Element.visible('!help-type-imgselect')) { new Effect.SlideUp('!help-type-imgselect'); } else { new Effect.SlideDown('!help-type-imgselect'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_IMGGRID --> value="imggrid"> Image Grid
+			<a href="#" onClick="if (Element.visible('!help-type-imggrid')) { new Effect.SlideUp('!help-type-imggrid'); } else { new Effect.SlideDown('!help-type-imggrid'); }">[?]</a><Br>
+ 
+			<input type="radio" name="TYPE" <!-- TYPE_CALENDAR --> value="calendar"> Calendar
+			<a href="#" onClick="if (Element.visible('!help-type-calendar')) { new Effect.SlideUp('!help-type-calendar'); } else { new Effect.SlideDown('!help-type-calendar'); }">[?]</a><Br>
+ 
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+		<div class="r1" id="!help-type-select" style="display: none"><br><div>
+		<b>Select Lists:</b> A select list is also commonly known as a drop down list. A select list should be used when the number
+		of options exceeds 5 or more. 
+		As a rule when designing options you should never use more than 25 options in a select list since it will
+		make it difficult for the user to see all the choices and arrive at a decision.<br>
+		</div><br></div>
+		<div class="r1" id="!help-type-radio" style="display: none"><br><div>
+		<b>Radio Buttons:</b> are used to display all the options available with a circle next to each option.
+		The user chooses the appropriate option and the circle becomes filled in. Unlike select lists a radio button
+		always displays all options to the customer. Radio buttons should typically be used with 10 or less options since
+		they consume a lot of screen space and make the customer need to scroll.
+		</div><br></div>
+		<div class="r1" id="!help-type-cb" style="display: none"><br><div>
+		<b>Checkbox:</b> Have only two possible states, either ON or OFF. 
+		Checkboxes should be used whenever the user has only two possible choices. 
+		</div><br></div>
+		<div class="r1" id="!help-type-attrib" style="display: none"><br><div>
+		<b>Hidden Attribute:</b> A hidden attribute allows you to specify additional text which will appear in the product
+		description. Such as a disclaimer or any text which you want to be printed in the product description to the customer
+		and which is NOT editable by the customer.
+		</div><br></div>
+		<div class="r1" id="!help-type-assembly" style="display: none"><br><div>
+		<b>Hidden Attribute:</b> A hidden attribute uses the option subsystem to set/store properties of an item 
+		(usually this is done through a custom javascript module).
+		</div><br></div>
+		<div class="r1" id="!help-type-text" style="display: none"><br><div>
+		<b>Text:</b> this is the simpliest form of customer input. A text input should be used for limited text entry.
+		If you need multiple lines consider using a text area. 
+		You can assses additional fees per character or per line. 
+		Fees are additive and will be summed together to present a total.
+		</div><br></div>
+		<div class="r1" id="!help-type-number" style="display: none"><br><div>
+		<b>Number:</b> this allows a customer to input a number. This is NOT the same as quantity, and should not be used
+		for any sort of inventory control. You can restrict the number to a specific minimum and maximu value. 
+		
+		</div><br></div>
+		<div class="r1" id="!help-type-textarea" style="display: none"><br><div>
+		<b>Textarea:</b> is large format text box in which users can enter a block of text. You can also restrict the 
+		number of characters.<br><br>
+		Like a textbox you can assess fees per character (excluding spaces and punctuation), and per word.  
+		The textarea also allows you assess fees per line. Fees are additive and can be used together.
+
+		</div><br></div>
+		<div class="r1" id="!help-type-readonly" style="display: none"><br><div>
+		<b>Readonly:</b> is intended for developers who wish to design custom page layouts which (typically) implement
+		a customized javascript or flash "chooser" component. A hidden form element is setup on the page with the ID of
+		the store option group, and *MUST* be set by some type of external script which is running on the page. 
+		</div><br></div>
+		<div class="r1" id="!help-type-biglist" style="display: none"><br><div>
+		Biglist lets you create a multi-stage select (drop down) list. When the first option is chosen, then the customer
+		must make a second selection in another box which appears. The boxes may only go two deep. Use this when you have
+		options which are tiered to reduce the number of decisions a customer needs to make. 
+		</div><br></div>
+		<div class="r1" id="!help-type-imgselect" style="display: none"><br><div>
+		<b>Image Select:</b> when a customer chooses an option an image (if available) will be displayed adjacent to it.
+		Image select lists are ideally suited for situations where there are 10 or more options and it is likely the customer
+		will NOT want to look at all the pictures before making a choice. 
+		</div><br></div>
+		<div class="r1" id="!help-type-imggrid" style="display: none"><br><div>
+		<b>Image Grid:</b> Unlike an image select list which the user must manually choose each option in order to see the
+		image associated with it - instead all images are displayed in a grid with a radio button below each option. 
+		The advantage of an image grid is it displays ALL the possible choices and their respective images to the customer,
+		which is also it's disadvantage if you have a product with a lot of pictures it can consume a vast amount of 
+		real-estate and increase page load times. 
+		</div><br></div>
+		<div class="r1" id="!help-type-calendar" style="display: none"><br><div>
+		<b>Calendar:</b> Allows the user to easily choose a date. The date is stored in a text field in YYYY/MM/DD format.<br>
+<br>		
+		The calendar has the ability to apply a rush fee if the date is within a certain number of days of today.
+		This allows you to create additional revenue for speciality things like "Rush Fees". 
+		</div><br></div>
+		</td>
+	</td>
+</table>
+
+
+
+
+<input type="hidden" name="INAME" value="<!-- TS -->">
+<br>
+<!-- PROMPT_ERROR -->
+Option Prompt: <input type="textbox" name="PROMPT" value="<!-- PROMPT_VAL -->"> 
+<a href="#" onClick="if (Element.visible('!help-prompt')) { new Effect.SlideUp('!help-prompt'); } else { new Effect.SlideDown('!help-prompt'); }">[Info]</a><br>
+<div id="!help-prompt" style="display: none"><div>
+The prompt is displayed the customers so they know what they are choosing. E.g. "Size", "Color". 
+You can edit/change the prompt later if you want to.<br>
+</div>
+</div>
+
+<br>
+<b>Inventory:</b>
+<a href="#" onClick="if (Element.visible('!help-inventory')) { new Effect.SlideUp('!help-inventory'); } else { new Effect.SlideDown('!help-inventory'); }">[Info]</a><br>
+<div id="!help-inventory" style="display: none"><div>
+Inventoriable options allow you to track inventory for different "versions" of the same product.<br>
+<br>
+For example if you had three sizes (Small, Medium, and Large) and three colors (Red, Blue, Green)
+and both the Size and Color options were inventoriable you would have 9 distinct products
+(Small/Red, Medium/Red, Large/Red, Small/Blue, Medium/Blue, etc.) - this could be structured as one group titled "Size and Color" 
+with 9 options or as two separate groups "Size" and "Color" with 3 options each.<br>
+<br>
+WARNING: Plan carefully - you are allowed a maximum of 3 inventoriable option groups per product, and 100 maximum options per group.
+Textboxes and Textareas, Numbers, Calendars, Hidden Attributes and Readonly fields do not support inventory
+</font><br>
+</div>
+</div>
+<br>
+<input type="radio" checked name="INV" value="0"> <b>NO</b>: This option group does NOT affect inventory<br>
+<input type="radio" name="INV" value="1">	<b>YES</b>: This option group affects inventory<br>
+<br>
+<input type="checkbox" name="ASSEMBLY"> <b>Enable Assembly Processing</b>
+<a href="#" onClick="if (Element.visible('!help-assembly')) { new Effect.SlideUp('!help-assembly'); } else { new Effect.SlideDown('!help-assembly'); }">[Info]</a><br>
+<div id="!help-assembly" style="display: none"><div>
+<br>
+<b>Assemblies</b> can create master products which are made up of one more sub products.
+Each option may contain a different list of items and quantities it contains. 
+When an assembly item is displayed in the cart it will display the items (and quantities) which make up the assembly.
+This is ideally suited for things which are "build to order" such as custom computer systems.
+When one or more of the items referenced in a particular assembly option is not in-stock then the option will not
+be displayed to the customer.<br>
+<br>
+When purchased the inventory for each item in the assembly is decremented based on the quantity needed to complete
+the assembly. Not all options in an option group need to have assembly's tied to them. 
+<br>
+Assembly processing is the most complex form of options, and therefore also has the largets list of incompatibilities.
+Do not enable assembly processing if you do not actually need it. 
+</div>
+</div>
+
+<br>
+<!-- FINDER_OPTION -->
+<!-- AMZ_OPTIONS -->
+<!-- GOO_OPTIONS -->
+<!-- EBAY_OPTIONS -->
+<!-- SOG_OPTIONS -->
+<!-- INV_ERROR -->
+<br>
+Before saving please take a moment to review your choices. All settings on this page, (except prompt) cannot be edited once the option
+group is saved.<br>
+<br>
+<center>
+	<input type="button" onClick="thisFrm.submit();" value="  Save  ">
+	<input type="button" onClick="thisFrm.VERB.value=''; thisFrm.submit();" value="  Exit  ">
+</center>
+</form>
+</td></tr></table>
+
+
+
+</td></tr></table>
+</center>
+</body>
+
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<cross-domain-policy>
+  <!-- secure="false" allows us to load http data on an https call for more efficiency -->
+	<allow-access-from domain="www.zoovy.com" secure="false" />
+	<allow-access-from domain="webapi.zoovy.com" secure="false" />
+	<allow-access-from domain="webdoc.zoovy.com" secure="false" />
+</cross-domain-policy>
+  

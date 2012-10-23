@@ -1,0 +1,39 @@
+<!-- SETUP_TAB -->
+<center>
+<table width='500'>
+<tr><Td>
+<h1>Access Denied</h1><hr>
+External API Shipping lets your Zoovy store contact a remote server in order to obtain one or
+more shipping methods and prices. This allows for much more complex shipping computation, based
+on your own internal company logic.<br>
+<br>
+Requires: API Bundle <a href="/biz/configurator?VERB=VIEW&BUNDLE=API">[More Detail]</a><br>
+<br>
+<b>What is possible?</b><br>
+As with most developer features the only limitation you have is what your mind can dream up, 
+and your programmers can accomplish, 
+but here is a common list of solutions afforded by the External Shipping API:<br>
+<br>
+<li> Multi-location (Warehouse) shipping quotes based on geography, weight, etc. (for example nearest warehouse selection)<br>
+<li> Complex discount rules and promotions.<br>
+<li> Special Affiliate/Coupon shipping rates.<br>
+<li> Simplify large numbers of rules, into a much smaller and faster program on a remote server.<br>
+<li> Set Shipping Descriptions and Codes to match 3rd party Shipping Manifest program.<br>
+<li> Log cart contents (both checked out, and non-checked out depending on configuration) for
+Data Mining, sales projections, site analysis, you name it.<br>
+<li> More complex Auction/Store shipping computations.<br>
+<li> Configure one Zoovy store, to query another Zoovy store via the WebAPI to obtain Shipping.<br>
+<br>
+<b>How does this work?</b><br>
+During shipping calculation Zoovy will attempt to query a CGI program on a remote server in order to obtain a list 
+of valid shipping codes, and prices. Zoovy passes parameters such as the account name, computed weight, 
+the destination zip and state (if available), country, and of course the full cart contents (products, external
+items, and meta information).<br>
+<br>
+Example source code for the remote CGI is provided.<br>
+<br>
+<center><a target="_top" href='/biz/setup/shipping/'><img src='/images/bizbuttons/exit.gif' border='0'></a></center>
+</td></tr>
+</table>
+</center>
+</body>

@@ -1,0 +1,5 @@
+how the TOKEN works
+you pass:
+	PRODUCT= MODE=TOKEN USERNAME= CLIENT= TS= TOKEN= 
+	where TOKEN = md5(USERNAME + CLIENT + CLIENT_TOKEN + TS)
+

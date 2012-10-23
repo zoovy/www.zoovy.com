@@ -1,0 +1,43 @@
+<head>
+<title></title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">  
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<!-- SETUP_TAB -->
+<table width='500'>
+<tr><Td>
+<h1>Access Denied</h1><hr>
+Order Dispatch Configuration is only available to accounts which have the
+API Developer Integration Bundle enabled.<br>
+<br>
+<a href="/biz/configurator?VERB=VIEW&BUNDLE=API">Learn More</a><br>
+<br>
+<b>What is possible?</b><br>
+As with most developer features the only limitation you have is what your mind can dream up, 
+and your programmers can accomplish, 
+but here is a common list of solutions afforded by the External Shipping API:<br>
+<br>
+<li> Real-time Integration with a custom order processing backend.
+<li> Real-time Integration with a fulfillment or shipping center.
+<li> Real-time Integration with a custom reporting system.
+<li> Integration with a variety of other 3rd party order processing
+applications such as e-Bridge (www.ebridgesoft.com)
+<br>
+<b>How does this work?</b><br>
+Order Dispatching lets you easily integrate your Zoovy store with a variety of other<br>
+great services such as automatically routing invoices to suppliers, sending orders to<br>
+fulfillment centers and much more!<br>
+<br>
+If you think you might have a need for Order Dispatch services, or you have an application<br>
+you think might benefit from Order Dispatch services please contact Zoovy Sales and let us know!<br>
+<br>
+Example source code for the remote CGI is provided.<br>
+<br>
+<center><a href='/biz/setup' target="_top"><img src='/images/bizbuttons/exit.gif' border='0'></a></center>
+</td></tr>
+</table>
+</center>
+</body>
+
+

@@ -1,0 +1,53 @@
+<!-- UTILITIES_TAB -->
+<center>
+
+<br>
+<form name="thisFrm" action="index.cgi" method="POST">
+	<input type="hidden" name="VERB" value="NUKE_CAMPAIGN">
+	<input type="hidden" name="ID" value="<!-- ID -->">
+
+<!-- SIZING TABLE  -->
+<table class="zoovytable" width="600" cellspacing=0 cellpadding=0>
+<tr>
+	<td class='zoovytableheader'>Confirm Campaign Delete</td>
+   </tr>
+   <tr class="white_bg">
+		<td>
+		<br><font size=-2>Please confirm you want to delete the below Campaign by pressing "Delete". If you have changed your mind about deleting this Campaign, press "Cancel".</font>
+		<br>
+		<br>
+		<table>
+			<tr>
+				<td valign='top'>Name:</td>
+				<td valign='top'><!-- NAME --></td>
+			</tr>
+
+			<tr>
+				<td valign='top'>Subject:</td>
+				<td valign='top'><!-- SUBJECT --></td>
+			</tr>
+
+			<tr>
+				<td valign='top'>Create Date:</td>
+				<td valign='top'><!-- CREATE_GMT --></td>
+			</tr>
+		</table>
+			
+
+		<table cellspacing=0 cellpadding=0 border=0 width="100%">
+			<tr>
+         <td class='table_top' align="center">
+
+			<input type="submit" name="BUTTON" value="Delete" class="button" onClick="thisFrm.submit();">
+                        &nbsp;&nbsp;
+         <input type="button" name="BUTTON" value="Cancel" class="button" onClick="document.location='index.cgi?VERB=CAMPAIGNS';">
+
+			</td>
+			</tr>
+		</table>
+
+
+</td></tr>
+</table>
+
+</form>

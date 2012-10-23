@@ -1,0 +1,156 @@
+<!-- NO_TAB -->
+
+
+<br>
+<center>
+<table class="zoovytable" cellpadding="3" cellspacing=0 width="800">
+<tr><td class="zoovysub1header">Desktop Software</td></tr>
+<tr><td>
+
+Zoovy Integrated Desktop contains three applications:
+<ol>
+<li> <b>Order Manager</b>
+<div class="hint">Easily manage your orders and customers. 
+The order manager will download any orders placed through your Zoovy store, 
+automatically send customers email, manage tracking numbers,
+UPS/FedEx/USPS (Endicia) airbill printing, Quickbooks integration, advanced printing support and so much more!
+</div>
+<li> <b>Warehouse Manager</b>
+<div class="hint">
+Makes the day to day tasks of managing
+products, images, and categories easier and faster than ever. 
+</div>
+</ol>
+
+<!-- order manager box -->
+<b>Release: <!-- VERSION --> - <!-- DATE -->
+(<a target="_webdoc" href="http://webdoc.zoovy.com/doc/51349">Release Notes</a>)<br>
+
+<form method="GET" action="/biz/downloads/record.cgi">
+<input type="hidden" name="CODE" value="<!-- ZID_FILE -->">
+<input type="hidden" name="MAJOR" value="<!-- VERSION_MAJOR -->">
+<input type="hidden" name="MINOR" value="<!-- VERSION_MINOR -->">
+<input type="submit" class="button" value=" Download Now ">
+</form>
+
+</td></tr>
+</table>
+<br>
+
+<table class="zoovytable" cellpadding="3" cellspacing=0 width="800">
+<tr><td class="zoovysub1header">Network Database Installation/Deployment</td></tr>
+<tr><td>
+
+Zoovy supports network database installations for customers who need concurrent user access. 
+Please download and install the following application on your network database server:
+<ul>
+	<li> <b>Zoovy Network Sync Manager</b><br>
+	<a
+href="http://www.zoovy.com/biz/downloads/record.cgi?CODE=<!-- ZNSM_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->">
+[[Download v<!-- VERSION -->]]</a>
+<div class="hint">
+A windows service that automatically synchronizes your local databases with Zoovy
+servers. This is intended for clients running network databases and manages
+the synchronization process automatically.
+</div>
+</ul>
+
+
+If you do not currently have a supported database installed on your server, you will also need to 
+select a database that fits your network environment. 
+A discussion of network databases, and deployment options along with
+frequently asked questions is located in:  
+<a href="http://www.zoovy.com/webdoc/index.cgi?VERB=DOC&DOCID=51344">webdoc #51344</a>.
+
+<ul>
+<li> MySQL 5.1 Community Server
+<ul>
+	<li><a href="http://dev.mysql.com/downloads/mysql/5.1.html">MySQL 5.1 Community Edition</a>
+	<div class="hint">A high performance free database, recommended!</div>
+	<li><a href="http://dev.mysql.com/downloads/connector/net/5.2.html">MySQL 5.2 Connector/Net</a>
+	<div class="hint">Necessary for the server, and must be installed on each client as well.</a>
+</ul>
+
+<li> Microsoft SQL Server 2008
+<ul>
+	<li><a href="http://www.microsoft.com/express/sql/default.aspx">Microsoft SQL Server 2008</a>
+	<div class="hint">The free version of SQL Server supports up to 4gb databases and 1gb of memory.</div>
+</ul>
+
+</td></tr>
+</table>
+<br>
+
+<table class="zoovytable" cellpadding="3" cellspacing=0 width="800">
+<tr><td class="zoovysub1header">First Time Installation Notes</td></tr>
+<tr><td>
+Before installing any of the applications above you should consider the
+following:
+<ul>
+<li> <b>.Net Framework Required</b>
+<div class="hint">
+All applications require the Windows Installer 3.1, and Microsoft .NET 3.5 sp1 framework to be installed for proper operation.
+Please use the links to download:
+<br>
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=5A58B56F-60B6-4412-95B9-54D056D6F9F4&displaylang=en">
+Windows Installer 4.5</a><br>
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en">
+Microsoft .Net 3.5 sp1 Download Site</a><br>
+</div>
+
+<li> <b>Network Database Installation</b>
+<div class="hint">
+Installation documentation can be found: <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50491">Webdoc #50491</a>.
+<br>
+Warning: Network Database installations are difficult multi-step processes with lots of room for mistakes.
+We encourage companies who do not employ a fulltime database administrator 
+(which is different than a "Tech Guy") to consult with our 
+<a href="http://www.zoovy.com/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">
+Geek Services</a> to deploy your database.
+In order to speed up the installation appointment, please view our
+<a target="_webdoc" href="http://webdoc.zoovy.com/doc/51357">Webdoc
+#51357</a> prior to your appointment.
+</div>
+
+<li> <b>Multi-Site Considerations</b>
+<div class="hint">
+Only one database may be active per account. If you have multiple sites
+or remote users you will need to use a VPN solution to connect them.<br>
+<a href="http://www.zoovy.com/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">Zoovy Geek Services</a> 
+can assist you with multi-site VPN deployments.
+</div>
+</a>
+
+<li> <b>Enterprise Support</b><br>
+<div class="hint">
+Zoovy provides an enhanced level of support for our larger clients who are more sensitive 
+to service disruptions.  Enterprise support is also suitable for clients who need 
+specific customizations made to their software version. 
+Enterprise support also offers scheduled upgrades on weekends and off-business hours to minimize 
+potential disruption to business operations. 
+Please contact billing@zoovy.com to determine eligibility for this service.
+</div>
+
+<li> <b>Supported Operating Systems: </b><br>
+<div class="hint">
+Windows XP sp3, Vista sp2, Windows Server 2003 r2; Windows Server 2008.
+Requires .NET Framework 3.0. 
+<br>
+64 Bit Considerations: Order Manager will run correctly on Vista 64 Bit Operating System.
+Other applications such as Quickbooks and Endicia will not integrate properly. 
+In addition various peripherals such as many models of HP Printers are known to have issues
+and will cause the Order Manager software to become unstable.
+
+</div>
+
+<li> <b>Early Access Releases</b>
+<div class="hint">
+For the latest versions of all Zoovy applications please visit the 
+<a href="http://www.zoovy.com/biz/support/beta">Early Access Download Area</a>
+</a>
+
+</ul> 
+</td></tr>
+</table>
+</center>
+<br>

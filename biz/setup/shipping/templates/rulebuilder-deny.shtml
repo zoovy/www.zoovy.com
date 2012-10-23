@@ -1,0 +1,37 @@
+<!-- SETUP_TAB -->
+<body bgcolor="FFFFFF"  marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+</center>
+<font face="verdana, arial, helvetica" size="3" color="red">
+
+<center>Sorry!
+<br>
+Your account does not have access to this feature.
+<br>
+<br>
+<table width='75%'>
+<tr><Td>
+<font face='verdana, arial, helvetica' size='2'>
+&nbsp;&nbsp;&nbsp; The Rules Based Shipping tool allows you to easily create customized rules that handle 
+special shipping situations, here are some common examples: <br>
+<br>
+<li>Promotions: such as FREE shipping when you buy any three qualifying products, or even discounted
+shipping when you purchase a specific grouping of products.
+<li>When certain products (eg: Auctions) need to fix the shipping price, regardless of the quantity. 
+<li>If your company sells a combination of both light and heavy products, but does not want to use a weight
+based shipping mechanism.
+<li>When certain products need to have free or discounted shipping while others do not.
+<li>Anytime you need more flexibility in your shipping policies.<br>
+<br>
+&nbsp;&nbsp;&nbsp; The rules based shipping tool will make it easy to accomodate your needs. 
+<br>
+<Br>
+<a target="_top" href="/biz/configurator?VERB=VIEW&BUNDLE=SHIP">Click here to add this feature</a><br>
+</font>
+</td></tr>
+</table>
+<br>	
+<a href="index.cgi" TARGET="_top"><img border="0" src="/images/bizbuttons/cancel.gif"></a>&nbsp;&nbsp;&nbsp; 
+</font>
+</body>
+</html>

@@ -1,0 +1,57 @@
+% my $menu;
+% $menu = 'company';
+
+<&| /includes/header/index.html, title => 'Zoovy Logo Download', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+<h1>Zoovy Logo Download</h1>
+
+
+<P><strong>Attention:</strong> the following images can be used with articles about Zoovy. The logo may not be changed in any way. <!-- Please <a href="zoovy_logo_guidelines.pdf">click here</a> for the Zoovy Logo Acceptable Use Guidelines in a PDF format. --></p>
+
+<h2>Color Specifications:</h2>
+<table cellspacing="1" cellpadding="3">
+<tr>
+	<td width="50"></td>
+	<td style='background-color:#2F3C40; color:#ffffff;' width="196"><strong>&nbsp;Zoovy Grey</strong></td>
+	<td style='background-color:#2461AA; color:#ffffff;' width="196"><strong>&nbsp;Zoovy Blue</strong></td>
+	<td style='background-color:#000000; color:#ffffff;' width="196"><strong>&nbsp;Zoovy Tagline</strong></td>
+</tr>
+<tr>
+	<td>Pantone</td>
+	<td valign="top" align="left">7546 c</td>
+	<td valign="top" align="left">285 c</td>
+	<td valign="top" align="left">Process Black C</td>
+</tr><tr>
+	<td valign="top">RGB</td>
+	<td valign="top" align="left">R: 47 | G: 60 | B: 64</td>
+	<td valign="top" align="left">R: 36 | G: 97 | B: 170</td>
+	<td valign="top" align="left">R: 0 | G: 0 | B: 0</td>
+</tr><tr>
+	<td valign="top">CMYK</td>
+	<td valign="top" align="left">C: 80 | M: 62 | Y: 58 | K: 51</td>
+	<td valign="top" align="left">C: 96 | M: 57 | Y: 6 | K: 1</td>
+	<td valign="top" align="left">C: 0 | M: 0 | Y: 0 | K: 100</td>
+</tr><tr>
+	<td valign="top">HEX</td>
+	<td valign="top" align="left">#2F3C40</td>
+	<td valign="top" align="left">#2461AA</td>
+	<td valign="top" align="left">#000000</td>
+</tr>
+</table>
+
+<div align='center'>
+<img src='http://www.zoovy.com/images/zoovy/zoovy_logo-170x41.gif' width='170' height='41' alt='zoovy.com' border='0' style='margin:15px;' />
+</div>
+
+<table cellspacing='1' cellpadding='3'>
+<tr>
+	<td>
+<h2>Downloads:</h2>
+<p><a href="logo.ai">Adobe Illustrator</a> - (vector-based) 210k</p>
+	</td>
+</tr>
+</table>
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

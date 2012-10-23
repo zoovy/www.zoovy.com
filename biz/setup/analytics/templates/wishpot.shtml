@@ -1,0 +1,78 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<!-- DISCLAIMER -->
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Wishpot (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<b>HINT: Remember to configure your Wishpot syndication feed to transmit product feeds.</b><br>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="WISHPOT-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<br>
+Wishpot Merchant ID: <input type="textbox" value="<!-- WISHPOT_MERCHANTID -->"
+name="wishpot:merchantid"> (Provided by Wishpot to Zoovy)<br>
+<div class="hint">
+To initiate the setup process of a Wishpot account, please submit a ticket to
+Zoovy Support to get started. Please let us know which of the following
+Wishpot initiatives you would like to participate in.  
+</div>
+<br>
+
+
+</td></tr>
+<tr><td class="zoovysub1header">Gift Registry (WishList)</td></tr>
+<tr><td>
+<input type="checkbox" <!-- CHK_WISHLIST --> name="wishpot:wishlist"> Enable<br>
+
+Details: Zoovy clients have no setup fees, no monthly fees from Wishpot.
+A straight 3% CPA (Cost Per Action) for referred sales.
+Wishpot is currently being integrated into the built-in Zoovy product layouts. 
+Sites with custom products layouts will need to pay hourly rates for updates.
+Orders will appear from affiliate "WISHPOT", fees will automatically be added to your Zoovy monthly invoice.
+<br>
+<br>
+
+</td></tr>
+<tr><td class="zoovysub1header">Enable Facebook Application</td></tr>
+<tr><td>
+<input type="checkbox" <!-- CHK_FACEBOOK --> name="wishpot:facebook"> Enable<br>
+No monthly fee - 3% CPA (Cost Per Action) for referred sales. Orders will
+appear from affiliate "WPFACEBOOK", fees will automatically be added to your
+Zoovy monthly invoice.
+<br>
+<br>
+Due to Facebook security measures this application is best installed by the
+merchant, however if additional assistance is required Marketing Services
+can assist as a billable service.  Please open a ticket or schedule an
+appointment.<br>
+<br>
+
+<table class="zoovytable" width="100%">
+<tr><td class="zoovysub1header">FACEBOOK PRODUCT FEED STATUS</td></tr>
+<tr>
+	<td>
+	<!-- FEED_STATUS -->
+	<input class="button" type="button" onClick="document.location='/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=WSH&PROFILE=<!-- PROFILE -->&GUID=<!-- GUID -->';" value=" Submit Feed Now ">
+	</td>
+</tr>
+</table>
+
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+</form>
+</td></tr>
+</table>

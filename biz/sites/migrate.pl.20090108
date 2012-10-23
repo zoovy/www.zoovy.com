@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+
+use strict;
+use Data::Dumper;
+
+use lib "/httpd/modules";
+use ZOOVY;
+use DBINFO;
+use ZWEBSITE;
+use NAVCAT;
+
+my $USERNAME = 'ibuystores';
+my $SRC_PRT = 0;
+my $DST_PRT = 6;
+
+my $MID = &ZOOVY::resolve_mid($USERNAME);
+my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+
+my ($SRCPRT_INFO) = &ZOOVY::fetchprt($USERNAME,$SRC_PRT);
+my ($DSTPRT_INFO) = &ZOOVY::fetchprt($USERNAME,$DST_PRT);
+
+my ($qtSRC_PROFILE) = $udbh->quote($SRCPRT_INFO->{'profile'});
+my ($qtDST_PROFILE) = $udbh->quote($SRCPRT_INFO->{'profile'});
+
+## start with navcats
+if (1) {
+	my ($nc) = NAVCAT->new($USERNAME,PRT=>$SRC_PRT);
+	$nc->{'_PRT'} = $DST_PRT;
+	$nc->save();
+	}
+
+## now pages
+if (0) {
+	my $udbh = &DBINFO::db_user_connect($USERNAME);
+	my $pstmt = "select SAFEPATH,DATA from SITE_PAGES where MID=$MID /* $USERNAME */ and PROFILE=".$qtSRC_PROFILE;
+	print STDERR $pstmt."\n";
+	my $sth = $udbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ($SAFE,$DATA) = $sth->fetchrow() ) {
+		print "SAFE: $SAFE DATA: $DATA\n";
+		}
+	$sth->finish();
+	}
+
+## now webdb
+if (1) {
+	my ($webdbref) = &ZWEBSITE::fetch_website_dbref($USERNAME,$SRC_PRT);
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref,$DST_PRT);
+	}
+
+## now shipping rules
+## now coupons
+if (1) {
+	require ZSHIP::RULES;
+	my ($ref) = ZSHIP::RULES::loadbin($USERNAME);
+	foreach my $k (keys %{$ref}) {
+		## RULE.1
+		my $thisPRT = 0;
+		my $ruleID = $k;
+		if ($k =~ /^(.*?)\.([\d]+)$/) {
+			$thisPRT = $2;
+			$ruleID = $1;
+			}
+		## at this point $thisPRT is the prt we're on (0..#?)
+		##		$ruleID = is the id with out the .PRT at the end.
+		if ($thisPRT == $DST_PRT) { 
+			# clear out existing rules.
+			delete $ref->{$k}; 
+			}	
+		next if ($thisPRT != $SRC_PRT);
+		print STDERR "COPY RULEID: $ruleID thisPRT: $thisPRT dstPRT: $DST_PRT\n";
+		my $ruleNEWID = $ruleID.(($DST_PRT==0)?'':'.'.$DST_PRT);
+		$ref->{$ruleNEWID} = $ref->{$k};
+		}
+	&ZSHIP::RULES::savebin($USERNAME,$ref);
+	}
+
+## profile
+## site messaging
+
+&DBINFO::db_user_close();

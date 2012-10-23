@@ -1,0 +1,78 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width="80%"><tr>
+	<Td>
+<form action="index.cgi" method="post">
+	<input type="hidden" name="ACTION" value="SAVE">
+<h1>Rewards Program</h1>
+<p>Rewards programs allow customers to earn points by making purchases from your store.
+They can be used as a powerful incentive to encourage repeat business and reward customer loyalty.
+Please make your choices carefully, it can be a lethal for a business to make changes to a point program after the fact.</p>
+
+<table cellspacing="0" cellpadding="2" class="table_stroke" width="100%"><tr class="table_top">
+	<td><span class="white"><strong>Configuration</strong></span></td>
+</tr><tr>
+	<td>
+Program Name: <input type="textbox" size="40" value="<!-- NAME -->" name="NAME"><br>
+Program Start Date: <input type="textbox" name="STARTDATE" value="<!-- STARTDATE -->"> YYYYMMDD - purchases before this date do not count.<br>
+<br>
+<input type="checkbox" <!-- OPTIONS1_CHK --> name="opt_1"> Exclude Incomplete items from eligibility.<br>
+<input type="checkbox" <!-- OPTIONS2_CHK --> name="opt_2"> Disable promotions when reward points are used.<br>
+<input type="checkbox" <!-- OPTIONS3_CHK --> name="opt_3"> Allow negative orders (if disabled,  a customer must have a order total greater than or equal to zero to checkout).<br>
+<input type="checkbox" <!-- OPTIONS4_CHK --> name="opt_4"> Base points on subtotal instead of grand total (subtotal does not include shipping, tax, etc.) <br>	
+</td>
+</tr></table><br>
+
+<table cellspacing="0" cellpadding="2" class="table_stroke" width="100%"><tr class="table_top">
+	<td><span class="white"><strong>Conversion</strong></span></td>
+</tr><tr>
+	<td>
+<input type="checkbox" <!-- POINTS1_CHK --> name="points_1"> Add <input type="textbox" name="points1_inc" size="3" value="<!-- POINTS1_INC -->" class="formed"> points for every dollar spent.<br>
+<input type="checkbox" <!-- POINTS2_CHK --> name="points_2"> Add <input type="textbox" name="points2_inc" size="5" value="<!-- POINTS2_INC -->" class="formed"> points for every $<input name="points2_bump" value="<!-- POINTS2_BUMP -->" type="textbox" size="5" class="formed"> dollars spent (note: this always rounds down).</td>
+</tr></table><br>
+<table cellspacing="0" cellpadding="2" class="table_stroke" width="100%"><tr class="table_top">
+	<td><span class="white"><strong>Rewards</strong></span></td>
+</tr><tr>
+	<td>
+<input type="textbox" size="5" value="<!-- BOUNTY_FREESHIP -->" name="bounty_freeship" class="formed"> Points needed for Free Shipping / Handling<br>
+<input type="textbox" size="5" value="<!-- BOUNTY1_INC -->" name="bounty1_inc" class="formed"> Points needed for $<input size="5" type="textbox" value="<!-- BOUNTY1_SUM -->" name="bounty1_sum" class="formed"> coupon<br>
+<input type="textbox" size="5" value="<!-- BOUNTY2_INC -->"  name="bounty2_inc" class="formed"> Points needed for $<input size="5" type="textbox" value="<!-- BOUNTY2_SUM -->" name="bounty2_sum" class="formed"> coupon<br>
+<input type="textbox" size="5" value="<!-- BOUNTY3_INC -->"  name="bounty3_inc" class="formed"> Points needed for $<input size="5" type="textbox" value="<!-- BOUNTY3_SUM -->" name="bounty3_sum" class="formed"> coupon<br>
+<input type="textbox" size="5" value="<!-- BOUNTY11_INC -->" name="bounty11_inc" class="formed"> Points needed for %<input size="5" type="textbox" value="<!-- BOUNTY11_DISC -->" name="bounty11_disc" class="formed"> off coupon<br>
+<input type="textbox" size="5" value="<!-- BOUNTY12_INC -->" name="bounty12_inc" class="formed"> Points needed for %<input size="5" type="textbox" value="<!-- BOUNTY12_DISC -->" name="bounty12_disc" class="formed"> off coupon<br>
+<input type="textbox" size="5" value="<!-- BOUNTY13_INC -->" name="bounty13_inc" class="formed"> Points needed for %<input size="5" type="textbox" value="<!-- BOUNTY13_DISC -->" name="bounty13_disc" class="formed"> off coupon<br>
+</td>
+</tr></table><br>
+<table cellspacing="0" cellpadding="2" class="table_stroke" width="100%"><tr class="table_top">
+	<td><span class="white"><strong>Behavior/Expiration:</strong></span></td>
+</tr><tr>
+	<td>
+<input type="radio" <!-- EXPIRE1_CHK --> value="1" name="expire"> Points are cumulative and never expire.<br>
+<input type="radio" <!-- EXPIRE2_CHK --> value="2" name="expire"> Points are cumulative for a period of <input type="textbox" value="<!-- EXPIRE_DAYS -->" name="expire_days" size="6" class="formed"> days.<br>
+<input type="radio" <!-- EXPIRE3_CHK --> value="3" name="expire"> Points are consumable, but do not expire. [RECOMMENDED]<br>
+<input type="radio" <!-- EXPIRE4_CHK --> value="4" name="expire"> Points are consumable, and they do expire (required if any of the options below are enabled)<br>
+&nbsp; &nbsp; <input type="checkbox" <!-- EXPIRE_OPTIONS1_CHK --> name="expire_options1"> Grace Period: <input type="textbox" size="5" name="expire_gracedays" value="<!-- EXPIRE_GRACEDAYS -->" class="formed"> days from last purchase. (note: points don't start expiring until the grace period is over.)<br>
+&nbsp; &nbsp; <input type="checkbox" <!-- EXPIRE_OPTIONS2_CHK --> name="expire_options2"> Daily point reduction: <input type="textbox" size="5" name="expire_dailyloss" value="<!-- EXPIRE_DAILYLOSS -->" class="formed">  (how many points to take away each day after the grace period.)<br>
+&nbsp; &nbsp; <input type="checkbox" <!-- EXPIRE_OPTIONS3_CHK --> name="expire_options3"> Maximum Point Lifetime: <input type="textbox" size="5" name="expire_maxlife" value="<!-- EXPIRE_MAXLIFE -->" class="formed"> days. (maximum number of days between purchases before points are removed.)<br>
+<br>
+<b>Explanation:</b> Please provide text that explains how your point program works.<br>
+<textarea rows="3" cols="60" name="explanation" class="formed"><!-- EXPLANATION --></textarea><br>
+<input type="checkbox" <!-- AUTO_EXPLAIN_CHK --> name="auto_explain"> Automatically update explanation.
+</td>
+</tr></table><br>
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi"><img border=0 src="/images/bizbuttons/cancel.gif"></a></td>
+	</tr>
+</table>
+</center>
+
+</form>
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

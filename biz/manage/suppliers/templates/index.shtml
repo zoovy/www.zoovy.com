@@ -1,0 +1,26 @@
+<!-- UTILITIES_TAB -->
+<div align="center">
+<table border=0 width=80%>
+<tr><td align='left'>
+<!-- MESSAGE -->
+<h1>Suppliers</h1><br>
+<a href="index.cgi?VERB=NEW">Add new Supplier</a><br>
+<br>
+<table width='100%' class='zoovytable' border=0 cellspacing="0" cellpadding="0">
+	<tr class="zoovytableheader">
+		<td ></td>
+		<td >Supplier ID</td>
+		<td >Format</td>
+		<td >Supplier Name</td>
+		<td >Manage</td>
+ </tr>
+<!-- SUPPLIERS -->
+</table>
+<br>
+<a href="index.cgi?VERB=NEW">Add new Supplier</a><br>
+<br>
+
+</td></tr></table>
+</div>
+<!-- FOOTER -->
+

@@ -1,0 +1,46 @@
+<!-- SETUP_TAB -->
+
+<table width="100%" cellpadding=4 cellspacing=0>
+<tr>
+	<td valign="top" width="100"><img src="/biz/images/tabs/icons/advanced.gif" width="91" height="84"></td>
+	<td valign="top" align="left">
+		<b>Advanced Features</b><br>
+
+<br>
+<p>
+<a href="/biz/setup/import">CSV Import Utility</a><br>
+<font class='teenygrey'>Import information from CSV, eBay, AuctionWorks, Yahoo, and more.</font>
+</p>
+
+<p>
+<a href="/biz/setup/bulkupload">Bulk Image Upload</a><br>
+<font class='teenygrey'>Upload multiple images at the same time into your account</font>
+</p>
+
+<p>
+<a href="/biz/setup/reminder">Site Automation</a><br>
+<font class='teenygrey'>Configure payment reminders, and other automatic behaviors</font>
+</p>
+
+<p>
+<a href="/biz/setup/developer">Site Integrator Features</a><br>
+<font class='teenygrey'>Configure integration with non-Zoovy websites.</font>
+</p>
+
+<p>
+<a href="/biz/setup/search">Manage Search Catalogs</a><br>
+<font class='teenygrey'>Create search catalogs which can be used to do fast indexed searches of products on your website.</font>
+</p>
+
+<p>
+<a href="/biz/setup/dispatch">Order Dispatching</a><br>
+<font class='teenygrey'>Enable the delivery of orders to remote servers</font>
+</p>
+
+
+
+	</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

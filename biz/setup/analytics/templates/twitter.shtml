@@ -1,0 +1,60 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Twitter (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<div class="hint">
+For More Information:
+<a href="http://webdoc.zoovy.com/doc-51686">http://webdoc.zoovy.com/doc-51686</a>
+</div>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="TWITTER-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<br>
+<h2>Profile Settings:</h2>
+Twitter USERID: <input type="textbox" size="100" value="<!-- TWITTER_USERID -->" name="twitter:userid"> 
+<div class="hint">
+Your twitter url is: http://www.twitter.com/userid
+</div>
+<br>
+
+<h2>Partition Settings:</h2>
+<table>
+<tr>
+	<td>access token</td>
+	<td><input type="textbox" name="twitter:access_token" value="<!-- ACCESS_TOKEN -->"></td>
+</tr>
+<tr>
+	<td>access token secret</td>
+	<td><input type="textbox" name="twitter:access_secret" value="<!-- ACCESS_SECRET -->"></td>
+</tr>
+<tr>
+	<td>consumer key</td>
+	<td><input type="textbox" name="twitter:consumer_key" value="<!-- CONSUMER_KEY -->"></td>
+</tr>
+<tr>
+	<td>consumer secret</td>
+	<td><input type="textbox" name="twitter:consumer_secret"  value="<!-- CONSUMER_SECRET -->"></td>
+</tr>
+</table>
+
+<br>
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+</form>
+</td></tr>
+</table>

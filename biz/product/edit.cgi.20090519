@@ -1,0 +1,567 @@
+#!/usr/bin/perl
+
+use strict;
+use lib "/httpd/modules";
+require GTOOLS;
+require ZOOVY;
+require AJAX::PANELS;
+require PRODUCT::PANELS;
+require LUSER;
+require ZWEBSITE;
+
+my $html = '';
+my @ERRORS = ();
+
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_P&2');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+my $template_file = 'edit.shtml';
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my $PID = $ZOOVY::cgiv->{'PID'};
+if ($PID =~ /^(.*?):/) { $PID = $1; }
+$PID =~ s/[^\w\-]+//gs;		# strip non compatible characters (e.g. space) from the product id
+$PID = uc($PID);
+my $prodref = &ZOOVY::fetchproduct_as_hashref($USERNAME,$PID);
+
+my $CSS = '/biz/standard.css'; 
+if ($FLAGS =~ /,MSUSER,/) {
+	$CSS = '/biz/images/ms_header/ms_standard.css';
+	}
+$GTOOLS::TAG{'<!-- CSS -->'} = $CSS;
+
+## SANITY: at this point $PID, $VERB, and $prodref are all initialized
+
+# print STDERR "VERB: $VERB\n";
+
+if (($VERB eq '') && ($PID eq '')) { $VERB = 'WELCOME'; }
+
+if ($VERB =~ /CREATE/) {
+	}
+elsif ($VERB eq 'WELCOME') {
+	$template_file = 'welcome.shtml';
+	$VERB = '*';
+	}
+elsif ($PID eq '') {
+	$VERB = 'ERROR';
+	$html = "<li>ERROR: Product ID was not passed.";
+	}
+
+
+
+## CREATE
+
+my $product_id = uc($ZOOVY::cgiv->{"product"});
+$product_id = substr($product_id, 0, 20);
+$product_id = uc($product_id);
+$product_id =~ s/^[^A-Z0-9]+//og; # strips anything which not a leading A-Z0-9
+
+
+
+# if we clone a product we'll populate it if it not it'll be blank
+my %PRODUCT = ();
+
+if (($FLAGS =~ /,MEDIA,/) && ($VERB eq 'CREATE-DOWNLOAD')) {
+	require CATALOGS;
+
+	my $catalog = $ZOOVY::cgiv->{'catalog'};
+	$GTOOLS::TAG{'<!-- CATALOG -->'} = $catalog;
+	
+	($product_id,my $prodref) = &CATALOGS::download($USERNAME,$ZOOVY::cgiv->{'CATALOG'},$ZOOVY::cgiv->{'ID'});
+	%PRODUCT = %{$prodref};
+	$PRODUCT{'zoovy:catalog'} = $prodref->{'zoovy:catalog'};
+	$ZOOVY::cgiv->{'catalog'} = $prodref->{'zoovy:catalog'};
+	$ZOOVY::cgiv->{'prod_id'} = $product_id;
+	$VERB = '*';
+	}
+
+
+if (($FLAGS =~ /,MEDIA,/) && ($VERB eq 'CREATE-SEARCH_CATALOG')) {
+	my $catalog = $ZOOVY::cgiv->{'catalog'};
+	$GTOOLS::TAG{'<!-- CATALOG -->'} = $catalog;
+	
+	my $TEXT = $ZOOVY::cgiv->{'prod_id'};
+	$GTOOLS::TAG{'<!-- PROD_ID -->'} = $TEXT;
+	if ($ZOOVY::cgiv->{'TEXT'}) { $TEXT = $ZOOVY::cgiv->{'TEXT'}; }
+	
+	require CATALOGS;
+	my $PRODS = &CATALOGS::find_products($catalog,'SKU',$TEXT);
+
+	my $out = '';
+	foreach my $prod (@{$PRODS}) {
+		#$prod->{'attrib'}->{'sku|name'};
+		#$prod->{'content'}->[0]->{'content'};
+		$out .= "<tr><td bgcolor='CCCCCC'>&nbsp; [<a href=\"create.cgi?ACTION=DOWNLOAD&CATALOG=$catalog&ID=$prod->{'attrib'}->{'sku'}\">Download</a>] <b>$prod->{'attrib'}->{'name'}</b></td></tr>";
+		$out .= "<tr><td><br>$prod->{'content'}->[0]->{'content'}</td></tr>";
+		}
+		
+	if ($out eq '') {
+		$out = "<tr><td><i>Sorry no results found for <b>$TEXT</b> in catalog <b>".uc($catalog)."</b></i></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- RESULTS -->'} = $out;
+	$template_file = 'create-catalog.shtml';
+	$VERB = '*';
+	}
+
+
+
+##
+## Create and Add to Website
+## take the same path
+##
+my $error;
+if (($VERB eq "CREATE-SAVE") || ($VERB eq "CREATE-PROCEED")) {
+	# step 0 - load and parse the clone buffer (if it exists) - remember
+	# its already been dcoded by CGI.pm [shit]
+	$error = 0;
+
+	$PRODUCT{"zoovy:prod_name"} = $ZOOVY::cgiv->{"prod_name"};
+	$PRODUCT{"zoovy:prod_desc"} = $ZOOVY::cgiv->{"prod_desc"};
+
+	if (defined $ZOOVY::cgiv->{'catalog'}) {
+		$PRODUCT{'zoovy:catalog'} = $ZOOVY::cgiv->{'catalog'};
+		}
+	my $c = uc($ZOOVY::cgiv->{"prod_id"}); 
+	$c =~ s/[^\w\-]+//g;
+	$c =~ s/^[^A-Z0-9]+//og; # strips anything which not a leading A-Z0-9
+
+	if ($c eq "") {
+		# if a product id was not input then lets build one.
+		$c = &ZOOVY::builduniqueproductid($USERNAME, $PRODUCT{'zoovy:prod_name'});
+		}	
+
+	if (&ZOOVY::productidexists($USERNAME, $c)) {
+		$error = 1;
+		$GTOOLS::TAG{"<!-- ERROR_MSG -->"} .= "The product ID you requested already exists.<br>\n";
+		$GTOOLS::TAG{"<!-- ERR_PROD_ID -->"} .= "<font color='red'>*</font>";
+		}
+	else {
+		$GTOOLS::TAG{"<!-- ERR_PROD_ID -->"} = "<font>";
+		}
+	$product_id = uc(substr($c, 0, 20));
+
+	$c = $ZOOVY::cgiv->{"base_price"};
+	$c =~ s/\$//g;
+	if ($c =~ /[^0-9&^.]/) {
+		$error = 1;
+		$GTOOLS::TAG{"<!-- ERROR_MSG -->"} .= "Invalid characters in base price!.<br>\n";
+		$GTOOLS::TAG{"<!-- ERR_BASE_PRICE -->"} .= "<font color='red'>* ";
+		}
+	else {
+		$GTOOLS::TAG{"<!-- ERR_BASE_PRICE -->"} = "<font>";
+		}
+	$PRODUCT{"zoovy:base_price"} = $c;
+
+	$c = $ZOOVY::cgiv->{"base_cost"};
+	$c =~ s/\$//g;
+	if ($c =~ /[^0-9&^.]/) {
+		$error = 1;
+		$GTOOLS::TAG{"<!-- ERROR_MSG -->"} .= "Invalid characters in base cost!.<br>\n";
+		$GTOOLS::TAG{"<!-- ERR_BASE_PRICE -->"} .= "<font color='red'>* ";
+		}
+	else {
+		$GTOOLS::TAG{"<!-- ERR_BASE_PRICE -->"} = "<font>";
+		}
+	$PRODUCT{"zoovy:base_cost"} = $c;
+
+
+	$c = $ZOOVY::cgiv->{"base_weight"};
+	if ($c =~ /[^0-9\#\.]+/) {
+		$error = 1;
+		$GTOOLS::TAG{"<!-- ERROR_MSG -->"} .= "Invalid characters in Base Weight.<br>\n";
+		$GTOOLS::TAG{"<!-- ERR_BASE_WEIGHT -->"} .= "<font color='red'>*</font>";
+		}
+	else { $GTOOLS::TAG{"<!-- ERR_BASE_WEIGHT -->"} = "<font>"; }
+	$PRODUCT{"zoovy:base_weight"} = $c;
+	$PRODUCT{"zoovy:taxable"} = &ZOOVY::is_true($ZOOVY::cgiv->{'taxable'})?'Y':'N';
+
+	# second save the data.
+	# third, redirect to modify_product.cgi
+	my $inv_enable = 0;
+	if ($error == 0) {
+		$inv_enable = 1;
+		if (defined $ZOOVY::cgiv->{'INV_UNLIMITED'}) { $inv_enable += 32; }
+		$PRODUCT{'zoovy:inv_enable'} = $inv_enable;
+		&ZOOVY::saveproduct_from_hashref($USERNAME,$product_id,\%PRODUCT);
+		## Calling save record is not necessary! (and doesn't create a log)
+		## &INVENTORY::save_record($USERNAME,$product_id,0,'U','','CREATE');
+		&INVENTORY::add_incremental($USERNAME,$product_id,'U',int($ZOOVY::cgiv->{'INVENTORY'})); 
+
+		print "Location: index.pl?goto=" . CGI->escape("edit.cgi?PID=$product_id") . "\n\n";
+		} ## end if ($error == 0)
+	else {
+		$VERB = '';
+		}
+	} ## end if ($VERB eq "SAVE" ...
+
+if ($VERB eq 'CREATE') {
+	$GTOOLS::TAG{"<!-- PRODUCT_ID -->"} = substr($product_id, 0, 25);
+	$GTOOLS::TAG{"<!-- PRODUCT_NAME -->"}        = &ZOOVY::incode($PRODUCT{"zoovy:prod_name"});
+	$GTOOLS::TAG{"<!-- PRODUCT_DESCRIPTION -->"} = &ZOOVY::incode($PRODUCT{"zoovy:prod_desc"});
+	$GTOOLS::TAG{"<!-- BASE_PRICE -->"}          = $PRODUCT{"zoovy:base_price"};
+	$GTOOLS::TAG{"<!-- BASE_COST -->"}          = $PRODUCT{"zoovy:base_cost"};
+	$GTOOLS::TAG{"<!-- BASE_WEIGHT -->"}         = $PRODUCT{"zoovy:base_weight"};
+	$GTOOLS::TAG{'<!-- INVENTORY -->'} = $ZOOVY::cgiv->{'INVENTORY'};
+
+	if (!defined($PRODUCT{"zoovy:taxable"}) || $PRODUCT{'zoovy:taxable'} eq '') { $PRODUCT{"zoovy:taxable"} = 1; }
+
+	if ($PRODUCT{"zoovy:taxable"} =~ /y|1/i) {
+		$GTOOLS::TAG{"<!-- TAXABLE -->"}     = "checked";
+		$GTOOLS::TAG{"<!-- NOT_TAXABLE -->"} = "";
+		}
+	else {
+		$GTOOLS::TAG{"<!-- TAXABLE -->"}     = "";
+		$GTOOLS::TAG{"<!-- NOT_TAXABLE -->"} = "checked";
+		}
+	$GTOOLS::TAG{'<!-- INVENTORY -->'} = '';
+
+	my %CATALOGS = ();
+	if ($FLAGS =~ /,APPAREL,/) {
+		%CATALOGS = (
+			'clothing'=>'Clothing',
+			'clothing.misc'=>'Clothing: Miscellaneous',
+			'clothing.shoes'=>'Clothing: Shoes',
+			'jewelry' => 'Jewelry',
+			'jewelry.bracelets' => 'Jewelry: Bracelets',
+			'jewelry.earrings' => 'Jewelry: Earrings',
+			'jewelry.necklace' => 'Jewelry: Necklace',
+			'jewelry.ring' => 'Jewelry: Ring',
+			'jewelry.watch' => 'Jewelry: Watch',
+			);
+		}
+
+	if ($FLAGS =~ /,MEDIA,/) {
+		%CATALOGS = (
+			'dvd'=>'DVD',
+			'vhs'=>'VHS',
+			'book'=>'Book',
+			'cd'=>'CD',
+			);
+		}
+
+	if (scalar(%CATALOGS)>0) {
+		my $out = qq~
+			<tr>
+			<td class="data">Catalog:</td>
+			<td nowrap align="left">
+				<select name="catalog">
+					<option ~.(($ZOOVY::cgiv->{'catalog'} eq '')?'SELECTED':'').qq~ value="">None</option>
+					~;
+		foreach my $cat (sort keys %CATALOGS) {
+			$out .= qq~<option ~.((lc($ZOOVY::cgiv->{'catalog'}) eq $cat)?'SELECTED':'').qq~ value="$cat">$CATALOGS{$cat}</option>~;
+			}
+	
+		$out .= '</select>';
+		if ($FLAGS =~ /,MEDIA,/) {
+			$out .= qq~
+				&nbsp; 
+				<input type="button" onClick="thisFrm.ACTION.value='SEARCH_CATALOG'; thisFrm.submit();" value=" Search Catalog ">
+				~;
+			}
+		
+	
+		$out .= qq~
+			</td>
+			</tr>
+		~;
+		$GTOOLS::TAG{'<!-- CATALOGS -->'} = $out;
+		}
+	$template_file = 'create.shtml';
+	$VERB = '*';
+	}
+
+
+## END CREATE
+
+
+if (($VERB eq 'NUKE') && (not defined $ZOOVY::cgiv->{'confirm'})) { $VERB = ''; }
+if ($VERB eq 'NUKE') {
+	if (($ZOOVY::cgiv->{'delimages'} eq 'true') || ($ZOOVY::cgiv->{'delimages'} eq 'on')) {
+		require MEDIA;
+		my @images = ();
+		push @images, 'zoovy:prod_thumb';
+		foreach my $i (1..9999) { push @images, 'zoovy:prod_image'.$i; }
+		
+		foreach my $img (@images) {
+			next if ($prodref->{$img} eq '');
+
+			print STDERR "NUKE: $img\n";
+			$LU->log('PRODEDIT.NUKEIMG',"[PID:$PID] Nuking image $img=".$prodref->{$img},'INFO');
+			&MEDIA::nuke($USERNAME,$prodref->{$img});
+			}
+		}
+	$LU->log('PRODEDIT.NUKE',"Nuking Product $PID",'INFO');
+	&ZOOVY::deleteproduct($USERNAME,$PID);
+	print "Location: /biz/product/edit.cgi\n\n";
+	exit;
+	}
+
+
+if (($VERB eq 'RENAME') || ($VERB eq 'CLONE')) {
+
+	my $NEWID = uc($ZOOVY::cgiv->{'NEW_PID'}); 
+	if ($VERB eq 'CLONE') { $NEWID = uc($ZOOVY::cgiv->{'new_pid'}); }
+	$NEWID =~ s/[^\w-]+//g;
+	if (($VERB eq 'RENAME') && ($NEWID eq '')) { 	
+		push @ERRORS, "You must input a Product ID for $PID to be renamed to"; $NEWID = '';
+		}
+	if (($VERB eq 'CLONE') && ($NEWID eq '')) { 	
+		push @ERRORS, "You must input a Product ID for $PID to be cloned to"; $NEWID = '';
+		}
+	if (&ZOOVY::productidexists($USERNAME,$NEWID)) { 
+		push @ERRORS, "A product with the id $NEWID already exists"; $NEWID = '';
+		}
+
+	if ($NEWID ne '') {
+		require INVENTORY;
+		require NAVCAT;
+		my ($onref,$reserveref,$locref,$reorderref,$onorderref,$metaref) = &INVENTORY::fetch_incrementals($USERNAME,[$PID],undef,8+16+32+64+128+256);
+		foreach my $sku (keys %{$onref}) {
+			my ($pid,$claim,$invopts,$noinvopts) = &INVENTORY::stid_to_pid($sku);
+			next if ($pid ne $PID);	## wtf, sometimes fetch_incrementals returns us products that we didn't ask for. (yeah it's supposed to do that)
+			my $NEWSKU = $NEWID.(($invopts ne '')?':'.$invopts:'').(($noinvopts ne '')?'/'.$noinvopts:'');
+			&INVENTORY::set_meta($USERNAME,$NEWSKU,$metaref->{$sku});
+			if ($VERB eq 'RENAME') { 
+				&INVENTORY::save_record($USERNAME,$NEWSKU,$onref->{$sku},'U',$locref->{$sku},'CHANGEPID',$metaref->{$sku});
+				&INVENTORY::nuke_record($USERNAME,$PID,$sku,"Rename to $NEWSKU"); 
+				}
+			}
+		my ($PREF) = &ZOOVY::fetchproduct_as_hash($USERNAME,$PID);
+
+		if ($VERB eq 'CLONE') {
+			$LU->log('PRODEDIT.CLONE',"PID[$PID] cloned to PID[$NEWID]",'INFO');
+			foreach my $k (keys %{$PREF}) { 
+				next if ($k =~ /^zoovy:/); 
+				next if (($k =~ /^ebay/) && ($ZOOVY::cgiv->{'CLONE_EBAY'}));
+				next if ($ZOOVY::cgiv->{'CLONE_OTHER'});
+				delete $PREF->{$k}; 
+				}
+			}
+
+		&ZOOVY::saveproduct_from_hashref($USERNAME,$NEWID,$PREF);		
+	
+		if ($VERB eq 'RENAME') {
+			# handle navcats
+			$LU->log('PRODEDIT.RENAME',"PID[$PID] renamed to PID[$NEWID]",'INFO');
+			require NAVCAT;
+			foreach my $prttext (@{&ZWEBSITE::list_partitions($USERNAME)}) {		
+				my ($prt) = split(/:/,$prttext);
+				my $NC = NAVCAT->new($USERNAME,PRT=>$prt);
+				my $arref = $NC->paths_by_product($PID);
+				if (defined $arref) {
+					foreach my $safe (@{$arref}) {
+						$NC->set( $safe, insert_product=>$NEWID, delete_product=>$PID);
+						}
+					$NC->save();
+					}
+				}
+
+			require CHANNEL::MERCHANT;
+			&CHANNEL::MERCHANT::rename_product($USERNAME,$PID,$NEWID);
+			&ZOOVY::deleteproduct($USERNAME,$PID);
+			}
+		$PID = $NEWID;
+		}
+	$VERB = '';
+	}
+
+
+##
+## some ground rules.
+##		each form should have the fields named the same as the variable they are editing.
+##		each form should have some sort of identifier e.g. _ID= which designates which form is being saved.
+##
+
+
+if (($VERB ne '*') && ($PID eq '')) {
+	$html = "<li> Product id not set, please let support know what you were doing when this message occurred.";
+	$VERB = 'ERROR';
+	}
+
+if ($VERB eq '*') {
+	}
+elsif ($VERB eq 'ERROR') {
+	}
+else {
+	$GTOOLS::TAG{'<!-- GENERAL_PANEL -->'} = $PRODUCT::PANELS::func{'general'}->($LU,$PID,'',$prodref,{});
+	$GTOOLS::TAG{'<!-- PID -->'} = $PID;
+
+	my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,0);
+	my $globalref = &ZWEBSITE::fetch_globalref($USERNAME);
+
+	my @PANELS = ();
+	if ($globalref->{'cached_flags'} =~ /,PKG=SHOPCART,/) {
+		push @PANELS, ['hosting','HOSTING_PANEL','Hosting Information'];
+		}
+
+	if ($prodref->{'zoovy:catalog'} ne '') {
+		push @PANELS, ['catalog','CATALOG_PANEL','Catalogs'];
+		}
+	push @PANELS, ['images','IMAGES_PANEL','Images'];
+	push @PANELS, ['inventory','INVENTORY_PANEL','Inventory'];
+	push @PANELS, ['shipping','SHIPPING_PANEL','Shipping'];
+
+	if (($webdbref->{'flexedit'} ne '') || (defined $globalref->{'@flexedit'})) {
+		push @PANELS, ['flexedit','FLEXEDIT_PANEL','Custom Fields (Flex Edit)'];
+		}
+
+	if (($FLAGS !~ /,PKG=SHOPCART,/) && ($FLAGS !~ /,SITEHOST,/)) {
+		push @PANELS, ['navigation','NAVIGATION_PANEL','Website Navigation'];
+		}
+
+	push @PANELS, ['syndication','SYNDICATION_PANEL','Marketplace Syndication'];
+	if ($FLAGS =~ /,AMZ,/) {
+		push @PANELS, ['amazon','AMAZON_PANEL','Amazon Marketplace'];
+		}
+	if ($FLAGS =~ /,BUY,/) {
+		push @PANELS, ['buy','BUY_PANEL','Buy.com Marketplace'];
+		}
+	if ($FLAGS =~ /,WS,/) {
+		push @PANELS, ['doba','DOBA_PANEL','Doba.com Supplier Settings'];
+		}
+
+	if ($FLAGS =~ /,XSELL,/) {
+		push @PANELS, ['xsell','XSELL_PANEL','Cross Selling'];
+		}
+	if ($FLAGS =~ /,EBAY,/) {
+		push @PANELS, ['ebay','EBAY_PANEL','eBay Marketplace Data'];
+	#	push @PANELS, ['ebaypower','EBAYPOWER_PANEL','eBay Listing Management'];
+		}
+
+	if ($FLAGS =~ /,WS,/) {
+		push @PANELS, ['wholesale','WHOLESALE_PANEL','Wholesale Pricing'];
+		}
+	if ($FLAGS =~ /,EBAY,/) {
+		push @PANELS, ['channels','CHANNELS_PANEL','Channels'];
+		}
+	if (($FLAGS !~ /,SCONLY,/) && ($FLAGS =~ /,CRM,/)) {
+		push @PANELS, ['reviews','REVIEWS_PANEL','Customer Reviews'];
+		}
+	if ($FLAGS =~ /,XSELL,/) {
+		push @PANELS, ['rss','RSS_PANEL','SEO &amp; RSS Properties'];
+		}
+	push @PANELS, ['tools','TOOLS_PANEL','Tools'];
+
+	my $ERRORS = &GTOOLS::errmsg( join("<li>",@ERRORS) );
+
+	my $fastlookupjs = '';
+	foreach my $panelref (@PANELS) {
+		# example:
+		#$content = ($state)?$PRODUCT::PANELS::func{'catalog'}->($USERNAME,$PID,'',$prodref):'';
+		#$GTOOLS::TAG{'<!-- CATALOG_PANEL -->'} = &PRODUCT::PANELS::render_panel('catalog','Catalogs',$state,$content);
+		my ($content,$state) = ('',0);
+		if (defined $LU) { ($state) = $LU->get('prodedit.'.$panelref->[0],0); }
+		
+		next if ($panelref->[0] eq '');
+
+		if ($panelref->[0] eq 'buy') {
+		$fastlookupjs = q~<script language="JavaScript1.2" type="text/javascript" src="/biz/syndication/fastlookup.js"></script>
+<script>
+<!--
+
+var popWin;
+
+function selectCategory(MKT,NAVCAT,VAL,FRM) {
+   popWin = openWindow('/biz/syndication/catchooser.cgi?FRM='+FRM+'&MKT='+MKT+'&CATID='+VAL+'&NAVCAT='+NAVCAT);
+   }
+
+function closeWindow(nc,catid) {
+   window.opener.ajaxUpdate('JLY',window.document.catFrm[nc]);
+   }
+
+//-->
+</script>
+~;
+		}
+
+	my ($LOGIN) = $LU->login();
+#	print STDERR "$panelref->[0]\n";
+	$content = ($state) ? $PRODUCT::PANELS::func{$panelref->[0]}->($LU,$PID,'',$prodref,{}):'';
+	$GTOOLS::TAG{'<!-- '.$panelref->[1].' -->'} = &AJAX::PANELS::render_panel($panelref->[0],$panelref->[2],$state,$content);
+	}
+
+$html = qq~
+<head>
+$fastlookupjs
+<!-- HEADER_ONLY -->
+~.AJAX::PANELS::header('PRODEDIT',$PID,'edit.cgi').qq~</head>
+<body  marginwidth="0" marginheight="0">
+<!-- MYTODO -->
+
+$ERRORS
+
+<!-- general information table -->
+<table width="800" class="border_top border_right border_bottom border_left" cellpadding="5" cellspacing="0">
+	<tr>
+		<td class="border_bottom bold" colspan="2"><!-- PID --></td>
+	</tr>
+	<tr>
+		<td class="divider bold" colspan="2">General Information</td>
+	</tr>
+	<tr>
+		<td>
+		<form style="margin: 0px;" id="general!frm" name="general!frm">
+		<div id="general!content"><!-- GENERAL_PANEL --></div>
+		</form>
+		</td>
+	</tr>
+</table>
+
+<table width="800" cellpadding="0" cellspacing="0" style="margin-top: 4px;">
+	<tr>
+		<td>
+		<!-- IMAGES_PANEL -->
+		<!-- HOSTING_PANEL -->
+		<!-- CATALOG_PANEL -->
+		<!-- SHIPPING_PANEL -->
+		<!-- FLEXEDIT_PANEL -->
+		<!-- NAVIGATION_PANEL -->
+		<!-- SYNDICATION_PANEL -->
+		<!-- AMAZON_PANEL -->
+		<!-- BUY_PANEL -->
+		<!-- DOBA_PANEL -->
+		<!-- XSELL_PANEL -->
+		<!-- EBAY_PANEL -->
+		<!-- EBAYPOWER_PANEL -->
+		<!-- WHOLESALE_PANEL -->
+		<!-- INVENTORY_PANEL -->
+		<!-- CHANNELS_PANEL -->
+		<!-- REVIEWS_PANEL -->
+		<!-- RSS_PANEL -->
+		<!-- TOOLS_PANEL -->
+		</td>
+	</tr>
+</table>
+
+<br>
+<br>
+<br>
+</form>
+</center>
+
+
+</body>
+~;
+
+	}
+
+
+my %NEED = ();
+if ($LU->get('todo.setup')) {
+	require TODO;
+	my $t = TODO->new($USERNAME);	
+	my ($need,$tasks) = $t->setup_tasks('products',LU=>$LU);
+	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('products',$tasks);
+   }
+
+
+
+&GTOOLS::output(file=>$template_file,html=>$html,header=>1,todo=>1);
+undef $LU;
+
+exit;
+
+

@@ -1,0 +1,9 @@
+<body bgcolor="FFFFFF">
+<form action="testupload.cgi" method="post" ENCTYPE="multipart/form-data">
+USERNAME<input type="textbox" name="USERNAME" value="this.username"><br>
+PASSWORD<input type="textbox" name="PASSWORD" value="this.password"><br>
+METHOD<input type="textbox" name="METHOD" value="this.upload"><br>
+<input type="file" onKeyDown="alert('You must use the Browse button')" name="FILENAME"><br>
+<input type="submit">
+</form>
+</body>

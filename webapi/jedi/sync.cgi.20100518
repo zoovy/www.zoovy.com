@@ -1,0 +1,552 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use DBINFO;
+use CUSTOMER;
+use DOMAIN::TOOLS;
+use ORDER;
+use Data::Dumper;
+
+use strict;
+
+my $help = q~
+##
+## Valid GET/POST parameters:
+##
+##	VERSION=1	(required)
+##
+##	DOMAIN=[wholesalestoredomain.com]
+##	EMAIL=[user@domain.com]
+##	PASSWORD=[user_password]
+##
+## VERB=
+##		HELP
+##		CHECKACCESS		- no parameters required, just verifies api access
+##		ADDORDER-XML	- creates an order from xml payload.
+##		ADDORDER-CSV	- creates an order from csv payload. (under construction)
+##		GETORDER			- dumps an existing order that belongs to this customer account.
+##		LISTORDERS		- shows orders beloning to the customer account. 
+##		GETTRACKING		- 
+##
+##	-----= INVENTORY =-----
+##		no parameters are required. : returns all products with inventory, hint: items which are temporarily out of stock may not appear.
+##		PRODUCTS=pid1,pid2,pid3
+##
+##	-----= ADDORDER-XML =-----
+##		XML=<ORDER>...</ORDER>		:	hint: place an order online, then do a getorder to see how it's formatted.
+##
+## 	Simple Order Example:
+##		<ORDER USER="merchant">
+##		<DATA>
+##			<erefid>123</erefid>
+##			<ship_zip>92109</ship_zip>
+##			<ship_state>CA</ship_state>
+##			<ship_firstname>First</ship_firstname>
+##			<ship_address1>1175 Street</ship_address1>
+##			<ship_company>Zoovy</ship_company>
+##			<ship_phone>888-888-8888</ship_phone>
+##			<payment_method>CASH</payment_method>
+##			<ship_country></ship_country>
+##			<ship_lastname>Last</ship_lastname>
+##			<ship_city>san diego</ship_city>
+##		</DATA>
+##		<STUFF>
+##			<item id="S5050-1W18S-RGB-4S" base_price="89.00" qty="1"></item>
+##		</STUFF>
+##		</ORDER>
+##	
+##		PAYMENT=..see examples..
+##		
+##		PAYMENT=[TYPE=CREDIT|CC=####-####-####-####|MM=##|YY=##|CID=###]
+##		PAYMENT=[TYPE=PO|REFID=REFERENCEID]
+##		PAYMENT=[TYPE=PAYPAL|EMAIL=user@domain.com]
+##
+##	-----= LISTORDERS =-----
+##		SINCE=YYYYMMDDHHMMSS 		:	a list of ordrs updated since YYYYMMDDHHMMSS (optional)
+##		MODIFIED=YYYYMMDDHHMMSS
+##		*NOTE: in all cases a strict limit of 100 orders in a result set is enforced.
+##	
+##	-----= GETORDER =-----
+##		ORDERID=orderid				:  a valid order # for this client, in this store. 
+##
+##	-----= GETTRACKING =-----
+##		ORDERID=orderid				:  a valid order # for this client, in this store.
+##
+##
+## NOTES: ABOUT VERSIONING.
+##		It is your responsibility to check periodically for updates to this API. 
+##		Zoovy will attempt to maintain backward compatibility of 1 calendar year from the release of a new version. 
+##		After that, the version will be discontinued.
+##
+~;
+
+use CGI;
+
+my ($q) = CGI->new();
+
+my $VERB = $q->param('VERB');
+my $DOMAIN = $q->param('DOMAIN');
+my $EMAIL = $q->param('EMAIL');
+my $PASSWORD = $q->param('PASSWORD');
+my $output = undef;
+my @ERRORS = ();
+my $o = undef;
+
+my $USERNAME = undef;
+my $PRT = undef;
+my $CID = undef;
+
+if ($VERB eq '') {
+	push @ERRORS, "10|VERB parameter was not found, hint: try VERB=HELP";
+	}
+elsif ($VERB eq 'HELP') {
+	$output = "<Help><![CDATA[$help]]></Help>\n";
+	$VERB = '';
+	}
+else {
+
+	## Resolve the DOMAIN into a user/partition pair	
+	if ((scalar(@ERRORS)==0) && ($DOMAIN eq '')) {
+		push @ERRORS, "20|FATAL|Did not receive a DOMAIN= parameter (always required)";
+		}
+	else {
+		($USERNAME,$PRT) = &DOMAIN::TOOLS::domain_to_userprt($DOMAIN);
+		}
+
+	if ((scalar(@ERRORS)==0) && ($USERNAME eq '')) {
+		push @ERRORS, "2|FATAL|Could not resolve supplier store and partition from domain[$DOMAIN]. Domain is probably incorrect.";
+		}
+	
+	## Lookup the MID - make sure the user really exists.
+	if ((scalar(@ERRORS)==0) && (&ZOOVY::resolve_mid($USERNAME)<=0)) {
+		push @ERRORS, "3|FATAL|Zoovy Store: $USERNAME does not appear to exist.";
+		}
+
+	## a few pieces of sanity checks.
+	if ((scalar(@ERRORS)==0) && ($EMAIL eq '')) {
+		push @ERRORS, "4|FATAL|Required parameter EMAIL was not passed to API call";
+		}
+
+	if ((scalar(@ERRORS)==0) && ($PASSWORD eq '')) {
+		push @ERRORS, "5|FATAL|Required parameter PASSWORD was not passed to API call";
+		}
+
+	## now attempt to verify the client is real
+	$CID = -1;
+	if (scalar(@ERRORS)==0) {
+		($CID) = CUSTOMER::resolve_customer_id($USERNAME,$PRT,$EMAIL);
+		}
+	if ((scalar(@ERRORS)==0) && ($CID<=0)) {
+		push @ERRORS, "6|FATAL|Customer $EMAIL is not valid on domain $DOMAIN/partition $PRT";
+		}
+
+	## okay really authenticate them.
+	if ((scalar(@ERRORS)==0) && (CUSTOMER::authenticate($USERNAME,$PRT,$EMAIL,$PASSWORD)<=0)) {
+		$CID = -1;
+		push @ERRORS, "7|FATAL|Supplied security credentials (password) for customer are invalid";
+		}
+	}
+
+if ((scalar(@ERRORS)==0) && ($VERB eq 'CHECKACCESS')) {
+	$output = "<Success>Welcome!</Success>";
+	$VERB = '';
+	}
+
+
+if (scalar(@ERRORS)>0) {
+	}
+elsif (
+	($VERB eq 'GETORDER') ||
+	($VERB eq 'GETTRACKING')
+	) {
+	## 
+	## ACCESS CONTROL - MAKE SURE THAT THE ORDER WE'RE LOOKING AT, IS ACCESSIBLE TO THIS USER.
+	##
+
+	my ($OID) = $q->param('ORDERID');
+	if ($OID eq '') { 
+		push @ERRORS, "400|FATAL|$VERB call requires ORDERID parameter be passed";
+		}
+
+	if (scalar(@ERRORS)==0) {
+		## phase1: make sure we can load the order object
+		($o,my $err) = ORDER->new($USERNAME,$OID);
+		if ((not defined $o) || (ref($o) ne 'ORDER')) {
+			push @ERRORS, "402|FATAL|Order object could not be loaded.";
+			}
+		elsif ($err ne '') {
+			push @ERRORS, "401|FATAL|$VERB got error[$err] from object";
+			}
+		}
+
+	if (scalar(@ERRORS)==0) {
+		## phase2: verify access
+		if ($o->get_attrib('bill_email') ne $EMAIL) {
+			push @ERRORS, "403|FATAL|The billing email for the order does not match the credentials supplied";
+			}
+		}
+	}
+
+
+
+if ((scalar(@ERRORS)==0) && ($VERB eq 'ADDORDER-XML')) {
+	##
+	## receive an XML order
+	## 
+	## TODO: add option support
+	## TODO: setup appropriate drop ship fields.
+	## TODO: payment status.
+
+	my ($C) = CUSTOMER->new($USERNAME,PRT=>$PRT,CID=>$CID);
+	print STDERR "Found customer for $USERNAME ($PRT): $CID\n";
+
+	my $XML = $q->param('XML');
+	if ($XML eq '') {
+		push @ERRORS, "201|FATAL|Order XML was empty (no data)";
+		}
+	elsif ($XML !~ /<ORDER.*<\/ORDER>/s) {
+		push @ERRORS, "200|FATAL|Must start and end with <ORDER> </ORDER> tags : $XML";
+		}
+	#push @ERRORS, "99|UNKNOWN|Sorry no access to call $VERB yet.";
+	#$VERB = '';
+
+	print STDERR "XML: $XML\n";
+
+	## test creation of order
+	my $ref = undef;
+ 	if (scalar(@ERRORS)==0) {
+		require XML::Simple;
+		eval { $ref = XML::Simple::XMLin($XML,'ForceArray'=>1,'ContentKey'=>'_','KeyAttr'=>{} ); };
+		if ($@){
+			push @ERRORS, "1000|FATAL|XML Parsing error $@";
+			}
+		elsif (not defined $ref) {
+			push @ERRORS, "1001|FATAL|could not decode xml order (no reason available)";
+			}
+		elsif (not defined $ref->{'DATA'}) {
+			push @ERRORS, "1002|FATAL|order xml did not contain required DATA section";
+			}
+		elsif (not defined $ref->{'STUFF'}) {
+			push @ERRORS, "1003|FATAL|order xml did not contain required STUFF section";
+			}
+		elsif (not defined $ref->{'STUFF'}->[0]->{'item'}) {
+			push @ERRORS, "1005|FATAL|STUFF did not contain at least one \"item\" node";
+			}
+		}
+
+	my %DATA = ();
+	if (scalar(@ERRORS)==0) {
+		my @DATA_PARAMS = (
+			[ 'erefid', 1 ],		# external reference id (required)
+			[ 'ship_address1', 1 ],
+			[ 'ship_address2', 0 ],
+			[ 'ship_city', 1 ],
+			[ 'ship_zip', 1 ],
+			[ 'ship_state', 1 ],
+			[ 'ship_phone', 0 ],
+			[ 'ship_email', 0 ],
+			[ 'ship_company', 0 ],
+		# 	[ 'ship_fullname', 0 ],
+			[ 'ship_firstname', 1 ],
+			[ 'ship_lastname', 1 ],
+			);
+		$DATA{'bill_email'} = $EMAIL;
+		$DATA{'sdomain'} = $DOMAIN;
+		$DATA{'mkt'} = (1<<31);
+		$DATA{'customer_id'} = $CID;
+
+		if ($ref->{'DATA'}->[0]->{'bill_address1'}->[0]) {
+			## 
+			## if bill_address1 is set, then we assume we're getting address info from the order. 
+			##
+			push @DATA_PARAMS, [ 'bill_address1', 1 ];
+			push @DATA_PARAMS, [ 'bill_address2', 0 ];
+			push @DATA_PARAMS, [ 'bill_city', 1 ];
+			push @DATA_PARAMS, [ 'bill_zip', 1 ];
+			push @DATA_PARAMS, [ 'bill_state', 1 ];
+			push @DATA_PARAMS, [ 'bill_phone', 1 ];
+			push @DATA_PARAMS, [ 'bill_company', 1 ];
+			push @DATA_PARAMS, [ 'bill_firstname', 1 ];
+			push @DATA_PARAMS, [ 'bill_lastname', 1 ];
+			}
+		else {
+			## 
+			## no bill_address1 set, load from customer record.
+			## note: firstname, lastname not set on wholesale orders.
+			$DATA{'bill_address1'} = $C->get('WS.ws_address1');
+			$DATA{'bill_address2'} = $C->get('WS.ws_address2');
+			$DATA{'bill_city'} = $C->get('WS.ws_city');
+			$DATA{'bill_state'} = $C->get('WS.ws_state');
+			$DATA{'bill_zip'} = $C->get('WS.ws_zip');
+			$DATA{'bill_company'} = $C->get('WS.ws_company');
+			$DATA{'bill_firstname'} = '';
+			$DATA{'bill_lastname'} = '';
+			}
+
+		foreach my $pref (@DATA_PARAMS) {
+			my ($attrib,$required) = @{$pref};
+			$DATA{$attrib} = $ref->{'DATA'}->[0]->{$attrib}->[0];
+			if ($required && $DATA{$attrib} eq '') {
+				push @ERRORS, "1004|FATAL|Required parameter \"$pref->[0]\" was not passed.";
+				}
+			}
+		}
+
+
+	my $CARTID = undef;
+	if (scalar(@ERRORS)>0) {
+		## shit already happened.
+		}
+	elsif ($DATA{'erefid'} eq '') {
+		push @ERRORS, "1005|FATAL|erefid parameter is required, cannot be blank, must be unique per order.";
+		}
+	elsif (length($DATA{'erefid'})>12) {
+		push @ERRORS, "1007|FATAL|erefid must be no longer than 12 alphanumeric characters";
+		}
+	else {
+		## check for duplicate erefid 
+		$CARTID = sprintf("%d|%s",$CID,$DATA{'erefid'});
+		my ($OID) = ORDER::lookup_cartid($USERNAME,$CARTID,0);
+		if ($OID eq '') { 
+			$DATA{'cartid'} = $CARTID;
+			}
+		else {
+			push @ERRORS, "1006|FATAL|erefid[$DATA{'erefid'}] already created Order[$OID]"; 
+			}
+		}
+
+	my $STUFF = STUFF->new();
+	if (scalar(@ERRORS)==0) {
+		my @STUFF_PARAMS = (
+			[ 'prod_name', 0 ],
+			[ 'qty', 1 ],
+			[ 'force_qty', 0 ],
+			);
+	
+		my $item_counter = 0;
+		foreach my $iref (@{$ref->{'STUFF'}->[0]->{'item'}}) {
+	#		print STDERR Dumper($iref);
+			$item_counter++;
+			my ($stid) = $iref->{'id'};
+			
+			if (not defined $stid) { 
+				push @ERRORS, "1006|FATAL|STUFF item[$item_counter] node did not contain \"id\" attribute"; 
+				}
+			next if (not $stid);
+
+			if ($stid eq '') { push @ERRORS, "1007|FATAL|STUFF item[$item_counter] \"id\" attribute was blank (not allowed)"; }
+
+			my %item = ();
+			$item{'stid'} = $stid;
+			$item{'full_product'} = &ZOOVY::fetchproduct_as_hashref($USERNAME,$stid);
+			if ($stid =~ /[:\/]+/) {
+				my ($pid,$claim,$invopts,$noinvopts,$virtual) = &INVENTORY::stid_to_pid($stid);
+				$item{'product'} = $pid;
+				$item{'optionstr'} = (($invopts)?":$invopts":'').(($noinvopts)?"/$noinvopts":'');
+				$item{'pogs'} = $item{'full_product'}->{'zoovy:pogs'};
+				}
+			# print STDERR 'ITEM:'.Dumper(\%item);
+
+			foreach my $pref (@STUFF_PARAMS) {	
+				my ($attrib,$required) = @{$pref};
+				$item{$attrib} = $iref->{ $attrib };
+				if ($required && ($item{$attrib} eq '')) {
+					push @ERRORS, "1021|FATAL|Required STUFF item[$item_counter] parameter \"$attrib\" was blank";
+					}
+				}
+			my ($err,$errmsg) = $STUFF->cram($USERNAME,\%item);
+			if ($err) {
+				push @ERRORS, "1020|FATAL|STUFF item[$item_counter] cram failed \"$errmsg\"";
+				}
+			}
+
+		}
+
+	if (scalar(@ERRORS)==0) {
+		($o,my $error) = ORDER->new($USERNAME,'','new'=>1,'save'=>0,'data'=>\%DATA,'stuff'=>$STUFF,'events'=>[
+			[ 'Created from JEDI-API' ],
+			]);
+		if ($error ne '') { push @ERRORS, "201|FATAL|Order->from_xml error is $error"; }
+		}
+
+	my ($OID) = undef;
+	if (scalar(@ERRORS)==0) {
+		## orderid creation works fine, just didn't want confuse merchant by grabbing excessive orderids
+		$o->save();
+		$output = "<Success>ADDORDER was successful!</Success>\n<ORDERID>".$o->id()."</ORDERID>\n\n";
+		$VERB = 'GETORDER';
+		}
+
+	if ($q->param('PAYMENT') ne '') {
+		}
+
+	print STDERR Dumper(\@ERRORS);
+	}
+
+
+##
+##
+##
+if ((scalar(@ERRORS)==0) && ($VERB eq 'LISTORDERS')) {
+	##
+	## lists available orders
+	##		SINCE=YYYYMMDDHHMMSS
+	## 
+	my %params = ();
+	if (defined $q->param('SINCE')) {
+		if (length($q->param('SINCE')) != 14) {
+			push @ERRORS, "501|FATAL|SINCE date must be in format YYYYMMDDHHMMSS";
+			}
+		else {
+			$params{'CREATED_GMT'} = &ZTOOLKIT::mysql_to_unixtime($q->param('SINCE'));
+			}
+		}
+	if (defined $q->param('MODIFIED')) {
+		if (length($q->param('MODIFIED')) != 14) {
+			push @ERRORS, "501|FATAL|MODIFIED date must be in format YYYYMMDDHHMMSS";
+			}
+		else {
+			$params{'TS'} = &ZTOOLKIT::mysql_to_unixtime($q->param('MODIFIED'));
+			}
+		}
+	if (defined $q->param('EREFID')) {
+		$params{'EREFID'} = $q->param('EREFID');
+		}
+	if (defined $q->param('OIDS')) {
+		my @OIDS = split(/,/,$q->param('OIDS'));
+		$params{'@OIDS'} = \@OIDS;
+		}
+	if (defined $q->param('CID')) {
+		$params{'CID'} = $q->param('CID');
+		}
+	if (scalar(keys %params)==0 && scalar(@ERRORS) == 0) {
+		push @ERRORS, "500|FATAL|No valid parameters passed to LISTORDERS, at least one is required";
+		}
+
+	if (scalar(@ERRORS)==0) {
+		require ORDER::BATCH;
+		$params{'CUSTOMER'} = $CID;
+		$params{'LIMIT'} = 100;
+		$params{'DETAIL'} = 9;
+		my ($r) = ORDER::BATCH::report($USERNAME,%params);
+		foreach my $ref (@{$r}) {
+			$ref->{'CREATED_GMT'} = &ZTOOLKIT::unixtime_to_gmtime($ref->{'CREATED_GMT'});
+			$ref->{'MODIFIED_GMT'} = &ZTOOLKIT::unixtime_to_gmtime($ref->{'MODIFIED_GMT'});
+			if ($ref->{'SHIPPED_GMT'} > 0) { $ref->{'SHIPPED_GMT'} = &ZTOOLKIT::unixtime_to_gmtime($ref->{'SHIPPED_GMT'}); }
+			
+			$output .= "<ORDER>".&ZTOOLKIT::hashref_to_xmlish($ref,'sort'=>1)."</ORDER>\n";
+			}
+		$output = "<LISTORDERS>\n$output</LISTORDERS>\n";
+		}
+
+
+	$VERB = '';
+	}
+
+##
+##
+##
+if ((scalar(@ERRORS)==0) && ($VERB eq 'GETORDER')) {
+	##
+	## get tracking for an order. ($o is set earlier)
+	##
+
+#	my %VALID_STUFF_PARAMS = (
+#		);
+#	my %VALID_ORDER_PARAMS = (
+#		);
+#	
+	## EVENTUALLY THIS SHOULD BE A WHITELIST - BUT FOR TIMELY REASONS NOW, WE WONT DO THAT.
+	my $stuff = $o->stuff();
+	foreach my $stid ($stuff->stids()) {
+		my $item = $stuff->item($stid);
+		delete $item->{'cost'};
+		delete $item->{'force_qty'};
+		delete $item->{'inv_mode'};
+#		print STDERR "ITEM: ".Dumper($item);
+		}
+
+	$output .= $o->as_xml(108);
+	$VERB = '';
+	}
+
+##
+##
+##
+if ((scalar(@ERRORS)==0) && ($VERB eq 'GETTRACKING')) {
+	##
+	## get tracking on an xml order
+	##		ORDERID=
+	## 
+	foreach my $trk (@{$o->tracking()}) {
+		$trk->{'created'} = &ZTOOLKIT::unixtime_to_gmtime($trk->{'created'});
+		if (defined $trk->{'void'}) {
+			$trk->{'void'} = &ZTOOLKIT::unixtime_to_gmtime($trk->{'void'});
+			}
+		$output .= "<TRACKING>\n".&ZTOOLKIT::hashref_to_xmlish($trk)."</TRACKING>\n";
+		}
+	$output = "<GETTRACKING>\n$output</GETTRACKING>\n";
+	$VERB = '';
+	}
+
+
+##
+##
+##
+if ((scalar(@ERRORS)==0) && ($VERB eq 'INVENTORY')) {
+	##
+	## generate inventory for this store.
+	##
+	my $PIDS = $q->param('PRODUCTS');
+	my %PIDS = ();
+	if ($PIDS ne '') {
+		foreach my $pid (split(/,/,$PIDS)) { $PIDS{$pid}++; }
+		}
+	else {
+		## undefined / blank PIDS - so we return all pids.
+		require NAVCAT;
+		my ($nc) = NAVCAT->new($USERNAME,PRT=>$PRT);
+		foreach my $path ($nc->paths()) {
+			my ($pretty,$children,$pids) = $nc->get($path);
+			foreach my $pid (split(/,/,$pids)) {
+				next if ($pid eq '');
+				$PIDS{$pid}++;
+				}
+			}
+		}
+
+	## at this point %PIDS contains a list of all products on this site.
+	require INVENTORY;
+	my ($onhand_ref) = &INVENTORY::fetch_incrementals($USERNAME,[keys %PIDS],1+8);
+	$output .= "<INVENTORY>\n";
+	foreach my $k (keys %{$onhand_ref}) {
+		$output .= "<SKU ID=\"$k\" QTY=\"$onhand_ref->{$k}\"/>\n";
+		}
+	$output .= "</INVENTORY>\n";
+	$VERB = '';
+	}
+
+##
+##
+##
+if ((scalar(@ERRORS)==0) && ($VERB ne '')) {
+	push @ERRORS, "11|UNKNOWN|Unknown method $VERB, hint: try VERB=HELP";
+	}
+
+
+print "Content-type: text/xml\n\n";
+print "<Response ts=\"".time()."\">\n";
+if (scalar(@ERRORS)) {
+	print "<Errors>\n";
+	foreach my $err (@ERRORS) {
+		my ($code,$severity,$msg) = split(/\|/,$err);
+		print "<Error severity=\"$severity\" err=\"$code\">$msg</Error>";
+		}
+	print "<!-- hint: you might try passing VERB=HELP to see a list of valid parameters -->";
+	print "</Errors>\n";
+	}
+if (defined $output) {
+	print $output;
+	print STDERR $output;
+	}
+print "</Response>\n";

@@ -1,0 +1,20 @@
+<!-- UTILITIES_TAB --> 
+
+<center>
+<table class="zoovytable">
+<tr>
+	<td colspan=5 class="zoovytableheader">Strategy</td>
+</tr>
+<tr>
+	<td class="zoovysub1header"></td>
+	<td class="zoovysub1header">StrategyID</td>
+	<!-- <td class="zoovysub1header">Summary</td> -->
+	<td class="zoovysub1header">Last Modified</td>
+</tr>
+<!-- STRATEGIES -->
+<tr>
+ 	<td colspan=5>
+ 	<a href="index.cgi?VERB=STRATEGY-NEW">Add Strategy</a>
+ 	</td>
+ </tr>
+</table>

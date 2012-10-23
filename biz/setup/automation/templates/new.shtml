@@ -1,0 +1,29 @@
+<!-- SETUP_TAB -->
+
+<script type="text/javascript">
+<!--
+
+function frmUpdate(subtype) {
+
+	frm = $('thisFrm');
+	if (subtype == undefined) { subtype = 'Save'; }		
+	
+	var postBody = 'm=EVENTMGR/'+subtype+'&'+Form.serialize(frm);
+	// alert(postBody);
+	new Ajax.Request('/biz/ajax/prototype.pl/EVENTMGR/'+subtype, 
+		{ postBody: postBody,asynchronous: 1,onComplete: function(request){handleResponse(request.responseText);} } ) ;
+	}
+	
+//-->
+</script>
+
+<center>
+<form id="thisFrm" name="thisFrm" method="post" action="/biz/ajax/prototype.pl">
+	<input type="hidden" name="VERB" value="NEW">
+	<div id="myDiv">
+
+	<!-- NEW_EVENT -->
+
+	</div>
+</form>
+</center>

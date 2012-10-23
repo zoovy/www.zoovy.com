@@ -1,0 +1,127 @@
+<body align="center">
+<!-- NO_TAB -->
+
+<br>
+<center>
+<table width="520"><tr><td>
+
+<!-- order manager box -->
+<form method="GET" action="http://webapi.zoovy.com/biz/downloads/record.cgi">
+<input type="hidden" name="CODE" value="zom_v6134.msi">
+<input type="hidden" name="MAJOR" value="6">
+<input type="hidden" name="MINOR" value="134">
+<table class="zoovytable" border="0" cellspacing="0" width="100%">
+	<tr>
+		<td class="zoovytableheader">Order Manager - Desktop Software</td>
+		<td class="zoovytableheader" align="right">
+		<input type="submit" class="button" value=" Download ">
+		</td>
+	</tr>
+	<tr>
+	<td colspan='2'>
+	
+<b>Build 6.134 - released 10/20/07</b><br>
+Size: 7.4mb &nbsp; | &nbsp; <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50698">Release Notes</a>
+<br>
+<br>
+The Zoovy Order Manager allows you to easily manage your orders and customers 
+without needing to be online! 
+The order manager can download any orders placed through your Zoovy store, 
+automatically send customers email, manage tracking numbers, advanced printing support and so much more!
+<br>
+<br>
+Supports multiple Zoovy accounts but only one concurrent installation per account.<br>
+<br>
+For information on setting up a network version of order manager please
+visit <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50491">Multi User Instructions</a>
+<br>
+
+	</td>
+	</tr>
+	</table>
+</form>
+
+<!-- warehouse manager box -->
+
+<form method="GET" action="http://webapi.zoovy.com/biz/downloads/record.cgi">
+<input type="hidden" name="CODE" value="zwm_v6018.msi">
+<input type="hidden" name="MAJOR" value="6">
+<input type="hidden" name="MINOR" value="018">
+<table class="zoovytable" border="0" cellspacing="0">
+	<tr>
+		<td class="zoovytableheader">Warehouse Manager - Desktop Software</td>
+		<td class="zoovytableheader" align="right">
+		<input type="submit" class="button" value=" Download ">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		
+<b>Build 6.018 - released 9/25/07</b><br>
+Size: 7mb &nbsp; | &nbsp; <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50697">Release Notes</a>
+<br>
+<br>
+The Zoovy Warehouse Manager is a desktop application to making the day to
+day tasks of managing products and images easier than ever! 
+<br>
+<br>
+		</td>
+	</tr>
+	</table>
+</form>
+
+<table cellspacing=0 class="zoovytable">
+<tr>
+	<td class="zoovysub1header">Important Installation Details:</td></tr>
+<tr>
+<td>
+
+<font class="tiny">
+
+<div>
+Zoovy Desktop software will only operate on computers which are fully patched via Windows Update. 
+Please visit: <a target="_blank" href="http://windowsupdate.microsoft.com">http://windowsupdate.microsoft.com</a>
+</div>
+
+<br>
+
+<div><b>Supported Operating Systems: </b><br>
+Windows 2000 Service Pack 3; Windows Server 2003; Windows XP Service Pack 2, 
+in addition to all 64 bit and IA64 bit Windows versions.</div>
+
+<br>
+
+<div>
+<b>Before Installing:</b><br>
+All applications require the Microsoft .NET 2.0 framework to be installed for proper operation.
+Please visit: 
+<a href="http://msdn.microsoft.com/netframework/downloads/updates/default.aspx">
+Microsoft .Net Framework Download Site
+</a>
+</div>
+
+<br>
+
+<div>
+HINT: If you are not sure which version of the .NET framework is right for your
+computer use the x86 Redistribute Package version. 
+However if you have a 64 bit machine, then you can download the x64 for more
+faster performance - consult your IT manager for details.
+</div>
+
+<br>
+
+<i>For the latest versions of all Zoovy products please visit the <a href="http://support.zoovy.com/beta">Early Access Download Area</a></i>
+
+</font>
+</td></tr>
+</table>
+
+
+
+	</td>
+</tr>
+</table>
+</center>
+
+<!-- FOOTER -->

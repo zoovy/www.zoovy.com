@@ -1,0 +1,62 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /globalincludes/header.html, title => 'Zoovy supports iSpeakVideo presentations', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","ISPEAKVIDEO");
+</script>
+  
+  
+<p><img src='/images/partner_pages/ispeakvideo_header-462x85.gif' height="85" width="462" border='0' alt='Listing and selling on Amazon made easy' /><br />
+</p>
+<h2>iSpeakVideo can help any merchant  further explain their product or service through the addition of Online Video.</h2>  
+<p>iSpeakVideo's various video products are designed with internet retailers in mind.  Our goal is to help enhance the overall website user experience.  We have seen an increase in conversion rates and a reduction in question rate when our engaging products are used in key areas.</p>  
+  
+<p>Virtual Spokesperson: A Virtual Spokesperson can not only provide a human touch that connects with your customers, but also drive them to action.<br />    
+  Ways to Use a iSpeakVideo: Home Pages, FAQ’s, Landing Pages, Product Demos,  Check Out Pages, Thank You pages, How to Order Pages, Presentations, Video Email Correspondence</p>
+<b>FAQ’s:</b><br />  <a href="http://ispeakvideo.com/remote/discountmugs/faq/discountmugs_cs2_3.html" target="_blank">http://ispeakvideo.com/remote/discountmugs/faq/discountmugs_cs2_3.html</a><br />
+<b>How to use/Product Demos:</b> <br /><a href="http://ispeakvideo2.com/remote/1800petmeds/1800petmeds_arthritis_v5.html" target="_blank">http://ispeakvideo2.com/remote/1800petmeds/1800petmeds_arthritis_v5.html</a><br />
+<h2>iVideo Header/Presentation:</h2>  <div style="width:250px">A iVideo Header is essentially a 1 minute e-commercial placed on any webpage to further enhance the message.   This product includes a custom background, graphical elements, music, and integration.</div><br /><br />
+    
+  <b>Examples:</b><br /> 
+  <a href="http://www.gomcgruff.com/m/HowItWorks.asp" target="_blank">http://www.gomcgruff.com/m/HowItWorks.asp</a><br />
+  <a href="http://www.ifbyphone.com" target="_blank">http://www.ifbyphone.com</a><br />
+  <a href="http://www.dealeron.com" target="_blank">http://www.dealeron.com</a><br />
+  <a href="http://roomadvice101.com" target="_blank">http://roomadvice101.com</a></p><br />
+  
+  
+<br>
+
+<script src="http://www.ispeakvideo.com/scripts/iSpeakVideo.js"
+type="text/javascript" language="javascript" ></script>
+ <script language="javascript" type="text/javascript">
+   var video=new iSpeakVideo();
+   video.src='zoovy.swf';
+   video.height=320;
+   video.width=300;
+   video.positionFrom='fromTop';
+   video.Location.X=220;
+   video.Location.Y=370;
+   video.ReferenceID='imgReference';
+   video.anchorMode='absolute';
+   video.Intialize();
+   
+   function hideWhenFinished() {
+    video.HideWhenFinished();
+	}
+ </script>
+
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /globalincludes/nav_painpage.html &></&>
+
+<&| /globalincludes/partner_footer.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /globalincludes/sample_stores.html &></&>
+
+% ## Do not touch anything below this line.
+<&| /globalincludes/footer.html, menu => $menu &></&>
+</li></font></ul>

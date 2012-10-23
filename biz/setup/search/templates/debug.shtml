@@ -1,0 +1,76 @@
+<!-- SETUP_TAB -->
+
+<br>
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="DEBUG-RUN">
+<center>
+<!-- MESSAGE -->
+<table width=800 class="zoovytable">
+	<tr>
+		<td class="zoovytableheader">Debugger</td></tr>
+	</tr>
+	<tr>
+		<td>Catalog: <select name="CATALOG"><!-- CATALOGS --></select></td>
+	</tr>
+	<tr>
+		<td>Site: <select name="SITE">
+		<!-- PARTITIONS -->
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Search Term: <input value="<!-- SEARCHFOR -->" type="textbox" name="SEARCHFOR"></td>
+	</tr>
+	<tr>
+		<td>
+		*Product ID: <input type="textbox" name="PRODUCT">
+		<div class="hint">
+		Product is Optional: Specify a product that does not appear, and the system will attempt to determine why.
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		Element Parameters: <input value="<!-- ELEMENT -->" type="textbox" name="ELEMENT">
+		<div class="hint">
+		Pass in modifiers to the SEARCH function (normally done by the page layout), 
+		refer to the PRODSEARCH element for more details. Example parameters: ROOT,CATALOG,PRT,KEYWORDS,MODE,LOG,ISOLATION_LEVEL<br>
+		Format: A=B&amp;C=D
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="submit" class="button" value=" Run Query ">
+		<input type="button" class="button" onClick="this.form.ACTION.value='CONFIG'; this.form.submit();" value=" Back to Config ">
+		</td>
+	</tr>
+</table>
+
+<!--
+<table width=800 class="zoovytable">
+	<tr>
+		<td class="zoovytableheader">Keyword Explosion Debug</td></tr>
+	</tr>
+	<tr>
+		<td>SKU/Model #: <input value="" type="textbox" name="EXPLODE"></td>
+	</tr>
+	<tr>
+		<td>
+		<input type="button" class="button" onClick="this.form.ACTION.value='EXPLODE-DEBUG'; this.form.submit();" value=" Show Results ">
+		</td>
+	</tr>
+</table>
+-->
+
+<br>
+<br>
+<h2>Debug Output:</h2><br>
+<table width=500 class="zoovytable">
+	<tr>
+		<td><!-- DEBUG_OUT --></td>
+	</tr>
+</table>
+</table>
+</center>
+</form>

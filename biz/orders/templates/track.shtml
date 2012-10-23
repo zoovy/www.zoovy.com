@@ -1,0 +1,100 @@
+<html>
+<head>
+	<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body>
+<center>
+<table>
+<tr>
+<td align="center">
+
+Tracking Information for <!-- ID --><br>
+<!-- MESSAGE -->
+<br>
+</font>
+
+<form action="track.cgi">
+<input type="hidden" name="CMD" value="SAVE">
+<input type="hidden" name="ID" value="<!-- ID -->">
+<table width='600'><tr><td>
+<table class="zoovytable">
+	<tr class="zoovytableheader">
+		<td>&nbsp;</td>
+		<td>DELETE</td>
+		<td>CARRIER</td>
+		<td>TRACKING #</td>
+		<td>DETAIL</td>
+		<td>&nbsp;</td>
+	</tr>
+	<!-- CONTENTS -->
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+
+	<tr class="zoovytableheader">
+		<td></td>
+		<td colspan='4'>Add New Package:</b></td>
+		<td></td>
+	</tr>
+
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan='4'>
+		<table width=100% border=0>
+			<tr>
+				<td>
+				<select name="method">
+					<option value="UPS">UPS</option>
+					<option value="USPS">USPS</option>
+					<option value="FEDX">FEDEX</option>
+					<option value="DHL">DHL</option>
+					<option value="OTHR">Other Carrier</option>
+				</select>
+				</td>
+				<td>&nbsp;</td>
+				<td>Tracking #: <input type="text" name="value"></td>
+			</tr>
+			<tr>
+				<td>Cost: <input type="text" size="5" name="cost"></td>
+				<td>&nbsp</td>
+				<td>Actual Weight: <input size="5" type="text" name="actualwt"></td>
+			</tr>
+			<tr>
+				<td colspan='3'>
+				Notes: (max 255 characters)<br>
+				<textarea cols=80 rows=3 name="notes"></textarea>
+				</td>
+			</tr>
+		</table>
+		</td>
+		<td>&nbsp;
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan='10'>
+		<center>
+		<input type="submit" value=" Save " class="button">
+		<input type="button" value=" Exit " class="button" onClick="document.location='view.cgi?ID=<!-- ID -->';">
+		</center>
+<div class="hint">
+HINT: When you use Zoovys Desktop Order Manager to print out USPS Postage, UPS
+Airbills, or FedEx Airbills and the tracking #'s and shipping costs are
+automatically imported -- never re-enter data again!
+</div>
+		</td>
+	</tr>
+</table>
+
+</td></tr></table>
+<br>
+<br>
+
+
+
+</form>
+
+</td></tr></table>
+
+</body>
+</html>

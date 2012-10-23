@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<center>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="GOOGAPI-SAVE">
+
+<table width=500 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">
+	Google API Authorization
+	</td>
+</tr>
+<tr>
+	<td>
+	<!-- MESSAGE -->
+	ANALYTICS TOKEN: <!-- ANALYTICS_TOKEN --><br>
+	<br>
+	<a target="_blank" href="https://www.google.com/accounts/AuthSubRequest?next=http://www.zoovy.com/webapi/google/authsub.cgi/analytics&scope=https://www.google.com/analytics/feeds/&secure=0&session=1&hd=default">Add Token</a>
+	</td>
+</tr>
+</table>
+
+</form>

@@ -1,0 +1,46 @@
+<!-- SETUP_TAB -->
+<br>
+
+<center>
+<form action="index.cgi" method="POST">
+
+<input type="hidden" name="ACTION" value="CHECKFIELD-SAVE">
+<table class="zoovytable" width="600" cellpadding="0">
+<tr class="zoovytableheader">
+	<td colspan='2' bgcolor='CCCCCC' align='left' class='title' valign='top'>&nbsp; <b>Custom Fields</b></td>
+</tr>
+<tr>
+	<td>Trigger Rule:</td>
+	<td><input type="textbox" name="trigger"></td>
+</tr>
+<tr>
+	<td>Message Id:</td>
+	<td><input type="textbox" name="msgid"></td>
+</tr>
+<tr>
+	<td>Type: </td>
+	<select name="type">
+		<option value="cbo">Checkbox Optional</option>
+		<option value="cbr">Checkbox Required</option>
+		<option value="select">Select Box</option>
+	</select>
+	</td>
+</tr>
+<tr>
+	Values: <input type="textbox" name="values"> (not required for checkbox)	
+	</td>
+</tr>
+<tr>
+	<td colspan="2" align='left'>
+	<br>
+	<center>
+	<input type="submit" class="button" name="ACTION-SAVE" border="0" width="81" height="31" value="Save Information">
+	<br>
+	</center>
+	</td>
+</tr>
+</table>
+
+</form>
+
+</body>

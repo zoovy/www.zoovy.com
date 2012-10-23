@@ -1,0 +1,57 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use CGI;
+use ZAUTH;
+use ZOOVY;
+use YAHOO;
+use ZOOVYLITE;
+use GT;
+
+$|++;
+$q = new CGI;
+
+$USERNAME = $q->param("USERNAME");
+$PASSWORD = $q->param("PASSWORD");
+if (!$USERNAME && !$PASSWORD) 
+   { 
+   # if they didn't pass username, then lets try cookie authentication
+   ($SESSION_STATUS, $USERNAME) = ZAUTH::verify_cookie();
+   if (!$USERNAME || $SESSION_STATUS != 0) 
+      {
+      print $q->header(-type=>"text/error");
+      print "ERROR: Invalid Username/Password or not specified! ($SESSION_STATUS -> $USERNAME)\n";
+      exit; 
+      }
+   } else {
+   if (!ZOOVY::verifypassword($USERNAME,$PASSWORD,1))
+      { 
+      print $q->header(-type=>"text/error");
+      print "ERROR: Invalid Username/Password\n"; 
+      exit(0); 
+      }
+   }
+
+$ZOOVY = $q->unescape($q->param('ZOOVY'));
+
+print $q->header;
+
+%vars = ZOOVYLITE::buffer_to_hash($ZOOVY);
+#foreach (keys %vars)
+# { print $_." -> ".$vars{$_}."<br>"; }
+
+if ($vars{"zoovy:prod_image1"})
+   {
+   $GT::TAG{"<!-- IMAGE -->"} = "<img src='".$vars{"zoovy:prod_image1"}."' border='0'>";
+   } else {
+   $GT::TAG{"<!-- IMAGE -->"} = "Not Available";
+   }
+%AR = ();
+$GT::TAG{"<!-- PRETTY -->"} = &YAHOO::make_pretty($ZOOVY,\%AR,1);
+$RETURN_URL = $q->param('RETURN');
+if (!$RETURN_URL) { $RETURN_URL = "https://www.zoovy.com/biz"; }
+$GT::TAG{"<!-- RETURN_URL -->"} = $RETURN_URL;
+
+&GT::print_form("","ebay.shtml");
+
+exit(0);

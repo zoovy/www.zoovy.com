@@ -1,0 +1,41 @@
+<!-- HEADER_ONLY -->
+<table align="center">
+
+<form action="email.cgi" method="POST">
+<input type="hidden" name="CMD" value="SENDNOW">
+<input type="hidden" name="AREA" value="<!-- AREA -->">
+<input type="hidden" name="SORTBY" value="<!-- SORTBY -->">
+<input type="hidden" name="message" value="<!-- message -->">
+<!-- ORDERS_DEFINED -->
+
+<tr><td colspan='3'><h1>Sending Message <!-- MESSAGE --></h1></td></tr>
+<tr><td colspan='3'>Orders: <!-- ORDERS --><br></td></tr>
+
+<tr><td>Type:</td><td><!-- MSGTYPE --></td></tr>
+<tr><td>Title:</td><td><input style="font-family: arial,helvetica; font-size: 8pt;" type="text" name="MSGTITLE" value="<!-- MSGTITLE -->" size="60"></td></tr>
+<tr><td colspan=2>
+<textarea style="font-family: arial,helvetica; font-size: 8pt;" rows="20" cols="70" name="MSGBODY"><!-- MSGBODY --></textarea><br>
+
+
+<table align="center">
+	<tr>
+		<td><input class="button" type="submit" value="  Send Email  "></td>
+		<td><input class="button" type="button" value="   Go Back  " onClick="document.location='move.cgi?CMD=EMAIL&ORDERS=<!-- ORDERS -->&AREA=<!-- AREA -->';"></td>
+	</tr>
+</table>
+</td></tr></table>
+<br>
+</form>
+
+<form action="move.cgi" name="goBackFrm">
+<input type="hidden" name="AREA" value="<!-- AREA -->">
+<input type="hidden" name="SORTBY" value="<!-- SORTBY -->">
+<input type="hidden" name="message" value="<!-- message -->">
+<input type="hidden" name="CMD" value="EMAIL">
+<!-- ORDERIDS_DEFINED -->
+</form>
+
+</td></tr></table>
+
+</body>
+</html>

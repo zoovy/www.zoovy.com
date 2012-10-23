@@ -1,0 +1,43 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<title>Amazon @Merchant Syndication</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<center>
+<!-- SETUP_TAB -->
+
+<br><br>
+<table width="650">
+	<tr>
+	<td><font color=red><!-- MSG --></font></td>
+	</tr>
+</table>
+
+<br>
+<br>
+<table width="650"><tr><td>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="SAVE-CATEGORIES">
+<b>Current Uploads:</b><br>
+
+
+<br>
+<!-- OUTPUT -->
+
+<br>
+<center>
+
+<table>
+	<tr>
+		<td><a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></td>
+	</tr>
+</table>
+
+<br>
+</form>
+</td></tr>
+</table>
+
+
+</center>
+</body>

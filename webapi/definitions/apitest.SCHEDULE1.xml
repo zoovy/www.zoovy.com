@@ -1,0 +1,33 @@
+<DEFINITION NAME="SCHEDULE1">
+<!--
+
+Sample Template, you should customize this to fit your needs.
+
+-->
+	<DIV NAME="ALPHA" TITLE="Welcome!">
+		<META TYPE="TITLE">
+			</META>
+		<META TYPE="DESCRIPTION">
+			</META>
+		<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+		<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+		<DISPLAY TYPE="TITLE">Required Information</DISPLAY>
+
+		<INPUT TYPE="TEXTBOX" 
+				NAME="product:zoovy:prod_name" 
+				PROMPT="Product Name" 
+				COLS="100" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+	</DIV>
+
+	<DIV NAME="OMEGA">
+		<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+		<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+	</DIV>
+
+
+</DEFINITION>

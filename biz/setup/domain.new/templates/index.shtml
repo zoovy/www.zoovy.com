@@ -1,0 +1,36 @@
+<!-- SETUP_TAB -->
+
+<br>
+
+<center>
+<table width=800><tr><td>
+
+<table class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Domains</td>
+</tr>
+<!-- DOMAINS -->
+<tr>
+	<td>
+	<a href="index.cgi?VERB=DOMAIN-ADD">[Add Domain]</a>
+	</td>
+</tr>
+</table>
+
+
+
+<table class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Email</td>
+</tr>
+<!-- EMAIL -->
+<tr>
+	<td>
+	<a href="index.cgi?VERB=EMAIL-ADD">[Add Email]</a>
+	</td>
+</tr>
+</table>
+
+</td></tr>
+</table>
+</center>

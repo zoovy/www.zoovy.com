@@ -1,0 +1,26 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, pageid=>$ENV{"SCRIPT_NAME"}, title => 'Zoovy Services - hosting', menu => $menu, nav=>"services|hosting" &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+	
+<div class='pageHeaderGraphic'><a href='http://www.zoovy.com/pdfs/hosting.pdf' target='corpPDF'><img src='images/category-hosting-660x188.jpg' width='660' height='188' alt='' /></a></div>
+
+<h1>Zoovy Hosting</h1>
+
+<p>Hosting is provided for all Zoovy merchant sites and includes:
+<ul>
+	<li>24/7/365 System Hosting and Monitoring</li>
+	<li>Geographically Redundant Hosting Enviroments</li>
+	<li>Network Uptime:  99.99% network uptime excluding planned maintenance.  </li>
+	<li>Hardware Maintenance:  All hardware provided by Zoovy and maintained at its hosting facilities as part of the hosting agreement</li>
+	<li>OS & DB Maintenance:  Routine maintenance includes updating operating system and database versions when made available for the purpose of security or performance enhancement.</li>
+	<li>Performance Monitoring: Continual performance monitoring of hardware and bandwidth.</li>
+</ul>
+</p>
+
+<p class='hint'>**Hosting is including in contract agreement with Zoovy.</p>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

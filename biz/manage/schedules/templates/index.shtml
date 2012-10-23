@@ -1,0 +1,27 @@
+<!-- REPORT_TAB -->
+
+<br>
+<center>
+<table class="zoovytable" cellpadding="2" cellspacing="0" border='0' width='600'>
+	<tr>
+		<td class="zoovytableheader">Wholesale Pricing Schedules</td>
+	</tr>
+	<tr>
+		<td>
+		<table width=100%>
+		<tr><td>
+		<!-- MESSAGE -->
+		<table>
+		<!-- SCHEDULES -->
+		</table>
+		[<a href="index.cgi?ACTION=ADD">Add Wholesale Schedule</a>]<br>
+		</td></tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<br>
+<br>
+</center>
+<!-- FOOTER -->
+

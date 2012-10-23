@@ -1,0 +1,143 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZORDER;
+
+use Text::PDF::API;
+use Text::PDF::File;
+use Text::PDF::Page;        # pulls in Pages
+use Text::PDF::Utils;       # not strictly needed
+use Text::PDF::SFont;
+
+$USERNAME = 'abbys';
+
+$pdf=Text::PDF::API->new('pagesize' => 'letter',
+                          'compression'=>1,
+                          'PageOrientation' => 'Landscape');
+
+
+# $pdf = Text::PDF::API->new( %defaults );
+#$root = Text::PDF::Pages->new($pdf);    # Make a page tree in the document
+#$root->proc_set("PDF", "Text");         # Say that all pages have PDF and Text instructions
+#$root->bbox(0, 0, 612, 792);            # hardwired page size A4 (for this app.) for all pages
+#$page = Text::PDF::Page->new($pdf, $root);      # Make a new page in the tree
+
+$pdf->newFont('Helvetica');
+
+
+$pdf->newpage();
+
+$toppage = 600;
+$rtpage = 600;
+
+## Logo Stuff
+($key,$width,$height ) = $pdf->newImage('abbys1.png');
+$logoheight = 50;
+$aspect = $logoheight / $height;
+$height = $logoheight;
+$width = int($width * $aspect);
+
+## print the address
+$textpos = $logoheight+15+2;
+$pdf->useFont("Helvetica",10,'latin1');
+$pdf->placeImage($key,53,$toppage-($logoheight+15),$width,$height);
+$pdf->showTextXY(53,$toppage-($textpos),"Address 1");
+$pdf->showTextXY(53,$toppage-($textpos+10),"Address 2");
+$pdf->showTextXY(53,$toppage-($textpos+10+10),"City, State, Zip");
+$pdf->showTextXY(53,$toppage-($textpos+10+10+10),"Phone Number");
+
+## Print the invoice number
+$pdf->useFont("Helvetica",16,'latin1');
+$pdf->showTextXY($rtpage,$toppage-20,"Invoice ####-##-##");
+
+## Print the Billing Information:
+$customertop = 125;
+$rtcol = 90;
+$ltcol = 300+$rtcol+10;
+$colwidth=290;
+$pdf->useFont("Helvetica",10,'latin1');
+
+## draw a box
+$pdf->setColorStroke(0,0,0);
+$pdf->useGfxLineWidth(2);
+$pdf->rect($rtcol-5,($toppage-($customertop+5)),$colwidth,15);
+$pdf->rect($ltcol-5,($toppage-($customertop+5)),$colwidth,16);
+
+# $pdf->fill;  // for now can't figure out how to change the font color
+$pdf->stroke();
+$pdf->useGfxLineWidth(1);
+$boxheight = 60;
+$pdf->rect($rtcol-5,($toppage-($customertop+$boxheight+4)),$colwidth,$boxheight);
+$pdf->rect($ltcol-5,($toppage-($customertop+$boxheight+4)),$colwidth,$boxheight);
+$pdf->stroke();
+
+## Add billing text
+$pdf->setColorStroke(255,255,255);
+$pdf->showTextXY($rtcol,($toppage-$customertop),"Billing Address:");
+$pdf->showTextXY($ltcol,($toppage-$customertop),"Shipping Address:");
+
+## Add address information
+$pdf->useFont("Helvetica",8,'latin1');
+$pdf->showTextXY($rtcol+5,($toppage-($customertop+15)),"Address 1");
+$pdf->showTextXY($rtcol+5,($toppage-($customertop+15+11)),"Address 2");
+$pdf->showTextXY($rtcol+5,($toppage-($customertop+15+22)),"City, State. Zip");
+$pdf->showTextXY($rtcol+5,($toppage-($customertop+15+33)),"Phone Number");
+$pdf->showTextXY($rtcol+5,($toppage-($customertop+15+44)),"Email");
+
+$pdf->showTextXY($ltcol+5,($toppage-($customertop+15)),"Address 1");
+$pdf->showTextXY($ltcol+5,($toppage-($customertop+15+11)),"Address 2");
+$pdf->showTextXY($ltcol+5,($toppage-($customertop+15+22)),"City, State. Zip");
+$pdf->showTextXY($ltcol+5,($toppage-($customertop+15+33)),"Phone Number");
+$pdf->showTextXY($ltcol+5,($toppage-($customertop+15+44)),"Email".time());
+
+%contents = ();
+%extra = ();
+&ZORDER::fetchorder_contents_as_hash('nerdgear','2001-07-5117',\%contents,\%extra);
+
+$orderlength = 0;
+$ordertop = 260;
+$col1 = 0;
+$col2 = 60;
+$col3 = 90;
+$col4 = 500;
+$col5 = 525;
+$col6 = 570;
+$pdf->useFont("Helvetica",8,'latin1');
+foreach $sku (keys %contents)
+	{
+	# print "$item\n";
+	## Add the contents of the order
+	$pdf->setColorStroke(0,0,0);
+	$pdf->useGfxLineWidth(1);
+
+	$pdf->rect($rtcol-5,($toppage-($ordertop+$orderlength)),600,15);
+	$pdf->stroke();
+
+	my ($price, $qty, $wt, $tax, $about) = split(',',$contents{$sku});
+			
+	$pdf->showTextXY($rtcol+$col1,($toppage-($ordertop+$orderlength-3)),$sku);
+	$pdf->showTextXY($rtcol+$col2,($toppage-($ordertop+$orderlength-3)),$qty);
+	$pdf->showTextXY($rtcol+$col3,($toppage-($ordertop+$orderlength-3)),$about);
+	$pdf->showTextXY($rtcol+$col4,($toppage-($ordertop+$orderlength-3)),$tax);
+	$pdf->showTextXY($rtcol+$col5,($toppage-($ordertop+$orderlength-3)),sprintf("%2.2f",$price));
+	$ext_price = $qty*$price;
+	$pdf->showTextXY($rtcol+$col6,($toppage-($ordertop+$orderlength-3)),sprintf("%2.2f",$ext_price));
+	$orderlength += 15;
+	}
+
+# draw the horizontal lines
+$pdf->setColorStroke(0,0,0);
+$pdf->useGfxLineWidth(1);
+$pdf->lineXY($rtcol+$col2-2,$toppage-($ordertop-15),$rtcol+$col2-2,$toppage-($ordertop+$orderlength-15));
+$pdf->lineXY($rtcol+$col3-2,$toppage-($ordertop-15),$rtcol+$col3-2,$toppage-($ordertop+$orderlength-15));
+$pdf->lineXY($rtcol+$col4-2,$toppage-($ordertop-15),$rtcol+$col4-2,$toppage-($ordertop+$orderlength-15));
+$pdf->lineXY($rtcol+$col5-2,$toppage-($ordertop-15),$rtcol+$col5-2,$toppage-($ordertop+$orderlength-15));
+$pdf->lineXY($rtcol+$col6-2,$toppage-($ordertop-15),$rtcol+$col6-2,$toppage-($ordertop+$orderlength-15));
+$pdf->stroke();
+
+
+$pdf->endpage();
+
+$pdf->saveas('output.pdf');   # output the document to a file
+$pdf->end();
+

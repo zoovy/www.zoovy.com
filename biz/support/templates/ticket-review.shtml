@@ -1,0 +1,102 @@
+<!-- SUPPORT_TAB -->
+<!-- SUPPORT_SIDEBAR_BEGIN -->
+
+<form action="/biz/support/index.cgi" name="frmticket" method="post">
+<center>
+<br>
+<table class="zoovytable" cellpadding='1' cellspacing='0' border='0' width='650'>
+<Tr><td class='zoovytableheader'> Please Review Your Ticket</td></tr>
+<tr><td>
+<table width='100%' bgcolor='white' cellpadding='2' cellspacing='0' border='0'><tr><td>
+	<tr>
+		<td colspan='2'>
+		<font color='RED'>WARNING: YOUR TICKET HAS NOT BEEN SAVED YET - PLEASE REVIEW</font><br>
+		
+		<table>
+			<tr><td align="right">Customer:</td><td><!-- USERNAME -->*<!-- LUSERNAME --></td></tr>
+			<tr><td align="right">Topic:</td><td><!-- TOPIC --></td></tr>
+			<tr><td align="right">Priority:</td><td><!-- DISPOSITION --></td></tr>
+			<tr><td align="right">Subject:</td><td><b><!-- SUBJECT --></b></td></tr>
+		</table>
+<br>
+<!-- PLATFORM -->
+<!-- CONNECTION -->
+Notes:
+<!-- NOTES --><br>
+<!-- WARNINGS --><br>
+<div class="hint">
+<b>TIPS TO ENSURE A FAST AND ACCURATE RESPONSE:</b><br>
+1. Include relevant information such as example order #'s, channel #'s, external items.<br>
+2. Include only one issue per ticket (unless issues are related).<br>
+3. Include any steps that can be performed to replicate the problem.<br>
+4. Never open a new ticket on an old issue - instead reopen the original ticket.<br>
+The more information you provide about the problem and circumstances 
+the more likely we will be able to answer your question without needing additional details.<br>
+</div>
+<br>
+<!-- ATTACHMENTS -->
+</font>
+		<br>
+		</td>
+	</tr>
+	<tr><td colspan='2' class='zoovytableheader'> Self-Help / Webdoc Search</td></tr>
+	<tr>
+		<td colspan='2'>
+		<b>Possible Answers (from Webdoc):</b> <br>
+		<br>
+		<table>
+		<!-- FAQS -->		
+		</table>
+		<br>
+		<a target="_webdoc" href="http://webdoc.zoovy.com/">Search Webdoc</a> (opens a new window)<br>
+		<br>
+		</td>
+	</tr>		
+	<tr><td colspan='2' class='zoovytableheader'> Options</td></tr>
+	<tr>
+		<td colspan='2'>
+		<input type='checkbox' name='PRIVATE'> Private: only display ticket status to me, not to other 
+		users on this account.<br>		
+		<input type='checkbox' name='CALLBACK'> Callback: please have a support technician contact me.<br>
+		</td>
+	</tr>
+<Tr><td colspan='2' class="zoovytableheader"> Submit your Ticket</td></tr>
+	<tr>
+		<td colspan='2'>
+<input type='hidden' name='VERB' value='TICKET-SAVE'>
+<input type='hidden' name='disposition' value='<!-- DISPOSITION -->'>
+<input type='hidden' name="notes" value="<!-- NOTES -->">
+<input type='hidden' name="topic" value="<!-- TOPIC -->">
+<input type='hidden' name='subject' value="<!-- SUBJECT -->">
+<div class="hint">
+All requests are subject to support charges if billable services, or
+configuration advice (implementation) is requested. Some accounts may
+include monthly support allocations, or have existing 
+<a href="https://www.zoovy.com/biz/support/index.cgi?VERB=BILLING">pre-paid balances</a>. 
+Please review our <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50551">billing policies</a>
+for criteria on billable services.
+</div>
+<br>
+<font color='blue'>TO SAVE THIS TICKET YOU MUST PRESS "CREATE":</font><br>
+<br>
+<center>
+<table>
+<tr>
+	<Td><input type="submit" class="button" value='  Create  '></td>
+	<td><input type="button" class="button" value="  Edit " onClick="frmticket.VERB.value='TICKET-CREATE'; frmticket.submit();"></td>
+</tr>
+</table>
+</center>
+<br>
+<br>
+		</td>
+	</tr>
+</table>
+</tr></tr></table>
+<br>
+</form>
+</center>
+<!-- SUPPORT_SIDEBAR_END -->
+<!-- FOOTER -->
+
+

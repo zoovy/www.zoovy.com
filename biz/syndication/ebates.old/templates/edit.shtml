@@ -1,0 +1,115 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="500"><tr><td>
+
+<table>
+	<tr>
+		<td><b>Last Update:</b></td>
+		<td><!-- LAST_UPDATE --></td>
+	</tr>
+	<tr>
+		<td><b>Status:</b></td>
+		<td><!-- STATUS --></td>
+	</tr>
+	<tr>
+		<td><b>Data File:</b></td>
+		<td><!-- FILENAME --></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<br>
+<form method="post" action="index.cgi">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<input type="hidden" name="VERB" value="SAVE">
+
+<ol>
+<li> pilot only - 10 customers
+<li> customers will be approved and negotiate their rates with ebates to
+determine "optimal" commission
+<li> commission will be communicated to zoovy and setup by support (can be
+seen by merchant, but not changed)
+<li> zoovy will collect fees - and those will appear on zoovy invoice.
+<li> zoovy will add tracking code to order.
+<li> zoovy will remit order reports to ebates within 24 hours.
+</ol>
+
+
+<i>
+NOTE: eBates requires an FTP Site to load files from will
+provide you with a username and password.
+</i>
+
+<table>
+	<tr>
+		<td><b>JF Merchant ID:</b></td>
+		<td><input type="textbox" name="jfmid" value="<!-- JFMID -->"></td>
+	</tr>
+	<tr>
+		<td><b>FTP Host :</b></td>
+		<td><input type="textbox" name="host" value="<!-- HOST -->"></td>
+	</tr>
+	<tr>
+		<td><b>FTP Username:</b></td>
+		<td><input type="textbox" name="user" value="<!-- USER -->"></td>
+	</tr>
+	<tr>
+		<td><b>FTP Password:</b></td>
+		<td><input type="textbox" name="pass" value="<!-- PASS -->"></td>
+	</tr>
+	<tr>
+		<td valign='top'><b>Default Rebate:</b></td>
+		<td>
+			<input type="textbox" size="3" name="commission" value="<!-- COMMISSION -->">%<br>
+			<i>(Rebate off sell for price given to Jellyfish users must be between 2 and 100% percent)</i>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+<i>HINT: The JellyFish Merchant ID, FTP username, and password given to you by Jellyfish.
+<br>
+Zoovy does NOT require the embedding of javascript at the end of checkout,
+because that method is incompatible with various payment methods such as
+Google Checkout. 
+Zoovy will automatically notify JellyFish once an order is flagged as paid.
+</i>
+<br>
+
+		</td>
+	</tr>
+</table>
+<br>
+<center>
+<table>
+	<tr>
+		<td>
+		<input class="button" type="submit" value=" Save Settings  ">
+		</td><td>
+		<input onClick="document.location='index.cgi';" class="button" type="button" value=" Exit ">
+		</td></tr>
+	</tr>
+</table>
+</center>
+<br>
+
+</td></tr>
+<tr><td>
+
+<table width=100% cellspacing=0 class='zoovytable'>
+<tr><td colspan=3 class='zoovytableheader'>Logs for this profile</td></tr>
+<!-- LOGS -->
+</table>
+
+
+</td></tr></table>
+<br>
+
+
+
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

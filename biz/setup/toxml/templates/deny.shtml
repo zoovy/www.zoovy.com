@@ -1,0 +1,30 @@
+<!-- SETUP_TAB -->
+<center>
+
+<table width='400'><tr><td>
+<font face='arial'>
+<Br>
+<center><font class='bigtitle'><font color='red'>Sorry - You don't have access to this feature.</font></font></center>
+<hr>
+<br>
+<a href="/biz/configurator?VERB=VIEW&PACKAGE=WEB">You'll need the WEB package to utilize this feature</a>.
+<br>
+Custom Page Layouts allow you to design your own unique page designs for 
+your storefront. Affording a web developer with the ultimate flexability
+when it comes to the control of the page. Provides full access to
+create your own pages using custom HTML in combination with  
+every page elements including textboxes, image libary images, 
+product lists, web navigation, pricing buttons, textareas, 
+slideshows and many more!<br>
+<br>
+Custom page layouts can be created to customize
+virtually every page on the system except for the customer login,
+external item claim page, and checkout procedure which must still
+be customized within the confines of the Zoovy account setup.<br>
+<Br>
+</td></tr></table>
+</font>
+<a target="_top" href=".."><img border='0' src="/images/bizbuttons/exit.gif"></a>
+</center>
+
+</body>

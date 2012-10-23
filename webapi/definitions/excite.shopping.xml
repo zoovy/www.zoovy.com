@@ -1,0 +1,228 @@
+<DEFINITION NAME="shopping">
+<!--
+*
+*  Excite Shopping Template
+*
+*
+-->
+
+<LIST NAME="ICONS">
+	<OPTION VALUE="_" PROMPT="No Speciality Icons"></OPTION>
+	<OPTION VALUE="SALE" PROMPT="Sale Icon +$0.10" FEE="0.10"></OPTION>
+	<OPTION VALUE="GIFT" PROMPT="Gift Icon +$0.25" FEE="0.25"></OPTION>
+	<OPTION VALUE="EASTER" PROMPT="Easter Bunny +$0.25" FEE="0.25"></OPTION>
+	<OPTION VALUE="MOMDAY" PROMPT="Mothers Day Flower Icon +$0.25" FEE="0.25"></OPTION>
+	<OPTION VALUE="DADDAY" PROMPT="Fathers Day Tie Icon +$0.25" FEE="0.25"></OPTION>
+</LIST>
+
+<LIST NAME="TTL">
+	<OPTION VALUE="0" PROMPT="Continue until removed."></OPTION>
+	<OPTION VALUE="1" PROMPT="1 Month"></OPTION>
+	<OPTION VALUE="2" PROMPT="2 Months"></OPTION>
+	<OPTION VALUE="3" PROMPT="3 Months"></OPTION>
+	<OPTION VALUE="6" PROMPT="6 Months"></OPTION>
+	<OPTION VALUE="9" PROMPT="9 Months"></OPTION>
+	<OPTION VALUE="12" PROMPT="1 Year"></OPTION>
+</LIST>
+
+
+<LIST NAME="CATEGORY">
+	<OPTION VALUE="1000" PROMPT="Antiques &amp; Art/Antiquities"></OPTION>
+	<OPTION VALUE="1100" PROMPT="Antiques &amp; Art/Books &amp; Manuscripts"></OPTION>
+	<OPTION VALUE="1200"  PROMPT="Antiques &amp; Art/Furniture"></OPTION>
+	<OPTION VALUE="1300" PROMPT="Antiques &amp; Art/Antiques (Post 1900)"></OPTION>
+	
+	<OPTION VALUE="2000" PROMPT="Babies &amp; Kids/Bathing &amp; Diapering"></OPTION>
+	<OPTION VALUE="2100" PROMPT="Babies &amp; Kids/Feeding"></OPTION>
+	<OPTION VALUE="2200" PROMPT="Babies &amp; Kids/Gear"></OPTION>
+	<OPTION VALUE="2300" PROMPT="Babies &amp; Kids/Nursery"></OPTION>
+	<OPTION VALUE="2400" PROMPT="Babies &amp; Kids/Safety"></OPTION>
+	
+	<OPTION VALUE="3000" PROMPT="Books/Fiction"></OPTION>
+	<OPTION VALUE="3100" PROMPT="Books/Non-Fiction"></OPTION>
+	<OPTION VALUE="3200" PROMPT="Books/Magazines"></OPTION>
+	<OPTION VALUE="3300" PROMPT="Books/Childrens"></OPTION>
+	
+	<OPTION VALUE="4000" PROMPT="Collectibles/Animals"></OPTION>
+	<OPTION VALUE="4100" PROMPT="Collectibles/Art &amp; Animation"></OPTION>
+	<OPTION VALUE="4200" PROMPT="Collectibles/Historical"></OPTION>
+	<OPTION VALUE="4300" PROMPT="Collectibles/Pop Culture"></OPTION>
+	
+	<OPTION VALUE="5000" PROMPT="Clothing &amp; Apparel/Mens"></OPTION>
+	<OPTION VALUE="5100" PROMPT="Clothing &amp; Apparel/Womens"></OPTION>
+	<OPTION VALUE="5200" PROMPT="Clothing &amp; Apparel/Boys"></OPTION>
+	<OPTION VALUE="5300" PROMPT="Clothing &amp; Apparel/Girls"></OPTION>
+	
+	<OPTION VALUE="6000" PROMPT="Cars, Trucks &amp; Parts/Cars"></OPTION>
+	<OPTION VALUE="6100" PROMPT="Cars, Trucks &amp; Parts/Trucks"></OPTION>
+	<OPTION VALUE="6200" PROMPT="Cars, Trucks &amp; Parts/Parts"></OPTION>
+	<OPTION VALUE="6300" PROMPT="Cars, Trucks &amp; Parts/Accessories"></OPTION>
+	
+	<OPTION VALUE="7000" PROMPT="Computers/Desktops"></OPTION>
+	<OPTION VALUE="7100" PROMPT="Computers/Laptops"></OPTION>
+	<OPTION VALUE="7200" PROMPT="Computers/Accessories"></OPTION>
+	<OPTION VALUE="7300" PROMPT="Computers/Refurbished"></OPTION>
+	
+	<OPTION VALUE="8000" PROMPT="DVD's &amp; Movies/DVD Action, Adventure"></OPTION>
+	<OPTION VALUE="8100" PROMPT="DVD's &amp; Movies/DVD Comedy"></OPTION>
+	<OPTION VALUE="8200" PROMPT="DVD's &amp; Movies/DVD Horror"></OPTION>
+	<OPTION VALUE="8300" PROMPT="DVD's &amp; Movies/DVD Sci-Fi"></OPTION>
+	<OPTION VALUE="8400" PROMPT="DVD's &amp; Movies/VHS Everything"></OPTION>
+	<OPTION VALUE="8600" PROMPT="DVD's &amp; Movies/Memorabilia"></OPTION>
+	
+	<OPTION VALUE="9000" PROMPT="Hobbies &amp; Crafts/Arts &amp; Crafts"></OPTION>
+	<OPTION VALUE="9100" PROMPT="Hobbies &amp; Crafts/Model Trains"></OPTION>
+	<OPTION VALUE="9200" PROMPT="Hobbies &amp; Crafts/Radio Controlled"></OPTION>
+	<OPTION VALUE="9300" PROMPT="Hobbies &amp; Crafts/Needlecraft"></OPTION>
+	
+	<OPTION VALUE="10000" PROMPT="Electronics"></OPTION>
+	
+	<OPTION VALUE="11000" PROMPT="Flowers and Gifts"></OPTION>
+	
+	<OPTION VALUE="12000" PROMPT="Food &amp; Wine"></OPTION>
+	
+	<OPTION VALUE="13000" PROMPT="Health &amp; Beauty"></OPTION>
+	
+	<OPTION VALUE="14000" PROMPT="Home &amp; Garden"></OPTION>
+	
+	<OPTION VALUE="15000" PROMPT="Jewelry &amp; Watches"></OPTION>
+	
+	<OPTION VALUE="16000" PROMPT="Magazines"></OPTION>
+	
+	<OPTION VALUE="17000" PROMPT="Movies"></OPTION>
+	
+	<OPTION VALUE="18000" PROMPT="Music"></OPTION>
+	
+	<OPTION VALUE="19000" PROMPT="Office"></OPTION>
+	
+	<OPTION VALUE="20000" PROMPT="Sports &amp; Memorabilia"></OPTION>
+	
+	<OPTION VALUE="21000" PROMPT="Tools"></OPTION>
+	
+	<OPTION VALUE="22000" PROMPT="Toys"></OPTION>
+	
+	<OPTION VALUE="23000" PROMPT="Travel"></OPTION>
+	
+	<OPTION VALUE="24000" PROMPT=".. Everything Else"></OPTION>
+</LIST>
+
+
+<LIST NAME="FEATURE">
+	<OPTION VALUE="0" PROMPT="Do not Feature"></OPTION>
+	<OPTION VALUE="1" PROMPT="Feature in Category +$5.00" FEE="5.00"></OPTION>
+	<OPTION VALUE="2" PROMPT="Feature in Homepage +$25.00" FEE="25.00"></OPTION>
+</LIST>
+
+	<DIV NAME="ALPHA" TITLE="Welcome to Excite Shopping!">
+		<META TYPE="TITLE">
+		Shop @ Excite!
+			</META>
+		<META TYPE="DESCRIPTION">
+		This is a demo of the Exite Shopping Marketplace
+			</META>
+		<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+		<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+		<DISPLAY TYPE="TITLE">Product Information</DISPLAY>
+
+		<INPUT TYPE="TEXTBOX" 
+				NAME="product:zoovy:prod_name" 
+				PROMPT="Product Name" 
+				HELP="Please provide a short name which describes the product"
+				COLS="75" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="TEXTAREA"
+				NAME="product:zoovy:prod_desc"
+				PROMPT="Product Description"
+				HELP="Please provide a detailed description of your product."
+				COLS="80" ROWS="5" MAXLENGTH="5000"
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="NUMBER" 
+				MIN="0" 
+				DECIMAL="Y" 
+				NAME="product:zoovy:base_price" 
+				PROMPT="Sale Price"
+				HELP="The sale price is the price a customer can purchase the item for."
+				COLS="10" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="NUMBER" 
+				MIN="0" 
+				DECIMAL="Y" 
+				NAME="product:zoovy:retail_price" 
+				PROMPT="Suggested Retail Price"
+				HELP="Enter the Suggested Retail Price - if different from the Sale Price."
+				COLS="10" 
+				MANDATORY="N">
+			</INPUT>
+
+		<DISPLAY TYPE="TITLE">Product Images</DISPLAY>
+
+		<INPUT TYPE="IMAGE" 
+				NAME="product:zoovy:prod_image1" 
+				PROMPT="Primary Image" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="IMAGE" 
+				NAME="product:zoovy:prod_image2" 
+				PROMPT="Secondary Image" 
+				MANDATORY="N">
+			</INPUT>
+
+		<INPUT TYPE="IMAGE" 
+				NAME="product:zoovy:prod_image3" 
+				PROMPT="Trinary Image" 
+				MANDATORY="N">
+			</INPUT>
+
+
+		<INPUT TYPE="IMAGE" 
+				NAME="product:zoovy:prod_thumb" 
+				PROMPT="Thumbnail" 
+				LOADFROM="product:zoovy:prod_image1"
+				MANDATORY="Y">
+			</INPUT>
+
+		<DISPLAY TYPE="TITLE">Listing Upgrades</DISPLAY>
+		<INPUT TYPE="RADIO" PROMPT="Specialty Icon"
+				NAME="product:excite:icon"
+				HELP="Add specialty icons to make your products stand out so you sell more!"
+				STICKY="Y"
+				LIST="ICONS"></INPUT>
+		<INPUT TYPE="RADIO"
+				NAME="product:excite:feature"
+				PROMPT="Feature Product"
+				HELP="Featuring your product insures maximum exposure to customers."
+				STICKY="Y"
+				LIST="FEATURE">
+			</INPUT>
+				
+		<INPUT TYPE="TREE"
+				PROMPT="Excite Shopping Category"
+				NAME="product:excite:category"
+				STICKY="Y" MANDATORY="Y"
+				HELP="Select a category" LIST="CATEGORY">
+			</INPUT>
+
+		<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+	</DIV>
+
+	<DIV NAME="OMEGA">
+		<BUTTON TYPE="SUBMIT" PROMPT="Send to Shop @ Excite"></BUTTON>
+		<BUTTON TYPE="LAST" PROMPT="Edit Listing"></BUTTON>
+		<DISPLAY TYPE="TITLE">Thank You</DISPLAY>
+		<DISPLAY TYPE="BLANK"></DISPLAY>
+		<DISPLAY TYPE="LABEL">Your Listing Will Appear on http://excite.gunnett.org shortly.</DISPLAY>
+		<DISPLAY TYPE="BLANK"></DISPLAY>
+		<DISPLAY TYPE="LABEL">Any fees will be automatically billed to your account.</DISPLAY>
+		
+	</DIV>
+
+
+</DEFINITION>

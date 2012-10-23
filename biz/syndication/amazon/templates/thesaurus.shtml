@@ -1,0 +1,134 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<title>Amazon @Merchant Syndication</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<br>
+<table width="800" align='center' cellspacing='0' cellpadding='0'>
+<tr>
+	<td>
+<h1>Amazon Thesaurus</h1>
+<p><b>FACT:</b> 95% of the purchases on Amazon are made through browse/search
+recommendation. Attempting to use Amazon without classifying your items is a
+waste of time and energy. Thesaurus Profiles (a Zoovy exclusive) make it easy to 
+map your products to Amazon's Browse Nodes and keep them up to date.</p>
+
+<h2>Thesaurus / Item Classification Profiles:</h2>
+<p>Using thesaurus profiles dramatically reduces the time to both setup and maintain thesaraus
+keywords, thereby making it easier to have your products appear in more
+searches more often.</p>
+
+<h2>Links:</h2>
+<ul>
+	<li>  
+<!-- WEBDOC --> </li>
+	<li><a target="_blank"
+href="http://sellercentral.amazon.com/gp/help/help-page.html?itemID=1631">Amazon's Thesaurus/Item Classification Guides</a></li>
+	<li><a target="_blank" href="http://sellercentral.amazon.com/gp/icg/icg.html"> Online Item Classification Guide</a></li>
+	<li><a target="_blank" href="https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/btg/apparel_merchant_classification_guide.xls">
+Apparel Classification Guide</a></li>
+
+</ul>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="THESAURUS-SAVE">
+<input type="hidden" name="ID" value="<!-- ID -->">
+
+<center><font color=red><!-- MSG --></font></center><br>
+
+<table cellspacing='0' cellpadding='4' width='100%' class='zoovytable'>
+<tr>
+	<td colspan='2' class='zoovytableheader'><b><!-- TITLE -->:</b></td>
+</tr>
+	<tr><td colspan='2'><i>Item Type is required. However all other fields are optional, and in most cases will generate very little 
+additional traffic to your items (except possibly target audience for items which could potentially be gifts).
+<br><br>There is 
+some debate about the validity of Search Terms. Any Search Terms defined on the Product level will
+be combined with Search Terms on the Thesaurus level, with the Product level terms listed first.
+<br><br>If you ever have any questions about what information will help your sales, please contact
+your Amazon Sales Rep as this may change on a category by category basis.</td>
+	</tr>
+	<tr>
+		<td>Profile Name:</td>
+		<td><input name="name" value="<!-- NAME -->" size="20" type="textbox"></td>
+	</tr>
+	<tr>
+		<td>Item Type:</td>
+		<td nowrap><input name="itemtype" value="<!-- ITEMTYPE -->" size="20" type="textbox"> [1 max]</td>
+	</tr>
+	<tr>
+		<td>Used For:</td>
+		<td nowrap><input name="usedfor" value="<!-- USEDFOR -->" size="40" type="textbox">[5 max]</td>
+	</tr>
+	<tr>
+		<td>OtherItemAttributes:</td>
+		<td nowrap><input name="otherattribs" value="<!-- OTHERATTRIBS -->" size="60" type="textbox"> [5 max]</td>
+	</tr>
+
+
+	<tr>
+		<td>Subject Content:</td>
+		<td nowrap><input name="subjectcontent" value="<!-- SUBJECTCONTENT -->" size="60" type="textbox">[5 max]</td>
+	</tr>
+	<tr>
+		<td>TargetAudience:</td>
+		<td nowrap><input name="targetaudience" value="<!-- TARGETAUDIENCE -->" size="60" type="textbox">[3 max]</td>
+	</tr>
+	<tr>
+		<td>Is Gift Wrap Available:</td>
+		<td nowrap>
+		<!-- ISGIFTWRAPAVAILABLE -->
+		</td>
+	</tr>
+	<tr>
+		<td>Is Gift Message Available:</td>
+		<td nowrap>
+		<!-- ISGIFTMESSAGEAVAILABLE -->
+		</td>
+	</tr>
+	<tr>
+		<td>AdditionalAttributes:</td>
+		<td nowrap><input name="additionalattribs" value="<!-- ADDITIONALATTRIBS -->" size="60" type="textbox"> [no max]</td>
+	</tr>
+	
+	<tr>
+		<td valign=top>Search Terms:</td>
+		<td nowrap><textarea name="search_terms" cols="60" rows="5"><!-- SEARCH_TERMS --></textarea> [250 chars max]</td>
+	</tr>
+
+	<tr>
+		<td colspan='2' class='hint'>
+		Hint: Choose a Profile Name to describe the type of product you are describing, then enter the appropriate thesaurus keywords separated by commas.
+		<br>
+		If you need a unique profile for each product you are selling, then you should use the product id as the profile name.
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<div class='zbutton_group'>
+ <input  type=image src="/images/bizbuttons/save.gif">		
+ 		</div>
+		</td>
+	</tr>
+</table>
+</form>
+
+<b>Existing Thesaurus Profiles:</b><br>
+
+<table border=1>
+	<!-- PROFILES -->
+</table>
+
+
+
+<br>
+</td></tr>
+</table>
+
+
+</center>
+</body>

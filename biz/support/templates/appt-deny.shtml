@@ -1,0 +1,25 @@
+<!-- NO_TAB -->
+<head>
+<SCRIPT>
+<!--//
+
+function openWindow(url) {
+buyWin = window.open(url, 'buyWin','status=no,width=638,height=400,menubar=yes,scrollbars=yes')
+buyWin.focus(true);
+}
+
+//--></SCRIPT>
+</head>
+<body>
+<br>
+<center>
+<font face='arial'>
+<b>Sorry <!-- USERNAME -->, you must have a live account in order to schedule live training.
+<br>
+<a href="http://www.zoovy.com/biz/configurator">Click here to sign up!</a><br>
+<Br>
+<a target="_top" href="http://support.zoovy.com">Click Here to Return to http://support.zoovy.com</a><br>
+</center>
+</font>
+<br>
+</body>

@@ -1,0 +1,25 @@
+<!-- HEADER -->
+
+<body>
+<b>Greeting:</b><br>
+<div class="say">
+<br>
+Good [Morning/Afternoon/Evening] ... <br>
+<br>
+You've reached the ZOO-VEE answering service.<br>
+<br>
+my name is [YOUR NAME] - how may I assist you?<br>
+<br>
+</div>
+<br>
+<li> <a href="index.cgi?VERB=SALES"> Sales / Product Info</a><br>
+<li> <a href="index.cgi?VERB=SUPPORT"> Technical Support</a><br>
+<li> <a href="index.cgi?VERB=BILLING"> Billing Question</a><br>
+<li> <a href="index.cgi?VERB=EMPLOYEE"> Contact Employee</a><br>
+<li> <a href="index.cgi?VERB=SERVICE"> Customer Service Issue</a><br>
+
+<br>
+<i>(NOTE: Company name is ZOOVY but is spelled phonetically above.)</i>
+<br>
+<br>
+<!-- FOOTER -->

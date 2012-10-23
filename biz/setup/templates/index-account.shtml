@@ -1,0 +1,48 @@
+<!-- SETUP_TAB -->
+
+<table width="100%" cellpadding=4 cellspacing=0>
+<tr>
+	<td valign="top" width="100"><img src="/biz/images/tabs/icons/account_settings.gif" width="91" height="84"></td>
+	<td valign="top" align="left">
+		<b>Account Settings</b><br>
+
+
+<p>
+<a href="/biz/setup/logotool">Company Logo</a><br>
+Setup your company name, address, email, and phone
+</p>
+<p>
+<a href="/biz/setup/account">Company Information</a><br>
+Setup your company name, address, email, and phone
+</p>
+
+<p>
+<a href="/biz/setup/history">Billing History</a><br>
+View your Billing History
+</p>
+
+<p>
+<a href="/biz/setup/password">Change Password</a><br>
+Change your Account Password
+</p>
+
+<p>
+<a href="/biz/setup/redir/index.cgi">Domain Hosting</a><br>
+Configure Domain Names and Email Forwarding
+</p>
+
+<p>
+<a href="/biz/configurator">Add/Remove Features</a><br>
+Manage the features currently associated with your account
+</p>
+
+<p>
+<a href="/biz/setup/usermgr">User Manager</a><br>
+Manage which users can access your account.
+</p>
+
+	</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

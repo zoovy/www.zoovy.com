@@ -1,0 +1,20 @@
+<!-- HIDDEN_TABS -->
+
+
+<form id="thisFrm" method="post" name="thisFrm" action="definition.cgi">
+<input type="hidden" id="_VERB" name="_VERB" value="SAVE">
+<input type="hidden" name="_DOCID" value="<!-- DOCID -->">
+<input type="hidden" name="_PRODUCT" value="<!-- PRODUCT -->">
+
+
+<table>
+<tr colspan=3 class="zoovytableheader"><td>DOC:<!-- DOCID --> &nbsp;&nbsp&nbsp PRODUCT:<!-- PRODUCT --></td></tr>
+
+<!-- OUTPUT -->
+
+</table>
+
+<input class="button" type="button" onClick="document.thisFrm['_VERB'].value='SAVE'; document.thisFrm.submit();" value=" Save ">
+<input class="button" type="button" onClick="document.thisFrm['_VERB'].value='QUIT'; document.thisFrm.submit();" value=" Quit ">
+
+</form>

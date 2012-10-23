@@ -1,0 +1,277 @@
+<%args>
+$menu
+</%args>
+
+
+
+<!-- footer-20110629 -->
+
+
+	</div>
+	</td>
+
+	<td valign='top' align='right'>
+	
+
+
+
+<%perl>
+if($menu eq 'clients')	{
+	}
+elsif ($menu eq 'register') {
+	}
+else {
+	## we are on the register page. No need to show a duplicate trial form.
+	</%perl>
+
+<div style='text-align:left; width:290px;'>
+
+<div style='margin-bottom:21px;'>
+	</div>
+	
+<div style='margin-right:20px;'>
+
+	<div class='border' style='padding:4px; margin-bottom:20px;'>
+		<div><a href='/complete/#mobile'><img src='/includes/footer-20110629/images/banner_mobile-260x126.jpg' width='260' height='126' alt='' /></a></div>
+	</div>
+
+</div>
+
+
+</div>
+
+<%perl>
+	}
+</%perl>
+
+
+
+
+
+
+
+	
+	</td>
+</tr>
+</table>
+</div><!-- ends 'edges' graphic -->
+
+
+<div style='position:relative; width:984px;'>
+
+<!-- right side edge color and transition -->
+	<div style='position:absolute; right:0; bottom:0px;'><img src='<% $::BASE %>/includes/footer-20110629/images/edge_bottom_right-18x51.png' width='18' height='51' alt='' /></div>
+	<div style='position:absolute; right:0; bottom:50px; top:56px; width:18px; background:#e6e7e8;'></div>
+
+<!-- left side edge color and transition -->
+	<div style='position:absolute; left:0; bottom:0px;'><img src='<% $::BASE %>/includes/footer-20110629/images/edge_bottom_left-18x51.png' width='18' height='51' alt='' /></div>
+	<div style='position:absolute; left:0; bottom:50px; top:56px; width:18px; background:#e6e7e8;'></div>
+
+<!-- footer links header graphic -->
+	<div><img src="<% $::BASE %>/includes/footer-20110629/images/footlinks_header-984x56.gif" alt='' width="984" height="56" /></div>
+
+<!-- footer links bg and content -->
+	<div style='margin:0 18px; background:#f1f0f1; padding:20px 0; text-align:left;' id='footer'>
+
+<!-- footer column 1 -->
+<div style='float:left; margin-left:17px; width:218px;' id='footer_col1' class='section vertsplit'>
+
+<a href='/company/'>Company Information</a>
+<a target='blog' href='http://blog.zoovy.com/'>Blog</a>
+<a href='/company/contact/'>Contact</a>
+<a href='/company/pressreleases/'>News &amp; Press Releases</a>
+<a href='/legal/'>Legal</a>
+<a href='/legal/privacy/'>Privacy</a>
+<a href='/sitemap/'>Sitemap</a>
+
+</div>
+
+
+<!-- footer column 2 -->
+<div style='float:left; margin-left:22px; width:217px;' id='footer_col2' class='section vertsplit'>
+
+<!-- !!!!!  add in ajax subscribe later -->
+<form action="https://ssl.zoovy.com/proshop/subscribe.cgis" method="post" target="_blank">
+
+<div class='small' style='margin-bottom:10px;'>Enter your email address and receive eCommerce specific new and Zoovy product info.</div>
+
+
+<label for='subscribeFrmEmail'>Email</label>
+<input type="text" size="30" maxlength="50" name="email" value="" class='formed' id='subscribeFrmEmail' style='width:200px;' />
+
+
+<label for='subscribeFrmName'>Full Name</label>
+<input type="text" size="30" maxlength="50" name="fullname" value="" class='formed' id='subscribeFrmName' style='width:200px;' />
+
+
+<div align='right' style='margin-right:13px;'><input type="image" src='<% $::BASE %>/includes/footer-20110629/images/subscribe_button-104x29.jpg'></div>
+
+</form>
+
+
+</div>
+
+
+<!-- footer column 3 -->
+<div style='float:left; margin-left:15px; width:222px;' id='footer_col3' class='section vertsplit'>
+	<div class='small' style='margin-bottom:10px;'>
+Enter your email address and receive eCommerce specific news and Zoovy product info.
+	</div>
+	
+	<div style='background:url(//static.zoovy.com/graphics/general/socialb_logos/simple-32x32/facebook-32x32.png) no-repeat left top; line-height:32px; font-size:14px; padding-left:40px; margin-bottom:10px;'><a href='http://www.facebook.com/pages/Zoovy-e-Commerce/99488342473/' target='facebook' style='display:block;'>Become a Fan</a></div>
+	<div style='background:url(//static.zoovy.com/graphics/general/socialb_logos/simple-32x32/twitter-32x32.png) no-repeat left top; line-height:32px; font-size:14px; padding-left:40px;'><a href='http://twitter.com/zoovyinc' target='twitter' style='display:block;'>Follow Us</a></div>
+	
+</div>
+
+
+<!-- footer column 4 -->
+<div style='float:left; margin-left:17px; width:208px;' id='footer_col4' class='section'>
+	
+	<div style='margin-bottom:10px;'>For service or product questions, please call us at 877.966.8948 ext 2.</div>
+	
+	<div style='margin-bottom:10px;'>Technical assistance for current customers can call us at 877.966.8948 or <a href='https://www.zoovy.com/biz/support/'>click here</a> to submit a ticket.</div>
+	
+	<div>Please <a href='/company/employment/'>click here</a> for employment opportunities</div>
+	
+</div>
+
+<div style='clear:both;'></div><!-- makes sure grey bg is tall enough to encompass four columns -->
+
+	</div>
+</div>
+
+
+
+
+
+  	<!-- START LOGO BLOCK - name attrib removed from div on 2011/08/09. not a supported attrib. name="footer_logo_block" -->
+    <div  id='partnerlogomap' style='margin:5px 18px 0 0;'>
+
+	<%perl>
+## if new logos are added, there MUST be a color version with the same name added to the zoovy/logos folder.	
+## if you need to change these to color instead of greyscale, remove the /greyscale folder from the image path.
+
+## you need the width or IE makes them all 1px wide. once again, I say 'stupic IE!'
+	my @footer_logos = (
+		{ h=>22,w=>"111",alt=>"Amazon", link=>"/compatible-integration-review/amazon/", src=>"//static.zoovy.com/img/proshop/H22-Btttttt/zoovy/logos/amazon.png", },
+		
+		{ h=>24,w=>"52",alt=>"ebay", link=>"/compatible-integration-review/ebay/", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/ebay.png", },
+		
+		{ h=>21,w=>"115",alt=>"shopzilla", link=>"/services/comparison-shopping-sites.html", src=>"//static.zoovy.com/img/proshop/H21-Btttttt/zoovy/logos/shopzilla2.png", },
+    	
+		{ h=>24,w=>"62",alt=>"Bing", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/bing.png", },
+
+		{ h=>21,w=>"129",alt=>"Amazon Payments", link=>"/compatible-integration-review/amazon-payments/", src=>"//static.zoovy.com/img/proshop/H21-Btttttt/zoovy/logos/amazon_payments.png", },
+		
+		 { h=>24,w=>"55",alt=>"Paypal", link=>"/compatible-integration-review/paypal/", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/paypal.png", },
+		 
+		{ h=>24,w=>"62",alt=>"Google Checkout", link=>"/compatible-integration-review/google-checkout/", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/google_checkout.png", },
+		
+		{ h=>24,w=>"104",alt=>"endicia", link=>"/compatible-integration-review/endicia/", src=>"//static.zoovy.com/img/proshop/H24-Bffffff/zoovy/logos/endicia_and_dymo.png", },
+		
+		{ h=>24,w=>"75",alt=>"UPS Ready", link=>"/compatible-integration-review/ups/", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/ups_ready.png", },
+
+        
+		{ h=>24,w=>"75",alt=>"Verisign", src=>"//static.zoovy.com/img/proshop/H24-W75-Btttttt/zoovy/logos/symantec_verisign.png", },
+		
+        { h=>22,w=>"77",alt=>"buySafe", link=>"/compatible-integration-review/buysafe/", src=>"//static.zoovy.com/img/proshop/H22-Btttttt/zoovy/logos/buysafe.png", },
+
+		{ h=>24,w=>"107",alt=>"Authorize.net", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/authorizenet.png", },
+		
+## quickbooks logo is a bit smaller because it is a bit dominating
+        { h=>20,w=>"114",alt=>"Quickbooks", link=>"/compatible-integration-review/quickbooks/", src=>"//static.zoovy.com/img/proshop/H20-Btttttt/zoovy/logos/quickbooks.png", },
+
+		
+		{ h=>21,w=>"69",alt=>"FedEx", link=>"/compatible-integration-review/fedex/", src=>"//static.zoovy.com/img/proshop/H21-Btttttt/zoovy/logos/fedex.png", },
+		
+        { h=>22,w=>"104",alt=>"Google Analytics", link=>"/compatible-integration-review/google-analytics/", src=>"//static.zoovy.com/img/proshop/H22-Btttttt/zoovy/logos/google_analytics.png", },
+        { h=>24,w=>"82",alt=>"Power Reviews", link=>"/compatible-integration-review/power_reviews/", src=>"//static.zoovy.com/img/proshop/H24-Btttttt/zoovy/logos/powerreviews.png", },
+
+        { h=>20,w=>"87",alt=>"Shipwire", link=>"/compatible-integration-review/shipwire/", src=>"//static.zoovy.com/img/proshop/H20-Bffffff/zoovy/logos/shipwire.png", },
+
+        { h=>20,w=>90,alt=>"iSpeakVideo", link=>"/compatible-integration-review/ispeakvideo/", src=>"//static.zoovy.com/img/proshop/H20-Bffffff/zoovy/logos/ispeakvideo.png", },
+        
+		);
+		
+
+	foreach my $logoref (@footer_logos) {
+		if (not defined $logoref->{'h'}) { $logoref->{'h'} = 100; }
+		if (not defined $logoref->{'w'}) { $logoref->{'w'} = 100; }
+		
+		print("<div style='float:left; margin:7px 0px 0 17px;'>");
+		if (defined $logoref->{'link'}) { print qq~<a href="$logoref->{'link'}" title="$logoref->{'alt'}">~; }
+		print qq~
+			<img height="$logoref->{'h'}" width="$logoref->{'w'}" src="$logoref->{'src'}" alt="$logoref->{'alt'}" border="0" />
+			~;
+		if (defined $logoref->{'link'}) { print("</a>"); }
+		print("</div>");
+		}
+         
+    </%perl>
+
+
+	</div>
+	<!-- END LOGO BLOCK -->
+
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+
+
+</div>
+
+
+% # This is here until we can figure out how to get the hitbox code to do what we want.
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
+"http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost +
+"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-885015-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+<script type="text/javascript">
+// used on some partner pages to hide the footer (paypal doesn't want google showing up).  value of hideDiv is the div id to be hidden.
+if(window.hideDiv === undefined)	{}
+else if	(window.hideDiv != null)	{
+	document.getElementById(hideDiv).style.display='none';
+	}
+</script>
+
+<!-- veruta pulled on 8/10/11 updates per christy. was causing an ssl error. -->
+
+
+<!-- BEGIN ProvideSupport.com Graphics Chat Button Code -->
+<div id="ciFeLJ" style="z-index:100;position:absolute"></div><div id="scFeLJ" style="display:inline"></div><div id="sdFeLJ" style="display:none"></div>
+<script type="text/javascript">var seFeLJ=document.createElement("script");seFeLJ.type="text/javascript";var seFeLJs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/zoovy/safe-standard.js?ps_h=FeLJ&ps_t="+new Date().getTime();setTimeout("seFeLJ.src=seFeLJs;document.getElementById('sdFeLJ').appendChild(seFeLJ)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=zoovy">Live Customer Support</a></div></noscript>
+<!-- END ProvideSupport.com Graphics Chat Button Code -->
+
+
+<!-- end of page -->
+
+<br /><br />
+
+<!-- /footer-20110629 (after the /body and /html  -->
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+

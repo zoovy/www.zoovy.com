@@ -1,0 +1,35 @@
+<!-- SETUP_TAB -->
+
+<!-- MESSAGE -->
+<pre>
+KOUNT Fraud Screen is currently in pilot and not supported. Please
+contact Zoovy support to request access to the pilot.
+<!--
+It was a beautiful day in the gumdrop forest.  
+Ms. Butterfly was walking through the cottoncandy tree forest
+picking some cotton candy for her unicorn pickles.  
+In the middle of the forest she saw Mr. Caterpillar, and he
+appeared to be sad.
+"Good day to you Mr. Caterpillar!" said Ms. Butterfly
+"A fine day, you as well Ms. Butterfly" responded Mr. Capterpillar
+"Is there anything I can do you for you?" asked Ms. Butterfly
+"I am looking for a fraud detection service, do you know of any?" said Mr. Caterpillar.
+"Why Yes!" said Ms. Butterfly, "would you like me to help you set it up?"
+she said with glee.
+"Why that would be splendiferous" said Mr. caterpillar.
+So they both put their hands on the mouse and click the "Request Account" 
+link below.
+-->
+</pre>
+
+<!--
+this is the kount regsitration screen 
+(/biz/setup/plugins/templates/kount-registration.shtml), liz will populate this with all the
+fees, and billing details as well as setup instructions.
+-->
+
+
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="KOUNT-PROVISION">
+<input type="submit" value=" Request Account ">
+</form>

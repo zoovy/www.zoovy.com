@@ -1,0 +1,77 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<table width='700'><tr><Td>
+<br>
+
+<!-- RESULT -->
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="NEW-SAVE">
+<table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
+<tr><td class="zoovytableheader">Add Supplier</td></tr>
+<tr><td width=20%>
+ <table border=0 bgcolor="#ffffff" cellspacing="0" cellpadding="3" width="100%">
+	<tr>
+		<td valign='top'><b>Supplier Code:</b></td>
+		<td><input type="text" name="CODE" value="<!-- CODE -->" maxlength="6" size="6" class="formed"> <font color='red'><i>(required)</i></font></td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<i>The Supplier Code is a 6 character alphanumeric code you will use to
+refer to this supplier. Only capital letters and the numbers 0-9 are
+allowed.</i><br></td>
+	</tr>
+
+	<tr>
+		<td valign='top'><B>Profile:</b></td>
+		<td>
+		<select name="PROFILE">
+		<!-- PROFILE --></select><br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<i>The selected profile will affect the contact information Zoovy sends to your Supplier.</i>
+		</td>
+	</tr>
+
+		
+	<tr>
+		<td valign='top'>Name:</td>
+		<td><input type="text" maxlength="60" value="<!-- NAME -->" name="NAME" class="formed"></td>
+	</tr>
+	<tr>
+		<td valign='top'>Account #:</td>
+		<td><input type="text" maxlength="60" value="<!-- ACCOUNT -->" name="ACCOUNT" class="formed"></td>
+	</tr>
+	<tr>
+		<td valign='top'>Phone:</td>
+		<td><input type="text" maxlength="12" value="<!-- PHONE -->" name="PHONE" class="formed"></td>
+	</tr>
+	<tr>
+		<td valign='top'>Email:</td>
+		<td><input type="text" maxlength="65" value="<!-- EMAIL -->" name="EMAIL" class="formed"></td>
+	</tr>
+	<tr>
+		<td valign='top'>Website:</td>
+		<td><input type="text" maxlength="65" value="<!-- WEBSITE -->" name="WEBSITE" class="formed"></td>
+	</tr>
+</table>
+
+<br>
+<center>
+<input type="submit" class="button" value=" Create Supplier ">
+</center>
+		
+</td></tr></table>
+
+
+</table></td></tr></table>
+<br>
+
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

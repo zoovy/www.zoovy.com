@@ -1,0 +1,87 @@
+<%perl>
+
+
+
+## make sure the user is always on www.zoovy.com not zoovy.com
+if ( 
+	($ENV{'HTTP_HOST'} eq 'zoovy.com') || 
+	($ENV{'HTTP_HOST'} eq 'zoovy.net') || 
+	($ENV{'HTTP_HOST'} eq 'www.zoovy.net') || 
+	($ENV{'HTTPS'} ne 'on') 
+	) {
+	my $url = "https://www.zoovy.com".$ENV{'SCRIPT_NAME'};
+	if ($ENV{'QUERY_STRING'} ne '') { $url .= "?".$ENV{'QUERY_STRING'}; }
+	$m->redirect($url);
+	}
+
+use CGI;
+my $q = new CGI;
+
+## setup a global $::SRC variable - we can make decisions on this in other applications.
+$::SRC = $q->param('SRC');
+if (not defined $::SRC) { $::SRC = ''; }
+
+if (
+	($::SRC eq '') && 
+	($ENV{'SCRIPT_NAME'} eq '/freetrial/index.html') && 
+	($ENV{'HTTP_REFERER'} =~ /agappdom\.net/)
+	) {
+	# **DO NOT REMOVE** code to handle MSOL office live tracking: 
+	#	checks for referrals from: http://smallbusiness.officelive.com/Marketplace?cloc=en-us
+	#	which appear as:
+	#	'http://msbluelight-0.agappdom.net/e1/d/63664/18328398/63382867200/0.CJoM-J8BFcvyAuVAx2kz3cOAZco/zziframehtml2zz.html', 
+	$::SRC = 'MSOL';			
+	}
+if ($::SRC eq '') { 
+	## this is a method of last resort so at least we have SOME data.
+	if ($ENV{'SCRIPT_NAME'} =~ /fedex/i) { $::SRC = 'FEDEX'; }
+	if ($ENV{'SCRIPT_NAME'} =~ /ups/i) { $::SRC = 'UPS'; }
+	if ($ENV{'SCRIPT_NAME'} =~ /amazon/i) { $::SRC = 'AMAZON'; }
+	}
+	
+## if SRC is passed in the uri AND the ZOOVY_LEAD cookie is NOT set, 
+##	set the zoovy_lead cookie to the values in the uri.
+my $ZOOVY_LEAD = $q->cookie('ZOOVY_LEAD');
+if ((defined $::SRC)  && (not defined $ZOOVY_LEAD ))	{
+	## remember this referral source using the ZOOVY_LEAD cookie.
+	my $cookie = "$::SRC|".$q->param('OPERID')."|".$q->param('META');
+	print qq~<script type="text/javascript" src="//www.zoovy.com/includes/cookies.js"></script> ~;
+	print("<script type='text/javascript'>\n
+setCookie('ZOOVY_LEAD','".$cookie."');\n
+</script>\n");
+	}
+elsif (($::SRC eq '') && (defined $ZOOVY_LEAD) && ($ZOOVY_LEAD ne '')) {
+	## try and figure out who the referral source is
+	($::SRC) = split(/\|/,$ZOOVY_LEAD);
+	}
+
+$::REGISTER_LINK = "/register/index.html";
+
+#use Data::Dumper;
+#print Dumper(\%ENV);
+open F, "/proc/sys/kernel/hostname"; $/ = undef; my ($hostname) = <F>; $/ = "\n"; close F; chomp($hostname);
+$::IS_DEV = 0;
+if ($hostname eq 'newdev.zoovy.com') {
+	# print "<!-- newdev -->";
+	$::BASE = "//www.zoovy.com";
+	# $::BASE = "//www-zoovy.simplecdn.net/";
+	$::IS_DEV++;
+	# print "<h1>DEVELOPMENT</h1><hr>";
+	}
+elsif ($ENV{'HTTP_USER_AGENT'} =~ /Mozilla/) {
+	## we're only going to use this trick for mozilla/ie.
+	# print qq~<base href="http://wwwzoovycom.lg1x6z.simplecdn.net/">\n~;
+	#$::BASE = "//www-zoovy.simplecdn.net/";
+	$::BASE = "//www.zoovy.com";
+	}
+print qq~<link rel="canonical" href="https://www.zoovy.com$ENV{'SCRIPT_NAME'}" />\n~;
+
+## at this point we're pretty much assured that SRC will be set.
+
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time());
+my $timeisnow = sprintf("%04d%02d%02d %02d:%02d:%02d",$year+1900,$mon,$wday,$hour,$min,$sec);
+
+print "<!-- SRC: $::SRC LEAD: $ZOOVY_LEAD HOST: $hostname GENERATED: $timeisnow -->\n";
+
+</%perl>
+

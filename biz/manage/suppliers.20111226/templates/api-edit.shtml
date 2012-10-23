@@ -1,0 +1,135 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+
+<h1>Setup Supplier</h1>
+<br>
+<form method="POST" action="index.cgi">
+<input type="hidden" name="ACTION" value="SAVE-API-EDIT">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table>
+	<tr>
+		<td class="zoovytableheader" colspan=2>Supplier Information</td>
+	</tr>
+	<tr>
+		<td colspan=2><!-- RESULT --></td>
+	</tr>
+	<tr>
+		<td width=30%>Supplier Code:</td>
+		<td><!-- CODE --> (<!-- MODE -->)</td>
+	</tr>
+	<tr>
+		<td> Default Markup: </td>
+		<td><input type="textbox" name="MARKUP" value="<!-- MARKUP -->" class="formed"> </td>
+	</tr>
+	<tr>	
+		<td>Company:</td>
+		<td><input type="textbox" name="COMPANY_NAME" value="<!-- COMPANY_NAME -->" class="formed"> </td>
+	</tr>
+	<tr>	
+		<td>Account:</td>
+		<td><input type="textbox" name="COMPANY_ACCOUNT" value="<!-- COMPANY_ACCOUNT -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td>Phone:</td>
+		<td><input type="textbox" name="COMPANY_PHONE" value="<!-- COMPANY_PHONE -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td>Email:</td>
+		<td><input type="textbox" name="COMPANY_EMAIL" value="<!-- COMPANY_EMAIL -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td>Website:</td>
+		<td><input type="textbox" name="COMPANY_WEBSITE" value="<!-- COMPANY_WEBSITE -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td class="zoovytableheader" colspan='2'><b>API Link Configuration</b></td>
+	</tr>
+	<tr>
+		<td>API Version:</td>
+		<td>
+			<select name="API_VERSION">
+				<option <!-- API_VERSION_108 --> value="108">ORDER v3.108</option>
+				<option <!-- API_VERSION_4 --> value="4">XCBL v4</option>
+				<option <!-- API_VERSION_1 --> value="1">ORDER v1 (DEPRECATED)</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Automatically Dispatch Orders<br>upon Creation:</td>
+		<td>
+		<select name="DISPATCH_ON_CREATE">
+			<option <!-- DISPATCH_ON_CREATE_0 --> value="0">No [RECOMMENDED]</option>~;
+			<option <!-- DISPATCH_ON_CREATE_1 --> value="1">Yes </option>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Transmit Full Order Contents<br>upon Creation:</td>
+		<td>
+		<select name="DISPATCH_FULL_ORDER">
+			<option <!-- DISPATCH_FULL_ORDER_0 --> value="0">No [RECOMMENDED]</option>~;
+			<option <!-- DISPATCH_FULL_ORDER_1 --> value="1">Yes </option>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<!-- DISPATCH_WARNING -->
+		</td>
+	</tr>
+	<tr>
+		<td>Order URL:</td>
+		<td><input size="90" maxlength="128" type="textbox" name="API_ORDERURL" value="<!-- API_ORDERURL -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td>ShipQuote URL:</td>
+		<td>	
+			<input size="90" maxlength="128" type="textbox" name="API_SHIPURL" value="<!-- API_SHIPURL -->" class="formed"><br>
+			<i>Note: leave the ShipQuote URL blank to use your stores default shipping rules for this supplier.</i>
+		</td>
+	</tr>
+	<tr>
+		<td>Inventory URL <!-- API_INVCSV -->:</td>
+		<td><input size="90" maxlength="128" type="textbox" name="API_INVURL" value="<!-- API_INVURL -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td colspan=2>Inventory Header:</td>
+	</tr>
+	<tr>
+		<td colspan=2><textarea cols="90" rows="4" name="API_INVHDR" class="formed"><!-- API_INVHDR --></textarea></td>
+	</tr>
+	<tr>
+		<td colspan='2'><i>Note: it is completely acceptable for all URL's to be the same value.</i></td>
+	</tr>
+</table>
+
+
+<br>
+<table>
+	<tr>
+		<td><b>Products:</b></td>
+		<td>
+			<a href="index.cgi?ACTION=ADDPRODUCTS&CODE=<!-- CODE -->">Add Individual</a> |
+			<a href="index.cgi?ACTION=IMPORT&CODE=<!-- CODE -->">Import Batch</a> 
+		</td>
+	</tr>
+</table>
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi"><img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+		<td><a href="index.cgi?ACTION=REMOVE&CODE=<!-- CODE -->"><img border=0 src="/images/bizbuttons/delete.gif"></a></td>
+	</tr>
+</table>
+</center>
+
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

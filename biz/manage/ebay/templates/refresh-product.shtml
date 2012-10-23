@@ -1,0 +1,64 @@
+<!-- NO_TAB -->
+<center>
+<br>
+
+<script type="text/javascript" src="refresh-20080405.js"></script>
+
+
+
+<table width="600" cellspacing=0 class="zoovytable">
+<tr><td class="zoovytableheader"> Profile: <!-- PROFILE --></td></tr>
+<tr><td>
+
+<div style="height: 300px;" class="zoovytableframe" id="output">
+<br>
+<br>
+<b>This utility will go to eBay and update your active listings for <!-- METHOD --> <!-- PRODUCT -->. 
+A realtime status will be provided in this window as we proceed.</b><br>
+<br>
+Frequent Gotchas:<br>
+<ul>
+<li> Any changes you have made to the product OR the profile will be reflected when the item is refreshed 
+<li> eBay may not allow revisions of certain listing such as those which contain feature downgrades, or those
+items which have already been purchased or received bids. The system will try and implement the changes anyway
+but you will receive an error message.<br>
+<li> The profile which was selected when the item was *LAUNCHED* is the profile which will be used.
+If you select an alternate profile for a product after an ebay item was created.
+</ul>
+
+</div>
+
+<table><tr><td>
+
+<form name="thisFrm">
+
+
+Action:
+<select id="VERB" name="VERB">
+  <option value="REFRESH">Refresh</option>
+  <option value="END">End</option>
+</select>
+
+&nbsp;
+
+<input id="METHOD" type="hidden" name="METHOD" value="<!-- METHOD -->">
+<input id="VARS" type="hidden" name="VARS" value="<!-- VARS -->"> 
+<input id="DATA" type="hidden" name="data" value="">
+<input id="BUTTON" type="button" style="width: 150px;" class="button" value="Start" onClick="loadDataSet();"><br>
+</form>
+
+</td><td>
+
+<form action="http://www.zoovy.com/biz/product/edit.cgi">
+<input type="hidden" name="PID" value="<!-- PRODUCT -->">
+<input type="submit" style="width: 150px;" class="button" value="Return to Product"><br>
+</form>
+
+</td></tr></table>
+
+</td></tr></table>
+</center>
+ 
+
+</body>
+

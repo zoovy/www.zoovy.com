@@ -1,0 +1,47 @@
+<head>
+<SCRIPT>
+function goBack()
+{
+	window.document.goBackFrm.submit();	
+}
+</SCRIPT>
+<STYLE>
+<!--
+FONT { font-face: helvetica,arial; font-size: 12pt; }
+input.button { width: 100px; font-size: 8pt; font-face: arial; font-style: bold; }
+TD { font-face: helvetica,arial; font-size: 10pt; }
+--->
+</STYLE>
+</head>
+<body>
+<center>
+<table>
+<tr><td>
+
+<h1>Sending Message <!-- MESSAGE --></h1>
+Incomplete Items: <!-- EXIDS_LIST --><br>
+
+<form action='email.cgi' method='POST'>
+	<input type='hidden' name='CMD' value='SENDNOW'>
+	<input type='hidden' name='EXIDS' value='<!-- EXIDS -->'>		
+	<input type='hidden' name='AREA' value='<!-- AREA -->'>
+	<input type='hidden' name='SORTBY' value='<!-- SORTBY -->'>
+
+Title: <input style='font-family: arial,helvetica; font-size: 8pt;' type='textbox' name='TITLE' value='<!-- TITLE -->' size='60'><br>
+<textarea style='font-family: arial,helvetica; font-size: 8pt;' rows='20' cols='70' name='CONTENTS'><!-- CONTENTS --></textarea><br>
+<center>
+<table>
+	<tr><td><input class='button' type='submit' value='  Send Email  '></td><td><input class='button' type='button' value='   Go Back  ' onClick='goBack();'></td></tr>
+</table>
+</center>
+<br>
+</form>
+</td></tr>
+</table>
+
+<form action="main.cgi" name='goBackFrm'>
+<input type='hidden' name='CMD' value=''>
+<input type='hidden' name='EXIDS' value="<!-- EXIDS -->">
+</form>
+
+</body>

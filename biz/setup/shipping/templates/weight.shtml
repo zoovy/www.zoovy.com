@@ -1,0 +1,60 @@
+<!-- SETUP_TAB -->
+<STYLE>
+<!--
+TD.title { font-family: verdana, helvetica; color: #FFFFFF; font-weight: bold;  }
+-->
+</STYLE>
+</head>
+<body bgcolor='FFFFFF' marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<!-- MESSAGE -->
+<table width="85%">
+<tr><td>
+<center>
+</center>
+<form action="weight.cgi" method="POST" target="_top">
+<input type="hidden" name="ACTION" value="SAVE">
+<center>
+<table width='624'><tr><td>
+<font face="Arial, Helevetica" size='2'>
+&nbsp;&nbsp;&nbsp; Simple Weight Calculator allows you to specify a simple handling rate based on the total weight of 
+a particular package. During checkout the least value, which is greater than the total cart weight will match. If the 
+cart weighs more than the greatest amount, and no other shipping methods are available then an error will be displayed.<br>
+<br>
+<input type="checkbox" name="weight_dom" <!-- DOM_ENABLED --> > Enable Weight Based Calculation for Domestic Shipping<br>
+<br>
+<center>
+<table width='80%' cellpadding='5' border='0' cellspacing='0'>
+<tr><td colspan='4'><b>Domestic:</b><br></td></tr>
+<!-- DOM_TABLE -->
+<tr><td colspan='4'><font size='3'><b><a href='weight.cgi?ACTION=ADD&TYPE=DOM'>Add a Weight/Price/Description</a></b></font></td></tr>
+<tr><td colspan='4'><font size='3'><b><a href='http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=weight_dom'>View/Edit Special Rules</a></b></font></td></tr>
+</table>
+<hr>
+</center>
+
+<input type="checkbox" name="weight_int" <!-- INT_ENABLED --> > Enable Weight Based Calculation for International Shipping<br>
+<br>
+<center>
+<table width='80%' cellpadding='5' border='0' cellspacing='0'>
+<tr><td colspan='4'><b>International:</b><br></td></tr>
+<!-- INT_TABLE -->
+<tr><td colspan='4'><font size='3'><b><a href='weight.cgi?ACTION=ADD&TYPE=INT'>Add a Weight/Price/Description</a></b></font></td></tr>
+<tr><td colspan='4'><font size='3'><b><a href='http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=weight_int'>View/Edit Special Rules</a></b></font></td></tr>
+</table>
+<hr>
+
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-SIMPLE" width='81' height='31'>
+<a href="index.cgi" target="_top"><img border="0" src="/images/bizbuttons/exit.gif" width='81' height='31'></a><br>
+</center>
+
+</form>
+</font>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+</center>
+</body>

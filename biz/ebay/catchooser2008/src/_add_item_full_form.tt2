@@ -1,0 +1,67 @@
+<p>Please, describe your item to list in this category:</p>
+<form id="add-item-form" method="POST" onSubmit="return validate(this)" action="/biz/ebay/catchooser2008/index.cgi/add_item">
+  <label>Title <span class="required">*</span></label><input type="text" name="title" maxlength="400" value="[% product_title %]" style="width:350px" />
+  <label>Subtitle ($0.50)</label><input type="text" name="subtitle" maxlength="400" value="" style="width:350px" />
+  <div id="category-specifics">[% specifics_html %]
+    [% IF selected_category.item_specifics_enabled %]
+    <div id="custom_specifics">
+      <p><a href="javascript:void(0);" id="add_custom_specific"><img src="/biz/ebay/catchooser2008/images/add_cs.gif" />Add a custom detail</a></p>
+    </div>
+    [% END %]
+  [%- IF specifics_html %]
+    [%- INCLUDE '_return_policy_table.tt2' %]
+  [%- END %]
+  [%- IF product_id %]
+    <input type="hidden" name="product_id" value="[% product_id %]">
+  [%- END %]
+  </div>
+  <label>Description <span class="required">*</span></label><textarea type="text" name="description" rows="8" style="width:450px" /></textarea>
+  <label>Item Location <span class="required">*</span></label><input type="text" name="item_location" maxlength="400" value="" style="width:350px" />
+  <label>Start Price <span class="required">*</span></label><input type="text" name="start_price" maxlength="10" value="0.25" style="width:40px" /> USD
+  <label>Payment Methods <span class="required">*</span></label><input type="text" name="payment_methods" maxlength="40" value="PayPal" disabled style="width:200px" />
+  <label>Email address for receiving payment <span class="required">*</span></label><input type="text" name="payment_email" maxlength="60" value="test@ebay.com" style="width:200px" />
+  <label>Listing Duration <span class="required">*</span></label>
+  <select type="text" name="listing_duration" style="width:100px">
+    <option value="Days_3">3 days</option>
+    <option value="Days_5">5 days</option>
+    <option value="Days_7">7 days</option>
+    <option value="Days_10">10 days</option>
+  </select>
+  <input type="hidden" name="primary_category" value="[% selected_category.id %]" />
+  <label>Quantity <span class="required">*</span></label><input type="text" name="quantity" maxlength="10" value="1" disabled style="width:40px" />
+  <div class="error" id="errors"></div>
+  <div id="buttons">
+    <input type="submit" id="verify-add-item-button" value="Build AddItem XML" />
+  </div>
+</form>
+
+<!-- other attribute select fix -->
+<script>
+function display_input_for_other(el,attributeId, attributeValue) {
+	if(attributeValue== -6)	{
+		$(el).after('<input onFocus="if(this.value==\'Enter Other Value\')this.value=\'\'" onBlur="if(this.value==\'\')this.value=\'Enter Other Value\'" type="text" value="Enter Other Value" class="other_value" name="other_'+el.name+'" id="other_'+el.name+'" />');
+	} else {
+    $('input#other_'+el.name+'').hide();
+  }
+}
+
+/* required form fields check */
+function validate(form) {
+  var returnVal = true;
+  var errors = '';
+
+  if (form.title.value == ""){ errors = '<p>Item title required</p>'; }
+  if (form.description.value == ""){ errors += '<p>Item description required</p>'; }
+  if (form.item_location.value == ""){ errors += '<p>Item location required</p>'; }
+  if (form.payment_email.value == "" || form.payment_email.value == 'test@ebay.com'){ errors += '<p>Payment email required</p>'; }
+
+  if (errors != '') {
+    document.getElementById("errors").innerHTML = errors;
+    document.getElementById("errors").style.display="block";
+    returnVal = false;
+  } else {
+    document.getElementById("errors").innerHTML = '';
+  }
+  return returnVal;
+}
+</script>

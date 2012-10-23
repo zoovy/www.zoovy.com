@@ -1,0 +1,33 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+<table width='80%'><Tr>
+	<td><h1><b><span class="alert"><!-- ERROR --></b></span></h1>
+</td></tr></table>
+
+<a name="CSV">
+<table width='90%' cellspacing='0' cellpadding='2' border='0' class="table_stroke">
+<tr>
+	<td align="left" class="table_top"><span class="header">Load /Other/ from CSV File</span></td>
+</tr>
+<tr>
+	<td align="left"><table cellspacing='0' cellpadding='4' border='0' bgcolor='FFFFFF'><tr><td width='100%' valign='top'>
+ 
+<font size='2'>
+<form  name="thisFrm" id="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-OTHER'>
+
+<!-- SWFUPLOAD -->
+
+&nbsp;&nbsp;&nbsp; <input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload CSV File ">
+
+</form>
+
+</td></tr></table>
+</center>
+
+</form>
+<br>
+</font>
+<!-- FOOTER -->

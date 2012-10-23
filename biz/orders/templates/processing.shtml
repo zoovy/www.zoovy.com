@@ -1,0 +1,7 @@
+<html>
+<frameset rows="*,50" frameborder="0" framespacing="0" border="0">
+	<frame src="main.cgi?CMD=PROCESS&ORDERIDS=" name="main" frameborder="0" border="0"></frame>
+	<frame src="footer.pl?CMD=PROCESS" name="footer" frameborder="0" border="0" noresize scrolling="no"></frame>
+</frameset>
+</html>
+

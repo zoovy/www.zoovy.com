@@ -1,0 +1,18 @@
+<!-- REPORT_TAB -->
+<center>
+<table width=800><tr><td> 
+
+<form action="index.cgi" method="post" name="thisFrm">
+<table class="zoovytable" width='100%'>
+<tr><td colspan="5" class="zoovytableheader">Product Power Tool Job Lookup</td></tr>
+
+
+<!-- JOBS -->
+
+</table>
+<i>This functionality is still under development</i>
+</center>
+</form>
+
+</body>
+

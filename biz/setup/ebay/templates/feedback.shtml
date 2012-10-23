@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table><tr><td>
+<h2>Feedback Setup</h2>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="FEEDBACK-SAVE">
+<table width=800 class='zoovytable'>
+<tr>
+	<td class='zoovytableheader'>Username</td>
+	<td class='zoovytableheader'>Setting</td>
+	<td class='zoovytableheader'>Positive Message</td>
+	<td class='zoovytableheader'>Last Check</td>
+</tr>
+<!-- ACCOUNTS -->
+<tr>
+	<td colspan=5><input type="submit" class="button" value=" Save "></td>
+</tr>
+</table>
+</form>
+
+</td></tr></table>
+</center>

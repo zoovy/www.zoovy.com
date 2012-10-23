@@ -1,0 +1,69 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+
+<!-- RESULT -->
+
+<h1>Add Product</h1>
+<br>
+<form method="POST" action="index.cgi">
+<!-- NOTE: 
+	this is actually used for both GENERIC and API 
+-->
+<input type="hidden" name="VERB" value="SAVE-ADDPRODUCTS">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
+<table>
+	<tr>
+		<td>Supplier Code: <!-- CODE --></td>
+	</tr>
+</table>
+
+	<table>
+		<tr>
+			<td>Product Name:</td>
+			<td><input type="textbox" name="prod_name" class="formed"></td>
+		</tr>
+		<tr>
+			<td>Your SKU:</td><td><input type="textbox" name="sku" class="formed" ></td>
+		</tr>
+		<tr>
+			<td>Your Cost:</td>
+			<td><input type="textbox" name="cost" class="formed"></td>
+		</tr>
+		<tr>
+			<td>Supplier Part No:</td>
+			<td><input type="textbox" name="suppliersku" class="formed"></td>
+		</tr>
+		<tr>
+		         <td>Base Weight:</td>
+		         <td><input type="textbox" name="base_weight" class="formed"> ounces (use # for pounds)</td>
+      </tr>
+		<tr>
+			<td>Fixed Shipping:</td>
+			<td><input type="textbox" name="suppliership" class="formed"></td>
+		</tr>
+		<tr>
+			<td>Unlimited Inventory:</td>
+			<td><input type="checkbox" name="inv_unlimited"></td>
+		</tr>
+	</table>
+<br>
+
+<center>
+<table>
+   <tr>
+      <td><input type="image" src="/images/bizbuttons/save.gif"></td>
+      <td><a href="index.cgi?VERB=<!-- MODE -->-EDIT&CODE=<!-- CODE -->">
+      <img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+   </tr>
+</table>
+</center>
+		
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

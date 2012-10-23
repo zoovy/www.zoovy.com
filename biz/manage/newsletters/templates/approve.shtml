@@ -1,0 +1,72 @@
+<!-- UTILITIES_TAB -->
+<center>
+
+<form name="thisFrm" action="index.cgi" method="POST">
+	<input type="hidden" name="VERB" value="CAMPAIGN-START">
+	<input type="hidden" name="ID" value="<!-- ID -->">
+	<input type="hidden" name="GUID" value="<!-- GUID -->">
+
+<!-- SIZING TABLE  -->
+<table class="zoovytable" width="600" cellspacing=0 cellpadding=0>
+
+		<tr><td class="zoovytableheader">Step 5: Approve and Send your Campaign</td></tr>
+		<tr class="white_bg">
+
+			<td>
+			<table>
+				<tr>
+					<td colspan=2><!-- MSG --></td>
+				</tr>
+				<tr>
+					<td valign='top'>Name:</td>
+					<td valign='top'><!-- NAME --></td>
+				</tr>
+
+				<tr>
+					<td valign='top'>Send Date (MM-DD-YYYY):</td>
+					<td valign='top'>
+					<!-- SEND_DATE -->
+					</td>
+				</tr>
+				<tr>
+					<td valign='top'>Start Time: </td>
+					<td valign='top'>
+					<select name="SEND_TIME">
+					<option value="0"> As soon as possible</option>
+					<option value="0"> 12am PST / 3am EST</option>
+					<option value="3"> 3am PST / 6am EST</option>
+					<option value="6"> 6am PST / 9am EST</option>
+					<option value="9"> 9am PST / 12pm EST</option>
+					<option value="12"> 12pm PST / 3pm EST</option>
+					<option value="15"> 3pm PST / 6pm EST</option>
+					<option value="18"> 6pm PST / 9pm EST</option>
+					<option value="21"> 9pm PST / 12am EST</option>
+					</select>
+					</td>
+				</tr>
+			</table>
+			<br>
+			
+<div style="margin-left: 5px;" class="hint">
+Newsletters campaigns will activate and begin sending mail within 15 minutes of their scheduled time.
+The actual send rate will be determined by how many other campaigns are running
+concurrently, along with an embedded rate limiter per user to avoid being blocked by ISP spam filters. 
+To anticipate how long a campaign should take to fully execute - use an output rate of 
+approximately 250 emails every 10 minutes per Zoovy account.
+</div>
+			
+			<table cellspacing=0 cellpadding=0 border=0 width="100%">
+				<tr>
+					<td align="center">
+					<!-- APPROVE_BUTTON -->
+					&nbsp;&nbsp;
+					<input class="button" type="button" name="BUTTON" value="Exit" onClick="top.location='index.cgi?VERB=CAMPAIGNS';">
+					<br>
+					</td>
+				</tr>
+			</table>
+
+			</td>
+		</tr>
+</table>
+</form>

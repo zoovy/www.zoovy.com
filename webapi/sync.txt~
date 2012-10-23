@@ -1,0 +1,192 @@
+http[s]://webapi.zoovy.com/webapi/sync.cgi
+
+In the header (NOT AS CGI PARAMS LIKE BEFORE!)
+X-CLIENT=your unique client id w/version (so in an emergency we can client specific work arounds)
+X-ZOOVY-USERNAME=username
+X-ZOOVY-SECURITY=security digest
+X-ZOOVY-API=api name
+X-ZOOVY-REQUEST=unique number for this request (varchar 128)
+X-TIME=unix timestamp
+X-LENGTH=length of data in bytes
+X-COMPRESS=BZIP2|GZIP|NONE
+Content-type: application/API\n\n
+DATA
+
+....
+notes:
+X-TIME must be + or - 300 seconds off GMT or the request will be ignored.
+X-SECURITY is base16 md5 digest of the following: X-USERNAME + unencrypted password + X-ZOOVY-API + X-ZOOVY-REQUEST + X-TIME + DATA
+	If X-COMPRESS is used the DATA in X-SECURITY should be the compressed value.
+
+currently supported apis:
+TEST/ECHO									- echos data you sent it.
+TEST/REVERSE								- echos the reverse of the text you sent
+TEST/ECHODELAY								- echos the data you sent, but makes you wait for it.
+PICKUP/requestid							- picks up the response to a request. (use this if you receive a PickupTime>0)
+
+ORDERSYNC/UPLOAD							- upload new orders, pass orders in contents
+ORDERSYNC/SINCE/[timestamp]			- asks for orders which have changed since a certain timestamp
+ORDERSYNC/ORDERLIST/order1,..			- pass a comma separated list of orders. max: 50
+ORDERSYNC/TIMESTAMPS/[timestamp]		- returns a list of orders modified timestamps (functionally equivalent to old merchant/ordersync.cgi) 
+	note: defaults to a timestamp of zero
+
+CUSTOMERSYNC/SUMMARY/[timestamp]		- creates a list of customers which have changed in a specific time.
+CUSTOMERSYNC/DOWNTS/[timestamp] 		- downloads changes since a specific time.
+CUSTOMERSYNC/DOWNLIST/[id1,id2,]		- downloads a list of customers (pass comma separated list - 50 max)
+CUSTOMERSYNC/UPLOAD						- uploads customer (pass as data)
+
+PAYPROCESS/AUTH/[order id]				- authorizes an order id
+PAYPROCESS/CAPTURE/[order id]			- 
+PAYPROCESS/CREDIT/[order id]/[amount]
+PAYPROCESS/VOID/[order id]
+note1: if DATA is passed then it is assumed to be fully qualified order. e.g. <ORDER ID="...">...</ORDER>
+note2: this is *always* a realtime call, it will never send back a PickupTime
+note3: if no payment status is set (as in blank), then pay_initialize is run, and order is charged (always instant capture)
+
+CALCSHIP/ORDER/[order id]				- loads order, quotes shipping (if DATA includes order, then the order is updated)
+CALCSHIP/RATEONLY							- pass order in DATA and it will be rated.
+
+ORDERBLOCK/[count]						- requests a block of [count] orders
+
+INCOMPLETESYNC/DOWNLOAD/[timestamp]
+INCOMPLETESYNC/UPLOAD
+INCOMPLETESYNC/CREATE
+
+MERCHANTSYNC/XML							- sends down merchant namespace, xml-ified
+MERCHANTSYNC/ZML							- sends down merchant namespace, not enconded.
+		
+WEBDBSYNC									- sends down the webdb database
+
+INVENTORYSYNC/DOWNLOAD/[timestamp]	- sends down the inventory changed since the timestamp
+INVENTORYSYNC/UPLOADONLY				- same as upload but doesn't bother to return what changed
+INVENTORYSYNC/UPLOAD/[timestamp]		- accepts +/- values, returns whats changed.
+
+SKULIST/LISTALL							- returns a list of SKUs
+SKULIST/DOWNLOAD/[prodlist]			- returns a list of PRODUCTS
+
+PAYMENTMETHODS								- returns a comma separated list of accepted payment methods
+
+NAVCATSYNC/DOWNLOAD						- ouptuts the navcats
+NAVCATSYNC/INCREMENTAL					- incremental update
+NAVCATSYNC/FULLUPLOAD					- a full overwrite (faster than incremental)
+
+PRODSYNC/TIMESTAMPS/[timestamp]		- returns a list of products skus which have changed since a timestamp along 
+												- with the timestamp of the product but NOT the product contents
+PRODSYNC/DOWNLOADLIST/[prod1,prod2]	- downloads a comma separted list of sku's (note: sku list can also be passed in data)
+PRODSYNC/DOWNLOADSINCE/[timestamp]	- returns a list of all products which have changed since a specific time (in one big result)
+PRODSYNC/UPLOAD							- uploads one or more products.
+
+IMAGESYNC/DELETE/[collection]			- deletes an image collection
+IMAGESYNC/UPLOAD/[collection]/[type]	- creates an image collection (be sure to pass the binary data in the data area)
+
+
+
+
+future, planned but not yet implemented apis:
+-----------------------------------------------------------------
+
+CONSIGNEE/UPLOAD							- uploads a full list of consignees
+CONSIGNEE/DOWNLOAD						- downloads a full list of consignees
+
+CALCSHIP/QUOTECART						- pass a legacy cart <CART><ZIP></ZIP><CONTENTS>
+CALCSHIP/PRODUCT/[product id]/[zip]/[country]	- pass a product id or (0*PRODUCT for a claim)
+
+CHANNELLIST/?
+BRIEFCASE/?
+CHANNELSYNCV2/?
+CHANNELLIST/?
+CHANNELSTATUS/?
+FETCHCHANNELV2/?
+SAVEIMAGE/?
+PRODUCTSYNC/?
+VERSIONCHECK/?
+LICENSE/?
+SUBSCRIBE/?
+
+.....
+
+RESPONSE:
+
+content type: 
+	text/html - indicates ISE (application fault)
+	text/xml - indicates successful request (may contain errors, but it will be properly formatted)
+
+<Response>
+
+	<!-- 
+		If Errors is passed, then something went wrong. .. but that might not NECESSARILY mean we didn't have data.
+		Also, multiple errors can be returned for a single call.
+	-->
+	<Errors>
+		<Error Id="[Request Id]" Code="[Code]">[Error Description]</Error>
+	</Errors>
+
+	<Time>1234</Time>
+
+	<!--
+		if PickupTime>0 it indicates we should check the pickup url at PickupTime 
+		NOTE: when retrieving a file from PickupURL it's possible it may not be ready yet, in which case
+			the client should retry the pickup request until the data is ready.
+	-->
+	<Request Id="[X-ZOOVY-REQUEST]" PickupTime="1234"/>
+
+	<!--
+		if PickupTime=0 it indicates the data is ready and included in this response
+		Compress will be the same type of Compression the original request was made in either NONE|BZIP|GZIP
+	-->
+	<Request id="[X-ZOOVY-REQUEST]" Compress="NONE" PickupTime="0"><![CDATA[... data ...]]></Request>
+
+	<!-- 
+		SysInfo is used to display messages and advertisements to customers - for now we're only supporting type HTML.
+	-->
+
+	<SysInfo>
+		<Info type="html" show="60"><![CDATA[.. html ..]]></Info>
+		<Info type="html" show="60"><![CDATA[.. html ..]]></Info>
+		<Info type="html" show="60"><![CDATA[.. html ..]]></Info>
+	</SysInfo>
+
+</Response>
+
+.....
+Backward Compatibility mode:
+intent: this mode is designed to ease the migration for legacy apis. it is slower than the header mode, and may be discontinued
+(then again, in some cases the CGI method is faster, so we might keep it around). This is a universal library, which means it
+works with all API's, except those which have mandatory pickups - those are only available in the new method. This is fine since
+currently there are none-which have mandatory pickups. All other calls which have optional pickups will NOT recommend pickups
+when in CGI mode. This is particularly interesting since this would provide comprehensive logging of all webapi calls through
+a consistent library. Thats just too spiffy!
+
+Request URL: http[s]://webapi.zoovy.com/webapi/legacy.cgi
+
+when in LEGACY MODE - you need to pass the following CGI variables:
+	X-CLIENT=your unique client id w/version (so in an emergency we can client specific work arounds)
+	X-ZOOVY-USERNAME=username
+	X-ZOOVY-SECURITY=security digest OR X-ZOOVY-PASSWORD (unencrypted password)
+	X-ZOOVY-API=api name
+	X-ZOOVY-REQUEST=unique number for this request (varchar 128) - optional
+	X-TIME=unix timestamp													 - optional
+	X-LENGTH=length of data in bytes										 - optional
+	X-COMPRESS=BZIP2|GZIP|NONE
+	
+You can pass the data in a CGI variable as either of the following formats (pick one):
+FILENAME - requires rfc2388 multipart format (e.g. <INPUT TYPE="FILE">)
+CONTENT - standard form-data encoding.
+
+.....
+
+Common error codes:
+-1 : Generic Error... shit happened! (actually, this contain the error text from a sub module)
+		presence of a -1 indicates the request was successful, but there was some error in the data which prevented
+		it from being correctly intrepreted or output.
+995,996,997 : are compression errors, you might try disabling compression and re-trying the sync.
+999 : Cannot connect to database, this is clearly a case where you can retry, and it will probably work.
+2002 : Deviation of X-TIME too large. - you're clock is off. (NOTE: we'll implement a timesync in this,
+		and the timesync API won't check X-TIME deviation, so you'll be able to figure out what the correct time 
+		is pretty easily.
+2005 : Security digest was invalid (wrong password)
+2006 : Legacy X-ZOOVY-PASSWORD  was wrong.
+
+NOTE: remember, when retrying, recursion is you're friend (in other words try having the module simply wait, or
+prompt the user to enter the correct data, then have the request function call itself with the same parameters.)
+

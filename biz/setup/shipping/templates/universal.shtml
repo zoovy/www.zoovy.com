@@ -1,0 +1,88 @@
+<!-- SETUP_TAB -->
+</center>
+<form id="thisFrm" name="thisFrm" action="universal.cgi" method="POST">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="HANDLER" value="<!-- HANDLER -->">
+<input type="hidden" name="ID" value="<!-- ID -->">
+
+<center>
+<table cellpadding=3 cellspacing=0 class="zoovytable" width='624'>
+<tr class="zoovytableheader">
+	<td colspan=5><!-- TITLE --> (<!-- ID -->)</td>
+</tr>
+	<!-- MESSAGES -->
+<tr>
+	<td>
+	<!-- ABOUT -->
+	</td>
+</tr>
+<tr>
+	<td>
+	<table width=100%>
+	<!-- EDIT_ENABLE -->
+	<tr>
+		<td align="left" colspan=2>
+			<input type="checkbox" name="METHOD_ACTIVE" <!-- CHK_METHOD_ACTIVE -->> Enable method
+		</td>
+		<td>&nbsp;</td>
+		<td align="right">Region:</td>
+		<td>
+		<select name="METHOD_REGION">
+		<!-- AVAILABLE_REGIONS -->
+		<!--
+		<option value="INTX">Selected Countries</option>
+		-->
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">Description:</td>
+		<td><input type="textbox" size="25" maxlength="25" value="<!-- METHOD_NAME -->" name="METHOD_NAME"></td>
+		<td>&nbsp;</td>
+		<td align="right">Carrier Code:</td>
+		<td>
+		<input size="4" type="textbox" value="<!-- METHOD_CARRIER -->" name="METHOD_CARRIER">
+		<!-- WARN_CARRIER_CODE -->
+		</td>
+	</tr>
+	<tr class="zoovysub1header">
+		<td colspan=5>Shipping Rules</td>
+	</tr>
+	<tr>
+		<td colspan=5><input type="checkbox" <!-- CHK_METHOD_RULES --> name="METHOD_RULES">
+		Use Shipping Rules: <a href="rulebuilder.cgi?method=<!-- ID -->">[EDIT]</a><br>
+		<div class="hint">Shipping rules can disable the shipping method or modify the price</div>.
+		<table>
+		<!-- RULES -->
+		</table>
+		</td>
+	</tr>
+		
+	<!-- UPPER_CONTENT -->
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+	<!-- LOWER_CONTENT -->
+	</td>
+</tr>
+<tr>
+	<td>
+	<center>
+<input type="submit" class="button showLoadingModal" value=" Save ">
+<input type="button" class="button showLoadingModal" value=" Delete "
+	onClick="document.location='/biz/setup/shipping/universal.cgi?VERB=DELETE&ID=<!-- ID -->';">
+<input type="button" class="button showLoadingModal" value=" Exit "
+	onClick="document.location='/biz/setup/shipping';">
+</center>
+	</td>
+</tr>
+</table>
+
+
+<br>
+<br>
+
+</center>
+</body>

@@ -1,0 +1,102 @@
+
+<script name="javascript">
+<!--
+
+// validates that the string has nothing more than the allowed characters
+function validate(string,Chars) {
+     if (!string) return false;
+
+     for (var i = 0; i < string.length; i++) {
+        if (Chars.indexOf(string.charAt(i)) == -1)
+           return false;
+     }
+     return true;
+}
+
+// returns a filtered string.
+function validated(valid,string) {
+     for (var i=0, output=''; i<string.length; i++)
+        if (valid.indexOf(string.charAt(i)) != -1)
+           output += string.charAt(i)
+     return output;
+ }
+
+// takes: name of the form field, value of the form field.
+function calc_weight(varname,value)
+{
+
+  if (!validate(value,'0123456789#.')) { value = '0'; alert('Invalid Entry, field reset'); }
+  if (value.indexOf('#')>=0)
+      {
+      value = validated('0123456789.',value);
+      value = value * 16;
+      }
+  value = Math.round(value);
+  eval('document.forms[0].'+varname+'.value = "'+value+'"');
+  return(true);
+}
+
+// -->
+</script>
+
+<STYLE TYPE="text/css">
+	<!--
+	TD.a 
+		{ 
+		vertical-align: middle;
+		text-align: left;
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 12px;
+		}
+
+	FONT.title
+		{ 
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 14px;
+		font-weight: bold;
+	   color: #330066;
+		}
+	FONT.body
+		{ 
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 10px;
+		}
+	-->
+</STYLE>
+<body bgcolor="FFFFFF" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<center>
+<font face="verdana, arial, helvetica" size="2"><b>Create an Incomplete Item</b></font>
+<font color="red"><b><!-- MESSAGE --></b></font>
+<form method="POST" action="add.cgi" target='main'>
+<input type="hidden" name="CMD" value="SAVE">
+<input type='hidden' name='REDIRECT' value='main.cgi'>
+<table cellspacing="0" cellpadding="4">
+
+<tr><td bgcolor="DDDDDD" class="A">Customer Email:</td><td bgcolor="DDDDDD" class="A">
+<input type="textbox" name="BUYER_EMAIL" size="50" value="<!-- BUYER_EMAIL -->"></td></tr>
+
+<tr><td class="A">Reference Product ID:</td><td class="A"><input type="textbox" size="10" name="PRODUCT" value="<!-- PRODUCT -->"> (optional)</td></tr>
+
+<tr><td bgcolor="DDDDDD" class="A">Product Name:</td><td bgcolor="DDDDDD" class="A">
+<input type="textbox" name="PRODUCT_NAME" size="50" value="<!-- PRODUCT_NAME -->"></td></tr>
+
+<tr><td class="A">Price per product:</td><td class="A"> 
+<input type="textbox" onChange="this.value = validated('-0123456789.',this.value)" size="6" name="PRODUCT_PRICE" value="<!-- PRODUCT_PRICE -->"></td></tr>
+
+<tr><td class="A">Product Quantity:</td><td class="A">
+<input type="textbox" size="6" name="PRODUCT_QUANTITY" value="<!-- PRODUCT_QUANTITY -->"></td></tr>
+
+</table>
+<input type="image" border="0" src="/images/bizbuttons/save.gif" alt="Save"></a>
+<a href="main.cgi"><img border="0" src="/images/bizbuttons/exit.gif" alt="Exit"></a><br>
+<br>
+<!-- POG_DISPLAY -->
+<br>
+<br>
+<br>
+</center>
+</form>
+</body>

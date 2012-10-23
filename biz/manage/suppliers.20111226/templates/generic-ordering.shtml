@@ -1,0 +1,127 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+<h1>Order Delivery</h1>
+<div class="hint">
+This page configures the order notification sent to a generic supplier.
+</div>
+<hr>
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE-ORDERING">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table>
+	<tr>
+		<td>CODE: <!-- CODE --></td>
+	</tr>
+	<tr>
+		<td><!-- RESULT --></td>
+	</tr>
+</table>
+<br>
+
+<!-- ORDER_DELIVERY_SETTINGS -->
+<br>
+<b>Transmission Format:</b><br>
+<br>
+
+<table>
+	<tr>
+		<td><input valign='middle' align="right" type='radio' name='GEN_ORDERTYPE' value="1" <!-- GEN_ORDERTYPE_1 -->> Recipient Email:</td>
+		<td><input type='text' class="formed" size=45 name='GEN_ORDEREMAIL' value='<!-- GEN_ORDEREMAIL -->'></td>
+	</tr>
+	<tr>
+		<td align="right">&nbsp;&nbsp;&nbsp; Bcc Email:</td>
+		<td><input type='text' class="formed" size=45 name='GEN_ORDERBCC' value='<!-- GEN_ORDERBCC -->'></td>
+	</tr>
+	<tr>
+		<td><input valign='middle' align="right" type='radio' name='GEN_ORDERTYPE' value="2" <!-- GEN_ORDERTYPE_2 -->>*
+Recipient Fax:</td>
+		<td><input type='text' class="formed" size=45 name='GEN_ORDERFAX' value='<!-- GEN_ORDERFAX -->'></td>
+		<td><div class="hint">Example: 1-###-###-####</div></td>
+	</tr>
+
+</table>
+
+
+<br>
+Source Email address (from <a target="_new"
+href="http://www.zoovy.com/biz/setup/builder/index.cgi?VERB=COMPANYEDIT&NS=<!-- PROFILE -->"><!-- PROFILE --> Profile</a>):<br>
+&nbsp;&nbsp;&nbsp; <!-- GEN_ORDEREMAIL_SRC -->	<br><br>
+<input type="hidden" name="GEN_ORDEREMAIL_SRC" value="<!-- GEN_ORDEREMAIL_SRC -->">
+<br>
+Email Message Template:<br>
+<select name='GEN_ORDERMSGID' rows=2 class="dropdown">
+<!-- MESSAGES -->
+</select><br>
+<br>
+Email Subject:<br>
+<input type='text' class="formed" name='GEN_ORDERSUBJECT' size=65 maxsize=100 value='<!-- GEN_ORDERSUBJECT -->'><br>
+<div class="hint">This will override the title in the email message</div>
+
+<br>
+Email Special Notes:<br>
+<textarea max="255"  class="formed" rows="3" cols="50" name='GEN_ORDERBODY' wrap="virtual"><!-- GEN_ORDERBODY --></textarea>
+<br>
+<br>
+<br>
+
+<br>
+<table>
+<tr>
+	<td nowrap>
+<input type="checkbox" class="formed" name="GEN_ORDERFIELD_COST" <!-- CHK_GEN_ORDERFIELD_COST -->> Show Cost Field<br>	
+	</td>
+</tr>
+<tr>
+	<td nowrap>
+<input type="checkbox" class="formed" name="GEN_ORDERZERO_QTY" <!-- CHK_GEN_ORDERZERO_QTY -->>Omit Items from Supplier Email with Zero Quantity<br>	
+	</td>
+</tr>
+<tr>
+	<td nowrap>
+<input type="checkbox" name="GEN_ORDERNOTES" value="1" <!-- GEN_ORDERNOTES -->> 
+Include Order Notes (from original order):<br>
+	</td>
+</tr>
+</table>
+<br>
+
+
+
+<!-- TAKE OUT UNTIL IMPLEMENTED
+<br>
+Supplier Confirmation Required?:<br>
+<i>Supplier is required to confirm placed order by submitting a form on 
+ 
+<a target="_new" href="CONFIRMATION_PAGE"><CONFIRMATION_PAGE></a>.
+<br>Orders that are not confirmed will be resent on a daily basis.</i>
+<br>
+<input type="checkbox" name="GEN_ORDERCONF" value="1"> 
+<GEN_ORDERCONF> >
+-->
+</ul>
+
+
+<br>
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi?VERB=EDIT&CODE=<!-- CODE -->">
+		<img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+	</tr>
+</table>
+</center>
+
+<br><br>
+<i>* Note: a $0.10 charge will be applied to your monthly minimum fee per successful facsimile. 
+This fee does not affect accounts that exceed their monthly minimum sales requirement. 
+If you have any questions regarding this policy please contact billing@zoovy.com.</i><br>
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

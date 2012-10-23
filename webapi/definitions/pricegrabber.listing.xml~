@@ -1,0 +1,131 @@
+<DEFINITION NAME="listing">
+
+<!--
+
+pricegrabber:category = category value
+pricegrabber:saleqty = qty to sell
+pricegrabber:condition =
+pricegrabber:ship_method
+	(NOTE: hopefully someday "ZOOVY" will be an option, which will query rates from their Zoovy store)
+	if FIXED
+	pricegrabber:ship_fixedamt contains fixed amount to ship.
+	if WEIGHT then
+	zoovy:base_weight = weight field (note: 3#1 is 3 lbs. 1oz | 3.25 is 3.25 oz | 3.25# is 3 1/4 lbs.)
+	.. note: all fields below will be either 1 (true) or 0 (false)
+	pricegrabber:ship_ups_ground
+	pricegrabber:ship_ups_3day
+	pricegrabber:ship_ups_2day
+	pricegrabber:ship_ups_nextday
+	pricegrabber:ship_ups_nextam
+	pricegrabber:ship_usps_parcel_post
+	pricegrabber:ship_usps_priority
+	pricegrabber:ship_usps_express
+	pricegrabber:ship_usps_media
+	pricegrabber:ship_airborne_ground
+	pricegrabber:ship_airborne_next
+	pricegrabber:ship_airborne_overnight
+	pricegrabber:ship_fedex_ground
+	pricegrabber:ship_fedex_2day
+	pricegrabber:ship_fedex_std
+	pricegrabber:ship_fedex_priority
+	pricegrabber:ship_dhl_usa
+	
+	
+
+zoovy:zip = origin zip code (for shipping)
+zoovy:prod_image1 = image 1
+zoovy:base_price = sell for price
+zoovy:prod_mfg = manufacturer
+zoovy:prod_mfgno = manufacturer part no
+zoovy:prod_upc = upc
+zoovy:prod_isbn = isbn
+pricegrabber:masterid = 
+
+Search "CATEGORIES" to see how to format categories.
+-->
+
+<LIST NAME="CONDITION">
+	<!-- 
+	note: leave new's value to _new so it appears first in the list (sorts alphanumerically)
+	-->
+	<OPTION PROMPT="New" VALUE="_new"></OPTION>
+	<OPTION PROMPT="Like New" VALUE="like_new"></OPTION>
+	<OPTION PROMPT="Refurbished" VALUE="refurbished"></OPTION>
+	<OPTION PROMPT="OEM" VALUE="oem"></OPTION>
+	<OPTION PROMPT="Used - Very Good" VALUE="used_verygood"></OPTION>
+	<OPTION PROMPT="Used - Good" VALUE="used_good"></OPTION>
+	<OPTION PROMPT="Used - Acceptable" VALUE="used_acceptable"></OPTION>
+	<OPTION PROMPT="Not Working" VALUE="not_working"></OPTION>
+	<OPTION PROMPT="Generic - 3rd Party" VALUE="generic"></OPTION>
+</LIST>
+
+<LIST NAME="SHIPMETHODS">
+	<OPTION VALUE="FIXED" PROMPT="Use Fixed Price"></OPTION>
+</LIST>
+
+
+
+<DIV NAME="ALPHA" TITLE="Enter Data">
+	<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Quit"></BUTTON>
+   <META TYPE="TITLE">PriceGrabber Listing</META>
+	<META TYPE="DESCRIPTION">
+THIS IS CURRENTLY IN BETA.
+Users must have an account with pricegrabber with a credit card on file and payment options configured.
+Each listing must have one of the following to match up with specific products in our database.
+	</META>
+
+<INPUT TYPE="TEXTBOX" COLS="45" PROMPT="Product Name" NAME="product:zoovy:prod_name"></INPUT>
+<INPUT TYPE="NUMBER" PROMPT="Sell For Price" NAME="channel:zoovy:base_price"></INPUT>
+<INPUT TYPE="INVENTORY" PROMPT="Quantity to Sell" VALUE="1" NAME="channel:pricegrabber:saleqty"></INPUT>
+<INPUT TYPE="IMAGE" PROMPT="Image 1" NAME="product:zoovy:prod_image1"></INPUT>
+<INPUT TYPE="SELECT" PROMPT="Condition" LIST="CONDITION" NAME="product:pricegrabber:condition" LOADFROM="product:zoovy:prod_condition"></INPUT>
+<INPUT TYPE="TEXTAREA" COLS="80" ROWS="5" PROMPT="Product Description" NAME="product:zoovy:prod_desc"></INPUT>
+<!-- *************************************** CLASSIFY **************************************** -->
+
+<DISPLAY TYPE="TITLE">Product Identification:</DISPLAY>
+<DISPLAY TYPE="LABEL">Please provide the following information (if available) to help PriceGrabber place this item in the correct category.</DISPLAY>
+
+<!--
+   <INPUT TYPE="SELECT" PROMPT="Shipping Method" LIST="SHIPPING" NAME="merchant:pricegrabber:ship_method"></INPUT>
+   <INPUT TYPE="TEXTBOX" NAME="product:pricegrabber:category" LOADFROM="merchant:pricegrabber:category" STICKY="Y" PROMPT="Category" COLS="6"></INPUT>
+   <BUTTON TYPE="PEER" TARGET="CATEGORY1" PROMPT="Choose Category"></BUTTON>
+   <DISPLAY TYPE="BYPROMPT" NAME="product:pricegrabber:category" PROMPT="Current Category" LIST="CATEGORIES" SHOWVALUE="Y" ERROR="Not Selected"></DISPLAY>
+   -->
+
+<INPUT TYPE="TEXTBOX" COLS="25" PROMPT="Manufacturer" NAME="product:zoovy:prod_mfg"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25"  PROMPT="Manufacturer Part No" NAME="product:zoovy:prod_mfgid"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25"  PROMPT="UPC" NAME="product:zoovy:prod_upc"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25"  PROMPT="ISBN" NAME="product:zoovy:prod_isbn"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25"  PROMPT="PriceGrabber Master ID" NAME="product:pricegrabber:masterid"></INPUT>
+
+
+<!-- *************************************** SHIPPING **************************************** -->
+<DISPLAY TYPE="TITLE">Shipping Information:</DISPLAY>
+<DISPLAY TYPE="LABEL">Enter the price for the shipping options below. shipping options left blank will not be included.</DISPLAY>
+<INPUT TYPE="NUMBER" PRECISION="2" MAXLENGTH="6" PROMPT="Fixed Shipping Cost" NAME="product:zoovy:ship_cost1" HELP="Required for zone based methods"></INPUT>
+
+<!--
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_ups_ground" PROMPT="UPS Ground" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_ups_3day" PROMPT="UPS 3 Day" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_ups_2day" PROMPT="UPS 2 Day" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_ups_nextday" PROMPT="UPS Next Day Air" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_ups_nextam" PROMPT="UPS Next Day Early AM" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_usps_parcel_post" PROMPT="USPS Parcel Post" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_usps_priority" PROMPT="USPS Priority Mail" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_usps_express" PROMPT="USPS Express Mail" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_usps_media" PROMPT="USPS Media Mail" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_airborne_ground" PROMPT="Airborne Ground" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_airborne_next" PROMPT="Airborne Next Afternoon" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_airborne_overnight" PROMPT="Airbrone Overnight" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_fedex_ground" PROMPT="FedEx Ground" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_fedex_2day" PROMPT="FedEx 2 Day" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_fedex_std" PROMPT="FedEx Standard" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_fedex_priority" PROMPT="FedEx Priority" VALUE=""></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="merchant:pricegrabber:ship_dhl_usa" PROMPT="DHL USA Service" VALUE=""></INPUT>
+-->
+   
+</DIV>
+
+</DEFINITION>
+
+

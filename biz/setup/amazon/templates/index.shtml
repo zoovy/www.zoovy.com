@@ -1,0 +1,137 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="600">
+<tr><td>
+
+<form id="thisFrm" name="thisFrm" method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE">
+
+<h2>Amazon Setup</h2>
+
+<table cellspacing=0  width=100% class="zoovytable">
+	<tr>
+		<td class="zoovytableheader" colspan="2">Integration Setup</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant Name:</td>
+		<td valign=top>
+			<input type="textbox" maxlength=65 size=65 name="amz_merchantname" value="<!-- AMZ_MERCHANTNAME -->">
+			<div class="hint">This is your registered business name with Amazon.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>User Id:</td>
+		<td valign=top>
+			<input type="textbox" maxlength=65 size=65 name="amz_userid" value="<!-- AMZ_USERID -->">
+			<div class="hint">The email address you use to sign into seller central or payment central.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Password:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_password" value="<!-- AMZ_PASSWORD -->">
+			<div class="hint">The password you use to sign into seller central or payment central.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant Token:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_merchanttoken" value="<!-- AMZ_MERCHANTTOKEN -->">
+			<div class="hint">The merchant token for account e.g. M_COMPANY_#######</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant ID:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_merchantid" value="<!-- AMZ_MERCHANTID -->">
+			<div class="hint">Yet another number used to identify an account by Amazon.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>AWS Access Key:</td>
+		<td valign=top>
+			<input type="textbox" size=25 maxlength=25 name="amz_accesskey" value="<!-- AMZ_ACCESSKEY -->">
+			<div class="hint">Required for Checkout by Amazon, or Amazon Web Services</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Signing Secret Key:</td>
+		<td valign=top>
+			<input type="textbox" size="65" name="amz_secretkey" value="<!-- AMZ_SECRETKEY -->">
+			<div class="hint">Required for Checkout by Amazon</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top><b>MWS TOKEN:</b></td>
+		<td valign=top>
+		<!-- MWSTOKEN_STATUS --><br>
+		<a target="_blank" href="https://sellercentral.amazon.com/gp/maws/maws-registration.html?ie=UTF8&id=APF889O5V4GVL&userType=web&returnUrl=https%3A%2F%2Fwebapi.zoovy.com%2Fwebapi%2Famazon%2Ftokenreturn.cgi%2FUSERNAME%3D<!-- USERNAME -->%2FPRT%3D<!-- PRT -->">
+		Create/Verify MWS Token
+		</a></td>
+	</tr>
+	<tr>
+		<td valign=top>Feeds Settings:</td>
+		<td valign=top>
+			<input <!-- FEED_PERMS_1 --> type="checkbox" name="FEED_PERMS_1"> Sync Inventory<br>
+			<input <!-- FEED_PERMS_2 --> type="checkbox" name="FEED_PERMS_2"> Sync Prices/Shipping<br>
+			<input <!-- FEED_PERMS_4 --> type="checkbox" name="FEED_PERMS_4"> Sync Products/Relations/Images<br>
+			<!-- FEED_PERMISSIONS_WARNING -->
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>FBA Settings:</td>
+		<td valign=top>
+			<input <!-- FBA_PERMS --> type="checkbox" name="FBA_PERMS"> Import FBA Orders and Tracking<br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<input class="button" type="submit" value=" Save ">
+		</td>
+	</tr>
+</table>
+
+<br>
+<table cellspacing=0  width=100% class="zoovytable">
+	<tr>
+		<td class="zoovytableheader">Amazon Syndication</td>
+	</tr>
+	<tr>
+		<td>		
+<ul>
+<li> Amazon Syndication requires an account to: <a href="http://sellercentral.amazon.com">http://sellercentral.amazon.com</a><br>
+<li> New Users: <a href="?VERB=SIGNUP">Sign Up!</a>
+<li> To configure go to: <a href="/biz/syndication/amazon">Syndication | Amazon.</a>
+<li> The information above is provided to you by your Amazon Merchant Integration Manager.
+<li> REMEMBER: After configuring your account you should always double-check that your categories are mapped 
+correctly by going to Amazon in the Syndication area.
+</ul>
+		</td>
+	</tr>
+
+</table>
+
+<br>
+<table cellspacing=0  width=100% class="zoovytable">
+	<tr>
+		<td class="zoovytableheader">Checkout by Amazon</td>
+	</tr>
+	<tr>
+		<td>
+<ul>
+<li> In order for Checkout by Amazon to work all fields above must be populated.
+<li> New Users: <a
+href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough%2Fsource=AmazonCheckout&passthrough%2Fld=Zoovy&passthrough%2Faccount=cba&passthrough%2FsuperSource=OAR&passthrough%2FmarketplaceID=AZ4B0ZS3LGLX">Sign Up!</a>
+<li> To configure go to: <a href="/biz/setup/payment/index.cgi?MODE=AMZPAY">Setup | Payments | Amazon</a>
+<li> Orders will be delayed arriving into your store for up to 90 minutes, 
+during this time inventory can be over-purchased.
+</ul>
+		</td>
+	</tr>
+</table>
+
+</form>
+</td></tr></table>
+</center>
+</body>

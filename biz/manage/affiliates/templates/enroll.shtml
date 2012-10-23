@@ -1,0 +1,26 @@
+<!-- UTILITIES_TAB -->
+
+<br>
+<center>
+<form method="POST" action='index.cgi'>
+<input type="hidden" name="VERB" value="ENROLL-SAVE">
+<table class="zoovytable" width=600>
+<tr>
+	<td colspan=2 class="zoovytableheader">Enroll Client</td>
+</tr>
+<tr>
+	<td>Package:</td>
+	<td><select name="PACKAGE"><!-- PACKAGES --></select></td>
+</tr>
+<tr>
+	<td>Email:</td>
+	<td><input type="textbox" name="EMAIL"></td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="submit" class="button" value=" Enroll ">
+	</td>
+</tr>
+</table>
+</form>
+</center>

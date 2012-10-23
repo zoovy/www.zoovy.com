@@ -1,0 +1,20 @@
+<!-- SETUP_TAB -->
+
+<table width=800 align='center'>
+<tr>
+	<td>
+	
+<h1>Syndication Log</h1>
+<i>This displays the most recent 1,000 entries into the systems syndication log for your products, it may offer some
+insight as to how certain decisions are made by the software. Remember -
+products which are already running on eBay will NOT be syndicated.</i><br>
+<br>
+<table class="zoovytable" cellspacing='0' cellpadding='2'>
+<!-- LOGS -->
+</table>
+
+	</td>
+</tr>
+</table>
+
+</body>

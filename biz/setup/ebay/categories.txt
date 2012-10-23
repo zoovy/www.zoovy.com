@@ -1,0 +1,43 @@
+USERNAME	MID	EIAS	EBAYUSER	CatNum	Category
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645751013	Chess Pieces (1645729013) / Plastic Chess Pieces
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645750013	Chess Pieces (1645729013) / Brass & Metal Chess Pieces
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	19206397	Backgammon Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645673013	Chess Clocks (19199546) / Analog Chess Clocks
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645674013	Chess Clocks (19199546) / Digital Chess Clocks
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645698013	Chess Boards (10) / Value Wood Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	9	Tournament Chess Set Kits
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645717013	Travel Chess Sets (2) / Wood Folding Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645718013	Travel Chess Sets (2) / Travel Chess Computers
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645719013	Travel Chess Sets (2) / Travel Bags (board & pieces)
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645716013	Travel Chess Sets (2) / Wood Magnetic Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645749013	Chess Pieces (1645729013) / Theme Chess Pieces
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645748013	Chess Pieces (1645729013) / Wood Chess Pieces
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	4	Chess Sets (1645657013) / Marble Chess Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	6	Chess Sets (1645657013) / Brass & Metal Chess Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	7	Chess Sets (1645657013) / Wood Chess Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	8	Chess Sets (1645657013) / Theme Chess Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645728013	Chess Sets (1645657013) / Plastic Chess Sets
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	5	Chess Set Storage (1645658013) / Chess Cases
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645670013	Chess Set Storage (1645658013) / Chess Bags
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645671013	Chess Set Storage (1645658013) / Chess Boxes
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645659013	Chess Tables
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645660013	Chess Books
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645661013	Chess Software
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645662013	Chess DVDs
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645720013	Other Games (1645663013) / Checkers
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645721013	Other Games (1645663013) / Cribbage
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645722013	Other Games (1645663013) / Dice
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645723013	Other Games (1645663013) / Dominoes
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645724013	Other Games (1645663013) / GO
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645725013	Other Games (1645663013) / Mah Jong
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645666013	Chess Club Supplies
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645699013	Chess Boards (10) / Wood Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645700013	Chess Boards (10) / The Chess Store Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645701013	Chess Boards (10) / Colorful Wood Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645702013	Chess Boards (10) / Drueke Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645703013	Chess Boards (10) / Italfama Wood Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645704013	Chess Boards (10) / Brass Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645705013	Chess Boards (10) / Leatherette Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	1645706013	Chess Boards (10) / Rollup Chess Boards
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	0	Other
+thechessstore	12949	nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wJmYeoCZOEpQ+dj6x9nY+seQ==	thechessstore	3	Chess Computers

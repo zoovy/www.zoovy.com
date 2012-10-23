@@ -1,0 +1,58 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+<table class='zoovytable' cellspacing=0 width="600">
+<tr><td class='zoovytableheader'>Veruta Setup: <!-- PROFILE --></td></tr>
+<tr><td>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<input type="hidden" name="VERB" value="SETUP-NOW">
+
+<div class="error"><!-- ERROR --></div>
+
+<b>Your Veruta login will be: veruta@<!-- DOMAIN --></b><br>
+<br>
+<b>Campaign Type(s):</b> <i>(you must choose one)</i><br>
+<input type="checkbox" name="cpg|static_1:callus"> Static Banner w/ Coupon + phone number<br>
+<input type="checkbox" name="cpg|dynamic_1:standard"> Dynamic Product Banner w/ Individual product recommendations.<br>
+<input type="checkbox" name="cpg|dynamic_1:newprods"> Dynamic New Products List<br>
+<input type="checkbox" name="cpg|dynamic_1:bestsellers"> Dynamic Best Seller List<br>
+<input type="checkbox" name="cpg|dynamic_1:onsalenow"> Dynamic On Sale Now List<br>
+<input type="checkbox" name="cpg|flash_1:dotd"> Flash Deal of the Day*<br>
+<input type="checkbox" name="cpg|other"> Other / Custom<br>
+<i>Clients are encouraged to have multiple variations produced to keep
+banners fresh. If you would like multiple variations of the same campaign
+type please let the designer assigned to the project know at the onset. 
+*Flash Deal of Day will require development to create, or customize an existing flash deal of the
+day and therefore cannot be done as a fixed price express project.</i><br>
+<br>
+<br>
+<b>Scope of Work:</b><br>
+<!-- IS_STAFF -->
+<input type="radio" name="jobtype" value="NONE"> No Project Necessary - just gimme an account! **ZOOVY STAFF ONLY**<br>
+<!-- END_STAFF -->
+<input type="radio" name="jobtype" value="CUSTOM-ART"> Create Custom Artwork (hourly, est. 1-5 hours per campaign type)<br>
+<input type="radio" name="jobtype" value="SUPPLIED-ART"> Supply Custom Artwork (hourly, est. 3-5 hours per campaign type)<br>
+<input type="radio" checked name="jobtype" value="EXPRESS"> Create Express Artwork (Flat $150 fee per campaign type) -- <font color='blue'>*RECOMMENDED*</font><br>
+<br>
+<div class="hint">
+Not sure which choice is right for you? <a href="index.cgi?PROFILE=<!-- PROFILE -->&VERB=LEARN">Learn more.</a>
+</div>
+<br>
+<input type="submit" class="button" value=" Create Account "><br>
+
+<br>
+<b>What happens next?</b> Upon submission a veruta account will automatically be created, and a corresponding project 
+ticket will be created in the support area of your account. 
+Please post any special instructions or necessary artwork to that ticket.  
+Accounts which have existing pre-paid design time balances will have hours deducted from those banks. 
+</div>
+
+</form>
+</td></tr>
+</table>
+
+
+</center>
+</body>

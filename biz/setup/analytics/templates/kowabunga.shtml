@@ -1,0 +1,27 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<!-- DISCLAIMER -->
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">KowaBunga! (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="KOWABUNGA-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<br>
+JavaScript Conversion Tracking Code:<br>
+<textarea cols="70" rows="3" name="checkout_code"><!-- CHECKOUT_CODE --></textarea><br>
+<div class="hint">This is the javascript which KowaBunga! tells you to include on your site
+at the checkout page</div>
+
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</form>
+</td></tr>
+</table>

@@ -1,0 +1,32 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=850><tr><Td>
+
+<h2>Inventory for Supplier <!-- CODE -->:</h2>
+
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table width=100% class="zoovytable" cellspacing="1" cellpadding="2">
+<tr class="zoovytableheader">
+	<td></td>
+	<td>#</td>
+	<td>SKU</td>
+	<td>Supplier SKU</td>
+	<td>Inventory</td>
+	<td width="50%">Product Name</td>
+	<td>Shipping</td>
+	<td>Cost</td>
+	<td>Price</td>
+</tr>
+	<!-- INVENTORY -->
+</table>
+</div>
+
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

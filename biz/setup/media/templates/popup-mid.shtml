@@ -1,0 +1,38 @@
+<head>
+<link rel="stylesheet" type="text/css" href="/biz/standard.css">
+<script><!--//
+
+
+if (window.parent.topInitialized) {
+	// the topInitialized variable is set in the parent form by popup-top
+	window.parent.TopFrame.document.topFrm.PWD.value='<!-- PWD -->';
+	}
+
+window.parent.LowFrame.document.open();
+<!-- LOWFRAME -->
+window.parent.LowFrame.document.close();
+// -->
+</script>
+</head>
+<body>
+<form name="midFrm" method="post" action="popup-mid.cgi">
+<input type="hidden" name="PWD" value="">
+<input type="hidden" name="s" value="<!-- SERIAL -->">
+<input type="hidden" name="ACTION" value=''>
+
+<!-- BEGIN MIDDLE FRAME -->
+<table cellpadding=4 cellspacing=0 width="100%">
+<tr>
+	<td><strong>Directory:</strong> <!-- PWD --> <!-- BACKPWD --></td>
+</tr>
+<tr>
+	<td colspan=2>
+	<table border=0 cellpadding=1 cellspacing=1 width="100%">
+		<!-- FOLDERS -->
+	</table>
+	</td>
+</tr>
+</table>
+<!-- END MIDDLE FRAME -->
+</form>
+</body>

@@ -1,0 +1,19 @@
+<body bgcolor='FFFFFF'>
+<table>
+<tr><td>
+previewebay.cgi
+<td></td>
+Purpose: shows what an EBAY subscription will look like BEFORE it is placed.
+Parameters: USERNAME, PASSWORD, ZOOVY
+ZOOVY is the computed list of SGML tags, passed URL encoded. For a list of
+which variables this function is expecting check the @!#$%^ template. ;-)
+<br>
+Optional: RETURN="some fully qualified hyperlink, or javascript which closes
+the window!"
+<br>
+To avoid the GET limit, all parameters should be passed via POST.<br>
+<br>
+
+</td></tr>
+</table>
+<body bgcolor="FFFFFF">

@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Veruta (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<form action="index.cgi">
+
+To sign up for a Veruta account and for further information on this product
+offering through Zoovy, please go to
+<a target="_blank" href="http://www.zoovy.com/biz/syndication/veruta">
+Syndication &gt; Veruta.</a>
+<br>
+<br>
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</form>
+</td></tr>
+</table>

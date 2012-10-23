@@ -1,0 +1,67 @@
+<head>
+	<title>Order Management</title>
+	<link rel="STYLESHEET" type="text/css" href="/biz/standard.css">  
+	<script>
+	<!--//
+		var tState = false;
+		function toggleAll() {
+			tState = !tState;
+			for (i=0,n=window.document.myForm.elements.length;i<n;i++) {
+				if (window.document.myForm.elements[i].name.indexOf("order-") !=-1) {
+					window.document.myForm.elements[i].checked = tState;	
+				}
+			}
+		}
+		function submitIt(action) {
+			window.document.myForm.CMD.value=action;
+			window.document.myForm.submit();
+		}
+		function sortBy(column) {
+			window.document.myForm.CMD.value="<!-- CMD -->";
+			window.document.myForm.SORTBY.value = column;
+			window.document.myForm.submit();
+		}
+	//-->
+	</script>
+	<style>
+		TR.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+		TR.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+		TD.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+		TD.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+		TD.title { font-size: 10pt; font-family: helvetica, arial; background-color: #000000; font-style: bold; }
+		a:visited { color: purple; }		
+	</style>
+</head>
+
+<body vlink="#3366FF">
+<form name="myForm" action="move.cgi" target="body" method="POST">
+<input type="hidden" name="SORTBY" value="ID">
+<input type="hidden" name="CMD" value="<!-- NEXT -->">
+<input type="hidden" name="AREA" value="<!-- AREA -->">
+
+
+<center>
+<table border='0' width='95%' align="center">
+<tr>
+	<td>
+	<font face="Arial"><!-- MESSAGE --></font>
+
+	<table border=0 cellspacing=0 cellpadding=0 class="zoovytable" width=95%>
+	<tr>
+		<td class="zoovytableheader"><!-- AREA --> Orders</td>
+		<td class="zoovytableheader" align="right">Total: <!-- ORDER_COUNT --> - Value: $<!-- ORDER_TOTAL --></td>
+	</tr>
+	<tr>
+		<td class="zoovytablebody" colspan=2>
+		<table width=100% cellspacing=0 cellpadding=2>
+			<!-- ORDER_TABLE -->
+		</table>
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+</form>
+
+

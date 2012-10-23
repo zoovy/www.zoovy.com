@@ -1,0 +1,42 @@
+<HEAD>
+<title>Zoovy: Online Product Management - Merchant</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</HEAD>
+<BODY onLoad="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#DD0000" VLINK="#DD0000" ALINK="#DD0000"   marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<!-- MSGS -->
+<center>
+<table bgcolor='ffffff' border='0' cellspacing='0' cellpadding='0' width='100%'><tr><td>
+<Br>
+<b>Product Option Manager</b><br>
+Product: <!-- PRODUCT -->
+<!-- END HEADER -->
+
+<form name="thisFrm" method="post" action="index.cgi">
+<input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
+<input type="hidden" name="VERB" value="">
+<input type="hidden" name="MODE" value="<!-- MODE -->">
+<input type="hidden" name="POG" value="<!-- POG -->">
+<input type="hidden" name="SOG" value="<!-- SOG -->">
+<br>
+<table width=500><tr><td>
+
+<font color='red'>WARNING:</font><br>
+Removing a Store Option Group can have extremely adverse effects if any products are still referencing it.
+In addition, if the id is reused at a later time any products referencing the store option group will inherit 
+properties that will likely be wrong. <br>
+Bottom Line: Do not delete a store option group unless you are 100% sure you know exactly what you're doing!<br>
+<br>
+<center>
+	<input type="button" value="  Remove Anyway  " onClick="thisFrm.VERB.value='KILLSOG'; thisFrm.submit();">
+	<input type="button" value="  Exit  " onClick="thisFrm.VERB.value=''; thisFrm.submit();">
+</center>
+</form>
+</td></tr></table>
+
+
+<!-- BEGIN_FOOTER -->
+</td></tr></table>
+</center>
+</body>
+
+

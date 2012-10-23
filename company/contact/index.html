@@ -1,0 +1,64 @@
+% my $menu;
+% $menu = 'company';
+
+<&| /includes/header/index.html, title => 'Zoovy Contact Information', menu => $menu, nav=>"company|contact" &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<h1>Zoovy Contact Information</h1>		
+
+<table cellspacing=0 cellpadding=5 width='100%' class='box'>
+<tr>
+	<td><h3>Email Contacts:</h3></td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;New Customers</td>
+	<td><a href="mailto:questions@zoovy.com">Questions@zoovy.com</a></td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;Partner Relations</td>
+	<td><a href="mailto:info@zoovy.com">Info@zoovy.com</a></td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;Employment (<a href="/company/employment">Jobs</a>)</td>
+	<td><a href="mailto:jobs@zoovy.com">Jobs@zoovy.com</a></td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;Technical Support</td>
+	<td>(please login to your account and submit a ticket)</td>
+</tr>
+</table>
+
+<table cellspacing=0 cellpadding=5 width='100%' class='box'>
+<tr>
+	<td><h3>Telephone/Fax:</h3></td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;Toll&nbsp;Free</td>
+	<td ALIGN="left">1.877.966.8948 (ext 2 for sales)</td>
+</tr>
+<tr>
+	<td >&nbsp;-&nbsp;International</td>
+	<td >+01.760.692.2093</td>
+</tr>
+<tr>
+	<td>&nbsp;-&nbsp;Fax</td>
+	<td>1.760.692.2094</td>
+</tr>
+</table>
+
+<table cellspacing=0 cellpadding=5 width='100%' class='box'>
+<tr>
+	<td><h3>Mailing Address:</h3></td>
+</tr>
+<tr>
+	<td><div style="padding-left: 8px;">
+5868 Owens Ave<br>
+Suite 150<br>
+Carlsbad, CA 92008<br>
+		</div></td>
+</tr>
+</table>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

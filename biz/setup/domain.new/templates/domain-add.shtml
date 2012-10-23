@@ -1,0 +1,239 @@
+<!-- SETUP_TAB -->
+
+<script>
+
+
+var settings = new Array;
+
+function updateForm(k,v) {
+	settings[k] = v;
+	
+	$('#fieldset_email_mx').toggle((settings['email']=='mx')?1:0);
+	$('#fieldset_email_googleapps').toggle((settings['email']=='googleapps')?1:0);
+	$('#fieldset_email_fusemail').toggle((settings['email']=='fusemail')?1:0);
+	
+	alert(k+'='+v);
+	}
+
+
+</script>
+
+<form id=domain class="stdform">
+<fieldset>
+<legend>Domain details</legend>
+<ol>
+<li>
+<label for=domain>Domain</label>
+<input id=domain name=domain type=text placeholder="Domain" required autofocus>
+</li>
+<li>
+<label for=email>Admin Email</label>
+<input id=email name=email type=email placeholder="example@domain.com" required>
+</li>
+<li>
+Lets a single Zoovy account have multiple appearances and pricing+shipping+promotion models based on which 
+domain name a customer arrives at.
+<label>Associated Profile:</label>
+	<select name="PROFILE">$PROFILES</select>
+<div class="hint">
+HINT: You may create Configuration Profiles by going to Setup | Company Profiles.<br>
+<br>
+Configuration profiles store information such as contact information, about us, returns policy, email messages, 
+and much more. Each profile may have a unique wrapper, pricing schedule, and root category, company logo, etc.
+<br>
+You may have only one domain associated with a profile at any time.  All other related domains should simply be 
+configured as redirect domains, or splash domains (for SEO reasons).
+</div>
+<label for=phone></label>
+<input id=phone name=phone type=tel placeholder="Eg. 555-555-1212"
+required>
+</li>
+<li>
+	<div>
+	<span>
+	<input id=email_none onClick="updateForm('email',this.value);" name=emailtype value="" type=radio>
+	<label for=email_none>None</label>
+	</span>
+	<span>
+	<input id=email_googleapps onClick="updateForm('email',this.value);" name=emailtype value="googleapps" type=radio>
+	<label for=email_googleapps>GoogleApps</label>
+	</span>
+	<span>
+	<input id=email_fusemail onClick="updateForm('email',this.value);" name=emailtype value="fusemail" type=radio>
+	<label for=email_fusemail>Fusemail</label>
+	</span>
+	<span>
+	<input id=email_mx onClick="updateForm('email',this.value);" name=emailtype value="mx" type=radio>
+	<label for=email_mx>Other</label>
+	</span>
+	</div>
+</li>
+</ol>
+</fieldset>
+
+<fieldset id="fieldset_email_mx">
+<legend>MX Email Configuration</legend>
+<ol>
+<li>
+<label for=email_mx1>mx1</label>
+<input id=email_mx1 name=email_mx1 type=textbox placeholder="Eg. mail.someprovider.com" required>
+</li>
+<li>
+<label for=email_mx2>mx2</label>
+<input id=email_mx2 name=email_mx2 type=textbox placeholder="Eg. mail.someprovider.com" required>
+</li>
+<li>
+<label for=email_mxspf>SPF</label>
+<textarea id=email_mxspf name=email_mxspf rows=5 required></textarea>
+</li>
+</ol>
+</fieldset>
+
+<fieldset id="fieldset_email_googleapps">
+<legend>GoogleApps Email Configuration</legend>
+<ol>
+<li>
+<i>No configuration is necessary</i>
+</li>
+</ol>
+</fieldset>
+
+<fieldset id="fieldset_email_fusemail">
+<legend>Fusemail</legend>
+<ol>
+<li>
+<i>No configuration is necessary</i>
+</li>
+</ol>
+</fieldset>
+
+<fieldset id="fieldset_host_primary">
+<b>PRIMARY DOMAIN:</b><br>
+Domain Profile: $d->{'PROFILE'}<br>
+Partition Profile: $PROFILE<br>
+<br>
+<div class="hint">
+<b>DEFAULT Domains:</b><br>
+You should have only one DEFAULT domain per partition.  
+Default domains are where syndication traffic is delivered to, and are considered the "primary" domain
+for a group of related sites. All other domains should be one of the following:<br>
+<ul>
+<li> REDIRECT: any traffic to this domain will be 301 redirected (SEO friendly) to the new domain.
+<li> NEWSLETTER: used exclusively for sending email.
+<li> SPECIALITY: for specialized sites versions, and can share carts inside a partition.
+<li> SPLASH: a domain which targets a particular landing page, but all links on the page
+would send the shopper back to the default domain. 
+<li> 
+</ul>
+</div>
+</fieldset>
+
+<fieldset id="fieldset_host_newsletter">
+<div class="hint">
+<b>Newsletter Domains:</b><br>
+Newsletter domains are the most reliable way to handle bounce's and unsubscribes because the "from" 
+address is unique to each campaign/recipient. In the past few years many pieces of mail software
+have begun stripping the body of the message when it is returned to save on disk space, and 
+obscuring the recipient email address (primarily  due to the disk space requirements of storing 
+SPAM/UCE). To combat this a unique "From" address must be generated for each message, and any 
+mail received at that email address is automatically treated as a bounce. <br>
+<br>
+For example a recipient "To: joe\@theplumber.com" would have a message sent 
+"From: joe%40theplumber.com\@newsletterdomain.com" - effectively giving each recipient it's own
+unique return address.<br>
+</div>
+<br>
+</fieldset>
+
+<fieldset id="">
+			<b>Splash URL:</b> <input type="textbox" maxlength=100 size=50 value="$d->{'SPLASH_URL'}" name="SPLASH_URL"><br>
+			e.g. /category/safe.name or /product/PRODUCTID<br>
+			<br>
+			<b>Destination Domain:</b> <select name="REDIR_DOMAIN">~;
+			my (@d) = DOMAIN::TOOLS::domains($USERNAME,SKIP_VSTORE=>1,REG_TYPE=>['NEW','TRANSFER','ZOOVY'],HOST_TYPE=>['PRIMARY','SPECIALTY']);
+			my $i = 0;
+			foreach my $dx (@d) {
+				next if ($d->{'DOMAIN'} eq $dx);
+				$out .= "<option ".(($d->{'REDIR_DOMAIN'} eq $dx)?'selected':'')." value=\"$dx\">$dx</option>";
+				$i++;
+				}
+			$out .= qq~</select>~;
+			$d->{'EMAIL_TYPE'} = 'NONE';
+			if ($i==0) { $out .= "<br><font color='red'>NO ELIGIBLE DOMAINS - PLEASE SELECT A DIFFERENT HOSTING METHOD!</font>"; }
+</fieldset>
+
+<fieldset id="">
+			$out .= "<b>Specialty Site Configuration:</b><br>";
+			##
+
+			my $PROFILES = '';
+			my $profileref = &ZOOVY::fetchprofiles($USERNAME, 'FILTER'=>'NO_DOMAIN_MAPPED');
+			#if ($d->{'SP_PROFILE'} eq '') {
+			#	$PROFILES .= "<option value=\"\">DEFAULT PROFILE w/LEGACY LOGO SUPPORT (DEPRECATED - DO NOT USE!)</option>";
+			#	}
+			
+			unshift @{$profileref}, $d->{'PROFILE'};
+
+			foreach my $ns (@{$profileref}) {
+				if ($ns eq '') { $ns = 'DEFAULT'; }
+
+				## once a profile is mapped to a partition .. you shouldn't be able to see it on other partitions.
+				my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$ns);
+				next if ($nsref->{'prt:id'} != $PRT);
+
+		      $PROFILES .= "<option ".(($d->{'PROFILE'} eq $ns)?'selected':'')." value=\"$ns\">$ns</option>\n";
+				}
+
+			$out .= qq~
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			~;
+
+</fieldset>
+
+<fieldset>
+		elsif ($d->{'HOST_TYPE'} eq 'REDIR') {
+			require DOMAIN::TOOLS;
+			$out .= qq~
+			<i>Use a redirect domain to send all traffic and robots from one domain (e.g. yourname.net) 
+		to another domain that you own (e.g. yourname.com) using a HTTP 301 redirect. </i><br>
+		<br>
+			~;
+			$out .= qq~<b>Redirect Destination Domain:</b> <select name="REDIR_DOMAIN">~;
+			my (@d) = DOMAIN::TOOLS::domains($USERNAME,SKIP_VSTORE=>1,REG_TYPE=>['NEW','TRANSFER','ZOOVY'],HOST_TYPE=>['PRIMARY','SPECIALTY']);
+			my $i = 0;
+			foreach my $dx (@d) {
+				next if ($d->{'DOMAIN'} eq $dx);
+				$out .= "<option ".(($d->{'REDIR_DOMAIN'} eq $dx)?'selected':'')." value=\"$dx\">$dx</option>";
+				$i++;
+				}
+			$out .= qq~</select><br>~;
+			if ($i==0) { $out .= "<font color='red'>NO ELIGIBLE DOMAINS - PLEASE SELECT A DIFFERENT DOMAIN HOSTING TYPE!</font><br>"; }
+
+			$out .= qq~
+			<br>
+			<br>
+			For a domain to appear as an available destination Zoovy must be the registrar handling the domain.
+			The target domain	must also be configured as either a DEFAULT or SPECIALTY hosting type.
+			<br>
+			<ul>
+			<li> More Information: <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50858">Transferring Domains Survival Guide</a>
+			<li> More Information: <a target="_webdoc" href="http://webdoc.zoovy.com/doc/50971">Business Case: Why make Zoovy your Registrar</a>
+			</ul>
+			~;
+			}
+
+
+
+</fieldset>
+
+<fieldset>
+<button class="button" type=submit>Save</button>
+</fieldset>
+
+</form>
+

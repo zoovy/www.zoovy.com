@@ -1,0 +1,79 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- ERROR -->
+<table class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Upload JEDI Package</td>
+</tr>
+<tr>
+	<td>
+	
+<div class="hint">
+JEDI allows a supplier to create a package which can be easily imported,
+once, or continuously into a zoovy store. 
+</div>
+
+<form  name="thisFrm" id="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-JEDI'>
+<input type='hidden' name='TYPE' value='JEDI'>
+<br>
+
+<table class="zoovytable">
+	<tr><td class="zoovysub1header"><b>Initial Import Only:</b></td></tr>
+	<tr><td>
+<input type="checkbox" <!-- CHK_JEDI_CREATE --> name=".create"> Create a supplier in my database.<br>
+<input type="checkbox" <!-- CHK_JEDI_THEMES --> name=".themes"> Import themes, and layouts from package (if available)<br>
+<table>
+<tr>
+	<td>JEDI Customer Account:</td>
+	<td><input type="textbox" name=".login"></td>
+</tr>
+<tr>
+	<td>JEDI Customer Password</td>
+	<td><input type="textbox" name=".pass"></td>
+</tr>
+</table>
+<div class="hint">
+Customer Account / Password are the same as the ones you use to login to the store.
+</div>
+	</td>
+	</tr>
+</table>
+<br>
+
+<b>JEDI Products:</b><br>
+<input type="radio" name=".products" <!-- JEDI_PRODUCTS_RESET --> value="reset"> Full Reset: deletes all products from supplier,
+replaces with updated descriptions/images.<br>
+<input type="radio" name=".products" <!-- JEDI_PRODUCTS_SMART --> value="smart"> Prices Only: reloads prices, but does not make
+any changes.<br>
+<input type="radio" name=".products" <!-- JEDI_PRODUCTS_NEW --> value="new"> New Products: only loads new products that do not exist.<br>
+<br>
+<b>JEDI Inventory:</b><br>
+<input type="checkbox" <!-- CHK_JEDI_INVENTORY --> name=".inventory"> Refresh inventory from supplier.<br>
+<br>
+Website Navigation Categories:<br>
+<input type="radio" name=".navcats" <!-- JEDI_NAVCATS_RESET --> value="reset"> Full Reset: delete all categories and load new
+categories + pages from jedi package.<br>
+<input type="radio" name=".navcats" <!-- JEDI_NAVCATS_SMART --> value="smart"> Partial: loads products into your site, if the category 
+exists on your site.<br>
+<input type="radio" name=".navcats" <!-- JEDI_NAVCATS_IGNORE --> value="ignore"> Leave my categories alone, I will map products manually.<br>
+<br>
+<b>Ordering:</b><br>
+<input type="radio" name=".ordering" <!-- JEDI_ORDERING_YES --> value="yes"> Automatically place orders with supplier for paid items.<br>
+<input type="radio" name=".ordering" <!-- JEDI_ORDERING_NO --> value="no"> I will manually place orders at vendors site.<br>
+<input type="radio" name=".ordering" <!-- JEDI_ORDERING_ --> value=""> Leave my settings alone.<br>
+<br>
+<b>Shipping:</b><br>
+<input type="radio" name=".shipping" <!-- JEDI_SHIPPING_YES --> value="yes"> Automatically ask my supplier for shipping rates whenever possible.<br>
+<input type="radio" name=".shipping" <!-- JEDI_SHIPPING_NO --> value="no"> I will configure my site shipping to calculate my shipping charges.<br>
+<input type="radio" name=".shipping" <!-- JEDI_SHIPPING_ --> value=""> Leave my settings alone.<br>
+<br>
+
+<!-- SWFUPLOAD -->
+&nbsp;&nbsp;&nbsp; <input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload JEDI Package File ">
+</form>	
+	</td>
+</tr>
+</table>
+</center>

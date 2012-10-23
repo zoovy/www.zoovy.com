@@ -1,0 +1,41 @@
+<!-- SETUP_TAB -->
+<center>
+<!-- MESSAGE -->
+</center>
+<form action="dhl.cgi" method="POST" target="_top">
+<input type="hidden" name="ACTION" value="REGISTER-SAVE">
+<font face="Arial">
+<center>
+<table width='624'>
+<tr><td>
+
+	<table border=1><tr><td>
+	<b>DHL Shipper Key Registration:</b><br>
+	<table border='0'>
+		<tr>
+			<td>DHL Account #:</td>
+			<td><input size="12" type="textbox" name="ACCOUNT_NUM" value="<!-- ACCOUNT_NUM -->"></td>
+		</tr>
+		<tr>
+			<td>Origin Zip:</td>
+			<td><input size="5" type="textbox" name="ORIGIN_ZIP" value="<!-- ORIGIN_ZIP -->"></td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-DHL">
+<a href="index.cgi" target="_top"><img border="0" src="/images/bizbuttons/exit.gif"></a><br>	
+</center>
+			</td>
+		</tr>
+	</table>
+	</td></tr></table>
+
+<br>
+<br>
+
+</td></tr>
+</table>
+
+</form>
+</body>

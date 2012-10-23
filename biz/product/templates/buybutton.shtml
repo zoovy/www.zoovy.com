@@ -1,0 +1,44 @@
+<html>
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body bgcolor="#FFFFFF"  marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<font size='2'>
+<table width="400" height="100%" border="0" cellspacing="0" cellpadding="10">
+	<tr>
+		<td valign="top">
+			<font face='verdana, arial, helvetica' size="2">
+			<font size="+1" color="43A143"><b>Add To Cart Button</b></font><br>
+			<br>
+			<b>To create an "Add To Cart" button for an existing web site, insert the following code into the source code of any web page.</b>
+			<br>
+<table width="400" bgcolor="#CCCCCC" border="1"><tr><td>
+<font size='2' face='ocr; helvetica'>
+<pre>
+<!-- CODE -->
+</pre>
+</font>
+</td></tr></table>
+			<br>
+			<b>Which will produce the following:</b>
+			<br>
+			<br>
+<table bgcolor="#CCCCCC" border="1"><tr><td>
+<!-- BUTTON -->
+</td></tr></table>
+<br>
+			If you'd like the button to be an image, please put the URL of the image here:<br>
+			<form action="buybutton.cgi" method="get">
+			<input type="hidden" name="product" value="<!-- PRODUCT -->">
+			<input type="text" name="img" value="http://<!-- IMG -->" width="60">
+			<input type="submit" value="Change">
+			</form>
+			<br>
+<a href="/biz/product/edit.cgi?PID=<!-- PRODUCT -->"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+			<br>
+		</td>
+	</tr>
+</table>
+</font>
+</body>
+</html>

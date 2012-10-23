@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>Amazon Marketplace Syndication</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+</head>
+<body bgcolor="FFFFFF"  marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+</center>
+<font face="verdana, arial, helvetica" size="3" color="red">
+
+<center>Your account does not have access to this feature.
+<br>
+<br>
+<table width='75%'>
+<tr><Td>
+&nbsp;&nbsp;&nbsp; Amazon @Merchant Syndication enables your Zoovy account
+to add products and download orders from the Amazon.com @Merchants Program.<br>
+<br>
+<b>NOTICE:</b> Once you enable Amazon onto your account, you will need to
+signup with Amazon. Please return to Zoovy: Amazon Syndication for more
+information on this signup process.
+<br>
+<br>
+<br>
+<a href="/biz/configurator?VERB=VIEW&PACKAGE=AMZ">Add these Features Now</a><br>
+</font>
+<br>
+<i>This is a new service which is currently in open pilot mode and should be considered *EXPERIMENTAL*.</i>
+</td></tr>
+</table>
+<br>	
+<a href="index.cgi" TARGET="_top"><img border="0" src="/images/bizbuttons/cancel.gif"></a>&nbsp;&nbsp;&nbsp; 
+</font>
+</body>
+</html>

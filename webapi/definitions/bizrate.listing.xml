@@ -1,0 +1,16 @@
+<DEFINITION NAME="listing">
+
+	<DIV NAME="ALPHA" TITLE="BizRate">
+		<META TYPE="TITLE">BizRate Listing</META>
+
+		<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_mfgid" PROMPT="Manufacturers SKU"></INPUT>
+		<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_mfg" PROMPT="Manufacturers Name" HINT="example: Sony"></INPUT>
+		<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_upc" PROMPT="UPC"></INPUT>
+
+		<INPUT TYPE="TEXTBOX" NAME="product:bizrate:bid" PROMPT="BizRate Bid"></INPUT>
+		<INPUT TYPE="TEXTBOX" NAME="product:bizrate:category" PROMPT="BizRate Category"></INPUT>
+
+		<INPUT TYPE="BLANK"></INPUT>		
+	</DIV>
+
+</DEFINITION>

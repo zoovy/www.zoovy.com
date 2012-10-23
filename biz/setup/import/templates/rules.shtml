@@ -1,0 +1,60 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+
+<br>
+
+<table width='90%' cellspacing='0' cellpadding='2' border='0' class="zoovytable">
+<tr>
+	<td align="left" class="zoovytableheader">Load Rules from a CSV File</td>
+</tr><tr>
+	<td>
+
+<div class="hint">
+Hints for importing rules:<br>
+<li> Rules syntax is very specific - please review webdoc. 
+<li> Always perform an EXPORT of your rules, prior to performing an import, be sure to keep a backup.
+<li> Minimal validation is done on rules, however if a critical error is detected then no import is performed.
+<li> All imports are fully destructive of existing data.
+<li> Review <a target="webdoc" href="http://webdoc.zoovy.com/doc/51515">webdoc 51515</a> for documentation.
+</div>
+<Br>
+
+<span class="alert"><!-- ERROR --></b></span>
+<form id="thisFrm" name="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-RULES'>
+<input type='hidden' name='TYPE' checked value='rules'>
+
+
+<!-- SWFUPLOAD -->
+<input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload CSV File ">
+
+</form>
+</td></tr></table>
+
+<br>
+<br>
+<table width='90%' class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Export Rules</td>
+</tr>
+<tr>
+	<td>
+<form id="xyz" name="xyz" action="index.cgi/rules.csv">
+	<input type="hidden" name="VERB" value="EXPORT-RULES">
+	
+<div class="hint">
+</div>
+	<input class="button" type="submit" value=" Export ">
+</form>
+
+	</td>
+</tr>
+</table>
+<br>
+<br>
+
+
+
+<!-- FOOTER -->

@@ -1,0 +1,29 @@
+[%- page_title = 'eBay Category Browser - Saved' -%]
+
+[%- INSERT '_round_corners_top.tt2' %]
+  <div id="category-tree">
+    <p>Saved OK.
+    <a href="#" onClick="window.close();">Close [%- CATID %]</a></p>
+<script type="text/javascript">
+<!--
+
+window.opener.document.forms['[%- FRM -%]'].elements['[%- V -%]'].value='[%- CATID -%]'; 
+// window.close();
+
+//-->
+</script>
+
+<!--
+<SESSION_TERMINATED>
+<input type="hidden" name="set-product:ebay:csid" value=""/>
+<input type="hidden" name="set-product:ebay:csversion" value=""/>
+<input type="hidden" name="set-product:ebay:productid" value=""/>
+<input type="hidden" name="set-product:ebay:attributeset" value=""/>
+<input type="hidden" name="set-product:ebay:category" value=""/>
+<input type="hidden" name="set-product:ebay:financeoffer" value=""/>
+</SESSION_TERMINATED>
+//-->
+
+  </div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+

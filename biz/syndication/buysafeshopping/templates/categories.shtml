@@ -1,0 +1,56 @@
+<!-- SETUP_TAB -->
+
+<script>
+<!--
+
+var popWin;
+
+function selectCategory(MKT,NAVCAT,VAL) {
+	popWin = openWindow('/biz/syndication/catchooser.cgi?MKT='+MKT+'&CATID='+VAL+'&NAVCAT='+NAVCAT);
+	}
+
+
+function closeWindow(nc,catid) {
+	// popWin.close();
+	// alert(window.document.catFrm[nc].value);
+	window.opener.ajaxUpdate('JLY',window.document.catFrm[nc]);
+	}
+
+//-->
+</script>
+
+
+<table width="800" align='center'><tr><td>
+
+<form name="catFrm" method="post" action="index.cgi">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<input type="hidden" name="VERB" value="SAVE-CATEGORIES">
+
+<!-- MSG -->
+
+<h1>Submit BuySafeShopping Categories:</h1>
+
+<table align='center' class='zoovytable'>
+	<!-- CATEGORIES -->
+</table>
+
+
+<div class='zbutton_group'>
+
+
+<input type="image" src="/images/bizbuttons/save.gif" value=" Save Settings">
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+
+
+</div>
+
+</td></tr></table>
+
+
+</form>
+
+
+</center>
+
+
+</body>

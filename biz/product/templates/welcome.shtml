@@ -1,0 +1,94 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+<!-- HEADER_ONLY -->
+</head>
+<body>
+
+<center>
+<!-- MYTODO -->
+</center>
+
+<table width="600" height="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+	<td valign="top" style="padding-left:20px;"><h1>Online Product Manager</h1>
+<br>
+
+<table width='500'><tr>
+	<td colspan="2" class="divider" style="padding-left:10px;"><strong>Quick Links:</strong></td>
+</tr><tr>
+
+	<td width="18"><a href="edit.cgi?VERB=CREATE"><img src="menu-images/products.gif" border="0" width="18" height="18"></a></td>
+	<td><a href="edit.cgi?VERB=CREATE">Add a New Product</a></td>
+
+</tr><tr>
+
+	<td><a href='search.cgi?ACTION='><img src='menu-images/search.gif' border='0' width='18' size='18'></a></td>
+	<td><a href='search.cgi?ACTION='>Search for a Product</a></td>
+
+</tr><tr>
+
+	<td><a href='search.cgi?ACTION=LISTALL'><img src='menu-images/menu_link_txt.gif' width='18' height='18' border='0'></a></td>
+	<td><a href='search.cgi?ACTION=LISTALL'>List all Products</a></td>
+
+</tr>
+
+	<td></td>
+	<td><a href="/biz/downloads" target="_top">Download Zoovy Warehouse Manager</a></td>
+</table>
+<form action='search.cgi'><input type='hidden' name='ACTION' value='SEARCH'>
+<table class="outline" cellpadding='0' cellspacing='3'><tr>
+	<td>Search For: </td>
+	<td><input type='textbox' name='VALUE' class="formed"></td>
+	<td><input type='submit' value='Search Now' class="button"></td>
+</tr><tr>
+	<td colspan="3" align="right"><input type='checkbox' name='DETAIL'> Search Product Descriptions (slower)</td>
+</tr></table>
+</form>
+
+<h3>Helpful Tips for the Online Product Editor</h3>
+<p>
+The new Ajax powered Zoovy Product editor has been designed for safer and  more intuitive data-entry allowing you to effectively keep track of the  product information you need to publish live to your Zoovy store.</p>
+
+
+<p><h2>Much faster page rendering - Quicker, Slicker.</h2>
+Sellers with very large product databases will notice significant speed  increases in page rendering saving you time when adding product to your  large database.
+</p>
+
+<p><h2>Lost data during entry - A thing of the past.</h2>
+The potential for data loss during entry is virtually eliminated as each  section allows you to 'Save-as-you-go' by either pressing the save button  or simply collapsing the section, leaving you to focus on the remaining  information that you wish to edit.
+</p>
+
+<p><h2>Collapsible Information Sections - Focus only on what you need.</h2>
+With so many features and options available for each of your products,  making sure you have entered all the information needed can be hard to  keep track of. Now with new collapsible information areas, you can simply  focus on the information you need to insert and collapse the other options  from view. The system will remember which windows you collapse and which  stay open, allowing you to customize the form for future data entry only  showing the information that is relevant to you.</p>
+
+
+<p><h2>Cleaner, easy-to-read layout - Everything you need, nothing you don't.</h2>
+The new layout allows you to view your product information without being  distracted by other objects on the page. </p>
+
+
+<p><h2>Why the change? Because the future of the web is knocking at the door. </h2>
+Ajax web technology is going to change the way the entire internet will  look and work, and it's coming into play at breakneck speeds (follow the  exploits of Google and Microsoft over the next few months and you'll see  what we mean). To take advantage of the coming revolution make sure you  have the latest version of your preferred internet browser installed for  maximum compatibility.</p>
+
+
+<p>Having trouble with the expanding sections?  Download the latest version of your browser:
+<div align="center">
+<table cellspacing="5" cellpadding="0" width="350"><tr>
+
+	<td align="center"><a href="http://www.mozilla.com/firefox/" target="_blank"><img src="/images/logos/firefox.gif" width="65" height="65" border="0"></a></td>
+	<td align="center"><a href="http://www.microsoft.com/windows/ie/default.mspx" target="_blank"><img src="/images/logos/explorer.gif" width="65" height="65" border="0"></a></td>
+	<td align="center"><a href="http://www.opera.com/download/" target="_blank"><img src="/images/logos/opera.gif" width="65" height="65" border="0"></a></td>
+	<td align="center"><a href="http://browser.netscape.com/ns8/" target="_blank"><img src="/images/logos/netscape.gif" width="65" height="65" border="0"></a></td>
+	
+</tr><tr>
+
+	<td align="center"><a href="http://www.mozilla.com/firefox/" target="_blank">Firefox</a></td>
+	<td align="center"> <a href="http://www.microsoft.com/windows/ie/default.mspx" target="_blank">Explorer</a></td>
+	<td align="center"><a href="http://www.opera.com/download/" target="_blank">Opera</a></td>
+	<td align="center"><a href="http://browser.netscape.com/ns8/" target="_blank">Netscape</a></td>
+
+</tr></table>
+</div>
+</p>
+
+</td>
+</tr></table>
+</body>

@@ -1,0 +1,58 @@
+<head>
+<TITLE>Zoovy - Domain Email Setup</TITLE>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+<table width="80%"><tr><td>
+<font face='arial'>
+
+<center><font color='red' size='5'><b><!-- MESSAGE --></b></font></center>
+<br>
+You may add up to 50 virtual domain redirects per domain.<br>
+<br>
+<form name="thisFrm" method="index.cgi">
+<input type='hidden' name='ACTION' value='SAVEPROPERTIES'>
+<input type='hidden' name='DOMAINNAME' value='<!-- DOMAINNAME -->'>
+<br>
+<br>
+<table>
+	<tr>
+		<td><b>Domain Name:</b>
+		<!-- DOMAINNAME --></td>
+	</tr>
+	<tr>
+		<td><b>Status:</b> <!-- STATUS --></td>
+	<tr>
+		<td>Default email:
+		<input type="text" name="TARGET_EMAIL" maxlength="129" size="20" value='<!-- TARGET_EMAIL -->'></td>
+	</tr>
+	<tr>
+		<td>MX Servers: <!-- MX1 --> <!-- MX2 --><br>
+		<i>To change the MX servers, you must delete the domain on the previous menu and re-create it.</i><Br>
+		</td>
+	</tr>
+	<tr>
+		<td><!-- SPECIALTY --></td>
+	</tr>
+	<tr><td ><font color='red'><!-- EMAIL_ERROR --></font></td></tr>
+	<tr>
+		<td ><font size='2'>The default email address is the destination where all mail sent to this domain will be delivered.<br></font></td>
+	</tr>
+	<tr>
+		<td><font size='2'><!-- TRACK_REFERRER --></font></td>
+	</tr>
+	</table>
+</table>
+<br>
+<center>
+	<input type='image' src='/images/bizbuttons/save.gif' width='81' height='31' border='0'>
+	<a href='index.cgi?ACTION=EDITMAPPING&DOMAINNAME=<!-- DOMAINNAME -->'><img src="/images/bizbuttons/refresh.gif" border="0" width="81" height="31"></a>
+	<a href='index.cgi'><img src="/images/bizbuttons/exit.gif" border='0' width="81" height="31"></a>
+</center>
+</font>
+</form>
+</td></tr></table>
+</center>
+</body>

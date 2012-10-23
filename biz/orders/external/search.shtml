@@ -1,0 +1,23 @@
+<body>
+<br>
+<br>
+<br>
+<center>
+<table cellspacing='1' cellpadding='0' border='0' bgcolor='330066'>
+<tr><td><font face='arial' size='3' color='white'><b>Search External Items</b></font></td></tr>
+<tr><td>
+<table cellspacing='4' cellpadding='0' border='0' bgcolor='white'><tr><td>
+<form action="main.cgi">
+<font face='arial'>
+<input type='hidden' name='CMD' value='SEARCH'>
+<br>
+Search For: <input type='textbox' name='TEXT'>
+<br>
+<center><input type='submit' value='  Begin Search  '><br></center>
+<br>
+</td></tr></table>
+</td></tr></table>
+
+<br>
+</form>
+</body>

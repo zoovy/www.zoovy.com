@@ -1,0 +1,50 @@
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+function openWindow(url) {
+
+  adviceWin = window.open(url,'advice','status=no,width=638,height=400,menubar=yes,scrollbars=yes');
+
+  adviceWin.focus(true);
+
+}
+
+//-->
+</SCRIPT>
+
+</head>
+
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<form action="index.cgi" method="POST">
+<center>
+<!-- SETUP_TAB -->
+<br>
+<table width="500" cellpadding="0">
+<tr>
+	<td colspan='2' bgcolor='CCCCCC' align='left' class="title" valign='top'>&nbsp; <b>General Settings</b></td>
+</tr>
+<tr>
+	<td width="20%" align="right" class="body" valign="top">Website Name:</td>
+	<td valign="top" class="body" ><input type="textbox" name="website_name" size="40" value="<!-- website_name -->"> </td>
+</tr>
+</table>
+
+<br>
+<a href="/biz/configurator?VERB=VIEW&PACKAGE=WEB">Click here to expand your ability to customize your website behaviors!</a><br>
+<br>
+
+<tr>
+	<td colspan="2">
+	<br>
+	<center>
+	<input type="image" name="ACTION-SAVE" src="/images/bizbuttons/save.gif" border="0" width="81" height="31" value="Save Information">
+	&nbsp;&nbsp; <a href=".."><img src="/images/bizbuttons/exit.gif" width="81" height="31" border="0"></a>
+	</center>
+	</td>
+</tr>
+</table>
+</center>
+</form>
+
+</body>

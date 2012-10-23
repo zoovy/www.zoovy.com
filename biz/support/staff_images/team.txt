@@ -1,0 +1,26 @@
+Brian|System Architect
+Becky|Developer
+MattB|Customer Service Mgr.
+LizM|Client Services Mgr.
+Tom|Just Tom.
+JamieH|Client Services
+Patti|Developer
+TarasI|Developer
+JT|Lead Graphic Designer
+JerryC|Graphic Designer
+Joel|Internal Communications
+ChristyD|Marketing Services
+RichG|System Operations
+AaronP|System Operations
+NickD|System Operations
+KarloH|Support Specialist
+FredK|Support Specialist
+ReneeC|Implementation Specialist
+EdwinJ|Implementation Specialist
+Melissa|Implementation Specialist
+MarioZ|Support Specialist
+AndrewT|Support Specialist
+RickF|Support Specialist
+KimH|Support Specialist
+MattH|Business Development
+MitchF|Business Development

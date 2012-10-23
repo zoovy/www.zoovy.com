@@ -1,0 +1,74 @@
+<html>
+
+<head>
+<title>
+</title>
+</head>
+<body>
+<font face='arial'>
+
+<center>
+<table width=600 cellspacing=0 cellpadding=0 border=0>
+	<tr>
+		<td align="right"><img src="//www.zoovy.com/images/zoovy-reallysmall.gif"></td>
+	</tr>
+	<tr>
+		<td colspan=3 height=1 bgcolor="#CCCCFF"></td>
+	</tr>
+</table>
+
+<table width=600 cellspacing=0 cellpadding=0 border=0>
+	<tr>
+		<td>
+		<font face="arial, helvetica" color="#333399">
+		<h2>Account Payment Issue</h2>
+		<p>
+		Your access to this account has been <b>temporarily</b> disabled. </p>
+		<p>
+		Possible causes:
+		<ol>
+			<li>Invalid or Incorrect Billing Information</li>
+			<li>Account Balance Overdue</li>
+			<li>When we went to bill your credit card or banking account, the charge was denied.</li>
+			<li>Zoovy has received a charge back on your account.</li>
+		</ol>
+		</p>
+		<p>
+		Please review the instructions below:
+		</p>
+			
+	<b>To have your account activated immediately: 
+	<a href="https://www.zoovy.com/biz/setup/history/change.cgi">
+	<strong><font color="#339933">Click Here</font></strong></a> 
+	to Edit/Verify Your Payment Information.</b></p>
+
+	<strong><font color='red'>IMPORTANT:</font><br> After verifying your payment information you will need to 
+	<a href="/login/logout.cgi">LOGOUT</a> and log back in again.</strong><Br>
+	
+	<font color="#333399" style="font-size: 8pt;">
+<p><b>Your store operation has not been affected, customers can still browse your web site and place orders, 
+and you will still receive email confirmations from them. 
+All of your listings will continue running as well.</b> 
+However, you will not be able to process orders until this billing lock is removed.</p>
+
+<p>If you believe this is an error, please contact our Customer Service department 
+as soon as possible by calling 877-966-8948 and then pressing 3, 
+or contact the Accounts Receivable department directly, by emailing 
+<a href="mailto:billing@zoovy.com"><font color="#339933">Billing@Zoovy.com</font></a></p>
+
+<p><a href="https://www.zoovy.com/biz/setup/history/change.cgi"><strong><font color="#339933">Click Here</font></strong></a> for Your Payment Information.</p>
+
+<p>Please allow up to 7 business days for payments to be processed.  
+However, by updating and verifying your payment information, your access will be <strong>immediately restored</strong>.
+<br>
+</p></font>
+	</td>
+	</tr>
+	<tr>
+	<td align="right" height=75 valign="bottom"><font face="arial" color="#333399">Regards,<br>Zoovy Management</td>
+	</tr>
+</table>
+
+</body></html>
+
+

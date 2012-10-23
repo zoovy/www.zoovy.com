@@ -1,0 +1,16 @@
+<head>
+</head>
+<body>
+<center>
+<h1>Ticket <!-- TICKET --></h1>
+<table>
+	<tr>
+		<td><b>Original Ticket:</b><br><!-- CONTENT --></td>
+	</tr>
+</table>
+<pre>
+<!-- C -->
+</pre>
+
+</center>
+</body>

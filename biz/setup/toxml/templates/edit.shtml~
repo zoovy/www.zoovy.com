@@ -1,0 +1,23 @@
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<br>
+<center>
+<table class='zoovytable'>
+<tr><td class="zoovytableheader">Viewing <!-- DOCID --> <!-- AS_TYPE --></td></tr>
+<tr><td>
+<form action="index.cgi" method="POST">
+<input type="HIDDEN" name="ACTION" value="SAVEAS">
+<input type="HIDDEN" name="DOCID" value="<!-- DOCID -->">
+<input type="HIDDEN" name="FORMAT" value="<!-- FORMAT -->">
+
+<textarea name="CONTENT" style="font-size: 8pt; font-family: courier;" cols="120" rows="25"><!-- CONTENT --></textarea>
+<br>
+<input type="checkbox" name="BACKUP"> Create Backup Copy / Restore Point<br>
+<input type="checkbox" name="REQUESTQA"> Request Quality Assurance perform testing.<br>
+<input class="button" type="submit" value="Save <!-- DOCID -->">
+
+</form>
+</td></tr></table>
+<br>
+</center>
+</body>

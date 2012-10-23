@@ -1,0 +1,47 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<!--
+https://adwords.google.com/support/aw/bin/answer.py?hl=en&answer=86277
+
+   1. A user clicks your AdWords ad.
+      2. Our googleadservices.com server places a temporary cookie on the
+user's computer or mobile device.
+   3. If the user reaches one of your designated conversion confirmation
+request pages, his or her computer or mobile device passes back the cookie
+and requests that our server send the conversion tracking text. If cookies
+are rejected for any reason, the conversions made from that user won't get
+recorded. Conversion tracking is also not supported if the mobile phone user
+disables images.
+   4. Google records the conversion event and correlates it with your
+campaign, ad group, URL and keyword.
+   5. At the next report update, you will see conversion statistics from the
+campaign level down to the keyword level.
+-->
+
+
+<center>
+<!-- DISCLAIMER -->
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Google AdWords (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="GOOGLEAW-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<br>
+JavaScript Checkout Tracking Code:<br>
+<textarea cols="70" onFocus="this.rows=30;" rows="3" name="head_code"><!-- HEAD_CODE --></textarea><br>
+<div class="hint">This is the javascript which Adwords tells you to include on your site
+in checkout.</div>
+<br>
+
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+
+</form>
+</td></tr>
+</table>

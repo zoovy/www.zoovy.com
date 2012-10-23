@@ -1,0 +1,19 @@
+<!-- SETUP_TAB -->
+
+
+<center>
+<table width=800 class="zoovytable">
+<tr><td class="zoovytableheader">Projects</td></tr>
+<tr><td>
+<table>
+<tr class="zoovysub1header">
+	<td></td>
+	<td></td>
+	<td>ID</td>
+	<td>TITLE</td>
+	<td>SECRET</td>
+</tr>
+<!-- PROJECTS -->
+</table>
+</table>
+</center>

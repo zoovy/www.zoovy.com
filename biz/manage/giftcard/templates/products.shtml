@@ -1,0 +1,65 @@
+<!-- UTILITIES_TAB -->
+
+
+<br>
+
+<div align='center'>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="SAVEPROD">
+<table width='450' class="zoovytable" cellspacing='0' cellpadding='4'>
+	<tr class="zoovytableheader">
+		<td colspan='2'>Create GiftCard Product</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+<!-- SUCCESS -->
+
+This will create a product in your store, which when purchased will create a
+gift card for the customer. The product will be assigned a SKU, but have
+unlimited inventory.
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>SKU:</td>
+		<td valign=top><input type="textbox" name="SKU"></td>
+	</tr>
+	<tr>
+		<td valign=top>Amount:</td>
+		<td valign=top>
+			<input size="5" type="textbox" name="RETAIL">
+			<div class="hint">
+			HINT: set an amount of 0 to create an "amount" option that lets the user select an amount.
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<input checked type="checkbox" name="ALLOW_NOTE"> Allow buyer to put note on card.
+		<div class="hint">
+		This will let the user specify a text note that will be sent to the recipient.
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<input checked type="checkbox" name="ALLOW_RECIPIENT"> Allow buyer to specify electronic recipient
+		<div class="hint">
+		This will automatically create an account for a recipient.
+		</div>
+		</td>
+	</tr>
+	<!--
+	<tr>
+		<td colspan='2'><input type="checkbox" name="ALLOW_MULTI"> Allow buyer to purchase multiple quantities.</td>
+	</tr>
+	-->
+	<tr>
+		<td colspan='2' align='center'><input type="submit" class="button" value=" Save "></td>
+	</tr>
+		
+</table>
+</form>
+</div>
+
+</body>
+

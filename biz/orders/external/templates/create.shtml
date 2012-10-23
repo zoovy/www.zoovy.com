@@ -1,0 +1,51 @@
+<head>
+<title>Zoovy: Create an Incomplete Item</title>
+<SCRIPT language="JavaScript">
+<!--//
+        function openWindow(url) {
+                termsWin = window.open(url, 'terms','status=no,width=638,height=400,menubar=yes,scrollbars=yes')
+                termsWin.focus(true);
+        }
+
+//-->
+</SCRIPT>
+
+</head>
+<body bgcolor="FFFFFF">
+<center><!-- REPORT_TAB --></center><br>
+<center>
+<table width="620"><tr><td>
+<form action="<!-- SCRIPT_NAME -->">
+<INPUT TYPE="HIDDEN" NAME="CMD" value="SAVE">
+<INPUT TYPE="HIDDEN" NAME="SECRETCODE" value="<!-- SECRETCODE -->">
+<font face="Arial, Helevetica">
+
+<center>
+<font face='Helevetica, Arial' size="3" class='size1'><b>Create Incomplete Item</b></font><br>
+</center>
+<font size="1">	</font><br>
+<br>
+<table>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Product Title:</b></font></td><td valign='middle' align='left'><font face='Arial'><b><input type="textbox" name="TITLE"></b></font></td></tr>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Product Price:</b></font></td><td valign='middle' align='left'><font face='Arial'><b><input type="textbox" name="PRICE"></b></font></td></tr>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Description:</b></font></td><td valign='middle' align='left'><font face='Arial'><b><textarea name="DESCRIPTION" rows='3' cols='50'></textarea></b></font></td></tr>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Taxable: </b></font></td><td valign='middle' align='left'><font face='Arial'><b><input type="checkbox" name="TAXABLE"></b></font></td></tr>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Weight: </b></font></td><td valign='middle' align='left'><font face='Arial'><b><input type="textbox" name="WEIGHT"></b></font></td></tr>
+<tr><td valign='middle' align='right'><font face='Arial'><b>Recipient Email: </b></font></td><td valign='middle' align='left'><font face='Arial'><b><input type="textbox" name="RECIPIENT"></b></font></td></tr>
+</table>
+
+<center>
+<table>
+<tr>
+	<td><input type='image' border='0' src="/images/bizbuttons/save.gif"></a></td>
+	<td><a href=".."><img border='0' src="/images/bizbuttons/cancel.gif"></a></td>
+</tr>
+</table>
+</center>
+
+</center>
+
+</font>
+</form>
+</td></tr></table></center>
+</body>

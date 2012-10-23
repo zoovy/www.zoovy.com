@@ -1,0 +1,39 @@
+Hello Kendall,
+
+Thank you for writing to Yahoo! Store.
+
+Special note for database users:
+
+If you are using a CSV database to create the items in your Store, the 
+page ID will have been created from your code field.  It is important to understand how the Store will create a page ID for your pages from the 
+Code field so you can correctly name your images.  
+
+As shown below, the Store can only create IDs that use letters, numbers 
+and hyphens (dashes).  While the Code field can use nearly any 
+character, when the ID is created, any character that is not a number, 
+letter or hyphen will be converted to a hyphen in the page ID.
+
+
+Examples:
+
+   Code      --->   Page ID    --->   Image Name
+
+   123abc           123abc            123abc.gif
+
+   123 abc          123-abc           123-abc.gif
+
+   123*abc          123-abc           123-abc.gif
+
+   12 34#8-3        12-34-8-3         12-34-8-3.gif
+
+
+Thank you again for contacting Yahoo! Customer Care.
+
+
+Regards,
+
+Yahoo! Customer Care
+
+For assistance with all Yahoo! services please visit:
+
+   http://help.yahoo.com/

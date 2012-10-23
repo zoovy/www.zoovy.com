@@ -1,0 +1,124 @@
+<!-- ORDER_TAB -->
+
+<form name="thisFrm" action="index.cgi" id="thisFrm" method='post'>
+<input type='hidden' name='CLAIMS' value='<!-- CLAIMS -->,A,B,C'>
+
+<input type='hidden' name='VERB' value='SAVE'>
+
+
+<br>
+<center>
+<table class="zoovytable" cellspacing='0' border='0'>
+<tr>
+	<td class="zoovytableheader"> Create an Order <!-- ID --></td>
+</tr>
+<tr>
+	<td>
+	<table cellspacing='0' border='0'>
+	<tr>
+		<td>Customer Email:</td>
+		<td><input type='textbox' name='EMAIL' value='<!-- EMAIL -->' size='45'></td>
+	</tr>
+	<tr>
+		<td>Customer Name:</td>
+		<td><input type='textbox' name='NAME' value='<!-- NAME -->' size='45'></td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<center>
+		<table cellpadding='5'>
+		<tr>
+			<td valign="bottom">
+			Smart Address:<br><textarea name='ADDRESS' cols='45' rows='3'></textarea>
+			</td>
+			<td valign="bottom">
+			Example:<br>123 Main Street<br>Some Optional Suite#<br>City, STATE. Zip<br>
+			</td>
+		</tr>
+		</table>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<table class="zoovytable" border='0' cellspacing='0' cellpadding='4'>
+			<tr>
+				<td class="zoovysub1header">SKU</td>
+				<td class="zoovysub1header">Qty</td>
+				<td class="zoovysub1header">Description</td>
+				<td class="zoovysub1header">Taxable</td>
+				<td class="zoovysub1header">Price</td>
+				<td class="zoovysub1header">Ounces</td>
+			</tr>
+			</tr>
+			<!-- CONTENTS -->
+			<tr>
+				<td><input type='textbox' name='SKU-A' size='15'></td>
+				<td><input type='textbox' name='QTY-A' size='3'></td>
+				<td><input type='textbox' name='TITLE-A' size='45'></td>
+				<td><input type='checkbox' name='TAXABLE-A'></td>
+				<td><input type='textbox' name='PRICE-A' size='10'></td>
+				<td><input type='textbox' name='WEIGHT-A' size='6'></td>
+			</tr>
+			<tr>
+				<td><input type='textbox' name='SKU-B' size='15'></td>
+				<td><input type='textbox' name='QTY-B' size='3'></td>
+				<td><input type='textbox' name='TITLE-B' size='45'></td>
+				<td><input type='checkbox' name='TAXABLE-B'></td>
+				<td><input type='textbox' name='PRICE-B' size='10'></td>
+				<td><input type='textbox' name='WEIGHT-B' size='6'></td>
+			</tr>
+			<tr>
+				<td><input type='textbox' name='SKU-C' size='15'></td>
+				<td><input type='textbox' name='QTY-C' size='3'></td>
+				<td><input type='textbox' name='TITLE-C' size='45'></td>
+				<td><input type='checkbox' name='TAXABLE-C'></td>
+				<td><input type='textbox' name='PRICE-C' size='10'></td>
+				<td><input type='textbox' name='WEIGHT-C' size='6'></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>Sales Tax Rate:</td>
+		<td><input type='textbox' name='TAX'></td>
+	</tr>
+	<tr>
+		<td>Shipping Amount:</td>
+		<td><input size='6' type='textbox' name='SHIPPRICE' value='<!-- SHIPPRICE -->'> via <input size='20' type='textbox' name='SHIPMETHOD' value='<!-- SHIPMETHOD -->'</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		Notes:<br><textarea rows='3' name='NOTES' cols='45'></textarea><br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type='checkbox' name='paid_in_full'> &nbsp; Set New Order as Paid in Full</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type='checkbox' checked name='add_promotions'> &nbsp; Automatically calculate promotions if available.</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type='checkbox' checked name='remove_inventory'> &nbsp; Decrement Inventory counts for items in order</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type='checkbox' <!-- CREATE_CUSTOMER_CHECKED --> name='create_customer'> &nbsp; Create a customer account</td>
+	</tr>
+</table>
+</center>
+<br>
+
+<center>
+
+	<input style="width: 100px;" onClick="
+		window.document.thisFrm.VERB.value='INCOMPLETE';
+		window.document.thisFrm.submit();
+		" type="button" class="button" value=" Create Order ">
+
+	<input style="width: 100px;" onClick="
+		window.document.thisFrm.VERB.value='INCOMPLETE';
+		window.document.thisFrm.submit();
+		" type="button" class="button" value=" Exit ">
+
+</center>	
+</form>
+
+</body>

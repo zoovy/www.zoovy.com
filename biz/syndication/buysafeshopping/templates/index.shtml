@@ -1,0 +1,28 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+<table class='zoovytable' cellspacing=0 width="650">
+<tr><td class='zoovytableheader'>BuySAFE Enabled Domains</td></tr>
+
+<tr>
+	<td class="zoovysub2header">
+<div class="hint">
+REMINDER: Only domains which are configured for BuySAFE and have Bonding enabled will
+appear in the list below.
+</div>
+
+<!-- PROFILES -->
+
+
+	</td>
+</tr>
+</table>
+
+
+<center>
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+</center>
+
+</center>
+</body>

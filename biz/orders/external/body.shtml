@@ -1,0 +1,9 @@
+<html>
+<frameset rows="*,50" frameborder=0 framespacing=0 border=0>
+<frame src="main.cgi" name="main" frameborder=0 border=0>
+<frame src="main-footer.shtml" name="footer" frameborder=0 border=0 noresize scrolling='no'>
+</frameset>
+<body>
+</body>
+</html>
+

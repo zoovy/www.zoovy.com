@@ -1,0 +1,64 @@
+<p>
+% my $menu;
+% $menu = 'default';
+	
+	<&| /includes/header/index.html, title => 'Zoovy supports Shipwire Integration', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var. 
+	
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","SHIPWIRE");
+</script>
+	
+<div style="margin-left:15px"><img src='/images/partner_pages/shipwire_header-462x85.gif' height="85" width="462" border='0' alt='Shipwire Shipping and Storage Solutions'></div>
+
+<h1>Shipwire storage and fulfillment solution</h1>
+<p>Shipwire lets you focus on growing your business by removing the hassles of storage &amp; shipping.</p>
+
+<h2>What is Shipwire?</h2>
+<p>Shipwire is a leading order fulfillment service that allows you to store merchandise in massive East and West Coast warehouses in the U.S. and Toronto, Canada. Shipwire can easily be connected to your shopping cart or payment solution. As customers order from your online store, Shipwire will pack and ship it for you. It is that simple.</p>
+
+<h2>Why do I need Shipwire?</h2>
+<p>Grow your business and save yourself a lot of headaches. Without an order fulfillment service you must work long hours or hire employees to manage order fulfillment, packaging and inventory receiving. That takes a lot of time and money. Instead, focus on growing your business, and let Shipwire handle storage and shipping.<br>
+</p>
+<h2>How does Shipwire compare to hiring employees?</h2><p>If you&rsquo;re just starting out, or looking for a better way to manage your shipping and handling, Shipwire offers an easy and quick way to outsource shipping with no startup, receiving, storage or packaging fees.</p>
+
+<p>The alternative to Shipwire is hiring employees. Hiring takes longer, is a headache, won&rsquo;t scale during your busy season and typically costs more when you consider salary, overhead, benefits and insurance. Be careful, hiring can give you the illusion of more control, if you have the time to train and manage them.</p>
+
+
+
+<h1 style='margin-top:20px;'>How does Shipwire work?</h1>
+<h2>Shipwire has created the easiest order fulfillment solution available for small and growing businesses.</h2></div>
+
+<p><img src='/images/partner_pages/shipwire_overview-488x181.jpg' alt='Shipwire overview' width='488' height='181'></p>
+
+<div>
+<h2>No Upfront Costs:</h2>
+
+<p> Shipwire makes order fulfillment easy and affordable. You pay shipping and handling fees only when an order
+is placed. Plus, there are no setup, receiving, storage or packaging fees.</p>
+
+<h2>Quick & Easy Setup: </h2>
+
+<p>Shipwire makes it simple to automate order fulfillment from your site’s buy-buttons or cart. Sign-up  online and immediately get a “ship to address” to send Shipwire your initial inventory. With the free trial, you don’t even need to give Shipwire a Credit Card until your ready to start shipping.</p>
+
+<h2>Reach New Customers in New Markets: </h2>
+
+<p>Go Global! Shipwire has Warehouses in the U.S. and Canada. We are adding International order fulfillment solutions quickly. With Shipwire handling your storage and shipping you don’t need personnel in local markets where you want to expand. Check out the Shipwire Case studies on “Entering New Markets” and consider how it will help your business
+gembedbar-howitworks-20090707/index> Provide Your Business & Your Customers with More Options: </h2>
+
+<p>With Shipwire, your customers can receive merchandise anywhere in  the world, serviced by the USPS, UPS or one of our freight partners. Also, with our facilities shipping more than 200,000 orders a month, we can customize your merchandise with assembly and kitting services at extremely affordable prices.</p>
+
+<p> Gain Ultimate Control of Your Shipping and Inventory: Shipwire provides inventory tools and transparency on order shipping and
+delivery tracking. Shipwire’s reporting tools help you understand your inbound and outbound shipping, and automate time-consuming
+
+bookkeeping tasks. <br>
+</p>
+
+
+<h2 style='margin-top:30px;'>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+</div>
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

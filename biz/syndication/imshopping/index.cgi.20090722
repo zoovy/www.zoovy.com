@@ -1,0 +1,198 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use SYNDICATION;
+use DOMAIN::TOOLS;
+use strict;
+
+my $dbh = &DBINFO::db_zoovy_connect();	
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_P&16');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+
+my @BC = (
+      { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', },
+      { name=>'Bizrate',link=>'http://www.zoovy.com/biz/syndication/bizrate','target'=>'_top', },
+      );
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+
+my $template_file = 'index.shtml';
+if ($FLAGS !~ /,XSELL,/) {
+	$template_file = 'deny.shtml';
+	}
+
+my $q = undef;
+
+if ($VERB eq 'DELETE') {
+	my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'BZR');
+	$so->nuke();
+	$VERB = '';
+	}
+
+
+if ($VERB eq 'SAVE') {
+	my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'BZR');
+	tie my %s, 'SYNDICATION', THIS=>$so;
+	
+	$s{'.user'} = $ZOOVY::cgiv->{'user'};
+	$s{'.pass'} = $ZOOVY::cgiv->{'pass'};
+
+	my $ERROR = '';
+	if ($ERROR eq '' && $s{'.user'} eq '') { $ERROR = "Bizrate username is required"; }
+	if ($ERROR eq '' && $s{'.pass'} eq '') { $ERROR = "Bizrate password is required"; }
+
+   my $qtSCHEDULE = "''";
+   if ($FLAGS =~ /,WS,/) {
+		$s{'.schedule'} = $ZOOVY::cgiv->{'SCHEDULE'};
+      &ZWEBSITE::save_website_attrib($USERNAME,'bizrate_schedule',$s{'.schedule'});
+      }
+
+	if ($ERROR ne '') {
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>$ERROR</font>";
+		}
+	else {
+		$s{'IS_ACTIVE'} = 1;
+		$so->save();
+		}
+	$VERB = '';
+
+	my $changed = 0;
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+	foreach my $safe ($NC->paths()) {
+		next if (not defined $ZOOVY::cgiv->{'navcat-'.$safe});
+		# next if ($q->param('navcat-'.$safe) eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if ($metaref->{'BIZRATE_CAT'} eq $ZOOVY::cgiv->{'navcat-'.$safe});
+		$metaref->{'BIZRATE_CAT'} = $ZOOVY::cgiv->{'navcat-'.$safe};
+		$NC->set($safe,metaref=>$metaref);
+		}
+	$NC->save(); 
+	undef $NC;
+
+	&ZWEBSITE::save_website_attrib($USERNAME,'bizrate',time());
+	}
+
+
+if ($VERB eq 'EDIT') {
+	my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+	$GTOOLS::TAG{'<!-- PROFILE -->'} = $PROFILE;
+	push @BC, { name=>'Edit Profile: '.$PROFILE };
+
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'BZR');
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	$GTOOLS::TAG{'<!-- USER -->'} = $s{'.user'};
+	$GTOOLS::TAG{'<!-- PASS -->'} = $s{'.pass'};
+
+	$GTOOLS::TAG{'<!-- STATUS -->'} = $so->statustxt();
+	$GTOOLS::TAG{'<!-- FILENAME -->'} = "http://static.zoovy.com/merchant/$USERNAME/$PROFILE-bizrate.txt";
+
+
+	if ($FLAGS =~ /,WS,/) {
+	   my $c = '<option value="">Not Set</option>';
+		require WHOLESALE;
+		foreach my $sch (@{&WHOLESALE::list_schedules($USERNAME)}) {
+			$c .= "<option ".(($s{'.schedule'} eq $sch)?'selected':'')." value=\"$sch\">$sch</option>\n";
+			}
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = $c;
+	   }
+	else {
+		$s{'.schedule'} = '';
+	   $GTOOLS::TAG{'<!-- SCHEDULE -->'} = '<option value="">Not Available</option>';
+  		}
+
+	my ($domain,$ROOTCAT,$nsref) = $so->syn_info();
+
+	my $c = '';
+	use Data::Dumper;
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+	foreach my $safe (sort $NC->paths($ROOTCAT)) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if (substr($pretty,0,1) eq '!');
+
+		my $name = ''; 
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		if (substr($safe,0,1) eq '.') {
+			foreach (split(/\./,$safe)) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+			}
+		elsif (substr($safe,0,1) eq '$') {
+			$name = "LIST: ".$pretty;
+			}
+		my $val = $metaref->{'BIZRATE_CAT'};
+		$c .= "<tr><td nowrap>$name</td><td><input type='textbox' size='10' name='navcat-$safe' value='$val'></td></tr>\n";
+		}
+	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+
+
+	my $logsref = $so->logs();
+	if (defined $logsref) {
+		my $c = '';
+		foreach my $logset (@{$logsref}) {
+			$logset->[1] =~ s/(zoovy:\w+)/<font color=red>$1<\/font>/g;
+			$logset->[1] =~ s/(gb_missing_\w+.csv)/<a href="http:\/\/static.zoovy.com\/merchant\/$USERNAME\/$1">$1<\/a>/g;
+			$c .= "<tr><td>$logset->[0]</td><td>$logset->[1]</td><td>".&ZTOOLKIT::pretty_date($logset->[2],1)."</td></tr>\n";
+			}
+		$GTOOLS::TAG{'<!-- LOGS -->'} = $c;
+		}
+	else {
+		$GTOOLS::TAG{"<!-- LOGS -->"} = '<tr><td><i>there are no logs recorded for this marketplace.</td></tr>';
+		}
+
+
+
+	$template_file = 'edit.shtml';
+	}
+
+
+if ($VERB eq '') {
+	my $profref = &DOMAIN::TOOLS::syndication_profiles($USERNAME,PRT=>$PRT);
+	my $c = '';
+	my $cnt = 0;
+	my $ts = 0;
+	foreach my $ns (sort keys %{$profref}) {
+		my $class = ($cnt++%2)?'r0':'r1';
+		$c .= "<tr>";
+		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
+		$c .= "<a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>";
+		$c .= " | ";
+		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=BZR&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		$c .= "</td>";
+		$c .= "</tr>";
+		my ($s) = SYNDICATION->new($USERNAME,$ns,'BZR');
+		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+	$template_file = 'index.shtml';
+	}
+
+
+
+&GTOOLS::output(
+   'title'=>'Bizrate Syndication',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>'#50374',
+   'tabs'=>[
+      ],
+   'bc'=>\@BC,
+   );
+
+&DBINFO::db_zoovy_close();
+

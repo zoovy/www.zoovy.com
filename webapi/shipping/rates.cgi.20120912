@@ -1,0 +1,129 @@
+#!/usr/bin/perl
+
+use CGI;
+use strict;
+use lib "/httpd/modules";
+require PRODUCT;
+require ZOOVY;
+require ZWEBSITE;
+require CART;
+require INVENTORY;
+$|++;
+my $q = new CGI;
+
+##
+## this is used by the shipping calculator
+##
+
+# Make an upper case reference to hash.
+my %PARAMS = ();
+my $k;
+foreach $k ($q->param()) { $PARAMS{uc($k)} = $q->param($k); }
+
+if ($PARAMS{'DEBUG'}) {
+	print "Content-type: text/plain\n\n";
+	print "Debugging enabled raw output below:\n";
+	}
+
+my $ERROR = '';
+#if (not defined $PARAMS{'USERNAME'}) {
+#	my $URI = $ENV{'REQUEST_URI'};
+#	if ($URI =~ /USERNAME=([\w]+)[\/]?/) { $PARAMS{'USERNAME'} = $1; }
+#	}
+
+if (not defined $PARAMS{'USERNAME'}) { 
+	$ERROR = 'No valid username specified'; 
+	}
+
+if (defined $PARAMS{'APPKEY'} ) {
+	## Shipping Calculator
+	if ($PARAMS{'APPKEY'} eq 'FizzyWigDingleBerry') {
+		}
+	else {
+		$ERROR = 'Invalid APPKEY specified';
+		}
+
+	}
+
+&ZOOVY::confess($USERNAME,"LEGACY DEPRECATED SHIPPING CALCULATOR");
+die();
+
+
+my $USERNAME = $PARAMS{'USERNAME'};
+
+
+##
+## Parameters: USERNAME, PASSWORD, COUNTRY, ZIP, WEIGHT, PRICE<br>
+##
+my $CART = CART->new($USERNAME,'*');
+if (defined $PARAMS{'COUNTRY'}) { $CART->save_property('cgi.country',$PARAMS{'COUNTRY'}); }
+if (defined $PARAMS{'ZIP'}) { $CART->save_property('cgi.zip',$PARAMS{'ZIP'}); }
+if (defined $PARAMS{'STATE'}) { $CART->save_property('cgi.state',$PARAMS{'STATE'}); }
+if (defined $PARAMS{'COD'}) { $CART->save_property('cgi.cod',$PARAMS{'COD'}); }
+
+if (defined $PARAMS{'SKU'}) {
+	## LEGACY: CONTENTS BASED METHODS
+	my $STID = $PARAMS{'SKU'};
+
+#	my $wt = &ZOOVY::fetchproduct_attrib($USERNAME,$PARAMS{'SKU'},'zoovy:base_weight');
+#	my $price = sprintf("%.2f",&ZOOVY::fetchproduct_attrib($USERNAME,$PARAMS{'SKU'},'zoovy:base_price'));
+#	$CONTENTS = "<product id=\"$PARAMS{'SKU'}\" price=\"$price\" qty=\"1\" wt=\"$wt\">product name</product>\n";
+	
+	my ($pid,$claim,$invopts,$noinvopts,$virtual) = &PRODUCT::stid_to_pid($STID);
+	my $prodref = &ZOOVY::fetchsku_as_hashref($USERNAME,$pid);
+	my $price = $prodref->{'zoovy:base_price'};
+	if ($price eq '') { $price = 0.01; }
+
+	my ($err,$msg) = $CART->stuff()->legacy_cram({
+		stid=>$STID,
+		pid=>$pid,
+		qty=>1,
+		base_price=>$prodref->{'zoovy:base_price'},
+		full_product=>$prodref,
+		});
+
+	if ($err) { $ERROR = $msg; }
+
+	}
+#elsif (defined $PARAMS{'ORDER_ID'}) {
+#	require ORDER;
+#	my $ORDER_ID = uc($PARAMS{'ORDER_ID'});
+#	my ($o,$err) = ORDER->new($USERNAME,$ORDER_ID);
+#	if (not $err) { $CART = CART->new($USERNAME,'*',order=>$o);	} else { $ERROR = "Invalid order id $ORDER_ID"; }
+#	}
+#elsif (defined $PARAMS{'STUFF'}) {
+#	require STUFF::CGI;
+#	my @ERRORS = ();
+#	STUFF::CGI::parse_params($USERNAME,\%PARAMS,\%PARAMS,0,\@ERRORS);
+#	if (scalar(@ERRORS)>0) {
+#		$ERROR = join(" ",@ERRORS);
+#		}
+#	}
+
+
+##
+##
+##
+
+my $out = '';
+if ($ERROR eq '') {
+	$CART->shipping();
+	$out = &ZSHIP::xml_out($CART,1);
+
+	print "Content-type: text/xml-success\n\n";
+	print "<?xml version=\"1.0\"?>\n";
+	print "<CalcShipping>";
+	print "<Rates>$out</Rates>";
+	# print "<DEBUG><![CDATA["; use Data::Dumper; print Dumper($CART); print "]]></DEBUG>";
+	print "</CalcShipping>";
+	}
+else {
+	print "Content-type: text/xml-error\n\n";
+	print "<?xml version=\"1.0\"?>\n";
+	print "<CalcShipping>";
+	print "<Error>$ERROR</Error>";
+	print "</CalcShipping>";
+	}
+
+exit(0);
+

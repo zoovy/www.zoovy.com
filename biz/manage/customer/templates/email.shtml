@@ -1,0 +1,53 @@
+<!-- HIDDEN_TABS -->
+
+<div align="center">
+<form name="topFrm" method="post" action="index.cgi" style="margin: 0px;">
+<input type="hidden" name="CID" value="<!-- CID -->">
+<input type='hidden' name="VERB" value='SAVE'>
+
+
+<script type="text/javascript">
+<!--
+
+function load_email(msgid) {
+	var emails = <!-- JSON_EMAILS -->;
+	for (i in emails) {
+		// alert(emails[i]);
+		if (emails[i]["MSGID"] == msgid) {
+			document.topFrm.MSGSUBJECT.value = emails[i]["MSGSUBJECT"];
+			document.topFrm.MSGBODY.value = emails[i]["MSGBODY"];
+			}
+		}
+	// alert(msgid);
+	}
+	
+//-->
+</script>
+
+<table class="zoovytable" cellspacing="0" cellpadding="0" width="600">
+<tr class="zoovytableheader" style="height: 22px;">
+	<td align="left" class="zoovytableheader"><b>&nbsp;Email: <!-- EMAIL --></b></td>
+	<td align="right" nowrap class="zoovytableheader"><b>Cid: <!-- CID --> | Prt: <!-- PRT --></b></td>
+</tr>
+<tr>
+<td colspan="2">
+Available Emails:
+<!-- EMAILS -->
+<br>
+</td></tr>
+<tr><td>
+Subject: <input type="textbox" size="80" maxlength="100" name="MSGSUBJECT"><br>
+<br>
+<textarea rows=5 cols=60 name="MSGBODY"></textarea><br>
+
+<center>
+<input class="button2" type="button" onClick="topFrm.VERB.value='EMAIL-SEND'; topFrm.submit(); " value=" Send ">
+&nbsp;
+<input class="button2" type="button" onClick="topFrm.VERB.value='EDIT'; topFrm.submit();" value=" Back ">
+</center>
+<br>
+</td>
+</tr>
+</table>
+
+</form>

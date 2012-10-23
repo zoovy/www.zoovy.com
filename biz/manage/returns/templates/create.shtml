@@ -1,0 +1,54 @@
+<!-- UTILITIES_TAB -->
+
+<h1>Create a new return policy</h1>
+<div class="hint">
+	Return Policies are associated with products, it is not uncommon for
+stores to have multiple return policies for different types of items
+examples might be: "STANDARD", "SPECIALORDER", "NORETURNS"
+</div>
+<form action="index.cgi" method="POST">
+<table>
+	<tr>
+		<td>ID:</td>
+		<td><input type="textbox" length="14" size="14" name="ID"></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<div class="hint">A 10 digit code which will be used to refer to this return
+policy, some profiles are reserved/built into the system.
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td>Title:</td>
+	</tr>
+	<tr>
+		<td>Plaintext Policy:</td>
+	</tr>
+	<tr>
+		<td>CashBack Max Allowed Time (in Days)</td>
+	</tr>
+	<tr>
+		<td>Excahnge Max Allowed Time (in Days)</td>
+	</tr>
+	<tr>
+		<td>StoreCredit Max Allowed Time (in Days)</td>
+	</tr>
+	<tr>
+		<td>Auto-Issue-RMA</td>
+	</tr>
+	<tr>
+		<td>Policy Statement</td>
+	</tr>
+	<tr>
+		<td>Restocking Fee %:</td>
+	</tr>
+	<tr>
+		<td>Prepaid Airbill</td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+<input type="submit" class="button">
+</form>

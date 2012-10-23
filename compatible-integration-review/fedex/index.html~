@@ -1,0 +1,55 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy offers exceptional integration with FedEx', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","FEDEX");
+</script>
+
+<img src='/images/partner_pages/fedex_header-462x85.gif' height="85" width="462" border='0' alt='Listing and selling on Amazon made easy' />
+
+<p>The FedEx<sup>&reg;</sup> Compatible functionality  in Zoovy eCommerce web stores provides seamless FedEx checkout-integration for eBay sellers and other major marketplaces such as Shopping.com and Overstock.com. Using Zoovy with FedEx Compatible shipping is as simple as a single click.</p>
+
+
+
+<h2>Immediate Customer Notification &amp; Tracking</h2>
+<p>Tracking numbers are automatically stored in Zoovy Order Manager and sent directly to the customer.</p>
+
+<h2>FedEx Airbill Printing</h2>
+<p>Faster Shipping - Print FedEx airbills directly from Zoovy Order Manager, eliminating the need to export shipping information or switch applications, allowing more packages to be shipped in less time.</p>
+<p>User Accountability - with Zoovy order manager, users know exactly which employee shipped each package. Use this information to create reports to gauge employee productivity, and to track employee errors. </p>
+
+<h3>Transparent Checkout Integration</h3>
+<p>FedEx is automatically available as the users&#8217; shipping provider in the Zoovy eCommerce software.</p>
+
+<h3>Shipping Calculator</h3>
+<p>Zoovy provides the FedEx compatible shipping calculator on eBay auctions.</p>
+
+<h3>Integrated FedEx Scale Support</h3>
+<p>Easy one click scale integration within the Zoovy software. Zoovy supports all of the most popular scale models.</p>
+
+<h2>Resources for FedEx Compatible Customers</h2>
+<ul>
+  <li><a href="http://www.fedex.com/us/certifiedsolutions/customer/benefits.html" target="_blank">More information on FedEx Certified Solutions</a></li>
+  <li><a href="http://webdoc.zoovy.com/doc-50496" target="_blank">FedEx Shipping Manager in Order Manager Docs</a></li>
+<!--   <li><a href="http://www.zoovy.com/track.cgi?P=fedex&amp;SENDTO=/freetrial">Setup Trial / Request More Information</a></li> -->
+</ul>
+
+
+<p class='small'>FedEx logos used by permission. All rights reserved. A FedEx Compatible Solution means the FedEx functionality within the Zoovy has passed FedEx certification testing.</p>
+
+<br>
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

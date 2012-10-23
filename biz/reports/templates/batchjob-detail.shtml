@@ -1,0 +1,55 @@
+<!-- REPORT_TAB -->
+
+<!-- OUTPUT -->
+<center>
+<table class="zoovytable" width="800">
+<tr>
+	<td colspan=2 class='zoovytableheader'>General Job Info</td>
+</tr>
+<tr>
+	<td>Job Id:</td>
+	<td><!-- ID --></td>
+</tr>
+<tr>
+	<td>Title:</td>
+	<td><!-- TITLE --></td>
+</tr>
+<!-- VIEW_URL -->
+<tr>
+	<td>Status:</td>
+	<td><!-- STATUS --></td>
+</tr>
+<tr>
+	<td>User:</td>
+	<td><!-- LUSERNAME --></td>
+</tr>
+<tr>
+	<td>Created:</td>
+	<td><!-- CREATED --></td>
+</tr>
+<tr>
+	<td>Finished:</td>
+	<td><!-- FINISHED --></td>
+</tr>
+<tr>
+	<td>Output Notes:</td>
+	<td><!-- OUTPUT_NOTES --></td>
+</tr>
+
+</table>
+<form id="thisFrm" name="thisFrm" action="index.cgi">
+	<input type="hidden" name="VERB" value="">
+	<input type="hidden" name="JOBID" value="<!-- ID -->">
+	<input type="button" class="button" onClick="thisFrm.VERB.value='BATCH-CLEANUP'; thisFrm.submit();" value="Cleanup">
+</form>
+<br>
+<br>
+
+<table class="zoovytable" width="800">
+<tr>
+	<td class='zoovytableheader'>Job Status Logs</td>
+</tr>
+	<!-- SLOG_OUTPUT -->
+</table>
+</center>
+

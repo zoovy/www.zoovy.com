@@ -1,0 +1,79 @@
+#if ($VERB eq 'VERIFY') {
+#	my $usercode = $q->param('usercode');
+#
+#	if ($usercode eq '***') {
+#		$usercode = $code;
+#		}
+#	
+#	if ($usercode ne $code) {
+#		print "Sorry, but $usercode is not the proper activation code, please try again<br>";
+#		$VERB = 'CALLME';
+#		}
+#	else {
+#		my ($dbh) = &DBINFO::db_zoovy_connect();
+#		my $pstmt = "update LEADS set PHONE_VERIFIED=1 where ID=".int($leadid);
+#		$dbh->do($pstmt);
+#		&DBINFO::db_zoovy_close();
+#		$VERB = 'CREATE';
+#		}
+#	}
+
+
+
+#if ($VERB eq 'CALLME') {
+#	## 
+#	## MAKE OUTBOUND CALL
+#	##
+#	my $dbh = &DBINFO::db_zoovy_connect();
+#	my $pstmt = "update LEADS set PHONE_ATTEMPTS=PHONE_ATTEMPTS+1,PHONE_NUMBER=".$dbh->quote($phone)." where ID=".int($leadid);
+#	print STDERR $pstmt."\n";
+#	$dbh->do($pstmt);
+#	&DBINFO::db_zoovy_close();
+#	
+#	my $vcode = $code;
+#	$vcode =~ s/([\d])/$1\. /g;  ## change 1234 to 1. 2. 3. 4.
+#
+#	my $xml = qq~<campaign menuid="34896-873760401" username="zoovy" password="password1" action="0"><prompts><prompt promptid="2" tts="$vcode" /></prompts><phonenumbers><phonenumber number="$phone" callid="Zoovy, Inc." callerid="8779668948" /></phonenumbers></campaign>~;
+#	print STDERR $xml;
+#
+#   use LWP::UserAgent; my $ua = LWP::UserAgent->new; $ua->timeout(10); $ua->env_proxy;   
+#   
+#   require HTTP::Headers;
+#   my $h = HTTP::Headers->new;
+#   $h->header('Content-Type'=>'text/xml');
+#   $h->header('Content-Length'=>length($xml));
+#   
+#	my $request = HTTP::Request->new('POST','http://api.voiceshot.com/ivrapi.asp',$h); 
+#	$request->content($xml);
+# 	my $response = $ua->request($request);
+#
+#	if (not $response->is_success()) {
+#		use Data::Dumper;
+#		print STDERR Dumper($response);
+#		&ZOOVY::confess("billing",Dumper($response),justkidding=>1);
+#		}
+#
+#</%perl>
+#
+#<br>
+#<h3>We are attempting to call you.</h3>
+#<i>An automated call will be placed to you within 60 seconds, 
+#be prepared to receive a 3 digit verification code. 
+#</i><br>
+#<form action="/register/index.html">
+#<input type="hidden" name="VERB" value="VERIFY">
+#<input type="hidden" name="leadid" value="<% $leadid %>">
+#Phone Number: <input type="textbox" name="phone" value="<% $phone %>"><input type="submit" value=" Try Again ">
+#<br>
+#<br>
+#<h3>Please provide the verification code:</h3>
+#Verification Code: <input type="textbox" name="usercode" size="3" maxlength="3" value=""><br>
+#<input type="submit" value=" Select Account Type ">
+#</form>
+#<br>
+#
+# 
+#<%perl>
+# 	 }  
+ 
+

@@ -1,0 +1,102 @@
+<!-- SETUP_TAB -->
+
+<br>
+
+<center>
+<table width="500" class='zoovytable' cellpadding=4 cellspacing=0>
+<tr>
+<tr>
+	<td class='zoovytableheader' valign="top">
+	<b>Remove Existing Profile:</b> 
+	</td>
+</tr>
+<tr>
+	<td>
+	
+	<div class="hint">
+	<i>"Profiles are like the cornerstone of a building, 
+	taking them away is rarely necessary, and typically dangerous."</i><br>
+	 -- Brian Horakh, Zoovy System Architect</div>
+<br>
+	Removing profiles from the system is very dangerous. If the profile is
+still being referenced by a product or website the removing it can cause a enormously
+wide range of nasty business impacting issues ranging from minor problems
+such as missing contact information, to more severe blank emails and
+blank/corrupt listings, a large briar patch of issues. <br>
+<br>
+It is your responsibility to make sure a profile is NOT in use prior to removing it.
+At a minimum this means making sure that no products are using the profile, and
+no domains use the profile, and no listings are live, or scheduled for any
+marketplace which has been created using this profile.<br>
+<br>
+<font color='red'>If you cannot say with absolute certainty that the profile is not in use
+please do NOT proceed!</font><br>
+<br>
+Diagnosis of technical issues stemming from deleted profiles can be very difficult and 
+resource intensive. If the removal of a profile is determined to be the
+cause you will incur additional fees and face possible loss of removal
+profile priviledges for repeat offenders.<br>
+<br>
+It's also worth mentioning that most profiles consume less than 20k of disk space on 
+your account (so 50 profiles = 1mb of space) so removing them to save space is
+really silly. 
+<br>
+	
+	To continue with profile removal, you must select the profile twice, and check all three boxes
+below.<br>
+<br>
+
+	<form action="index.cgi">
+		<input type="hidden" name="ACTION" value="REALLY_DELETE_PROFILE">
+	<!-- MESSAGE -->	
+	<table>
+		<tr>
+			<td valign="top" nowrap width=1>Profile to Remove:</td>
+			<td valign="top">
+				<select name="REMOVE1">
+					<option value=""> -- select --</option>
+					<!-- REMOVE -->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap width=1>Profile to Remove:</td>
+			<td valign="top">
+				<select name="REMOVE2">
+					<option value=""> -- select --</option>
+					<!-- REMOVE -->
+				</select> (AGAIN)
+			</td>
+		</tr
+		<tr>
+			<td colspan='2'>
+				<input type="checkbox" name="CHECK1"> Yes, I have read the
+statement above about the issues and resulting consequences that can stem 
+from removing profiles.
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<input type="checkbox" name="CHECK2"> Yes, I am really sure I
+want to do this, I've totally thought this through and it still seems like a
+good idea.
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<input type="checkbox" name="CHECK3"> Yes, I am really, really,
+sure. My mind is made up. There is absolutely nothing you can do to talk me out of this.
+			</td>
+		</tr>
+	</table>
+	<input class="button" type="submit" value=" Remove Profile "> &nbsp;
+	<input class="button" type="button" onClick="document.location='index.cgi';" value=" Cancel "> &nbsp;
+	</form>	
+	</td>
+</tr>
+</table>
+<br>
+
+
+
+<!-- FOOTER -->

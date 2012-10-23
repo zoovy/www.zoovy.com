@@ -1,0 +1,43 @@
+<!-- SETUP_TAB -->
+<center>
+
+<table><tr><td valign="middle">
+<img src="/biz/setup/shipping/images/ups_logo.gif" width="45" height="50">
+</td><td valign="middle">
+<i>UPS OnLine&reg; Tools License and Registration Wizard</i><br>
+</td></tr></table>
+
+<form action="upsapi.cgi" method="POST">
+<input type="hidden" name="VERB" value="config">
+<input type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
+
+<table width="500"><tr><td>
+<font size="2" face="arial, helvetica">
+<p><b>Registration successful!</b></p>
+
+<p>Thank you for registering to use the UPS OnLine&reg; Tools with Zoovy.</p>
+
+<p>To learn more about UPS OnLine&reg; Tools, please visit
+<a href="http://www.ec.ups.com" target="_new">www.ec.ups.com</a></p>
+
+<p>Still handwriting your UPS shipping labels?
+<a href="http://www.ups.com/bussol/solutions/internetship.html" target="_new">UPS Internet Shipping</a>
+allows you to electronically prepare domestic and international shipments
+from the convenience of any computer with internet access.</p>
+
+</td></tr></table>
+
+<br>
+
+<center>
+<a href="<!-- EXIT_URL -->" target="_top"><img border="0" src="/images/bizbuttons/proceed.gif"></a><br>
+</center>
+
+
+
+</form>
+
+<!-- UPS_DISCLAIMER -->
+
+</center>
+</body>

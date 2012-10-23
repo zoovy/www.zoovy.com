@@ -1,0 +1,75 @@
+<!-- SETUP_TAB -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="middle">
+<CENTER>
+<font class='bigtitle'>Create a Product List</font><br>
+</font>
+<br>
+
+<table width="80%">
+<tr><td>
+<font face="verdana, arial, helvetica" size='2'>
+<u>USAGE:</u> Enter the List name you wish to create. 
+List names may be a combination of both upper and lower case characters and numbers, punctuation, or other characters. 
+When you are done press the SAVE button. Simply put, lists are just another way of 
+grouping products together without needing to create a category.<br>
+<br>
+Lists can be referenced on multiple pages. For example you might use a list to create a "Recommended Products", or
+"Best Sellers" list that can be displayed by both products, as well as in the categories those products are displayed in.
+(Hint: it is our intention that Zoovy will eventually create and automatically update a variety of lists for you.)
+</font>
+</td></tr>
+</table>
+
+<FORM METHOD="POST" ENCTYPE='multipart/form-data' onSubmit="">
+<input type="hidden" name="ACTION" value="SAVELIST">
+<input type="hidden" name="MODE" value="<!-- MODE -->">
+<input type='hidden' name='EXIT' value='<!-- EXIT -->'>
+<input type='hidden' name='PATH' value='<!-- PATH -->'>
+
+<font face="verdana, arial, helvetica" size="3">
+<B>List Name:</B>
+</font>
+&nbsp;&nbsp;
+<INPUT TYPE='text' NAME='PRETTY' VALUE='' SIZE='25' MAXLENGTH='25'><BR>
+<br>
+<br>
+<br>
+
+<INPUT BORDER=0 TYPE='image' NAME='SAVE' SRC='/images/bizbuttons/save.gif'>&nbsp;&nbsp;
+<A HREF="index.cgi?EXIT=<!-- EXIT -->"><IMG SRC='/images/bizbuttons/exit.gif' BORDER=0></A>
+<br>
+<br>
+<table width="80%">
+<tr><td>
+<font class='small' face="arial" size='2'>
+<u>SPECIAL CONSIDERATIONS:</u> <br>
+<br>
+<u>TIP HIDDEN LISTS:</u> If you don't want the name of the list to be displayed, or the products in the list to be indexed then in
+search then you should pre-pend an exclamation mark (!) as the very first character the list name.
+<br><br>
+<u>META PARAMETERS:</u> 
+Using Meta Parameters it is possible to create lists which map to a search results, or even
+another store, or ebay listings. Example: CATALOG=DEFAULT&QUERY=string
+<table>
+<tr>
+	<td><font color='777777'>Special Meta Parameters:</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td><input type='text' NAME='META' VALUE='' SIZE='50'></td>
+</tr>
+</table>
+
+
+
+</font>
+</td></tr>
+</table>
+
+</FORM>
+
+</td></tr>
+</table>
+
+</BODY>
+</HTML>

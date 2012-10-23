@@ -1,0 +1,78 @@
+<form id="add-item-form" method="POST" action="/biz/ebay/catchooser2008/index.cgi/add_item">
+  [% IF is_media_cat ## display ISBN field %]
+  <div id="external-ebay-id">
+    To improve your listing, you can provide UPC/ISBN/EAN number
+and eBay will insert additional info into Item Specifics - for example cover (picture), rating and description for DVDs, or cover for a book (if eBay has such information in inner database).<br>
+Can be used with Books/DVDs/Media categories.<br>
+    <select name="ebay:ext_pid_type" id="ext_pid_type">
+     <option value="UPC">UPC</option>
+     <option value="ISBN">ISBN</option>
+     <option value="EAN">EAN</option>
+    </select>
+    <input type="text" size="25" name="ebay:ext_pid_value" id="ext_pid_value">
+  <br><br>
+  </div>
+  [% END %]
+  <div id="category-specifics">[% specifics_html %]
+    [% IF selected_category.item_specifics_enabled %]
+    <div id="custom_specifics">
+      <p><a href="javascript:void(0);" id="add_custom_specific"><img src="/biz/ebay/catchooser2008/images/add_cs.gif" />Add a custom detail</a></p>
+    </div>
+    [% END %]
+  [%- IF specifics_html %]
+    [%- INCLUDE '_return_policy_table.tt2' %]
+  [%- END %]
+  [%- IF product_id %]
+    <input type="hidden" name="product_id" value="[% product_id %]">
+  [%- END %]
+  </div>
+  <input type="hidden" name="primary_category" value="[% selected_category.id %]" />
+
+  <div id="buttons">
+    <input type="submit" id="verify-add-item-button" value="Save Category and Item Specifics" />
+  </div>
+</form>
+
+<!-- other attribute select fix -->
+<script>
+function display_input_for_other(el,attributeId, attributeValue) {
+	if(attributeValue== -6)	{
+		$(el).after('<input onFocus="if(this.value==\'Enter Other Value\')this.value=\'\'" onBlur="if(this.value==\'\')this.value=\'Enter Other Value\'" type="text" value="Enter Other Value" class="other_value" name="other_'+el.name+'" id="other_'+el.name+'" />');
+	} else {
+    $('input#other_'+el.name+'').hide();
+  }
+}
+</script>
+
+<script type="text/javascript">
+[%- FOREACH attributeSet IN cs.keys %]
+  [%- attributes = cs.$attributeSet %]
+  [%- FOREACH attribute IN attributes.keys %]
+    [%- values = attributes.$attribute %]
+    [%- FOREACH value IN values %]
+    if($("[name=attr[% attributeSet %]_[% attribute %]][value=[% value %]]").attr('name')) {
+      $("[name=attr[% attributeSet %]_[% attribute %]][value=[% value %]]").attr('checked',1);
+    } else {
+      $("[name=attr[% attributeSet %]_[% attribute %]]").val('[% value %]');
+      $("[name=attr_t[% attributeSet %]_[% attribute %]]").val('[% value %]');
+      $("[name=attr_y[% attributeSet %]_[% attribute %]]").val('[% value %]');
+    }
+
+    [%- END %]
+  [%- END %]
+[%- END %]
+
+[% c1 = 0 %]
+[%- FOREACH name IN cs1.keys %]
+   $('a#add_custom_specific').click();
+   $("[name=cs_name[% c1 %]]").val("[% name %]");
+   $("[name=cs_value[% c1 %]]").val("[% cs1.$name %]");
+  [%- c1 = c1 + 1 %]
+[% END %]
+
+
+[% IF ext_pid_type && ext_pid_value %]
+  $("#ext_pid_type").val('[% ext_pid_type %]');
+  $("#ext_pid_value").val('[% ext_pid_value %]');
+[% END %]
+</script>

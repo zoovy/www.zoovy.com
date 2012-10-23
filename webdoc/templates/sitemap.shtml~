@@ -1,0 +1,53 @@
+<head>
+<title>Zoovy WebDoc Search</title>
+<link rel="STYLESHEET" type="text/css" href="http://www.zoovy.com/biz/webdoc.css">
+<style type="text/css">
+<!--
+.searchbox {height:21px; width:285px; border:#C4CCE9 2px inset;}
+-->
+</style>
+</head>
+
+<body>
+
+<div align="center" style="margin:20px 0px;">
+<img src="http://static.zoovy.com/img/proshop/W150-H33-BFFFFFF/zoovy/logos/webdoc.gif"></div>
+
+<div align="center">
+<form action="http://www.zoovy.com/webdoc/index.cgi" method="get" style="margin:0px; display:inline;">
+<input type="hidden" name="VERB" value="SEARCH">
+<input type="hidden" name="SESSION" value="<!-- SESSION -->">
+<table cellpadding="0" cellspacing="0" style="background-image:url(http://gfx.zoovy.com/webdoc/webdoc_bgmid.gif);">
+<tr>
+	<td colspan="2"><img src="http://gfx.zoovy.com/webdoc/webdoc_bgtop.gif" width="507" height="6"></td>
+</tr>
+<tr>
+	<td colspan="2" style="padding:40px 0px 4px 85px;"><b>Please type in your topic of interest here:</b></td>
+</tr>
+<tr>
+	<td style="padding-left:80px;"><input type="text" name="keywords" value="" class="searchbox"></td>
+	<td style="padding-right:76px;">
+	<input type="image" src="http://gfx.zoovy.com/webdoc/webdoc_submitbutton.gif" width="57" height="20"></td>
+</tr>
+<tr>
+	<td align="right" colspan="2" style="padding:30px 15px 8px 0px;">
+		<a href="?VERB=SITEMAP" style="padding:0px 4px;">sitemap</a>
+		<!-- 
+		<a href="/new" style="padding:0px 4px;">new</a>
+		-->
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><img src="http://gfx.zoovy.com/webdoc/webdoc_bgbot.gif" width="507" height="6"></td>
+</tr>
+</table>
+</form>
+</div>
+<br><br>
+<center>
+
+<!-- RESULTS -->
+
+</center>
+</body>
+</html>

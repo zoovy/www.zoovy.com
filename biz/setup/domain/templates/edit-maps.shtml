@@ -1,0 +1,61 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<TITLE>Zoovy - Domain Email Setup</TITLE>
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB --><center>
+<table width="80%"><tr><td>
+<font face='arial'>
+
+<center><font color='red' size='5'><b><!-- MESSAGE --></b></font></center>
+<br>
+You may add up to 50 virtual domain redirects per domain.<br>
+<br>
+<form method="index.cgi">
+<input type='hidden' name='ACTION' value='SAVE-MAPS'>
+<input type='hidden' name='DOMAINNAME' value='<!-- DOMAINNAME -->'>
+<br>
+<br>
+
+<table>
+	<tr>
+		<td align='right'><b>Domain URL:</b></td>
+		<td>http://<!-- DOMAINNAME -->/<input style='font-size: 8pt;' type='textbox' name='PATH' size='50'></td>
+	</tr>
+	<tr>
+		<td align='right'><b>Redirect to:</b></td>
+		<td><input style='font-size: 8pt;' type='textbox' name='LOCATION' size='80' value='http://<!-- USERNAME -->.zoovy.com/'></td>
+	</tr>
+	<!-- START_DISABLE_FRAMES -->
+	<Tr>
+		<td align='right'><b>Wrap in Frames:</b></td>
+		<td><input style='font-size: 8pt;' type='checkbox' name='FRAMETHIS' value='on'></td>
+	</tr>
+	<tr>
+		<td align='right'><b>Frame Title:</b></td>
+		<td><input style='font-size: 8pt;' type='textbox' name='TITLE' size='80' value='http://<!-- USERNAME -->.zoovy.com/'></td>
+	</tr>
+	<tr>
+		<td align='right'><b>Keywords:</b></td>
+		<td><textarea rows="3" cols="80" maxlength="255" style='font-size: 8pt;' name='KEYWORDS'><!-- KEYWORDS --></textarea></td>
+	</tr>
+	<!-- END_DISABLE_FRAMES -->
+</table>
+<br>
+<center>
+	<input type='image' src='/images/bizbuttons/save.gif' width='81' height='31' border='0'>
+	<a href='index.cgi?ACTION=EDITMAPPING&DOMAINNAME=<!-- DOMAINNAME -->'><img src="/images/bizbuttons/refresh.gif" border="0" width="81" height="31"></a>
+	<a href='index.cgi'><img src="/images/bizbuttons/exit.gif" border='0' width="81" height="31"></a>
+</center>
+<br>
+<hr>
+<b>Current Mappings:</b><br>
+<table border='1' cellspacing='1' cellpadding='5'>
+<!-- MAPPINGS -->
+</table>
+</font>
+</form>
+<!-- NOTES -->
+</td></tr></table>
+</center>
+</body>

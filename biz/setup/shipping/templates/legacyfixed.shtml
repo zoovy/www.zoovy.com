@@ -1,0 +1,166 @@
+<!-- SETUP_TAB -->
+<br>
+<center>
+<table width='80%'>
+<tr><td>
+<font color='red'>
+NOTE: THIS FEATURE IS DEPRECATED - YOU SHOULD MIGRATE TO ANOTHER SHIPPING METHOD AS SOON AS POSSIBLE.
+</font>
+
+<form action="legacyfixed.cgi" method="POST">
+
+<center><h1><!-- MESSAGE --></h1><!-- HELPLINK -->
+</center>
+<input type='hidden' name='ACTION' value='SAVE'>
+<center>
+<a name="SINGLE">
+<table cellpadding='1' cellspacing='0' width='625' border='0' bgcolor='311370'>
+<tr>
+	<Td>
+	<font face='arial, helvetica' color='white'><b>&nbsp; Fixed Shipping Calculator: Single External Items</b>
+	</td>
+</tr>
+<tr>
+	<td>
+	<table cellpadding='10' width='100%' bgcolor='FFFFFF' cellspacing='0' border='0'><tr><Td><font face='arial'>
+<i>Explanation: This shipping calculator is only used when one External (e.g. Auction) Item appears in the cart, 
+in addition the External Item quantity must be equal to 1.</i><br>
+<br>
+Method Name: <input type='textbox' name='SINGLE_NAME' value="<!-- SINGLE_NAME -->" maxlength="20"> (Letters A-z,0-9 and spaces only)<br>
+<br>
+<B>Behavior:</b><br>
+<input type='radio' name='SINGLE_BEHAVIOR' <!-- SINGLE_BEHAVIOR_0 --> value="0"> Disable This Shipping Method (use other methods).<br>
+<input type='radio' name='SINGLE_BEHAVIOR' <!-- SINGLE_BEHAVIOR_1 --> value="1"> Use this Method with other Calculated Methods.<br>
+<input type='radio' name='SINGLE_BEHAVIOR' <!-- SINGLE_BEHAVIOR_2 --> value="2"> Disable All Other Shipping Methods<br>
+<br>
+<b>Calculation Method:</b><br>
+<input type='radio' name='SINGLE_CALC' <!-- SINGLE_CALC_0 --> value="0"> Use Fixed Shipping Cost.<br>
+<input type='radio' name='SINGLE_CALC' <!-- SINGLE_CALC_2 --> value="2"> Add Fixed Shipping Cost to Actual Computed Shipping Cost(s).<br>
+<br>
+  <a href="rulebuilder.cgi?method=FIXED_SINGLE"><font size='2' value="">[Edit Shipping Rules]</font></a>
+	</td></tr></table>
+	</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+
+
+
+<a name="MULTI">
+<table cellpadding='1' cellspacing='0' width='625' border='0' bgcolor='311370'>
+<tr>
+	<Td>
+	<font face='arial, helvetica' color='white'><b>&nbsp; Fixed Shipping Calculator: Multiple External Items</b>
+	</td>
+</tr>
+<tr>
+	<td>
+	<table cellpadding='10' width='100%' bgcolor='FFFFFF' cellspacing='0' border='0'><tr><Td><font face='arial'>
+<i>Explanation: This shipping calculator is only used when multiple External (e.g. Auction) Items appears in the cart, for example
+a winner has won two or more different items OR the winning bid quantity was greater than one.</i><br>
+<br>
+Method Name: <input type='textbox' name='MULTI_NAME' value="<!-- MULTI_NAME -->" maxlength="20"> (Letters A-z,0-9 and spaces only)<br>
+<br>
+<b>Behavior:</b><br>
+<input type='radio' name='MULTI_BEHAVIOR' <!-- MULTI_BEHAVIOR_0 --> value="0"> Disable This Shipping Method (use other methods).<br>
+<input type='radio' name='MULTI_BEHAVIOR' <!-- MULTI_BEHAVIOR_1 --> value="1"> Use this Method with other Calculated Methods.<br>
+<input type='radio' name='MULTI_BEHAVIOR' <!-- MULTI_BEHAVIOR_2 --> value="2"> Disable All Other Shipping Methods<br>
+<br>
+<b>Calculation Method:</b><br>
+<input type='radio' name='MULTI_CALC' <!-- MULTI_CALC_0 --> value="0"> Combine All Shipping Costs.<br>
+<input type='radio' name='MULTI_CALC' <!-- MULTI_CALC_1 --> value="1"> Only Apply Most Expensive Shipping Cost one time.<br>
+<input type='radio' name='MULTI_CALC' <!-- MULTI_CALC_2 --> value="2"> Add Only the Highest Fixed Shipping Cost to Actual Computed Shipping Cost(s).<br>
+<input type='radio' name='MULTI_CALC' <!-- MULTI_CALC_3 --> value="3"> Add Any Fixed Shipping Costs to Actual Computed Shipping Cost.<br>
+<br>
+  <a href="rulebuilder.cgi?method=FIXED_MULTI"><font size='2'>[Edit Shipping Rules]</font></a>
+	</td></tr></table>
+	</td>
+</tr>
+</table>
+
+
+<br>
+<Br>
+
+<a name="COMBO">
+<table cellpadding='1' cellspacing='0' width='625' border='0' bgcolor='311370'>
+<tr>
+	<Td>
+	<font face='arial, helvetica' color='white'><b>&nbsp; Fixed Shipping Calculator: Store and External (Auction) Items</b>
+	</td>
+</tr>
+<tr>
+	<td>
+	<table cellpadding='10' width='100%' bgcolor='FFFFFF' cellspacing='0' border='0'><tr><Td><font face='arial'>
+<i>Explanation: This shipping calculator is only used when a buyer has at least one or more External (e.g. Auction) Items 
+and has also purchased items from the Storefront at the same time.</i><br>
+<br>
+Method Name: <input type='textbox' name='COMBO_NAME' value="<!-- COMBO_NAME -->" maxlength="20"> (Letters A-z,0-9 and spaces only)<br>
+<br>
+<b>Behavior:</b><br>
+<input type='radio' name='COMBO_BEHAVIOR' <!-- COMBO_BEHAVIOR_0 --> value="0"> Disable This Shipping Method (use other methods).<br>
+<input type='radio' name='COMBO_BEHAVIOR' <!-- COMBO_BEHAVIOR_1 --> value="1"> Use this Method with other Calculated Methods.<br>
+<input type='radio' name='COMBO_BEHAVIOR' <!-- COMBO_BEHAVIOR_2 --> value="2"> Disable All Other Shipping Methods.<br>
+<br>
+<b>Calculation Method:</b><br>
+<input type='radio' name='COMBO_CALC' <!-- COMBO_CALC_0 --> value="0"> Combine All Shipping Costs.<br>
+<input type='radio' name='COMBO_CALC' <!-- COMBO_CALC_1 --> value="1"> Only Apply Most Expensive Shipping Cost for one item.<br>
+<input type='radio' name='COMBO_CALC' <!-- COMBO_CALC_2 --> value="2"> Add Only the Highest Fixed Shipping Cost to Actual Computed Shipping Cost(s).<br>
+<input type='radio' name='COMBO_CALC' <!-- COMBO_CALC_3 --> value="3"> Add Any Fixed Shipping Costs to Actual Computed Shipping Cost.<br>
+<br>
+  <a href="rulebuilder.cgi?method=FIXED_COMBO"><font size='2'>[Edit Shipping Rules]</font></a>
+	</td></tr></table>
+	</td>
+</tr>
+</table>
+
+
+
+<br>
+<br>
+<a name="STORE">
+<table cellpadding='1' cellspacing='0' width='625' border='0' bgcolor='311370'>
+<tr>
+	<Td>
+	<font face='arial, helvetica' color='white'><b>&nbsp; Fixed Shipping Calculator: Store Items Only</b>
+	</td>
+</tr>
+<tr>
+	<td>
+	<table cellpadding='10' width='100%' bgcolor='FFFFFF' cellspacing='0' border='0'><tr><Td><font face='arial'>
+<i>Explanation: This shipping calculator is only used when a buyer has only items from the website into their shopping cart.</i><br>
+<br>
+Method Name: <input type='textbox' name='STORE_NAME' value="<!-- STORE_NAME -->" maxlength="20"> (Letters A-z,0-9 and spaces only)<br>
+<br>
+<b>Behavior:</b><br>
+<input type='radio' name='STORE_BEHAVIOR' <!-- STORE_BEHAVIOR_0 --> value="0"> Disable This Shipping Method (use other methods).<br>
+<input type='radio' name='STORE_BEHAVIOR' <!-- STORE_BEHAVIOR_1 --> value="1"> Use this Method with other Calculated Methods.<br>
+<input type='radio' name='STORE_BEHAVIOR' <!-- STORE_BEHAVIOR_2 --> value="2"> Disable All Other Shipping Methods.<br>
+<Br>
+<b>Calculation Method:</b><br>
+<input type='radio' name='STORE_CALC' <!-- STORE_CALC_0 --> value="0"> Combine All Shipping Costs.<br>
+<input type='radio' name='STORE_CALC' <!-- STORE_CALC_1 --> value="1"> Only Apply Most Expensive Shipping Cost for one item.<br>
+<input type='radio' name='STORE_CALC' <!-- STORE_CALC_2 --> value="2"> Add Only the Highest Fixed Shipping Cost to Actual Computed Shipping Cost(s).<br>
+<input type='radio' name='STORE_CALC' <!-- STORE_CALC_3 --> value="3"> Add Any Fixed Shipping Costs to Actual Computed Shipping Cost.<br>
+<br>
+  <a href="rulebuilder.cgi?method=FIXED_STORE"><font size='2'>[Edit Shipping Rules]</font></a>
+	</td></tr></table>
+	</td>
+</tr>
+</table>
+<br>
+<br>
+<input class='button100' type='submit' value='  Save  '>
+<input class='button100' type='button' onClick='window.location="index.cgi";' value='  Exit  '>
+<br>
+<br>
+<br>
+</form>
+</center>
+</td></tr>
+</table>
+</center>
+</body>

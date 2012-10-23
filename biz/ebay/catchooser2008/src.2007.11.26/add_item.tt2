@@ -1,0 +1,13 @@
+[%- page_title = 'Describe Your Item' -%]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="category-tree">
+  [%- INCLUDE '_category_tree.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="add-item-block">
+  [% INCLUDE '_add_item_form.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]

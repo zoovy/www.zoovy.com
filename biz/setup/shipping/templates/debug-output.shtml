@@ -1,0 +1,22 @@
+<!-- SETUP_TAB -->
+
+<h2>Shipping Rate Debugger</h2>
+<hr>
+<b>OUTPUT:</b>
+<br>
+Cart:
+<pre>
+<!-- CART -->
+</pre>
+<hr>
+<b>RESULTS:</b><br>
+<table>
+<!-- RESULTS -->
+</table>
+<hr>
+<b>Trace:</b><br>
+<table>
+	<!-- OUTPUT -->
+</table>
+
+</body>

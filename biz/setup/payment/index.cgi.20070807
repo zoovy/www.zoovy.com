@@ -1,0 +1,1011 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;
+use ZTOOLKIT;
+use strict;
+
+&ZOOVY::init();
+
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_S&8');
+if ($USERNAME eq '') { exit; }
+my $template_file = '';
+
+my $help = "#50542";
+
+## get link for WEBDOC in templates
+my ($helplink, $helphtml) = GTOOLS::help_link('Payment Gateways', 50611);
+$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helplink;
+
+my $GATEWAY_OKAY = 0;
+if ($FLAGS =~ /,[LD]2,/) { $GATEWAY_OKAY = 1; $FLAGS .= ',EBAY,'; }
+elsif ($FLAGS =~ /,LITE,/) { $GATEWAY_OKAY = 1; }
+elsif ($FLAGS =~ /,BASIC,/) { $GATEWAY_OKAY = 1; }
+
+if ($FLAGS =~ /,DEV,/) { $FLAGS .= ',API2,'; }
+
+$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+
+my $ACTION = uc($ZOOVY::cgiv->{'ACTION'});
+my %webdb  = &ZWEBSITE::fetch_website_db($USERNAME);
+
+##Breadcrumbing
+my @BC = ();
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Payment',link=>'/biz/setup/payment','target'=>'_top', };
+
+##MODES
+## ALL, GENERAL, CREDIT, PAYPAL, SPECIAL
+
+
+##SET DEFAULT PAGE
+#if ($ZOOVY::cgiv->{'MODE'} eq '') { $ZOOVY::cgiv->{'MODE'} = 'ALL'; }
+if ($ZOOVY::cgiv->{'MODE'} eq '') { $ZOOVY::cgiv->{'MODE'} = 'GENERAL'; }
+
+##Icon Hub: Brandon Pliska Feb. 10, 2005
+##ALL PAYMENTS ICON HUB
+if ($ZOOVY::cgiv->{'MODE'} eq 'ALL'){
+	if ($ACTION eq '') { $ACTION = 'ALL'; }
+		if ($ACTION eq 'ALL') {
+			$template_file = 'all.shtml';
+		}                
+}
+## END ALL PAYMENTS ICON HUB                
+
+
+##
+## General Code!
+##
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'GENERAL') {
+	if ($ACTION eq '') { $ACTION = 'GENERAL'; }
+	if ($ACTION eq "GENERAL-SAVE") {
+		$ACTION = "GENERAL";
+
+		$webdb{'payable_to'} = $ZOOVY::cgiv->{'payable_to'};
+		$webdb{"pay_cash"} = $ZOOVY::cgiv->{'pay_cash'}; 
+		$webdb{"pay_giftcard"} = $ZOOVY::cgiv->{'pay_giftcard'}; 
+		$webdb{"pay_pickup"} = $ZOOVY::cgiv->{'pay_pickup'}; 
+		$webdb{"pay_check"} = $ZOOVY::cgiv->{'pay_check'}; 
+		$webdb{"pay_check_fee"} = $ZOOVY::cgiv->{'pay_check_fee'}; 
+		$webdb{"pay_cod"} = $ZOOVY::cgiv->{'pay_cod'}; 	
+		$webdb{"pay_cod_fee"} = $ZOOVY::cgiv->{'pay_cod_fee'}; 
+		$webdb{"pay_chkod"} = $ZOOVY::cgiv->{'pay_chkod'}; 
+		$webdb{"pay_chkod_fee"} = $ZOOVY::cgiv->{'pay_chkod_fee'}; 
+		$webdb{"pay_po"} = $ZOOVY::cgiv->{'pay_po'}; 
+		$webdb{"pay_wire"} = $ZOOVY::cgiv->{'pay_wire'}; 
+		$webdb{"pay_wire_fee"} = $ZOOVY::cgiv->{'pay_wire_fee'}; 
+		$webdb{"pay_wire_instructions"} = $ZOOVY::cgiv->{'pay_wire_instructions'}; 
+		&ZWEBSITE::save_website_db($USERNAME,\%webdb);
+		%webdb = &ZWEBSITE::fetch_website_db($USERNAME);
+	
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Saved General Settings Successfully! </font></td></tr></table>";
+		$ACTION = 'GENERAL';
+		}
+		
+	if ($ACTION eq 'GENERAL') {
+		$GTOOLS::TAG{'<!-- PAYABLE_TO -->'} = $webdb{'payable_to'};
+		$GTOOLS::TAG{"<!-- PAY_PO_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PO_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PO_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PO_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PO_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PO_".$webdb{"pay_po"}."_SELECTED -->"} = "SELECTED";
+	
+		$GTOOLS::TAG{"<!-- PAY_CASH_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CASH_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CASH_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CASH_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CASH_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CASH_".$webdb{"pay_cash"}."_SELECTED -->"} = "SELECTED";
+
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_GIFTCARD_".$webdb{"pay_cash"}."_SELECTED -->"} = "SELECTED";
+	
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_PICKUP_".$webdb{"pay_pickup"}."_SELECTED -->"} = "SELECTED";
+	
+		$GTOOLS::TAG{"<!-- PAY_WIRE_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_WIRE_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_WIRE_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_WIRE_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_WIRE_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_WIRE_".$webdb{"pay_wire"}."_SELECTED -->"} = "SELECTED";
+		$GTOOLS::TAG{'<!-- PAY_WIRE_FEE -->'} = $webdb{'pay_wire_fee'};
+		$GTOOLS::TAG{'<!-- PAY_WIRE_INSTRUCTIONS -->'} = $webdb{'pay_wire_instructions'};
+	
+		$GTOOLS::TAG{"<!-- PAY_CHECK_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHECK_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHECK_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHECK_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHECK_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHECK_".$webdb{"pay_check"}."_SELECTED -->"} = "SELECTED";
+		$GTOOLS::TAG{'<!-- PAY_CHECK_FEE -->'} = $webdb{'pay_check_fee'};
+	
+		$GTOOLS::TAG{"<!-- PAY_COD_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_COD_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_COD_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_COD_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_COD_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_COD_".$webdb{"pay_cod"}."_SELECTED -->"} = "SELECTED";
+		$GTOOLS::TAG{'<!-- PAY_COD_FEE -->'} = $webdb{'pay_cod_fee'};
+	
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_NO_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_DOMESTIC_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_ALL51_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_INT_LOW_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_INT_HIGH_SELECTED -->"} = "";
+		$GTOOLS::TAG{"<!-- PAY_CHKOD_".$webdb{"pay_chkod"}."_SELECTED -->"} = "SELECTED";
+		$GTOOLS::TAG{'<!-- PAY_CHKOD_FEE -->'} = $webdb{'pay_chkod_fee'};
+	
+		$template_file = 'general.shtml';
+		push @BC, { name=>'General',link=>'/biz/setup/payment','target'=>'_top', },
+		}
+	}
+	
+
+##
+## CREDIT CARDS
+##
+
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'CREDIT') {
+
+	push @BC, { name=>'Credit Cards',link=>'/biz/setup/payment/index.cgi?MODE=CREDIT','target'=>'_top', };
+	$help = "#50304";
+
+	if ($ACTION =~ /.*-SAVE$/) {
+		## common save - saves the following:
+		##		webdb/pay_credit - a list of payment methods accepted
+		##		
+		&nuke_requests(\%webdb);
+		my $cc_types = "";
+		if ($ZOOVY::cgiv->{'cc_type_visa'})  { $cc_types .= "VISA,"; }
+		if ($ZOOVY::cgiv->{'cc_type_mc'})    { $cc_types .= "MC,"; }
+		if ($ZOOVY::cgiv->{'cc_type_amex'})  { $cc_types .= "AMEX,"; }
+		if ($ZOOVY::cgiv->{'cc_type_novus'}) { $cc_types .= "NOVUS,"; }
+		chop($cc_types);
+		$webdb{"cc_types"}             = $cc_types;
+		$webdb{"pay_credit"}           = $ZOOVY::cgiv->{"pay_credit"};
+	
+		my %fees = ();
+		$fees{'CC_TRANSFEE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'CC_TRANSFEE'}))?$ZOOVY::cgiv->{'CC_TRANSFEE'}:'0';
+		$fees{'CC_DISCRATE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'CC_DISCRATE'}))?$ZOOVY::cgiv->{'CC_DISCRATE'}:'0';
+		$fees{'VISA_TRANSFEE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'VISA_TRANSFEE'}))?$ZOOVY::cgiv->{'VISA_TRANSFEE'}:'0';
+		$fees{'VISA_DISCRATE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'VISA_DISCRATE'}))?$ZOOVY::cgiv->{'VISA_DISCRATE'}:'0';
+		$fees{'MC_TRANSFEE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'MC_TRANSFEE'}))?$ZOOVY::cgiv->{'MC_TRANSFEE'}:'0';
+		$fees{'MC_DISCRATE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'MC_DISCRATE'}))?$ZOOVY::cgiv->{'MC_DISCRATE'}:'0';
+		$fees{'AMEX_TRANSFEE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'AMEX_TRANSFEE'}))?$ZOOVY::cgiv->{'AMEX_TRANSFEE'}:'0';
+		$fees{'AMEX_DISCRATE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'AMEX_DISCRATE'}))?$ZOOVY::cgiv->{'AMEX_DISCRATE'}:'0';
+		$fees{'NOVUS_TRANSFEE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'NOVUS_TRANSFEE'}))?$ZOOVY::cgiv->{'NOVUS_TRANSFEE'}:'0';
+		$fees{'NOVUS_DISCRATE'} = (&ZTOOLKIT::isdecnum($ZOOVY::cgiv->{'NOVUS_DISCRATE'}))?$ZOOVY::cgiv->{'NOVUS_DISCRATE'}:'0';
+		$webdb{'cc_fees'} = &ZTOOLKIT::buildparams(\%fees);
+		# &ZTOOLKIT::parseparams(
+		}
+
+	if ($ACTION eq 'QBMS-SAVE') {
+		$ACTION = 'QBMS';
+		$webdb{'cc_processor'}     = 'QBMS';
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+
+		## set to null, QBMS doesn't have API for echeck
+		$webdb{'echeck_processor'} = '';
+		$webdb{'pay_echeck'} = '';
+
+		$webdb{'cc_cvvcid'} = 2; 	# 2=require CVV/CID card code | 1=optional | 0=do not ask
+		$webdb{'cc_report_voice_fail'} = 'ALWAYS';	# always treat voice auths as failures
+		$webdb{'cc_voice_fail_code'} = 202; 	# 202 is the payment code for voice fails
+
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured QBMS!</font></td></tr></table>";
+		}
+
+	if ($ACTION eq 'ECHO-SAVE') {
+		$ACTION = "ECHO";
+	
+		$webdb{'cc_processor'}     = 'ECHO';
+		$webdb{'echeck_processor'} = 'ECHO';
+		$webdb{'echeck_request_check_number'} = 1; ## Used by checkout to determine which fields to ask for
+		$webdb{'echeck_request_drivers_license_number'} = 1;
+		$webdb{'echeck_request_drivers_license_state'}  = 1;
+		$webdb{'echeck_request_drivers_license_exp'}    = 1;
+		$webdb{'echeck_request_business_account'}       = 1;
+		if ($ZOOVY::cgiv->{"echo_username"}) { $webdb{"echo_username"} = $ZOOVY::cgiv->{"echo_username"}; }
+		if ($ZOOVY::cgiv->{"echo_password"} && $ZOOVY::cgiv->{"echo_password"} ne '') { $webdb{"echo_password"} = $ZOOVY::cgiv->{"echo_password"}; }
+	
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+	
+		$webdb{'pay_echeck'}           = $ZOOVY::cgiv->{'pay_echeck'};
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		$webdb{'echeck_success_code'}  = $ZOOVY::cgiv->{'echeck_success_code'};
+		$webdb{'echeck_payable_to'}    = $ZOOVY::cgiv->{'echeck_payable_to'};
+	
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Echo!</font></td></tr></table>";
+		} ## end if ($ACTION eq 'ECHO-SAVE'...
+
+
+	if ($ACTION eq 'SKIPJACK-SAVE') {
+		$ACTION = 'SKIPJACK';
+		$webdb{'cc_processor'}     = 'SKIPJACK';
+		$webdb{'echeck_processor'} = 'NONE';
+	
+		$webdb{'skipjack_htmlserial'} = $ZOOVY::cgiv->{'skipjack_htmlserial'};
+		$webdb{'cc_cvvcid'}           = $ZOOVY::cgiv->{'cc_cvvcid'};
+	
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured SkipJack!</font></td></tr></table>";	
+		} ## end if ($ACTION eq 'SKIPJACK-SAVE'...
+
+	if ($ACTION eq "VERISIGN-SAVE") {
+		$ACTION = "VERISIGN";
+
+		$webdb{'cc_processor'}     = 'VERISIGN';
+		$webdb{'echeck_processor'} = 'NONE';
+		if ($ZOOVY::cgiv->{"verisign_username"}) { $webdb{"verisign_username"} = $ZOOVY::cgiv->{"verisign_username"}; }
+		if ($ZOOVY::cgiv->{"verisign_password"} && $ZOOVY::cgiv->{"verisign_password"} ne '') { $webdb{"verisign_password"} = $ZOOVY::cgiv->{"verisign_password"}; }
+		if ($ZOOVY::cgiv->{"verisign_partner"})  { $webdb{"verisign_partner"}  = $ZOOVY::cgiv->{"verisign_partner"}; }
+		if ($ZOOVY::cgiv->{"verisign_vendor"})   { $webdb{"verisign_vendor"}   = $ZOOVY::cgiv->{"verisign_vendor"}; }
+
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Verisign!</font></td></tr></table>";
+		} ## end if ($ACTION eq "VERISIGN-SAVE"...
+
+	if ($ACTION eq "SUREPAY-SAVE") {
+		$ACTION = "SUREPAY";
+
+		$webdb{'cc_processor'}     = 'SUREPAY';
+		$webdb{'echeck_processor'} = 'NONE';
+		if ($ZOOVY::cgiv->{"surepay_username"}) { $webdb{"surepay_username"} = $ZOOVY::cgiv->{"surepay_username"}; }
+		if ($ZOOVY::cgiv->{"surepay_password"} && $ZOOVY::cgiv->{"surepay_password"} ne '') { $webdb{"surepay_password"} = $ZOOVY::cgiv->{"surepay_password"}; }
+	
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+	
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured SurePay!</font></td></tr></table>";
+		} ## end if ($ACTION eq "SUREPAY-SAVE"...
+	
+
+	if ($ACTION eq 'AUTHORIZENET-SETUPSAVE') {
+		$ACTION = "AUTHORIZENET";
+		$webdb{"authorizenet_username"}   = $ZOOVY::cgiv->{"authorizenet_username"};
+		if ($ZOOVY::cgiv->{"authorizenet_password"} ne '') { $webdb{"authorizenet_password"} = $ZOOVY::cgiv->{"authorizenet_password"}; }
+		$webdb{"authorizenet_key"}        = $ZOOVY::cgiv->{"authorizenet_key"};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Authorize.Net username/password!</font></td></tr></table>";
+		}
+	
+
+	if ($ACTION eq "AUTHORIZENET-SAVE") {
+		$ACTION = "AUTHORIZENET";
+	
+		$webdb{'cc_processor'}     = 'AUTHORIZENET';
+		$webdb{'echeck_processor'} = 'AUTHORIZENET';
+	
+		($webdb{"authorizenet_wellsfargo"}) = $ZOOVY::cgiv->{"authorizenet_wellsfargo"};
+	
+		$webdb{'echeck_request_acct_name'} = 1; 
+		$webdb{'cc_request_business_account'}       = 0;
+		$webdb{'cc_request_tax_id'}                 = 0;
+		$webdb{'cc_request_drivers_license_number'} = 0;
+		$webdb{'cc_request_drivers_license_state'}  = 0;
+		$webdb{'cc_request_drivers_license_dob'}    = 0;
+		if ($webdb{"authorizenet_wellsfargo"}>0) {
+			$webdb{'echeck_request_business_account'}       = 1;
+			$webdb{'echeck_request_tax_id'}                 = 1;
+			$webdb{'echeck_request_drivers_license_number'} = 1;
+			$webdb{'echeck_request_drivers_license_state'}  = 1;
+			$webdb{'echeck_request_drivers_license_dob'}    = 1;
+			$webdb{'echeck_notice'} = "To process this transaction you need to either provide Driver's License or SSN / Tax ID information.";
+			# $webdb{'cc_notice'} = "To process this transaction you need to either provide Driver's License or SSN / Tax ID information.";
+			}
+	
+		if ($webdb{"authorizenet_wellsfargo"}==2) {
+			$webdb{'cc_request_business_account'}       = 1;
+			$webdb{'cc_request_tax_id'}                 = 1;
+			$webdb{'cc_request_drivers_license_number'} = 1;
+			$webdb{'cc_request_drivers_license_state'}  = 1;
+			$webdb{'cc_request_drivers_license_dob'}    = 1;
+			}
+	
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+		
+		my $cc_types = "";
+		if ($ZOOVY::cgiv->{'cc_type_visa'})  { $cc_types .= "VISA,"; }
+		if ($ZOOVY::cgiv->{'cc_type_mc'})    { $cc_types .= "MC,"; }
+		if ($ZOOVY::cgiv->{'cc_type_amex'})  { $cc_types .= "AMEX,"; }
+		if ($ZOOVY::cgiv->{'cc_type_novus'}) { $cc_types .= "NOVUS,"; }
+		chop($cc_types);
+	
+		$webdb{"cc_types"}             = $cc_types;
+		$webdb{'pay_echeck'}           = $ZOOVY::cgiv->{'pay_echeck'};
+		$webdb{"pay_credit"}           = $ZOOVY::cgiv->{"pay_credit"};
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		$webdb{'echeck_success_code'}  = $ZOOVY::cgiv->{'echeck_success_code'};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Authorize.Net!</font></td></tr></table>";
+		} ## end if ($ACTION eq "AUTHORIZENET-SAVE"...
+	
+	if ($ACTION eq "TC-SAVE") {
+		$ACTION = "TC";
+	
+		$webdb{'cc_processor'}     = 'TC';
+		$webdb{'echeck_processor'} = 'TC';
+		if ($ZOOVY::cgiv->{"tc_login"})    { $webdb{"tc_login"}    = $ZOOVY::cgiv->{"tc_login"}; }
+		if ($ZOOVY::cgiv->{"tc_password"} && $ZOOVY::cgiv->{"tc_password"} ne '') { $webdb{"tc_password"} = $ZOOVY::cgiv->{"tc_password"}; }
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+	
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Transaction Central!</font></td></tr></table>";
+		} ## end if ($ACTION eq "TC-SAVE"...
+	
+
+
+	if ($ACTION eq 'PAYPALVT-SAVE') {
+		$ACTION = 'PAYPALVT';
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Paypal Virtual Terminal!</font></td></tr></table>";
+		$webdb{'cc_processor'} = 'NONE';
+		if ($ZOOVY::cgiv->{'paypal_use_vt'}) {
+			$webdb{'cc_processor'} = 'PAYPALVT';
+			}
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		}
+
+	if ($ACTION eq "LINKPOINT-SAVE") {
+		$ACTION = "LINKPOINT";
+	
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully configured Cardservice Linkpoint!</font></td></tr></table>";
+		$webdb{'cc_processor'}       = 'LINKPOINT';
+		$webdb{'echeck_processor'}   = 'LINKPOINT';
+	
+		$webdb{'echeck_request_check_number'}           = 1; ## Used by checkout to determine which fields to ask for
+		$webdb{'echeck_request_acct_name'}              = 1; 
+		$webdb{'echeck_request_drivers_license_number'} = 1; 
+		$webdb{'echeck_request_drivers_license_state'}  = 1; 
+		$webdb{'echeck_request_bank_state'}             = 1; 
+	
+		if ($ZOOVY::cgiv->{"storename"}) { $webdb{"storename"} = $ZOOVY::cgiv->{"storename"}; }
+
+		my $x = $webdb{"storename"};
+		$x =~ s/[^\d]+//gs;
+		if ($x ne $webdb{'storename'} || $x eq '') {
+			$GTOOLS::TAG{'<!-- MESSAGE -->'} = '<font color="red"><br><h2>Critical Error: Linkpoint Store Name must be given, it must contain only numbers.</h2></font>';
+			}
+		$webdb{'linkpoint_storename'} = $x;
+		$webdb{'storename'}           = $x;
+		$webdb{'cc_cvvcid'} = $ZOOVY::cgiv->{'cc_cvvcid'};
+	
+		$webdb{'pay_echeck'}           = $ZOOVY::cgiv->{'pay_echeck'};
+		$webdb{"cc_avs_require"}       = $ZOOVY::cgiv->{"cc_avs_require"};
+		$webdb{"cc_avs_fail_code"}     = $ZOOVY::cgiv->{"cc_avs_fail_code"};
+		$webdb{"cc_report_voice_fail"} = $ZOOVY::cgiv->{"cc_report_voice_fail"};
+		$webdb{"cc_voice_fail_code"}   = $ZOOVY::cgiv->{"cc_voice_fail_code"};
+		$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+		$webdb{'echeck_success_code'}  = $ZOOVY::cgiv->{'echeck_success_code'};
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		} ## end if ($ACTION eq "LINKPOINT-SAVE"...
+	
+	if ($ACTION eq "MANUAL-SAVE") {
+		$ACTION = "MANUAL";
+		$webdb{'cc_processor'}     = 'MANUAL';
+		$webdb{'echeck_processor'} = 'NONE';
+
+		$webdb{'cc_emulate_gateway'} = (defined $ZOOVY::cgiv->{'cc_emulate_gateway'})?1:0;
+
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully saved Manual Processing configuration!</font></td></tr></table>";
+		} ## end if ($ACTION eq "MANUAL-SAVE"...
+
+	# this is the save for both NONE and the SELECT page
+	if ($ACTION eq "SAVE") {
+		$webdb{'cc_processor'} = $ZOOVY::cgiv->{'process'};
+		if (($webdb{'cc_processor'} eq 'ECHO') || ($webdb{'cc_processor'} eq 'AUTHORIZENET')) {
+			$webdb{'echeck_processor'} = $webdb{'cc_processor'};
+			}
+		else {
+			$webdb{'echeck_processor'} = 'NONE';
+			}
+
+		## only save when they won't be going to the next step (eg: tell them we've saved nothing)
+		if ($webdb{'cc_processor'} eq 'NONE') {
+			$webdb{'cc_types'}   = '';
+			$webdb{'pay_credit'} = 0;
+			&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+			$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='1' cellpadding='5'><tr><td><font size='3' face='arial' color='red'><b><center>Successfully Saved Credit Card Processor Changes</font></td></tr></table>";
+			}
+
+		$ACTION = "JUMP";
+		} ## end if ($ACTION eq "SAVE")
+
+	## AT THIS POINT WE'RE DONE PROCESSING ANYTHING THAT SAVED
+	$GTOOLS::TAG{'<!-- CC_CVVCID_0 -->'} = '';
+	$GTOOLS::TAG{'<!-- CC_CVVCID_1 -->'} = '';
+	$GTOOLS::TAG{'<!-- CC_CVVCID_2 -->'} = '';
+	$GTOOLS::TAG{"<!-- CC_CVVCID_" . $webdb{'cc_cvvcid'} . " -->"} = ' SELECTED ';
+
+	# whitelist the $webdb{'cc_processor'} default to NONE
+	if ($webdb{'cc_processor'} ne 'MANUAL' && 
+		$webdb{'cc_processor'} ne 'IONGATE' && 
+		$webdb{'cc_processor'} ne 'QBMS' && 
+		$webdb{'cc_processor'} ne 'TC' && 
+		$webdb{'cc_processor'} ne 'ECHO' && 
+		$webdb{'cc_processor'} ne 'VERISIGN' && 
+		$webdb{'cc_processor'} ne 'PAYPALVT' && 
+		$webdb{'cc_processor'} ne 'AUTHORIZENET' && 
+		$webdb{'cc_processor'} ne 'SKIPJACK' && 
+		$webdb{'cc_processor'} ne 'LINKPOINT' && 
+		$webdb{'cc_processor'} ne 'SUREPAY') { $webdb{'cc_processor'} = 'NONE'; }
+	
+	# this should always run first, if jump then we'll go straight to the correct processor
+	if ($ACTION eq 'JUMP') { $ACTION = $webdb{'cc_processor'}; }
+
+	if ($ACTION eq 'MANUAL') {
+		&build_general(\%webdb);
+	
+		if ($webdb{"cc_emulate_gateway"} == 1) {
+			$GTOOLS::TAG{"<!-- CC_EMULATE_GATEWAY -->"} = 'checked';
+			}
+		else {
+			$GTOOLS::TAG{"<!-- CC_EMULATE_GATEWAY -->"} = '';
+			}
+	
+		push @BC, { name=>'Manual',link=>'', };
+		$template_file = 'credit-manual.shtml';
+		}
+	
+	if ($ACTION eq 'SKIPJACK') {
+		&build_general(\%webdb);
+		$GTOOLS::TAG{'<!-- SKIPJACK_HTMLSERIAL -->'} = $webdb{'skipjack_htmlserial'};
+		push @BC, { name=>'Skipjack',link=>'', };
+		$template_file = 'credit-skipjack.shtml';
+		}
+	
+	if ($ACTION eq 'VERISIGN') {
+		$GTOOLS::TAG{"<!-- VERISIGN_USERNAME -->"} = $webdb{"verisign_username"};
+		#$GTOOLS::TAG{"<!-- VERISIGN_PASSWORD -->"} = $webdb{"verisign_password"};
+		$GTOOLS::TAG{"<!-- VERISIGN_PARTNER -->"}  = $webdb{"verisign_partner"};
+		$GTOOLS::TAG{"<!-- VERISIGN_VENDOR -->"}   = $webdb{"verisign_vendor"};
+		&build_general(\%webdb);
+		push @BC, { name=>'Verisign Payflow Pro',link=>'', };
+		$template_file = 'credit-verisign.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+
+	if ($ACTION eq 'SUREPAY') {
+		$GTOOLS::TAG{"<!-- SUREPAY_USERNAME -->"} = $webdb{"surepay_username"};
+		#$GTOOLS::TAG{"<!-- SUREPAY_PASSWORD -->"} = $webdb{"surepay_password"};
+		&build_general(\%webdb);
+		push @BC, { name=>'Surepay',link=>'', };
+		$template_file = 'credit-surepay.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; } 
+		}
+
+	if ($ACTION eq 'ECHO') {
+		$GTOOLS::TAG{"<!-- ECHO_USERNAME -->"}     = &ZOOVY::incode($webdb{"echo_username"});
+		$GTOOLS::TAG{"<!-- ECHO_PASSWORD -->"}     = &ZOOVY::incode($webdb{"echo_password"});
+		&build_general(\%webdb);
+		push @BC, { name=>'ECHO',link=>'', };
+		$template_file = 'credit-echo.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+
+	if ($ACTION eq 'AUTHORIZENET') {
+		$GTOOLS::TAG{"<!-- AUTHORIZENET_WELLSFARGO_0_SELECTED -->"} = '' ;
+		$GTOOLS::TAG{"<!-- AUTHORIZENET_WELLSFARGO_1_SELECTED -->"} = '' ;
+		$GTOOLS::TAG{"<!-- AUTHORIZENET_WELLSFARGO_2_SELECTED -->"} = '' ;
+		$GTOOLS::TAG{"<!-- AUTHORIZENET_WELLSFARGO_".$webdb{"authorizenet_wellsfargo"}."_SELECTED -->"} = 'selected' ;
+	
+		if ($webdb{'authorizenet_username'} eq '') {
+			$GTOOLS::TAG{'<!-- USERNAME -->'} = "<font color='red'>NOT SET</font>";
+			$GTOOLS::TAG{'<!-- PASSWORD -->'} = "<font color='red'>NOT SET</font>";
+			$GTOOLS::TAG{'<!-- KEY -->'} = "<font color='red'>NOT SET</font>";
+			}
+		else {
+			$GTOOLS::TAG{'<!-- USERNAME -->'} = $webdb{'authorizenet_username'};
+			$GTOOLS::TAG{'<!-- PASSWORD -->'} = "<i>hidden</i>";
+			$GTOOLS::TAG{'<!-- KEY -->'} = "<i>hidden</i>";
+			}
+		
+	
+		&build_general(\%webdb);
+		push @BC, { name=>'Authorize.Net',link=>'', };
+
+		## get link for WEBDOC
+		my ($helplink, $helphtml) = GTOOLS::help_link('Authorize.net', 50276);
+		$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helplink;
+		
+		$template_file = 'credit-authorize.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+	
+	if	($ACTION eq 'AUTHORIZENET-SETUP') {
+		$GTOOLS::TAG{"<!-- AUTHORIZENET_USERNAME -->"} = $webdb{"authorizenet_username"};
+		$template_file = 'credit-authorizesetup.shtml';		
+		}
+	
+
+	if ($ACTION eq 'TC') {
+		$GTOOLS::TAG{"<!-- TC_LOGIN -->"}    = $webdb{"tc_login"};
+		#$GTOOLS::TAG{"<!-- TC_PASSWORD -->"} = $webdb{"tc_password"};
+		&build_general(\%webdb);
+		push @BC, { name=>'PRI/Transaction Central',link=>'', };
+		$template_file = 'credit-tc.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+
+	if ($ACTION eq 'PAYPALVT') {
+		$template_file = 'credit-paypalvt.shtml';
+		&build_general(\%webdb);
+
+		$GTOOLS::TAG{'<!-- CHECKED_PAYPAL_USE_VT -->'} = ($webdb{'cc_processor'} eq 'PAYPALVT')?'checked':'';
+
+		push @BC, { name=>'Paypal Virtual Terminal',link=>'' };
+		}
+
+	
+	if ($ACTION eq 'LINKPOINT') {
+		my $pemfile = &ZOOVY::resolve_userpath($USERNAME) . "/linkpoint.pem";
+		if (!-f $pemfile) {
+			$GTOOLS::TAG{'<!-- LINKPOINT_PEM_MISSING -->'} = "<font color='red'><h2><b>CONFIGURATION ERROR:</b> Missing PEM file - please request a PEM file for Linkpoint API from Cardservice and contact Zoovy technical support to have it installed.</h2></font>";
+			}
+	
+		$GTOOLS::TAG{"<!-- LINKPOINT_STORENAME -->"} = $webdb{"storename"};
+		&build_general(\%webdb);
+
+		## get link for WEBDOC in templates
+		my ($helplink, $helphtml) = GTOOLS::help_link('Payment Gateways', 50280);
+		$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helplink;
+
+		push @BC, { name=>'Cardservice Linkpoint',link=>'', };
+		$template_file = 'credit-linkpoint.shtml';
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+	
+	if ($ACTION eq 'QBMS') {
+		$GTOOLS::TAG{'<!-- MID -->'} = $MID;
+		$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+		$template_file = 'credit-qbms.shtml';
+
+		if ($webdb{'qbms_appid'} eq '') {
+			$GTOOLS::TAG{'<!-- TOKEN_STATUS -->'} = "<font color='red'>NOT AUTHORIZED: Before continuing use the links above to authorize Zoovy to access your Quickbooks Merchant Services Account</font>";
+			}
+		elsif ($webdb{'qbms_appid'} eq '58002316') {
+			$GTOOLS::TAG{'<!-- TOKEN_STATUS -->'} = "<font color='orange'>Authorized on Test Server</font>"; 
+			}
+		elsif ($webdb{'qbms_appid'} eq '83162751') {
+			$GTOOLS::TAG{'<!-- TOKEN_STATUS -->'} = "<font color='blue'>Successfully Authorized on Production</font>";
+			}
+		else {
+			$GTOOLS::TAG{'<!-- TOKEN_STATUS -->'} = "<font color='red'>Token Authorized with Unknown Application Id [$webdb{'qbms_appid'}].</font>";
+			}
+
+
+		&build_general(\%webdb);
+		push @BC, { name=>'Quickbooks Merchant Services',link=>'', };
+		if (not $GATEWAY_OKAY) { $template_file = "processor-deny.shtml"; }
+		}
+
+
+
+	if ($ACTION eq "NONE" || $ACTION eq "SELECT" || $ACTION eq "") {
+		my $c = $webdb{'cc_processor'};
+		$GTOOLS::TAG{"<!-- C -->"} = $c;
+		# Default the $cc_processor value
+		## There seems to be some missing from the above list, but I'm afraid to put anything in there...  -AK
+		
+		my $found = 0;
+		foreach my $processor (qw(NONE QBMS MANUAL VERISIGN ECHO PAYPALVT AUTHORIZENET LINKPOINT TC SKIPJACK IONGATE SUREPAY)) {
+			### having trouble?? check the whitelist above!
+			$GTOOLS::TAG{"<!-- $processor -->"} = '';
+			if ($c eq $processor) { 
+				$found=1;
+				$GTOOLS::TAG{"<!-- $processor -->"} = 'CHECKED';
+				}
+			}
+		
+		if (not $found) {
+			$GTOOLS::TAG{'<!-- NONE -->'} = 'CHECKED';
+			}
+	
+		push @BC, { name=>'Choose Account Type',link=>'', };
+		$template_file = 'credit.shtml';
+		}
+	
+	}	
+############################################################
+## END: Merchant account code
+############################################################
+
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'GOOGLE-SAVE') {
+
+	$ZOOVY::cgiv->{'google_key'} =~ s/[^A-Za-z0-9]+//gs;	# clean out unallowed chars.
+	$webdb{'google_key'} = $ZOOVY::cgiv->{'google_key'};
+	$ZOOVY::cgiv->{'google_merchantid'} =~ s/[^\d]+//gs;	# clean out unallowed chars.
+	$webdb{'google_merchantid'} = $ZOOVY::cgiv->{'google_merchantid'};
+	$webdb{'google_api_env'} = $ZOOVY::cgiv->{'google_api_env'};
+	&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+
+	$ZOOVY::cgiv->{'MODE'} = 'GOOGLE';
+	}
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'GOOGLE') {
+	$GTOOLS::TAG{'<!-- GOOGLE_MERCHANTID -->'} = $webdb{'google_merchantid'};
+	$GTOOLS::TAG{'<!-- GOOGLE_KEY -->'} = $webdb{'google_key'};
+	$GTOOLS::TAG{'<!-- GOOGLE_API_ENV_0 -->'} = ($webdb{'google_api_env'}==0)?'selected':'';
+	$GTOOLS::TAG{'<!-- GOOGLE_API_ENV_1 -->'} = ($webdb{'google_api_env'}==1)?'selected':'';
+	$GTOOLS::TAG{'<!-- GOOGLE_API_ENV_2 -->'} = ($webdb{'google_api_env'}==2)?'selected':'';
+
+	push @BC, { name=>'Google Payments',link=>'' };
+	$template_file = 'google.shtml';
+	}
+
+
+#############################################################
+##
+#############################################################
+
+
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'PAYPALEC-SAVE') {	
+	$webdb{"cc_instant_capture"}   = $ZOOVY::cgiv->{"cc_instant_capture"};
+	$webdb{'paypal_api_reqconfirmship'} = $ZOOVY::cgiv->{'paypal_api_reqconfirmship'};
+	$webdb{'paypal_email'} = $ZOOVY::cgiv->{'paypal_email'};
+	$webdb{'paypal_api_user'} = $ZOOVY::cgiv->{'paypal_api_user'};
+	$webdb{'paypal_api_pass'} = $ZOOVY::cgiv->{'paypal_api_pass'};
+	$webdb{'paypal_api_sig'} = $ZOOVY::cgiv->{'paypal_api_sig'};
+	$webdb{'paypal_api_env'} = $ZOOVY::cgiv->{'paypal_api_env'};
+	&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+
+	$ZOOVY::cgiv->{'MODE'} = 'PAYPALEC';
+	}
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'PAYPALEC') {
+	$template_file = 'paypalec.shtml';
+	&build_general(\%webdb);
+
+	$GTOOLS::TAG{'<!-- PAYPAL_EMAIL -->'} = $webdb{'paypal_email'};
+	$GTOOLS::TAG{'<!-- PAYPAL_API_USER -->'} = $webdb{'paypal_api_user'};
+	$GTOOLS::TAG{'<!-- PAYPAL_API_PASS -->'} = $webdb{'paypal_api_pass'};
+	$GTOOLS::TAG{'<!-- PAYPAL_API_SIG -->'} = $webdb{'paypal_api_sig'};
+	$GTOOLS::TAG{'<!-- PAYPAL_API_REQCONFIRMSHIP_0 -->'} = ($webdb{'paypal_api_reqconfirmship'}==0)?'selected':'';
+	$GTOOLS::TAG{'<!-- PAYPAL_API_REQCONFIRMSHIP_1 -->'} = ($webdb{'paypal_api_reqconfirmship'}==1)?'selected':'';
+	$GTOOLS::TAG{'<!-- PAYPAL_API_ENV_0 -->'} = ($webdb{'paypal_api_env'}==0)?'selected':'';
+	$GTOOLS::TAG{'<!-- PAYPAL_API_ENV_1 -->'} = ($webdb{'paypal_api_env'}==1)?'selected':'';
+	$GTOOLS::TAG{'<!-- PAYPAL_API_ENV_2 -->'} = ($webdb{'paypal_api_env'}==2)?'selected':'';
+
+	push @BC, { name=>'Paypal Direct Payments',link=>'' };
+	}
+
+
+
+##	
+## Paypal
+##
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'PAYPALIPN') {
+
+	$help = "#50284";
+	if ($ACTION eq "SAVE") {
+		$webdb{"pay_paypal"}    = $ZOOVY::cgiv->{"pay_paypal"};
+		if (defined $ZOOVY::cgiv->{'pay_bidpay'}) {
+			$webdb{'pay_bidpay'} = 'INT_HIGH';
+			}
+		else {
+			$webdb{'pay_bidpay'} = 'NO';
+			}
+
+		if (defined $ZOOVY::cgiv->{"paypal_email"})       { $webdb{"paypal_email"}       = $ZOOVY::cgiv->{"paypal_email"}; }
+		if (defined $ZOOVY::cgiv->{"PAYPAL_CONFIRM"})     { $webdb{"paypal_confirm"}     = $ZOOVY::cgiv->{"PAYPAL_CONFIRM"}; }
+		if (defined $ZOOVY::cgiv->{"paypal_correlate"})   { $webdb{"paypal_correlate"}   = $ZOOVY::cgiv->{"PAYPAL_CORRELATE"}; }
+		$webdb{"paypal_manual"}   = (uc($ZOOVY::cgiv->{"paypal_manual"}) eq "ON") ? 1 : 0 ;
+		$webdb{"paypal_feedback"} = $ZOOVY::cgiv->{"paypal_manual"} ? 1 : 0 ;
+		$webdb{"paypal_disable_ipn"} = $ZOOVY::cgiv->{"paypal_disable_ipn"} ? 1 : 0 ;
+	# 	$webdb{"paypal_checkout"} = $ZOOVY::cgiv->{"paypal_checkout"} ? 1 : 0 ;
+		$webdb{"paypal_disable_address"} = $ZOOVY::cgiv->{"paypal_disable_address"} ? 1 : 0 ;
+
+		my $v = 0;
+		for (my $x = 0; $x<16; $x++) {
+			my $bit = 1 << $x;
+			if ($ZOOVY::cgiv->{'IPN_'.$bit}) {
+				$v += (1 << $x);
+				}
+			}
+		print STDERR "RESULT: $v\n";
+		$webdb{'pay_paypal_ipn'} = $v;
+
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='0' cellpadding='5'><tr><td><font size='4' color='red'><i>Saved PayPal Payment Settings</i></font></td></tr></table><br>";
+
+	} ## end if ($ACTION eq "SAVE")
+
+	## PAYPAL
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_NO_SELECTED -->"}       = "";
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_DOMESTIC_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_ALL51_SELECTED -->"}    = "";
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_INT_LOW_SELECTED -->"}  = "";	
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_INT_HIGH_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_PAYPAL_".$webdb{"pay_paypal"}."_SELECTED -->"} = "SELECTED";
+
+	## bits:
+	##
+	## 1 : enable processing
+	## 2 : attempt to correlate unknown payments
+	## 4 : create phantom orders for unknown items
+	## 128 : notify of unknown payments
+	## 256 : audit shipping
+	## 512 : process promotions
+	##
+	if (not defined $webdb{'pay_paypal_ipn'}) { $webdb{'pay_paypal_ipn'} = 1+128; }
+	for (my $x = 0; $x<16; $x++) {
+		my $bit = 1 << $x;
+		if (($webdb{'pay_paypal_ipn'} & $bit) == $bit) {	
+			$GTOOLS::TAG{'<!-- IPN_'.$bit.' -->'} = 'checked'; 
+			}
+		else {
+			$GTOOLS::TAG{'<!-- IPN_'.$bit.' -->'} = ''; 
+			}
+		}
+
+
+	$GTOOLS::TAG{"<!-- VALUE_CREDIT_HANDLER_PAYPAL -->"} = " CHECKED ";
+	$GTOOLS::TAG{"<!-- VALUE_PAYPAL_EMAIL -->"}          = " VALUE=\"" . $webdb{"paypal_email"} . "\" ";
+	$GTOOLS::TAG{"<!-- VALUE_PAYPAL_LASTNAME -->"}       = " VALUE=\"" . $webdb{"paypal_lastname"} . "\" ";
+	#$GTOOLS::TAG{"<!-- VALUE_PAYPAL_PASSWORD -->"}       = " VALUE=\"" . $webdb{"paypal_password"} . "\" ";
+	$GTOOLS::TAG{"<!-- CHECKED_PAYPAL_MANUAL -->"}       = $webdb{"paypal_manual"}   ? ' CHECKED' : '' ;
+	$GTOOLS::TAG{'<!-- PAYPAL_FEEDBACK -->'}             = $webdb{'paypal_feedback'} ? ' CHECKED' : '' ;
+	$GTOOLS::TAG{'<!-- PAYPAL_DISABLE_IPN -->'}          = $webdb{'paypal_disable_ipn'} ? ' CHECKED' : '' ;
+	$GTOOLS::TAG{'<!-- PAYPAL_MINIMAL -->'}              = $webdb{'paypal_minimal'} ? ' CHECKED' : '' ;
+#	$GTOOLS::TAG{'<!-- PAYPAL_CHECKOUT -->'}              = $webdb{'paypal_checkout'} ? ' CHECKED' : '' ;
+
+	$GTOOLS::TAG{'<!-- PAYPAL_CORRELATE_0 -->'}  = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CORRELATE_1 -->'}  = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CORRELATE_10 -->'} = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CORRELATE_'.$webdb{'paypal_correlate'}.' -->'} = 'checked';
+	
+	$GTOOLS::TAG{'<!-- PAYPAL_CONFIRM_ -->'}     = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CONFIRM_ANY -->'}  = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CONFIRM_CITY -->'} = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CONFIRM_ZIP -->'}  = '';
+	$GTOOLS::TAG{'<!-- PAYPAL_CONFIRM_'.$webdb{'paypal_confirm'}.' -->'} = 'selected';
+
+	## get link for WEBDOC in templates
+	my ($helplink, $helphtml) = GTOOLS::help_link('Paypal', 50284);
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helplink;
+
+	push @BC, { name=>'Paypal',link=>'', };
+	$template_file = 'paypalipn.shtml';
+	}
+
+
+##
+## Advanced
+##
+if ($ZOOVY::cgiv->{'MODE'} eq 'ADVANCED') {
+	## no specific help available
+	## $help = '';
+
+	if ($ACTION eq "SAVE") {
+
+	if ($FLAGS !~ /,API2,/) {
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='3' cellpadding='5'><tr><td><font size='5' color='red'><center>Requires GOLD account</font></td></tr></table><br>";
+		}
+	else {
+		&ZOOVY::savemerchant_attrib($USERNAME,"zoovy:payment_explanation",$ZOOVY::cgiv->{'payment_explanation'});
+		$webdb{'pay_custom'} = defined($ZOOVY::cgiv->{'pay_custom'})?$ZOOVY::cgiv->{'pay_custom'}:'';
+		$webdb{'pay_custom_desc'} = defined($ZOOVY::cgiv->{'pay_custom_desc'})?$ZOOVY::cgiv->{'pay_custom_desc'}:'';
+		&ZWEBSITE::save_website_db($USERNAME,\%webdb);
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='3' cellpadding='5'><tr><td><font size='5' color='red'><center>Saved Settings</font></td></tr></table><br>";
+		}
+	}
+
+	$GTOOLS::TAG{'<!-- PAY_CUSTOM_DESC -->'} = $webdb{'pay_custom_desc'};
+	
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_NO_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_DOMESTIC_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_ALL51_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_INT_LOW_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_INT_HIGH_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CUSTOM_".$webdb{"pay_custom"}."_SELECTED -->"} = "SELECTED";
+	push @BC, { name=>'Advanced Payment Types',link=>'', };
+	$template_file = 'advanced.shtml';
+	}
+
+##
+## Special
+##
+
+if ($ZOOVY::cgiv->{'MODE'} eq 'SPECIAL') {
+	if ($ACTION eq "SAVE") {
+		if (defined $ZOOVY::cgiv->{'pay_bidpay'}) {
+			$webdb{'pay_bidpay'} = 'INT_HIGH';
+			}
+		else {
+			$webdb{'pay_bidpay'} = 'NO';
+			}
+
+		&ZWEBSITE::save_website_db($USERNAME, \%webdb);
+	
+		$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table width='80%' border='3' cellpadding='5'><tr><td><font size='5' color='red'><center>Saved Special Payment Settings</font></td></tr></table><br>";
+		} ## end if ($ACTION eq "SAVE")
+
+	## BIDPAY
+	if ((!defined($webdb{'pay_bidpay'})) || ($webdb{'pay_bidpay'} eq '')) { $webdb{'pay_bidpay'} = 'NO'; }
+	if ($webdb{'pay_bidpay'} ne 'NO') {
+		$GTOOLS::TAG{'<!-- PAY_BIDPAY_CHECKED -->'} = 'checked';
+		}
+	else {
+		$GTOOLS::TAG{'<!-- PAY_BIDPAY_CHECKED -->'} = '';
+		}
+
+	push @BC, { name=>'Speciality Payment Types',link=>'?MODE=SPECIAL', };
+	$template_file = 'special.shtml';
+	}
+
+my @TABS = ();
+##push @TABS, { name=>'All Payments',link=>'index.cgi?MODE=ALL','target'=>'_top', };
+push @TABS, { name=>'General',selected=>($ZOOVY::cgiv->{'MODE'} eq 'GENERAL')?1:0,link=>'index.cgi?MODE=GENERAL','target'=>'_top', };
+push @TABS, { name=>'Credit Cards',selected=>($ZOOVY::cgiv->{'MODE'} eq 'CREDIT')?1:0,link=>'index.cgi?MODE=CREDIT','target'=>'_top', };
+push @TABS, { name=>'GoogleCheckout',link=>'index.cgi?MODE=GOOGLE','target'=>'_top', };
+push @TABS, { name=>'Paypal EC',selected=>($ZOOVY::cgiv->{'MODE'} eq 'PAYPALEC')?1:0, link=>'index.cgi?MODE=PAYPALEC','target'=>'_top', };
+
+if ($FLAGS =~ /,EBAY,/) {
+	push @TABS, { name=>'Paypal IPN',selected=>($ZOOVY::cgiv->{'MODE'} eq 'PAYPALIPN')?1:0,link=>'index.cgi?MODE=PAYPALIPN','target'=>'_top', };
+	push @TABS, { name=>'Special',selected=>($ZOOVY::cgiv->{'MODE'} eq 'SPECIAL')?1:0,link=>'index.cgi?MODE=SPECIAL','target'=>'_top', };
+	}
+
+if (index($ZOOVY::FLAGS,',DEV2,')>=0) {
+	push @TABS, { name=>'Advanced',link=>'index.cgi?MODE=ADVANCED','target'=>'_top', };
+	}
+
+##End of script: outputting
+##Header: 1 = yes  Boolean (bitwise)
+
+&GTOOLS::output(
+	'title'=>'Payment Processing Configuration',
+	'file'=>$template_file,
+	'header'=>'1',
+	'help'=>$help,
+	'tabs'=>\@TABS,
+	'bc'=>\@BC,
+	);
+
+exit;
+
+sub build_general {
+	my ($webdbref) = @_;
+
+	$GTOOLS::TAG{"<!-- CC_TYPE_VISA_CHECKED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_TYPE_MC_CHECKED -->"}    = "";
+	$GTOOLS::TAG{"<!-- CC_TYPE_AMEX_CHECKED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_TYPE_NOVUS_CHECKED -->"} = "";
+	my @cc_types = split (',', $webdbref->{"cc_types"});
+	foreach my $cc (@cc_types) { $GTOOLS::TAG{"<!-- CC_TYPE_" . $cc . "_CHECKED -->"} = "CHECKED"; }
+
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_NO_SELECTED -->"}       = "";
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_DOMESTIC_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_ALL51_SELECTED -->"}    = "";
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_INT_LOW_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_INT_HIGH_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_CREDIT_" . uc($webdbref->{"pay_credit"}) . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_NO_SELECTED -->"}       = "";
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_DOMESTIC_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_ALL51_SELECTED -->"}    = "";
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_INT_LOW_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_INT_HIGH_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- PAY_ECHECK_" . uc($webdbref->{"pay_echeck"}) . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- CC_AVS_REQUIRE_NONE_SELECTED -->"}    = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_REQUIRE_PARTIAL_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_REQUIRE_FULL_SELECTED -->"}    = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_REQUIRE_NOFRAUD_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_REQUIRE_" . $webdbref->{"cc_avs_require"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- CC_AVS_FAIL_CODE_105_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_FAIL_CODE_205_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_FAIL_CODE_402_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_AVS_FAIL_CODE_" . $webdbref->{"cc_avs_fail_code"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- CC_REPORT_VOICE_FAIL_ALWAYS_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_REPORT_VOICE_FAIL_NEVER_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_REPORT_VOICE_FAIL_" . $webdbref->{"cc_report_voice_fail"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- CC_VOICE_FAIL_CODE_103_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_VOICE_FAIL_CODE_202_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_VOICE_FAIL_CODE_" . $webdbref->{"cc_voice_fail_code"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- CC_INSTANT_CAPTURE_ALWAYS_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- CC_INSTANT_CAPTURE_NEVER_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_INSTANT_CAPTURE_NOAUTH_DELAY_SELECTED -->"}  = "";
+	$GTOOLS::TAG{"<!-- CC_INSTANT_CAPTURE_" . $webdbref->{"cc_instant_capture"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- ECHECK_SUCCESS_CODE_120_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- ECHECK_SUCCESS_CODE_006_SELECTED -->"} = "";
+	$GTOOLS::TAG{"<!-- ECHECK_SUCCESS_CODE_" . $webdbref->{"echeck_success_code"} . "_SELECTED -->"} = "SELECTED";
+
+	$GTOOLS::TAG{"<!-- ECHECK_PAYABLE_TO -->"} = &ZOOVY::incode($webdbref->{"echeck_payable_to"});
+
+	my $feesref = &ZTOOLKIT::parseparams($webdbref->{'cc_fees'});
+	$GTOOLS::TAG{'<!-- CC_TRANSFEE -->'} = $feesref->{'CC_TRANSFEE'};
+	$GTOOLS::TAG{'<!-- CC_DISCRATE -->'} = $feesref->{'CC_DISCRATE'};
+	$GTOOLS::TAG{'<!-- VISA_TRANSFEE -->'} = $feesref->{'VISA_TRANSFEE'};
+	$GTOOLS::TAG{'<!-- VISA_DISCRATE -->'} = $feesref->{'VISA_DISCRATE'};
+	$GTOOLS::TAG{'<!-- MC_TRANSFEE -->'} = $feesref->{'MC_TRANSFEE'};
+	$GTOOLS::TAG{'<!-- MC_DISCRATE -->'} = $feesref->{'MC_DISCRATE'};
+	$GTOOLS::TAG{'<!-- AMEX_TRANSFEE -->'} = $feesref->{'AMEX_TRANSFEE'};
+	$GTOOLS::TAG{'<!-- AMEX_DISCRATE -->'} = $feesref->{'AMEX_DISCRATE'};
+	$GTOOLS::TAG{'<!-- NOVUS_TRANSFEE -->'} = $feesref->{'NOVUS_TRANSFEE'};
+	$GTOOLS::TAG{'<!-- NOVUS_DISCRATE -->'} = $feesref->{'NOVUS_DISCRATE'};
+	
+
+} ## end sub build_general
+
+## Strips off the request variables out of a webdb hash.
+## Most methods don't use much of them, so this keeps the webdb a lot cleaner
+sub nuke_requests
+{
+	my ($webdbref) = @_;
+	delete $webdbref->{'echeck_request_bank_state'};
+	delete $webdbref->{'echeck_request_acct_name'};
+	delete $webdbref->{'echeck_request_check_number'};
+	delete $webdbref->{'echeck_request_business_account'};
+	delete $webdbref->{'echeck_request_tax_id'};
+	delete $webdbref->{'echeck_request_drivers_license_number'};
+	delete $webdbref->{'echeck_request_drivers_license_state'};
+	delete $webdbref->{'echeck_request_drivers_license_dob'};
+	delete $webdbref->{'echeck_notice'};
+	delete $webdbref->{'cc_request_business_account'};
+	delete $webdbref->{'cc_request_tax_id'};
+	delete $webdbref->{'cc_request_drivers_license_number'};
+	delete $webdbref->{'cc_request_drivers_license_state'};
+	delete $webdbref->{'cc_request_drivers_license_dob'};
+	delete $webdbref->{'cc_notice'};
+	delete $webdbref->{'cc_fees'};
+}
+
+	

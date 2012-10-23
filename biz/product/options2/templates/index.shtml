@@ -1,0 +1,111 @@
+<HEAD>
+<!-- HEADER_ONLY -->
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</HEAD>
+<BODY>
+<!-- MSGS -->
+<center>
+<br>
+<form method="post" action="index.cgi">
+<table border=0 cellspacing=0 class="zoovytable" width='550'>
+<tr>
+	<td class="zoovytableheader">
+	<b>Product Option Manager</b><br>
+	</td><td colspan="2" align="right" class="zoovytableheader">
+	Product: <!-- PRODUCT -->
+	</td>
+</tr>	
+<tr>
+	<td colspan="3">
+	<!-- MESSAGE -->
+	<!-- OUTPUT -->
+	</td>
+</tr>	
+<tr>
+
+
+
+
+	<td width="260" valign='top'>
+	<table cellpadding=3><tr><td>
+	
+	
+		<b>Current Product Options:</b><br>
+		<table cellspacing=0 class="zoovytable" border=1>
+		<tr>
+			<td nowrap class="zoovytableheader">&nbsp;</td>
+			<td nowrap class="zoovytableheader">Name/Prompt</td>
+			<td nowrap class="zoovytableheader">Type</td>
+			<td nowrap class="zoovytableheader"># Options</td>
+			<td nowrap class="zoovytableheader">Code</td>
+		</tr>
+		<!-- POG_OUTPUT -->
+		</table>
+		<br>
+		<input class="button" type="button" value="Add New" onClick="document.location='index.cgi?MODE=<!-- MODE -->&VERB=CREATEPOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->';">
+			<a href="#" onClick="if (Element.visible('!help-pogs')) { new Effect.SlideUp('!help-pogs'); } else { new Effect.SlideDown('!help-pogs'); }">[Info]</a>
+		<div id="!help-pogs" style="display: none">
+		<span> 
+		Product specific option groups (also known as POGs) can only be used by a single product (not shared across products).<br>
+		<br>
+		To share one or more options across multiple products first create a Store Option Group (or SOG for short). 
+		Using POGs is not recommended unless the set of options you are specifying are unique to this product exclusively.
+		POG's cannot be used with certain types of syndication such as Amazon.<br>
+		<br>
+		Max: 26 POGs per product</span>
+		</div>
+		
+		<br>
+	</td></tr></table>
+	</td>
+	<td nowrap>&nbsp;&nbsp;</td>
+	<td width="260" valign='top'>
+		<table cellpadding=3><tr><td>
+		<b>Available Store Option Groups</b>
+		<table class="zoovytableheader" border=0 cellspacing=0>
+		<!-- SOGS_OUTPUT -->
+		</table>	
+		<!--
+		<a href="index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->"> Create a new Store Option Group</a><br>
+		-->
+			<a href="#" onClick="if (Element.visible('!help-sogs')) { new Effect.SlideUp('!help-sogs'); } else { new Effect.SlideDown('!help-sogs'); }">[Learn More]</a>
+		<div id="!help-sogs" style="display: none">
+		<span>
+		Store option groups (or SOGs for short) is a set of shared options which can be applied to multiple products.<br>
+		<br>
+		A product can be setup to automatically inherit options in a SOG (e.g. the options are the same for every product),
+		or selectively choose which of the options are available on a product by product basis (e.g. there
+		are 6 possible sizes, but a particular product might use 3).<br>
+		<br>
+		Max: 936 SOGs per store.
+		To create a store option group click on the "Store Option Groups" link on the left hand navigation bar of the online product editor.
+		</span>
+		</div>
+		</td></tr></table>
+	</td>
+</tr>
+<tr>
+	<td colspan='3'>
+	<center>
+	<table>
+		<tr>
+			<td><b>Help:</b></td>
+		<tr>
+			<td><img src="/biz/images/arrows/blue_up-13x13.gif"> Move option up the list.<br></td>
+			<td><img src="/biz/images/arrows/blue_edit-13x13.gif"> Edit the option group.</td>
+			<td><img src="/biz/images/arrows/blue_up-13x13.gif"> Move option down in list.<br></td>
+		</tr>
+	</table>
+	</center>
+	<center>
+		<a href="<!-- EXIT_URL -->"><img border="0" src="/images/bizbuttons/exit.gif"></a>
+	</center>
+	</td>
+	
+	
+</tr>
+</table>
+<br>
+</form>
+</center>
+</body>

@@ -1,0 +1,54 @@
+<!-- SETUP_TAB -->
+
+<center>
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="CHECKOUT-SAVE">
+<table class="zoovytable" width=600>
+<tr>
+	<td colspan=3 class="zoovytableheader">eBay Account Checkout Settings</td>
+</tr>
+<tr>
+	<td colspan=3 class="zoovysub1header">eBay Username: <!-- EBAY_USERNAME --></td>
+</tr>
+<tr>
+	<td colspan=3>
+		<input type="checkbox" <!-- CHK_DO_IMPORT_LISTINGS --> name="DO_IMPORT_LISTINGS"> 
+		Auto-Sync eBay Account (RECOMMENDED)<br>
+		<br>		
+		<b>You should ENABLE Auto-Sync:</b><br>
+		<div class="hint">
+		.. if you use Zoovy exclusively to process eBay sales.  This will result in the best performance/reliability 
+		because Zoovy will be able to automatically correct/recover a variety of common types of errors.
+		</div>
+		<div class="hint">
+		.. if you use another listing tool, and want Zoovy to automatically 
+		import eBay listings (and sales) that were not created by Zoovy.
+		</div>
+		<div class="hint">
+		.. if you plan to create Second Chance offers outside of Zoovy (ex: via ebay.com)
+		</div>
+		<br>
+		<b>You should NOT ENABLE Auto-Sync:</b><br>
+		<div class="hint">
+		.. if you concurrently use a another listing tool (or ebay.com) to create/manage eBay sales on the same account. 
+		Auto-sync will import any eBay sales created regarldess of the origin. 
+		</div>
+		<div class="warning">
+		IMPORTANT: Non-Zoovy created eBay listings *MUST* have the SKU set, 
+		and a corresponding product id configured in the zoovy account product database in order to 
+		create a valid order.
+		</div>
+		</div>
+		DO NOT CREATE Orders before: <select name="IGNORE_ORDERS_BEFORE_GMT">
+			<!-- IGNORE_ORDERS_BEFORE -->
+		</select>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td colspan=3>
+		<input type="submit" class="button" value=" Save ">
+	</td>
+</table>
+</form>
+</center>

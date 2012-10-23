@@ -1,0 +1,12 @@
+<!-- SETUP_TAB -->
+
+<center>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="DOMAINS-SAVE">
+<table width=800 border=0 class="zoovytable">
+	<tr class="zoovytableheader"><td>SYNDICATION ENABLE</td><td>DOMAIN</td><td>PROFILE</td><td>PRT</td></tr>
+	<!-- DOMAINS -->
+	<tr><td colspan=4><input type="submit" class="button" value=" Save "></td></tr>
+</table>
+</center>
+</form>

@@ -1,0 +1,27 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<!-- DISCLAIMER -->
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">LinkShare (<!-- PROFILE -->)</td></tr>
+<tr><td>
+
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="LINKSHARE-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<br>
+<br>Checkout Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="checkout_code"><!-- CHECKOUT_CODE --></textarea><br>
+<div class="hint">This will be displayed at the bottom of checkout.</div>
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+</form>
+
+</td></tr>
+</table>

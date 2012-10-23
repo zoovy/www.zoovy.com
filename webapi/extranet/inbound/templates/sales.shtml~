@@ -1,0 +1,38 @@
+<!-- HEADER -->
+
+<b>Sales Greeting:</b>
+
+<div class="say">
+I'm sorry, but all members of our sales team are currently unavailable.<br>
+<br>
+But I would be happy to take a message for you and pass it on.<br>
+</div>
+
+<hr>
+<b>Take a Message Form</b>
+
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="SALES-SAVE">
+
+<div class="say">
+Do you know who you wanted to contact?
+</div>
+
+Which Employee: <select name="EMPLOYEE">
+<option value="">Any/First Available</option>
+<!-- SALES_EMPLOYEES -->
+</select><br>
+<br>
+
+
+Message:
+<textarea cols="80" rows="5" name="message"></textarea><br>
+<br>
+<i>Hint: Be sure to ask the caller for their name, phone number, and account username if they have one.</i><br>
+<input type="submit" value="  Send Message  ">
+</form>
+<hr>
+
+<!-- FOOTER -->
+
+

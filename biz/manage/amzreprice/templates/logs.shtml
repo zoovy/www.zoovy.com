@@ -1,0 +1,30 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="GLOBAL-SAVE">
+<div style="width:600px">
+<!-- MESSAGE -->
+</div>
+<br>
+
+<table class="zoovytable" width="80%">
+<thead>
+<tr>
+	<th>Date</th>
+	<th>SKU</th>
+	<th>ASIN</th>
+	<th>VERB</th>
+	<th>PRICE_WAS</th>
+	<th>PRICE_IS</th>
+	<th>NOTE</th>
+</tr>
+</thead>
+<tbody>
+	<!-- LOGS -->
+</tbody>
+</table>
+</form>
+</center>
+<!-- FOOTER -->
+

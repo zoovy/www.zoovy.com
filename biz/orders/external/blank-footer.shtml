@@ -1,0 +1,32 @@
+<head>	
+</head>
+<body bgcolor="#3366CC" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+<form name='footFrm' action='#' onSubmit='doIt(this);'>
+<font face='arial' color='white'>
+<center>
+<table width='100%' cellspacing='0' cellpadding='0' border='0'>
+	<tr><td bgcolor='663399'><img height='2' width='100%' src='/images/blank.gif'></td></tr>
+	<tr>
+		<td align='center'><table>
+<tr>
+	<td valign='top'>
+   <a target="body" href="body.cgi?REDIRECT=add.cgi&XCMD=CREATE" style='font-size: 8pt; color: white;  font-family: arial, helvetica;'> Create New </a><br>
+	</td>
+	<td width='6' align='center'><img src='/images/whitedot.gif' width='1' height='100%'></td>
+	<td valign='top'>
+	<font style='font-size: 8pt; color: white;  font-family: arial, helvetica;'><b>
+   <a target="body" href="body.cgi?REDIRECT=main.cgi&XCMD=ALL" style='font-size: 8pt; color: white;  font-family: arial, helvetica;'> View All </a><br>
+   <a target="body" href="body.cgi?REDIRECT=main.cgi&XCMD=WAITING" style='font-size: 8pt; color: white;  font-family: arial, helvetica;'> View Incomplete</a><br>
+   <a target="body" href="body.cgi?REDIRECT=main.cgi&XCMD=COMPLETED" style='font-size: 8pt; color: white;  font-family: arial, helvetica;'> View Completed</a><br>
+	</font>
+	</td>
+	<td width='6' align='center'><img src='/images/whitedot.gif' width='1' height='100%'></td>
+	</tr>
+		</table></td>
+	</tr>
+</table>
+</center>
+</font>
+</form>
+</body>
+

@@ -1,0 +1,15 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+
+<table class="zoovytable" width="800">
+	<tr class="zoovytableheader">
+		<td>Series Name</td>
+		<td># Cards Issued</td>
+		<td>Total Value</td>
+		<td>Total Transactions</td>
+		<td>Last Created</td>
+	</tr>
+	<!-- SERIES -->
+</table>
+</body>

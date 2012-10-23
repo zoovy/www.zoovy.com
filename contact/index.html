@@ -1,0 +1,299 @@
+% my $menu = 'register';
+
+<&| /includes/header/index.html, title => 'Trials, Personalized Demos and Pricing', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+<%perl>
+
+my @ERRORS = ();
+my $SUCCESS = 0;
+
+
+my $q = new CGI;
+
+my $SOURCE = undef;
+if (not defined $SOURCE) { $SOURCE = $q->cookie('ZOOVY_LEAD'); }
+#if (lc($SOURCE) eq 'msol') {
+#	$PACKAGE = 'MSOL';
+#	}
+	
+if ( (not defined $SOURCE) && (defined $q->cookie('ZOOVY_AFFILIATE')) ) { 
+	$SOURCE = "WEB|".$q->cookie('ZOOVY_AFFILIATE');  ## the ZOOVY_AFFILIATE cookie predated the ZOOVY_LEAD so we reformat it.
+	} 
+if (not defined $SOURCE) { 
+	$SOURCE = $q->param('ZOOVY_LEAD'); 
+	}
+if (not defined $SOURCE) { 
+	$SOURCE = $q->param('source'); 
+	}
+if (not defined $SOURCE) { 
+	$SOURCE = 'UWEB'; 
+	}  ## UWEB - undefined web.  That way if blank is set elsewhere from 
+## some other lead source, we at least know this came in from the web.
+my ($src,$opid,$meta) = split(/\|/,$SOURCE,3); 
+
+my $firstname = $q->param('firstname'); 	$firstname =~ s/[\"\>\<]+//gs;
+if ($firstname eq '') { push @ERRORS, "Firstname is required"; }
+my $lastname = $q->param('lastname');  $lastname =~ s/[\"\>\<]+//gs;
+if ($lastname eq '') { push @ERRORS, "Lastname is required"; }
+my $phone = $q->param('phone');  $phone =~ s/[\"\>\<]+//gs; $phone =~ s/[^\d]+//gs;
+if ($phone eq '') { push @ERRORS, "Phone is required"; }
+my $email = $q->param('email'); if (not defined $email) { $email = ''; } $email =~ s/[\"\>\<]+//gs;
+if ($email eq '') { push @ERRORS, "Email is required"; }
+my $company = $q->param('company'); if (not defined $company) { $company = ''; } $company =~ s/[\"\>\<]+//gs;
+if ($company eq '') { push @ERRORS, "Company is required"; }
+my $state = $q->param('state');
+if ($state eq '--') { push @ERRORS, "State is required"; }
+
+my $notes = $q->param('comment');
+if (defined $q->param('want_trial')) { $notes .= "\nTRIAL"; }
+if (defined $q->param('want_demo')) { $notes .= "\nDEMO"; }
+if (defined $q->param('want_pricing')) { $notes .= "\nPRICING"; }
+
+
+my ($whatis) = &SITE::whatis($ENV{'REMOTE_ADDR'},$ENV{'HTTP_USER_AGENT'},$ENV{'SERVER_NAME'},$ENV{'REQUEST_URI'});
+if (($whatis eq 'SCAN') || ($whatis eq 'BOT')) {
+	push @ERRORS, "Sorry, but user-agent or ip appears to be a security scanner or robot. 
+	We don't serve those types in here, you'll need to wait outside.";
+	}
+
+if ($q->param('ACTION') ne 'SAVE') {
+	@ERRORS = ();
+	}
+else {
+	if (scalar(@ERRORS)==0) { $SUCCESS++; }
+	}
+
+
+if (not $SUCCESS) {
+
+
+</%perl>
+
+<br>
+<br>
+
+<h1>Complete the form below for free trials, personalized demos & pricing</h1>
+<!--
+<div style="margin-left:-32px; width:774px; height:550px; background-image:url(images/20100507_form_background.jpg); background-repeat:no-repeat; position:relative">
+-->
+
+<table width='100%'> 
+<tr> 
+	<td valign='top'> 
+
+
+
+
+<form action="/contact/index.html"> 
+	<input type="hidden" name="ACTION" value="SAVE"> 
+    
+<table cellpadding="0" cellspacing="0">
+<tr><td style="background-image:url(images/form_background_top.gif); height:7px; width:314px;"></td></tr>
+<tr><td style="background-image:url(images/form_background.gif); width:314px;">
+
+<div style="margin-left:15px;">
+<%perl>
+if (scalar(@ERRORS)>0) {
+	print "<div style=\"color: red;\">\n";
+	print "<strong>Please correct the following errors:</strong>";
+	foreach my $err (@ERRORS) {
+		print "<li> $err\n";
+		}
+	print "</div>";
+	}
+</%perl>
+
+<table style="margin-left:15px;"> 
+	<tr> 
+		<td style="font-size:14px;">First Name</td> 
+		<td><input type="text" value="<% $firstname %>" name="firstname" class="formed" style="font-size:18px; width:200px"></td> 
+	</tr> 
+	<tr> 
+		<td style="font-size:14px;">Last Name</td> 
+		<td><input type="text" value="" name="lastname" class="formed" style="font-size:18px; width:200px"></td> 
+	</tr> 
+	<tr> 
+		<td style="font-size:14px;">Email</td> 
+		<td><input type="text" value="" name="email" class="formed" style="font-size:18px; width:200px"></td> 
+
+	</tr> 
+	<tr> 
+		<td style="font-size:14px;">Phone</td> 
+		<td><input type="text" value="" name="phone" class="formed" style="font-size:18px; width:200px"></td> 
+	</tr> 
+	<tr> 
+		<td style="font-size:14px;">Company</td> 
+		<td><input type="text" value="" name="company" class="formed" style="font-size:18px; width:200px"></td> 
+	</tr> 
+	<tr> 
+		<td style="font-size:14px;">State:</td> 
+		<td><select name="state" size="1" class="formed" style="font-size:18px;">
+	<option value="--">--</option>
+	<option value="AK">AK</option>
+	<option value="AL">AL</option>
+	<option value="AR">AR</option>
+	<option value="AZ">AZ</option>
+	<option value="CA">CA</option>
+	<option value="CO">CO</option>
+	<option value="CT">CT</option>
+	<option value="DC">DC</option>
+	<option value="DE">DE</option>
+	<option value="FL">FL</option>
+	<option value="GA">GA</option>
+	<option value="HI">HI</option>
+	<option value="IA">IA</option>
+	<option value="ID">ID</option>
+	<option value="IL">IL</option>
+	<option value="IN">IN</option>
+	<option value="KS">KS</option>
+	<option value="KY">KY</option>
+	<option value="LA">LA</option>
+	<option value="MA">MA</option>
+	<option value="MD">MD</option>
+	<option value="ME">ME</option>
+	<option value="MI">MI</option>
+	<option value="MN">MN</option>
+	<option value="MO">MO</option>
+	<option value="MS">MS</option>
+	<option value="MT">MT</option>
+	<option value="NC">NC</option>
+	<option value="ND">ND</option>
+	<option value="NE">NE</option>
+	<option value="NH">NH</option>
+	<option value="NJ">NJ</option>
+	<option value="NM">NM</option>
+	<option value="NV">NV</option>
+	<option value="NY">NY</option>
+	<option value="OH">OH</option>
+	<option value="OK">OK</option>
+	<option value="OR">OR</option>
+	<option value="PA">PA</option>
+	<option value="RI">RI</option>
+	<option value="SC">SC</option>
+	<option value="SD">SD</option>
+	<option value="TN">TN</option>
+	<option value="TX">TX</option>
+	<option value="UT">UT</option>
+	<option value="VA">VA</option>
+	<option value="VT">VT</option>
+	<option value="WA">WA</option>
+	<option value="WI">WI</option>
+	<option value="WV">WV</option>
+	<option value="WY">WY</option>
+</select>
+</td> 
+	</tr> 
+    <tr><td style="font-size:14px;">Comments</td><td valign="middle">
+<textarea name="comment" style="width:200px; height:60px"></textarea>
+</td></tr>
+    <tr><td></td><td valign="middle">
+<input type="checkbox" name="want_trial" value="yes" />I would like a free trial
+</td></tr>
+<tr><td></td><td valign="middle">
+<input type="checkbox" name="want_demo" value="yes" />I would like a personal demo
+</td></tr>
+<tr><td></td><td valign="middle">
+<input type="checkbox" name="want_pricing" value="yes" />I would like pricing information
+</td></tr>
+	<tr> 
+		<td colspan='3' align='right'><input type="submit" value="Next" style='font-size:12pt;'></td> 
+	</tr> 
+</table> 
+</td></tr>
+<tr><td style="background-image:url(images/form_background_bottom.gif); height:7px; width:314px;"></td></tr>
+</table>
+</form></td> 
+	<td valign='top' align="right"></td> 
+</tr> 
+</table> 
+
+</div>
+
+
+<%perl>
+	}
+elsif ($SUCCESS) {	
+
+	my $dbh = &DBINFO::db_zoovy_connect();
+	if (not defined $opid) { $opid = 'NONE'; }
+	if (not defined $src) { $src = 'WEB'; }
+	if (not defined $firstname) { $firstname = ''; }
+	if (not defined $lastname) { $lastname = ''; }
+	if (not defined $meta) { $meta = ''; }
+	if (not defined $phone) { $phone = ''; }
+	if (not defined $email) { $email = ''; }
+	if (not defined $state) { $state = ''; }
+	my $ipaddress = $ENV{'REMOTE_ADDR'};
+
+	my $pstmt = DBINFO::insert($dbh,'LEADS',{ 
+ 		SRC=>$src,OPERATORID=>$opid,CREATED=>&ZTOOLKIT::mysql_from_unixtime(time()),
+ 		COMPANY_NAME=>$company,CONTACT_FIRSTNAME=>$firstname,CONTACT_LASTNAME=>$lastname,
+		META=>$meta,
+		IPADDRESS=>$ipaddress,
+		PHONE_NUMBER=>$phone,EMAIL=>$email},debug=>2);
+	print STDERR $pstmt."\n";
+
+	if ($phone eq '13 255 645 135') { $pstmt = ''; }
+
+	if ($pstmt ne '') {
+		$dbh->do($pstmt);
+		}
+
+  my ($leadid) = &DBINFO::last_insert_id($dbh);
+
+  ## NOTIFY SALESFORCE:
+  require LWP::Simple;
+  require ZTOOLKIT;
+  my %foo = ();
+  $foo{'encoding'} = 'UTF-8';
+  # $foo{'oid'} = '00D80000000cL3u';
+  $foo{'oid'} = '00DA0000000Z19B';
+  $foo{'retURL'} = 'http://www.zoovy.com/thanks!';
+  $foo{'first_name'} = $firstname;
+  $foo{'last_name'} = $lastname;
+  $foo{'email'} = $email;
+  $foo{'company'} = $company;
+  $foo{'state'} = $state;
+  $foo{'phone'} = $phone;
+  $foo{'lead_source'} = 'site-zoovy.com';
+  #$foo{'00N80000003Pyp7'} = "$meta|$opid";
+  ### Correlation Data:
+  #$foo{'00N80000003Pyp6'} = '';
+  ### CorrelationID:
+  #$foo{'00N80000003Pyp5'} = "LEAD-$leadid";
+  # WebSource?!
+  $foo{'00NA0000003BOfp'} = "$meta|$opid";
+  ## Correlation Data:
+  $foo{'00NA0000003BOfo'} = '';
+  ## CorrelationID:
+  $foo{'00NA0000003BOfn'} = "LEAD-$leadid";
+
+  ## send to salesforce
+  my $paramstr = &ZTOOLKIT::buildparams(\%foo);
+  my ($r) = LWP::Simple::get("https://www.salesforce.com/servlet/servlet.WebToLead?$paramstr");
+  
+#  use Data::Dumper; print &ZOOVY::incode(Dumper($r));
+  
+  &DBINFO::db_zoovy_close();
+
+
+
+</%perl>
+<br>
+<br>
+
+<div style="margin-left:-32px; width:774px; height:550px; background-image:url(images/20100507_thankyou_background.jpg); background-repeat:no-repeat; position:relative">
+<span style="font-family:Arial, Helvetica, sans-serif; font-size:37px; color:#aaaaaa; margin-left:30px;">Free trials, personalized demos & pricing</span>
+	
+</div>
+<%perl>
+	}
+</%perl>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => 'home' &></&>
+
+<!-- end of page -->

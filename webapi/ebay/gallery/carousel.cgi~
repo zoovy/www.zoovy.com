@@ -1,0 +1,268 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use lib "/httpd/modules";
+use CGI;
+use ZOOVY;
+use ZTOOLKIT;
+use GTOOLS;
+
+## /gallery/index.cgi?merchant=zsmc&limit=10&keyword=asdf&catalog=1&productid= 
+
+my $q = new CGI;
+## Flash can only send parameters in lowercase ...?  :(  -AK
+##
+my %p = map { lc($_) => $q->param($_) } $q->param(); ## Load cgi params as lowercase keys into hash %p
+my $SHOWCASEREF = undef;
+
+my $MERCHANT = $p{'merchant'};
+
+my $MID = 0;
+my $ERROR = '';
+
+if (not defined $MERCHANT) { $ERROR = 'Merchant undefined'; } 
+elsif ($MERCHANT eq 'undefined') { $MERCHANT = ''; $ERROR = 'Merchant /undefined/ not valid.'; }
+elsif ($MERCHANT eq '') { $ERROR = "No merchant passed\n"; }
+else {
+	$MID = &ZOOVY::resolve_mid($MERCHANT);
+	if ($MID==0) { $ERROR = "MID is invalid for user $MERCHANT\n"; }
+	}
+
+my $PRODUCT = $p{'product'};
+if (not defined $PRODUCT) { $PRODUCT = $p{'productid'}; }
+if (not defined $PRODUCT) { $PRODUCT = ''; }
+my $KEYWORD = $p{'keyword'};
+
+my $build_file = 1;
+if ((not defined $KEYWORD) || ($KEYWORD eq '')) { $KEYWORD = undef; }
+else {
+	$KEYWORD =~ s/^[\W]+//g;
+	$KEYWORD =~ s/[\W]+$//g;
+	$KEYWORD =~ s/^(.*?)[\W]+.*/$1/g;
+	if ($KEYWORD eq '') { $KEYWORD = undef; }
+	print STDERR "GALLERY KEYWORD: $KEYWORD\n";
+	}
+
+if ($ERROR ne '') {
+	print "Content-type: text/error\n\n";
+	print $ERROR;
+	print STDERR "ERROR: $ERROR\n";
+	$build_file = -1;
+	}
+
+my $out = '';
+$MERCHANT =~ s/[\W]+//g;
+$PRODUCT =~ s/[^\w\-\#]+//g;
+
+$PRODUCT = '';
+my $filename = "/httpd/gfxapi-htdocs/gallery/cache/$MERCHANT..xml";
+if ((-f "$filename") && ($build_file>=0)) {
+	my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($filename);
+	if (not defined $ctime) {
+		## file doesn't exist!
+		$build_file = 1;
+		}
+	elsif (($PRODUCT eq '') && (($ctime+600)<time())) {
+		## flush cache! - we do merchants every 5 minutes
+		print STDERR "FLSH1: $filename\n";
+		unlink("$filename");
+		$build_file = 1;
+		}
+	elsif (($PRODUCT ne '') && ($ctime+(60*24)<time())) {
+		## flush cache! - we do products every 24 hours
+		print STDERR "Flushing product cache! $filename\n";
+		unlink("$filename");
+		$build_file = 1;
+		}
+	else {
+		## use cache version
+		$build_file = 0;
+		}
+	}
+elsif ($build_file>=0) {
+	$build_file = 1;
+	print STDERR "Could not load $filename\n";
+	}
+
+##
+## Build_file creates the $filename and $filename.gz files
+##		0 = skip, 1=build file (save), 2=build file (don't save)
+##
+if ($build_file) {
+	require EBAY::API;
+	require EBAY::LISTING;
+	my $LIMIT = defined($p{'limit'}) ? int($p{'limit'}) : 10;
+	if ($LIMIT == 0) { $LIMIT = 10; }
+	# $LIMIT = 10;
+
+	if ((defined $KEYWORD) && ($KEYWORD ne '')) {
+		## never cache search requests!
+		$build_file = 2;
+		}
+
+	my $edbh = &EBAY::API::db_ebay_connect();
+
+	#mysql> desc RELATED_PRODUCTS;
+	#+------------------+--------------+------+-----+---------+-------+
+	#| Field            | Type         | Null | Key | Default | Extra |
+	#+------------------+--------------+------+-----+---------+-------+
+	#| USERNAME         | varchar(20)  |      | PRI |         |       |
+	#| PRODUCT          | varchar(20)  |      | PRI |         |       |
+	#| RELATED_PRODUCTS | varchar(255) |      |     |         |       |
+	#+------------------+--------------+------+-----+---------+-------+
+
+	my @MATCHES = ();
+
+	## if we are searching by ISBN or something, ..
+	srand(time());
+	if ($PRODUCT ne '') {	
+		my $RELATED = &ZOOVY::fetchproduct_attrib($MERCHANT,$PRODUCT,'zoovy:prod_related');
+		if ($RELATED) {
+			## Check eBay Running listings FIRST!
+			my $pstmt = "select EBAY_ID from MONITOR_QUEUE_OO where MID=$MID /* $MERCHANT */ and ((ENDS_GMT>".time().") or (ENDS_GMT=0 and EBAY_ID>0)) and PRODUCT in (";
+			foreach my $prod (split(/,/,$RELATED)) { $pstmt .= $edbh->quote($prod).','; }
+			chop($pstmt); $pstmt .= ')';
+			print STDERR $pstmt."\n";
+			my $sth = $edbh->prepare($pstmt);
+			$sth->execute();
+			while ( my ($EBAY_ID) = $sth->fetchrow() ) { push @MATCHES, "OO*$EBAY_ID"; }
+			$sth->finish();
+			}
+		}	
+
+	if (scalar(@MATCHES)==0) {
+		my $pstmt = "select EBAY_ID from MONITOR_QUEUE_OO where MID=$MID /* $MERCHANT */ and ENDS_GMT>".time()." limit 0,100";
+		print STDERR $pstmt."\n";
+		my $sth = $edbh->prepare($pstmt);
+		$sth->execute();
+		while ( my ($EBAY_ID) = $sth->fetchrow() ) { 
+			push @MATCHES, "OO*$EBAY_ID"; 
+			}
+		$sth->finish();
+		}
+	
+
+	if (scalar(@MATCHES)>$LIMIT) {
+		## we don't have enough matches yet. or we don't have a product specified.
+		my $count = scalar(@MATCHES);
+		print STDERR "FOUND COUNT: $count (needed $LIMIT)\n";
+		my $pos = int(rand()*time()%$count);
+		if (($pos + $LIMIT) > $count) {
+			## append the front onto the back.
+			@MATCHES = (@MATCHES,@MATCHES);
+			}
+		@MATCHES = splice @MATCHES, $pos, $LIMIT;
+		}
+	
+	
+	$out = '';
+	$out .= "<?xml version=\"1.0\"?>\n";
+	$out .= "<gallery version=\"1\">\n";
+	#$out .= "<limit>$LIMIT</limit>\n";
+	#$out .= "<matches>".scalar(@MATCHES)."</matches>\n";
+	#$out .= '<!-- '.Dumper(\@MATCHES).' -->';
+	foreach my $element (@MATCHES) {
+		next if ($LIMIT-- <= 0); 
+
+		my $ebay_id = '';
+
+
+		my (my $TB,$ebay_id) = split(/\*/,$element);
+		next if ($ebay_id eq '');
+
+		my $listing = undef;
+		my $inforef = undef;
+	
+		($listing) = EBAY::LISTING->new('EBAY',$MERCHANT,listingid=>$ebay_id);
+		# $out .= '<!-- 1 -->'; 
+		next if (not defined $listing);
+		# $out .= '<!-- '.Dumper($listing).' -->'; 
+	
+		if ((not defined $listing->{'THUMB'}) || 
+			($listing->{'THUMB'} eq '')) { $listing->{'THUMB'} = 'http://www.zoovy.com/images/blank.gif'; }	
+		# next if ($listing->{'THUMB'} eq ''); 
+		# $out .= '<!-- 3 -->'; 
+	
+		# $img =~ s/\.[A-Za-z0-9]+$//g;
+		my $jpegURL = &GTOOLS::imageurl($MERCHANT,$listing->{'THUMB'},0,0,'FFFFFF',0,'jpg'); 	
+		my $thumbURL = &GTOOLS::imageurl($MERCHANT,$listing->{'THUMB'},75,75,'FFFFFF',0,'jpg'); 	
+		my $linkURL = "http://cgi.ebay.com/aw-cgi/eBayISAPI.dll?ViewItem&item=".$ebay_id;
+		if (not defined $jpegURL) { $jpegURL = ''; }
+		if (not defined $thumbURL) { $thumbURL = ''; }
+		next if ($jpegURL eq '' || $thumbURL eq '');
+
+		if ($jpegURL eq '') { $jpegURL = 'http://www.zoovy.com/images/blank.gif'; }
+		if ($thumbURL eq '') { $thumbURL = 'http://www.zoovy.com/images/blank.gif'; }
+	
+		if (not defined $listing->{'BIDCOUNT'}) { $listing->{'BIDCOUNT'} = 0; }
+		if (not defined $listing->{'BIDPRICE'}) { $listing->{'BIDPRICE'} = ''; }
+
+		my $about = $listing->{'TITLE'}."\n";
+		$about .= "eBay Item: $ebay_id  ";
+		if ($listing->{'BIDPRICE'} eq '') { $listing->{'BIDPRICE'} = 0; }
+		if ($listing->{'BIDPRICE'}>0) { $about .= " Current Price: \$".$listing->{'BIDPRICE'}.' Bids: '.$listing->{'BIDCOUNT'}."\n"; }
+			
+		$out .= "<imageNode jpegURL=\"$jpegURL\" thumbURL=\"$thumbURL\" ";
+		$out .= 'title="'.&EBAY::API::xml_incode($listing->{'TITLE'}).'" ';
+		$out .= 'eBayItem="'.$ebay_id.'" ';
+		$out .= 'bidPrice="'.$listing->{'BIDPRICE'}.'" ';
+		$out .= 'bidCount="'.$listing->{'BIDCOUNT'}.'" ';
+		$out .= 'bin="'.$listing->{'BUYITNOW'}.'" ';
+		
+		if (not $listing->{'IS_GTC'}) { 
+			$about .= "ENDS: ".&ZTOOLKIT::pretty_date($listing->{'ENDS'},1);
+			$out .= 'ends="'.&ZTOOLKIT::pretty_date($listing->{'ENDS'},1).'" '; 
+			}
+	
+		$out .= 'linkURL="'.&EBAY::API::xml_incode($linkURL).'">';
+		$out .= &EBAY::API::xml_incode($about);
+		$out .= "</imageNode>\n";	
+		}
+	$out .= "</gallery>\n";
+
+	if ($build_file == 1) {
+		print STDERR "Writing file $filename\n";
+		open F, ">$filename";
+		print F $out;
+		close F;
+
+		use Compress::Zlib;
+		my $cout = Compress::Zlib::memGzip(\$out);
+		open F, ">$filename.gz";
+		print F $cout;
+		close F;
+		}
+
+	print STDERR "WRITING: $filename\n";
+	&EBAY::API::db_ebay_close();
+	}
+
+
+print "Connection: close\n";
+if ($out ne '') {
+	## we get here when we just generated the file, OR we did search results.  (no compression)
+	print "Content-length: ".length($out)."\n";
+	print "Content-type: text/xml\n\n";
+	print $out;
+	}
+elsif (defined($ENV{'HTTP_ACCEPT_ENCODING'}) && ($ENV{'HTTP_ACCEPT_ENCODING'} =~ m/gzip/)) {
+	$/ = undef; open F, "<$filename.gz"; $out = <F>; close F; $/ = "\n";
+	my $comp = "gzip";
+	if ($ENV{'HTTP_ACCEPT_ENCODING'} =~ /x-gzip/) { $comp = 'x-gzip'; }
+	print "Content-type: text/xml\n";
+	print "Content-length: ".length($out)."\n";
+	print "Content-encoding: $comp\n\n";
+	print $out;
+	}
+else {
+	$/ = undef; open F, "<$filename"; $out = <F>; close F; $/ = "\n";
+	print "Content-length: ".length($out)."\n";
+	print "Content-type: text/xml\n\n";
+	print $out;
+	}
+
+#use Data::Dumper;
+#print STDERR Dumper(\%ENV);
+
+

@@ -1,0 +1,182 @@
+<!-- SETUP_TAB -->
+<br>
+<center>
+<table width='85%'>
+<tr><td>
+<font><h2>Insurance</h2>
+<Br>
+<form name="thisFrm" action="insurance.cgi">
+<input type="hidden" name="ACTION" value="SAVE">
+
+Insurance fees for orders will be:<br>
+<input type="radio" name="insurance" <!-- INSURANCE_0 --> value="0"> Not Used/Disabled.<br>
+<input type="radio" name="insurance" <!-- INSURANCE_1 --> value="1"> Included as part of the shipping total.<br>
+<input type="radio" name="insurance" <!-- INSURANCE_2 --> value="2"> Displays as it's own line item under shipping.<br>
+*NOTE: If you combine insurance as part of shipping - it cannot be reported on separately 
+and may affect some aspects of reporting.
+<br>
+Insurance is:<br>
+<input type="radio" name="ins_optional" <!-- INS_OPTIONAL_1 --> value="1"> Optional (user will be prompted)<br>
+<input type="radio" name="ins_optional" <!-- INS_OPTIONAL_0 --> value="0"> Mandatory (will be automatically included in order)<br>
+<br>
+
+Insurance fees are applied after the rules based shipping calculation. 
+Insurance fees are typically used to cover the cost of 3rd party insurance companies, or as a profit center for companies who decide
+to be "self insuring".
+You may enable as many insurance calculations as you like, all methods will be summed together to arrive at the final insurance total.
+<br>
+<br>
+<input type="checkbox" <!-- INS_FLAT --> name="flat"><b>Flat Insurance Per Item:</b>
+NOTE: This method works off the total count of all items in the cart, if a customer purchases qty 2 of one item, 
+and qty 3 of another, this would charge the first item price, plus the second item price for each of the remaining qty of 4. <br>
+<table><tr>
+	<td>&nbsp;&nbsp;&nbsp&nbsp;</td>
+	<td>
+<TABLE>
+<tr>
+	<td></td><td><b>Domestic</b></td><td><b>Canada</b></td><td><b>International</b></td>
+</tr>
+<tr>
+	<td>First Item:</td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_DOM_ITEM1 -->" name="dom_item1"></td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_CAN_ITEM1 -->" name="can_item1"></td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_INT_ITEM1 -->" name="int_item1"></td>
+</tr>
+<tr>
+	<td>Additional Items:</td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_DOM_ITEM2 -->" name="dom_item2"></td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_CAN_ITEM2 -->" name="can_item2"></td>
+	<td>$<input type="textbox" size="5" value="<!-- INS_INT_ITEM2 -->" name="int_item2"></td>
+</tr>
+</TABLE>
+	</td>
+</tr></table>
+
+<br>
+<input type="checkbox" <!-- INS_PRODUCT --> name=""><b> Per Product:</b><br>
+<table><tr>
+	<td>&nbsp;&nbsp;&nbsp&nbsp;</td>
+	<td>
+Enabling a per product handling will allow you to specify a different handling charge for each product (stored as zoovy:ship_insurance).
+Each handling charge will only be applied once per product, regardless of how many are purchased.<br>
+<Br>
+
+<input type="radio" name="product" <!-- INS_PRODUCT_0 --> value="0"> Disabled (do not configure handling per product)<br>
+<input type="radio" name="product" <!-- INS_PRODUCT_7 --> value="7"> Use per product for all destinations<br>
+<input type="radio" name="product" <!-- INS_PRODUCT_1 --> value="1"> Use per product for domestic orders only<br>
+<input type="radio" name="product" <!-- INS_PRODUCT_2 --> value="2"> Use per product for canada orders only<br>
+<input type="radio" name="product" <!-- INS_PRODUCT_4 --> value="4"> Use per product for international orders only<br>
+<input type="radio" name="product" <!-- INS_PRODUCT_6 --> value="6"> Use per product for canada + international orders<br>
+</td></tr>
+</table>
+<br>
+<br>
+<input type="checkbox" <!-- INS_WEIGHT --> name="weight"><b> Weight Based:</b><br>
+<table><tr>
+	<td>&nbsp;&nbsp;&nbsp&nbsp;</td>
+	<td>
+A Weight Based calculation will sum the total weight of all the items in the cart combined and then use a
+lookup table to determine the next highest handling fee.
+
+<table>
+<tr>
+	<td><b>Domestic</b></td>
+	<td><b>Canada</b></td>
+	<td><b>International</b></td>
+</tr>
+<tr>
+	<td valign='top'><!-- WEIGHT_DOM --></td>
+	<td valign='top'><!-- WEIGHT_CAN --></td>
+	<td valign='top'><!-- WEIGHT_INT --></td>
+</tr>
+<tr>
+	<td colspan='3'><hr></td>
+</tr>
+<tr>
+	<td><input type="radio" name="weight_area" value="dom"> Edit</td>
+	<td><input type="radio" name="weight_area" value="can"> Edit</td>
+	<td><input type="radio" name="weight_area" value="int"> Edit</td>
+</tr>
+<tr>
+	<td colspan='3'>
+	<table>
+	<tr>
+		<td nowrap align='center'><input type='button' class='button showLoadingModal' onClick="window.document.thisFrm.ACTION.value='WEIGHT_EDIT'; window.document.thisFrm.submit();" style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Up to Weight:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="weight_upto" size="8"></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Fee:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="weight_fee" size="5"></td>
+	</tr>
+	</table>
+	HINT: To reset/remove a value, simply enter a blank fee.
+	</td>
+</tr>
+</table>
+	</td>
+</tr>
+</table>
+<br>
+<br>
+
+<input type="checkbox" <!-- INS_PRICE --> name="price"><b> Price Based:</b><br>
+<table><tr>
+	<td>&nbsp;&nbsp;&nbsp&nbsp;</td>
+	<td>
+A Price Based calculation uses the sum of all the items in the cart combined and then use a
+lookup table to determine the next highest handling fee.
+
+<table>
+<tr>
+	<td><b>Domestic</b></td>
+	<td><b>Canada</b></td>
+	<td><b>International</b></td>
+</tr>
+<tr>
+	<td valign='top'><!-- PRICE_DOM --></td>
+	<td valign='top'><!-- PRICE_CAN --></td>
+	<td valign='top'><!-- PRICE_INT --></td>
+</tr>
+<tr>
+	<td colspan='3'><hr></td>
+</tr>
+<tr>
+	<td><input type="radio" name="price_area" value="dom"> Edit</td>
+	<td><input type="radio" name="price_area" value="can"> Edit</td>
+	<td><input type="radio" name="price_area" value="int"> Edit</td>
+</tr>
+<tr>
+	<td colspan='3'>
+	<table>
+	<tr>
+		<td nowrap align='center'><input type='button' class='button showLoadingModal' onClick="window.document.thisFrm.ACTION.value='PRICE_EDIT'; window.document.thisFrm.submit();" style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Up to Price:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="price_upto" size="8"></td>
+		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Ins. Fee:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="price_fee" size="5"></td>
+	</tr>
+	</table>
+	HINT: To reset/remove a value, simply enter a blank fee.
+	</td>
+</tr>
+</table>
+	</td>
+</tr>
+</table>
+
+
+<br>
+<br>
+<b>Special Handling Rules: </b><br>
+Use shipping rules to handle the "special cases" that come up from time to time.<br>
+<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=INSURANCE">Edit/View Advanced Rules</a>
+<br>
+<br>
+<br>
+
+<input class='button showLoadingModal' type='submit' value='  Save  '>
+<input class='button showLoadingModal' type='button' onClick='window.location="index.cgi";' value='  Exit  '>
+<br>
+<br>
+<br>
+</form>
+</center>
+</td></tr>
+</table>
+</center>
+</body>

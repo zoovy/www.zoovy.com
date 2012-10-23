@@ -1,0 +1,123 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+<h1>Configure Product Import</h1>
+<form name="thisFrm" method="POST" action="index.cgi">
+<input type="hidden" name="ACTION" value="SAVE-GENERIC-IMPORT">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table>
+	<tr>
+		<td>Supplier Code: <!-- CODE --></td>
+	</tr>
+	<tr>
+		<td><!-- RESULT --></td>
+	</tr>
+</table>
+
+<br>
+<br>
+<b>Data File:</b><br>
+<input type="radio" name="GEN_PRODDATA" <!-- GEN_PRODDATA_FILE --> value="FILE">
+File:<input size="50" type="file" name="GEN_PRODFILE" value="<!-- GEN_PRODFILE -->"><br>
+<br>
+<input type="radio" name="GEN_PRODDATA" <!-- GEN_PRODDATA_URL --> value="URL">
+Url: <input size=60 type="textbox" name="GEN_PRODURL" value="<!-- GEN_PRODURL -->"><br>
+&nbsp;&nbsp;Both FTP, HTTP and HTTPS formats are supported:<br>
+&nbsp;&nbsp;ftp://username:password@ftphost.com/path/to/file.txt<br>
+&nbsp;&nbsp;http://username:password@someurl.com/path/to/file.txt<br>
+<br>
+
+
+
+
+<br>
+
+<b>File Format:</b>
+<select name="GEN_PRODTYPE">
+<option value="CSV">Comma Separated</option>
+<option value="TAB">Tab Delimited</option>
+<option value="OTHER">Other</option>
+</select>
+<br>
+&nbsp;&nbsp;Other: (#, ^)
+<input size="2" maxlength="2" type="textbox" name="GEN_PRODTYPE_OTHER">
+
+<br>
+<br>
+<b>Data Positions:</b>
+<table>
+	<tr>
+		<td align='right'>Column #1:</b></td>
+		<td><input name="GEN_PROD1" size="3" value="<!-- GEN_PROD1 -->" maxlength="3" class="formed"></td>
+	</tr>
+	<tr>
+		<td align='right'>Column #2:</b></td>
+		<td><input name="GEN_PROD2" size="3" value="<!-- GEN_PROD2 -->" maxlength="3" class="formed"></td>
+	</tr>
+	<tr>
+		<td align='right'>Column #3:</b></td>
+		<td><input name="GEN_PROD3" size="3" value="<!-- GEN_PROD3 -->" maxlength="3" class="formed"></td>
+	</tr>
+	<tr>
+		<td align='right'>Column #4:</b></td>
+		<td><input name="GEN_PROD4" size="3" value="<!-- GEN_PROD4 -->"  maxlength="3" class="formed"></td>
+	</tr>
+	<tr>
+		<td align='right'>Column #5:</b></td>
+		<td><input name="GEN_PROD5" size="3"  value="<!-- GEN_PROD5 -->" maxlength="3" class="formed"></td>
+	</tr>
+</table>
+
+<center>
+<table>
+   <tr>
+      <td><input type="image" src="/images/bizbuttons/update.gif" onClick="document.thisFrm.ACTION.value='UPDATE-GENERIC-IMPORT'; 
+document.thisFrm.submit();"></td>
+      <td><input type="image" src="/images/bizbuttons/save.gif"></td>
+      <td><a href="index.cgi?ACTION=GENERIC-EDIT&CODE=<!-- CODE -->">
+      <img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+   </tr>
+</table>
+</center>
+		
+</form>
+
+
+
+<b>Directions:</b><br>
+<li>Look in the file your supplier automatically generates<br>
+<li>Map the columns in the file so Zoovy can automatically pick them up<br>
+<li>Input the Zoovy data type you would like imported from the list below<br> 
+<li>Leave columns blank that you do not want imported <br>
+<li>Only lines which contain a valid SKU will be imported 
+(all other lines will be ignored)<br>
+<li>Products are currently importly manually
+<br>
+<br>
+
+
+<br>
+<b>Header Names:</b>
+<br>
+<li>%PRODUCTID
+<li>%INVENTORY
+<li>%CATEGORY
+<li>zoovy:prod_name - the products short name or title, should be less than 100 characters 
+<li>zoovy:prod_desc - the products description, should be less than 1024 characters. 
+<li>zoovy:prod_image1 - a URL or Image Library name which represents the primary image for the product, also use zoovy:prod_image2 .. etc. 
+<li>zoovy:prod_image2 - a URL or Image Library name which represents the secondary image 
+<li>zoovy:prod_thumb - a URL or Image Library name which represents the thumbnails 
+<li>zoovy:base_price - the price, in US dollars without the dollar sign. 
+<li>zoovy:base_weight - the weight in ounces. 
+<br>
+<br>
+Go to the <a
+href="http://webdoc.zoovy.com/webmgr/detail/import-product.php">Product
+Import Guide</a> for more detailed information.
+
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

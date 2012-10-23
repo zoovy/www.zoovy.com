@@ -1,0 +1,41 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+<table width="540">
+<tr><td>
+<font face="Arial, Helevetica">
+<center>
+<BR>
+<!-- ERROR_MSG -->
+<br>
+</center>
+<a target="_top" href="/biz/configurator?VERB=VIEW&BUNDLE=WEB">Click here to add Domain Hosting to your Account</a>.
+<br>
+<br>
+<b>Domain Hosting</b> lets you host one or more custom domain names which can point to your
+Zoovy store. Zoovy will also forward one or more mail accounts so you and your employees can send
+and receive mail from employee@yourname.com.<br>
+<br>
+If you want to have a domain name like http://www.my-company.com then you need to contact Zoovy technical 
+support and inquire about purchasing domain redirection services.<br>
+<br>
+If you do not already own your domain name, you will still need to reserve it (in addtion to buying hosting).
+Zoovy offers registration services for $10/yr.
+<br>
+
+<Br>
+</center>
+
+<FONT FACE="helvetica, arial" SIZE="2">
+<BR>
+<center>
+<a target="_top" href=".."><img src="/images/bizbuttons/okay.gif" border="0"></a></center>
+</form>
+</font>
+</td></tr>
+</table>
+</center>
+</body>

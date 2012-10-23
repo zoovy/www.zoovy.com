@@ -1,0 +1,46 @@
+<!-- UTILITIES_TAB -->
+
+<form id="thisFrm" name="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="EDITSAVE">
+<input type="hidden" name="RID" value="<!-- RID -->">
+<br>
+
+<center>
+<table width="500" class="zoovytable">
+	<tr><td colspan='2' class="zoovytableheader">Edit Review <!-- RID --></td></tr>
+	<tr>
+		<td width="1" valign='top'>Customer:</td>
+		<td valign='top'><input size="30" type="textbox" name="CUSTOMER_NAME" value="<!-- CUSTOMER_NAME -->"></td>
+	</tr>
+	<tr>
+		<td width="1" valign='top'>Location:</td>
+		<td valign='top'><input size="20" type="textbox" name="LOCATION" value="<!-- LOCATION -->"></td>
+	</tr>
+	<tr>
+		<td width="1" valign='top'>Rating:</td>
+		<td valign='top'><select name="RATING"><!-- RATING_OPTIONS --></select></td>
+	</tr>
+	<tr>
+		<td width="1" valign='top'>Title:</td>
+		<td valign='top'><input size="60" type="textbox" name="SUBJECT" value="<!-- SUBJECT -->"></td>
+	</tr>
+	<tr>
+		<td width="1" colspan=2>Message: <br>
+		<textarea name="MESSAGE" cols="60" rows="3"><!-- MESSAGE --></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td width="1" valign='top'>Link URL:</td>
+		<td valign='top'><input size="100" type="textbox" name="BLOG_URL" value="<!-- BLOG_URL -->"></td>
+	</tr>
+	<tr>
+		<td colspan=2 valign='top'><input class="button" value="  Save  " onClick="window.document.thisFrm.submit();"> 
+	</tr>
+</table>
+</center>
+
+
+</form>
+
+
+<!-- FOOTER -->

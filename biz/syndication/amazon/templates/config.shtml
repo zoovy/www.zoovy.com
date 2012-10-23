@@ -1,0 +1,156 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<title>Amazon @Merchant Syndication</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<table width="800" cellspacing='0' cellpadding='0' align='center'>
+<tr>
+	<td>
+
+<h1>Amazon Configuration</h1>
+
+<!-- MESSAGE -->
+
+<form name="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="CONFIG-SAVE">
+
+<table class="zoovytable" cellspacing='0' cellpadding='4' width='100%'>
+	<tr>
+		<td class="zoovytableheader" colspan="2">Integration Setup</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant Name:</td>
+		<td valign=top>
+			<input type="textbox" maxlength=65 size=65 name="amz_merchantname" value="<!-- AMZ_MERCHANTNAME -->">
+			<div class="hint">This is your registered business name with Amazon.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>User Id:</td>
+		<td valign=top>
+			<input type="textbox" maxlength=65 size=65 name="amz_userid" value="<!-- AMZ_USERID -->">
+			<div class="hint">The email address you use to sign into seller central or payment central.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Password:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_password" value="<!-- AMZ_PASSWORD -->">
+			<div class="hint">The password you use to sign into seller central or payment central.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant Token:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_merchanttoken" value="<!-- AMZ_MERCHANTTOKEN -->">
+			<div class="hint">The merchant token for account e.g. M_COMPANY_#######</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Merchant ID:</td>
+		<td valign=top>
+			<input type="textbox" name="amz_merchantid" value="<!-- AMZ_MERCHANTID -->">
+			<div class="hint">Yet another number used to identify an account by Amazon.</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>AWS Access Key:</td>
+		<td valign=top>
+			<input type="textbox" size=25 maxlength=25 name="amz_accesskey" value="<!-- AMZ_ACCESSKEY -->">
+			<div class="hint">Required for Checkout by Amazon, or Amazon Web Services</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top>Signing Secret Key:</td>
+		<td valign=top>
+			<input type="textbox" size="65" name="amz_secretkey" value="<!-- AMZ_SECRETKEY -->">
+			<div class="hint">Required for Checkout by Amazon</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top><b>MWS TOKEN:</b></td>
+		<td valign=top>
+		<!-- MWSTOKEN_STATUS --><br>
+		<a target="_blank" href="https://sellercentral.amazon.com/gp/maws/maws-registration.html?ie=UTF8&id=APF889O5V4GVL&userType=web&returnUrl=https%3A%2F%2Fwebapi.zoovy.com%2Fwebapi%2Famazon%2Ftokenreturn.cgi%2FUSERNAME%3D<!-- USERNAME -->%2FPRT%3D<!-- PRT -->">
+		Create/Verify MWS Token
+		</a></td>
+	</tr>
+
+	<tr>
+		<td class="zoovysub1header" colspan="2">Feed Configuration</td>
+	</tr>	
+	<tr>
+		<td valign=top>Feeds:</td>
+		<td valign=top>
+			<input <!-- FEED_PERMS_1 --> type="checkbox" name="FEED_PERMS_1"> Sync Inventory to Amazon<br>
+			<input <!-- FEED_PERMS_2 --> type="checkbox" name="FEED_PERMS_2"> Sync Prices/Shipping to Amazon<br>
+			<input <!-- FEED_PERMS_4 --> type="checkbox" name="FEED_PERMS_4"> Sync Products/Relations/Images to Amazon<br>
+			<!-- FEED_PERMISSIONS_WARNING -->
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'>Pricing Schedule</td>
+		<td valign='top'>
+			<!-- SCHEDULE --> [ <a href='/biz/manage/schedules/'>Add Schedule</a> ]
+		</td>
+	</tr>
+	<tr>
+		<td valign='top' colspan=2>
+		<input type="checkbox" <!-- PRIVATE_LABEL --> value=1 name="private_label">
+		Amazon has granted your store an exemption to the UPC requirement</b><br><div
+class='hint'>(ie your products are sold under your company's own Private Label)</div></td>
+	</tr>
+	<tr>
+		<td valign='top' colspan=2>
+		<input type="checkbox" <!-- UPC_CREATION --> value=1 name="upc_creation">
+		Automatically Create UPCs</b><br><div class='hint'>(create UPCs for SKUs syndicating to categories that Amazon has
+deemed them required.)</div></td>
+	</tr>
+
+	<tr>
+		<td class="zoovysub1header" colspan="2">Repricing Configuration</td>
+	</tr>
+	<tr>
+		<td valign='top' colspan=2>
+		<i>coming soon.</i>
+		</td>
+	</tr>
+	<tr>
+		<td class="zoovysub1header" colspan="2">Order Configuration</td>
+	</tr>
+	<tr>
+		<td valign=top>Order Settings:</td>
+		<td valign=top>
+			<input <!-- ORDER_PERMS --> type="checkbox" name="ORDER_PERMS"> Import Orders and Send Tracking<br>
+		</td>
+	</tr>
+	<tr>
+		<td class="zoovysub1header" colspan="2">Fulfillment by Amazon (EXPERIMENTAL)</td>
+	</tr>
+	<tr>
+		<td valign=top>FBA Settings:</td>
+		<td valign=top>
+			<input <!-- FBA_PERMS --> type="checkbox" name="FBA_PERMS"> Import FBA Orders and Tracking from Amazon<br>
+		</td>
+	</tr>
+	<tr>
+		<td class="zoovysub1header" colspan="2">Order Configuration</td>
+	</tr>
+	
+	<tr>
+		<td colspan='2'><div class='zbutton_group'><input type="submit" value="Save" class="button2"></div></td>
+	</tr>
+</table>
+</form>
+
+
+	</td>
+</tr>
+</table>
+
+</body>

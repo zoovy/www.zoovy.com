@@ -1,0 +1,46 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<SCRIPT>
+<!--//
+function openWindow(url) {
+viewWin = window.open(url, 'advice','status=yes,menubar=yes,scrollbars=yes')
+viewWin.focus(true);
+}
+//-->
+</SCRIPT>
+</head>
+<body bgcolor="FFFFFF" onload="this.focus()" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<br>
+<center><font color='red'><h2><!-- MESSAGE --></h2></font></center>
+<center>
+<table width='80%'>
+<tr><td>
+<br>
+<table bgcolor='330099' cellspacing='0' cellpadding='1' border='0'>
+<tr><td><font face='arial' size='2' color='white'><b>&nbsp; Upload a New File:</b></font></td></tr>
+<tr><td>
+<table bgcolor='FFFFFF' width='100%' border='0' cellpadding='3' cellspacing='0'><tr><td>
+<form action='index.cgi' method='post' ENCTYPE='multipart/form-data'>
+<input type='hidden' name='ACTION' value='UPLOAD'>
+<input type='hidden' name='ts' value='<!-- TS -->'>
+Filename: <input type='file' name='FILENAME'>
+<input type='submit' value=' Upload! '>
+<br>
+<i>Note: you may also put a URL in the box above</i><br>
+</form>
+</td></tr></table>
+</td></tr></table><br>
+
+Current Custom Files:<br>
+<table cellspacing='0' cellpadding='5' border='0'>
+<!-- LIST -->
+</table>
+<br>
+</td></tr>
+</table>
+<a href=".." target="_top"><img src="/images/bizbuttons/exit.gif" border='0'></a>
+<a href="/biz" target="_top"><img src="/images/bizbuttons/home.gif" border='0'></a><br>
+</center>
+<br>
+</body>

@@ -1,0 +1,48 @@
+<!-- HEADER -->
+<!-- HEADER_MSG -->
+		
+<!-- ERRORS -->
+		
+<form id="thisFrm" name="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="FINDCART-NEXT">
+<input type="hidden" name="key" value="<!-- KEY -->">
+<table>
+
+	<tr>
+		<td><b>Find by Order #:</b></td>
+		<td><input name="order" value="<!-- ORDERID -->" type="textbox"></td>
+		<td>
+			<input type="submit" 
+			onClick="document.thisFrm.VERB.value='FINDORDER-ORDER'; document.thisFrm.submit();" value=" Next ">
+		</td>
+	</tr>	
+
+	<tr>
+		<td><b>Find By Email:</b></td>
+		<td><input name="email" value="<!-- EMAIL -->" type="textbox"></td>
+		<td>
+			<input type="submit" 
+			onClick="document.thisFrm.VERB.value='FINDORDER-EMAIL'; document.thisFrm.submit();" value=" Next ">
+		</td>
+	</tr>	
+	
+	<tr>
+		<td><b>Find By Phone:</b></td>
+		<td><input name="phone" value="<!-- PHONE -->" type="textbox"></td>
+		<td>
+			<input type="submit" 
+			onClick="document.thisFrm.VERB.value='FINDORDER-PHONE'; document.thisFrm.submit();" value=" Next ">
+		</td>
+	</tr>
+</table>
+
+<table>
+	<!-- ORDERS -->
+</table>
+
+
+</form>
+
+
+<!-- FOOTER -->
+

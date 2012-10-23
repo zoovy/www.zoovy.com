@@ -1,0 +1,19 @@
+<!-- SETUP_TAB -->
+<br>
+
+<center>
+<table width=780 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Recent Batch Jobs</td>
+</tr>
+<tr>
+	<td>
+	<table width=100%>
+	<!-- JOBS -->
+	</table>
+	</td>
+</tr>
+</table>
+</center>
+
+<!-- FOOTER -->

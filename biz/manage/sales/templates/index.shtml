@@ -1,0 +1,60 @@
+<!-- REPORT_TAB -->
+<center>
+<font face='Arial'>
+<br>
+
+<!--
+<form name='myfrm'>
+<table border='1'>
+<tr><td>
+Show invoices in:<br>
+<input type='checkbox' checked name='RECENT'> Recent &nbsp; 
+<input type='checkbox' checked name='PENDING'> Pending &nbsp; 
+<input type='checkbox' checked name='APPROVED'> Approved &nbsp; 
+<input type='checkbox' checked name='COMPLETED'> Completed &nbsp; 
+<input type='checkbox' name='DELETED'> Deleted
+</td></tr></table>
+</form>
+-->
+
+<table><tr><td>
+<br>
+<form method="get" action="report.cgi">
+<input type='hidden' name='report' value='monthyear'>
+<b>Sales Reports by Month:</b><br>
+<select name="month">
+<!-- MONTHS -->
+</select>
+<select name="year">
+<!-- YEARS -->
+</select><br>
+<input type="submit" name="submit" value="  Report by Month  "><br>
+</form>
+<br>
+<form method="get" action="report.cgi">
+<input type='hidden' name='report' value='period'>
+<b>Sales Report by Period:</b><br>
+<table cellpadding='0' cellspacing='0'>
+	<tr><td>Begins:</td><td><input size='8' maxlength='8' type='textbox' name='begins'> MM/DD/YY</td></tr>
+	<tr><Td>Ends:</td><td><input size='8' maxlength='8' type='textbox' name='ends'> MM/DD/YY</td></tr>
+</table>
+<input type="submit" name="submit" value="  Report by Period  "><br>
+</form>
+<br>
+<form method="get" action="report.cgi">
+<b>Speciality Reports:</b><br>
+<select name='report'>
+	<option value='today'>Today Only</option>
+	<option value='4week'>Last 4 Weeks</option>
+	<option value='all'>All Orders</option>
+</select>
+<input type="submit" name="submit" value="   Do Report  "><br>
+</form>
+
+<br><a href='..'>
+<img width='81' height='31' src='/images/bizbuttons/exit.gif' border='0'></a>
+</font>
+</center>
+
+</body>
+

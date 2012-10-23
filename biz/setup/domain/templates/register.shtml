@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<br>
+
+<center>
+<table class="zoovytable">
+<tr><td class="zoovytableheader">Register a new Domain</td></tr>
+<tr><td>
+
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="REGISTER-SAVE">
+<!-- ERRORS -->
+Domain Name: <input type="textbox" name="DOMAIN" value="<!-- DOMAIN -->">
+<input type="button" onClick="this.form.submit();" value=" Register ">
+</form>
+<br>
+
+Your account will be billed a rate of $10.00 annually for each domain name
+registered.
+
+</td></tr>
+</table>
+</center>

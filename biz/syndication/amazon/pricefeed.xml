@@ -1,0 +1,16 @@
+<AmazonEnvelope xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
+<Header>
+<DocumentVersion>1.01</DocumentVersion>
+<MerchantIdentifier>Q_M_NERDGEARIN_26443</MerchantIdentifier>
+</Header>
+<MessageType>Price</MessageType>
+<Message>
+<MessageID>1</MessageID>
+<Price><SKU>1234</SKU><StandardPrice currency="USD">10.00</StandardPrice></Price>
+</Message>
+<Message>
+<MessageID>2</MessageID>
+<Price><SKU>1237</SKU><StandardPrice currency="USD">25.00</StandardPrice></Price>
+</Message>
+</AmazonEnvelope>
+						

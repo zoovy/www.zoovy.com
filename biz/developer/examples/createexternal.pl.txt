@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+
+use LWP::UserAgent;
+use HTTP::Request::Common;
+use LWP::Simple;
+
+$agent = new LWP::UserAgent;
+%fields = (
+	'USERNAME'=>'zoovyuser',
+	'PASSWORD'=>'zoovypassword',
+	'COMPRESS'=>'none',
+	'METHOD'=>'CREATE',
+	'CONTENT'=>qq~
+<EXTERNAL>
+<origin>0</origin>
+<portal>foodog</portal>
+<marketid>123456789</marketid>
+<customer>zoovy\@foodogsoftware.com</customer>
+<marketurl>http://www.ebay.com/path/to/auction</customer>
+<taxable>1</taxable>
+<quantity>10</quantity>
+<product>CODERED8OZ</product>
+<autoemail>1</autoemail>
+<DATA>
+&lt;zoovy:base_price&gt;1.23&lt;/zoovy:base_price&gt;
+&lt;zoovy:prod_image1&gt;http://www.imagehost.com/mypicture.gif&lt;/zoovy:prod_image1&gt;
+&lt;zoovy:prod_name&gt;Code Red Mountain Dew 8oz Can&lt;/zoovy:prod_name&gt;
+&lt;zoovy:prod_desc&gt;This is a half full can of code red that has been sitting on my desk for about a week now.&lt;/zoovy:prod_desc&gt;
+&lt;zoovy:base_weight&gt;10#&lt;/zoovy:base_weight&gt;
+</DATA>
+</EXTERNAL>
+~,
+	);
+$result = $agent->request(POST "http://www.zoovy.com/webapi/merchant/externalsync.cgi", [%fields]);
+
+use Data::Dumper;
+
+print Dumper($result);
+

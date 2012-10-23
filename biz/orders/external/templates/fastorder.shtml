@@ -1,0 +1,98 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">  
+</head>
+<body>
+<form action='fastorder.cgi' method='post'>
+<center>
+<input type='hidden' name='CMD' value='SAVE'>
+<br>
+<center>
+<table class='zoovytable' cellpadding='1' cellspacing='0' border='0'>
+<Tr><td>&nbsp; <font class='title' color='white' size='3'><b>Incomplete Item <!-- ID --></b></font></td></tr>
+<tr><td>
+<table bgcolor='ffffff' cellpadding='3' cellspacing='0' border='0'>
+<tr>
+	<td>Customer Email:</td>
+	<td><input type='textbox' name='EMAIL' value='<!-- EMAIL -->' size='45'></td>
+</tr><tr>
+	<td>Customer Name:</td>
+	<td><input type='textbox' name='NAME' value='<!-- NAME -->' size='45'></td>
+</tr><tr>
+	<td>Customer Phone:</td>
+	<td><input type='textbox' name='PHONE' value='<!-- PHONE -->' size='45'></td>
+</tr><tr>
+	<td colspan='2'>
+	<center>
+	<table cellpadding='5'>
+	<tr>
+		<td>Smart Address:<br>
+		<textarea name='ADDRESS' cols='45' rows='3'><!-- ADDRESS --></textarea><br>
+		</td>
+		<td valign='top'>Example:
+		<br>123 Main Street
+		<br>Some Optional Suite#
+		<br>City, STATE. Zip<br>
+		<font class="hint">Does not support international</font>
+		</td>
+	</tr>
+	</table>
+	</center>
+	</td>		
+</tr><tr>
+	<td colspan='2'>
+	<!-- ERRORS -->
+	<table border='0' cellspacing='3' cellpadding='1'>
+	<tr bgcolor='AAAAAA'>
+		<td>SKU</td>
+		<td>Qty</td>
+		<td>Price</td>
+		<td>Description</td>
+		<td>Taxable</td>
+		<td>Ounces</td>
+	</tr>
+	<!-- CONTENTS -->
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>Shipping Amount:</td>
+	<td><input size='6' type='textbox' name='SHIPPRICE' value='<!-- SHIPPRICE -->'> via <input size='20' type='textbox' name='SHIPMETHOD' value='<!-- SHIPMETHOD -->'</td>
+</tr><tr>
+	<td colspan='2'>
+	Notes:<br><textarea rows='3' name='NOTES' cols='45'><!-- NOTES --></textarea><br>
+	</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<div class="hint">You will need to add payments to the order if you have already received payment for this.</div>
+	</td>
+</tr>
+<tr>
+	<td colspan='2'><input type='checkbox' checked name='add_promotions'> &nbsp; Automatically calculate promotions if available.</td>
+</tr>
+<tr>
+	<td colspan='2'><input type='checkbox' checked name='remove_inventory'> &nbsp; Decrement Inventory counts for items in order</td>
+</tr>
+<tr>
+	<td colspan='2'><input type='checkbox' <!-- CREATE_CUSTOMER_CHECKED --> name='create_customer'> &nbsp; Create a customer account</td>
+</tr>
+</table>
+</td></tr></table>
+</center>
+<br>
+
+<script language="JavaScript">
+<!--
+var clicks=0;
+function prevent_double() {
+clicks++; if (clicks > 1) { alert('Your order is being processed, please stand by.'); return false; }
+}
+//-->
+</script>
+
+<input type='image' src='/images/bizbuttons/create.gif' border='0' onClick="return prevent_double();">
+<a href="edit.cgi?ID=<!-- ID -->"><img src="/images/bizbuttons/back.gif" border='0'></a>
+<a href="main.cgi"><img src="/images/bizbuttons/exit.gif" border='0'></a>
+</form>
+
+</body>

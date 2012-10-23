@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+
+use lib '/httpd/modules';
+use TOXML::CHOOSER;
+use Data::Dumper;
+
+TOXML::CHOOSER::blah();
+
+exit;
+my ($out) = TOXML::CHOOSER::buildChooser();
+print Dumper($out);

@@ -1,0 +1,49 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy Partners', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<p>Zoovy has partnered with industry leaders and view these relationships as an important part of our business. We're deeply committed to offering the most competitive and effective solutions to the eCommerce marketplace.</p>
+
+
+<table cellspacing=1 cellpadding=5 width="100%">
+
+
+<&| /includes/partners.html &></&>
+<%perl>
+
+my @PARTNERS = &get_partners('active'=>1);
+my $i = 0;
+foreach my $pref (@PARTNERS) {
+	if ($i++ == 0) {
+		## print out a divider on all but the first interation
+		print qq~<tr><td colspan=2 height=8></td></tr>~;
+		}
+	print qq~<!-- $pref->{'alt'} -->\n~;
+	print qq~<tr><td width="10%" align="left" valign="top">~;
+	if ($pref->{'href'} ne '') {
+		print qq~<a href="$pref->{'href'}">~;
+		}
+	print qq~<img src="$pref->{'src'}" border="0" alt="$pref->{'alt'}" height="50" width="105">~;
+	if ($pref->{'href'} ne '') {
+		print qq~</a>~;
+		}
+	print qq~</td><td>~;
+	print qq~<p>$pref->{'txt'}</p>~;
+	print qq~</td></tr>~;
+	}
+
+</%perl>
+
+</table>
+
+
+
+
+
+
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

@@ -1,0 +1,234 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use GTOOLS;
+use CGI;
+require ZOOVY;
+require INVENTORY;
+require ZSKU;
+require POGS;
+use strict;
+use URI::Escape;
+
+&ZOOVY::init();
+my $dbh = &DBINFO::db_zoovy_connect();
+my ($USERNAME,$FLAGS) = &ZOOVY::authenticate('/biz',1);
+if (!$USERNAME) { exit; }
+$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+
+my @BC = ();
+push @BC, { name=>'Reports',link=>'https://www.zoovy.com/biz/reports','target'=>'_top', };
+push @BC, { name=>'Inventory',link=>'https://www.zoovy.com/biz/utilities/inventory','target'=>'_top', };
+
+# push @BC, { name=>'',link=>'','target'=>'_top', },
+
+
+if ($FLAGS =~ /,[DL]+2,/) {
+	$FLAGS .= ',CSV,';
+	}
+
+
+my $template_file = 'main.shtml';
+my $q = new CGI;
+my $ACTION = $q->param('ACTION');
+
+if ($ACTION eq 'MISSING') {
+
+	push @BC, { name=>'Show Unconfigured',link=>'','target'=>'_top', };
+
+	my ($onhandref,$reserveref) = &INVENTORY::load_records($USERNAME,undef);
+	my @ar = &ZOOVY::fetchproduct_list_by_merchant($USERNAME);
+	my @missing = ();
+	use Data::Dumper;
+
+	open F, ">/tmp/inv"; print F Dumper($onhandref)."\n"; close F;
+	foreach my $prod (@ar) {
+		my $found = 0;
+		if (defined $onhandref->{$prod}) { 
+			$found = 1; 
+			delete $onhandref->{$prod};
+			}
+
+		# search for this product with options
+		if (not $found) {
+			foreach my $k (keys %{$onhandref}) {
+				if ($k =~ /^$prod\:/) {
+					$found = 1; 
+					delete $onhandref->{$k};
+					}
+				elsif ($k =~ /^$prod\-/) { 
+					$found = 1; 
+					delete $onhandref->{$k};
+					}
+				}
+			}
+		
+		if (not $found) { 
+			push @missing, $prod; 
+			}
+		}
+
+
+	open F, ">>/tmp/inv"; print F Dumper($onhandref)."\n"; close F;
+	my $c = '';
+	foreach my $prod (@missing) {
+		my $url = URI::Escape::uri_escape("/biz/product/modify_product.cgi?product=$prod");
+		$c .= "<tr><td></td><td><a target=\"_product\" href=\"/biz/product/index.pl?goto=$url\">$prod</a></td><td>?</td><td>$reserveref->{$prod}</td><td>_</td></tr>\n";
+		}
+	if ($c eq '') { $c .= "<tr><td colspan='4'><i>All products currently have inventory enabled.</i></td></tr>"; }
+
+	$GTOOLS::TAG{'<!-- LIST -->'} = $c;
+	$template_file = 'dump.shtml';
+	}
+
+if ($ACTION eq 'UPDATERESERVE') {
+	
+	push @BC, { name=>'Update Reserve',link=>'','target'=>'_top', };
+	my ($onhandref,$reserveref) = &INVENTORY::load_records($USERNAME,undef);
+	foreach my $prod (keys %{$onhandref}) {
+		&INVENTORY::update_reserve($USERNAME,$prod);
+	   }
+
+	$ACTION = '';
+	$GTOOLS::TAG{'<!-- MSG -->'} = "<b><br><font color='red'>Reserved Inventory has been updated.</b></font><br>";
+	}
+
+if (($ACTION eq 'EXPORTCSV') && ($FLAGS !~ /,CSV,/)) {
+	&GTOOLS::output(file=>'denied.shtml',header=>1);
+	&DBINFO::db_zoovy_close();
+	exit;
+	}
+elsif ($ACTION eq 'EXPORTCSV') {
+	print "Content-type: text/csv\n\n";
+
+	print "%SKU,%INVENTORY,%LOCATION,!RESERVED,!DESCRIPTION\n";
+
+	my %prodnames = &ZOOVY::fetchproducts_by_name($USERNAME);
+	my ($invref,$reserveref,$locref) = &INVENTORY::fetch_qty($USERNAME,undef);
+
+	my $c = '';
+	my @col = ();
+	my $k = '';
+	foreach my $sku (keys %{$invref}) {
+		$col[0] = $sku;
+		$col[1] = $invref->{$sku};
+		$col[2] = $locref->{$sku};
+		$col[3] = $reserveref->{$sku};
+		if (index($sku,'-')>=0) {
+			# has options
+			$col[4] = &ZSKU::describesku($USERNAME,$sku);
+			}
+		else {
+			$col[4] = $prodnames{$sku};
+			}
+		$c = '';
+		foreach $k (@col) { 
+			$k =~ s/"/""/gs;
+			$k =~ s/[\n\r]+//gs;
+			$c .= '"'.$k.'",'; 
+			}
+		chop($c);
+		print "$c\n";
+		}
+
+	&DBINFO::db_zoovy_close();
+	exit;
+	}
+
+if ($ACTION eq 'UPDATE') {
+	push @BC, { name=>'[Updated]',link=>'','target'=>'_top', };
+
+	foreach my $k ($q->param())
+		{
+		if (substr($k,0,1) eq '_') 
+			{
+			$k = substr("$k",1);
+			print STDERR "nuking $k\n"; 
+			&INVENTORY::nuke_record($USERNAME,"$k","$k");
+			}
+		}
+	$ACTION = 'DISPLAY';
+	}
+
+
+if ($ACTION eq 'DISPLAY') {
+	$template_file = 'dump.shtml';
+	my ($invref,$reserveref,$locref) = &INVENTORY::fetch_qty($USERNAME,undef);
+	my $c = '';
+	my $price = 0;
+	my $counter = 0;
+	my $bgcolor = '';
+	if ($q->param('PRICE')==1) {
+		push @BC, { name=>'Show',link=>'','target'=>'_top', };
+
+		$GTOOLS::TAG{'<!-- PRICING -->'} = '<td>Item Cost</td><td>Price</td><td>Extended</td>';
+		$price = 1;
+		}
+	else {
+		push @BC, { name=>'Show w/Price',link=>'','target'=>'_top', };
+		}
+
+	my $AMOUNT = 0;
+	foreach my $sku (sort keys %{$invref}) {
+		if ($counter++ % 2 ==0) { $bgcolor = 'CCCCCC' } else { $bgcolor = "FFFFFF"; }
+
+		my $product = $sku;
+		if ($product =~ /^(.*?)\:/) { $product = $1; }
+
+		my $itemref = &ZOOVY::fetchproduct_as_hash($USERNAME,$product);	
+		$c .= qq~
+			<tr bgcolor='$bgcolor'>
+			<td><input type='checkbox' name='_$sku'></td>
+			<td>$sku</td><td>$invref->{$sku}</td><td>$reserveref->{$sku}</td><td>$locref->{$sku}</td>
+			~;
+
+		if ($sku =~ /\:(.*?)$/) {
+			&POGS::apply_options($USERNAME,$sku,$itemref);
+			$c .= "<td>".$itemref->{'zoovy:prod_name'}."</td>";
+			}
+		else {
+			$c .= "<td>".&ZSKU::describesku($USERNAME,$product,$itemref)."</td>";
+			}
+
+		if ($price) {
+			my $x = &ZSKU::calc_modifiedprice_by_sku($USERNAME,$product,$itemref);
+			$c .= "<td>$itemref->{'zoovy:base_cost'}</td>";
+			$c .= "<td>\$".sprintf("%.2f",$x)."</td>";
+			if (index($invref->{$sku},'#')<0) {
+				$x = ($invref->{$sku}*$x);
+				$c .= "<td>\$".sprintf("%.2f",$x)."</td>";
+				$AMOUNT += $x;
+				} else {
+				$c .= "<td>N/A</td>";
+				}
+			}
+		$c .= "</tr>\n";
+		}
+
+	if ($price) {
+		$c .= "<tr bgcolor='330066'><td colspan='6' align='right'><font color='white'><b>Total Value: \$".sprintf("%.2f",$AMOUNT)."</b></td></tr>";
+		}
+	$GTOOLS::TAG{"<!-- LIST -->"} = $c;
+	}
+
+
+
+
+&GTOOLS::output(
+   'title'=>'Inventory Management',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>'#50332',
+	'tabs'=>[
+		{ name=>'Show', link=>'index.cgi?ACTION=DISPLAY', },
+		{ name=>'Show w/Price', link=>'index.cgi?ACTION=DISPLAY&PRICE=1', },
+		{ name=>'Show Unconfigured', link=>'index.cgi?ACTION=MISSING', },
+		{ name=>'Update Reserve', link=>'index.cgi?ACTION=UPDATERESERVE', },
+
+		],
+   'bc'=>\@BC,
+   );
+
+
+
+&DBINFO::db_zoovy_close();

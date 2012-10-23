@@ -1,0 +1,102 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+<table class='zoovytable' cellspacing=0 width="600">
+<tr><td class='zoovytableheader'>Veruta Setup: <!-- PROFILE --></td></tr>
+<tr><td>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="SETUP">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<p>
+<b>What is Veruta?</b><br>
+Veruta is a re-marketing service. The Veruta plugin will identify, and display your banners on other websites to
+customers who have visited your site, interacted with the site, and left without making a purchase.  
+Veruta can be deployed for virtually any type of business and can be highly targeted to only re-target clients who have
+a high likelihood to purchase (such as only retargeting clients who have added something to their cart).
+Veruta will also track which items visitors showed interest in, and can use this information to display 
+relevant/targeted special limited time offers which deliver a compelling call to action.
+In our opinion, there are many reasons why companies would want to use Veruta to try and pick up 
+any missed sales opportunities (especially at the prices Zoovy clients receive).
+</p>
+
+<p><b>How much does this cost?</b><br>
+Zoovy has a special relationship with Veruta. Our clients do not pay normal
+CPE (Cost Per Experience fees) which can
+be very expensive and difficult to measure. 
+Instead Zoovy clients pay a flat $3.50 base CPM (Cost Per Impression) for
+branding/exposure, 
+in addition to a 3% CPA  (Cost Per Action/Sale) based on the Order Total.  
+Zoovy clients also gain access to other exclusive veruta features which are
+normally reserved for 
+large agencies with substantial budgets. 
+Zoovy clients receive the same transaction rates as very large agencies, 
+however unlike large agencies our clients do not pay a minimum fee.
+You will only pay for what you use, and a nominal rev. share to Veruta for
+the resulting sales your site generates.  
+Veruta charges will appear on your normal Zoovy invoice.
+</p>
+
+<p><b>Where will my banners appear?</b><br>
+Simply put: Veruta advertisements appear on sites your customers visit. 
+Veruta will only show advertisements to people who have left without
+purchasing, and you only pay for advertising they deliver to your clients.
+Veruta currently reaches about 80% of the content sites on the
+Internet through its solid relationships with major media networks but the
+demographics vary based on your shoppers.
+</p>
+
+<p><b>What is required from me?</b><br>
+Configuration is easy and takes just a few moments. 
+There are no setup fees, beyond the cost of creating your remarketing messaging.
+To get started, Veruta requires 3 different creative banner sizes to be supplied
+for each profile (campaign). 
+The preparing of the creatives require 4 steps: artwork, xml assembly, testing and upload. <br>
+<br>
+
+<b>To generate the necessary creatives you have the following options:</b>
+<ol>
+<li> Have Custom artwork created and assembled/tested/uploaded (Hourly Rates
+apply)
+<div class="hint">
+Use this option if you would like to work 1:1 with a graphic designer to
+create an individually tailored campaign for
+your business. Custom artwork and integration will be able to access
+functionality such as dynamic re-pricing 
+which is NOT offered in Express. For hourly rates please see webdoc
+<a href="http://webdoc.zoovy.com/doc/50551">http://webdoc.zoovy.com/doc/50551</a>
+</div>
+
+<li> Supply your own artwork, and have it assembled/tested/uploaded by Zoovy
+(Hourly Rates apply)
+<div class="hint">
+Use this option if you have specific graphic style constraints or guidelines
+supplied by your marketing or 
+product brand management group which will need to be adhered to. 
+</div>
+
+<li> <font color='blue'>[RECOMMENDED]</font> Have Express artwork created and assembled/uploaded (One Time Fee: $75)
+<div class="hint">
+With Express Artwork - a graphic designer will select an appropriate
+matching style which resembles your website and
+styling for your logo.  This reduces the amount of customization, and
+subsequent testing which is necessary, 
+and therefore the cost is able to be reduced as well. As with any express project you will not be given
+the opportunity to make changes prior to 
+test/assembly, and any changes will be handled as custom hourly work after
+the project is completed. 
+</div>
+</ol>
+
+<center><input type="submit" class="button" value=" Next: Let's Get Started! "></center>
+<br>
+<br>
+
+</form>
+</td></tr>
+</table>
+
+
+</center>
+</body>

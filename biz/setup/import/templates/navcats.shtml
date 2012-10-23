@@ -1,0 +1,74 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+
+<table width='90%' cellspacing='0' cellpadding='2' border='0' class="zoovytable">
+<tr>
+	<td align="left" class="zoovytableheader">Load Navigation Categories from CSV File</td>
+</tr><tr>
+	<td>
+
+<span class="alert"><!-- ERROR --></b></span>
+<form id="thisFrm" name="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-NAVCATS'>
+<!-- CAT_IMPORT_WD -->
+<input type='hidden' name='TYPE' value='category'> Category - used to create navigation categories<br>
+&nbsp;&nbsp;&nbsp; <input type="checkbox" name="CAT_RESORT_NAVCATS" CHECKED> Reorder navigation categories after import. (only necessary if updating category sort fields via update - VERY SLOW)<br>
+&nbsp;&nbsp;&nbsp; <input type="checkbox" name="CAT_DESTRUCTIVE"> Destructive Overwrite (nukes all categories before running).<br>
+
+
+<!-- SWFUPLOAD -->
+
+&nbsp;&nbsp;&nbsp; <input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload CSV File ">
+
+
+</form>
+</td></tr></table>
+
+<br>
+<br>
+<table width='90%' class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Export Categories + Pages</td>
+</tr>
+<tr>
+	<td>
+<form id="xyz" name="xyz" action="navcatexport.cgi/navcats.csv">
+additional headers: <input type="textbox" name="headers"><br>
+<div class="hint">
+Common headers include: PAGE_TITLE, META_DESCRIPTION, META_KEYWORDS<br>
+However any field that is stored in page namespace can be accessed.
+</div>
+	<input class="button" type="submit" value=" Export ">
+</form>
+
+	</td>
+</tr>
+</table>
+<br>
+<br>
+
+<table width='90%' cellspacing='0' cellpadding='2' border='0' class="zoovytable">
+<tr>
+	<td align="left" class="zoovytableheader">Dump Page Properties</td>
+</tr><tr>
+	<td>
+<div class="hint">
+Provide the safename of a navigation category to dump all properties of the page 
+(even fields which are not necessarily referenced by the current layout selected.)
+</div>
+<form id="xfrm" name="xfrm" action="index.cgi">
+<input type="hidden" name="VERB" value="DUMP_PAGE">
+Safename: <input type="textbox" size="100" name="SAFENAME">
+<input class="button" type="submit" value=" Export ">
+<pre>
+<!-- DUMP -->
+</pre>
+</form>
+	</td>
+</tr>
+</table>
+
+
+<!-- FOOTER -->

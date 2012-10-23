@@ -1,0 +1,126 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MESSAGE -->
+<br>
+<form id="thisFrm" name="thisFrm" action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="ID" value="<!-- ID -->">
+<table width=500 class='zoovytable'>
+	<tr class='zoovytableheader'><td colspan=2> Add New</td></tr>
+	
+	<tr>
+		<td colspan=2 class="zoovysub1header"> General Properties</td>
+	</tr>
+	<tr>
+		<td valign="top">Domain/Profile:</td>
+		<td valign="top">
+			<select name="profile">
+			<!-- PROFILES -->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Feed Campaign Code</td>
+		<td valign="top">
+			<input type="textbox" value="<!-- FEED_CODE -->" name="feed_code" size="6" maxlength="6"><br>
+			<font class="hint">A unique 6 digit code to identify this campaign. (leave blank to auto generate)</font>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Image WxH</td>
+		<td valign="top">
+			<input type="textbox" value="<!-- image_w -->" name="image_w"> x
+			<input type="textbox" value="<!-- image_h -->" name="image_h"> 
+		<font class="hint">Typically 75x75</font></td>
+	</tr>
+	<tr>
+		<td valign="top">Feed Title</td>
+		<td valign="top"><input type="textbox" value="<!-- FEED_TITLE -->" name="feed_title"><br>
+		<font class="hint">The name of this feed, included in the feed</font></td>
+	</tr>
+	<tr>
+		<td valign="top">Feed Link</td>
+		<td valign="top">
+			<input type="textbox" value="<!-- FEED_LINK -->" name="feed_link"><br>
+			<font class="hint">The URL to your store, or for this promotion.
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Feed Translation</td>
+		<td valign="top">
+			<select name="translation">
+				<option <!-- TRANSLATION_RAW --> value="RAW">Raw (No Formatting)</option>
+				<option <!-- TRANSLATION_WIKISTRIP --> value="WIKISTRIP">Strip WIKI</option>
+				<option <!-- TRANSLATION_HTMLSTRIP --> value="WIKISTRIP">Strip HTML</option>
+				<option <!-- TRANSLATION_WIKI2HTML --> value="WIKI2HTML">WIKI -&gt; HTML</option>
+				<option <!-- TRANSLATION_WIKI2HTMLIMG --> value="WIKI2HTMLIMG">WIKI -&gt; Enhanced HTML (Images and Buy Buttons)</option>
+				<option <!-- TRANSLATION_LEGACYV1 --> value="LEGACYV1">Legacy1 (pre 8/14/09 format)</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"></td>
+		<td valign="top"><input type="checkbox" <!-- CHK_FEED_LINK_OVERRIDE --> name="feed_link_override"> Feed Link Override<br>
+		<font class="hint">Enable this to use the Feed Link instead of individual product links in the feed.</font>
+		</td>	
+	</tr>
+	<tr>
+		<td valign="top">Feed Subject/Category</td>
+		<td valign="top">
+			<input type="textbox" value="<!-- FEED_SUBJECT -->" name="feed_subject"><br>
+			<font class="hint">A dmoz category, or other taxonomy/navigation to help spiders categorize this feed.</font>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Source List:</td>
+		<td valign="top">
+			<select name="list">
+			<!-- LISTS -->
+			</select><br>
+			<font class="hint">
+			The list from which this RSS feed is built. 
+			</font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2 class="zoovysub1header"> Promotion Settings</td>
+	</tr>
+	
+	
+	<tr>
+		<td valign="top">Pricing Schedule:</td>
+		<td valign="top">
+			<select name="schedule">
+			<!-- SCHEDULES -->
+			</select><br>
+			<font class="hint">Offer special pricing via the RSS feed. Requires the wholesale bundle.</font>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Max Products to Include</td>
+		<td valign="top">
+			<select name="max_products">
+				<!-- MAX_PRODUCTS -->
+			</select><br>
+			<font class="hint">The maximum number of products included in the feed at one time.</font>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">Cycle Interval (minutes)</td>
+		<td valign="top">
+			<select name="cycle_interval">
+			<!-- CYCLE_INTERVAL -->
+			</select><br>
+			<font class="hint">How often the products from the list are changed.</font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<!-- BUTTON -->
+		</td>
+	</tr>
+</table>
+</form>
+
+</center>

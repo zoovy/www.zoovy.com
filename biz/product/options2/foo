@@ -1,0 +1,8 @@
+/httpd/modules/SUPPLIER/API.pm:			$O->stuff()->recram($USERNAME,$SITEM);	
+/httpd/modules/SUPPLIER/ATLAST.pm:			$O->stuff()->recram($USERNAME,$SITEM);	
+/httpd/modules/SUPPLIER/SHIPWIRE.pm:			$O->stuff()->recram($USERNAME,$SITEM);	
+/httpd/modules/ORDER.pm:					$self->stuff()->recram($self->username(),$item);
+/httpd/modules/ORDER/AMAZON.pm:				$existing_stuff->recram( $USERNAME, $stuff->item($STID));
+/httpd/modules/STUFF.pm:			$self->recram( $params{'stuff'}->{$stid} );
+/httpd/modules/STUFF.pm:sub recram {
+/httpd/modules/POGS.pm:		$tmpstuff->recram( $USERNAME, { product=>$SKU, sku=>$SKU, stid=>$SKU, qty=>int$QTY },is_assembly_cram=>1);

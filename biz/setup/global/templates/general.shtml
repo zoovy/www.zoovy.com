@@ -1,0 +1,53 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center><b><!-- MESSAGE --><!-- WARNINGS --></b></center>
+
+<center>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="GENERAL-SAVE">
+<table width=600 class="zoovytable">
+<tr class="zoovytableheader"><td colspan=2> &nbsp; Order Sequence</td></tr>
+<tr>
+	<td align="right" class="body" valign="top">Next Order Number:</td>
+	<td valign="top">
+	<table>
+		<tr>
+			<td valign='top' align='left'><input type="textbox" name="order_num" size="5" value="<!-- order_num -->"></td>
+			<td align='left'><input type="hidden" name="hidden_order_num" value="<!-- hidden_order_num -->">
+	<font size='1'>
+Note #1: You should NEVER move this number backwards - very BAD things could happen, including the possibility of 3rd party integration with tools like Quickbooks not working correctly.<br>
+Note #2: Order ID's are not sequential numbers, they just appear that way. Specifically, using Zoovy Order Manager will reserve numbers in the sequence.<br>
+Note #3: When the SAVE button is pressed the number you see on this page will be permanently lost - this is an intentional safety mechanism built to avoid duplicating order numbers.<br></font>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<br>
+<br>
+<table class="zoovytable" width=600>
+<tr class="zoovytableheader"><td>&nbsp; Base Currency</td></tr>
+<tr><td>
+Base Price Currency: 
+<select name="CURRENCY">
+	<option value="USD">(USD) Dollars</option>
+</select>
+</td></tr>
+</table>
+<br>
+
+<table class="zoovytable" width=600>
+<tr class="zoovytableheader"><td>&nbsp; Warehouse Management</td></tr>
+<tr><td><input type="radio" name="wms" value="0" <!-- WMS_0_CHK -->> Disabled</td></tr>
+<tr><td><input type="radio" name="wms" value="1" <!-- WMS_1_CHK -->> Enabled</td></tr>
+<tr class="zoovytableheader"><td>&nbsp; ERP</td></tr>
+<tr><td><input type="radio" name="erp" value="0" <!-- ERP_0_CHK -->> Disabled</td></tr>
+<tr><td><input type="radio" name="erp" value="1" <!-- ERP_1_CHK -->> Enabled</td></tr>
+</table>
+
+<input type="submit" class="button" value="  Save  ">
+</form>
+</center>

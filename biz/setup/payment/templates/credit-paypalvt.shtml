@@ -1,0 +1,75 @@
+<!-- SETUP_TAB -->
+<center>
+<!-- MYTODO -->
+<!-- MESSAGE -->
+</center>
+
+<form name="myfrm" onsubmit="validate()" action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="PAYPALVT-SAVE">
+<input type="hidden" name="TAB" value="CREDIT">
+
+<br>
+
+<center>
+<table width="80%">
+<tr><td class="zoovytableheader">Paypal Virtual Terminal Configuration</td></tr>
+<tr><td>
+
+
+If necessary - please use the following link to sign up for Paypal:<br>
+<a href="http://altfarm.mediaplex.com/ad/ck/3484-23890-3840-36">Paypal SignUp</a><br>
+<i>(By signing up through this link you help Paypal establish the value of
+maintaining superior integration with Zoovy.)</i><br>
+<br>
+<br>
+
+
+<input <!-- CHECKED_PAYPAL_USE_VT --> type="checkbox" name="paypal_use_vt"> Use Paypal Virtual Terminal for Credit Card Gateway<br>
+<br>
+NOTE: To use this setting you MUST have Paypal Express Checkout properly
+setup and configured. You must also be subscribed to use the Virtual Terminal product
+from Paypal, AND be registered with Website Payments Pro.
+
+
+<input type="hidden" name="pay_credit" value="INT_HIGH">
+<input type="hidden" name="cc_type_visa" value="checked">
+<input type="hidden" name="cc_type_amex" value="checked">
+<input type="hidden" name="cc_type_mc" value="checked">
+<input type="hidden" name="cc_type_novus" value="checked">
+<input type="hidden" name="VISA_TRANSFEE" value="0">
+<input type="hidden" name="VISA_DISCRATE" value="0">
+<input type="hidden" name="MC_TRANSFEE" value="0">
+<input type="hidden" name="MC_DISCRATE" value="0">
+<input type="hidden" name="AMEX_TRANSFEE" value="0">
+<input type="hidden" name="AMEX_DISCRATE" value="0">
+<input type="hidden" name="NOVUS_TRANSFEE" value="0">
+<input type="hidden" name="NOVUS_DISCRATE" value="0">
+
+<br>
+<br>
+
+
+<input type="hidden" name="cc_avs_require" value="NONE">
+<input type="hidden" name="cc_avs_fail_code" value="402">
+<input type="hidden" name="cc_cvvcid" value="2">
+<input type="hidden" name="cc_report_voice_fail" value="ALWAYS">
+<input type="hidden" name="cc_voice_fail_code" value="202">
+
+
+</td></tr>
+</table>
+
+<center>
+<table>
+<tr><td><input type="image" width="81" height="31" alt="Save Settings" width="81" height="31" src="/images/bizbuttons/save.gif" border="0"></td>
+<td><a  target="_top" href=".."><img border="0" width="81" height="31" alt="Exit" width="81" height="31"
+src="/images/bizbuttons/exit.gif"></td></tr>
+</table>
+</center>
+<br>
+</form>
+<br>
+<br>
+
+
+<!-- FOOTER -->

@@ -1,0 +1,53 @@
+<!-- UTILITIES_TAB -->
+
+<br>
+<form action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="CREATE-SAVE">
+<input type="hidden" name="ORDER" value="<!-- ORDER -->">
+<center>
+<!-- MESSAGES -->
+
+<table class="zoovytable" width='600'>
+<tr class="zoovytableheader">
+	<td>Create a New Customer</td>
+</tr>
+<tr>
+	<td>
+
+
+	<table>
+	<tr>
+		<td><b>Email Address:</b></td>
+		<td><input type="textbox" name="EMAIL" value="<!-- EMAIL -->">&nbsp;&nbsp; <font size='1' color='red'>(Required)</font></td>
+	</tr>
+	<tr>
+		<td><b>First Last:</b></td>
+		<td>
+			<input type="textbox" name="FIRST" value="<!-- FIRST -->">
+			<input type="textbox" name="LAST" value="<!-- LAST -->">
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2><input type="checkbox" <!-- NEWS_CHECKED --> name="NEWS"> Subscribe to all Default Newsletters</td>
+	</tr>
+	<tr>
+		<td colspan=2><input type="checkbox" <!-- PASS_CHECKED --> name="PASS"> Automatically generate a secure password.</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+	<table>
+	<tr>
+	<td><input value=" Save " type="submit" class="button" border='0'></td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+</center>
+</form>
+</font>
+</td></tr></table>
+</body>

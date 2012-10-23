@@ -1,0 +1,25 @@
+<!-- SETUP_TAB -->
+
+<center>Current Rules for <!-- METHOD_DESC --><br></center>
+<br>
+<center>
+<table><tr><td>
+
+<center><!-- WARNING --></center>
+<br>	
+<table border='0' cellspacing="1" cellpadding="10">
+<!-- EXISTING_RULES -->
+</table>
+<br>
+<input type="button" class="button" onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->&ACTION=APPEND';" value=" Add New ">
+<input type="button" class="button" onClick="document.location='<!-- CANCEL_LOCATION -->';" value=" Exit ">
+<input type="button" class="button" onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->';" value=" Refresh ">
+<br>
+<br>
+<br>
+<br>	
+</td></tr></table>
+</center>
+
+</body>
+</html>

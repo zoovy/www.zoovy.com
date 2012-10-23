@@ -1,0 +1,152 @@
+#!/usr/bin/perl
+
+use CGI;
+
+use lib "/httpd/servers/overstock/modules";
+use LISTING;
+use OVERSTOCK;
+
+use lib "/httpd/modules";
+use ZOOVY;
+use DBINFO;
+use DBI;
+
+
+# this is required for kill_item 
+my $q = new CGI;
+
+# Check to see if everything has been filled out correctly.  If it has
+# not been filled out, put a complaint out to STDERR and the debug
+# log if appropriate.
+
+my $TIMESTAMP=time();
+my $ID = $q->param('ID');
+
+if ($ID eq '') { 
+	$TIMESTAMP=time();
+	print STDERR "Error no ID passed.\n";
+	if ($::DEBUG) { print DEBUG "$TIMESTAMP : Error no ID passed.\n" } 
+	exit; }
+my $SRC = $q->param('SRC');
+my $CHANNEL = $q->param('CHANNEL');
+my $MERCHANT = $q->param('MERCHANT');
+
+my $chref = {};
+$chref->{'DATA'} = $q->param('CONTENTS');
+$chref->{'STATE'} = $q->param('STATE');
+$chref->{'PRODUCT'} = $q->param('PRODUCT');
+$chref->{'ID'} = $CHANNEL;
+$chref->{'MERCHANT'} = $MERCHANT;
+$chref->{'SRC'} = $SRC;
+if (not defined $chref->{'PRODUCT'}) { $chref->{'PRODUCT'} = ''; }
+my $DISPATCH_KEY = 'F4834j523//}3';
+use Digest::MD5;
+
+my $digest = Digest::MD5::md5_base64($ID.$CHANNEL.$chref->{'STATE'}.$MERCHANT.$chref->{'DATA'}.$DISPATCH_KEY);
+if ($digest ne $q->param('MD5')) {
+	print STDERR "Failed MD5 signature\n";
+   print "Content-type: text/retry\n\n";
+   print "MD5 signatures did not match!\n";
+	exit;
+   }
+
+if (!defined($chref)) {
+	print "Content-type: text/error\n\n";
+	} 
+else {
+
+	my $v = &ZOOVY::attrib_handler_ref($chref->{'DATA'});
+	my $STATE = $chref->{'STATE'};
+
+	my $dbh = &OVERSTOCK::db_overstock_connect();
+	my $qtCHANNEL = $dbh->quote($CHANNEL);
+
+	##
+	## Function: loads templates from a channel, into the AUCTION_CREATE_TODO queue
+	##
+
+	my $ERROR = '';
+
+	if (($ERROR ne '') && ($STATE ne 'D')) {
+		print "Content-type: text/update\n\n";
+		print "<CMD ACTION=\"FLUSH\"></CMD>\n";
+		print "<CMD ACTION=\"STATE\">E</CMD>\n";
+		print "<CMD ACTION=\"STATUS\">$ERROR</CMD>\n";
+		next;
+		}
+
+	if ($STATE eq 'PENDING' || $STATE eq "P") {
+		$v->{'overstock:category'} = 1;
+
+		$errsref = &OVERSTOCK::hasErrors($v);
+		if (defined $errsref) {
+			## SHIT HAPPENED
+			print "Content-type: text/update\n\n";
+			print "<CMD ACTION=\"FLUSH\"></CMD>\n<CMD ACTION=\"STATE\">E</CMD>\n<CMD ACTION=\"STATUS\">$errsref->[0]</CMD>\n";
+			}
+		else {
+			my $MID = &ZOOVY::resolve_mid($chref->{'MERCHANT'});
+			my $listing = LISTING->new('OVERSTOCK',$MERCHANT,chref=>$chref,'dispatchid'=>$ID,'channel'=>$CHANNEL);
+			$listing->{'MERCHANT'} = $MERCHANT;
+			$listing->{'MID'} = $MID;
+			$listing->{'PRODUCT'} = $chref->{'PRODUCT'};
+			$listing->{'CREATED_GMT'} = time();
+			$listing->{'CLASS'} = 'AUCTION';
+			$listing->{'LAUNCHED_GMT'} = 0;        # it is very key we reset LAUNCHED_GMT or other "Fix Error" won't work due t
+			
+			$listing->save_db();
+
+			print "Content-type: text/update\n\n";
+			print "<CMD ACTION=\"FLUSH\"></CMD>\n<CMD ACTION=\"STATE\">A</CMD>\n<CMD ACTION=\"STATUS\">Dispatched into TODO Queue</CMD>\n";
+			}
+		}
+
+	elsif ($STATE eq 'ACTIVE' || $STATE eq 'A') {
+		# print "Refreshing!!!\n";
+		
+		my $listing = LISTING->new('OVERSTOCK',$MERCHANT,channel=>$CHANNEL);
+		if (defined $listing) { $listing->getItem(); }
+		# figure out if this is an existing auction, or is still in todo queue
+
+		if ($listing->{'LISTINGID'} ne '') {
+			# new auction refresh data 
+			print "Content-type: text/update\n\n";
+			print "<CMD ACTION=\"STATE\">A</CMD>\n";
+			print "<CMD ACTION=\"STATUS\">Reloaded data from Channel (before launch).</CMD>\n";
+			}
+		else {
+			print "Content-type: text/update\n\n";
+			print "<CMD ACTION=\"STATE\">A</CMD>\n";
+			print "<CMD ACTION=\"STATUS\">Received an Active request - but auction is already live!</CMD>\n";
+			}
+		}
+
+	elsif ($STATE eq 'REMOVE' || $STATE eq 'M' || $STATE eq "REVOKE" || $STATE eq 'R') {
+		print "Content-type: text/update\n\n";
+		print "<CMD ACTION=\"STATE\">M</CMD>\n";
+
+		my $listing = LISTING->new('OVERSTOCK',$MERCHANT,channel=>$CHANNEL);
+		if (defined $listing) { $listing->endItem(); }
+		print "<CMD ACTION=\"STATUS\">Received request to Cancel items</CMD>\n";
+		}
+
+	elsif ($STATE eq 'DELETE' || $STATE eq 'D') {
+
+		my $listing = LISTING->new('OVERSTOCK',$MERCHANT,channel=>$CHANNEL);
+		if (defined $listing) { $listing->endItem(); }
+		$listing->cleanup();
+		print "Content-type: text/update\n\n";
+		print "<CMD ACTION=\"STATE\">D</CMD>";
+		print "<CMD ACTION=\"STATUS\">Channel has been deleted - no further tracking will be done.</CMD>\n";
+		}
+	else {
+		print "Content-type: text/error\n\n";
+		print "<MSG>Unknown State [$STATE]!</MSG>\n";
+		}
+
+
+	&OVERSTOCK::db_overstock_close();
+	}
+
+
+

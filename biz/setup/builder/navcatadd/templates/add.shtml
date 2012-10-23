@@ -1,0 +1,7 @@
+<html>
+<form action='index.cgi'>
+<input type='hidden' name='CAT' value='<!-- ESC_CAT -->'>
+<!-- LIST_PRODUCTS -->
+<input type='image' src='/images/bizbuttons/save.gif'>
+</form>
+</html>

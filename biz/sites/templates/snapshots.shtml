@@ -1,0 +1,38 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width=800><tr><td>
+<h1>Snapshots</h1>
+<div class="hint">
+WHAT IS THIS: A snapshot is a static compilation of your site and it's data (except inventory)
+which is downloaded and stored locally on each server servicing the cluster [group of redundant servers] 
+that are designated to service your site.
+The advantage of each server having its own local copy of your able to act autonomously, without needing to check
+for updates from the backend database servers. Normally updates are performed "on demand" meaning 
+a customer on your site will need to wait until any changes from the backend are downloaded to the server -
+the check, and the subsequent downloads can lead to substantial delays in site performance - especially on larger 
+sites. <br>
+<br>
+WHY IS THIS BETTER: A snapshot bypasses the update checks, and because the publish process is asychronous it means
+a user will NEVER wait while data is downloaded - making sites as fast as possible.  The downside is that changes
+you make to your site will not appear until a new snapshot is created and published and that while the snapshot is
+being created and published users may see slightly out of date data.  Snapshots also mean your site can withstand
+many types of (rare) network outages or backend-slowdowns caused by reports or power tool, and the site also becomes
+insanely fast.   Faster sites are proven to decrease bounce rates, increase conversions and starting in 2010 
+will by data dimension which contributes to organic ranking in Google. 
+</div>
+
+<form id="thisFrm" name="thisFrm" method="GET" action="index.cgi">
+<input type="hidden" name="VERB" value="">
+<input type="hidden" name="PRT" value="">
+<input type="hidden" name="FILE" value="">
+<table width="100%" class="zoovytable">
+<!-- PARTITIONS -->
+</table>
+<a href="/biz/manage/snapshots/">Create a new snapshot</a><br>
+</form>
+
+</td></tr></table>
+</center>
+
+<!-- FOOTER -->

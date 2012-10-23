@@ -1,0 +1,276 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use CGI;
+use URI::Escape;
+use ZTOOLKIT;
+use Data::Dumper;
+use strict;
+
+use CART;
+use SITE;
+
+my $q = new CGI;
+
+
+##
+## we receive the following from AOL:
+##		$q->param('siteState')
+##			a uri escaped set of parameters
+##			v=0&m=nerdgear
+##			values:
+##				v[VERB] values: AOL=aol checkout, 0=checkout-login, 
+##									 1=customer login, 2=customer_main page
+##				m[MERCHANT] values: merchant id
+##				c[CART]		values: cart (if applicable)
+##
+##		$q->param('siteId') 
+##			value= zoovy
+##		$q->param('mcAuth')
+##			this is what we send back to aol via server/server comm to get screenname
+##
+
+my $ERROR = '';
+
+use LWP::UserAgent;
+use LWP::Simple;
+use HTTP::Request;
+
+my $paramsref = undef;	# these are the params returned by AOL e.g. error=101 or 
+my $siteState = undef;		# these are the siteState variables passed in by Zoovy (see siteState above)
+my $result = undef;
+
+########################################################
+##
+## Stage1: AOL redirects with the following parameters
+##				siteId, siteState, mcAuth
+##	we do a server to server hit to:
+## 			http://my.screenname.aol.com/_cqr/mcLoginTokVal.psp?siteId=zoovy&mcAuth=".URI::Escape::uri_escape($q->param('mcAuth'));
+##
+if ($ERROR eq '') {
+	my $url = "http://my.screenname.aol.com/_cqr/mcLoginTokVal.psp?siteId=zoovy&mcAuth=".URI::Escape::uri_escape($q->param('mcAuth'));
+	my $agent = new LWP::UserAgent;
+	$result = $agent->get($url);
+	# print "Content-type: text/plain\n\n".Dumper($result);
+
+	if ($result->content()) {
+		my $content = $result->content();
+		$content =~ s/[\n\r]+//gs;
+		$paramsref = aol_parseparams($content);
+		if (scalar(keys %{$paramsref})==0) {
+			$ERROR = 'during stage1 the paramsref was not defined after decode sequence'; 
+			}
+
+		## FOR DEBUGGING!
+		## ERROR 101 means we're on dev, so just fake a valid response!
+		if ($ENV{'HOSTNAME'} eq 'dev') {
+			if ($paramsref->{'error'} eq '101') { delete $paramsref->{'error'}; $paramsref->{'sn'} = 'zoovyguy'; }
+			if ($paramsref->{'error'} eq '2002') { delete $paramsref->{'error'}; $paramsref->{'sn'} = 'zoovyguy'; }
+			}
+
+
+		}
+	else {
+		## $paramsref = {
+		##       'authLev' => '1,2',
+		##       'disSn' => 'zoovyguy',
+		##       'sn' => 'zoovyguy',
+		##       'lmts' => '1087595580'
+		##     };
+		$paramsref = { 'error'=>-1 };
+		$ERROR = 'No response from AOL during stage 1: server/server token validation';
+		}
+	}
+else {
+	## An error has already occurred? 
+	}
+
+###############################################
+##
+##  Stage2: decode siteState
+##
+if ($ERROR ne '') {
+	##
+	## don't do anything if we've already got an error
+	##
+	}
+elsif ($q->param('siteState') =~ /^OrigUrl=(.*?)$/) {
+	##
+	## old VL compatibility mode.	(a redirect from AOL Checkout!)	
+	##
+	## ex: http://webapi.zoovy.com/webapi/aol/aolsale.cgi?M=encinitasgolfshop&P=FUJI50&C=-1&ID=156&Qty=1&SaleID=1119&Email=brian@zoovy.com&Zip=92024	
+	$siteState = &ZTOOLKIT::urlparams(URI::Escape::uri_unescape($1)); 
+	$siteState->{'v'} = '!AOL';
+	if (defined $siteState->{'M'}) { $siteState->{'m'} = $siteState->{'M'}; delete $siteState->{'M'}; }	# m=M
+	}
+elsif ($q->param('siteState') ne '') {
+	$siteState = aol_parseparams($q->param('siteState'));
+	if (not defined $siteState) { $ERROR = 'siteState could not be decoded into hashref'; }
+	elsif (not defined $siteState->{'v'}) { $ERROR = 'siteState did not contain v[VERB] variable'; }
+	elsif (not defined $siteState->{'m'}) { $ERROR = 'siteState did not contain m[MERCHANT] variable'; }
+	}
+else {
+	$ERROR = 'siteState was received blank from AOL servers during stage 2'; 
+	}
+
+
+##############################################
+##
+## Stage3: determine which verb we're working with and send them down the correct logic path
+##
+##
+if ($ERROR ne '') {
+	## ShitHas Already happened -- so we just pass through.
+	}
+elsif ($siteState->{'v'} eq 'AOLSALE') {
+	##
+	##
+	if (defined $paramsref->{'error'}) {
+		## ERROR during AOL Checkout??
+		}
+	else {
+		## 
+		
+		}
+	}
+elsif ($siteState->{'v'} eq '0' || $siteState->{'v'} eq '1' || $siteState->{'v'} eq '2' || $siteState->{'v'} eq '!AOL') {
+	##
+	## v=0 ---> ZOOVY CHECKOUT (LOGIN) HANDLER
+	## v=1 ---> ZOOVY CUSTOMER LOGIN PAGE HANDLER
+	## v=2 ---> ZOOVY CUSTOMER MAIN PAGE (customer_main.cgis)
+	## v=!AOL ---> AOL Checkout Handler (direct from AOL classifieds -- redirect to aolsale.cgi)
+	##
+
+	## did we get passed a cookie (gee I hope so)
+	my $USERNAME = lc($siteState->{'m'});
+	$USERNAME =~ s/[\W]+//gs;			# hack this!
+	$SITE::merchant_id = $USERNAME;
+	my $URL = "http://$USERNAME.zoovy.com/";
+
+	# print "Content-type: text/plain\n\n".Dumper($result,$paramsref);
+
+	## initialize a cart if we were sent a cart id.
+	if ($siteState->{'c'} ne '') {
+		$SITE::CART = CART->new($USERNAME,$siteState->{'c'});
+		}
+
+	if (defined $paramsref->{'error'}) {
+		## crap, AOL returned an error.
+		my $errmsg = 'Unknown error from AOL Screen Name Service ['.$paramsref->{'error'}.']';
+		if ($paramsref->{'error'} eq '201') { $errmsg = 'Authentication Token Expired - please try again.'; }
+		elsif ($paramsref->{'error'} eq '101') { $errmsg = 'Err101: AOL SNS says invalid IP address making request.'; }
+
+		if ($siteState->{'v'} eq '!AOL') {
+			$URL = "http://$USERNAME.zoovy.com/c=$CART::CART_ID/aolsale.cgis?".&ZTOOLKIT::buildparams($siteState);;
+			}
+		elsif ($siteState->{'v'} eq '0') {			
+			$URL = "http://$USERNAME.zoovy.com/c=$CART::CART_ID/checkout.cgis?sender=AOLSNS_FAIL&errmsg=".CGI->escape($errmsg);
+			}
+		elsif ($siteState->{'v'} eq '1' || $siteState->{'v'} eq '2') {
+			$URL = "https://ssl.zoovy.com/$USERNAME/c=$CART::CART_ID/login.cgis?errmsg=".CGI->escape($errmsg);
+			}
+		}
+	else {
+		## Success!
+		$SITE::merchant_id = $USERNAME;
+		$ENV{'merchant_id'} = $USERNAME;
+		$ENV{'merchant_dir'} = &ZOOVY::resolve_userpath($USERNAME);
+		&SITE::init();
+
+		$SITE::CART->save_property('aolsn',$paramsref->{'sn'});
+	
+		## if you want to break checkout - just enable this:
+		# print "Content-type: text/plain\n\n";
+		# print Dumper($SITE::c,$cart);
+
+		## Okay, now lets see if this screen name exists.
+		require CUSTOMER;
+		require CUSTOMER::AOLSN;
+		my $email = &CUSTOMER::AOLSN::resolve_email($USERNAME,$SITE::CART->fetch_property('aolsn'));
+		print STDERR "AOLSN: $SITE::CART->{'aolsn'} EMAIL: $email\n";
+		if ($email ne '') {
+			## we found a login - whoop! log the user in!
+			$SITE::CART->save_property('login',$email);
+			}
+		elsif ($SITE::CART->fetch_property('login')) {
+			## the user was already logged in, hmm... why were they authenticating?? 
+			## we better make sure the account is associated.
+			}
+		else {
+			## non-existant AOL customer (so we don't set $SITE::CART->{'login'})
+			}
+		$SITE::CART->save();
+
+		print STDERR Dumper($SITE::CART);
+
+		if ($siteState->{'v'} eq '!AOL') {
+			$URL = "http://$USERNAME.zoovy.com/c=$CART::CART_ID/aolsale.cgis?".&ZTOOLKIT::buildparams($siteState);
+			}
+		elsif ($siteState->{'v'} eq '0') {			
+			$URL = "http://$USERNAME.zoovy.com/c=$CART::CART_ID/checkout.cgis?sender=AOLSNS_SUCCESS";
+			}
+		elsif ($siteState->{'v'} eq '1' || $siteState->{'v'} eq '2') {
+			$URL = "https://ssl.zoovy.com/$USERNAME/c=$CART::CART_ID/customer_main.cgis";
+			}
+		}
+
+	print STDERR "URL is: $URL\n";
+	&SITE::cookies();	# we need to call this to override any special header cookies
+	print "Location: $URL\n\n";
+	}
+else {
+	## not an error ..
+	$ERROR = 'Encountered unknown verb'; 
+	}
+
+print "Content-type: text/plain\n\n";
+print Dumper($ERROR);
+print Dumper($q);
+print Dumper($paramsref);
+print Dumper($result);
+print Dumper($siteState);
+
+sub fatalError {
+	my ($title,$q,$result) = @_;
+
+	open MH, "|/usr/lib/sendmail -t";
+	print MH "To: brian\@zoovy.com\n";
+	print MH "From: aol\@zoovy.com\n";
+	print MH "Subject: critical error -- $title!\n\n";
+	print MH Dumper($q);
+	print MH Dumper($result);
+	close MH;
+	
+	print "Content-type: text/plain\n\n";
+	print "We're sorry, but your session has experienced a non-recoverable (fatal) error\n";
+	print "This occurred during $title\n";
+	print "\n\nWe have already notified the system administrators, you might try pressing the back button\n";
+	print "a few times and seeing if the problem clears up on AOL's end.\n\n";
+	print "If all else fails, please email support\@zoovy.com and tell them what you were trying to do\n";
+	print "when the error occurred!\n";
+	exit;
+	}
+
+
+########################################
+# PARSEPARAMS
+# Description: Gets all of the params in a GET format URL
+# Accepts: A list of he GET method params in URL format
+# Returns: It returns a reference to a hash of all the parameters in
+#          the URL.
+sub aol_parseparams {
+	my ($string) = @_;
+	my $params = {};
+	foreach my $keyvalue (split /[\&\*]+/, $string) {
+		my ($key, $value) = split /\=/, $keyvalue;
+		if ((defined $value) && ($value ne '')) {
+			$value =~ s/\+/ /g;
+			$value =~ s/\%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+			$params->{$key} = $value;
+		}
+		else {
+			$params->{$key} = '';
+		}
+	}
+	return $params;
+}

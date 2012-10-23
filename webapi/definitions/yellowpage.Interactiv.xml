@@ -1,0 +1,166 @@
+<DEFINITION NAME="Interactive_Business_Card">
+<!--
+
+Yellow Pages.com
+
+-->
+	<DIV NAME="ALPHA" TITLE="Yellow Pages.com">
+		<META TYPE="TITLE">
+Yellow Pages.com Interactive Business Card Listing
+			</META>
+		<META TYPE="DESCRIPTION">
+Yellowpages.com is the largest online yellow pages on the Internet. By creating your interactive
+business card listing via Zoovy.com you will be billed $120 to your Zoovy account ($199 for 
+non-Zoovy customers) which includes listing fees for your first year.
+		</META>
+
+		<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+		<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+		<DISPLAY TYPE="TITLE">Requested Information</DISPLAY>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:company_name"
+	LOADFROM="merchant:zoovy:company_name" 
+	PROMPT="Company Name" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:address1"
+	LOADFROM="merchant:zoovy:address1" 
+	PROMPT="Address" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="N">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:city"
+	LOADFROM="merchant:zoovy:city" 
+	PROMPT="City" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="N">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:state"
+	LOADFROM="merchant:zoovy:state" 
+	PROMPT="State" 
+	COLS="2" MAXLENGTH="2"
+	MANDATORY="N">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:zip"
+	LOADFROM="merchant:zoovy:zip" 
+	PROMPT="Zip" 
+	COLS="5" MAXLENGTH="5"
+	MANDATORY="N">
+</INPUT>
+
+<!-- NOTE: we'll do data translation on the phone number, it's better for the user if we keep
+the format the same, even though YP only wants the ten digit string -->
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:phone"
+	LOADFROM="merchant:zoovy:phone" 
+	PROMPT="Phone Number" 
+	HINT="Please enter your phone number in the format ###-###-####"
+	COLS="15" MAXLENGTH="15"
+	MANDATORY="Y">
+</INPUT>
+
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:facsimile"
+	LOADFROM="merchant:zoovy:facsimile" 
+	PROMPT="Facsimile" 
+	HINT="Please enter your phone number in the format ###-###-####"
+	COLS="15" MAXLENGTH="15"
+	MANDATORY="Y">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:email"
+	LOADFROM="merchant:zoovy:support_email,merchant:zoovy:supportemail,merchant:zoovy:email" 
+	PROMPT="Support Email" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:websiteurl"
+	LOADFROM="merchant:zoovy:websiteurl" 
+	PROMPT="Website URL" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+<INPUT TYPE="TEXTAREA" 
+	NAME="channel:zoovy:about"
+	LOADFROM="merchant:zoovy:about,merchant:zoovy:desc" 
+	PROMPT="Business Description" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+
+<INPUT TYPE="IMAGE" 
+	NAME="merchant:zoovy:logo" 
+	LOADFROM="merchant:zoovy:company_logo"
+	PROMPT="Logo (120 x 60)">
+</INPUT>
+
+	<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="merchant:zoovy:firstname"
+	PROMPT="Contact Firstname" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="merchant:zoovy:lastname"
+	PROMPT="Contact Lastname" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:contact_phone"
+	LOADFROM="merchant:zoovy:phone" 
+	PROMPT="Phone Number" 
+	HINT="Please enter your phone number in the format ###-###-####"
+	COLS="15" MAXLENGTH="15"
+	MANDATORY="Y">
+</INPUT>
+
+<INPUT TYPE="TEXTBOX" 
+	NAME="channel:zoovy:email"
+	LOADFROM="merchant:zoovy:email,merchant:zoovy:support_email,merchant:zoovy:supportemail" 
+	PROMPT="Support Email" 
+	COLS="50" MAXLENGTH="50"
+	MANDATORY="Y">
+</INPUT>
+</DIV>
+
+	<DIV NAME="OMEGA">
+
+<DISPLAY TYPE="TITLE">Billing Summary</DISPLAY>
+<DISPLAY TYPE="LABEL">You are about to be billed $120 for your interactive business card on 
+
+Yellowpages.com, your fee will appear on your Zoovy Invoice.</DISPLAY>
+<DISPLAY TYPE="SHOWVALUE" PROMPT="Company Name" NAME="zoovy:company_name"></DISPLAY>
+<DISPLAY TYPE="SHOWVALUE" PROMPT="Website URL" NAME="zoovy:websiteurl"></DISPLAY>
+
+		<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+		<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+	</DIV>
+
+
+</DEFINITION>

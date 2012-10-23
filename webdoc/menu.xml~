@@ -1,0 +1,532 @@
+<menus>
+ <doc id="50732" title="BuySafe"/>
+<menu topicid="791" title="Sales">
+	<menu topicid="792" title="Integration">
+	  <doc id="50535" title="Intuit Quickbooks Compatibility"/>
+	</menu>
+	<menu topicid="594" title="Switching Services">
+	  <doc id="50616" title="Converting from Andale to Zoovy"/>
+	  <doc id="50622" title="Converting from AuctionWorks to Zoovy"/>
+	  <doc id="50623" title="Converting from Yahoo Store to Zoovy"/>
+	  <doc id="50631" title="Converting from Channel Advisor to Zoovy"/>
+	  <doc id="50632" title="Converting from Turbo Lister"/>
+	  <doc id="50624" title="Converting from Sellers Assistant Pro"/>
+	</menu>
+  <doc id="50708" title="Zoovy Design Services"/>
+  <doc id="50645" title="Zoovy System Architecture"/>
+</menu>
+<menu topicid="793" title="Training">
+  <doc id="50683" title="Project: Intermediate Branding Emails"/>
+  <doc id="50537" title="Auction Seller QuickStart"/>
+  <doc id="50727" title="Welcome to Zoovy!"/>
+  <doc id="50688" title="Project: Configuring Advanced Shipping"/>
+  <doc id="50677" title="Project: Basic Zoovy Orientation"/>
+  <doc id="50687" title="Project: Configuring Basic Shipping"/>
+  <doc id="50689" title="Project: Configuring Intermediate Shipping"/>
+</menu>
+<menu topicid="794" title="Support Hints/Polices">
+	<menu topicid="795" title="Billing">
+	  <doc id="50551" title="Services / Technical Support"/>
+	  <doc id="50548" title="Zoovy Mail Hosting / Transport service"/>
+	  <doc id="50566" title="Transaction Fees"/>
+	  <doc id="50569" title="Changename Procedure"/>
+	  <doc id="50599" title="Diskspace Billing"/>
+	</menu>
+  <doc id="50711" title="Integrating Other 3rd party non-supported applications"/>
+  <doc id="50721" title="Copy &amp; Paste in Mozilla Firefox"/>
+  <doc id="50716" title="Closing of the Zoovy Public Forums"/>
+  <doc id="50635" title="Guide to Experimental Features"/>
+  <doc id="50700" title="Glossary of Terms"/>
+  <doc id="50709" title="Troubleshooting Tips"/>
+  <doc id="50718" title="Information updates from queue"/>
+  <doc id="50702" title="Odd Behaviors"/>
+  <doc id="50714" title="Website Diagnostics"/>
+  <doc id="50641" title="Zoovy Phone Support Details"/>
+</menu>
+<menu topicid="796" title="Developer">
+	<menu topicid="797" title="Product Attributes">
+	  <doc id="50522" title="CD Catalog"/>
+	  <doc id="50519" title="DVD Catalog"/>
+	  <doc id="50518" title="Book Catalog"/>
+	  <doc id="50521" title="VHS Catalog"/>
+	</menu>
+	<menu topicid="605" title="Guides">
+	  <doc id="50729" title="SpecL Overview"/>
+	  <doc id="50605" title="Channel Survival Guide"/>
+	</menu>
+	<menu topicid="606" title="Unified Syntax for Developers">
+	  <doc id="50156" title="Beginner Guide to Unified Syntax"/>
+	  <doc id="50092" title="Wrapper Configuration"/>
+	  <doc id="50157" title="Code Snippets for Zoovy Developers"/>
+	  <doc id="50149" title="Flash Tools"/>
+	</menu>
+	<menu topicid="607" title="Features">
+	  <doc id="50129" title="Developer Overview"/>
+	  <doc id="50121" title="Shipping API"/>
+	  <doc id="50124" title="Promotion API"/>
+	  <doc id="50125" title="Inventory API"/>
+	  <doc id="50108" title="Shipping Calculator - Developer Guide"/>
+	  <doc id="50110" title="Buy Me Button Documentation"/>
+	  <doc id="50142" title="Custom SSL Certificate Policy"/>
+	  <doc id="50140" title="Hacking the Image Library"/>
+	  <doc id="50557" title="Hacking Navigation Categories"/>
+	</menu>
+	<menu topicid="608" title="Attributes">
+	  <doc id="50118" title="Attributes - ZOOVY"/>
+	</menu>
+	<menu topicid="609" title="WebAPI">
+		<menu topicid="611" title="Products and Images">
+		  <doc id="50103" title="Merchant Webapi: skulist.cgi"/>
+		  <doc id="50102" title="Merchant Webapi: syncinventory.cgi"/>
+		</menu>
+		<menu topicid="612" title="Customers and Orders">
+		  <doc id="50116" title="Merchant Webapi: fullordersync.cgi"/>
+		  <doc id="50115" title="Merchant Webapi: ordersync.cgi"/>
+		  <doc id="50109" title="Merchant Webapi: fullcustomersync.cgi"/>
+		  <doc id="50107" title="Merchant Webapi: customersync.cgi"/>
+		  <doc id="50128" title="Merchant WebAPI subscribe.cgi"/>
+		</menu>
+		<menu topicid="613" title="Special Purpose">
+		  <doc id="50152" title="Webapi / Consignee"/>
+		</menu>
+	</menu>
+	<menu topicid="614" title="Special Features">
+	  <doc id="50163" title="Worldpac Guide"/>
+	</menu>
+  <doc id="50696" title="Understanding Sessions in Cart / Variables"/>
+  <doc id="50213" title="Order Format"/>
+  <doc id="50674" title="Custom Site Wrappers"/>
+  <doc id="50684" title="Enterprise Suite Database Structure"/>
+  <doc id="50095" title="Page Layouts Overview"/>
+  <doc id="50251" title="Guide to Custom HTML Wizards"/>
+  <doc id="50099" title="Reference - Page Layout Categories"/>
+  <doc id="50675" title="Wrapper: Basic Reference"/>
+  <doc id="50151" title="Flows - CART Element"/>
+  <doc id="50158" title="Unified Syntax - Element Attributes ( advanced )"/>
+  <doc id="50094" title="Wrapper Reference - Categories"/>
+  <doc id="50148" title="Gallery Page Layout"/>
+</menu>
+<menu topicid="798" title="Order Manager 6.xxx">
+  <doc id="50427" title="Zoovy Order Manager Setup"/>
+  <doc id="50713" title="Steps to log into ZOM"/>
+  <doc id="50698" title="Order Manager 6.xxx Release Notes"/>
+  <doc id="50491" title="Order Manager - Multiple User"/>
+  <doc id="50433" title="Order Manager Database Management"/>
+  <doc id="50495" title="Keyed Lookup Feature in Order Manager"/>
+  <doc id="50489" title="Order Manager: Printing"/>
+  <doc id="50701" title="Order Manager: General Information"/>
+</menu>
+<menu topicid="799" title="Order Manager 5.xxx">
+	<menu topicid="616" title="Guides">
+	  <doc id="50498" title="Introduction to Zoovy Order Manager"/>
+	  <doc id="50502" title="Installation Guide"/>
+	</menu>
+	<menu topicid="617" title="Configuration">
+		<menu topicid="618" title="Tools">
+		  <doc id="50492" title="Order Manager Tools - Scale Setup"/>
+		</menu>
+		<menu topicid="619" title="Admin Menu">
+		  <doc id="50432" title="Order Manager: Configuration/Preferences"/>
+		  <doc id="50434" title="Order Manager: Payment Types"/>
+		  <doc id="50435" title="Technical Support Debug Tools"/>
+		  <doc id="50453" title="Sub Order Status"/>
+		</menu>
+	  <doc id="50430" title="Order Manager: Setup &amp;amp; Configuration"/>
+	</menu>
+	<menu topicid="620" title="Email">
+		<menu topicid="621" title="Configuration">
+		  <doc id="50431" title="SMTP and Order Manager"/>
+		  <doc id="50458" title="SMTP Error Codes"/>
+		  <doc id="50450" title="Zoovy Mail"/>
+		</menu>
+		<menu topicid="622" title="Email Manager">
+		  <doc id="50449" title="Sending Email"/>
+		  <doc id="50446" title="Custom Email Messages"/>
+		</menu>
+	</menu>
+	<menu topicid="623" title="Manage Customer Data">
+	  <doc id="50441" title="Customer Management"/>
+	  <doc id="50442" title="Edit Customer Data"/>
+	  <doc id="50444" title="Exporting Customers"/>
+	  <doc id="50443" title="Customer History"/>
+	  <doc id="50451" title="Deleting Customers"/>
+	</menu>
+	<menu topicid="624" title="Reports">
+	  <doc id="50497" title="Order Manager Reports - Dashboards"/>
+	  <doc id="50494" title="Order Manager Reports - Filters"/>
+	</menu>
+	<menu topicid="625" title="Database Management">
+	  <doc id="50437" title="Zoovy Order Manager Backup"/>
+	  <doc id="50469" title="Restoring Your Database"/>
+	  <doc id="50472" title="Tech Support / Compare Database"/>
+	  <doc id="50471" title="Compacting Your Database"/>
+	  <doc id="50473" title="Resetting Your Database"/>
+	</menu>
+	<menu topicid="626" title="Order Management">
+		<menu topicid="627" title="Managing Orders">
+		  <doc id="50455" title="Create an Invoice"/>
+		  <doc id="50465" title="Editing Invoices"/>
+		  <doc id="50439" title="Combine Orders"/>
+		  <doc id="50459" title="Splitting Orders"/>
+		  <doc id="50428" title="Synchronization Help"/>
+		  <doc id="50556" title="Inventory Integration"/>
+		</menu>
+		<menu topicid="628" title="Shipping">
+		  <doc id="50477" title="Edit Shipping"/>
+		  <doc id="50452" title="Order Manager: USPS / Endicia DaZzle"/>
+		  <doc id="50493" title="Order Manager: UPS Shipping"/>
+		  <doc id="50496" title="Order Manager: FedEx Shipping"/>
+		  <doc id="50445" title="USPS Delivery Confirmation"/>
+		</menu>
+		<menu topicid="629" title="Payment">
+		  <doc id="50454" title="Order Manager: Payment Status Guide"/>
+		  <doc id="50476" title="Edit Payment Type"/>
+		</menu>
+		<menu topicid="630" title="Searching">
+		  <doc id="50481" title="Order Manager: Search for Customers"/>
+		  <doc id="50482" title="Order Manager: Search Invoices"/>
+		  <doc id="50484" title="Order Manager: Search Incomplete Items"/>
+		</menu>
+	</menu>
+	<menu topicid="632" title="3rd Party Integration">
+	  <doc id="50457" title="Quickbooks"/>
+	  <doc id="50479" title="Quickbooks Legacy"/>
+	  <doc id="50452" title="Order Manager: USPS / Endicia DaZzle"/>
+	  <doc id="50647" title="UPS WorldShip"/>
+	  <doc id="50462" title="Airborne Express Libra"/>
+	  <doc id="50486" title="FedEx Ship Manager Cafe"/>
+	  <doc id="50429" title="Order Manager Packager"/>
+	</menu>
+	<menu topicid="633" title="Reporting">
+	  <doc id="50467" title="Affiliate Report"/>
+	  <doc id="50468" title="Paid Pending Report"/>
+	  <doc id="50470" title="Products by SKU"/>
+	  <doc id="50474" title="Order Manager: Products by Invoice Report"/>
+	</menu>
+	<menu topicid="634" title="Troubleshooting">
+	  <doc id="50431" title="SMTP and Order Manager"/>
+	  <doc id="50458" title="SMTP Error Codes"/>
+	  <doc id="50487" title="Order Manager FAQ"/>
+	  <doc id="50447" title="Troubleshooting Order Manager"/>
+	  <doc id="50478" title="Authentication"/>
+	  <doc id="50480" title="AntiVirus and Firewall Software and Order Manager"/>
+	  <doc id="50501" title="MDAC Troubleshooting Guide"/>
+	</menu>
+</menu>
+<menu topicid="800" title="Warehouse Manager">
+	<menu topicid="600" title="Guides">
+	  <doc id="50423" title="Zoovy Warehouse Manager Licensing"/>
+	  <doc id="50424" title="Zoovy Warehouse Manager Features"/>
+	  <doc id="50426" title="Warehouse Manager: Whats New"/>
+	  <doc id="50628" title="X Guide"/>
+	</menu>
+	<menu topicid="601" title="Product Management">
+	  <doc id="50418" title=""/>
+	</menu>
+	<menu topicid="602" title="Image Management">
+	  <doc id="50419" title=""/>
+	</menu>
+  <doc id="50697" title="Zoovy Warehouse Manager 1.5 Release Notes"/>
+  <doc id="50233" title="Editing a Product"/>
+  <doc id="50224" title="Navigation Categories"/>
+</menu>
+<menu topicid="801" title="Zoovy.com WebManager">
+	<menu topicid="649" title="Store Setup">
+		<menu topicid="650" title="Account Settings">
+		  <doc id="50289" title="Company Information and Policies"/>
+		  <doc id="50279" title="Website / Setup / Company Logo"/>
+		  <doc id="50341" title="Billing History"/>
+		  <doc id="50334" title="Domain Hosting"/>
+		  <doc id="50292" title="User Manager"/>
+		</menu>
+		<menu topicid="651" title="Your Storefront">
+			<menu topicid="652" title="Images">
+			  <doc id="50404" title="Image Library Quickstart Guide"/>
+			  <doc id="50274" title="Website / Image Library / Upload from Disk"/>
+			  <doc id="50275" title="Website / Image Library / Upload from Disk"/>
+			  <doc id="50408" title="Guide to the Web Based Image Library"/>
+			</menu>
+		  <doc id="50270" title="Website / Setup / Themes and Wrappers"/>
+		  <doc id="50361" title="Website Builder - Page Editor"/>
+		  <doc id="50325" title="Website Builder / Navigation Categories"/>
+		  <doc id="50358" title="Website Builder - Gallery Page"/>
+		  <doc id="50363" title="Website Builder / Shopping Cart Page"/>
+		  <doc id="50367" title="Search and Search Results Page"/>
+		  <doc id="50355" title="Website Builder Tips and Tricks"/>
+		  <doc id="50278" title="Website / Setup / Custom Files"/>
+		  <doc id="50345" title="Advanced Site Search"/>
+		  <doc id="50313" title="Configuring Coupons and Promotions with Zoovy"/>
+		  <doc id="50337" title="Promotion Rules"/>
+		</menu>
+		<menu topicid="653" title="Tax and Payment">
+			<menu topicid="654" title="Credit Cards">
+			  <doc id="50304" title="Credit Card Processing Overview"/>
+			  <doc id="50280" title="Cardservice Gateway Configuration"/>
+			  <doc id="50276" title="Authorize.net"/>
+			  <doc id="50385" title="Quickbooks Merchant Services"/>
+			</menu>
+		  <doc id="50710" title="Sales Tax"/>
+		  <doc id="50284" title="Setup / Payment / Paypal"/>
+		</menu>
+		<menu topicid="655" title="Shipping">
+		  <doc id="50293" title="Simple Multi-Item Shipping"/>
+		  <doc id="50299" title="FedEx"/>
+		  <doc id="50300" title="UPS Online Tools"/>
+		  <doc id="50339" title="Shipping Rules"/>
+		  <doc id="50351" title="Shipping Tricks and Tips"/>
+		  <doc id="50381" title="Global Tuning"/>
+		  <doc id="50382" title="Shipping Insurance"/>
+		</menu>
+		<menu topicid="656" title="Checkout Properties">
+		  <doc id="50305" title="Checkout Properties"/>
+		  <doc id="50308" title="Checkout Messages"/>
+		</menu>
+	  <doc id="50411" title="Beginner Mode Overview"/>
+	</menu>
+	<menu topicid="657" title="Products">
+		<menu topicid="658" title="Inventory">
+		  <doc id="50306" title="Inventory"/>
+		  <doc id="50310" title="Inventory and Channels"/>
+		  <doc id="50309" title="Inventory / Product Configuration"/>
+		  <doc id="50312" title="Inventory Updates"/>
+		  <doc id="50332" title="Manage / Inventory Report"/>
+		  <doc id="50406" title="HOWTO: Share Inventory across Multiple Zoovy Stores"/>
+		</menu>
+	  <doc id="50307" title="Creating Products"/>
+	  <doc id="50317" title="Product Edit"/>
+	  <doc id="50318" title="Configuring Product Pages"/>
+	  <doc id="50319" title="Product Options"/>
+	  <doc id="50324" title="Product / Navigation Categories"/>
+	  <doc id="50354" title="Product Export Properties"/>
+	  <doc id="50316" title="HTML Wizards"/>
+	</menu>
+	<menu topicid="659" title="Syndication and Channels">
+		<menu topicid="660" title="Yahoo Store Management">
+		  <doc id="50342" title="Yahoo Order Synchronization"/>
+		</menu>
+		<menu topicid="661" title="Amazon @Merchant">
+		  <doc id="50378" title="Amazon Merchant Feed"/>
+		  <doc id="50391" title=""/>
+		  <doc id="50390" title="Thesaurus"/>
+		  <doc id="50392" title="Orders"/>
+		  <doc id="50393" title="Amazon Error Codes"/>
+		</menu>
+	  <doc id="50373" title="Froogle Listing"/>
+	  <doc id="50396" title="GoogleBase Listing"/>
+	  <doc id="50374" title="Shopzilla Feed (formerly Bizrate)"/>
+	  <doc id="50377" title="Dealtime Listing"/>
+	  <doc id="50380" title="eBay Stores Syndication Feed Setup"/>
+	  <doc id="50379" title="PriceGrabber Feeds"/>
+	  <doc id="50349" title="Channel Manager"/>
+	  <doc id="50277" title="Batch Channel Editor"/>
+	  <doc id="50288" title="Channel Scheduler"/>
+	</menu>
+	<menu topicid="662" title="Orders">
+	  <doc id="50357" title="Order / Incomplete Items"/>
+	  <doc id="50320" title="Creating Orders"/>
+	  <doc id="50321" title="Editing Orders"/>
+	  <doc id="50340" title="Web Manager / Restoring Claims"/>
+	  <doc id="50347" title="Site Automation"/>
+	  <doc id="50672" title="Exporting Orders Guide"/>
+	</menu>
+	<menu topicid="663" title="Reports">
+	  <doc id="50328" title="Manage / Popular Categories"/>
+	  <doc id="50369" title="Manage / Popular Products Report"/>
+	  <doc id="50370" title="Manage / Site Statistics"/>
+	  <doc id="50371" title="Manage / Sales Report"/>
+	</menu>
+	<menu topicid="664" title="Utilities">
+		<menu topicid="665" title="Supply Chain">
+		  <doc id="50389" title="Supply Chain JEDI"/>
+		  <doc id="50401" title="Inventory"/>
+		  <doc id="50400" title="Shipping"/>
+		  <doc id="50402" title="Orders"/>
+		  <doc id="50399" title="Products"/>
+		</menu>
+	  <doc id="50394" title="Newsletter Management"/>
+	  <doc id="50397" title="Launch Groups"/>
+	  <menu topicid="50344" title="CSV Import"/>
+	  	<doc id="50285" title="Advanced Product Import Guide"/>
+	  	<doc id="50326" title="Category Import"/>
+	  	<doc id="50388" title="Advanced Customer Import Guide"/>
+	  </menu>
+	  <doc id="50323" title="eBay Power Lister"/>
+	  <doc id="50353" title="Manage Customers"/>
+	  <doc id="50365" title="Manage / Product Export"/>
+	  <doc id="50372" title="Manage / Image Associations"/>
+	  <doc id="50287" title="Product Power Tool"/>
+	  <doc id="50333" title="Non Paying Bidder Tool"/>
+	</menu>
+	<menu topicid="802" title="Setup">
+		<menu topicid="803" title="Theme Chooser">
+		  <doc id="50720" title="Sidebar Option"/>
+		</menu>
+		<menu topicid="804" title="Import">
+		  <doc id="50712" title="Product List Import"/>
+		</menu>
+		<menu topicid="805" title="Website Builder">
+		  <doc id="50283" title="Website Builder / Claim Page"/>
+		  <doc id="50272" title="Website / Setup / Website Builder"/>
+		  <doc id="50291" title="Setup / Website Builder / Email"/>
+		  <doc id="50415" title="HTML Editor Guide"/>
+		</menu>
+		<menu topicid="806" title="Shipping">
+		  <doc id="50620" title="Guide to Shipping"/>
+		  <doc id="50301" title="DHL/Airborne Shipping services"/>
+		</menu>
+	  <doc id="50228" title="Image Library Overview"/>
+	  <doc id="50547" title="Domain Hosting"/>
+	  <doc id="50335" title="Website / Setup / Shipping Overview"/>
+	</menu>
+	<menu topicid="807" title="Products">
+	  <doc id="50273" title="Batch Channel Launcher"/>
+	  <doc id="50338" title="Add Products to Categories"/>
+	</menu>
+	<menu topicid="808" title="Orders">
+	  <doc id="50485" title="Understanding Order Status"/>
+	  <doc id="50456" title="Changing Payment Status"/>
+	</menu>
+	<menu topicid="809" title="Syndication">
+	  <doc id="50386" title="MySimon Listing"/>
+	  <doc id="50383" title="NexTag Listing"/>
+	  <doc id="50375" title="Yahoo Syndication Feed"/>
+	</menu>
+	<menu topicid="810" title="Utilities">
+	  <doc id="50330" title="Disk Space Management"/>
+	  <doc id="50728" title="Utilities: Frequently Asked Questions"/>
+	</menu>
+</menu>
+<menu topicid="811" title="System Concepts">
+	<menu topicid="595" title="Tutorials">
+		<menu topicid="596" title="Order Processing">
+		  <doc id="50553" title="Order Status"/>
+		  <doc id="50542" title="General Info / Getting Paid"/>
+		</menu>
+		<menu topicid="597" title="Auction Management">
+		  <doc id="50613" title="Guide to Launching Auctions"/>
+		  <doc id="50606" title="General Info / eBay Selling Techniques"/>
+		  <doc id="50619" title="Guide to using eBay/Paypal Checkout"/>
+		</menu>
+		<menu topicid="598" title="Concepts">
+		  <doc id="50555" title="Advanced Guide - Navigation Categories and Lists"/>
+		  <doc id="50634" title="Concept: Lists"/>
+		  <doc id="50598" title="Technical Guide to the Image Library"/>
+		  <doc id="50559" title="Incomplete Items"/>
+		  <doc id="50555" title="Advanced Guide - Navigation Categories and Lists"/>
+		  <doc id="50541" title="Option Groups"/>
+		  <doc id="50590" title="WikiText Guide"/>
+		</menu>
+	  <doc id="50614" title="International Support for Non-US based businesses"/>
+	  <doc id="50597" title="Affiliate Tracking and Compatibility"/>
+	  <doc id="50575" title="Shopping Cart Details"/>
+	  <doc id="50630" title="Reoccuring Billing"/>
+	  <doc id="50627" title="Gift Certificates"/>
+	  <doc id="50629" title="Accepting Donations"/>
+	  <doc id="50582" title="Troubleshooting - Generating a System Info file"/>
+	  <doc id="50612" title="Customer Login"/>
+	</menu>
+	<menu topicid="588" title="Business Tutorials">
+	  <doc id="50608" title="Auction Etiquette"/>
+	  <doc id="50601" title="Improving Sales"/>
+	  <doc id="50609" title="Selling Internationally"/>
+	  <doc id="50611" title="Payment Gateways"/>
+	  <doc id="50615" title="Guide to Search Engines"/>
+	  <doc id="50610" title="Learning HTML"/>
+	  <doc id="50625" title="HTML Cheat Sheet"/>
+	</menu>
+	<menu topicid="812" title="Marketplaces">
+		<menu topicid="813" title="Google">
+		  <doc id="50596" title="Google SiteMap"/>
+		  <doc id="50595" title="Google Analytics"/>
+		</menu>
+		<menu topicid="814" title="eBay">
+		  <doc id="50584" title="eBay Unpaid Item Manager"/>
+		  <doc id="50539" title="eBay Auction"/>
+		  <doc id="50544" title="eBay Powerlister"/>
+		  <doc id="50604" title="eBay Powerlister Survival Guide"/>
+		  <doc id="50726" title="eBay Profile Tips"/>
+		  <doc id="50602" title="eBay: Automatic Second Chance Offers"/>
+		  <doc id="50717" title="eBay Express Cookbook"/>
+		  <doc id="50640" title="eBay Checkout Redirect"/>
+		  <doc id="50554" title="eBay Recycling Bin"/>
+		  <doc id="50576" title="eBay Showcase and eBay Carousel"/>
+		  <doc id="50562" title="eBay Stores"/>
+		</menu>
+		<menu topicid="592" title="CPC">
+		  <doc id="50538" title="Dealtime / Shopping.com Syndication"/>
+		  <doc id="50594" title="NexTag Listing"/>
+		  <doc id="50593" title="MySimon Listing"/>
+		</menu>
+	  <doc id="50592" title="Overstock Auctions"/>
+	</menu>
+	<menu topicid="815" title="Channels">
+	  <doc id="50215" title="Understanding Channel State"/>
+	</menu>
+  <doc id="50603" title="Guide to Merchant Accounts"/>
+  <doc id="50407" title="Guide to Zoovy clients"/>
+  <doc id="50239" title="Option Group Overview"/>
+  <doc id="50705" title="Specialty Site Hosting"/>
+  <doc id="50512" title="Wholesale Feature Bundle"/>
+  <doc id="50694" title="Supply Chain Cookbook"/>
+  <doc id="50617" title="Paypal IPN Feature"/>
+  <doc id="50706" title="Profiles"/>
+  <doc id="50150" title="Product Lists"/>
+  <doc id="50637" title="CRM Bundle Overview"/>
+  <doc id="50639" title="Vendor Authorization Codes (SecureKey)"/>
+</menu>
+<menu topicid="816" title="Webmail">
+	<menu topicid="636" title="Features">
+	  <doc id="50255" title="Webmail - General"/>
+	  <doc id="50261" title="Email Consolidation"/>
+	  <doc id="50260" title="Mail Rules"/>
+	  <doc id="50256" title="Fused Accounts"/>
+	  <doc id="50257" title="Configuring RSS Feeds"/>
+	</menu>
+	<menu topicid="637" title="Email Software">
+	  <doc id="50264" title="Configuring Microsoft Outlook"/>
+	  <doc id="50267" title="Configuring Outlook Express"/>
+	  <doc id="50265" title="Configuring Thunderbird"/>
+	  <doc id="50266" title="Setting up Eudora"/>
+	</menu>
+	<menu topicid="638" title="New Users">
+	  <doc id="50268" title="ZoovyMail: How to Start"/>
+	</menu>
+  <doc id="50259" title="Webmail Server Configuration Info"/>
+</menu>
+<menu topicid="817" title="Deprecated/Non-Support Reference">
+	<menu topicid="639" title="Enterprise">
+		<menu topicid="640" title="General Info">
+		  <doc id="50646" title="Enterprise Feature Overview"/>
+		  <doc id="50650" title="Enterprise Hardware Requirements"/>
+		  <doc id="50643" title="Zoovy System Security Policy"/>
+		  <doc id="50668" title="Guide to Zoovy Jargon"/>
+		</menu>
+		<menu topicid="641" title="Feature Guides">
+		  <doc id="50662" title="Guide to Barcoding with Zoovy"/>
+		</menu>
+		<menu topicid="642" title="Usage">
+			<menu topicid="643" title="Tools">
+			  <doc id="50659" title="Enterprise CSV Tool"/>
+			  <doc id="50660" title="Order Import Tool"/>
+			</menu>
+		  <doc id="50649" title="Editing Listings on Enterprise"/>
+		  <doc id="50651" title="Cancelling Listings on Enterprise"/>
+		</menu>
+		<menu topicid="644" title="Configuration">
+		  <doc id="50655" title="Zoovy Wireless Client"/>
+		  <doc id="50666" title=""/>
+		</menu>
+		<menu topicid="645" title="Troubleshooting">
+		  <doc id="50644" title="Symbol 1846 Maintenance Guide"/>
+		</menu>
+		<menu topicid="646" title="Code Examples">
+		  <doc id="50661" title="Creating a custom catalog"/>
+		</menu>
+	</menu>
+  <doc id="50587" title="1.0 to 2.0 conversion plan"/>
+  <doc id="50464" title="Shipping with UPS World Ship"/>
+  <doc id="50327" title=""/>
+  <doc id="50499" title="Order Manager 5.xxx Release Notes"/>
+</menu>
+
+</menus>

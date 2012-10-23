@@ -1,0 +1,9 @@
+BODY { font-size: 8pt; font-family: arial, helvetica; }
+TR.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+TR.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+TD.item_on { font-size: 8pt; font-family: arial, helvetica; background-color: #E1E1E1; }
+TD.item_off { font-size: 8pt; font-family: arial, helvetica; background-color: #FFFFFF; }
+TD.title { font-size: 8pt; font-family: helvetica, arial; background-color: #000000; font-style: bold; }
+
+FONT.head { style="color: white; font-size: 16pt; font-face: helvetica, arial; }
+TD { font-family: arial; font-size: 8pt; }

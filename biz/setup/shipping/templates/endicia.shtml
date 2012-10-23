@@ -1,0 +1,42 @@
+<!-- SETUP_TAB -->
+
+<center>
+
+<!-- MESSAGE -->
+
+<form action="endicia.cgi" method="POST" target="_top">
+<input type="hidden" name="ACTION" value="SAVE">
+
+<table border="0" width="600">
+	<tr>
+		<td>
+			<font face="Arial" size="2">
+			<p><b>USAGE:</b> Endicia Address Validation is a special service provided through Zoovy for Platinum users of the Endicia DazZle application.
+			It allows Zoovy to verify the address of a buyer prior to that person being able to complete checkout to ensure that there will be no problems shipping to that address.
+			</font>
+		</td>
+	</tr>
+</table>
+
+
+<br>
+
+<table border="1" cellpadding="5" cellspacing="1" width="600">
+	<tr>
+		<td>
+			<font face="Arial">
+			<input type="checkbox" name="ENDICIA_AVS" <!-- ENDICIA_AVS_CHECKED -->> Enable Address Validation service<br>
+			DaZzle Serial Number: <input type="textbox" name="ENDICIA_SERIAL" value="<!-- ENDICIA_SERIAL -->"><br>
+			</font>
+		</td>
+	</tr>
+</table>
+
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-ENDICIA">
+<a href="index.cgi" target="_top"><img border="0" src="/images/bizbuttons/exit.gif"></a><br>
+
+</form>
+
+</center>
+
+</body>

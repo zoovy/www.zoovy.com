@@ -1,0 +1,158 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use strict;
+use AMAZON;
+
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_M&4');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+
+
+my @BC = ();
+push @BC, { name=>'Setup', link=>'http://www.zoovy.com/biz/setup', target=>'_top' };
+push @BC, { name=>'Amazon ', link=>'/biz/setup/amazon', target=>'_top' };
+
+my $template_file = 'index.shtml';
+if ($FLAGS !~ /,AMZ,/) {
+	$template_file = 'deny.shtml';
+	}
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my ($webdb) = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
+
+
+if ($VERB eq 'SIGNUP') {
+	my $signup = get_signup_url();
+	$GTOOLS::TAG{'<!-- SIGNUP -->'} = $signup;	 
+
+	$template_file = 'signup.shtml';
+	push @BC, { 'name'=>'Sign Up' };
+	}
+
+
+if ($VERB eq 'SAVE') {
+   $webdb->{'amz_merchantname'} = $ZOOVY::cgiv->{'amz_merchantname'};
+	$webdb->{'amz_merchantname'} =~ s/[\s]+$//g;
+	$webdb->{'amz_merchantname'} =~ s/^[\s]+//g;
+   $webdb->{'amz_userid'} = $ZOOVY::cgiv->{'amz_userid'};
+	$webdb->{'amz_userid'} =~ s/[\s]+$//g;
+	$webdb->{'amz_userid'} =~ s/^[\s]+//g;
+   $webdb->{'amz_password'} = $ZOOVY::cgiv->{'amz_password'};
+	$webdb->{'amz_password'} =~ s/[\s]+$//g;
+	$webdb->{'amz_password'} =~ s/^[\s]+//g;
+   $webdb->{'amz_merchanttoken'} = $ZOOVY::cgiv->{'amz_merchanttoken'};
+	$webdb->{'amz_merchanttoken'} =~ s/[\s]+$//g;
+	$webdb->{'amz_merchanttoken'} =~ s/^[\s]+//g;
+   $webdb->{'amz_merchantid'} = $ZOOVY::cgiv->{'amz_merchantid'};;
+	$webdb->{'amz_merchantid'} =~ s/[^A-Z0-9]+//gs;
+	$webdb->{'amz_merchantid'} =~ s/[\s]+$//g;
+	$webdb->{'amz_merchantid'} =~ s/^[\s]+//g;
+
+	$webdb->{'amz_accesskey'} = $ZOOVY::cgiv->{'amz_accesskey'};
+	$webdb->{'amz_accesskey'} =~ s/[\s]+$//g;
+	$webdb->{'amz_accesskey'} =~ s/^[\s]+//g;
+	$webdb->{'amz_secretkey'} = $ZOOVY::cgiv->{'amz_secretkey'};
+	$webdb->{'amz_secretkey'} =~ s/[\s]+$//g;
+	$webdb->{'amz_secretkey'} =~ s/^[\s]+//g;
+
+	my ($FEED_PERMS) = 0;
+	$FEED_PERMS += (defined $ZOOVY::cgiv->{'FEED_PERMS_1'})?1:0;		## products
+	$FEED_PERMS += (defined $ZOOVY::cgiv->{'FEED_PERMS_4'})?4:0;		## orders
+
+	my $dbh = &DBINFO::db_zoovy_connect();
+	&DBINFO::insert($dbh,'AMAZON_FEEDS',{
+		USERNAME=>$USERNAME,PRT=>$PRT,MID=>$MID,FEED_PERMISSIONS=>$FEED_PERMS,
+		},key=>['MID','PRT']);
+	&DBINFO::db_zoovy_close();
+
+	$LU->log("SETUP.AMAZON","Tokens updated","SAVE");
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);
+	$VERB = '';
+	}
+
+
+if ($VERB eq 'RESYNDICATE') {
+
+	my $dbh = &DBINFO::db_zoovy_connect();	
+	my $pstmt = "update AMAZON_FEEDS set UPDATED=0 where MID=$MID /* $USERNAME */ and PRT=$PRT";
+	$dbh->do($pstmt);
+	&DBINFO::db_zoovy_close();
+
+	require PRODUCT::BATCH;
+	&PRODUCT::BATCH::updatetss($USERNAME);
+
+	$LU->log("SETUP.AMAZON.RESETFEED","Reset all Product Timestamps from Amazon Configuration");
+	}
+
+
+if ($VERB eq '') {
+	my ($userref) = &AMAZON::fetch_merchant($USERNAME,$PRT);
+
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTNAME -->'} = &ZOOVY::incode($webdb->{'amz_merchantname'});
+	$GTOOLS::TAG{'<!-- AMZ_USERID -->'} = &ZOOVY::incode($webdb->{'amz_userid'});
+	$GTOOLS::TAG{'<!-- AMZ_PASSWORD -->'} = &ZOOVY::incode($webdb->{'amz_password'});
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTTOKEN -->'} = &ZOOVY::incode($webdb->{'amz_merchanttoken'});
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTID -->'} = &ZOOVY::incode($webdb->{'amz_merchantid'});
+	$GTOOLS::TAG{'<!-- AMZ_ACCESSKEY -->'} = &ZOOVY::incode($webdb->{'amz_accesskey'});
+	$GTOOLS::TAG{'<!-- AMZ_SECRETKEY -->'} = &ZOOVY::incode($webdb->{'amz_secretkey'});
+	$GTOOLS::TAG{'<!-- FEED_PERMS_1 -->'} = ($userref->{'FEED_PERMISSIONS'}&1)?'checked':'';
+	$GTOOLS::TAG{'<!-- FEED_PERMS_4 -->'} = ($userref->{'FEED_PERMISSIONS'}&4)?'checked':'';
+
+	my $zdbh = &DBINFO::db_zoovy_connect();
+	my $pstmt = "select PRT from AMAZON_FEEDS where MID=$MID and FEED_PERMISSIONS&1>0";
+	my $sth = $zdbh->prepare($pstmt);
+	$sth->execute();
+	my @PRTS = ();
+	while ( my ($prt) = $sth->fetchrow() ) { push @PRTS, $prt; }
+	$sth->finish();
+	&DBINFO::db_zoovy_close();
+	if (scalar(@PRTS)>1) {
+		$GTOOLS::TAG{'<!-- FEED_PERMISSIONS_WARNING -->'} = "<div class=alert>WARNING: You must only have one partition setup to transmit products/inventory currently partitions: ".join(',',@PRTS)." have products configured to syndicate.</div>";
+		}
+
+	}
+
+&DBINFO::db_zoovy_close();
+
+&GTOOLS::output(bc=>\@BC,file=>$template_file,header=>1);
+
+
+sub get_signup_url {
+	require Digest;
+
+	my $associates_store_Id = "zoovy2-20";
+	my $shared_secret_key = "a29d04860c0a51c6f0bbb9c92f84358b";
+	my $promotion_code = "1mosfree";
+	## add 7hrs for UTC
+	my $time = time()+(7*60*60);
+	## expire url in 10 days
+	my $expires = $time + (10*86400);
+	
+	my $url = "http://sellercentral.amazon.com/gp/seller/channel-partner/";
+	my $message  = "associatesStoreID=".$associates_store_Id.
+						"&uniqueToken=".$MID.
+						"&trackingTag=main".
+						"&promotionCode=".$promotion_code.
+						"&timeGenerated=".$time.
+						"&timeExpires=".$expires;
+
+	my $hmac = Digest->HMAC_MD5(pack('H*',$shared_secret_key));
+	$hmac->add($message);
+	my $hash = $hmac->hexdigest();
+	
+	my $signup = $url."?".$message."&signedHash=".$hash;
+
+	return($signup);
+	}

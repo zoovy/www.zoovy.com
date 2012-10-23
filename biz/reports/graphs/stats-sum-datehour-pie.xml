@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- 
+	Stats / stats-sum-datehour-pie
+	displays portion of traffic received 
+-->
+<graph type="STACKED_AREA">
+<attribs 
+	bgcolor='FFFFFF' 
+	canvasbgcolor='DD9757'  xaxisname='Pages' 
+	caption='Traffic by Hour' 
+	subcation='(Hits - Visitors - Add to Cart)'
+	xAxisName='Hour'
+	legendboxbgcolor='FFFFDD' 
+	legendboxbrdrcolor='DD9757' 
+	navbtncolor='DD9757' 
+	showValues='0'
+	rotateNames='1'
+	numdivlines='3' divLineColor='333333' decimalPrecision='0'
+	sortby='0'
+/>
+<categories key="0" sortby="0"/>
+<dataset seriesname='Add to Cart' val="3" />
+<dataset seriesname='Visitors' val="1" />
+<dataset seriesname='Hits' val="2" />
+</graph>

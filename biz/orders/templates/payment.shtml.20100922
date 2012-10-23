@@ -1,0 +1,146 @@
+<!-- HEADER_ONLY -->
+<head>
+	<title>Payment Information</title>
+	<script>
+	<!--
+	var clicked = 0;
+	function clickedIt() {
+		var d = new Date();
+		if (clicked!=0) {
+			alert("Error: You only need to click SAVE once, pressing save more than once during a payment operation can lead to order corruption.");		
+			if (clicked+30 < d.getTime()) {
+				clicked=0;
+			}
+		} 
+		if (clicked == 0) {
+			clicked = d.getTime();
+			document.payMain.submit();
+		}
+	}
+	//-->
+	</script>
+</head>
+<body bgcolor="#FFFFFF">
+
+<table width=800 align="center"><tr><td>
+
+Payment Information for <!-- ID --><br>
+<font color="red"><b><!-- MESSAGE --></b></font>
+<br>
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Payments</td></tr>
+<tr><td>
+<table>
+	<tr class="zoovysub1header">
+		<th>TENDER</th>
+		<th>CREATED</th>
+		<th>NOTE</th>
+		<th>AMOUNT</th>
+		<th>STATUS</th>
+	</tr>
+<!-- PAYMENTS -->
+</table>
+</td></tr>
+</table>
+
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Order Payment Status</td></tr>
+<tr><td>
+			<table width="618" bgcolor="#FFFFFF" cellpadding="5" cellspacing="0" border="0">
+				<tr>
+					<td>
+						<form action="payment.cgi" name="payMain">
+							<input type="hidden" name="CMD" value="CHANGE_PAYMENT">
+							<input type="hidden" name="ID" value="<!-- ID -->">
+						<font face="verdana, arial">
+						Payment Type:
+						<select name="SELECTED_TYPE">
+						<!-- ACCEPTED_METHOD -->
+						</select><br>
+						<!-- DEBUG -->
+						<br>
+						<b>Set Payment Status:</b> (Currently <a target="_blank" href="http://www.zoovy.com/biz/help/general/payment.shtml#<!-- PAYMENT_STATUS -->">#<!-- PAYMENT_STATUS --></a>)<br>
+						<input type="radio" name="PAYMENT_STATUS" CHECKED value="<!-- PAYMENT_STATUS -->"> (<a target="_blank" href="http://webdoc.zoovy.com/doc/50456#<!-- PAYMENT_STATUS -->">#<!-- PAYMENT_STATUS --></a>) <!-- PAYMENT_STATUS_DETAIL --><br>
+						<input type="radio" name="PAYMENT_STATUS" value="000"> (<a target="_blank" href="http://webdoc.zoovy.com/doc/50456#000">#000</a>)  Paid in Full<br>
+						<input type="radio" name="PAYMENT_STATUS" value="100"> (<a target="_blank" href="http://webdoc.zoovy.com/doc/50456#100">#100</a>)  Pending<br>
+						<input type="radio" name="PAYMENT_STATUS" value="200"> (<a target="_blank" href="http://webdoc.zoovy.com/doc/50456#200">#200</a>)  Denied<br>
+						<input type="radio" name="PAYMENT_STATUS" value="300"> (<a target="_blank" href="http://webdoc.zoovy.com/doc/50456#300">#300</a>)  Cancelled<br>
+						</select><br>
+						<br>
+						* Note to Credit Card Users: once you have overridden a payment status, you must capture or acquire the payment by hand, 
+						or reset the transaction to re-process. If a transaction is reset then all previous payment information (eg: authorization 
+						or capture codes) will be lost.
+						<Br>
+						<input type="checkbox" name="EXTERNAL" checked> Flag associated incomplete sales as paid (and release for feedback)<br>
+						
+						<input type="button" onClick="clickedIt();" value="  Save  ">
+						<input type="button" onClick="document.location='view.cgi?ID=<!-- ID -->';" value="  Exit  ">
+						</font>
+						</form>
+					</td>
+				</tr>
+			</table>
+
+</td></tr>
+</table>
+
+<br>
+<br>
+
+<form action="payment.cgi" name="updateFrm">
+<input type="hidden" name="CMD" value="UPDATE">
+<input type="hidden" name="ID" value="<!-- ID -->">
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Payment Specific Information</td></tr>
+<tr><td>
+			<table width="100%" bgcolor="#FFFFFF" cellspacing="0" cellpadding="5" border="0">
+			<tr>
+				<td align="center">
+					<table><tr><!-- BUTTONS --></tr></table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!-- CONTENTS -->
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<table><tr><td><input type="submit" value="Save Changes"></td></tr></table>
+				</td>
+			</tr>
+			</table>
+</td></tr>
+</table>
+
+</form>
+
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Order Events</td></tr>
+<tr><td>
+	<!-- EVENTS -->
+</td></tr>
+</table>
+<br>
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Order Events</td></tr>
+<tr><td><table>
+<!-- FEES -->
+</table></td></tr>
+</table>
+<br>
+
+<font face="arial">
+External Reference ID: <!-- EREFID --><br>
+Created by IP Address: <!-- IP_ADDRESS --> on PRT: <!-- PRT --></font>
+</td></tr></table>
+
+
+
+</body>
+</html>

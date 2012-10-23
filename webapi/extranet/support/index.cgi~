@@ -1,0 +1,59 @@
+#!/usr/bin/perl
+
+use strict;
+
+
+use lib "/httpd/modules";
+use SUPPORT;
+use GTOOLS;
+
+
+#+------------------+-----------------------------------------------------------------------------------------------+------+-----+---------------------+----------------+
+#| Field            | Type                                                                                          | Null | Key | Default             | Extra          |
+#+------------------+-----------------------------------------------------------------------------------------------+------+-----+---------------------+----------------+
+#| ID               | int(11)                                                                                       | NO   | PRI | NULL                | auto_increment |
+#| CREATED_GMT      | int(10) unsigned                                                                              | NO   |     | 0                   |                |
+#| OPENED_GMT       | int(10) unsigned                                                                              | NO   |     | 0                   |                |
+#| CLOSED_GMT       | int(10) unsigned                                                                              | NO   |     | 0                   |                |
+#| CUSTOMER         | varchar(50)                                                                                   | NO   | MUL | NULL                |                |
+#| USERNAME         | varchar(20)                                                                                   | NO   |     | NULL                |                |
+#| LUSER            | varchar(10)                                                                                   | NO   |     | NULL                |                |
+#| MID              | int(10) unsigned                                                                              | NO   | MUL | 0                   |                |
+#| TECH             | varchar(10)                                                                                   | NO   | MUL | NULL                |                |
+#| SALESPERSON      | varchar(10)                                                                                   | NO   |     | NULL                |                |
+#| ORIGIN           | enum('PHONE','EMAIL','VM','WEB','OTHER')                                                      | NO   |     | OTHER               |                |
+#| NOTES            | mediumtext                                                                                    | YES  |     | NULL                |                |
+#| DISPOSITION      | enum('LOW','MED','HIGH','ACTIVE','OTHER','CLOSED','WAITING','INCIDENT','CALLBACK','NEEDINFO') | NO   | MUL | OTHER               |                |
+#| HAS_FASTTRACK    | enum('Y','N')                                                                                 | YES  |     | N                   |                |
+#| SUBJECT          | varchar(80)                                                                                   | NO   |     | NULL                |                |
+#| FOLLOWUPS        | int(11)                                                                                       | NO   |     | 0                   |                |
+#| LAST_FOLLOWUP    | datetime                                                                                      | NO   |     | 0000-00-00 00:00:00 |                |
+#| HAS_INCIDENT     | tinyint(4)                                                                                    | NO   |     | 0                   |                |
+#| GROUPCODE        | varchar(10)                                                                                   | NO   |     | NULL                |                |
+#| TIER             | char(1)                                                                                       | NO   |     | ?                   |                |
+#| DIRTY            | int(1)                                                                                        | YES  |     | 0                   |                |
+#| REVIEWED_GMT     | int(11)                                                                                       | NO   | MUL | 0                   |                |
+#| STRESS_HOURSOPEN | smallint(5) unsigned                                                                          | NO   |     | 0                   |                |
+#| STRESS_HOURSWAIT | smallint(5) unsigned                                                                          | NO   |     | 0                   |                |
+#| STRESS_BOUNCES   | smallint(5) unsigned                                                                          | NO   |     | 0                   |                |
+#| STRESS_SCORE     | int(10) unsigned                                                                              | NO   |     | 0                   |                |
+#| STRESS_EXEMPT    | tinyint(4)                                                                                    | NO   |     | 0                   |                |
+#| TRANSCENDED_GMT  | int(10) unsigned                                                                              | NO   |     | 0                   |                |
+#+------------------+-----------------------------------------------------------------------------------------------+------+-----+---------------------+----------------+
+
+my $sdbh = &SUPPORT::db_support_connect();
+my $template_file = 'index.shtml';
+
+my $c = '';
+my $pstmt = "select * from TICKETS where DISPOSITION in ('LOW','MED','HIGH','ACTIVE','NEEDINFO','OTHER') and TRANSCENDED_GMT=0";
+my $sth = $sdbh->prepare($pstmt);
+$sth->execute();
+while ( my $hashref = $sth->fetchrow_hashref() ) {
+	$c .= "<tr><td>$hashref->{'ID'}</td><td>$hashref->{'USERNAME'}</td><td>$hashref->{'SUBJECT'}</td></tr>";
+	}
+$sth->finish();
+$GTOOLS::TAG{'<!-- TICKETS -->'} = $c;
+
+&SUPPORT::db_support_close();
+
+&GTOOLS::output(file=>$template_file,header=>1);

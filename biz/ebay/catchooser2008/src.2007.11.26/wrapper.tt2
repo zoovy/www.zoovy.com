@@ -1,0 +1,30 @@
+[%- IF xml %]
+[%- content %]
+[% ELSIF nowrapper -%]
+[%- INCLUDE _error_block.tt2 %]
+[%#- INCLUDE _user_block.tt2 %]
+[%- content %]
+[%- ELSE %]
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>[% page_title || '---' %]</title>
+    <link rel="stylesheet" href="/biz/ebay/catchooser2008/css/style.css">
+    <link rel="stylesheet" href="/biz/ebay/catchooser2008/css/round-corners.css">
+    <script type="text/javascript" src="/biz/ebay/catchooser2008/js/jquery-1.2.pack.js"></script>
+    <script type="text/javascript" src="/biz/ebay/catchooser2008/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/biz/ebay/catchooser2008/js/core.js"></script>
+  </head>
+  <body>
+    <div id="loading">
+      <img src="/biz/ebay/catchooser2008/images/preloader.gif" />
+    </div>
+    <div id="body-inner"> <!-- just temporary inner to make page center aligned -->
+    [%- INCLUDE _error_block.tt2 %]
+    [%#- INCLUDE _user_block.tt2 %]
+    [%- content %]
+    </div>
+    <div style="clear: both; height: 7px;"></div>
+  </body>
+</html>
+[%- END %]

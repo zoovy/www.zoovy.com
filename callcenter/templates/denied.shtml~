@@ -1,0 +1,11 @@
+<body>
+
+<font color='red'><b>ACCESS DENIED</b></font>
+<br>
+<table>
+<tr><td>USERNAME:</td><td><!-- USERNAME --></td></tr>
+<tr><td>PRT:</td><td><!-- PRT --></td></tr>
+<tr><td>GUID:</td><td><!-- GUID --></td></tr>
+</table>
+
+</body>

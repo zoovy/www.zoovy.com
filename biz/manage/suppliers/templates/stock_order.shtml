@@ -1,0 +1,16 @@
+<!-- REPORT_TAB -->
+<div align="center">
+<table border=0 width=80%>
+<tr><td align='left'>
+<!-- MESSAGE -->
+<h1>Stock Order <!-- ORDER_ID --> for Supplier: <!-- CODE --></h1><br>
+<table width='100%' class='zoovytable' cellspacing="1" cellpadding="2">
+	<tr class="zoovytableheader">
+		<td ><span >Added</span></td>
+		<td ><span >SKU</span></td>
+		<td ><span >Description</span></td>
+		<td ><span >QTY</span></td>
+		<td ><span >Cost</span></td>
+	</tr>
+	<!-- ORDER_ITEMS -->
+</table>

@@ -1,0 +1,79 @@
+<!-- SETUP_TAB -->
+<center>
+<table>
+<tr><td>
+<h2>Promotion Debugger</h2>
+<hr>
+
+The debugger will display the internal logic that is used to compute promotions
+<br>
+
+<form method='post' action='index.cgi'>
+<input type='hidden' name='VERB' value='RUN-DEBUG'>
+<b>Detail Level:</b><br>
+<table>
+	<tr>
+		<td><input name="detail_1" checked type="checkbox"> General Trace Info (recommended)</td>
+		<td><input name="detail_2" <!-- DETAIL_2 --> type="checkbox"> Detailed Trace Info</td>
+	</tr>
+	<tr>
+		<td><input name="detail_64" <!-- DETAIL_64 --> type="checkbox"> Match Logic</td>
+		<td><input name="detail_255" <!-- DETAIL_255 --> type="checkbox"> Developer</td>
+	</tr>
+</table>
+<br>
+<!-- MESSAGE -->
+<br>
+<table>
+	<tr>
+		<td valign='top' colspan='2' bgcolor='E0E0E0'>Load products from order</td>
+	</tr>
+	<tr>
+		<td valign='top'>
+			Order Number: <input type='textbox' name='ORDER' value='<!-- ORDER -->'><br>
+		</td>
+	</tr>
+	<tr>
+		<td valign='top' colspan='2' bgcolor='E0E0E0'>Use Cart</td>
+	</tr>
+	<tr>
+		<td valign='top' colspan='2'>
+		Instructions: Place items into your cart, proceed into checkout and provide address information, 
+		but do not complete checkout. Your cart will appear in the list below. Please remember to re-add 
+		coupons after you make changes to the coupon (but not the rules) because coupon properties are 
+		stored in the cart and will not automatically update.
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'>
+			Cart ID: <input type="textbox" name="CARTID" value="<!-- CARTID -->"><br>
+		</td>
+	</tr>
+</table>
+<input type='submit' value='  Calculate Rates  '>
+</form>
+<br>
+<h2>Debugger Output:</h2>
+<hr>
+<b>OUTPUT:</b>
+<br>
+Cart:
+<pre>
+<!-- CART -->
+</pre>
+<hr>
+<b>RESULTS:</b><br>
+<table>
+<!-- RESULTS -->
+</table>
+<hr>
+<b>Trace:</b><br>
+<table>
+<!-- OUTPUT -->
+</table>
+  
+
+</td></tr>
+</table>
+</center>
+</body>

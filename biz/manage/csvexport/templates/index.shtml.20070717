@@ -1,0 +1,92 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/images/tabs/styles.css">
+<SCRIPT language="JavaScript">
+<!--//
+var tState = false;
+function toggleAll() {
+	tState = !tState;
+	for (i=0,n=document.myForm.elements.length;i<n;i++) {
+		if (document.myForm.elements[i].name.indexOf('product-') !=-1) {
+			document.myForm.elements[i].checked = tState;
+			}
+		}
+	}
+//-->
+</SCRIPT>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor='FFFFFF'>
+<!-- REPORT_TAB -->
+<font face='arial'>
+<center>
+<table width='95%'>
+<Tr><td>
+<b>Site Packaging Tool:</b>&nbsp;Creates a CSV or Excel export of products suitable for import into another
+Zoovy site using the advanced CSV import tool.<br>
+<br>
+Export Products:<br>
+<form action='index.cgi' name='selFrm' method='post'>
+<input type='hidden' name='ACTION' value=''>
+<input type='hidden' name='PRODUCTS' value='<!-- PRODUCTS -->'>
+<table width='500'><tr><td>
+<!-- PRODUCTOUT --><br>
+</td></tr></table>
+<!-- PRODUCT_WARNING --><br>
+<input style='width: 200px; font-size: 8pt;' type='submit' value=' Select All Products ' onClick='selFrm.ACTION.value="SELECT_ALL";'><br>
+<input style='width: 200px; font-size: 8pt;' type='submit' value=' Select Products Individually ' onClick='selFrm.ACTION.value="SELECT_PRODUCTS";'><br>
+<input style='width: 200px; font-size: 8pt;' type='submit' value=' Select from Range of Products ' onClick='selFrm.ACTION.value="SELECT_RANGE";'><br>
+<input style='width: 200px; font-size: 8pt;' type='submit' value=' Select by Navigation Categories ' onClick='selFrm.ACTION.value="SELECT_NAVCAT";'><br>
+<input style='width: 200px; font-size: 8pt;' type='submit' value=' Select by Management Category ' onClick='selFrm.ACTION.value="SELECT_MANAGECAT";'><br>
+</form>
+
+<i>Note: Effective 10/23/04 - 
+due to the resource intensive nature of compiling a CSV full product record exports with dynamic are limited to 500 products, 
+specify fixed headers to increase this limit up to the maximum of 250,000 total data-cells.</i>
+<br>
+<form target="_blank" method='POST' action='index.cgi' name='myForm'>
+<input type='hidden' name='ACTION' value='PACKAGE'>
+<input type='hidden' name='PRODUCTS' value='<!-- PRODUCTS -->'>
+
+Special Export Options:<br>
+<input type='checkbox' name='NAVCATS'> Export Navigation Categories -- MUCH SLOWER!<br>
+<input type='checkbox' name='CATEGORIES'> Export Management Categories<br>
+<input type='checkbox' name='IMAGELIB'> Export Image URLs rather than Image Library names (may break Excel)<br>
+<input type='hidden' name='TS' value='<!-- TS -->'> Timestamp<br>
+Fields: <input type="textbox" name="FIELDS" value="<!-- FIELDS -->" size="50"><br>
+NOTE: Leave "fields" blank to export a full product record with dynamic headers. 
+To specify header fields, specify product attributes separated by commas, leave no whitespace 
+e.g. "zoovy:prod_name,zoovy:base_price,zoovy:prod_image1" (without the quotes) - 
+without specifying which fields you want to export you will be limited to 500 products per export.<br>
+
+<P>
+<br>
+<b>Output Option:</b><br>
+<table>
+	<tr>
+		<td><input style='width: 120px; font-size: 8pt;' type='submit' value=' Package as CSV File ' onClick='myForm.action = "/biz/manage/csvexport/index.cgi/<!-- USERDATE -->.csv";'></td>
+		<td>For non/Microsoft applications (e.g. OpenOffice, Filemaker Pro)</td>
+	</tr>
+	<tr>
+		<td><input style='width: 120px; font-size: 8pt;' type='submit' value=' Package for Excel ' onClick='myForm.ACTION.value="EXCEL"; myForm.action="/biz/manage/csvexport/index.cgi/<!-- USERDATE -->.xls";'></td>
+		<td>For Microsoft Excel Users<br>
+		<i>Due to limitations of string length this export is known not to work with Excel 5, or Excel 97 - 
+Excel has a limitation of 65,536 rows (although Zoovy will export more than that)</i>
+		</td>
+	</tr>
+<!--
+	<tr>
+		<td><input style='width: 120px; font-size: 8pt;' type='submit' value=' Send to Screen ' onClick='myForm.ACTION.value="SCREEN"; myForm.action="/biz/manage/csvexport/index.cgi/<!-- USERDATE -->.txt";'></td>
+		<td>For testing purposes only.</td>
+	</tr>
+-->
+</tr>
+</table>
+<b>Usage Notes:</b><br>
+TO IMPORT FROM EXCEL: YOU MUST SAVE THE DATA AS CSV in Excel, to do this please select [File] and [Save As] and change the type to "Text/CSV". 
+If you attempt to re-import the native Excel file that was exported it will absolutely corrupt your product database.<br>
+<P>
+Customers using Netscape, Opera, or Mac OS should save the CSV file and open it in the application of their choice (Filemaker, etc).<P>
+</td></tr>
+</table>
+</form>
+</font>
+</body>

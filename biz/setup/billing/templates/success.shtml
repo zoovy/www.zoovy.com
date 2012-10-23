@@ -1,0 +1,13 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<body onLoad='alert("successfully saved changes, you should attempt to login again"); window.close();'>
+<center>
+<font face='arial'>
+<br>
+<br>
+<h1>Successfully Saved!</h1>
+<h2>Please close this window to continue</h2>
+</font>
+</center>
+</body>

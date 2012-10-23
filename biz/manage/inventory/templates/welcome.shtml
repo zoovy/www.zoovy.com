@@ -1,0 +1,25 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+
+<form action="index.cgi">
+<table class="zoovytable" width=500>
+<tr>
+	<td class="zoovytableheader">Welcome to Inventory Utilities</td>
+</tr>
+<tr>
+	<td>
+	If you have not already done so, please configure your warehouses and zones in Utilities | Warehouses.
+	</td>
+</tr>
+<tr>
+	<td>
+	This utility offers many of the same functions you would find on the
+desktop client, or using a handheld mobile scanner.
+	</td>
+</tr>
+</form>
+</table>
+
+
+</center>

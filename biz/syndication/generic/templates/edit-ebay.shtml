@@ -1,0 +1,59 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table class="zoovytable" width="500">
+<tr><td class="zoovytableheader"> <!-- MARKETPLACE --> Submission Manager</td></tr>
+<tr><td>
+
+<table>
+	<tr>
+		<td valign=top><b>Status:</b></td>
+		<td valign=top><!-- STATUS --></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<br>
+<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<table>
+	<!-- TOP_FIELDS -->
+	<!-- FEED_TYPE_FIELDS -->
+	<!-- MID_FIELDS -->
+	<tr>
+		<td valign=top><b>Validation File:</b></td>
+		<td>
+		<!-- PRODUCT_VALIDATION -->		
+		</td>
+	</tr>
+   <tr>
+      <td valign=top>Pricing Schedule:</td>
+      <td valign=top><select name="SCHEDULE"><!-- SCHEDULE --></select> <i>(Requires Wholesale Bundle)</i><br></td>
+   </tr>
+</table>
+
+		</td>
+	</tr>
+	<!-- BOTTOM_FIELDS -->
+</table>
+<br>
+<center>
+<input type="button" class="button" onClick="thisFrm.VERB.value='PUBLISH'; thisFrm.submit();" src="/images/bizbuttons/save.gif" value=" Publish ">
+&nbsp;
+
+<input type="button" class="button" onClick="thisFrm.VERB.value='SAVE'; thisFrm.submit();" src="/images/bizbuttons/save.gif" value=" Save ">
+&nbsp;
+<input type="button" class="button" onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();" src="/images/bizbuttons/delete.gif" value=" Delete  ">
+
+</center>
+<br>
+
+<br>
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

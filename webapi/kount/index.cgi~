@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+
+use CGI;
+use Data::Dumper;
+
+
+my ($q) = CGI->new();
+
+open F, ">>/tmp/kount.txt.".time();
+print F Dumper(\%ENV,$q);
+close F;
+
+print "Content-type: text/plain\n\n";
+print "Hello world!\n";
+
+use lib "/httpd/modules";
+use DBINFO;
+
+my ($zdbh) = &DBINFO::db_zoovy_connect();
+&DBINFO::insert($dbh,'NOTIFICATIONS_KOUNT',{
+	'USERNAME'=>'',
+	'CREATED_GMT'=>time(),
+	'DATA'=>Dumper(\%ENV,$q);
+	});
+&DBINFO::db_zoovy_close();

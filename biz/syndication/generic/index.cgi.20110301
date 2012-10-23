@@ -1,0 +1,955 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use DOMAIN::TOOLS;
+use SYNDICATION;
+
+use strict;
+
+my $dbh = &DBINFO::db_zoovy_connect();	
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_P&16');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+$GTOOLS::TAG{'<!-- PROFILE -->'} = $PROFILE;
+
+my $template_file = 'index.shtml';
+if ($FLAGS !~ /,XSELL,/) {
+	$template_file = 'deny.shtml';
+	}
+
+
+my @TABS = ();
+my @FIELDS = ();
+if ($PROFILE ne '') {
+	push @TABS, { name=>'Config',selected=>($VERB eq '')?1:0, link=>'index.cgi' };
+	push @TABS, { name=>'Edit',selected=>($VERB eq 'EDIT')?1:0, link=> "?VERB=EDIT&PROFILE=$PROFILE", };
+	}
+
+my @BC = (
+      { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', },
+		);
+
+my @CONFIG_FIELDS = ();
+
+my ($WEBDOC) = 0;		## this is REQUIRED
+my ($DST,$MARKETPLACE) = (undef,undef);
+
+
+if ($ENV{'SCRIPT_NAME'} =~ /nextag/) {
+	$WEBDOC = 50594;
+	($DST,$MARKETPLACE) = ('NXT','Nextag.com');
+	push @BC, { name=>'Nextag.com',link=>'http://www.zoovy.com/biz/syndication/nextag','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	}
+#elsif ($ENV{'SCRIPT_NAME'} =~ /mysimon/) {
+#	$WEBDOC = 50593;
+#	($DST,$MARKETPLACE,$FEED_TYPE) = ('MYS','MySimon.com','API');
+#	push @BC, { name=>'Nextag.com',link=>'http://www.zoovy.com/biz/syndication/nextag','target'=>'_top', };
+#	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+#	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /buycom/) {
+	require SYNDICATION::BUYCOM;
+
+	## this makes sure we never display profiles for buy.com
+	$PROFILE = "#$PRT";
+	if ($VERB eq '') { $VERB = 'EDIT'; }
+
+	$WEBDOC = 50917;
+	($DST,$MARKETPLACE) = ('BUY','Buy.com');
+	push @BC, { name=>'Buy.com',link=>'http://www.zoovy.com/biz/syndication/buycom','target'=>'_top', };
+	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>'index.cgi?VERB=FILES&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>'index.cgi?VERB=DBMAP&PROFILE='.$PROFILE };
+	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Seller ID', id=>'.sellerid', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Seller Password', id=>'.sellerpass', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /pricegrabber/) {
+	$WEBDOC = 50397;
+	($DST,$MARKETPLACE) = ('PGR','PriceGrabber.com');
+	push @BC, { name=>'PriceGrabber.com',link=>'http://www.zoovy.com/biz/syndication/pricegrabber','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	## NOTE: even though this is type FTP, it uses the .user and .pass fields
+	##			because pricegrabber doesn't separate the fields.
+	push @FIELDS, { type=>'textbox', name=>'FTP/Web Username', id=>'.user', required=>1, hint=>'hint: uploaded filename is always username.csv',};
+	push @FIELDS, { type=>'textbox', name=>'FTP/Web Password', id=>'.pass', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /wishpot/) {
+	$WEBDOC = 51424;
+	($DST,$MARKETPLACE) = ('WSH','Wishpot');
+	push @BC, { name=>'Wishpot.com',link=>'http://www.zoovy.com/biz/syndication/wishpot','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /shareasale/) {
+	$WEBDOC = 51514;
+	($DST,$MARKETPLACE) = ('SAS','ShareASale.com');
+	push @BC, { name=>'ShareASale.com',link=>'http://www.zoovy.com/biz/syndication/shareasale','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'Merchant ID', id=>'.merchantid', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /shoppingcom/) {
+	$WEBDOC = 50538;
+	($DST,$MARKETPLACE) = ('SHO','Shopping.com');
+	push @BC, { name=>'Shopping.com',link=>'http://www.zoovy.com/biz/syndication/shoppingcom','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /bing/) { 
+	$WEBDOC = 50918;
+	($DST,$MARKETPLACE) = ('BIN','Bing.com');
+	push @BC, { name=>'Bing.com',link=>'http://www.zoovy.com/biz/syndication/bing','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /googlebase/) { 
+	$WEBDOC = 50396;
+	($DST,$MARKETPLACE) = ('GOO','GoogleBase');
+	push @BC, { name=>'GoogleBase.com',link=>'http://www.zoovy.com/biz/syndication/googlebase','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Filename', id=>'.ftp_filename', required=>1, hint=>qq~(ex: products.xml)~};
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /bizrate/) { 
+	$WEBDOC = 50374;
+	($DST,$MARKETPLACE) = ('BZR','Shopzilla');
+	push @BC, { name=>'Shopzilla',link=>'http://www.zoovy.com/biz/syndication/bizrate','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'Web Login Username', id=>'.user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Web Login Password', id=>'.pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /pronto/) { 
+	$WEBDOC = 50538;
+	($DST,$MARKETPLACE) = ('PTO','Pronto.com');
+	push @BC, { name=>'Pronto.com',link=>'http://www.zoovy.com/biz/syndication/pronto','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /become/) { 
+	$WEBDOC = 51554;
+	($DST,$MARKETPLACE) = ('BCM','Become.com');
+	push @BC, { name=>'Become.com',link=>'http://www.zoovy.com/biz/syndication/become','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /smarter/) { 
+	$WEBDOC = 51555;
+	($DST,$MARKETPLACE) = ('SMT','Smarter.com');
+	push @BC, { name=>'Smarter.com',link=>'http://www.zoovy.com/biz/syndication/smarter','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /dijipop/) { 
+	$WEBDOC = 51556;
+	($DST,$MARKETPLACE) = ('DIJ','Dijipop.com');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/dijipop','target'=>'_top', };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /linkshare/) { 
+	$WEBDOC = 51557;
+	($DST,$MARKETPLACE) = ('LNK','Linkshare.com');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/linkshare','target'=>'_top', };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Linkshare MID', id=>'.linkshare_mid', required=>1, hint=>qq~Linkshare Merchant ID is assigned by LinkShare.~, };
+	push @FIELDS, { type=>'textbox', name=>'Linkshare Company', id=>'.linkshare_company', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Linkshare Default ClassID', id=>'.linkshare_default_classid', size=>3, required=>1, hint=>qq~(ex: 140 is electronics)~, };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /hsn/) { 
+	$WEBDOC = 51570;
+	($DST,$MARKETPLACE) = ('HSN','HSN.com');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/hsn','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Vendor ID', id=>'.vendorid', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Order FTP Server', id=>'.order_ftp_server', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Order FTP Username', id=>'.order_ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'Order FTP Password', id=>'.order_ftp_pass', required=>1 };
+   }
+elsif ($ENV{'SCRIPT_NAME'} =~ /sears/) { 
+	$WEBDOC = 51583;
+	($DST,$MARKETPLACE) = ('SRS','Sears');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/sears','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'API User', id=>'.user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'API Password', id=>'.pass', required=>1 };
+   }
+elsif ($ENV{'SCRIPT_NAME'} =~ /newegg/) { 
+	$WEBDOC = 00000;
+	($DST,$MARKETPLACE) = ('EGG','Newegg');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/newegg','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+   }
+## TODO:
+## thefind
+## imshopping
+## wishpot
+## veruta
+## shopping.com
+## cj
+## bin
+## buysafe
+## amazon product ads
+else {
+	$VERB = 'UNKNOWN-DST';
+	print STDERR "UNKNOWN: $ENV{'SCRIPT_NAME'}\n";
+	}
+
+
+#push @TABS, { name=>"Files", selected=>($VERB eq 'FILEs')?1:0, link=>"?VERB=FILES&PROFILE=$PROFILE", };
+if ($WEBDOC > 0) {
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $WEBDOC;
+	push @TABS, { name=>"Webdoc", selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=$WEBDOC&PROFILE=$PROFILE", };
+	}
+
+
+
+my ($so) = undef;
+my ($DOMAIN,$ROOTPATH) = ();
+if (($PROFILE ne '') && (defined $DST)) {
+	($so) = SYNDICATION->new($USERNAME,$PROFILE,$DST);
+	($DOMAIN,$ROOTPATH) = $so->syn_info();
+	push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"?VERB=LOGS&PROFILE=$PROFILE", };
+	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG&PROFILE=$PROFILE", };	
+	}
+$GTOOLS::TAG{'<!-- DOMAIN -->'} = $DOMAIN;
+$GTOOLS::TAG{'<!-- ROOTPATH -->'} = $ROOTPATH;
+$GTOOLS::TAG{'<!-- MARKETPLACE -->'} = $MARKETPLACE;
+$GTOOLS::TAG{'<!-- DST -->'} = $DST;
+
+
+if ($VERB eq 'DELETE') {
+   $so->nuke();
+   $VERB = '';
+   }
+
+
+##
+##
+##
+if ($VERB eq 'DBMAP-NUKE') {
+	my ($udbh) = &DBINFO::db_zoovy_connect($USERNAME);
+	my $pstmt = "delete from BUYCOM_DBMAPS where MID=$MID /* $USERNAME */ and ID=".int($ZOOVY::cgiv->{'ID'});
+	print STDERR $pstmt."\n";
+	$udbh->do($pstmt);
+	&DBINFO::db_user_close();
+	$VERB = 'DBMAP';
+	}
+
+
+##
+##
+##
+if ($VERB eq 'DBMAP-SAVE') {
+	my $ERROR = '';
+
+	if (($ERROR eq '') && ($ZOOVY::cgiv->{'CATID'} eq '')) {
+		$ERROR = "CatID not defined.";
+		}
+
+	if (($ERROR eq '') && ($ZOOVY::cgiv->{'STOREID'} == 0)) {
+		$ERROR = "StoreID not defined.";
+		}
+
+	if (($ERROR eq '') && ($ZOOVY::cgiv->{'MAPID'} eq '')) {
+		$ERROR = "MapID cannot be blank.";
+		}
+
+	if (($ERROR eq '') && ($ZOOVY::cgiv->{'MAPTXT'} eq '')) {
+		$ERROR = "You must specify some JSON in the DBMAP";
+		}
+
+	if ($ERROR eq '') {
+		require JSON;
+		my $json = JSON->new();
+		my $txt = $ZOOVY::cgiv->{'MAPTXT'};
+#		$txt =~ s/,[\s]+$//;		# strip trailing comma.
+		$txt =~ s/[\r]+//g;
+#		$txt = "[$txt]";
+#		$ZOOVY::cgiv->{'MAPTXT'} = $txt;
+		my $p = eval { $json->decode($txt) } or $ERROR = "JSON Validation Error: $@";
+#		use YAML::Syck;
+#		$ZOOVY::cgiv->{'MAPTXT'} = YAML::Syck::Dump($p);
+		$ERROR =~ s/ at \/.*?$//;	 ## get rid of at /httpd/htdocs/.... line 120
+		if ($ERROR =~ /offset ([\d]+) /) {
+			my ($offset) = int($1);
+			my $bytes = 0;
+			my $linecount = 0;
+			foreach my $line (split(/[\n]/,$txt)) {
+				$linecount++;
+				if ( (($bytes+length($line)+5) >= $offset) && ($offset>=$bytes) ) {
+					$ERROR .= "<br>LINE[$linecount] $line";
+					}
+				$bytes += length($line)+1;
+				}
+	
+#			$offset -= 20;
+#			if ($offset<=0) { $offset = 0; }			
+#			$ERROR .= "\n<br>approximate location: ".substr($txt,$offset,40);
+			}
+
+		if (($ERROR eq '') && (int($ZOOVY::cgiv->{'CATID'})==0)) {
+			## DBMAPS with CategoryID==0 means we need to be setting buycom:categoryid in the dbmap as an attribute.
+			## this is a *required* field.
+			my $found = 0;
+			foreach my $dbmapset (@{$p}) {
+				if ($dbmapset->{'id'} eq 'buycom:categoryid') { $found++; }
+ 				# $GTOOLS::TAG{'<!-- DEBUG -->'} .= "<hr>".Dumper($dbmapset);
+				}
+			if (not $found) {
+				$ERROR = "Please specify the buycom:categoryid product attribute in the dbmap to use CategoryID 0";
+				}
+			}
+		}
+
+
+	if ($ERROR eq '') {
+		my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+		&DBINFO::insert($udbh,'BUYCOM_DBMAPS',{
+			USERNAME=>$USERNAME, MID=>$MID,
+			MAPID=>uc($ZOOVY::cgiv->{'MAPID'}),
+			STOREID=>int($ZOOVY::cgiv->{'STOREID'}),
+			CATID=>int($ZOOVY::cgiv->{'CATID'}),
+			MAPTXT=>$ZOOVY::cgiv->{'MAPTXT'},
+			},key=>['MID','MAPID']);
+		&DBINFO::db_user_close();
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<div class='success'>Added DBMAP $ZOOVY::cgiv->{'MAPID'}</div>";
+		}
+	else {
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<div class='error'>ERROR: $ERROR</div>";
+		}
+
+	$VERB = 'DBMAP';
+	}
+
+
+##
+##
+##
+if (($VERB eq 'DBMAP') || ($VERB eq 'DBMAP-EDIT')) {
+
+#	my $cattxt = '';
+#	if ($prodref->{'buycom:category'}>0) {
+#		## This works  - try to save '7000.50845' into category for example.
+#		my ($CDS) = SYNDICATION::CATEGORIES::CDSLoad('BUY');
+#		my ($inforef) = SYNDICATION::CATEGORIES::CDSInfo($CDS,$prodref->{'buycom:category'});
+#		$cattxt = $inforef->{'Path'};
+#		}
+
+	my $udbh = &DBINFO::db_user_connect($USERNAME);
+	my $ref = $ZOOVY::cgiv;	## we'll copy from CGI params incase we're reloading
+
+	if ($VERB eq 'DBMAP-EDIT') {
+		my $pstmt = "select * from BUYCOM_DBMAPS where MID=$MID /* $USERNAME */ and MAPID=".$udbh->quote($ZOOVY::cgiv->{'ID'});
+		$ref = $udbh->selectrow_hashref($pstmt);
+		}
+
+	$GTOOLS::TAG{'<!-- MAPID -->'} = $ref->{'MAPID'};
+	$GTOOLS::TAG{'<!-- CATID -->'} = $ref->{'CATID'};
+	$GTOOLS::TAG{'<!-- MAPTXT -->'} = $ref->{'MAPTXT'};
+
+	my $c = '';
+	foreach my $x (@{$SYNDICATION::BUYCOM::STORECODES}) {
+		my $selected = ($ref->{'STOREID'}==$x->{'id'})?'selected':'';
+		$c .= "<option $selected value=\"$x->{'id'}\">$x->{'title'}</option>\n";
+		}
+	$GTOOLS::TAG{'<!-- STORECODES -->'} = $c;
+
+	$c = '';
+	my @maps = &SYNDICATION::BUYCOM::fetch_dbmaps($USERNAME);
+	my $class = '';
+	foreach my $map (@maps) {
+		$class = ($class eq 'r0')?'r1':'r0';
+		$c .= "<tr class=\"$class\">";
+		$c .= "<td valign=top>";
+			$c .= "<a href=\"index.cgi?VERB=DBMAP-EDIT&ID=$map->{'MAPID'}\">[Edit]</a>";
+			$c .= "<a href=\"index.cgi?VERB=DBMAP-NUKE&ID=$map->{'MAPID'}\">[Nuke]</a>";
+		$c .= "</td>";
+		$c .= "<td valign=top>$map->{'MAPID'}</td>";
+		$c .= "<td valign=top>$map->{'STOREID'}</td>";
+		$c .= "<td valign=top>$map->{'CATID'}</td>";
+		my $mapjrefs = JSON::XS::decode_json($map->{'MAPTXT'});
+		$c .= "<td valign=top>";
+			foreach my $jref (@{$mapjrefs}) {
+				$c .= "<b>$jref->{'id'}: $jref->{'header'}</b><br>";
+				if ((defined $jref->{'options'}) && (ref($jref->{'options'}) eq 'ARRAY')) {
+					$c .= "<i>Values: ";
+					foreach my $opt (@{$jref->{'options'}}) { $c .= "$opt->{'p'} "; }
+					$c .= "</i><br>";
+					}
+				# $c .= Dumper($jref)."<hr>";
+				}
+		$c .= "</td>";
+		$c .= "</tr>";
+		}
+	if ($c eq '') {
+		$c .= "<tr><td colspan=4><i>No Buy.com DBMaps currently defined</i></td></tr>";
+		}
+
+	&DBINFO::db_user_close();
+	$GTOOLS::TAG{'<!-- EXISTING_MAPS -->'} = $c;
+
+	$template_file = 'dbmap.shtml';
+	}
+
+
+##
+##
+##
+if ($VERB eq 'FILES') {
+	require LUSER::FILES;
+	my ($LF) = LUSER::FILES->new($USERNAME,LU=>$LU);
+
+	my $type = '';
+	if ($DST eq 'BUY') { $type = 'BUYCOM'; }
+
+	my $results = $LF->list(type=>$type);
+	my $c = '';
+	foreach my $file (@{$results}) {
+		$c .= "<tr>";
+		$c .= "<td>$file->{'%META'}->{'type'}</td>";
+		$c .= "<td><a href=\"/biz/setup/private/index.cgi/$file->{'TITLE'}?VERB=DOWNLOAD&GUID=$file->{'GUID'}&FILE=$file->{'FILE'}\">$file->{'TITLE'}</a></td>";
+		$c .= "<td>$file->{'CREATED'}</td>";
+		$c .= "<td>$file->{'SIZE'}</td>";
+		$c .= "</tr>";
+		}
+	$GTOOLS::TAG{'<!-- FILES -->'} = $c;
+	# $GTOOLS::TAG{'<!-- FILES -->'} = '<table><tr><td><pre>'.Dumper($results).'</pre></td></tr></table>';
+	$template_file = '_/syndication-files.shtml';
+	}
+
+
+#if ($VERB eq 'FILES') {
+#	my ($lf) = LUSER::FILES->new($USERNAME);
+#	$template_file = 'files.shtml';
+#	}
+
+
+if (($VERB eq 'SAVE') || ($VERB eq 'PUBLISH')) {
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	my $ERROR = '';
+
+	## (almost!!) all syndication use FTP settings to push feeds
+	foreach my $fref (@FIELDS) {
+		my $user_data = $ZOOVY::cgiv->{ $fref->{'id'} };
+		$user_data =~ s/^[\s]+//gs;	 # strip leading space
+		$user_data =~ s/[\s]+$//gs;	# strip trailing space
+		if ($fref->{'id'} eq '.ftp_server') {
+			$user_data =~ s/^ftp\:\/\///igs;
+			if ($user_data =~ /[^A-Za-z0-9\.\-]+/) { $ERROR = "$MARKETPLACE FTP Server contains invalid characters (perhaps you're sending a URI?)"; }
+			elsif (($DST eq 'BCM') && ($user_data !~ /\.become\.com$/)) { $ERROR = "FTP server [$user_data] does not end with .become.com - it's probably not valid!"; }
+			elsif (($DST eq 'GOO') && ($user_data !~ /google\.com$/)) { $ERROR = "FTP server does not end with .google.com - it's probably not valid!"; }
+			}
+		elsif ($fref->{'id'} eq '.linkshare_mid') {
+			if ($user_data==0) { $ERROR = "Linkshare Merchant ID is required"; }
+			}
+
+		$s{ $fref->{'id'} } = $user_data;
+		if (($fref->{'required'}) && ($user_data eq '')) {
+			$ERROR = "$MARKETPLACE $fref->{'name'} is required";
+			}
+		}
+
+	## it doesnt appear that username or password is required for FTP but we will store for tech troubleshooting
+	if ($DST eq 'GOO') {
+		$s{'.feed_options'} = 0;
+		$s{'.feed_options'} |= ($ZOOVY::cgiv->{'navcat_skiphidden'})?1:0;
+		$s{'.feed_options'} |= ($ZOOVY::cgiv->{'navcat_skiplists'})?4:0;
+		$s{'.include_shipping'} = ($ZOOVY::cgiv->{'include_shipping'})?1:0;
+		$s{'.ignore_validation'} = ($ZOOVY::cgiv->{'ignore_validation'})?1:0;
+		}
+	## done with validation
+
+
+	$s{'.schedule'} = undef;
+   if ($FLAGS =~ /,WS,/) {
+		$s{'.schedule'} = $ZOOVY::cgiv->{'SCHEDULE'};
+      }
+
+	if ($ERROR ne '') {
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>$ERROR</font>";
+		}
+	else {
+		$s{'IS_ACTIVE'} = 1;
+		$s{'DIAG_MSG'} = 'Settings have changed since last publish. Please re-publish.';
+		$so->save();
+		}
+
+	if ($ERROR ne '') {
+		$VERB = 'EDIT';
+		}
+	elsif (($VERB eq 'PUBLISH') && ($DST eq 'BUY')) {
+		$VERB = 'PUBLISH';
+		}
+	elsif ($VERB eq 'PUBLISH') {
+		## PUBLISH does a save + redirect to batch.cgi
+		$VERB = 'PUBLISH-NOW';
+		}
+	else {
+		$VERB  = 'EDIT';
+		}
+	}
+
+
+if ($VERB eq 'PUBLISH') {
+	$template_file = 'publish.shtml';
+	}
+
+
+if ($VERB eq 'WEBDOC') {
+	$template_file = &GTOOLS::gimmewebdoc($LU,$ZOOVY::cgiv->{'DOC'});
+	}
+
+
+
+if ($VERB eq 'BATCH-UPDATE') {
+	my $changed = 0;
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+	my $batchregex = '^'.quotemeta($ZOOVY::cgiv->{'batch-path'});
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		next unless ($safe =~ /$batchregex/);
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		$metaref->{$DST} = $ZOOVY::cgiv->{'batch-category'};
+      $NC->set($safe,metaref=>$metaref);
+		}
+
+	$NC->save(); undef $NC;
+	$VERB = 'CATEGORIES';
+	}
+
+
+
+if ($VERB eq 'SAVE-CATEGORIES') {
+	my ($NC) = NAVCAT->new($USERNAME,PRT=>$PRT);
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		my $SUBMIT = ($ZOOVY::cgiv->{'navcat-'.$safe} ne '')?$ZOOVY::cgiv->{'navcat-'.$safe}:'';
+		if ($SUBMIT eq '- Ignore -') { $SUBMIT = ''; }
+
+		## googlebase has GOO as DSTCODE and GOOGLEBASE as navcatMETA
+		## - product syndication and index.cgi?VERB=CATEGORIES currently use the navcatMETA vs DSTCODE
+		#$metaref->{$DST} = $SUBMIT;
+		$metaref->{$SYNDICATION::PROVIDERS{$DST}->{'navcatMETA'}} = $SUBMIT;
+		$NC->set($safe,metaref=>$metaref);
+		}
+	$NC->save();
+	undef $NC;
+	$GTOOLS::TAG{'<!-- MSG -->'} = "<font color='blue'>Successfully saved $MARKETPLACE categories.</font><br>";
+	$VERB = 'CATEGORIES';
+	}
+
+
+
+if ($VERB eq '') {
+	my $profref = &DOMAIN::TOOLS::syndication_profiles($USERNAME,PRT=>$PRT);
+	my $c = '';
+	my $cnt = 0;
+	my $ts = time();
+	foreach my $ns (sort keys %{$profref}) {
+		my $class = ($cnt++%2)?'r0':'r1';
+		$c .= "<tr>";
+		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
+		$c .= "<a href=\"index.cgi?VERB=EDIT&DST=$DST&PROFILE=$ns\">EDIT</a>";
+		$c .= " | ";
+		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH NOW</a>";
+		# $c .= "<a href=\"index.cgi?VERB=PUBLISH&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		$c .= "</td>";
+		$c .= "</tr>";
+		my ($s) = SYNDICATION->new($USERNAME,$ns,$DST);
+		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+	$template_file = 'index.shtml';
+
+	## NOTE: if we only have one profile, then lets just head straight to edit
+	if (scalar( keys %{$profref} )==1) {
+		($PROFILE) = keys %{$profref};
+		$VERB = 'REDIRECT';
+		}
+
+	}
+
+
+if ($PROFILE ne '') {
+	push @BC, { name=>'Profile: '.$PROFILE };
+	if ($VERB eq 'EDIT') { push @BC, { name=>'Config' };  }
+	if ($VERB eq 'CATEGORIES') { push @BC, { name=>'Categories' }; }
+	if ($VERB eq 'PUBLISH') { push @BC, { name=>'Publish Feed' }; }
+	if ($VERB eq 'FILES') { push @BC, { name=>'Files' }; }
+	}
+
+
+if ($VERB eq 'EDIT') {
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$PROFILE);
+	if ($nsref->{'zoovy:site_rootcat'} eq '') { $nsref->{'zoovy:site_rootcat'} = '.'; }
+	$GTOOLS::TAG{'<!-- ROOTCAT -->'} = $nsref->{'zoovy:site_rootcat'};
+	$GTOOLS::TAG{'<!-- PRT -->'} = $nsref->{'prt:id'};
+
+
+	foreach my $fref (@FIELDS) {
+		my $html = '';
+		$html .= qq~
+	<tr>
+		<td valign=top><b>$MARKETPLACE $fref->{'name'}</b></td>
+		<td valign=top>~;
+		if ($fref->{'type'} eq 'textbox') {
+			$html .= sprintf(
+			qq~<input type="textbox" name="%s" value="%s">~,
+			$fref->{'id'},&ZOOVY::incode($s{$fref->{'id'}}));
+			}
+		elsif ($fref->{'type'} eq 'select') {
+			
+			}
+		else {
+			$html .= "**ERROR UNKNOWN INPUT TYPE:$fref->{'type'}**";
+			}
+		$html .= qq~</td>
+	</tr>
+		~;
+		if ($fref->{'hint'}) {
+			$html .= qq~<tr><td colspan=2><div class="hint">$fref->{'hint'}</div></td></tr>~;
+			}
+
+		$GTOOLS::TAG{'<!-- FEED_TYPE_FIELDS -->'} .= $html;
+		}
+
+
+	if ($DST eq 'NXT') {
+		$s{'.format'} = $ZOOVY::cgiv->{'format'};
+		}
+	elsif ($DST eq 'GOO') {
+		my $CHK_NAVCAT_SKIPHIDDEN = (($s{'.feed_options'}&1)>0)?'checked':'';
+		my $CHK_NAVCAT_SKIPLISTS = (($s{'.feed_options'}&4)>0)?'checked':'';
+		my $CHK_INCLUDE_SHIPPING = (($s{'.include_shipping'}&1)>0)?'checked':'';
+		my $CHK_IGNORE_VALIDATION = (($s{'.ignore_validation'}&1)>0)?'checked':'';
+		my $STUPID_WARNING = '';
+		if (! $s{'.ignore_validation'}) {
+			## good user! 
+			}
+		elsif (($s{'.ignore_validation'}) && ($FLAGS =~ /,BPP,/)) {
+			$s{'.ignore_validation'} = 0;
+			$so->save();		
+			$STUPID_WARNING = qq~
+<div class="warning">
+SORRY - but as a BPP user you may not use the "ignore validation logic" because 
+it would create an unsupported profile.  (Read webdoc - you probably didn't want this anyway)
+</div>
+~;
+			}
+		elsif ($s{'.ignore_validation'}) {
+			$STUPID_WARNING = qq~
+<div class="warning">
+WARNING: Ignoring validation logic is *NOT* a recommended setting. Your items probably won't appear correctly
+on GoogleBase. 
+</div>
+~;
+			}
+
+		$GTOOLS::TAG{'<!-- MID_FIELDS -->'} = qq~
+		<tr>
+			<td colspan=2>
+			<b>Options:</b><br>
+			<input type="checkbox" $CHK_NAVCAT_SKIPHIDDEN name="navcat_skiphidden" value="on"> Skip hidden navigation categories.<br>
+			<input type="checkbox" $CHK_NAVCAT_SKIPLISTS  name="navcat_skiplists" value="on"> Skip lists.<br>
+			<input type="checkbox" $CHK_INCLUDE_SHIPPING name="include_shipping" value="on"> Include Fixed Cost Shipping Prices.<br>
+			<input type="checkbox" $CHK_IGNORE_VALIDATION name="ignore_validation" value="on"> Skip recommended validation logic<br>
+			$STUPID_WARNING
+			</td>
+		</tr>
+		~;
+		}
+
+	if ($DST eq 'SAS') {
+	my ($url) = $so->get('.url');
+	$url =~ s/site\:\/\//http\:\/\/static\.zoovy\.com\/merchant\/$USERNAME\//;
+$GTOOLS::TAG{'<!-- TOP_FIELDS -->'} = qq~
+	<tr>
+		<td>
+		NOTE: Share-A-Sale does NOT have an automated way to send a feed.
+You will need to generate the feed by hand, and then manually download +
+upload it as frequently as you wish to have it updated.<br>
+<br>
+Once the file has been generated you can download it from the URL below:<br>
+<a href="$url">$url</a>
+		</td>
+	</tr>
+~;
+
+$GTOOLS::TAG{'<!-- BOTTOM_FIELDS -->'} = qq~
+<div class="hint">NOTE: Share-A-Sale does not accept automated feeds, for this reason the
+feed will never be "ACTIVE" since it cannot be automatically
+transmitted.</div><br>
+~;
+		}
+
+
+	if ($DST eq 'NXT') {
+		$GTOOLS::TAG{'<!-- TOP_FIELDS -->'} = qq~
+   <tr>
+      <td><b>Product Upload Location<br>(used in NexTag UI):</b></td>
+      <td>http://webapi.zoovy.com/webapi/nextag/index.cgi/<!-- USERNAME -->.<!-- PROFILE -->.txt</td>
+   </tr>
+   <tr>
+      <td colspan='2'>
+      <b>Output File Format:</b><br>
+         <input type="radio" name="format" ~.(($s{'.format'}==0)?'checked':'').qq~ value="0"> Soft Goods (RECOMMENDED)<br>
+         <input type="radio" name="format" ~.(($s{'.format'}==1)?'checked':'').qq~ value="1"> Tech Feed (Electronics Only)<br>
+      </td>
+   </tr>
+~;
+		}
+
+   $GTOOLS::TAG{'<!-- GUID -->'} = $so->guid();
+   $GTOOLS::TAG{'<!-- VIEW_URL -->'} = $so->url_to_privatefile();
+	$GTOOLS::TAG{'<!-- PRODUCT_VALIDATION -->'} = $so->pleaseSirMayIHaveSomeValidations();
+
+	$GTOOLS::TAG{'<!-- STATUS -->'} = $so->statustxt();
+	$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+
+	if ($FLAGS =~ /,WS,/) {
+		my $c = '';
+		require WHOLESALE;
+		$c = "<option value=\"\">None</option>";
+		foreach my $sch (@{&WHOLESALE::list_schedules($USERNAME)}) {
+			$c .= "<option ".(($s{'.schedule'} eq $sch)?'selected':'')." value=\"$sch\">$sch</option>\n";
+			}
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = $c;
+		}
+	else { 
+		$s{'.schedule'} = '';
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = '<option value="">Not Available</option>'; 
+		}
+
+	$template_file = 'edit.shtml';
+	}
+
+if ($VERB eq 'FILES') {
+	}
+
+
+if ($VERB eq 'LOGS') {
+   $GTOOLS::TAG{'<!-- LOGS -->'} = $so->summarylog();
+   $template_file = '_/syndication-logs.shtml';
+   }
+
+## BEGIN DEBUGGER
+if ($VERB eq 'GOGO-DEBUG') {
+	$GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} = $so->runDebug(type=>'product',TRACEPID=>$ZOOVY::cgiv->{'PID'});
+	$VERB = 'DEBUG';
+	}
+if ($VERB eq 'DEBUG') {
+	if ($GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} eq '') { 
+		$GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} = '<i>Please specify a product</i>'; 
+		}
+	$GTOOLS::TAG{'<!-- PID -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'PID'});
+	$template_file = '_/syndication-debug.shtml';
+	}
+## END DEBUGGER
+
+
+if ($VERB eq 'CATEGORIES') {
+	require SYNDICATION::CATEGORIES;
+	my ($CDS) = SYNDICATION::CATEGORIES::CDSLoad($DST);
+	my $pathref = SYNDICATION::CATEGORIES::CDSByPath($CDS);
+
+	my $c = '';
+	if ($DST eq 'WSH') {
+		## wishpot has 0 and -1 specified as valid options to choose in their category file
+		}
+	elsif (($DST eq 'GOO') || ($DST eq 'ESS')) {
+		$c .= qq~me.options.add(new Option("Do not submit category","-1"));\n~;
+		$c .= qq~me.options.add(new Option("Send Uncategorized","0"));\n~;
+		}
+	else {
+		$c .= qq~me.options.add(new Option("Do not submit category","-1"));\n~;
+		$c .= qq~me.options.add(new Option("Ignore Category","0"));\n~;
+		}
+
+   foreach my $pretty (sort keys %{$pathref}) {
+		my $val = $pathref->{$pretty};
+		$pretty = ZOOVY::incode($pretty);
+      $c .= qq~me.options.add(new Option("$pretty","$val"));\n~;
+      }
+   $GTOOLS::TAG{'<!-- OPTIONS -->'} = $c;
+
+	my $c = '';
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+	my $navcatMETA = $DST;
+	#if (defined $SYNDICATION::PROVIDERS{$DST}->{'navcatMETA'}) {
+	#	## eventually we should consolidate down so everybody uses the DST as the navcatMETA
+	#	$navcatMETA = $SYNDICATION::PROVIDERS{$DST}->{'navcatMETA'};
+	#	}
+
+	my ($r) = undef;
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if (substr($pretty,0,1) eq '!');
+		$r = ($r eq 'r0')?'r1':'r0';
+	
+		my $name = ''; 
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		if (substr($safe,0,1) eq '.') {
+			foreach (split(/\./,substr($safe,1))) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+			}
+		elsif (substr($safe,0,1) eq '$') {
+			$name = "LIST: ".$pretty;
+			}
+		my $val = $metaref->{$navcatMETA};
+		
+		## check if val is in the legacy text format
+		if ($val eq '') {
+			$val = 0;
+			}
+		elsif ($val !~ /^\d+$/) {
+			$val =~ s/ > />/g;
+			if (defined $pathref->{$val}) {
+				$val = $pathref->{$val};
+				}
+			}	
+
+		$c .= "<tr class=\"$r\">";
+		$c .= "<td nowrap>
+		<div>$name</div>
+		<div class=\"hint\">$safe</div>
+		</td>";
+		
+		my ($iref) = SYNDICATION::CATEGORIES::CDSInfo($CDS,$val);
+		$pretty = $iref->{'Path'};
+
+		$c .= qq~<td nowrap>~;
+		$c .= qq~<input class="button" type="button" onClick="selectCategory('$DST','navcat-$safe',document.catFrm['navcat-$safe'].value);" value="Config"> ~;
+		$c .= qq~<input type="textbox" onChange="ajaxUpdate($DST,this);" value="$val" name="navcat-$safe" size="5"></td>~;
+		$c .= qq~<td nowrap><span id="txt!navcat-$safe">$pretty</span></td>~;
+		$c .= "</tr>\n";
+
+		}
+	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+
+	$template_file = 'categories.shtml';
+	}
+
+#if ($VERB eq 'CATEGORIES_NEW') {
+#	my $c = '';
+#	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+#
+#	my $hashref = ();
+#	open(FILE, "pg_cats.txt");
+#	while(<FILE>) {
+#		chop;
+#		my ($cat, $id) = split(/\|/);
+#		$cat =~ s/ *$//;
+#		#$hashref->{$cat} = $id;
+#		$hashref->{$cat} = $cat;
+#		}
+#	close(FILE);
+#	my $div = qq~<div id='bob' class="anylinkcss">~;
+#	foreach my $key (sort keys %{$hashref}) {	
+#		#print STDERR "$key $hashref->{$key}\n";
+#		$key =~ s/ \> / : /g;
+#		$div .= qq~<a href='' onclick='javascript:onSave("navcat","$key")'>$key</a>\n~;
+#		}
+#	$div .= "</div>";
+#	$GTOOLS::TAG{'<!-- SYN_CATS -->'} = $div;
+#
+#
+#	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+#		next if (substr($safe,0,1) eq '*');
+#		next if ($safe eq '');
+#		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+#		next if (substr($pretty,0,1) eq '!');
+#	
+#		my $name = ''; 
+#		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+#		if (substr($safe,0,1) eq '.') {
+#			foreach (split(/\./,substr($safe,1))) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+#			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+#			}
+#		elsif (substr($safe,0,1) eq '$') {
+#			$name = "LIST: ".$pretty;
+#			}
+#		my $val = $metaref->{$DST};
+#		$c .= "<tr>";
+#		$c .= qq~<td nowrap width=200><div id='$safe'>$name</td>~.
+#				qq~<td width=400><a href='javascript:onSave();' onClick="javascript:onSave()" ~.
+#				qq~onMouseover="dropdownmenu(this, event, 'bob')">$val</a></div></td></tr>~;
+#
+#		}
+#	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+#	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+#
+#	$template_file = 'categories_new2.shtml';
+#	}
+
+##
+##
+##
+if ($VERB eq 'REDIRECT') {
+	print "Location: index.cgi?VERB=EDIT&DST=$DST&PROFILE=$PROFILE\n\n";
+	}
+elsif ($VERB eq 'PUBLISH-NOW') {
+	## .FEEDTYPE
+	my $FEEDTYPE = $ZOOVY::cgiv->{'FEEDTYPE'};
+	if ($FEEDTYPE eq '') { $FEEDTYPE = 'PRODUCT'; }
+
+	require URI::Escape;
+	$PROFILE = URI::Escape::uri_escape($FEEDTYPE);
+	$FEEDTYPE = URI::Escape::uri_escape($FEEDTYPE);
+
+	print "Location: /biz/batch/index.cgi?X=Y&VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$PROFILE&GUID=".time()."&FEEDTYPE=$FEEDTYPE\n\n";
+	}
+else {
+	&GTOOLS::output(
+ 		'title'=>"$MARKETPLACE Syndication",
+		'file'=>$template_file,
+		'header'=>'1',
+		'help'=>"#$WEBDOC",
+		'tabs'=>\@TABS,
+		'js'=>1+2,
+		'bc'=>\@BC,
+		);
+	}
+
+&DBINFO::db_zoovy_close();
+

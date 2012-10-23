@@ -1,0 +1,67 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
+</head>
+<body>
+<br>
+<br>
+<center>
+<form action='search.cgi'>
+
+<center>
+<table width="500" class="zoovytable" cellpadding='0' cellspacing='0'>
+<tr><td class="zoovytableheader"> Search </td></tr>
+<tr><td>
+<table cellspacing=2><tr><td>
+
+<input type='hidden' name='ACTION' value='FILTER'> 
+Search For: <input type='textbox' value="<!-- VALUE -->" name='VALUE'> &nbsp; <input class="button" type='submit' value='Search Now'><br>
+<input checked type='hidden' name="searchtype" value='FILTER'>
+<br>
+<table width=100%>
+<tr><td valign=top width=33%>
+<h2>System Settings:</h2>
+<input type="checkbox" name="is:fresh" <!-- CHK-is:fresh --> > Is Fresh<br>
+<input type="checkbox" name="is:needreview" <!-- CHK-is:needreview --> > Is Need Review<br>
+<input type="checkbox" name="is:haserrors" <!-- CHK-is:haserrors --> > Has Syndication Errors<br>
+<br>
+</td><td valign=top width=33%>
+<h2>Merchandising:</h2>
+<input type="checkbox" name="is:openbox" <!-- CHK-is:openbox --> > Is Open Box<br>
+<input type="checkbox" name="is:preorder" <!-- CHK-is:preorder --> > Is PreOrder<br>
+<input type="checkbox" name="is:discontinued" <!-- CHK-is:discontinued --> > Is Discontinued<br>
+<input type="checkbox" name="is:specialorder" <!-- CHK-is:specialorder --> > Is Special Order<br>
+<input type="checkbox" name="is:bestseller" <!-- CHK-is:bestseller --> > Is Best Seller<br>
+<input type="checkbox" name="is:sale" <!-- CHK-is:sale --> > Is Sales<br>
+<input type="checkbox" name="is:shipfree" <!-- CHK-is:shipfree --> > Can Ship Free<br>
+<input type="checkbox" name="is:newarrival" <!-- CHK-is:newarrival --> > Is New Product<br>
+<input type="checkbox" name="is:clearance" <!-- CHK-is:clearance --> > Is Clearance<br>
+<input type="checkbox" name="is:refurb" <!-- CHK-is:refurb --> > Is Refurbished<br>
+
+</td><td valign=top>
+<h2>User Defined:</h2>
+<input type="checkbox" name="is:user1" <!-- CHK-is:user1 --> > Is User Defined 1<br>
+<input type="checkbox" name="is:user2" <!-- CHK-is:user2 --> > Is User Defined 2<br>
+<input type="checkbox" name="is:user3" <!-- CHK-is:user3 --> > Is User Defined 3<br>
+<input type="checkbox" name="is:user4" <!-- CHK-is:user4 --> > Is User Defined 4<br>
+<input type="checkbox" name="is:user5" <!-- CHK-is:user5 --> > Is User Defined 5<br>
+<input type="checkbox" name="is:user6" <!-- CHK-is:user6 --> > Is User Defined 6<br>
+<input type="checkbox" name="is:user7" <!-- CHK-is:user7 --> > Is User Defined 7<br>
+<input type="checkbox" name="is:user8" <!-- CHK-is:user8 --> > Is User Defined 8<br>
+</td></tr>
+</table>
+<br>
+<div class="hint">
+<a href='listall.cgi?ACTION=SEARCH&searchtype=LISTALL'>List all products</a>
+</div>
+
+</td></tr></table>
+</td></tr></table>
+</center>
+
+</form>
+
+<!-- RESULTS -->
+
+
+</center>
+</body>

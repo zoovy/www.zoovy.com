@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- 
+	Stats / stats-page-pie
+	displays the total hits as a pie graph, broken apart by page
+-->
+<graph type="PIE-LIMIT">
+<attribs 
+	bgcolor='FFFFFF' 
+	canvasbgcolor='DD9757'  xaxisname='Pages' 
+	caption='Hits by Page' 
+	legendboxbgcolor='FFFFDD' 
+	legendboxbrdrcolor='DD9757' 
+	navbtncolor='DD9757' 
+	showValues='0'
+/>
+<dataset limit="8" sortby="1" key="0" val="1" />
+</graph>

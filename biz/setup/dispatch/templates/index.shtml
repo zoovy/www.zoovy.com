@@ -1,0 +1,113 @@
+<!-- SETUP_TAB -->
+
+<center>
+
+<Br>
+<table cellpadding=0 cellspacing=0 width='600' class="zoovytable">
+<tr><td class="zoovytableheader">Order Dispatching</td></tr>
+<tr>
+	<td>
+	</td>
+</tr>
+</table>
+
+<br>
+<form action='index.cgi' method='POST'>
+<input type='hidden' name='VERB' value='SAVE'>
+<table cellspacing=0 cellpadding=0 class="zoovytable" width='600'>
+	<tr>
+		<td colspan='2'>Add new URL</td>
+	</tr>	
+	<tr>
+		<td><font class='title' valign='top'>Auto Dispatch:</font></td>
+		<td valign='middle'>
+			<select name='order_dispatch_mode'>
+				<option <!-- ORDER_DISPATCH_ENABLE_0 --> value='0'> Disable (Manual)</option>
+				<option <!-- ORDER_DISPATCH_ENABLE_1 --> value='1'> Only Paid Orders</option>
+				<option <!-- ORDER_DISPATCH_ENABLE_9 --> value='9'> All Orders</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><font class='title' valign='top'>Dispatch Format:</font></td>
+		<td valign='middle'>
+			<select name='order_format'>
+				<option <!-- ORDER_FORMAT_ZOOVY --> value='zoovy'>Zoovy Native Order Format (DEPRECATED)</option>
+				<option <!-- ORDER_FORMAT_XML --> value='xml'>Zoovy XML Order Format v107 (DEPRECATED) </option>
+				<option <!-- ORDER_FORMAT_XML108 --> value='xml108'>Zoovy XML Order Format v108 (RECOMMENDED) </option>
+				<option <!-- ORDER_FORMAT_XCBL --> value='xcbl'>XCBL</option>
+				<option <!-- ORDER_FORMAT_OBI --> value='obi'>Open Buying Interface (OBI)</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'><font class='title'>Billing Information:<br></td>
+		<td valign='midde'>
+			<input type='radio' <!-- BILLING_INFO_0 --> name='billing_info' value='0'> Do not include Billing Information.<br>
+			<input type='radio' <!-- BILLING_INFO_1 --> name='billing_info' value='1'> Include Billing Information from Order.<br>
+			<input type='radio' <!-- BILLING_INFO_2 --> name='billing_info' value='2'> Replace Billing Information with my information (Drop Ship Mode).<br>
+		</td>
+	</tr>
+	<tr>
+		<td><font class='title' valign='top'>Strip Prices</font></td>
+		<td>
+			<input type='checkbox' <!-- STRIP_PRICES_CHECKED --> name='strip_prices'> Strip Price Information.<br>
+			<input type='checkbox' <!-- STRIP_PAYMENT_CHECKED --> name='strip_payment'> Strip Payment Details.<br>
+		</td>
+	</tr>
+	<tr>
+		<td><font class='title' valign='top'>Smart Recovery:</font></td>
+		<td>
+			<input type='checkbox' <!-- RECOVERY_CHECKED --> name='smart_recovery'> Enable Smart Recovery (only allows an order to exported once)<br>
+		</td>
+	</tr>
+	<tr>
+		<td>Export URL:</td>
+		<td><input type='textbox' size='60' value='<!-- EXPORT_URL -->' name='dispatch_url'></td>
+	</tr>
+<!-- DEVELOPER -->
+</table>
+
+
+<!--
+<hr>
+<table width='600'>
+	<tr>	
+		<td colspan='2'><font class='smalltitle'>Incoming Configuration</font></td>
+	</tr>	
+	<tr>
+	SKU Matching:<br>
+		Accept all (no matching)
+		Attempt to match when possible.
+		Reject orders with non-matching SKUs.
+
+	Create Customer Records
+	Opt Customers into mailing list
+	Reset all incoming payment information
+	Attempt to match incoming billing with existing customer records.
+		
+	</tr>
+</table>
+-->
+
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" border="0" name="ACTION-SAVE-SIMPLE">
+<a href="/biz/setup" target="_top"><img border="0" src="/images/bizbuttons/exit.gif"></a><br>
+</center>
+<br>
+<table width='600'><Tr><Td>
+<font class='smalltitle'>Usage Notes:</font><br>
+<font class='small'>
+To post to another Zoovy store use the following URL:<br>
+http://webapi.zoovy.com/webapi/merchant/orderpost.cgi/user=USERNAME/pass=YAHOO_SYNC_PASSWORD<br>
+(https support is not currently available during the development phase - please be sure to strip payment information before transmission)<br>
+<br>
+<br>
+</font>
+</td></tr>
+</table>
+</center>
+
+<Br>
+</form>
+<!-- FOOTER -->

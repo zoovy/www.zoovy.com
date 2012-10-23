@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZOOVY;
+use DBINFO;
+use GTOOLS;
+use strict;
+
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_S&4');
+if ($USERNAME eq '') { exit; }
+
+$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+
+my %imgs = ();
+my %hash = &ZOOVY::fetchproducts_by_name($USERNAME);
+foreach my $k (keys %hash) {
+	# print $k."\n";
+	my $img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_image1');
+	$imgs{$img} .= $k.',';
+	$img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_image2');
+	$imgs{$img} .= $k.',';
+	$img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_image3');
+	$imgs{$img} .= $k.',';
+	$img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_image4');
+	$imgs{$img} .= $k.',';
+	$img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_image5');
+	$imgs{$img} .= $k.',';
+	$img = &ZOOVY::fetchproduct_attrib($USERNAME,$k,'zoovy:prod_thumb');
+	$imgs{$img} .= $k.',';
+	}
+
+# $c = scalar(%imgs);
+my $c = '';
+foreach my $k (keys %imgs) {
+	next if ($k eq '');
+	# print "$k=>$imgs{$k}\n";
+	$c .= "<tr>";
+	my $img = &GTOOLS::imageurl($USERNAME,$k,50,50,'FFFFFF',0);
+	$c .= "<td><img src='$img' height='50' width='50'><br><font size='1'>$k</font></td>";
+
+	$c .= "<td>";
+	foreach my $prod (split(',',$imgs{$k})) {
+		next if ($prod eq '');
+		$c .= "[$prod] $hash{$prod}<br>";
+		}
+	$c .= "</td>";
+	$c .= "</tr>";
+	}
+$GTOOLS::TAG{'<!-- CONTENTS -->'} = $c;
+
+
+&GTOOLS::output(
+   'title'=>'Image Associations',
+   'file'=>'index.shtml',
+   'header'=>'1',
+   'help'=>'#50372',
+   'bc'=>[
+      { name=>'Utilities',link=>'https://www.zoovy.com/biz/utilities','target'=>'_top', },
+      { name=>'Image Associations',link=>'','target'=>'_top', },
+      ],
+   );
+

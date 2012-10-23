@@ -1,0 +1,67 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MESSAGE -->
+<div align='center'>
+	<div style='width:800px; margin-top:10px; text-align:left;'>
+
+	
+<table width=600 class="zoovytable">
+	<tr><td class="zoovytableheader">Simple Promotions</td></tr>
+	<tr><td>
+
+<form name="frm1" action="index.cgi" method="POST">
+<input type='hidden' name='VERB' value='SIMPLE-SAVE'>
+
+<div class='alert'><!-- WARNINGS --></div>
+
+<table cellspacing=0 width='100%' cellpadding='3'>
+<tr>
+	<td valign="top" align='right'>
+		<input type="checkbox" name="promotion_freeshipping" <!-- CHECKED_PROMOTION_FREESHIPPING --> >
+	</td>
+	<td valign="top" align='left'>Free DOMESTIC Shipping on orders at or above <input size="10" 
+		type="textbox" <!-- VALUE_PROMOTION_FREESHIPPING_AMOUNT --> 
+		name="promotion_freeshipping_amount"> dollars.
+	</td>
+</tr>
+<tr>
+	<td valign="top" align='right'><input 
+		type="checkbox" <!-- CHECKED_PROMOTION_DISCOUNT --> name="promotion_discount">
+	</td>
+	<td valign='top' align='left'>Offer a <input <!-- VALUE_PROMOTION_DISCOUNT_AMOUNT --> type="textbox" 
+		size="5" name="promotion_discount_amount"> discount for any purchase over 
+		<input type="textbox" <!-- VALUE_PROMOTION_DISCOUNT_AFTER --> size="10" 
+		name="promotion_discount_after"> dollars.
+	</td>
+</tr>
+<tr>
+	<td valign="top" align='right'><input type="checkbox" <!-- CHECKED_PROMOTION_EXTERNAL --> 
+		name="promotion_external">
+	</td>
+	<td align='left'>
+		Promotions only apply if all items in the cart are purchased from the store 
+			(no Incomplete items e.g. Auctions)<br>
+	</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	
+	<center>
+		<input type="submit" value=" Save " class="button showLoadingModal">
+		<input type="button" value=" Exit " class="button" onClick="document.location='/biz/setup';">
+	</center>
+
+	<br>	
+	<div class="hint">
+	NOTE: simple promotions cannot be used with more advanced coupons, or uber promotions.
+	</div>
+	</td>
+</tr>
+</table>
+</form>
+
+</td></tr>
+</table>
+
+<!-- FOOTER -->

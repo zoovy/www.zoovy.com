@@ -1,0 +1,148 @@
+
+
+
+/* by default, no border on images. this saves having to put border=0 on every linked image. */
+img	{border:0}
+
+a	{color:#2461AA; text-decoration:none; }
+a:hover	{color:#000000; text-decoration:underline;}
+
+
+h1	{margin: 0px 0px 3px 0px; font-size: 18px; color: #0b315e; font-family:"Bitstream Vera Serif","Times New Roman", Times, serif}
+h2	{margin: 0px 0px 3px 0px; font-size: 15px; color: #0b315e; font-family:"Bitstream Vera Serif","Times New Roman", Times, serif}
+h3	{margin: 0px; font-size: 14px; color: #343433;}
+h4	{margin: 0px; font-size: 12px;}
+
+/* for small, disclaimer text */
+.small	{font-size:10px; color:#666666; line-height:140%;}
+
+/* for small, hints used to communicate small help for the customers */
+.hint	{font-size:10px; color:#666666; line-height:140%;}
+
+/* Global styling for large blocks of text.  Any text block should be placed into one of these three tags */
+#content div, table, p	{font-size:12px; line-height:160%; color:#000000;}
+
+/* used for horizontal links with | between each.  each href should have the class on it to generate spaceing between links but not between words */
+.menu	{margin:0px 5px 0px 5px;}
+
+/*	Mozilla and IE treat padding and margins differently, especially when used in conjunction with a specified width.
+	This solves that problem and */
+div	{ box-sizing: border-box; -moz-box-sizing: border-box;}
+p	{margin:0px 0px 10px 0px}
+ul	{margin-bottom:10px;}
+
+/* for items that needs a subtle border */
+.border	{border:1px solid #e8e7e6; background-color:#FFFFFF;}
+
+/* for stacked items (tables or divs) that each need a border */
+.box	{border:1px solid #E7E7DB; margin-bottom:10px;}
+
+/* form styles.  All textboxes and text areas should have formed on them.  All buttons should use the button class. */
+form	{display:inline;}
+.formed	{border:1px solid #636363; font-size:8pt; background-color:#ffffff;}
+.button	{font-size:8pt; color:#000000;}
+
+/* only to be used when a style needs to be set to hide content.  Add no other styles to this class */
+.hidden	{display:none;}
+
+
+/* these two styles are for the rss feed on the account login page. */
+div#rss_input ul {list-style: none; margin: 0; padding: 0; border: none;}
+div#rss_input li {border-bottom: 1px dotted #CCCCCC; margin: 0px; margin-bottom:6px; padding-bottom:6px;}
+
+
+/* floating text callout or quote box  */
+.callout	{margin:10px 40px 20px 40px; font-size:18pt; text-align:left; font-family:"Times New Roman", Times, serif; font-style:italic; color:#333333; line-height: 24px}
+
+
+
+div.clearAll	{clear:both; padding:0; margin:0; font-size:0px;}
+div.floatLeft	{float:left;}
+div.floatRight	{float:right;}
+
+
+
+
+/* class used on the triangle icons. for now, just handling margins */
+div.tricon	{margin-right:8px;}
+
+
+/* section splitter - whitespace for between sections */
+div.splitSection	{padding-top:16px;}
+
+
+/* header menu and submenu classes */
+
+/* the submenu on/off graphic determines whether the image shown is blue or white. each icon itself has a class to determine position */
+.submenu_off	{background:url(/includes/header-20110321/images/nav_icons-247x194-off.png) no-repeat; width:24px; height:22px; float:left;}
+.submenu_on	{background:url(/includes/header-20110321/images/nav_icons-247x194-on.png) no-repeat; width:24px; height:22px; float:left;}
+
+/* products */
+.submenu_complete	{background-position: -0px -25px}
+.submenu_webstore	{background-position: -0px -50px}
+.submenu_inventory	{background-position:  -0px -75px}
+.submenu_accounting	{background-position: -0px -97px }
+.submenu_orderprocess	{background-position: -0px -123px }
+.submenu_shipping	{background-position: -0px -148px }
+.submenu_wholesale	{background-position: -0px -173px }
+
+/* services */
+.submenu_gfx	{background-position: -53px 2px}
+.submenu_mkt	{background-position: -53px -25px}
+.submenu_marketplace	{background-position:  -53px -48px}
+.submenu_comparisonshop	{background-position: -53px -73px }
+.submenu_imp	{background-position: -50px -97px }
+.submenu_hosting	{background-position: -50px -123px }
+.submenu_domainreg	{background-position: -53px -150px }
+
+/* company */
+.submenu_company	{background-position: -106px 1px}
+.submenu_management	{background-position: -108px -23px}
+.submenu_employment	{background-position:  -108px -49px}
+
+/* news */
+.submenu_events	{background-position: -160px 1px}
+.submenu_znews	{background-position: -160px -23px}
+.submenu_pressrelease	{background-position:  -160px -49px}
+
+
+
+/* footer styles */
+
+#footer	{font-size:11px;}
+
+#footer_col1 a	{display:block; padding:2px 0;}
+
+/* makes sure each form label is on its own line */
+#footer_col2 label	{display:block;}
+#footer_col2 input	{margin-bottom:10px;}
+
+
+#footer .section	{height: 175px}
+#footer .vertsplit	{background:url(/includes/footer-20100825/images/footer_vert_splitter-5x1.gif) repeat-y right;}
+
+
+/* for use on news and press releases page */
+
+#pressReleases .section_head	{ padding: 1px 0; clear:both;}
+#pressReleases .section_head a	{color:#ffffff; text-decoration:none; background:#2461AA; padding:3px 10px; display:block; font-weight:bold;}
+#pressReleases .date	{width:80px; display:block; float:left;}
+#pressReleases .title	{width:450px; float:left; display:block;}
+#pressReleases .lineitem	{clear:both; padding:4px 0 0px 0;}
+#pressReleases .articles	{padding:10px 0;}
+
+/* styles for the navigation */
+
+#subcats div	{float:left; font-size:11px;}
+
+/* the left padding is to compensate for the icon, which is added inline */
+#subcats div a	{display:block; line-height:24px; color:#ffffff; margin-right:20px; float:left;}
+#subcats div a:hover	{color:#b4d4ef; text-decoration:none;}
+
+#subcats div.catlink_on a	{color:#b4d4ef;}
+
+/*  Color Pallete
+gunmetal grey: 	2F3C40						Zoovy Blue:  	2461AA
+medium grey: 	828282						light blue:  	C8D8EC
+light grey: 	ECECEC						yellow/orange: 	F7B135
+ */

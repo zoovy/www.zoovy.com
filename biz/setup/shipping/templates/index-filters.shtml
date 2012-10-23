@@ -1,0 +1,42 @@
+<!-- SETUP_TAB -->
+
+
+<form name="thisFrm" target="_top" action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="FILTER-SAVE">
+<center>
+<span class="alert"><b><!-- MESSAGE --></b></span>
+<br>
+<table class="zoovytable" cellspacing='0' cellpadding='2' border='0' width='600'>
+	<tr>
+		<td class="zoovytableheader" colspan='2'>Banned Countries:</td></tr>
+	</tr>
+	<tr>
+		<td colspan='2'>
+				<table>
+					<tr>
+						<td>
+				Countries you will NEVER to ship to: 
+				<table>
+				<!-- BLOCK_LIST -->
+				</table>
+				<div class="hint">NOTE: Only countries that are available to ship to will appear in the list below.</div>
+
+				Select country to Block <select name="BLOCK">
+					<!-- BLOCK -->						
+				</select>
+<input type="button" class="button"
+	onClick="window.document.thisFrm.ACTION.value='FILTER-ADDBLOCK'; window.document.thisFrm.submit();"
+	value="  Block  ">
+						</td>
+					</tr>
+				</table>
+					
+		</td>
+	</tr>
+</table>
+
+<br>
+</center>
+
+</form>
+</body>

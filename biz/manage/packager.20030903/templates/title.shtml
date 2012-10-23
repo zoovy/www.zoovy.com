@@ -1,0 +1,18 @@
+<head>
+<STYLE>
+<!--
+
+A { font-size: 10px; }
+TD { font-size: 10px; }
+FORM { padding: 0px; margin-bottom: 0px; padding-bottom: 0px; padding-top: 0px; margin-top: 0px; }
+
+//-->
+</STYLE>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor='FFFFFF'>
+<form action='main.cgi' target='main' padding='0' margin='0'>
+<!-- REPORT_TAB -->
+
+</font>
+</form>
+</body>

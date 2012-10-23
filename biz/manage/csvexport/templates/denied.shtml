@@ -1,0 +1,23 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/images/tabs/styles.css">
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+<br>
+<br>
+<font face='verdana, arial, helvetica' color='red' size='5'><b>Sorry - You don't have access to this feature</b></font><br>
+<br>
+<table table='80%'>
+<tr><td>
+<font face='sans-serif, arial' size='2'>
+<br>
+<a href="/biz/configurator?VERB=VIEW&BUNDLE=CSV">Learn more</a><br>
+<br>
+<br>
+</font>
+</td></tr>
+</table>
+
+</center>
+</body>

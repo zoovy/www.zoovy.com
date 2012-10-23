@@ -1,0 +1,95 @@
+<head>
+<title>Learn about Zoovy Merchant</title>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+var termsWin = false;
+
+  function openWindow(url) {
+   if (termsWin == false)
+     { 
+     termsWin = window.open(url,'terms','status=no,width=540,height=500,menubar=yes,scrollbars=yes')
+     termsWin.focus(true);
+     } else {
+     termsWin.focus(true);
+	  }
+  }
+
+var exit=true;
+
+function xit(e)
+{
+if (exit)
+  infoWin = window.open('http://www.zoovy.com/exitpoll.shtml','info',
+  'status=yes,width=440,height=480,menubar=0,scrollbars=1');
+}
+
+img_link1_off = new Image(); img_link1_off.src = "/images/learn/tryout-button.gif"; 
+img_link1_on = new Image(); img_link1_on.src = "/images/learn/tryout_button_green.gif";
+
+function mousein(num) { exit=false; document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_on.src"); }
+function mouseout(num) { exit=false; document.images[eval("\"link" + num + "\"")].src = eval("img_link" + num + "_off.src"); }
+
+
+//-->
+</SCRIPT>
+
+
+
+</head>
+<body onLoad="this.focus();" bgcolor="FFFFFF">
+
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td width="100">
+<img src="/images/blank.gif" width="100" height="1"></td>
+<td width="620">
+
+<form action="/login/recover.cgi">
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr><td>
+
+<table cellspacing="0" cellpadding="0">
+<tr><td colspan='2'>
+<br>
+<br><b><center>
+<font face="Verdana, Arial" size="3"><strong>Password Recovery Form</strong></font></b></center>
+<br>
+<font size='2'>
+Instructions: to recover your store password simply enter your username or registered email address and we will email your password to you.<br>
+</font>
+</center>
+<font face="verdana, arial" size="2"><br>
+&nbsp;&nbsp;&nbsp;
+Email or Store Name: <input type="textbox" name="lookfor">
+</td></tr>
+</table>
+
+<br>
+<br>
+<center>
+<table>
+<tr><td>
+<a href="http://www.zoovy.com" target="_top"><img src="/images/bizbuttons/cancel.gif" border="0"></a></center>
+</td><td>
+<input type="image" border="0" src="/images/bizbuttons/submit.gif"></center>
+</td></tr>
+</table>
+</form>
+<font face='arial'><b>NOTE: Trial users your password is "trial" (without the quotes)</b></font><br>
+<br>
+
+
+<br>
+<br>
+
+</td></tr>
+</table>
+</font>
+</center>
+
+</td></tr>
+</table>
+
+
+</body>

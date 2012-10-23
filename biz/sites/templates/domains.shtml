@@ -1,0 +1,21 @@
+<!-- SITES_TAB -->
+
+
+<center>
+<table width=600><tr><td>
+<b>Domains</b><br>
+<table cellpadding=2 border=0 cellspacing=0 class="zoovytable">
+	<tr class="zoovytableheader">
+		<td>Logo</td>
+		<td>Profile</td>
+		<td>Domain</td>
+		<td>Site(s)</td>
+		<td>Partition</td>
+		<td></td>
+	</tr>
+	<!-- DOMAINS -->
+</table>
+</td></tr></table>
+</center>
+
+<!-- FOOTER -->

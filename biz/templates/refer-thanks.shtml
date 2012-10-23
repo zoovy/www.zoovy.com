@@ -1,0 +1,86 @@
+<head>
+<title>Refer a Friend!</title>
+<style>
+<!--
+H1 { font-size: 14pt; font-family: arial, helvetica; }
+font.a { font-size: 8pt; font-family: arial, helvetica; font-weight: normal; }
+input { font-size: 8pt; font-family: arial, helvetica;  }
+td { font-size: 8pt; font-weight: bold; font-family: arial, helvetica;  }
+//-->
+</style>
+</head>
+<body bgcolor="FFFFFF" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" onLoad="this.focus();">
+<center>
+<table width='500'>
+<tr><td>
+<br>
+<font class='a'>
+<h1>Thanks for the Referral!</h1>
+We'll contact the person you specified shortly, we appreciate your 
+assistance. If you would like to refer another person please use the form
+below, otherwise <a href="main.cgi">click here to exit.</a><br>
+<br>
+<form action="/cgi-bin/formmail.cgi">
+<input type='hidden' name='subject' value='Customer Referral'>
+<input type='hidden' name='from' value='brian@zoovy.com'>
+<input type='hidden' name='recipient' value='brian@zoovy.com'>
+<input type='hidden' name='redirect' value='/biz/refer.cgi?ACTION=THANKS'>
+<center>
+
+<table width='80%' border='0' cellpadding='1' cellspacing='0' bgcolor='313370'>
+<tr><td>&nbsp;&nbsp; <font color='white'><b> Refer a Friend Form</b></font></td></tr>
+<tr><td>
+<table width='100%' border='0' cellpadding='5' cellspacing='0' bgcolor='FFFFFF'>
+<tr>
+	<td width='20%'>Name:</td>
+	<td><input type='textbox' name='CUSTOMERNAME'></td>
+</tr><tr>
+	<td>Phone:</td>
+	<td><input type='textbox' name='CUSTOMERPHONE'></td>
+</tr><tr>
+	<td>Email:</td>
+	<td><input type='textbox' name='CUSTOMEREMAIL'></td>
+</tr>
+<tr><td><br></td></tr>
+<tr>
+	<td valign='bottom'>Referring Username:</td>
+	<Td><input type='textbox' name='MERCHANT' value='<!-- MERCHANT -->'></td>
+</tr>
+<tr>
+	<td>Your Name:</td>
+	<td><input type='textbox' name='FULLNAME' value='<!-- YOURNAME -->'></td>
+</tr>
+<tr>
+	<td>Relationship to Referral:</td>
+	<td valign='bottom'><input type='textbox' name='RELATION'></td>
+</tr>
+<tr>
+	<td colspan='2'>If you'd like a specific sales person to contact the person mentioned above
+please mention their name below:<br>
+	</td>
+</tr>
+<tr>
+	<td>Sales Person:</td>
+	<td valign='bottom'><input type='textbox' name='SALESPERSON'></td>
+</tr>
+<tr>
+	<td colspan='2'>
+<center>
+<input type='submit' value=' Yes, Please Tell my Friend  '>
+</center>
+	</td>
+</tr>
+</table>
+</td></tr></table>
+<Br>
+<br>
+*Note: in order to qualify customers must sign up before February 28th. <br>
+Existing customers cannot refer themselves. <br>
+
+
+</form>
+
+</font>
+</td></tr>
+</table>
+</center>

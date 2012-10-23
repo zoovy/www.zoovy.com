@@ -1,0 +1,24 @@
+<!-- START Trusted Stores Order -->
+<div id="gts-order" style="display:none;">
+
+ <!-- start order and merchant information -->
+ <span id="gts-o-id">%ORDERID%</span>
+ <span id="gts-o-domain">%SDOMAIN%</span>
+ <span id="gts-o-email">%BILL_EMAIL%</span>
+ <span id="gts-o-country">%BILL_COUNTRY%</span>
+ <span id="gts-o-currency">USD</span>
+ <span id="gts-o-total">%GRANDTOTAL%</span>
+ <span id="gts-o-discounts">%DISCOUNTS%</span>
+ <span id="gts-o-shipping-total">%SHIPPING%</span>
+ <span id="gts-o-tax-total">%TOTALTAX%</span>
+ <span id="gts-o-est-ship-date">%EST_SHIPDATE%</span>
+ <span id="gts-o-has-preorder">%HAS_PREBACKDELAY_YN%</span>
+ <span id="gts-o-has-digital">%HAS_DOWNLOAD_YN%</span>
+ <!-- end order and merchant information -->
+
+ <!-- start repeated item specific information -->
+%GOOGLE_TRUSTED_STORES_ITEM_SPANS%
+<!-- end repeated item specific information -->
+
+</div>
+<!-- END Trusted Stores -->

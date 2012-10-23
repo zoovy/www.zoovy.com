@@ -1,0 +1,39 @@
+<link rel="stylesheet" type="text/css" href="/biz/standard.css">
+<body>
+<script type="text/javascript"><!-- //
+	window.parent.topInitialized = true;
+//-->
+</script>
+<form style="margin: 0px;" target="TopFrame" ENCTYPE='multipart/form-data' name="topFrm" method=POST action="popup-top.pl">
+
+<!-- MESSAGE -->
+<!-- BEGIN CURRENT SELECTION TABLE -->
+<table cellspacing=0 cellpadding=0 border=0 width="100%"><!-- this is a form -->
+<input type="hidden" name="s" value="<!-- SERIAL -->">
+<input type="hidden" name="ACTION" value=''>
+<input type="hidden" name="IMG" value="<!-- IMG -->">
+<input type="hidden" name="PWD" value="<!-- PWD -->">
+<tr>
+	<td><table cellspacing=0 cellpadding=2 border=0 width="100%"><tr>
+		<td class="table_top" rowspan=3 width="2%"><img src="<!-- IMGURL -->" width=110 height=110></td>
+		<td class="table_top" height=22><span class="white">Currently Selected: <strong><!-- PRETTY_IMGNAME --></strong> ( <!-- IMGSIZE --> )</span></td>
+	</tr><tr>
+		<td>Filename: <input type="file" name="upfile"> <input type="button" onClick="window.document.topFrm.ACTION.value='UPLOAD'; window.document.topFrm.submit();" value="upload"><br>
+<span class="small">Hint: Select a File, or enter a valid URL</span>
+<input type="button" onClick="<!-- CANCELLINK -->" value="Cancel"> 
+<input type="button" onClick="parent.LowFrame.document.lowFrm.IMG.value=''; parent.LowFrame.document.lowFrm.submit();" value="Clear Image">
+<input type="button" onClick="parent.LowFrame.document.lowFrm.IMG.value=window.document.topFrm.IMG.value; parent.LowFrame.document.lowFrm.submit();" value="Use Image"></td>
+</td>
+	</tr><Tr>
+		<td>
+<!--
+<span><i>Experiencing Slow Upload times?</i> Your ISP may temporarily limit your upload speed after
+uploading several large files, if you are affected by this try using warehouse manager.</span><br>
+-->
+		</td>	
+	</tr></table></td>
+</tr></table>
+<!-- END CURRENT SELECTION TABLE -->
+<!-- NOTE ---  you didn't have the above table closed, so make sure you add then if you don't copy this whole thing over.  -->
+</form>
+</body>

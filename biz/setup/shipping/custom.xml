@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<TEMPLATE NAME="CUSTOM">
+<!-- 
+
+ATTENTION: You should not be viewing this file, hit the back button on your browser.
+Follow the instructions provided to install this into your product manager directory.
+
+-->
+
+<DIV NAME="MAIN">
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_cost1" PROMPT="Domestic Shipping 1st item"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_cost2" PROMPT="Domestic Shipping 2nd item"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_can_cost1" PROMPT="Canada Shipping 1st item"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_can_cost2" PROMPT="Canada Shipping 1st item"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_int_cost1" PROMPT="International Shipping 1st item"></INPUT>
+<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:ship_int_cost2" PROMPT="International Shipping 2st item"></INPUT>
+</DIV>
+
+</TEMPLATE>
+

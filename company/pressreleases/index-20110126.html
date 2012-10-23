@@ -1,0 +1,83 @@
+% my $menu;
+% $menu = 'company';
+
+<&| /includes/header/index.html, title => 'Zoovy Press Releases &amp; Announcements', menu => $menu, nav=>'company|pressrelease' &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<h1>Zoovy Press Releases &amp; Announcements</h1>
+
+<div style='margin-bottom:10px;'>
+<b>Media Contact:</b> Stephanie Olsen, Lages & Associates<br />
+1.949.453.8080, stephanie@lages.com</div>
+
+<table cellspacing=1 cellpadding=5 width="100%">
+
+<&| /includes/pressreleases.html, xml=>0 &></&>
+
+<%perl>
+
+
+
+use CGI;
+use ZTOOLKIT;
+use DBINFO;
+
+my @AR = ();
+my $dbh = &DBINFO::db_zoovy_connect();
+
+my $q = CGI->new();
+if ($q->param('id')==0) {
+	
+	(@AR) = get_press(filter=>'newspage');
+
+	my $year = '';
+	foreach my $link (reverse sort @AR) {
+		my ($date,$type,$link,$title) = split(/\|/,$link);
+
+		if ($year ne substr($date,0,4)) {
+			$year = substr($date,0,4);
+			print "<tr><td><b>-- $year --</b></td></tr>";
+			}
+
+		print "<tr>";
+		print "<td valign=top NOWRAP>$date</td>";
+		print "<td valign=top>";
+		print qq~<a href="$link">~;
+		print $title;
+		print "</a>";
+		print "</td>";
+		print "</tr>";
+		}
+	}
+else {
+	
+
+	my $pstmt = "select CREATED,TITLE,TOPIC,MESSAGE from RECENT_NEWS where ID=".int($q->param('id'))." and PUBLIC>0";
+	my ($CREATED,$TITLE,$TOPIC,$MESSAGE) = $dbh->selectrow_array($pstmt);
+	
+	print "<strong>Zoovy Announces: $TITLE</strong><br>San Diego, CA.<br />
+	<p>$CREATED -- San Diego -- $MESSAGE</p>";
+
+	print qq~
+<br>
+<p><strong>About Zoovy Inc.</strong><br>
+ Zoovy, Inc., the leader in success driven e-commerce software, provides e-commerce tools and services for online businesses. With a multi-channel sales strategy, businesses reach more customers and drive more sales by integrating with multiple online marketplaces such as Amazon.com, Overstock, eBay and many other top comparison shopping services. Zoovy 1 automates product management, listing, sales, inventory, shipping and accounting processes, offering complete online storefronts and auction management tools for both small merchants and large wholesaler/retailers. For more information, call 877-966-8948, or visit <a href='http://www.zoovy.com' target='_blank'>www.zoovy.com</a>.</p>
+ ~;	
+	}
+&DBINFO::db_zoovy_close();
+
+
+</%perl>
+
+
+<!-- 
+-->
+</table>
+
+
+
+
+
+% # Do not touch anything below this line.
+
+<&| /includes/footer/index.html, menu => $menu &></&>

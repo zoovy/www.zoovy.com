@@ -1,0 +1,76 @@
+<DEFINITION NAME="listing">
+
+<DIV NAME="ALPHA" TITLE="Welcome">
+<META TYPE="TITLE">Bulkseller Advertisement Listing</META>
+<META TYPE="DESCRIPTION">
+Bulkseller.com is a new venue for wholesale &amp; retail customers. To use bulkseller you must supply the retail price of an item which you sell on your website (or the suggest retail price if you do not list the item on your website) AND you must supply a discounted price for larger quantities (2+). 
+There is no fee to sell on Bulkseller, and no registration is required for Zoovy customers. 
+There is a small fee of %1 for the gross total of any order which is placed through your website, Bulkseller charges will be appear on your Zoovy invoice, in addition there are listing upgrades which you may choose to do.
+</META>
+
+<DISPLAY TYPE="TITLE">Tier 1 Retail Pricing</DISPLAY>
+<DISPLAY TYPE="LABEL">Quantity: 1</DISPLAY>
+<INPUT TYPE="NUMBER" COLS="10" PRECISION="2" NAME="product:zoovy:base_price" PROMPT="Retail Price" MANDATORY="Y"></INPUT>
+
+<DISPLAY TYPE="TITLE">Tier 2 Extended Pricing</DISPLAY>
+<INPUT TYPE="NUMBER" COLS="10" PRECISION="2" PROMPT="Minimum Quantity" NAME="product:bulkseller:tier2qty"></INPUT>
+<INPUT TYPE="NUMBER" COLS="10" PRECISION="2" PROMPT="Price per Unit" NAME="product:bulkseller:tier2price"></INPUT>
+
+<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_name" PROMPT="Product Name" COLS="100" MANDATORY="Y"></INPUT>
+<INPUT TYPE="TEXTAREA" ROWS="10" COLS="80" NAME="product:zoovy:prod_desc" PROMPT="Product Description"></INPUT>
+<INPUT TYPE="IMAGE" NAME="product:zoovy:prod_image1" PROMPT="Product Picture" MANDATORY="Y"></INPUT>
+<INPUT TYPE="NUMBER" PRECISION="2" COLS="10" NAME="product:zoovy:shipping" PROMPT="Estimated Shipping Per Unit"></INPUT>
+<INPUT TYPE="CHECKBOX" ON="Y" OFF="N" NAME="product:bulkseller:feature" PROMPT="Featured Listing ($0.01 per day)"></INPUT>
+<INPUT TYPE="RADIO" LIST="CATEGORY" STICKY="Y" LOADFROM="merchant:bulkseller:category" NAME="product:bulkseller:category" PROMPT="Product Category" DEFAULT="0"></INPUT>
+<INPUT TYPE="RADIO" LIST="LENGTH" STICKY="Y" LOADFROM="merchant:bulkseller:listinglength" NAME="product:bulkseller:listinglength" PROMPT="Length of Listing" DEFAULT="30"></INPUT>
+
+<INPUT TYPE="HIDDEN" NAME="product:zoovy:base_weight"></INPUT>
+
+<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+<DISPLAY TYPE="TITLE">Required Information</DISPLAY>
+<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+</DIV>
+
+
+<DIV NAME="OMEGA">
+<META TYPE="TITLE">Bulkseller Advertisement Listing</META>
+
+<META TYPE="DESCRIPTION">
+Please press save and your listing will appear on Bulkseller.com shortly - if any errors occur you will be emailed.
+Thank you for choosing Bulkseller!
+</META>
+
+<DISPLAY TYPE="LABEL">Please press save to continue.</DISPLAY>
+<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+</DIV>
+
+
+
+<LIST TYPE="TEXT" NAME="LENGTH">
+<OPTION VALUE="01" PROMPT="1 Day"></OPTION>
+<OPTION VALUE="03" PROMPT="3 Day"></OPTION>
+<OPTION VALUE="07" PROMPT="1 Week"></OPTION>
+<OPTION VALUE="14" PROMPT="2 Weeks"></OPTION>
+<OPTION VALUE="30" PROMPT="30 Days"></OPTION>
+<OPTION VALUE="90" PROMPT="3 months"></OPTION>
+<OPTION VALUE="365" PROMPT="1 Year"></OPTION>
+</LIST>
+
+<LIST TYPE="TEXT" NAME="CATEGORY">
+<OPTION VALUE="1" PROMPT="General"></OPTION>
+<OPTION VALUE="2" PROMPT="Collectibles"></OPTION>
+<OPTION VALUE="3" PROMPT="Computers &amp; Internet"></OPTION>
+<OPTION VALUE="4" PROMPT="Crafts"></OPTION>
+<OPTION VALUE="5" PROMPT="Gifts, Flowers, &amp; Jewlery"></OPTION>
+<OPTION VALUE="6" PROMPT="Food &amp; Drink"></OPTION>
+<OPTION VALUE="7" PROMPT="Health &amp; Beauty"></OPTION>
+<OPTION VALUE="8" PROMPT="Home &amp; Gardens"></OPTION>
+<OPTION VALUE="9" PROMPT="Sports, Fitness &amp; Recreation"></OPTION>
+<OPTION VALUE="10" PROMPT="Toys &amp; Games"></OPTION>
+<OPTION VALUE="0" PROMPT="Everything Else"></OPTION>
+</LIST>
+
+</DEFINITION>

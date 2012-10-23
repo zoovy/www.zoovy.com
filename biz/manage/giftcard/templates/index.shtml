@@ -1,0 +1,41 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+
+<table width="800"><tr><td>
+
+<!-- WARNING -->
+
+
+<div align='center'><br>
+
+<table width=100% class="zoovytable">
+<tr><td class="zoovytableheader">Customer Search</td></tr>
+<tr><td>
+<form action="/biz/manage/giftcard/index.cgi">
+<!-- NOTE: this needs to redirect to giftcards/index.cgi so we can search for a specific giftcard -->
+<input type="hidden" name="VERB" value="SEARCH-NOW">
+<input type="hidden" name="ts" value="<!-- TS -->">
+<input type="hidden" name="scope" value="giftcard">
+Search Card# or Customer: <input type="textbox" name="searchfor">
+<input type="submit" class="button" value=" Go! ">
+</form>
+<div class="hint">
+NOTE: The search for a customer or giftcard will be performed by the customer manager.
+</div>
+</td></tr>
+</table>
+
+
+<h1><!-- TITLE --></h1>
+
+<form action="index.cgi">
+<input type="hidden" name="index.cgi">
+
+<!-- CARDTABLE -->
+
+</form>
+</div>
+
+</td></tr></table>
+</body>

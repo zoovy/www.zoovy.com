@@ -1,0 +1,20 @@
+<!-- REPORT_TAB -->
+
+<table width="100%" cellpadding=4 cellspacing=0>
+<tr>
+	<td valign="top" width="100"><img src="/biz/images/tabs/icons/reports_website.gif" width="100" height="100"></td>
+	<td valign="top" align="left">
+		<b>Stored Reports</b><br>
+
+<br>
+<p>
+<table>
+<!-- REPORT_LIST -->
+</table>
+</p>
+
+	</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

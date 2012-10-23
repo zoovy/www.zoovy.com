@@ -1,0 +1,28 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Content has been removed', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","ORANGESODA");
+</script>
+
+
+
+
+<div>The contents of this page have been removed.  <a href='/'>Please visit our homepage</a>.
+
+
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+% ## Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>
+</li></font></ul>

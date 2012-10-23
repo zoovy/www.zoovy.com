@@ -1,0 +1,93 @@
+<!-- SETUP_TAB -->
+
+<center>
+<br>
+
+<table width="500"><tr><td>
+
+<!--
+<p>
+There are two paths you may take:<br>
+<li> <a href="register.cgi">Quick-Registration</a> for trial bonding of $5,000 in sales
+<li> Complete <a target="_blank" href="https://www.buysafe.com/web/registration/seller/contactinformation.aspx">
+buySAFE Merchant </a> application for volumes of $5,000+
+-->
+
+
+<!-- ERRORS -->
+
+<form name="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="BUYSAFE-SAVE">
+
+<table width="600" border=0 cellspacing=0 class="zoovytable">
+<tr>
+	<td class="zoovysub1header">Environment:</td>
+</tr>
+<tr>
+	<td>
+	<select name="buysafe_mode">
+		<option <!-- BM_0 --> value="0">Disabled</option>
+		<option <!-- BM_1 --> value="1">Buysafe Bonded Development (Testing)</option>
+		<option <!-- BM_2 --> value="2">Buysafe Bonded Production (Live)</option>
+		<option <!-- BM_3 --> value="3">Buysafe Guaranteed Production (Live)</option>
+	</select>
+	<br>
+	</td>
+	</tr>
+	<tr>
+		<td class="zoovysub1header">Public Account Hash:</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="textbox" style="font-family: arial, helevetica; font-size: 8pt;" size=110 name="buysafe_token" value="<!-- TOKEN -->">
+		<div class="hint">The public hash will be provided to you by buySafe once your account is setup.<br>
+		<br>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="zoovysub1header">Domain Tokens:</td>
+	</tr>
+	<tr>
+		<td>
+<table>
+<!-- DOMAINS -->
+</table>
+<input class="button" type="button" value=" Update Domain Tokens " onClick="document.thisFrm.VERB.value='BUYSAFE-REFRESH'; document.thisFrm.submit();">
+
+</td></tr>
+<tr><td class="zoovysub1header">Sidebar Code:</td></tr>
+<tr><td class="zzoovysub1header">
+<div class="hint">
+The buysafe seal should be addded to each profile, and
+then must be added to the sidebar of each site in the Theme Chooser.  
+The code below is the same code displayed in the sidebar editor theme chooser. 
+<br>
+
+We apologize but at this time each site will need to have the buysafe option added/removed
+individually in the sidebar editor for each site. <br>
+<br>
+(This is because the sidebar simply makes a copy of the buysafe javascript code when it is generated, 
+so changing the code here won't actually effect anything on the site.)
+</div>
+<hr>
+
+<table>
+<!-- PROFILES -->
+</table>
+</td></tr>
+<tr>
+	<td>
+	
+<input type="submit" value=" Save " class="button">
+
+	</tr></tr>
+</table>
+
+<br>
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

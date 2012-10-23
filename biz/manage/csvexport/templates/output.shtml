@@ -1,0 +1,23 @@
+<head>
+<SCRIPT>
+<!--//
+
+//-->
+</SCRIPT>
+</head>
+<body>
+Output:<br>
+The contents below can be cut and pasted into a file which can then be imported using the
+Setup > Data Import > Advanced CSV Import.<br>
+<Br>
+<br>
+<form>
+</form>
+<pre>
+<!-- OUTPUT -->
+</pre>
+<br>
+<center>
+<a href="/biz/manage" border='0' target="_top"><img border='0' src='/images/bizbuttons/exit.gif'></a>
+</center>
+</body>

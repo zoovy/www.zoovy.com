@@ -1,0 +1,87 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Turnkey Ecommerce Websites | Zoovy Ecommerce Partners', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<h1>Featured Partners</h1>
+<br />
+<table>
+<tr>
+	<td valign='middle' align='left' style='padding-right:27px;'>
+<img src='//static.zoovy.com/img/proshop/W150-H70-Bffffff/zoovy/logos/amazon.gif' />
+	</td>
+	<td valign='top'>
+Leverage the buying power of the largest e-commerce shopping site on the net with syndicated product feeds &amp; consolidated order processing in Zoovy's Order Manager application. <b><a href='/compatible-integration-review/amazon-payments/'>&#187; More</a></b>
+	</td>
+</tr>
+<tr>
+	<td colspan='2'></td>
+</tr>
+<tr>
+	<td valign='middle' align='left' style='padding-right:27px;'>
+<img src='//static.zoovy.com/img/proshop/W150-H70-Bffffff/zoovy/logos/ebay.gif' />
+	</td>
+	<td valign='top'>
+Automate product listing, relisting and inventory control with Zoovy's built-in ebay support. Manage multiple orders &amp; automatically issue tracking numbers to ebay customers while reducing processing times.<br />
+<b><a href='/compatible-integration-review/ebay/'>&#187; More</a></b>
+	</td>
+</tr>
+
+<tr>
+	<td colspan='2'></td>
+</tr>
+<tr>
+	<td valign='middle' align='left' style='padding-right:27px;'>
+<img src='//static.zoovy.com/img/proshop/W150-H70-Bffffff/zoovy/logos/quickbooks_desfor.gif' />
+	</td>
+	<td valign='top'>
+Import extensive order data directly into Intuit QuickBooks via the Zoovy Order Manager desktop application to keep accounting and customer information in perfect order.<b><a href='/compatible-integration-review/quickbooks-merchant-services/'>&#187; More</a></b>
+	</td>
+</tr>
+
+</table>
+
+
+<p style='margin:27px 0 10px 0;'>Zoovy has partnered with industry leaders and view these relationships as an 
+important part of our business. We're deeply committed to offering the most 
+competitive and effective solutions to the eCommerce marketplace.</p>
+
+
+<!-- BEGIN /compatible-integration-review/index.html -->
+<&| /includes/partners.html &></&>
+<%perl>
+print qq~<table cellspacing=1 cellpadding=5 width="100%">~;
+my @PARTNERS = &get_partners('active'=>1);
+my $i = 0;
+foreach my $pref (@PARTNERS) {
+	if ($i++ == 0) {
+		## print out a divider on all but the first interation
+		print qq~<tr><td colspan=2 height=8></td></tr>~;
+		}
+	print qq~<!-- $pref->{'alt'} -->\n~;
+	print qq~<tr><td width="10%" align="left" valign="top">~;
+	if ($pref->{'href'} ne '') {
+		print qq~<a href="$pref->{'href'}">~;
+		}
+	print qq~<img src="$pref->{'src'}" border="0" alt="$pref->{'alt'}" height="50" width="105">~;
+	if ($pref->{'href'} ne '') {
+		print qq~</a>~;
+		}
+	print qq~</td><td>~;
+	print qq~<p>$pref->{'txt'}</p>~;
+	print qq~</td></tr>~;
+	}
+print qq~</table>~;
+</%perl>
+<!-- END /compatible-integration-review/index.html -->
+
+
+
+
+
+
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

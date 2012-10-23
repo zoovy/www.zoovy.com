@@ -1,0 +1,132 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+require GTOOLS;
+require ZOOVY;
+require ZWEBSITE;
+require EXTERNAL;
+require ZTOOLKIT;
+use CGI;
+use strict;
+use Data::Dumper;
+
+my $q = new CGI;
+&ZOOVY::init();
+&GTOOLS::init();
+&ZWEBSITE::init();
+my ($USERNAME,$FLAGS) = &ZOOVY::authenticate('/biz/manage',1);
+
+my $template_file = 'index.shtml';
+
+if ($ZOOVY::cgiv->{'ACTION'} eq 'SAVE') {
+	my $c = '';
+	foreach my $p (keys %{$ZOOVY::cgiv}) {
+		next if ($ZOOVY::cgiv->{$p} ne ''); 
+		if ($p =~ /^CLAIM\*([\d]+)$/) {
+			my $claim = $1;
+			my $HINT = $ZOOVY::cgiv->{$p};
+			$c .= "<tr><td><b>Initiating Dispute:</b><br>".&process($USERNAME,'DISPUTE',$claim,$HINT)."</td></tr>\n";	
+			}	
+		}
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<table>$c</table>";
+	$template_file = 'output.shtml';
+	}
+
+
+if ($ZOOVY::cgiv->{'ACTION'} eq '') {
+	my ($arref) = &EXTERNAL::fetch_external_list($USERNAME,'ID','','AIVWH');
+	my $t = time();
+	my $c = '';
+	foreach my $el (@{$arref}) {
+		next if ($el->{'STAGE'} eq 'W');
+		my $add = 0;
+	
+		## we only do eBay!
+		next unless ($el->{'PORTAL'} eq 'ebay' || $el->{'PORTAL'} eq 'ebaystores' || $el->{'PORTAL'} eq 'ebaymotors');
+	
+		$el->{'UPDATED'} = &ZTOOLKIT::mysql_to_unixtime($el->{'MODIFIED'});
+		$c .= "<tr>";
+
+		my $status = '';		
+		if ($el->{'STAGE'} eq 'A' || $el->{'STAGE'} eq 'I' || $el->{'STAGE'} eq 'V') { 
+			$status = 'Nothing Done';
+			}
+		elsif ($el->{'STAGE'} eq 'H') {
+			$status = 'Awaiting Payment'; 
+			}
+		elsif ($el->{'STAGE'} eq 'W') {
+			$status = 'Disputed';
+			}
+		elsif ($el->{'STAGE'} eq 'N') {
+			$status = 'Credited';
+			}
+		else {
+			$status = $el->{'STAGE'};
+			}
+
+		my $age = &ZTOOLKIT::pretty_time_since(&ZTOOLKIT::mysql_to_unixtime($el->{'CREATED'}));
+		$c .= qq~
+			<td>
+				$status
+			</td>
+			<td>
+				$age
+			</td>
+			<td><select name="CLAIM*$el->{'ID'}">
+				<option value="STAGE:$el->{'STAGE'}">Process</option>
+				<option value="">Exclude</option>
+				</select>
+			</td>
+			~;
+
+		$c .= "<td>".$el->{'MARKET_ID'}."</td>";
+		$c .= "<td> (".$el->{'BUYER_NAME'}.") ".$el->{'CUSTOMER'}."</td>";
+
+		$c .= "<td>";
+		$c .= "Channel: $el->{'CHANNEL'} - $el->{'PRODUCT'}: $el->{'PROD_NAME'}\n";
+		$c .= "</td>";
+		$c .= "</tr>";
+		$GTOOLS::TAG{'<!-- ITEMS_NEW -->'} = $c;
+		}
+	}
+&GTOOLS::output(file=>$template_file,header=>1,help=>'detail/manage-npb.shtml');
+
+
+sub process {
+	my ($MERCHANT,$ACTION,$CLAIM) = @_;
+
+	my $OUTPUT = '';
+
+	my $ua = LWP::UserAgent->new(env_proxy => 1, keep_alive => 1, timeout => 30, );
+	my $url = 'http://app3.zoovy.com/ebayapi/upixml.cgi?MERCHANT='.$MERCHANT.'&CLAIM='.$CLAIM.'&ACTION='.$ACTION;
+	print STDERR "Getting $url\n";
+	my $request = HTTP::Request->new('GET', $url);
+	my $response = $ua->request($request);
+
+	if ($response->content() =~ /<upi>(.*?)<\/upi>/s) {
+		my $content = $1;
+		if ($content =~ /<error>(.*?)<\/error>/) {
+			$OUTPUT = "ERROR: $1<br>";
+			}
+		elsif ($content =~ /<msg>(.*?)<\/msg>/) {
+			$OUTPUT = $1."<br>";
+			}
+		
+		if ($content =~ /<STAGE>(.*?)<\/STAGE>/) {
+			my $STAGE = $1;
+			$OUTPUT .= "updating stage on claim $CLAIM to $STAGE<br>";		
+			if ($STAGE eq 'W') {
+				&EXTERNAL::update_stage($MERCHANT,$CLAIM,'W');
+				}
+			elsif ($STAGE eq 'N') {
+				&EXTERNAL::update_stage($MERCHANT,$CLAIM,'N');
+				}
+			}
+
+		}
+	else {
+		$OUTPUT = 'Unknown response: '.$response->content();
+		}
+
+	return($OUTPUT);
+}

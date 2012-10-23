@@ -1,0 +1,16 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="800" class="zoovytable">
+<tr><td class="zoovytableheader">Available Sample Projects</td></tr>
+<tr><td>
+
+<form id=thisFrm name="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="PROJECT-COPY">
+<input type="hidden" name="PROJECT" value="">
+<!-- PROJECTS -->
+</form>
+
+</td></tr>
+</table>
+</center>

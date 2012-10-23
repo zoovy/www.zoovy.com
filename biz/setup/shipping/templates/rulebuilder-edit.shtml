@@ -1,0 +1,91 @@
+<!-- SETUP_TAB -->
+
+<form method="POST" action="rulebuilder.cgi">
+<input type="hidden" name='ACTION' value='<!-- NEXT_ACTION -->'>
+<input type="hidden" name='method' value="<!-- METHOD -->">
+<input type="hidden" name='id' value="<!-- ID -->">
+
+<body bgcolor="FFFFFF"  marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<br>
+<table cellspacing=0 cellpadding=2 class="zoovytable">
+<tr>
+	<td colspan=2 class="zoovytableheader"><!-- WHAT_ARE_WE_DOING --></td>
+</tr>
+<tr>
+	<td><b>Rule Name:</b></td>
+	<td>
+		<input type="textbox" name="NAME" value="<!-- NAME_V -->" size="60" maxlength="60">
+		<div class="hint">HINT: The name should remind you "why does this rule exist?".</td>
+</tr>
+
+<tr><td><b>Use Rule if:</b></td>
+<td>
+	<select name="MATCH">
+		<!-- MATCH -->
+	</select>
+	<div class="hint">
+	HINT: Refer to <a target="webdoc" href="http://webdoc.zoovy.com/doc/50339">webdoc #50339</a> for what each "Rule If" means.
+	</div>
+</td></tr>
+
+
+<tr><td><b>Filter Criteria:</b></td>
+<td><textarea name="FILTER" cols="60" rows="3"><!-- FILTER --></textarea></td></tr>
+
+<tr><td><b>Action if Match:</b></td>
+<td>
+	<select name="EXEC">
+		<!-- EXEC -->
+	</select>
+</td></tr>
+
+<tr><td valign='top'><b>Value:</b></td>
+<td valign='top'><input id="VALUE" type="textbox" name="VALUE" value="<!-- VALUE_V -->"><br>
+<font size='1'>NOTE: values must be written as -%5 or +$5 to be valid.</font></td></tr>
+
+<tr><td valign='top'><b>Schedule:</b></td>
+<td valign='top'>
+	<select name="SCHEDULE">
+		<option value="">N/A</option>
+		<!-- SCHEDULES -->
+	</select><br>
+	<div class="hint">
+	NOTE: schedule is only relevant when stores have multiple pricing schedules. 
+	<!-- SCHEDULE_WARNING -->
+	</div>
+</td></tr>
+
+
+<tr>
+	<td colspan=2 valign='top'>
+<center>
+	<input type="submit" class="button showLoadingModal" value=" Save ">
+	<input type="button" class="button showLoadingModal" value=" Cancel "
+		onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->';">
+</center>
+</td>
+<!-- DELETE_BUTTON -->
+</tr>
+
+</center>
+	</td>
+</tr>
+
+</table>
+
+
+</form>
+</td></tr>
+</table>
+</center>
+
+
+<br>
+<table>
+<br>
+<br>	
+
+</font>
+</body>
+</html>

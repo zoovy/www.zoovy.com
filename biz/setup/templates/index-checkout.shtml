@@ -1,0 +1,51 @@
+<!-- SETUP_TAB -->
+
+<table width="100%" cellpadding=4 cellspacing=0>
+<tr>
+	<td valign="top" width="100"><img src="/biz/images/tabs/icons/properties.gif" width="100" height="100"></td>
+	<td valign="top" align="left">
+		<span class="big_link">My Store Properties</span><br>
+
+<br>
+
+<p>
+<a href="/biz/setup/shipping">Shipping</a><br>
+<font class='teenygrey'>Determine how shipping will be calculated for your products</font>
+</p>
+
+<p>
+<a href="/biz/setup/pr0m0">Promotions</a><br>
+<font class='teenygrey'>Create discounts for special purchases</font>
+</p>
+
+
+<p>
+<a href="/biz/setup/tax">Sales Tax</a><br>
+<font class='teenygrey'>Configure state and local tax collection amounts</font>
+</p>
+
+<p>
+<a href="/biz/setup/payment">Payment Methods</a><br>
+<font class='teenygrey'>Configure which payment methods you will accept from customers</font>
+</p>
+
+<p>
+<a href="/biz/setup/checkout">Checkout Setup</a><br>
+<font class='teenygrey'>Customize store behaviors</font>
+</p>
+
+<p>
+<a href="/biz/setup/inventory">Inventory</a><br>
+<font class='teenygrey'>Configure Inventory behaviors</font>
+</p>
+
+<p>
+<a href="/biz/setup/email">Emails</a><br>
+<font class='teenygrey'>Customize the default emails sent to your customers.</font>
+</p>
+		
+	</td>
+</tr>
+</table>
+
+<!-- FOOTER -->

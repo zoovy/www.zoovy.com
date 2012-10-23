@@ -1,0 +1,34 @@
+<DEFINITION NAME="nextag.listing">
+
+<DIV NAME="ALPHA" TITLE="Main">
+   <BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Launch"></BUTTON>
+   <BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Quit"></BUTTON>
+   <META TYPE="TITLE">NexTag Listing</META>
+   <META TYPE="DESCRIPTION">
+   </META>
+
+	<INPUT TYPE="BLANK"></INPUT>
+	<DISPLAY TYPE="TITLE">Basic Information:</DISPLAY>
+	<DISPLAY TYPE="LABEL">Please complete all the fields.</DISPLAY>
+
+	<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_name" TITLE="1" PROMPT="NexTag Title" COLS="55" HELP="" MAXLENGTH="55" MANDATORY="Y"></INPUT>
+
+	<INPUT TYPE="TEXTAREA" NAME="product:zoovy:prod_desc" COLS="80" ROWS="10" HELP="Please enter a description for your item." MAXLENGTH="50000" MANDATORY="Y"></INPUT>
+
+	<INPUT TYPE="TEXTBOX" COLS="25" NAME="product:zoovy:prod_mfgid" PROMPT="Manufacturer Part #"></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="10" NAME="product:zoovy:prod_msrp" PROMPT="Suggested Retail Price"></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="15" NAME="product:zoovy:prod_upc" PROMPT="UPC"></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="80" NAME="product:zoovy:prod_promotxt" PROMPT="Marketing Message"></INPUT>
+
+	<INPUT TYPE="TEXTAREA" COLS="80" ROWS="10" NAME="product:zoovy:prod_warranty" PROMPT="Warranty"></INPUT>
+	
+
+	<INPUT TYPE="TEXTBOX" COLS="80" NAME="product:nextag:muze_id" PROMPT="Tech Feed: MUZE ID"></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="80" NAME="product:nextag:cpc_rate" PROMPT="Tech Feed: CPC Rate"></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="80" NAME="product:nextag:max_cpc" PROMPT="Tech Feed: Max CPC "></INPUT>
+	<INPUT TYPE="TEXTBOX" COLS="80" NAME="product:zoovy:prod_condition" PROMPT="Tech Feed: Condition"></INPUT>
+	
+</DIV>
+
+
+</DEFINITION>

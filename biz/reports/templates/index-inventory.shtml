@@ -1,0 +1,56 @@
+<!-- REPORT_TAB -->
+<center>
+<table width='600' cellspacing=0 class="zoovytable" cellpadding=2>
+<tr>
+	<td align="left" class="zoovytableheader">Available Inventory Tools &amp; Reports:</td>
+</tr>
+<tr>
+	<td align="left">
+<!-- MSG -->
+
+<br>
+
+<form action="/biz/batch/index.cgi">
+<input type="hidden" name="VERB" value="NEW">
+<input type="hidden" name="EXEC" value="REPORT">
+<input type="hidden" name="GUID" value="<!-- GUID -->">
+<b>Detail Level:</b><br>
+<input type="radio" name="REPORT" value="INVENTORY_SIMPLE"> Inventory Only (sku + quantity only)<br>
+<input type="radio" name="REPORT" value="INVENTORY_DETAIL"> Inventory Detail (product names, prices, etc.)<br>
+<input type="radio" name="REPORT" value="INVENTORY_MISSING"> Products w/o Inventory Configured<br>
+<br>
+<input class="button" type="submit" value=" Run Report ">
+</form>
+<br>
+
+	</td>
+</tr>
+<tr>
+	<td class="zoovytableheader">Utilities</td>
+</tr>
+<tr>
+	<td>
+<form action="/biz/batch/index.cgi">
+<input type="hidden" name="VERB" value="NEW">
+<input type="hidden" name="EXEC" value="UTILITY">
+<input type="hidden" name="APP" value="INVENTORY_UPDATE_RESERVES">
+<input type="hidden" name="GUID" value="<!-- GUID -->">
+<input class="button" type="submit" value="Update Reserves">
+</form>
+
+<!--
+<a href="index.cgi?ACTION=DISPLAY&PRICE=0">Show Inventory</a><br>
+<a href="index.cgi?ACTION=DISPLAY&PRICE=1">Show Inventory with Price (slower)</a><br>
+<a href="index.cgi?ACTION=MISSING">Show products which do not have Inventory enabled</a><br>
+<a href="index.cgi?ACTION=UPDATERESERVE">Update Reserve Inventory totals</a><br>
+<a target="_blank" href="index.cgi">Export to CSV</a><br>
+
+<br>
+<br>
+<b>EXPERIMENTAL:</b><br>
+<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=INVENTORY">Inventory Detail Report<br>
+-->
+	</td>
+</tr>
+</table>
+<!-- FOOTER -->

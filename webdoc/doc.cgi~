@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+
+print "Content-type: text/html\n\n";
+print $ENV{'SCRIPT_URL'};

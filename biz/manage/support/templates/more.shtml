@@ -1,0 +1,29 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<br>
+<table class="zoovytable" width=800>
+<tr class="zoovytableheader">
+	<td>More Utilities</td>
+</tr>
+<tr>
+	<td>
+
+<h2>Add a favorite layout:</h2>
+<form id="thisFrm" name="thisFrm" action="/biz/manage/support/index.cgi">
+<input type="hidden" name="VERB" value="ADD-FAVORITE">
+<select name="FORMAT">
+	<option value=""></option>
+	<option value="WRAPPER">WRAPPER</option>
+	<option value="LAYOUT">LAYOUT</option>
+	<option value="EMAIL">EMAIL</option>
+</select>
+<input type="textbox" name="DOCID">
+<input type="submit" value=" Set Favorite ">
+	</td>
+</tr>
+</table>
+
+</center>
+
+<!-- FOOTER -->

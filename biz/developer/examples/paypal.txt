@@ -1,0 +1,22 @@
+HOWTO: Convert from a Paypal Cart to Zoovy
+
+Zoovy has created a script which can translate the Paypal add to cart commands into Zoovy 
+add-to-cart commands. Rather than re-creating each page, you only need to do a search and replace 
+to migrate your entire site.
+
+Steps:
+
+1. Enable the Zoovy Developer Soft Cart option (be sure to enable Zoovy Developer as well!).
+2. Use the search and replace function of your HTML Editor to replace the action="http://www.paypal.com/x-click/webscr" 
+portion of your pages with the following text:
+action="http://www.zoovy.com/webapi/paypal/hack.cgi/USERNAME=yourname"
+
+be sure to replace yourname with your Zoovy username.
+3. Thats it, you're done. The Zoovy script will automatically translate the Paypal cart parameters into the proper
+Zoovy add-to-cart buttons.
+
+
+Known Issues:
+The Zoovy Cart will NOT translated fixed shipping from the Paypal cart.
+It will instead use the Zoovy shipping that is configured in your store.
+

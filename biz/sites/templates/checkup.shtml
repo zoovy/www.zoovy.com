@@ -1,0 +1,48 @@
+<!-- SITES_TAB -->
+
+<center>
+<br>
+<table width=500 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Site Check-up</td>
+</tr>
+<tr>
+	<td>
+	<form action="index.cgi">
+	<input type="hidden" name="VERB" value="CHECKUP">
+	<b>Checkup Type:</b><br>
+	<input <!-- CB_CHECK-GLOBAL --> type="checkbox" name="CHECK-GLOBAL"> Check Partition Configuration(s)<br>
+	<input <!-- CB_CHECK-PROFILE -->  type="checkbox" name="CHECK-PROFILE"> Check Profile Configuration(s)<br>
+	<input <!-- CB_CHECK-DOMAINS --> type="checkbox" name="CHECK-DOMAINS"> Check Domain Configuration(s)<br>
+	<br>
+	
+	
+	<b>Options:</b><br>
+	<input <!-- CB_FIX --> type="checkbox" name="FIX"> Fixup: make changes when appropriate.<br>
+	<br>
+	<input type="submit" value=" Run Checkup ">
+	</form>
+	</td>
+</tr>
+</table>
+<br>
+<br>
+
+<table width=500 class="zoovytable">
+<tr>
+   <td class="zoovytableheader">Site Check-up</td>
+</tr>
+<tr>
+   <td>
+   <table width=100%>
+   <!-- OUTPUT -->
+   </table>
+   </td>
+</tr>
+</table>
+<br>
+<br>
+
+</center>
+
+<!-- FOOTER -->

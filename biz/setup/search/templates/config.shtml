@@ -1,0 +1,200 @@
+<!-- SETUP_TAB -->
+
+
+<form method="POST" action="index.cgi">
+<input type="hidden" name="ACTION" value="CONFIG-SAVE">
+<input type="hidden" name="CATALOG" value="<!-- CATALOG -->">
+<center>
+<table border=0 width=600 class='zoovytable'>
+<tr>
+	<td class=zoovytableheader colspan='2'><b>Catalog Information</b></td>
+</tr>
+<tr>
+	<td width=100><b>CATALOG:</b></td>
+	<td><!-- CATALOG --></td>
+</tr>	
+<tr>
+	<td colspan=2>
+	<input type="checkbox" <!-- USE_INFLECTIONS --> name="USE_INFLECTIONS"> <b>Normalize Inflections (RECOMMENDED)</b>
+	<div class="hint">
+	Translation of singular into plural forms of all nouns, most verbs, and some adjectives are provided. 
+	Where appropriate, "classical" variants (for example: "brother" -> "brethren", "dogma" -> "dogmata", etc.) are also provided.
+	<br>
+	In generating these inflections, follows the Oxford English Dictionary and the guidelines in Fowler's Modern English Usage,
+	preferring the former where the two disagree.<br>
+	<br>
+	The feature is built around standard British spelling, but is designed to cope with common American variants as well. Slang, jargon, and other English
+	dialects are not explicitly catered for.<br>
+	<br>
+	Simply put: "cat" and "cats" will return the same results.
+	<br>
+	<a target="_blank" href="http://en.wikipedia.org/wiki/Inflections">Learn more about inflections</a>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<b>RESULTS ISOLATION LEVEL:</b><br>
+		<input type="radio" name="ISOLATION_LEVEL" <!-- ISO_0 --> value="0"> <b>None</b>: All products in database,
+even if they do not appear on the site.<br>
+		<input type="radio" name="ISOLATION_LEVEL" <!-- ISO_5 --> value="5"> <b>Standard</b>: Anything on the current site (even in hidden
+categories, excluding lists)<br>
+		<input type="radio" name="ISOLATION_LEVEL" <!-- ISO_10 --> value="10"> <b>Maximum</b>: Only show products on site in categories
+- skip hidden categories, lists, immediate descendants of hidden
+categories, and all subordinates of hidden origin categories.<br>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="checkbox" <!-- USE_WORDSTEMS --> name="USE_WORDSTEMS"> <b>Discover Word Stems (RECOMMENDED)</b>
+	<div class="hint">
+	Attempt to automatically determine the word stems, and strip pluralization from words so 
+	effectively "dog", "dogs", "doggies" would all become the same word. 
+	Word stemming is only applied to words longer than 7 characters.<br>
+	<br>
+	<a target="_blank" href="http://en.wikipedia.org/wiki/Stem_(linguistics)">Learn more about word stems</a>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="checkbox" <!-- USE_SOUNDEX --> name="USE_SOUNDEX"> <b>Store SoundEx/Metaphone Values (RECOMMENDED)</b>
+	<div class="hint">
+	SoundEx is mathemetical reduction formula for analyzing the phonetic sounds contained in a word and distilling
+	those sounds down to a 6 digit alphanumeric-string.  
+	SoundEx is useful in searches because two identical words e.g.
+	"MISTAKE" and "MISTEAK" both translate to the value "MSTK" so regardless of how it was typed, 
+	the user would see results returned.   Metaphone is only used on words longer than 5 characters.
+	<br>
+	<a target="_blank" href="http://en.wikipedia.org/wiki/Soundex">Learn more about SoundEx</a>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="checkbox" <!-- USE_EXACT --> name="USE_EXACT"> <b>Only Show Exact Matches</b>
+	<div class="hint">
+	This is the default value (if not passed by the method executing the search) that causes a secondary 
+	lookup to be performed to effectively render any intelligence offered by the WORDSTEM or SOUNDEX features moot.
+	In many cases this setting will be overridden by the wrapper or search being executed, but is especially useful
+	for the debugger.
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type="checkbox" <!-- USE_ALLWORDS --> name="USE_ALLWORDS"> <b>Always use All Words</b>
+	<div class="hint">
+	Normally search terms which have zero results are dropped. For example if
+you search for "Plaid Jacket" and the word "Plaid" does not appear on *any*
+product it is assumed to be invalid/misspelled/pointless and the entire search term is
+automatically reduced to "Jacket" which would show all jackets. 
+Turning this on will cause zero results to be displayed more frequently, but
+is better on sites which have more stubborn customers who will keep trying
+search terms until they find what they are looking for.
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<input type=button class=button onClick="this.form.ACTION.value='DEBUG'; this.form.submit();" value=" Debugger ">
+	<input type=button class=button onClick="this.form.ACTION.value='MAKEPRIMARY'; this.form.submit();" value=" Set as Primary ">
+	<input type=button class=button onClick="this.form.ACTION.value='RESET'; this.form.submit();" value=" Rebuild Index ">
+	</td>
+</tr>	
+<tr>
+	<td colspan='2' class='zoovysub1header'>Attributes:</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<!-- ATTRIBS_WARNING -->
+	<textarea  onFocus="this.rows=10;" rows=3 cols=70 name="ATTRIBS"><!-- ATTRIBS --></textarea>
+	</td>
+</tr>
+<tr>
+	<td colspan='2' class='zoovysub1header'>Substring Replacements (Phase 1):</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<div class="hint">
+	Use this tool to replace substrings which would normally be discarded in Phase 2. 
+Example the candy "m&m" is both too short, and presents a word boundary. In
+phase 2 it would appear as the letter m twice, separated by a space. By 
+rewriting this to "m-and-m" then it will be able to be matched.<br>
+<br>
+	Format:<br>
+	Specify three columns, currently only S (Substring) is supported in column 1. 
+	the second column is the substring, which if found will be replaced with column 3.
+	<br><br>
+	Example:<br>
+	"S","m&m","m-and-m"<br>	
+	<br>
+	<textarea rows=3 onFocus="this.rows=10;" cols=70 name="REPLACEMENTS"><!-- REPLACEMENTS --></textarea>
+<div class="hint">
+	HINT: Search terms shorter than 4 characters can be replaced with terms longer than 4 characters.
+	Be careful though, since "S","pen","xyz"   would not only change the word "pen" to "xyz", 
+	but also change "pencil" to "xyzcil".   The rewrites below are intelligent about word boundaries, 
+	whereas this filter is not.
+</div>
+	</td>
+</tr>
+<tr>
+	<td colspan='2' class='zoovysub1header'>Rewrites:</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<div class="hint">
+	A list of words or terms which can mean the same thing.<br>
+	<br>
+	Usage #1: (Equal)<br>
+	white:eggshell,ivory<br>
+	pink:lavender,lavendar<br>
+	<br>
+	Usage #2 (Inclusion):<br>
+	white:+eggshell<br>
+	<br>
+	So What is the Difference?<br>
+	In the "Equal" usage any search for eggshell would return all results for both white and ivory, and 
+	pink would mean the same as both the proper and misspelling of lavender. 
+	Whereas in the "Inclusion" usage any search for white would return eggshell, 
+	but any search for eggshell would ONLY return eggshell.
+	</div>
+	<textarea rows=3 onFocus="this.rows=10;" cols=70 name="REWRITES"><!-- REWRITES --></textarea>
+<div class="hint">
+	HINT: Search terms shorter than 4 characters are ignored. 
+	However you may rewrite short words (such as acronyms) to something longer than 3 characters. 
+</div>
+<div class="hint">
+HINT: Rewrites can eliminate confusion among search results for example in an apparel store which sold 
+both "white dress" and "white dress shirt" would commonly find "white dress" 
+appearing in "white dress shirt" searches.  
+The solution to this is somewhat non-obvious but very simple:<br>
+whitedressshirt:white dress shirt,white dress shirts
+</div>
+	</td>
+</tr>
+<tr>
+	<td colspan='2' class='zoovysub1header'>Kill Words:</td>
+</tr>
+<tr>
+	<td colspan='2'>
+	<div class="hint">A comma separated list of words that will always be 
+	ignored/discarded in searches. Kill words are processed after rewrites.
+	</div>
+	<textarea rows=3 cols=70  onFocus="this.rows=10;" name="KILLWORDS"><!-- KILLWORDS --></textarea><br>
+	<div class="hint">For example if a merchant only sold televisions then
+"television" is an acceptable kill word, 
+because it applies to all products.
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type=button class=button onClick="this.form.ACTION.value='CONFIG-SAVE'; this.form.submit();" value=" Save ">
+	<input type=button class=button onClick="this.form.ACTION.value='DELETE'; this.form.submit();" value=" Delete ">
+	</td>
+</tr>
+</table>
+</form>
+<br>
+<br>
+<br>

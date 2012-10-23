@@ -1,0 +1,29 @@
+<!-- NO_TAB -->
+<center>
+<br>
+<table width='300'><tr><td>
+
+<!-- MESSAGE -->
+
+
+<table width="700" class="zoovytable" cellspacing=0>
+<tr><td class="zoovytableheader">Active Accounts:</td></tr>
+<tr><td>
+
+	<table width="100%" cellspacing=0 cellpadding=0>
+	<!-- ACCOUNTS -->
+	</table>
+
+</td></tr>
+</table>
+
+<br>
+<li> <a href="index.cgi?ACTION=REGISTER">Setup or Refresh eBay Authorization Token</a><br>
+
+<i>Creating an eBay Authorization token is required to allow Zoovy to create and manage your eBay listings, 
+anytime you change your eBay password you will need to refresh your eBay Authorization Token.</i><br>
+<br>
+
+</td></tr></table>
+</center>
+</body>

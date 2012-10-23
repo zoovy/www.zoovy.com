@@ -1,0 +1,6 @@
+<html>
+<frameset rows="*,50" frameborder="0" framespacing="0" border="0">
+	<frame src="main.cgi?CMD=APPROVED&ORDERIDS=" name="main" frameborder="0" border="0"></frame>
+	<frame src="footer.pl?CMD=APPROVED" name="footer" frameborder="0" border="0" nowrap noresize scrolling="no"></frame>
+</frameset>
+</html>

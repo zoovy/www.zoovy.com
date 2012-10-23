@@ -1,0 +1,43 @@
+<!-- SETUP_TAB -->
+
+<center>
+<br>
+<table class="zoovytable" width="600"><tr><td>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="SHIPPING-SAVE">
+<div class="zoovytableheader"><!-- TITLE -->:</div>
+
+<!-- OUTPUT -->
+
+
+<br>
+<center>
+<table>
+	<tr>
+			<td>
+		<div class='zbutton_group'>
+ <input  type=image src="/images/bizbuttons/save.gif">		
+ 		</div>
+		</td>
+	</tr>
+</table>
+</center>
+
+<div class="hint">
+HINT: select the corresponding shipping type in amazon to your store shipments. 
+The Zoovy Desktop Client will use the 4 digit carrier codes to automatically
+select the proper shipping and methods which indicate "expedited" will be
+eligible for falling into any expedited shipping workflows you may have.
+</div>
+
+<!-- WEBDOC -->
+
+</form>
+<br>
+</td></tr>
+</table>
+
+
+</center>
+</body>

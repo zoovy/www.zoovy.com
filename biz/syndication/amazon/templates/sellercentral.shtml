@@ -1,0 +1,30 @@
+<!-- SETUP_TAB -->
+
+<b>Seller Central:</b><br>
+
+<iframe src="http://sellercentral.amazon.com" width=100% height=1024>
+</iframe>
+
+<b>Amazon Syndication:</b><br>
+<ul>
+<li> Amazon Syndication requires an account to: <a href="http://sellercentral.amazon.com">http://sellercentral.amazon.com</a><br>
+<li> New Users: <a href="?VERB=SIGNUP">Sign Up!</a>
+<li> To configure go to: <a href="/biz/syndication/amazon">Syndication | Amazon.</a>
+<li> The information above is provided to you by your Amazon Merchant Integration Manager.
+<li> REMEMBER: After configuring your account you should always double-check that your categories are mapped 
+correctly by going to Amazon in the Syndication area.
+</ul>
+
+<br>
+<b>Checkout by Amazon</b><br>
+<ul>
+<li> In order for Checkout by Amazon to work all fields above must be populated.
+<li> New Users: <a
+href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough%2Fsource=AmazonCheckout&passthrough%2Fld=Zoovy&passthrough%2Faccount=cba&passthrough%2FsuperSource=OAR&passthrough%2FmarketplaceID=AZ4B0ZS3LGLX">Sign Up!</a>
+<li> To configure go to: <a href="/biz/setup/payment/index.cgi?MODE=AMZPAY">Setup | Payments | Amazon</a>
+<li> Orders will be delayed arriving into your store for up to 90 minutes, 
+during this time inventory can be over-purchased.
+</ul>
+
+<br>
+

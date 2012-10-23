@@ -1,0 +1,63 @@
+<!-- SETUP_TAB -->
+<center>
+
+<table>
+<tr>
+	<td valign="middle"><img src="/biz/setup/shipping/images/ups_logo.gif" width="45" height="50"></td>
+	<td valign="middle">
+<i>UPS OnLine&reg; Tools License and Registration Wizard</i><br>
+	</td>
+</tr>
+</table>
+
+<table width=600>
+<tr>
+	<td>
+
+<form id="thisFrm" name="thisFrm" action="upsapi.cgi" method="POST">
+<font size="2" face="arial, helvetica">
+<input type="hidden" name="VERB" value="">
+<input type="hidden" name="sender" value="license">
+<input type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
+
+<div id="licenseframe" style="border-style:solid; border-width:thin; width: 600px; height: 300px; overflow: scroll">
+<!-- LICENSE_AGREEMENT_HTML -->
+<br>
+<br>
+</div>
+
+<center>
+<br>
+<br>
+<!--
+<input onClick="
+	if ($('licenseframe').scrollTop+100 > ($('licenseframe').scrollHeight - $('licenseframe').offsetHeight)) {
+		document.thisFrm.VERB.value='register';
+		document.thisFrm.submit();
+		}
+	else {
+   	alert('Sorry, but UPS&reg; requires you actually read the entire agreement (or at least scroll to the bottom!)');
+	   }
+	  
+	"
+ type="button" name="proceed" value=" Yes, I Do Agree ">
+ demos.flesler.com/jquery/scrollTo/
+-->
+
+<input class="button" onClick=" document.thisFrm.submit(); " type="button" name="proceed" value=" Yes, I Do Agree ">
+          
+<input class="button" type="button" onClick="
+	document.thisFrm.VERB.value='abort';
+	document.thisFrm.submit();
+	" name="cancel" value=" No, I Do Not Agree "><br>
+<input class="button" type="button" value=" Print This Agreement " onClick="window.open('upsapi.cgi?VERB=licenseframeprint')">
+</center>
+</form>
+
+	<!-- UPS_DISCLAIMER -->
+	</td>
+</tr>
+</table>
+
+</center>
+</body>

@@ -1,0 +1,363 @@
+#!/usr/bin/perl
+
+use strict;
+
+use CGI;
+my $q = new CGI;
+
+use lib "/httpd/modules";
+use WEBDOC;
+use GTOOLS;
+use ZOOVY;
+use Data::Dumper;
+
+my $wdbh = &WEBDOC::db_webdoc_connect();
+my $uri = $ENV{'REQUEST_URI'};
+my $template_file = 'index.shtml';
+my $DOCID = 0;
+my $keywords = $q->param('keywords');
+
+my $VERB = '';
+if (defined $q->param('VERB')) { $VERB = $q->param('VERB'); }
+my ($AREA,$FILE) = ('','');
+
+if ($uri =~ /^(\/images\/.*)$/) {
+	my $path = $1;
+	$path =~ s/[.]+/./gs;		# converts .. into .
+	$path =~ s/[\/]+/\//gs;		# converts // into /
+
+	open F, "/httpd/webdoc/$path"; $/ = undef; my $buf = <F>; close F; $/ = "\n";
+	if ($path =~ /\.gif$/) {
+		print "Content-type: image/gif\n\n";
+		}
+	elsif ($path =~ /\.js$/) {
+		print "Content-type: text/javascript\n\n";
+		}
+	elsif ($path =~ /\.css$/) {
+		print "Content-type: text/css\n\n";
+		}
+	elsif ($path =~ /\.html$/) {
+		print "Content-type: text/html\n\n";
+		}
+	print $buf;
+	$template_file = '';
+	$VERB = 'X';
+	}
+
+
+if (defined $q->param('GOTO')) {
+	$VERB = 'LOAD';
+	my ($AREA,$FILE) = split(/\//,$q->param('GOTO'),2);
+	my $pstmt = "select ID from WEBDOC_FILES where AREA=".$wdbh->quote($AREA)." and FILE=".$wdbh->quote($FILE);
+	print STDERR $pstmt."\n";
+	my $sth = $wdbh->prepare($pstmt);
+	$sth->execute();
+	($DOCID) = $sth->fetchrow();
+	$sth->finish();
+	$VERB = 'LOAD';
+	if ($DOCID == 0) { $VERB = ''; }
+	}
+
+
+if ($uri =~ /^\/sitemap$/) { $VERB = 'SITEMAP'; }
+elsif ($uri =~ /^\/search/) { $VERB = 'SEARCH'; }
+elsif ($uri =~ /^\/tag\/(.*?)$/) { $VERB = 'SEARCH'; $keywords = $1; }
+
+
+if ($uri =~ /^\/doc[\/-]([\d]+)/) { $VERB = 'LOAD'; $DOCID = int($1); } 
+if ($VERB eq 'DOC') { $VERB = 'LOAD'; $DOCID = int($q->param('DOCID'));  } 
+
+if ($VERB eq 'DOCHEADER') {
+	$VERB = 'SHOW';
+	$template_file = 'frame-header.shtml';
+	}
+
+if ($VERB eq 'DOCNAV') {
+	$DOCID = int($q->param('DOCID')); 
+	$VERB = 'SHOW';
+	## this displays the navigation (used in the left frame)
+	my ($w) = WEBDOC->new($DOCID);
+	($GTOOLS::TAG{'<!-- TOC -->'}) = buildToc($w,keywords=>$keywords);
+	$GTOOLS::TAG{'<!-- KEYWORDS -->'} = $keywords;
+	$w = undef;
+	$template_file = 'frame-nav.shtml';
+	}
+
+if ($VERB eq 'DOCBODY') {
+	$DOCID = $q->param('DOCID');
+	$VERB = 'SHOW';
+	## this displays the (used in the left frame)
+	my ($w) = WEBDOC->new($DOCID);
+	$GTOOLS::TAG{'<!-- KEYWORDS -->'} = $keywords;
+	$GTOOLS::TAG{'<!-- BODY -->'} = $w->wiki2html(keywords=>$keywords);
+	$w = undef;
+	$template_file = 'frame-body.shtml';
+	}
+
+if ($VERB eq '') { $VERB = 'SEARCH'; }
+
+
+
+sub buildToc {
+	my ($w,%options) = @_;
+	##
+	## generate the table of contents
+	##
+
+	my $toc = '';
+
+
+	if (defined $w->{'@FAQS'}) {
+		my $has_faqs = 0;
+		foreach my $faqref (@{$w->{'@FAQS'}}) {
+			# $toc .= Dumper($faqref);
+			if ($faqref->{'IS_FAQ'}) { $has_faqs++; }
+			}
+		if ($has_faqs) {
+			$toc .= qq~<h2 style="color:#777777;">Frequently Asked Questions</h2><ol>~;
+			foreach my $faqref (@{$w->{'@FAQS'}}) {
+				next unless ($faqref->{'IS_FAQ'});
+				my $txt = &WEBDOC::jsescape($faqref->{'QUESTION'});
+				$toc .= qq~<li> $txt\n~;
+				}
+			$toc .= qq~</ol><br>~;
+			}
+		
+		}
+
+
+	$toc .= qq~
+	<h2 style="color:#777777;">Related Documents</h2>
+<!--
+	<p><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></p>
+-->
+	<script type="text/javascript">
+		<!--
+
+		d = new dTree('d');
+	~;
+		
+
+#//		d.add(1,0,'Node 1','example01.html');
+#//		d.add(2,0,'Node 2','example01.html');
+#//		d.add(3,1,'Node 1.1','example01.html');
+#//		d.add(4,0,'Node 3','example01.html');
+#//		d.add(5,3,'Node 1.1.1','example01.html');
+#//		d.add(6,5,'Node 1.1.1.1','example01.html');
+#//		d.add(7,0,'Node 4','example01.html');
+#//		d.add(8,1,'Node 1.2','example01.html');
+#//		d.add(9,0,'My Pictures','example01.html','Pictures I taken over the years','','','img/imgfolder.gif');
+
+	##
+	## this builds the list of documents.
+	##
+
+	if (1) {
+		my $wdbh = &WEBDOC::db_webdoc_connect();
+		my $pstmt = "select TOPICID from WEBDOC_TOPIC_LINKS where DOCID=".int($w->{'ID'});
+		my $sth = $wdbh->prepare($pstmt);
+		$sth->execute();
+		while ( my ($TOPICID) = $sth->fetchrow() ) {
+			$pstmt = "select ID,PARENT,ROOT,TITLE from WEBDOC_TOPICS where ID=".int($TOPICID);
+			my $sthx = $wdbh->prepare($pstmt);
+			$sthx->execute();
+			while ( my ($topicid,$p,$root,$title) = $sthx->fetchrow() ) {
+				my $txt = &WEBDOC::jsescape($title);
+				$toc .= qq~ d.add($topicid,0,'$txt'); ~;
+				$toc .= WEBDOC::buildNav($root,int($w->{'ID'}));
+				}
+			$sthx->finish();
+			}
+		$sth->finish();
+		&WEBDOC::db_webdoc_close();
+		}
+
+
+	$toc .= qq~ 
+		d.add(0,-1,'Zoovy WebDocs');
+		document.write(d);
+
+//-->
+</script>
+	~;
+
+	return($toc);
+	}
+
+
+##
+## AT THIS POINT THE URI HAS BEEN PROCESSED AND A VERB HAS BEEN SELECTED.
+##
+
+
+if ($VERB eq 'SEARCH') {
+	require URI::Escape;
+	my $escKeywords = URI::Escape::uri_escape($keywords);
+
+	require WEBDOC::OZMO;
+	my $resultsref = &WEBDOC::OZMO::ask_question($keywords);
+	if ((defined $resultsref) && (scalar(@{$resultsref})>0)) { 
+        #    {
+        #      'FILE' => '',
+        #      'ID' => '1660',
+        #      'QUESTION' => 'What if I have a lot of products? How can I get them into Zoovy quickly?',
+        #      'DOCID' => '50788',
+        #      'SCORE_HURTFUL' => '0',
+        #      'RESPONSE' => 'If you have a spreadsheet of product data, we can import your products via CSV. It is best to have tech support handle the actual import or learn the details of how to do it through a scheduled appointment. If you do not have a spreadsheet and would rather create your products offline you might consider Zoovy Warehouse Manager.',
+        #      'CREATED_GMT' => '1164922436',
+        #      'MODIFIED_GMT' => '1164922436',
+        #      'IS_FAQ' => '1',
+        #      'AREA' => '',
+        #      'TECH' => 'jmiewald',
+        #      'SCORE_HELPFUL' => '100'
+        #    }
+
+		my $c = '';
+		my $i = 0; 
+		foreach my $faqref (@{$resultsref}) {
+			$c .= "<tr><td>";
+			$c .= $faqref->{'QUESTION'}."<br>";
+			if ($faqref->{'RESPONSE'} ne '') { $c .= "<div class=\"hint\">".$faqref->{'RESPONSE'}."</div>"; }
+			if ($faqref->{'DOCID'}>0) {
+				$c .= sprintf("<div class=\"hint\"><a href=\"/doc-%d\">Read WebDoc #%d</a></div>",$faqref->{'DOCID'},$faqref->{'DOCID'});
+				}
+			$c .= "</td></tr>";
+	
+			}
+		
+		if ($c ne '') {
+			$c = qq~
+<table align="center"><tr><td>
+	<!-- main section of copy in a doc. displays the headline of the section, subhead, and copy block -->
+<div class="sectional">
+<h3>Related FAQ's</h3>
+<div class="navcat_5 subsectional">
+<table width="100%">
+	$c
+</table>
+</div>
+</td></tr></table>
+~;
+			}
+
+		$GTOOLS::TAG{'<!-- FAQ_RESULTS -->'} = $c;
+		}
+
+
+	## 
+	## Keyword Results
+	## 
+
+	my ($keysref,$docsref) = &WEBDOC::search($keywords);
+	my $c = '';
+	my $i = 0; 
+	foreach my $docref (@{$docsref}) {
+		next if ($i++>25);
+		if ($docref->{'title'} eq '') { $docref->{'title'} = $docref->{'file'}; }
+		$c .= qq~<tr><td><a href="/index.cgi?VERB=DOC&DOCID=$docref->{'docid'}&keywords=$escKeywords">$docref->{'title'}</a></td><td>$docref->{'score'}</br></td></tr>~;
+		$c .= qq~<tr><td><font style='font-size: 8pt;'>$docref->{'summary'}</font></td></tr>~;
+		}
+
+	if ($c ne '') {
+		$c = qq~
+<table align="center"><tr><td>
+	<!-- main section of copy in a doc. displays the headline of the section, subhead, and copy block -->
+<div class="sectional">
+<h3>Documents Matching: $keywords</h3>
+<div class="navcat_5 subsectional">
+<table width="100%">
+	$c
+</table>
+</div>
+</td></tr></table>
+	~;
+		$GTOOLS::TAG{'<!-- SEARCH_RESULTS -->'} = $c;
+		}
+
+
+
+#<h3>Frequently asked questions</h3>
+#<div class="navcat_5 subsectional">
+#	<a href="">File Match</a><br />
+#	<a href="">File Match</a><br />
+#	<a href="">File Match</a><br />
+#</div>
+#<br>
+#<h3>Matching pages</h3>
+#<div class="navcat_5 subsectional">
+#	<a href="">File Match</a><br />
+#	<a href="">File Match</a><br />
+#	<a href="">File Match</a><br />
+#</div>
+#</div>
+
+
+
+	#  . '<pre>'.&ZOOVY::incode(Dumper($docsref)).'</pre>';
+	$GTOOLS::TAG{'<!-- KEYWORDS -->'} = &ZOOVY::incode($keywords);	
+
+	$template_file = 'index.shtml';
+	}
+
+
+if ($VERB eq 'LOAD') {
+	$GTOOLS::TAG{'<!-- DOCID -->'} = $DOCID;
+	$template_file = 'frames.shtml';
+	}
+
+
+if ($VERB eq 'SITEMAP') {
+	my $pstmt = "select ID,AREA,FILE,substring(BODY,1,1024),TITLE,MODIFIED_GMT from WEBDOC_FILES order by MODIFIED_GMT desc";
+	print STDERR $pstmt."\n";
+	my $sth = $wdbh->prepare($pstmt);
+	$sth->execute();
+	my $c = '';
+	my $i = 0;
+	while ( my ($id,$area,$file,$body,$title,$mgmt) = $sth->fetchrow() ) {
+		## skip if title is blank
+		next if ($title eq '');
+
+		$i++;
+		$body =~ s/\[\[.*?\].*?\]//gs; 
+		$body =~ s/\<.*?\>//gs;
+		$body =~ s/\&/\& /gs;
+		$body =~ s/<!--.*?-->//gs;
+		$body =~ s/<!--.*//gs;
+		if (substr($body,-25) =~ /</) {
+			$body =~ s/<.*$//gs;	# sometimes html tags are cut off in the middle.
+			}
+		if (substr($body,-25) =~ /\[/) {
+			$body =~ s/\[.*$//gs;	# sometimes webdoc markup tags are cut off in the middle.
+			}
+		my $modified = &ZTOOLKIT::pretty_date($mgmt,1);
+		$c .= qq~
+<tr>
+	<td align="left"><a href="/doc-$id/$title">[$id] $area: <b>$title</b></a></td>
+	<td align="right"><i>Last Modified: $modified</i><br></td>
+</tr>
+<tr>
+	<td colspan=2>
+	<br><div style="font-size: 8pt;">$body</div><br>
+	</td>
+</tr>~; 
+		}
+	$sth->finish();
+	$GTOOLS::TAG{'<!-- RESULTS -->'} = "<table width=700><tr><td colspan=2><h1>SiteMap</h1></td></tr>".
+												"$c</table><br><b>$i documents total.</b>";
+	$template_file = 'sitemap.shtml';
+	}
+
+
+if ($template_file ne '') {
+	&GTOOLS::output(file=>$template_file,header=>1);
+	if ($template_file ne 'frame-body.shtml') {}
+	elsif ($ENV{'REMOTE_ADDR'} =~ /^66\.240\.244/) {
+		print "URI:[$uri] [VERB: $VERB] [<a target=\"_top\" href=\"https://admin.zoovy.com/webdoc/index.cgi?VERB=EDIT&docid=$DOCID\">EDIT</a>] $ENV{'REMOTE_ADDR'}\n";
+		}
+	print "<!-- VERB[$VERB] FILE[$FILE] -->";
+	# use Data::Dumper; print STDERR Dumper(\%ENV);
+	#print STDERR "REMOTE_ADDR: ".$ENV{'REMOTE_ADDR'}. " template_file: $template_file\n";
+	}
+
+&WEBDOC::db_webdoc_close();
+

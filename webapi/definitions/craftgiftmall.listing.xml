@@ -1,0 +1,97 @@
+<DEFINITION NAME="listing">
+
+<DIV NAME="COMPANYINFO" TITLE="Company Information">
+<META TYPE="TITLE">Craft Gift Mall Listing</META>
+<META TYPE="DESCRIPTION">
+Please provide some additional information about your company which will appear with this listing. (NOTE: the most recent copy will be globally updated to all your listings)
+</META>
+<INPUT TYPE="TEXTBOX" STICKY="Y" NAME="channel:zoovy:company_name" 
+LOADFROM="merchant:zoovy:company_name" PROMPT="Company Name" MAXLENGTH="100"></INPUT>
+
+<INPUT TYPE="TEXTAREA" STICKY="Y" ROWS="5" COLS="80" 
+LOADFROM="merchant:zoovy:about_us" 
+NAME="channel:zoovy:aboutus" PROMPT="About You"  HELP="Please enter a short description about your company" MANDATORY="N" MAXLENGTH="1000"></INPUT>
+<INPUT TYPE="IMAGE" NAME="channel:craftgiftmall:company_logo" STICKY="Y" HEIGHT="100" WIDTH="100" LOADFROM="merchant:zoovy:company_logo" PROMPT="Your Logo" HELP="Logo will be scaled to 100x100, optional"></INPUT>
+<BUTTON TYPE="PEER" TARGET="ALPHA" PROMPT="Edit Listing Information"></BUTTON>
+<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+</DIV>
+
+
+
+
+
+
+<DIV NAME="ALPHA" TITLE="Create">
+<META TYPE="TITLE">Craft Gift Mall Listing</META>
+<META TYPE="DESCRIPTION">
+http://www.CraftGiftMall.com is a new marketplace for buyers and sellers of crafts and other online gifts.
+Please do not submit non GIFT items as they are not relevant to this site.
+</META>
+
+<INPUT TYPE="HIDDEN" NAME="channel:zoovy:company_name" LOADFROM="channel:zoovy:company_name"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="channel:zoovy:about_us" LOADFROM="merchant:zoovy:about_us"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="channel:craftgiftmall:company_logo" LOADFROM="merchant:zoovy:company_logo"></INPUT>
+
+<INPUT TYPE="TEXTBOX" NAME="product:zoovy:prod_name" PROMPT="Product Name" COLS="100" MANDATORY="Y"></INPUT>
+<INPUT TYPE="BLANK"></INPUT>
+<INPUT TYPE="NUMBER" COLS="10" PRECISION="2" NAME="product:zoovy:base_price" PROMPT="Retail Price" MANDATORY="Y"></INPUT>
+<INPUT TYPE="NUMBER" COLS="10" PRECISION="2" NAME="product:craftgiftmall:discount_price" PROMPT="Discount Price" MANDATORY="N" HELP="Discount price is completely optional"></INPUT>
+
+<INPUT TYPE="TEXTAREA" ROWS="10" COLS="80" NAME="product:zoovy:prod_desc" PROMPT="Tell us about this product"></INPUT>
+<INPUT TYPE="IMAGE" NAME="product:zoovy:prod_image1" PROMPT="Product Picture 1" MANDATORY="N" HELP="Recommended"></INPUT>
+<INPUT TYPE="IMAGE" NAME="product:zoovy:prod_image2" PROMPT="Product Picture 2" MANDATORY="N" HELP="Optional"></INPUT>
+<INPUT TYPE="IMAGE" NAME="product:zoovy:prod_image3" PROMPT="Product Picture 3" MANDATORY="N" HELP="Optional"></INPUT>
+
+<INPUT TYPE="BLANK"></INPUT>
+<INPUT TYPE="CHECKBOX" ON="Y" OFF="N"  STICKY="Y" LOADFROM="merchant:craftgiftmall:feature" NAME="product:craftgiftmall:feature" PROMPT="Featured Listing ($0.10 per week)"></INPUT>
+<INPUT TYPE="RADIO" LIST="CATEGORY" STICKY="Y" LOADFROM="merchant:craftgiftmall:category" NAME="product:craftgiftmall:category" PROMPT="Product Category" VALUE="0"></INPUT>
+<INPUT TYPE="RADIO" LIST="LENGTH" STICKY="Y" LOADFROM="merchant:craftgiftmall:listinglength" NAME="product:craftgiftmall:listinglength" PROMPT="Duration" VALUE="30"></INPUT>
+
+<DISPLAY TYPE="TITLE">Complete</DISPLAY>
+<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+<BUTTON TYPE="PEER" TARGET="COMPANYINFO" PROMPT="Create/Update Seller Profile"></BUTTON>
+<INPUT TYPE="NULL"></INPUT>
+<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+</DIV>
+
+<DIV NAME="OMEGA">
+<META TYPE="TITLE">Craft Gift Mall Advertisement Listing</META>
+<META TYPE="DESCRIPTION">
+Please press Submit Channel and your listing will appear on CraftGiftMall.com within a few minutes - if any errors occur you will be emailed.
+</META>
+
+<DISPLAY TYPE="LABEL">Please press save to continue.</DISPLAY>
+<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+</DIV>
+
+
+
+<LIST TYPE="TEXT" NAME="LENGTH">
+<OPTION VALUE="01" PROMPT="1 Day"></OPTION>
+<OPTION VALUE="03" PROMPT="3 Day"></OPTION>
+<OPTION VALUE="07" PROMPT="1 Week"></OPTION>
+<OPTION VALUE="14" PROMPT="2 Weeks"></OPTION>
+<OPTION VALUE="30" PROMPT="30 Days"></OPTION>
+<OPTION VALUE="90" PROMPT="3 months"></OPTION>
+<OPTION VALUE="365" PROMPT="1 Year"></OPTION>
+</LIST>
+
+<LIST TYPE="TEXT" NAME="CATEGORY">
+<OPTION VALUE="1" PROMPT="General"></OPTION>
+<OPTION VALUE="2" PROMPT="Collectibles"></OPTION>
+<OPTION VALUE="3" PROMPT="Computers &amp; Internet"></OPTION>
+<OPTION VALUE="4" PROMPT="Crafts"></OPTION>
+<OPTION VALUE="5" PROMPT="Gifts, Flowers, &amp; Jewlery"></OPTION>
+<OPTION VALUE="6" PROMPT="Food &amp; Drink"></OPTION>
+<OPTION VALUE="7" PROMPT="Health &amp; Beauty"></OPTION>
+<OPTION VALUE="8" PROMPT="Home &amp; Gardens"></OPTION>
+<OPTION VALUE="9" PROMPT="Sports, Fitness &amp; Recreation"></OPTION>
+<OPTION VALUE="10" PROMPT="Toys &amp; Games"></OPTION>
+<OPTION VALUE="0" PROMPT="Everything Else"></OPTION>
+</LIST>
+
+</DEFINITION>
+

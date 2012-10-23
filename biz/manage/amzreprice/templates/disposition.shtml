@@ -1,0 +1,42 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<form action="index.cgi">
+
+<table><tr><td>
+<div style="width:600px">
+<!-- MESSAGE -->
+</div>
+
+
+<table style="display: table;" id="datatable" class="flexigrid">
+<thead>
+<tr>
+	<th width="150">SKU</th>
+	<th width="100">ASIN</th>
+	<th width="100">STRATEGY</th>
+	<th width="50">HAS ERROR</th>
+	<th width="75">MIN_PRICE</th>
+	<th width="75">MIN_SHIP</th>
+	<th width="75">MAX_PRICE</th>
+	<th width="100">CURRENT_PRICE</th>
+	<th width="100">CURRENT_SHIP</th>
+	<th width="100">LAST UPDATE</th>
+	<th width="100">NEXT UPDATE</th>
+	<th width="250">STATUS</th>
+</tr>
+</thead>
+<tbody>
+	<!-- LOGS -->
+</tbody>
+</table>
+
+<script type="text/javascript">
+$('.flexigrid').flexigrid({height:'auto'});
+</script>
+
+</td></tr></table>
+</form>
+</center>
+
+<!-- FOOTER -->

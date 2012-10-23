@@ -1,0 +1,98 @@
+<!-- SETUP_TAB -->
+
+
+
+<!-- 
+this should be added to the header and included on every page. but we didn't/can't... so here it is exactly where we're not supposed to put it.  
+FOR TESTING purposes  :)
+
+THIS CSS FILE NEEDS TO GET PUSHED.  I created a back up before changing it.  Liz and JT made a few changes (it only takes two.  ha ha)
+-->
+
+<table width='800' border='0' cellpadding='1' cellspacing='0' align='center'>
+<tr>
+	<td align='left'>
+<h1><!-- FORMAT_PRETTY --> Manager</h1>
+<span class="alert"><!-- MESSAGE --></span>
+	</td>
+</tr>
+</table>
+
+
+
+<!-- UPLOAD_FORM -->
+
+
+
+
+<!-- begin manage TOXML -->
+<form action='index.cgi' method='POST' enctype='multipart/form-data'>
+<input type='hidden' name='FORMAT' value='<!-- FORMAT -->'>
+
+<table width='800' border='0' cellpadding='0' cellspacing='0' class="zoovytable" align='center'>
+<tr>
+	<td>
+	<div style='margin:5px;'>
+
+These files are owned/maintained by you and you may edit or delete them at any time. 
+
+	</div>	
+	</td>
+</tr>
+<tr>
+	<td>
+
+<table width='100%' border='0' cellpadding='4' border='0' cellspacing='0'>
+<thead>
+<tr>
+	<th colspan='2' align='left' class='zoovytableheader'>Custom <!-- FORMAT_PRETTY --></th>
+	<th align="right" class='zoovytableheader'>Action</th>
+</tr>
+</thead>
+
+<tbody>
+<!-- CUSTOM_TOXML -->
+</tbody>
+
+</table>
+
+	</td>
+</tr>
+</table>
+
+
+<table width='800' border='0' cellpadding='0' cellspacing='0' class="zoovytable" align='center'>
+<tr>
+	<td>
+	<div style='margin:5px;'>
+
+These files are maintained by the Zoovy design team. If
+you'd like to modify one, simply click the " View/Copy " link to save this <!-- FORMAT_PRETTY --> 
+onto your Zoovy file system.
+
+	</div>	
+	</td>
+</tr>
+<tr>
+	<td>
+
+<table width='100%' border='0' cellpadding='4' border='0' cellspacing='0'>
+<thead>
+<tr>
+	<th colspan='2' align='left' class='zoovytableheader'>Zoovy <!-- FORMAT_PRETTY --></th>
+    <th align="right" class='zoovytableheader'>Action</th>
+</tr>
+</thead>
+
+<tbody>
+<!-- ZOOVY_TOXML -->
+</tbody>
+</table>
+
+
+	</td>
+</tr>
+</table>
+
+<!-- end -->
+<div align='center' style='margin-top:10px;'><a target="_top" href=".."><img border='0' border='0' src="/images/bizbuttons/exit.gif"></a></div>

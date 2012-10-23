@@ -1,0 +1,291 @@
+<!-- NO_TAB -->
+
+<center>
+<form method="POST" name="thisFrm" action="index.cgi">
+<h2>Shipping Configuration [<!-- CODE -->]</h2>
+<input type='hidden' name='ACTION' value='PROFILE-SHIPPING-SAVE'>
+<input type='hidden' name='CODE' value='<!-- CODE -->'>
+
+<!-- XML -->
+
+<table border='0' width='600' class='zoovytable'>
+	<tr>
+		<td colspan='3' class='zoovytableheader' >General Shipping Configuration</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		Max Dispatch time: <!-- select!ebay:dispatchmaxtime --><br>
+		<div class='hint'>The maximum number of days before the time the order is placed and it will ship.</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2><!-- checkbox!ebay:getitfast --> Enable "Get It Fast" option.<br>
+		<div class='hint'>Requires a 1 day Max Dispatch Time, and at least one Expedited Shipping Service.</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='3' class='zoovysub1header' colspan=3>Calculated Shipping Settings</td>
+	</tr>
+	<tr>
+		<td colspan='3'><div class='hint'>Calculated settings apply only to calculated services.</div></td>
+	</tr>
+	<tr>
+		<td>OriginatingPostalCode</td>
+		<td><!-- textbox!ebay:ship_originzip --></td>
+	</tr>
+   <tr>
+		<td>InternationalPackagingHandlingCosts</td>
+		<td>$<!-- textbox!ebay:ship_intpkghndcosts --></td>
+	</tr>
+	<tr>
+		<td>PackagingHandlingCosts</td>
+		<td>$<!-- textbox!ebay:ship_dompkghndcosts --></td>
+	</tr>
+	<tr>
+		<td colspan='3'><!-- checkbox!ebay:ship_irregular -->ShippingIrregular</td>
+	</tr>
+	<tr>
+		<td>ShippingPackage</td>
+		<td><!-- select!ebay:ship_packagetype --><br>
+		<div class='hint'>Note: not all shipping packages are compatible with all shipping methods.
+		Choose "None" if you plan to use your own packaging.</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+		<div class='hint'>
+		REMEMBER: Configured product weight and dimensions will be used unless overridden with specific eBay values.
+		</div>
+	</tr>
+   <tr>
+      <td class='zoovysub1header' colspan=3>Insurance Settings</td>
+   </tr>
+	<tr>
+		<td width=50>Domestic</td>
+		<td colspan=2>Amount: <!-- textbox!ebay:ship_dominsfee --> | <!-- select!ebay:ship_dominstype --></td>
+	</tr>
+	<tr>
+		<td width=50>International</td>
+		<td colspan=2>Amount: <!-- textbox!ebay:ship_intinsfee --> | <!-- select!ebay:ship_intinstype --></td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+		<div class='hint' style='display: none;'>
+<ul>
+<li> IncludedInShippingHandling: The seller is not charging separately for shipping insurance costs; any insurance is already included in shipping cost.
+<li> NotOffered: The seller does not offer shipping insurance to the buyer.
+<li> Optional: The seller offers the buyer the choice of paying for shipping insurance or not.
+<li> Required: The seller requires that the buyer pay for shipping insurance.
+</ul>
+
+		If Insurance is Required and FreeShipping is true, eBay changes the insurance cost to 0 for that shipping service. 
+		But if InsuranceOption is Optional, the cost of shipping insurance remains, 
+		for it is up to the buyer whether to buy shipping insurance, regardless of whether the seller specified free shipping. 
+		</div>
+		</td>
+	</tr>
+	<!--
+	<tr>
+		<td colspan=3 class='zoovysub1header' >Discounts</td>
+	</tr>
+	<tr>
+		<td>ShippingDiscountProfileID</td>
+		<td>
+		<select name="">
+		<option value=''>None</option>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>InternationalShippingDiscountProfileID</td>
+		<td>
+		<select name="">
+		<option value=''>None</option>
+		</select>
+		</td>
+	</tr>
+	-->
+	<tr><td colspan=3 class='zoovysub1header'>Permitted Shipping Destinations</td></tr>
+	<tr><td colspan=3 align=center>
+		<table width=100%>
+		<!-- INT_COUNTRIES -->
+		</table>
+	</td></tr>
+	<tr>
+		<td colspan=3>
+		<input class="button" type="submit" value=" Save ">
+		</td>
+	</tr>
+</table>
+
+
+<br>
+<table border='0' width='600' class='zoovytable'>
+	<tr>
+		<td colspan=3 class='zoovysub1header' >
+		Domestic Shipping Services 
+	</td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+		<table>
+		<!-- DOM_CONFIGURED -->
+		</table>
+		
+		</td>
+	</tr>
+	<tr>
+		<td colspan=3>
+		<div id="xDomDiv" name="xDomDiv" style="display: visible">
+		<input type="button" class='button' onClick="
+		document.getElementById('xDomDiv').style.display = 'none';
+		document.getElementById('yDomDiv').style.display = '';
+		" value=" Add / Update "></a>
+		</div>
+		<div id="yDomDiv" name="yDomDiv" style="display: none">
+		<br>
+		<br>
+	<table width=100%>
+	<tr><td class='zoovysub1header' >Add New Domestic Option</td></tr>
+	<tr><td>
+		<table bgcolor='#CCCCCC'>
+		<tr><td colspan=3>Fixed Price Only:</td></tr>
+		<tr>
+		<td>ShippingServiceCost: $<input size="5" type="textbox" name="dom.cost"></td>		
+		<td>ShippingServiceAdditionalCost $<input size="5" type="textbox" name="dom.addcost"></td>
+		<td>AK+HI Add: $<input size="5" type="textbox" name="dom.farcost"></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+			<div class='hint'>
+			HINT: Use -1 for "cost" to pull fixed cost from the item, leave all fields blank for calculated shipping.
+			</div>
+			</td>
+		</tr>
+		</table>
+		<br>
+		<table>
+			<tr>
+				<td nowrap width=50>Shipping Service:</td>
+				<td>
+				<select name="dom.service">
+				<!-- DOM_SERVICES -->
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Priority:</td>
+				<td>
+				<select name="dom.priority">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2'>			
+				<input type="checkbox" name="dom.free"> FREE: This method can be selected at no cost to the buyer.<br>
+				</td>
+			</tr>
+		</table>
+		<input class="button" type="button" value=" Save " onClick="document.thisFrm.ACTION.value='PROFILE-SHIPPING-DOM-SAVE'; document.thisFrm.submit();">	
+	</td></tr>
+	</table>
+		</div>
+		</td>
+	</tr>
+</table>
+
+
+
+<br>
+<table border='0' width='600' class='zoovytable'>
+	<tr>
+		<td colspan=3 class='zoovysub1header' >
+		International Shipping Services 
+	</td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+		<table>
+		<!-- INT_CONFIGURED -->
+		</table>
+		<div class='hint'>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=3>
+
+		<div id="xIntDiv" name="xIntDiv" style="display: visible">
+		<input type="button" class='button' onClick="
+		document.getElementById('xIntDiv').style.display = 'none';
+		document.getElementById('yIntDiv').style.display = '';
+		" value=" Add / Update "></a>
+		</div>
+
+		<div id="yIntDiv" name="yIntDiv" style="display: none">
+		<br>
+		<br>
+	<table width=100%>
+	<tr><td class='zoovysub1header' >Add New International Option</td></tr>
+	<tr><td>
+		<table bgcolor='#CCCCCC'>
+		<tr><td colspan=3>Fixed Price Only:</td></tr>
+		<tr>
+		<td>ShippingServiceCost: $<input size="5" type="textbox" name="int.cost"></td>		
+		<td>ShippingServiceAdditionalCost $<input size="5" type="textbox" name="int.addcost"></td>
+		</tr>
+		<tr>
+			<td colspan=3><div class='hint'>HINT: Use -1 for "cost" to pull fixed cost from the item, leave all fields blank for calculated shipping.</div></td>
+		</tr>
+		</table>
+		<br>
+		<table>
+			<tr>
+				<td nowrap width=50>Shipping Service:</td>
+				<td>
+				<select name="int.service">
+				<!-- INT_SERVICES -->
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">Priority:</td>
+				<td valign="top">
+				<select name="int.priority">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">Countries: </td>
+				<td valign="top">
+				<input type="textbox" size="10" name="int.shipto">
+				<div class="hint">
+				A comma separated list of eBay ShipTo destinations. (Leave blank to use allowed list of countries).<br>
+				Canadian specific methods will be automatically restricted to only allow for Canada.
+				</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2'>			
+				<input type="checkbox" name="int.free"> FREE: This method can be selected at no cost to the buyer.<br>
+				</td>
+			</tr>
+		</table>
+		<input class="button" type="button" value=" Save " onClick="document.thisFrm.ACTION.value='PROFILE-SHIPPING-INT-SAVE'; document.thisFrm.submit();">	
+	</td></tr>
+	</table>
+		</div>
+		</td>
+	</tr>
+</table>
+
+<br>
+</form>
+
+</body>

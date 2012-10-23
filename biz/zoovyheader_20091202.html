@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>heads are great</title>
+
+
+<link rel="STYLESHEET" type="text/css" href="/biz/standard.css" />
+<style type='text/css'>
+
+img {border:0px;}
+
+
+
+/* header tabs and on-hover styles */
+
+/* common styling */
+.header_tabs {font-family: arial, sans-serif; position:relative; font-size:13px; z-index:100;}
+.header_tabs ul li a, .header_tabs ul li a:visited {display:block; text-decoration:none; padding:0 10px 2px 10px; line-height:27px; color:#666666; font-weight:bold; overflow:hidden; }
+
+.header_tabs ul li a.focus	{background:url(/biz/images/header/header_tab_highlight-1x14.png) top repeat-x #7eb4f2; border:solid #99c4f5 1px; border-top-width:0px; border-bottom-width:0px; color:#2462aa;}
+
+.header_tabs ul li a:hover	{background:#fdd988 url(/biz/images/header/header_tab_highlight-1x14.png) top repeat-x;}
+.header_tabs ul {padding:0; margin:0; list-style: none;}
+.header_tabs ul li {float:left; position:relative;}
+.header_tabs ul li ul {display: none;}
+
+/* specific to non IE browsers */
+
+.header_tabs ul li:hover ul {display:block; position:absolute; top:25px; left:0; width:200px; background:#fff2d6; border:2px solid #fdcf6a; text-align:center; font-size:12px; z-index:500;}
+.header_tabs ul li:hover ul li	{margin:0; padding:0;}
+.header_tabs ul li:hover ul li ul {display: none;}
+
+/* tier 2 menu links */
+.header_tabs ul li:hover ul li, .header_tabs ul li:hover ul	{margin:0; padding:0;}
+.header_tabs ul li:hover ul li	{width:200px;}
+.header_tabs ul li:hover ul li a {display:block; color:#ff6600; text-align:left; border-bottom:1px solid #f6d48a; line-height:21px;}
+.header_tabs ul li:hover ul li a:hover {background:#f2b93e; color:#ffffff;}
+
+.header_tabs ul li:hover ul li:hover ul {display:block; position:absolute; left:190px; top:0;}
+.header_tabs ul li:hover ul li:hover ul.left {left:-190px;}
+
+
+
+/* sublinks */
+#sublinks a	{background: url(/biz/images/header/header_sublink_splitter-2x24.png) right bottom no-repeat; padding:0 15px; color:#ffffff;line-height:28px; color:#ffffff; display:block; float:left;}
+#sublinks a.focus	{background:url(/biz/images/header/header_focus_subcat_bg-185x28.png) repeat-x right; color:#ff6600; font-weight:bold;}
+
+
+.shadow {text-shadow: #ffffff 1px 1px 1px;  }
+/* filter: Shadow(Color=#000000, Direction=135, Strength=1); */
+	
+</style>
+
+</head>
+
+<body>
+
+
+<div style='height:100px;'>
+    <div id='header' style='position:fixed; top:0; left:0; right:0; background:#f9f9f9 url(/biz/images/header/header_bg-985x105.jpg) no-repeat top left; height:95px;'>
+        <div style='position:relative; height:95px; background:url(/biz/images/header/header_bottomhors-1x53.gif) repeat-x bottom'>
+
+
+
+<!-- logo -->
+<div id='zoovyLogo' style='position:absolute; top:5px; left:5px;'><a href='/' onClick="JSgoTo();"><img src="/biz/images/header/zoovy_logo-136x33.png" alt="zoovy is great" width='136' height='33' /></a></div>
+
+
+
+
+<!-- username/id and partition info -->
+<div id='userInfo' style='position:absolute; top:1px; left:150px; font-size:10px;'>You are logged in as: ~.$ZOOVY::USERNAME.(($ZOOVY::LUSER ne '')?"*$ZOOVY::LUSER":'').$prtinfo.$alert.q~ on partition: 0 <span style='padding:0 10px;'>|</span> <a href='https://www.zoovy.com/login/logout.cgi' onClick="JSgoTo();">logout</a></div>
+
+
+<div style='position:absolute; top:42px; left:900px; width:100px; text-align:right;'><a target="webdoc" href="~.$m{'help'}.q~"><img src="//www-zoovy.simplecdn.net/biz/images/header/ui_help_link-29x10.gif" width="29" height="10" border="0" /></a></div>
+
+<!-- these are the sublinks (tabs as brian calls them), the ones that appear below the main tabs.  the focus href should have a class of 'focus' on it. -->
+<div id='sublinks' style='position:absolute; top:42px; left:0px;'>
+	
+~.$TABS.q~
+</div>
+
+
+
+
+<!-- breadcrumbs -->
+<div id='breadcrumb' style='position:absolute; top:72px; line-height:20px; height:20px; left:15px;'>
+~.$BREADCRUMB.q~
+</div>
+
+
+
+<div id='menu' style='position:absolute; top:1px; left:680px; width:320px; font-size:10px; text-align:right; '>
+<a href='/biz/downloads' onClick="JSgoTo();">downloads</a>  |  
+<a href='https://www.zoovy.com/biz/support/index.cgi' onClick="JSgoTo();">support</a>  |  
+<span class="menu~.(($has_todo)?'alert':'').q~"><a href='https://www.zoovy.com/biz/inbox.cgi' target="_top" onClick="JSgoTo();">inbox</a></span>  |  
+<span class="menu~.(($has_inbox)?'alert':'').q~"><a href='https://www.zoovy.com/biz/todo/inbox.cgi' target="_top" onClick="JSgoTo();">to do</a></span>
+</div>
+
+
+
+<!-- main tabs -->
+<div id='headerTabs' style='position:absolute; top:15px; height:29px; left:150px; width:520px; background: url(/biz/images/header/header_tab_bg-1x26.png) repeat-x top;'>
+	<div style='float:left;'><img src='/biz/images/header/header_tab_leftcap-7x26.png' width='7' height='26' alt='' /></div>
+	<div style='float:right;'><img src='/biz/images/header/header_tab_rightcap-7x26.png' width='7' height='26' alt='' /></div>
+
+
+
+<div class="header_tabs">
+
+<ul>
+<li><a class="hide shadow" href="/biz/setup/">setup</a>
+
+	<ul>
+	<li><a href='/biz/setup/builder'>site builder</a></li>
+	<li><a href='/biz/setup/builder/emails/index.cgi?VERB=EDIT&NS=DEFAULT'>edit email bessages</a></li>
+	<li><a href='/biz/setup/media/'>media library</a></li>
+	<li><a href='/biz/setup/navcats/'>categories and lists</a></li>
+	<li><a href='/biz/setup/analytics/'>analytics and plugins</a></li>
+	<li><a href='/biz/setup/promotions/'>coupons &amp; promotions</a></li>
+	<li><a href='/biz/setup/profiles/'>company profiles</a></li>
+	<li><a href='/biz/setup/domain/'>domain hosting</a></li>
+	<li><a href='/biz/setup/'>&#187; more</a></li>
+	</ul>
+
+</li>
+
+<li><a class="hide shadow" href="/biz/sites/">sites</a>
+
+	<ul>
+	<li><a href='/biz/sites/index.cgi?VERB=PROFILES'>profiles</a></li>
+	<li><a href='/biz/sites/index.cgi?VERB=DOMAINS'>domains</a></li>
+	<li><a href='/biz/sites/index.cgi?VERB=PARTITIONS'>partitions</a></li>
+	<li><a href='/biz/sites/index.cgi?VERB=CHECKUP'>diagnostics</a></li>
+	</ul>
+
+</li>
+
+
+<li><a class="hide shadow" href="/biz/products/">products</a>
+
+	<ul>
+	<li><a href="#">Create new</a></li>
+	<li><a href="#">Filter products</a>
+        <ul>
+        <li><a href='#'>fresh</a></li>
+        <li><a href='#'>need review</a></li>
+        <li><a href='#'>syndicaiton errors</a></li>
+        <li><a href='#'>preorder</a></li>
+        <li><a href='#'>discontinued</a></li>
+        <li><a href='#'>special order</a></li>
+        <li><a href='#'>best seller</a></li>
+        <li><a href='#'>on sale</a></li>
+        <li><a href='#'>can ship free</a></li>
+        <li><a href='#'>new arrival</a></li>
+        </ul>    
+    </li>
+	</ul>
+
+</li>
+
+<li><a class="hide shadow" href="https://www.zoovy.com/biz/orders/">orders</a>
+	<ul>
+	<li><a href="#">incomplete</a></li>
+	<li><a href="#">recent</a></li>
+	<li><a href="#">review</a></li>
+	<li><a href="#">hold</a></li>
+	<li><a href="#">pending</a></li>
+	<li><a href="#">approved</a></li>
+	<li><a href="#">processing</a></li>
+	<li><a href="#">completed</a></li>
+	<li><a href="#">cancelled</a></li>
+	</ul>
+</li>
+
+
+<li><a class="hide shadow" href="/biz/crm/">crm</a>
+
+	<ul>
+	<li><a href="/biz/crm/index.cgi?VERB=CREATE">create</a></li>
+	<li><a href="/biz/crm/index.cgi?VERB=TICKETS-NEW">new</a></li>
+	<li><a href="/biz/crm/index.cgi?VERB=TICKETS-OPEN">open</a></li>
+	<li><a href="/biz/crm/index.cgi?VERB=TICKETS-WAITING">waiting</a></li>
+	</ul>
+</li>
+
+
+<li><a class="hide shadow" href="/biz/syndication/">syndication</a>
+
+	<ul>
+	<li><a href="/biz/syndication/googlebase/">googlebase</a></li>
+	<li><a href="/biz/syndication/ebaystore">ebay stores</a></li>
+	</ul>
+
+</li>
+
+<li><a class="hide shadow" href="/biz/reports/">reports</a>
+
+	<ul>
+	<li><a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=CHANNEL_SCHEDULER&GUID=9B635ABA-DF95-11DE-A8A7-66FCEA1F">channel scheduler</a></li>
+	<li><a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=EBAY_POWER&detail=NONE&GUID=9B635ABA-DF95-11DE-A8A7-66FCEA1F">ebay powerlister</a></li>
+	
+	<li><a href='/biz/reports/index.cgi?VERB=STORED'>stored reports</a></li>
+	</ul>
+
+</li>
+
+
+<li><a class="hide shadow" href="/biz/utilities/">utilities</a>
+
+	<ul>
+	<li><a href='/biz/manage/customer'>customer manager</a></li>
+	<li><a href='/biz/manage/giftcard'>giftcard manager</a></li>
+	</ul>
+
+</li>
+</ul>
+</div>
+
+</div>
+<!-- Yoda says: end here main tabs they do  -->
+
+
+
+<!-- search -->
+<div id='search' style='position:absolute; top:15px; height:29px; left:680px; width:320px;'>
+
+<form action='' id='zoovySearch' name='zoovySearch' method='post'>
+<input type="hidden" name="VERB" value='QUICKSEARCH' />
+
+
+<!-- set to 1 to do a detailed (keyword) product search -->
+<input name="DETAIL" id='prod_search_detail' type="hidden" value='' />
+
+
+<table align='right' cellspacing='0' cellpadding='0' style='margin-top:2px;'>
+<tr>
+	<td><select style='font-size:11px;'>
+<option selected disabled>search</option>
+<optgroup label="product by">
+    <option>id or keyword</option>
+
+	<option>ebay item #</option>
+</optgroup>
+<optgroup label="orders by">
+	<option>order id</option>
+	<option>google order #</option>
+	<option>amazon order #</option>
+	<option>more options</option>
+
+</optgroup>
+<optgroup label="customers by">
+	<option>email</option>
+	<option>order #</option>
+	<option>last name</option>
+	<option>more options</option>
+</optgroup>
+</select></td>
+    <td style='padding:0 4px;'><input type="text" style='width:120px;' name='query' id='query' /></td>
+
+    <td><input type='submit' class='zbutton' value='go' /></td>
+</tr>
+</table>
+</form>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+<!--
+var logoImg = window.document.images['zoovyheaderlogo'];
+var waitIMG = new Image(114,58);
+waitIMG.src = "/biz/images/header/spin_logo-114x58.gif";
+
+function JSgoTo() {	
+	logoImg.focus();
+	logoImg.src = waitIMG.src;
+	logoImg.focus();
+	}
+
+//-->
+</script>
+

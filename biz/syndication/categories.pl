@@ -1,0 +1,1 @@
+/httpd/static/syndication/categories.pl

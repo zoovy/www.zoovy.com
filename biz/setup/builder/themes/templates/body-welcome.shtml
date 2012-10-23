@@ -1,0 +1,52 @@
+<!-- SETUP_TAB -->
+
+<script type="text/javascript" src="logos.js"></script>
+<table width="100%">
+<tr>
+	<td valign='top'>
+	<!-- LEFT -->
+	<td>
+	<td class="zoovytable">
+	<!-- BEGIN_CONTENT -->
+
+
+<table width=500 cellspacing="10" cellpadding="0">
+<tr><td align="left">
+<h1>Welcome to the Theme Chooser.</h1><br>
+<br>
+The theme is applied to every page on your website in order to provide a 
+consistent appearance to buyers.<br>
+<br>
+Themes also decide which fonts, colors, and buttons appear on your
+site in addition to how your logo is displayed.<br>
+<br>
+Zoovy includes over 450 themes that you may choose from.
+You may also purchase pre-built custom themes at http://proshop.zoovy.com,
+or commission Zoovy to build a custom theme for you.<br>
+<br>
+If you have the "WEB" feature bundle on your account then you can create and
+upload your own custom themes.<br>
+<br>
+If you are new to Zoovy we recommend you simply select any pre-built
+theme that appeals to you. You can always change it later. 
+Zoovy will remember the themes you select and compile a list of them so it's easy
+to try different ones.<br>
+<br>
+To get started, use the categories on the left. We recommend starting in
+the "User Favorites" or "Staff Favorites" lists since those are the most
+popular.
+
+</td></tr>
+</table>
+
+
+	
+		<!-- END_CONTENT -->
+		
+	</td>
+</tr>
+</table>		
+
+<center><a href="/biz/setup/builder"><img border=0 src="/images/bizbuttons/exit.gif"></a></center>
+
+</body>

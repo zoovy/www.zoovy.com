@@ -1,0 +1,45 @@
+<!-- UTILITIES_TAB -->
+<center>
+
+<form name="thisFrm" action="index.cgi" method="POST">
+	<input type="hidden" name="VERB" value="SAVE_SUBLIST">
+	<input type="hidden" name="ID" value="<!-- ID -->">
+
+
+<br>
+
+<!-- SIZING TABLE  -->
+<table class="zoovytable" width="600" cellspacing=0 cellpadding=0>
+	<tr><td class="zoovytableheader">Edit Subscribers List: <!-- ID --></td></tr>
+
+	<tr>
+	<td>
+	<table>
+
+<!-- RESULTS -->
+
+<b>Customer Email(s):</b><br>
+<textarea cols=65 rows=5 name="EMAILS"></textarea><br>
+<input class="button" onClick="thisFrm.VERB.value='ADD_SUBLIST_RECIPIENT'; thisFrm.submit();" 
+	type="button" value="Add" >
+<input class="button" onClick="thisFrm.VERB.value='REMOVE_SUBLIST_RECIPIENT'; thisFrm.submit();" 
+	type="button" value="Remove" >
+<div class="hint">
+If you specify an email address that does not have an account, one will be created.
+For bulk operations you may specify multiple email addresses (up to 500) separated by a space,
+CR/LF (enter), comma, or semicolon.
+</div>
+<hr>
+
+	</table>	
+	</td>
+	</tr>
+	<tr>
+		<td align="center">
+      <input type="button" name="BUTTON" value="Cancel" class="button"
+onClick="location='index.cgi?VERB=SUBSCRIBER-LISTS';">
+		</td>
+	</tr>
+</table>
+
+</form>

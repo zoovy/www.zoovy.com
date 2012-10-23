@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use ZPAY::GOOGLE;
+use ZWEBSITE;
+
+$USERNAME = 'google';
+
+				my $gco = &ZPAY::GOOGLE::buildGCO($USERNAME);
+				require Google::Checkout::Command::AddMerchantOrderNumber;		
+				my $add_merchant_order = Google::Checkout::Command::AddMerchantOrderNumber->new(
+                         order_number          => '265568456959908',
+                         merchant_order_number => $ORDERID);
+				my $run_diagnose = 1;
+				my $response = $gco->command($add_merchant_order, $run_diagnose);
+
+use Data::Dumper;
+print Dumper($response);

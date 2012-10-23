@@ -1,0 +1,26 @@
+<!-- SETUP_TAB -->
+<center>
+<br>
+<br>
+<font face='verdana, arial, helvetica' color='red' size='5'><b>Sorry</b></font><br>
+<br>
+<table table='80%'>
+<tr><td>
+
+The partition you are on does not have it's own customer database.
+
+
+<br>
+<br>
+<br>
+
+<!-- WEBDOC --> 
+
+<br>
+<br>
+</font>
+</td></tr>
+</table>
+
+</center>
+</body>

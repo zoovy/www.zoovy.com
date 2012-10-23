@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use SITE::EMAILS;
+use ORDER;
+use Data::Dumper;
+
+my ($o) = ORDER->new('mcdc','2008-01-95463');
+# print Dumper($o);
+
+my ($se) = SITE::EMAILS->new("mcdc",PROFILE=>"DEFAULT");
+# ($err) = $se->send("OCREATE",TO=>'brian@zoovy.com',TEST=>1,ORDER=>$o);
+($err) = $se->send("OCREATE",TO=>'brian@zoovy.com',ORDER=>$o);
+
+print "ERR[$err] $SITE::EMAILS::ERRORS{$err}\n";
+

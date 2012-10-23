@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="500"><tr><td>
+
+<h2>Syndication Logs</h2>
+<table width=100% cellspacing=0 class='zoovytable'>
+<tr><td colspan=3 class='zoovytableheader'>Logs</td></tr>
+<!-- LOGS -->
+</table>
+
+
+</td></tr></table>
+<br>
+
+
+
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

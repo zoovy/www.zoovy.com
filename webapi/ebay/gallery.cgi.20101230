@@ -1,0 +1,80 @@
+#!/usr/bin/perl
+
+
+##
+## NOTE: I don't think this format is actually used anymore. everything using carousel.
+##
+
+
+use Data::Dumper;
+use strict;
+use lib "/httpd/modules";
+use EBAY::API;
+use EBAY2;
+use IMGLIB::Lite;
+use CGI;
+
+my $q = new CGI;
+my $USERNAME = uc($q->param('USERNAME'));
+$USERNAME =~ s/[^A-Z0-9]+//gs;
+if ($USERNAME eq '') { $USERNAME = 'TOYNK'; }
+my $MID = &ZOOVY::resolve_mid($USERNAME);
+
+my $EIAS = $q->param('EIAS');
+my $PARAMS = $q->param('PARAMS');
+
+
+my $FILENAME = "/tmp/ebay-gallery-$USERNAME.xml";
+
+my $use_cache = 0;
+if (-f $FILENAME) {
+	$use_cache = 1;
+	my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($FILENAME);
+	if ($ctime < (time()-30*60)) {
+		$use_cache = 0;
+		}
+	}
+
+
+if (not $use_cache) {
+	my ($edbh) = &DBINFO::db_user_connect($USERNAME);
+	my ($TB) = &EBAY2::monitor_tb($USERNAME);
+
+	my $pstmt = "select EBAY_ID,IS_GTC as GTC,ITEMS_SOLD,ITEMS_REMAIN,ENDS_GMT,BIDCOUNT,BIDPRICE,THUMB,TITLE,VISITORS,CLASS,STORECAT,CATEGORY,BUYITNOW as BUYITNOW_PRICE from $TB where MID=$MID /* $USERNAME */ and EBAY_ID>0 and ENDS_GMT>unix_timestamp(now()) and ITEMS_REMAIN>0 and CLASS in ('AUCTION','DUTCH','FIXED','STORE') order by ID desc limit 0,25";
+	# print STDERR $pstmt."\n";
+	my $sth = $edbh->prepare($pstmt);
+	$sth->execute();
+	my @result = ();
+	while ( my $ref = $sth->fetchrow_hashref() ) {
+		# print Dumper($ref);
+		$ref->{'TITLE'} = &ZTOOLKIT::stripUnicode($ref->{'TITLE'});
+		$ref->{'URL'} = &EBAY::API::lookup_url($ref->{'EBAY_ID'});
+		# $ref->{'ENDS'} = &ZTOOLKIT::mysql_from_unixtime($ref->{'ENDS_GMT'});
+		if ($ref->{'GTC'}) { delete $ref->{'ENDS_GMT'}; }
+		if ($ref->{'THUMB'} eq '') {
+			delete $ref->{'THUMB'};
+			}
+		else {
+			$ref->{'THUMBURL'} = &IMGLIB::Lite::url_to_image($USERNAME,$ref->{'THUMB'},75,75,'FFFFFF',0);
+			}
+		#if (($ref->{'CLASS'} eq 'FIXED') || ($ref->{'CLASS'} eq 'STORE')) {
+		#	}
+		push @result, $ref;
+		}
+	$sth->finish();
+	&DBINFO::db_user_close();
+	open F, ">$FILENAME";
+	print F &ZTOOLKIT::arrayref_to_xmlish_list(\@result,tag=>"ITEM");
+	close F;
+	}
+
+print "Content-type: text/xml\n\n";
+print "<?xml version=\"1.0\"?>\n";
+print "<Gallery ts=\"".time()."\" user=\"$USERNAME\">\n";
+print "<ITEMS>";
+open F, "<$FILENAME";
+while (<F>) { print $_; }
+close F;
+print "</ITEMS>";
+print "</Gallery>\n";
+

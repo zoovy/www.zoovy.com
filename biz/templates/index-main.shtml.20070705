@@ -1,0 +1,161 @@
+<!-- NO_TAB -->
+<center>
+	<table bgcolor='ffffff' border=0>
+	<!-- LEGACY_WARNING -->
+	<!-- MASTER_LOGIN -->
+	<!-- WARNING_NO_AOL_EMAIL -->
+
+	<tr>
+		<td valign='top'>
+		<b>Recent News</b> 
+		&nbsp; <a href="http://support.zoovy.com/news.cgi/<!-- MERCHANT -->.rss"><img border=0 width=30 height=16 src="/biz/images/feedbullet.gif"></a>
+		</font>
+		<table cellpadding="5" cellspacing="0" border="0" width='100%'>
+		<!-- RECENT_NEWS -->
+		</table>
+		</td>
+		<td class="column" width="1%"><img src="/images/blank.gif" height=1 width=1></td>
+
+<!-- BEGIN QUICK LINKS -->
+		<td valign='top'>		
+	
+<table cellspacing=1 cellpadding=1 border=0 width="94%">
+	<tr>
+		<td colspan=2><h2>Quick Stats:</h2></td>
+	</tr>
+	<tr>
+		<td nowrap valign='top'><a target="_top" href="https://www.zoovy.com/biz/orders">
+			Recent Orders:</a><br>
+			<table border=0>
+			<!-- RECENT_ORDERS -->
+			</table>
+		</td>
+	</tr><tr>
+		<td nowrap valign='top'>
+			<a target="_top" href="http://www.zoovy.com/biz/reports/index.cgi?MODE=WEBSITE">
+			Visitors Today:</a><br>
+			<table border=0>
+			<!-- RECENT_VISITORS -->
+			</table>
+		</td>
+	</tr>
+	<!-- SYNDICATION -->
+	<tr>
+		<td colspan=2>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=2><h2>To Do List:</h2></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<table>
+		<!-- TODOLIST -->
+		</table>
+		</td>
+	</tr><tr>
+		<td colspan=2>&nbsp;</td>
+	</tr><tr>
+		<td colspan=2><h2>Quick Search:</h2></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<form target="_top" action="http://www.zoovy.com/biz/product/index.cgi">
+			<input type="hidden" name="VERB" value="QUICKSEARCH">
+			Product
+			<table cellspacing=2 cellpadding=2 border=0 width="100%" style="border-width: 1px; border-color: #666666; border-style: solid;">
+			<tr>
+				<td nowrap colspan=2><input type="text" name="VALUE" class="formed" size=20></td>
+			</tr>
+			<tr>
+				<td nowrap><input name="DETAIL" type="checkbox">&nbsp;Descriptions (slow)</td>
+				<td nowrap align="right" valign="top"><input type="image" src="/biz/images/tabs/search.gif" border=0></td>
+			</tr>
+			</table>
+		</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<form target="_top" action="https://www.zoovy.com/biz/orders/index.cgi">
+			<input type="hidden" name="VERB" value="QUICKSEARCH">
+			Order
+			<table cellspacing=2 cellpadding=2 border=0 width="100%" style="border-width: 1px; border-color: #666666; border-style: solid;">
+			<tr>
+				<td colspan=2><input name="find_text" type="text" class="formed" size=20></td>
+			</tr>
+			<tr>
+				<td><select name="find_status" class="dropdown">
+					<option value="ANY">-</option>
+					<option value="INCOMPLETE">Incomplete</option>
+					<option value="RECENT">Recent</option>
+					<option value="PENDING">Pending</option>
+					<option value="APPROVED">Approved</option>
+					<option value="COMPLETED">Complete</option>
+					</select>
+				</td>
+				<td align="right" valign="top">
+					<input type="image" src="/biz/images/tabs/search.gif" border=0>
+				</td>
+			</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			Customer
+			<form target="_top" action="http://www.zoovy.com/biz/manage/customer/index.cgi">
+			<input type="hidden" name="VERB" value="QUICKSEARCH">
+			<table cellspacing=2 cellpadding=2 border=0 width="100%" style="border-width: 1px; border-color: #666666; border-style: solid;">
+			<tr>
+				<td colspan=2><input name="searchfor" type="text" class="formed" size=20></td>
+			</tr>
+			<tr>
+				<td>
+				<select name="scope" class="dropdown">
+					<option value="email">Email Only</option>
+					<option value="name">Name</option>
+					<option value="full">Full Search</option>
+				</select>
+				</td>
+				<td align="right" valign="top">
+					<input type="image" src="/biz/images/tabs/search.gif" border=0>
+				</td>
+			</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			Validate Security Code <font color='RED'> - NEW</font>
+			<form target="_top" action="http://www.zoovy.com/biz/validate.cgi">
+			<input type="hidden" name="VERB" value="VALIDATE">
+			<table cellspacing=2 cellpadding=2 border=0 width="100%" style="border-width: 1px; border-color: #666666; border-style: solid;">
+			<tr>
+				<td nowrap colspan=2><input name="KEY" type="text" class="formed" size=6> <input type="submit" value=" Go "><br>
+				Example: <!-- TESTCODE --><br>
+				</td>
+			</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+</table>
+<!-- END QUICK LINKS -->
+		</td>
+	</tr>
+	</table>
+</center>
+
+<!-- FOOTER -->
+

@@ -1,0 +1,417 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use DOMAIN::TOOLS;
+use SYNDICATION;
+
+use strict;
+
+my $dbh = &DBINFO::db_zoovy_connect();	
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_P&16');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+$GTOOLS::TAG{'<!-- PROFILE -->'} = $PROFILE;
+
+my $template_file = 'index.shtml';
+if ($FLAGS !~ /,XSELL,/) {
+	$template_file = 'deny.shtml';
+	}
+
+
+my @TABS = ();
+if ($PROFILE ne '') {
+	push @TABS, { name=>'Config',selected=>($VERB eq '')?1:0, link=>'index.cgi' };
+	push @TABS, { name=>'Edit',selected=>($VERB eq 'EDIT')?1:0, link=> "?VERB=EDIT&PROFILE=$PROFILE", };
+	}
+
+my @BC = (
+      { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', },
+		);
+
+my @CONFIG_FIELDS = ();
+
+my ($WEBDOC) = 0;		## this is REQUIRED
+my ($DST,$MARKETPLACE) = undef;
+if ($ENV{'SCRIPT_NAME'} =~ /become/) { 
+	$WEBDOC = 51554;
+	($DST,$MARKETPLACE) = ('BCM','Become.com');
+	push @BC, { name=>'Become.com',link=>'http://www.zoovy.com/biz/syndication/become','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /smarter/) { 
+	$WEBDOC = 51555;
+	($DST,$MARKETPLACE) = ('SMT','Smarter.com');
+	push @BC, { name=>'Smarter.com',link=>'http://www.zoovy.com/biz/syndication/smarter','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /dijipop/) { 
+	$WEBDOC = 51556;
+	($DST,$MARKETPLACE) = ('DIJ','Dijipop.com');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/dijipop','target'=>'_top', };
+	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /linkshare/) { 
+	$WEBDOC = 51557;
+	($DST,$MARKETPLACE) = ('LNK','Linkshare.com');
+	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/linkshare','target'=>'_top', };
+	}
+else {
+	$VERB = 'UNKNOWN-DST';
+	print STDERR "UNKNOWN: $ENV{'SCRIPT_NAME'}\n";
+	}
+
+
+if ($WEBDOC > 0) {
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $WEBDOC;
+	push @TABS, { name=>"Webdoc", selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=0&PROFILE=$PROFILE", };
+	}
+
+
+
+my ($so) = undef;
+my ($DOMAIN,$ROOTPATH) = ();
+if (($PROFILE ne '') && (defined $DST)) {
+	($so) = SYNDICATION->new($USERNAME,$PROFILE,$DST);
+	($DOMAIN,$ROOTPATH) = $so->syn_info();
+	push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"?VERB=LOGS&PROFILE=$PROFILE", };
+	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG&PROFILE=$PROFILE", };	
+	}
+$GTOOLS::TAG{'<!-- DOMAIN -->'} = $DOMAIN;
+$GTOOLS::TAG{'<!-- ROOTPATH -->'} = $ROOTPATH;
+$GTOOLS::TAG{'<!-- MARKETPLACE -->'} = $MARKETPLACE;
+$GTOOLS::TAG{'<!-- DST -->'} = $DST;
+
+
+if ($VERB eq 'DELETE') {
+   $so->nuke();
+   $VERB = '';
+   }
+
+if (($VERB eq 'SAVE') || ($VERB eq 'PUBLISH')) {
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	my $ERROR = '';
+	if ($DST eq 'LNK') {
+		$s{'.linkshare_mid'} = int($ZOOVY::cgiv->{'.linkshare_mid'});	
+		if ($s{'.linkshare_mid'}==0) {
+			$ERROR = "Linkshare Merchant ID is required";
+			}
+		$s{'.linkshare_company'} = $ZOOVY::cgiv->{'.linkshare_company'};	
+		$s{'.linkshare_default_classid'} = $ZOOVY::cgiv->{'.linkshare_default_classid'};
+		}
+
+	$s{'.ftp_user'} = $ZOOVY::cgiv->{'user'};	
+	$s{'.ftp_pass'} = $ZOOVY::cgiv->{'pass'};	
+	$s{'.ftp_server'} = $ZOOVY::cgiv->{'ftpserver'};	
+	$s{'.ftp_server'} =~ s/^ftp\:\/\///igs;
+
+	if ($ERROR eq '' && $s{'.ftp_user'} eq '') { $ERROR = "$MARKETPLACE FTP username is required"; }
+	if ($ERROR eq '' && $s{'.ftp_pass'} eq '') { $ERROR = "$MARKETPLACE FTP password is required"; }
+	if ($ERROR eq '' && $s{'.ftp_server'} eq '') { $ERROR = "$MARKETPLACE FTP Server is required, and will be given to you by $MARKETPLACE when you sign up (Hint: stop guessing and try reading the documentation)"; }
+	if ($ERROR eq '' && $s{'.ftp_server'} =~ /[^A-Za-z0-9\.\-]+/) { $ERROR = "$MARKETPLACE Server contains invalid characters (perhaps you're sending a URI?)"; }
+
+	if ($DST eq 'BCM') {
+		if ($ERROR eq '' && $s{'.ftp_server'} !~ /\.become\.com$/) { $ERROR = "FTP server [$s{'.ftp_server'}] does not end with .become.com - it's probably not valid!"; }
+		}
+
+	$s{'.schedule'} = undef;
+   if ($FLAGS =~ /,WS,/) {
+		$s{'.schedule'} = $ZOOVY::cgiv->{'SCHEDULE'};
+      }
+
+	if ($ERROR ne '') {
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>$ERROR</font>";
+		}
+	else {
+		$s{'IS_ACTIVE'} = 1;
+		$so->save();
+		}
+
+	if (($VERB eq 'PUBLISH') && ($ERROR eq '')) {
+		## PUBLISH does a save + redirect to batch.cgi
+		}
+	else {
+		$VERB  = 'EDIT';
+		}
+	}
+
+
+if ($VERB eq 'WEBDOC') {
+	$template_file = &GTOOLS::gimmewebdoc($LU,$ZOOVY::cgiv->{'DOC'});
+	}
+
+
+if ($VERB eq 'SAVE-CATEGORIES') {
+
+	my ($NC) = NAVCAT->new($USERNAME,PRT=>$PRT);
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		my $SUBMIT = ($ZOOVY::cgiv->{'navcat-'.$safe} ne '')?$ZOOVY::cgiv->{'navcat-'.$safe}:'';
+		if ($SUBMIT eq '- Not Selected -') { $SUBMIT = ''; }
+
+		$metaref->{$DST} = $SUBMIT;
+		$NC->set($safe,metaref=>$metaref);
+		}
+	$NC->save();
+	undef $NC;
+	$GTOOLS::TAG{'<!-- MSG -->'} = "<font color='blue'>Successfully saved $MARKETPLACE categories.</font><br>";
+	$VERB = 'CATEGORIES';
+	}
+
+
+
+
+if ($VERB eq '') {
+	my $profref = &DOMAIN::TOOLS::syndication_profiles($USERNAME,PRT=>$PRT);
+	my $c = '';
+	my $cnt = 0;
+	my $ts = time();
+	foreach my $ns (sort keys %{$profref}) {
+		my $class = ($cnt++%2)?'r0':'r1';
+		$c .= "<tr>";
+		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
+		$c .= "<a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>";
+		$c .= " | ";
+		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		$c .= "</td>";
+		$c .= "</tr>";
+		my ($s) = SYNDICATION->new($USERNAME,$ns,$DST);
+		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+	$template_file = 'index.shtml';
+	}
+
+
+if ($PROFILE ne '') {
+	push @BC, { name=>'Profile: '.$PROFILE };
+	push @BC, { name=>($VERB eq 'EDIT')?'Config':'Categories' };
+	}
+
+
+if ($VERB eq 'EDIT') {
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	if ($DST eq 'LNK') {
+		$GTOOLS::TAG{'<!-- TOP_FIELDS -->'} = qq~
+<tr>
+	<td>LinkShare Merchant ID:</td>
+	<td><input type="textbox" name=".linkshare_mid" value="~.&ZOOVY::incode($s{'.linkshare_mid'}).qq~"></td>
+</tr>
+<tr>
+	<td>LinkShare Company Name:</td>
+	<td><input type="textbox" name=".linkshare_company" value="~.&ZOOVY::incode($s{'.linkshare_company'}).qq~"></td>
+</tr>
+<tr>
+	<td colspan=2><div class="hint">Linkshare Merchant ID is assigned by LinkShare.</div></td>
+</tr>
+<tr>
+	<td>LinkShare Default ClassId:</td>
+	<td><input type="textbox" size=3 name=".linkshare_default_classid" value="~.&ZOOVY::incode($s{'.linkshare_default_classid'}).qq~"></td>
+</tr>
+<tr>
+	<td colspan=2><div class="hint">ex: 140 is electronics</div></td>
+</tr>
+~;
+		}
+
+
+   $GTOOLS::TAG{'<!-- GUID -->'} = $so->guid();
+   $GTOOLS::TAG{'<!-- VIEW_URL -->'} = $so->url_to_privatefile();
+
+	$GTOOLS::TAG{'<!-- USER -->'} = &ZOOVY::incode($s{'.ftp_user'});
+	$GTOOLS::TAG{'<!-- PASS -->'} = &ZOOVY::incode($s{'.ftp_pass'});
+	$GTOOLS::TAG{'<!-- FTPSERVER -->'} = &ZOOVY::incode($s{'.ftp_server'});
+
+	$GTOOLS::TAG{'<!-- STATUS -->'} = $so->statustxt();
+	$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+	$GTOOLS::TAG{'<!-- VIEW_URL -->'} = $so->url_to_privatefile();
+
+	if ($FLAGS =~ /,WS,/) {
+		my $c = '';
+		require WHOLESALE;
+		$c = "<option value=\"\">None</option>";
+		foreach my $sch (@{&WHOLESALE::list_schedules($USERNAME)}) {
+			$c .= "<option ".(($s{'.schedule'} eq $sch)?'selected':'')." value=\"$sch\">$sch</option>\n";
+			}
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = $c;
+		}
+	else { 
+		$s{'.schedule'} = '';
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = '<option value="">Not Available</option>'; 
+		}
+
+	$template_file = 'edit.shtml';
+	}
+
+
+if ($VERB eq 'LOGS') {
+	my $logsref = $so->logs();
+	if (defined $logsref) {
+		my $c = '';
+		foreach my $logset (@{$logsref}) {
+			$c .= "<tr><td>$logset->[0]</td><td>$logset->[1]</td><td>".&ZTOOLKIT::pretty_date($logset->[2],1)."</td></tr>\n";
+			}
+		$GTOOLS::TAG{'<!-- LOGS -->'} = $c;
+		}
+	else {
+		$GTOOLS::TAG{"<!-- LOGS -->"} = '<tr><td><i>there are no logs recorded for this marketplace.</td></tr>';
+		}
+
+	$template_file = '_/syndication-logs.shtml';
+	}
+
+## BEGIN DEBUGGER
+if ($VERB eq 'GOGO-DEBUG') {
+	$GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} = $so->runDebug(type=>'product',TRACEPID=>$ZOOVY::cgiv->{'PID'});
+	$VERB = 'DEBUG';
+	}
+if ($VERB eq 'DEBUG') {
+	if ($GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} eq '') { 
+		$GTOOLS::TAG{'<!-- DEBUG-OUTPUT -->'} = '<i>Please specify a product</i>'; 
+		}
+	$GTOOLS::TAG{'<!-- PID -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'PID'});
+	$template_file = '_/syndication-debug.shtml';
+	}
+## END DEBUGGER
+
+
+if ($VERB eq 'CATEGORIES') {
+	require SYNDICATION::CATEGORIES;
+	my ($CDS) = SYNDICATION::CATEGORIES::CDSLoad($DST);
+
+	my $pathref = SYNDICATION::CATEGORIES::CDSByPath($CDS);
+
+	my $c = '';
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if (substr($pretty,0,1) eq '!');
+	
+		my $name = ''; 
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		if (substr($safe,0,1) eq '.') {
+			foreach (split(/\./,substr($safe,1))) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+			}
+		elsif (substr($safe,0,1) eq '$') {
+			$name = "LIST: ".$pretty;
+			}
+		my $val = $metaref->{'THEFIND'};
+		
+		## check if val is in the legacy text format
+		if ($val !~ /^\d+$/) {
+			$val =~ s/ > />/g;
+			if (defined $pathref->{$val}) {
+				$val = $pathref->{$val};
+				}
+			}	
+
+		$c .= "<tr>";
+		$c .= "<td nowrap>$name</td>";
+
+		my ($iref) = SYNDICATION::CATEGORIES::CDSInfo($CDS,$val);
+		$pretty = $iref->{'Path'};
+		
+		$c .= qq~<td nowrap>~;
+		$c .= qq~<input class="button" type="button" onClick="selectCategory('$DST','navcat-$safe',document.catFrm['navcat-$safe'].value);" value="Config"> ~;
+		$c .= qq~<input type="textbox" onChange="ajaxUpdate($DST,this);" value="$val" name="navcat-$safe" size="5"></td>~;
+		$c .= qq~<td nowrap><span id="txt!navcat-$safe">$pretty</span></td>~;
+		$c .= "</tr>\n";
+
+		}
+	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+
+	$template_file = 'categories.shtml';
+	}
+
+if ($VERB eq 'CATEGORIES_NEW') {
+
+
+	my $c = '';
+	my $NC = NAVCAT->new($USERNAME,PRT=>$PRT);
+
+	my $hashref = ();
+	open(FILE, "pg_cats.txt");
+	while(<FILE>) {
+		chop;
+		my ($cat, $id) = split(/\|/);
+		$cat =~ s/ *$//;
+		#$hashref->{$cat} = $id;
+		$hashref->{$cat} = $cat;
+		}
+	close(FILE);
+	my $div = qq~<div id='bob' class="anylinkcss">~;
+	foreach my $key (sort keys %{$hashref}) {	
+		#print STDERR "$key $hashref->{$key}\n";
+		$key =~ s/ \> / : /g;
+		$div .= qq~<a href='' onclick='javascript:onSave("navcat","$key")'>$key</a>\n~;
+		}
+	$div .= "</div>";
+	$GTOOLS::TAG{'<!-- SYN_CATS -->'} = $div;
+
+
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if (substr($pretty,0,1) eq '!');
+	
+		my $name = ''; 
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		if (substr($safe,0,1) eq '.') {
+			foreach (split(/\./,substr($safe,1))) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+			}
+		elsif (substr($safe,0,1) eq '$') {
+			$name = "LIST: ".$pretty;
+			}
+		my $val = $metaref->{'THEFIND'};
+		$c .= "<tr>";
+		$c .= qq~<td nowrap width=200><div id='$safe'>$name</td>~.
+				qq~<td width=400><a href='javascript:onSave();' onClick="javascript:onSave()" ~.
+				qq~onMouseover="dropdownmenu(this, event, 'bob')">$val</a></div></td></tr>~;
+
+		}
+	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+
+	$template_file = 'categories_new2.shtml';
+	}
+
+##
+##
+##
+if ($VERB eq 'PUBLISH') {
+	print "Location: /biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$PROFILE&GUID=".time()."\n\n";
+	}
+else {
+	&GTOOLS::output(
+ 		'title'=>"$MARKETPLACE Syndication",
+		'file'=>$template_file,
+		'header'=>'1',
+		'help'=>"#$WEBDOC",
+		'tabs'=>\@TABS,
+		'js'=>1+2,
+		'bc'=>\@BC,
+		);
+	}
+
+&DBINFO::db_zoovy_close();
+

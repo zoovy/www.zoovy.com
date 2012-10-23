@@ -1,0 +1,1 @@
+/httpd/htdocs/webapi/syncinfo/index.cgi

@@ -1,0 +1,265 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<table width='700'><tr><Td>
+
+<h1>Add a New Supplier</h1>
+<br>
+<!-- RESULT -->
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="NEW-SAVE">
+<table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
+<tr><td class="zoovytableheader">Configuration</td></tr>
+<tr><td>
+ <table bgcolor="#ffffff" cellspacing="0" cellpadding="3" width="100%">
+	<tr>
+		<td valign='top'><b>Supplier Code:</b> <input type="text" name="CODE" value="<!-- CODE -->" maxlength="6" size="6" class="formed"> <font color='red'><i>(required)</i></font></td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<i>The Supplier Code is a 6 character alphanumeric code you will use to
+refer to this supplier. Only capital letters and the numbers 0-9 are
+allowed.</i><br></td>
+	</tr>
+
+	<tr>
+		<td valign='top'><B>Default Markup:</b> <input type="text" name="MARKUP" value="<!-- MARKUP -->" maxlength="30" size="15" class="formed"><br><!-- MARKUP_ERROR --></td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<i>The default markup is used to configure the base sell for price,
+for example to markup all products 10% you would simply do: "COST*1.1"</i>
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign='top'><B>Profile:</b>&nbsp; 
+		<select name="PROFILE">
+		<!-- PROFILE --></select><br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<i>The selected profile will affect the contact information Zoovy sends to your Supplier.</i>
+		</td>
+	</tr>
+	
+ </table>
+</td></tr>
+</table>
+
+
+
+<br>
+<table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
+<tr><td class="zoovytableheader">Supplier Company Info</td></tr><tr><td>
+<table bgcolor="#ffffff" cellspacing="0" cellpadding="3" width="100%">
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+		<table>
+			<tr>
+				<td valign='top'>Name:</td>
+				<td><input type="text" maxlength="60" value="<!-- NAME -->"
+name="NAME" class="formed"></td>
+			</tr>
+				<tr>
+				<td valign='top'>Account #:</td>
+				<td><input type="text" maxlength="60" value="<!-- ACCOUNT -->"
+name="ACCOUNT" class="formed"></td>
+			</tr>
+				<tr>
+				<td valign='top'>Phone:</td>
+				<td><input type="text" maxlength="12" value="<!-- PHONE -->"
+name="PHONE" class="formed"></td>
+			</tr>
+			<tr>
+				<td valign='top'>Email:</td>
+				<td><input type="text" maxlength="65" value="<!-- EMAIL -->"
+name="EMAIL" class="formed"></td>
+			</tr>
+			<tr>
+				<td valign='top'>Website:</td>
+				<td><input type="text" maxlength="65" value="<!-- WEBSITE -->"
+name="WEBSITE" class="formed"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</td></tr></table>
+
+
+<br>
+<table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
+	<tr>
+		<td class="zoovytableheader">Ordering Method</td></tr><tr><td>
+<table bgcolor="#ffffff" cellspacing="0" cellpadding="3" width="100%">
+	<tr>
+		<td colspan='2'>
+		<table>
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<td nowrap valign='top'><input type="radio" <!-- FORMAT_STOCK --> name="FORMAT" value="STOCK"> <b>Stock:</b> </td>
+				<td valign='top'>Inventory is shipped to your warehouse, rather than direct to customer.
+The system will attempt to maintain minimum inventory levels (if set) and
+will allow you to group multiple customer orders together into a single
+larger order to your supplier. Supplier SKU #'s (when available) are used to place orders.</i></td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<td nowrap valign='top'><input type="radio" <!-- FORMAT_FULFILL --> name="FORMAT" value="FULFILL"> <b>Fulfillment:</b></td>
+				<td valign='top'>New Orders should be transmitted to your fullfillment center, no attempt to hide or conceal data is performed. Your SKU #'s are used, rather than supplier SKU's.</i></td></tr>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<td nowrap valign='top'><input type="radio" <!-- FORMAT_DROPSHIP --> name="FORMAT" value="DROPSHIP"> <b>Drop Ship:</b></td>
+				<td valign='top'>Pricing information is not included, the customers shipping information is sent, but the billing information is replaced with your information.  Contact email and phone numbers for the order are set to your store information. Supplier SKU #'s are substituted for your SKU #'s whenever available.</i></td>
+			</tr>
+			<tr>
+				<td nowrap valign='top'><input type="radio" <!-- FORMAT_NONE --> name="FORMAT" value="NONE"> <b>None:</b></td>
+				<td valign='top'>No automatic ordering will be performed. You will need to manually place orders with 
+this supplier.</i></td>
+			</tr>
+
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+<i>Hint: If you have a single supplier where some items are drop ship and other items are stocked, 
+you will need to create two different supplier codes in the Zoovy system (one for stock and one for drop ship).</i>
+		</td>
+	</tr>		
+</table>
+</td></tr></table>
+
+
+<br>
+<table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
+<tr><td class="zoovytableheader">Data Integration Type</td></tr><tr><td>
+<table bgcolor="#ffffff" cellspacing="0" cellpadding="3" width="100%">
+
+
+	<tr>
+		<td colspan='2'><input type="radio" <!-- MODE_GENERIC --> name="MODE" value="GENERIC"> <b>Generic Supplier</td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<i>Any supplier that is not currently using the Zoovy platform - the information below is purely for your records.
+			Orders can be delivered via Email or Fax, and may contain either Text, HTML or XML formatted attachments.
+			</i>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan='2'><input type="radio" <!-- MODE_JEDI --> name="MODE" value="JEDI"><b>JEDI2 (Just Easy Data Interchange)</b><br><!-- JEDI_ERROR --></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<table>
+				<tr>
+					<td>STORE DOMAIN:</td>
+					<td><input name=".jedi.domain" value="<!-- JEDI_DOMAIN -->" type="text" class="formed"></td>
+				</tr>
+				<tr>
+					<td>CUSTOMER ACCOUNT EMAIL:</td>
+					<td><input size="5" name=".jedi.login" value="<!-- JEDI_LOGIN -->" type="text" class="formed"></td>
+				</tr>
+				<tr>
+					<td>CUSTOMER ACCOUNT PASSWORD:</td>
+					<td><input name=".jedi.pass" value="<!-- JEDI_PASS -->" type="text" class="formed"></td>
+				</tr>
+			</table>
+			<i>JEDI allows you to download information from a report store.
+Transmission of orders, receiving automatic tracking updates.
+Optional shipping integration, and inventory downloads.<br>
+<br>
+To use this functionality the supplier must have enabled your wholesale
+customer account (in their store) for JEDI integration.
+</i><br>
+			
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan='2'><input type="radio" <!-- MODE_API --> name="MODE" value="API"> <b>API Link</b> <!-- API_ERROR --></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<i>
+	API Link allows realtime seamless data exchange with a non-Zoovy system.
+	API Link is commonly used when a programmer needs to modify/convert the native Zoovy order before 
+	it is sent to a supplier.
+	Zoovy actively works with larger suppliers to establish a native Zoovy API Link interface for our community to use- 
+	contact your Supplier, or Zoovy Account Manager to learn more.
+	*Requires the API bundle.</i>
+			</i>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan='2'><input type="radio" <!-- PARTNER_SHIPWIRE --> name="MODE" value="PARTNER_SHIPWIRE"> <b>ShipWire Fulfillment</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			
+			<i>Integrated Provider: <a target=_new href="http://partner.shipwire.com/o.php?id=1900">Shipwire.com Signup</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type="radio" <!-- PARTNER_ATLAST --> name="MODE" value="PARTNER_ATLAST"> <b>ATLAST Fulfillment</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<i>Integrated Provider: <a href="http://www.atlastfulfillment.com">At Last Fulfillment</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'><input type="radio" <!-- PARTNER_DOBA --> name="MODE" value="PARTNER_DOBA"> <b>DOBA Fulfillment</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<i>Integrated Provider: <a href="http://www.doba.com">DOBA.com</a> (BETA - use with caution)
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- <input type="radio" <!-- PARTNER_AMZ --> name="MODE" value="PARTNER_AMZ"> --><b>Fulfillment by Amazon</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;&nbsp;&nbsp;</td>
+		<td>
+			<i>Integrated Provider: Fulfillment by Amazon (PILOT - NOT LIVE)</i></a>
+		</td>
+	</tr>
+	</table>
+	</tr>
+
+
+
+</table></td></tr></table>
+<br>
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi"><img border=0 src="/images/bizbuttons/cancel.gif"></a></td>
+	</tr>
+</table>
+</center>
+		
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

@@ -1,0 +1,13 @@
+[%- page_title = 'eBay Search Results' -%]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="category-tree">
+[% INCLUDE '_category_tree.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="search-results-block">
+[% INCLUDE '_product_search_results.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]

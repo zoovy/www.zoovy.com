@@ -1,0 +1,24 @@
+<!-- SETUP_TAB -->
+
+<br>
+<table width="100%" cellspacing='0' cellpadding='0' align='center'>
+<tr>
+	<td>
+
+<h1>Amazon Products Error Report</h1>
+<div class='hint'>(Note: Only Warnings and Errors are shown in these logs.)</div>
+<br>
+<table class='zoovytable' align='center' cellspacing='0' cellpadding='4' width='100%'>
+<!-- LOGS -->
+</table>
+
+
+<a href="/biz/batch/index.cgi?VERB=NEW&EXEC=UTILITY&APP=AMAZON_UPDATE&GUID=<!-- GUID -->&.function=clear-errors">
+[Clear all errors]
+</a>
+
+</td></tr>
+</table>
+
+
+</body>

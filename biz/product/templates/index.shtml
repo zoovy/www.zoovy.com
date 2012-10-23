@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Zoovy: Online Product Management</title>
+
+<script type="text/javascript">
+<!-- hide the script from old browsesr
+
+
+if (top != self)
+   { 
+   top.location.href = location.href; 
+// this.close(); hmm..
+//	window.close(); 
+   }
+else {
+
+
+// This script is a part of:
+// Morten's JavaScript Tree Menu
+// version 2.3.2-macfriendly, dated 2002-06-10
+// http://www.treemenu.com/
+
+// Copyright (c) 2001-2002, Morten Wang & contributors
+// All rights reserved.
+
+// This software is released under the BSD License which should accompany
+// it in the file "COPYING".  If you do not have this file you can access
+// the license through the WWW at http://www.treemenu.com/license.txt
+
+var MTMUsableBrowser = false;
+// browser sniffing routine
+browserName = navigator.appName;
+browserVersion = parseInt(navigator.appVersion);
+if(browserName == "Netscape" && browserVersion >= 3) {
+  MTMUsableBrowser = (navigator.userAgent.indexOf("Opera") == -1) ? true : false;
+} else if(browserName == "Microsoft Internet Explorer" && browserVersion >= 4) {
+  MTMUsableBrowser = true;
+} else if(browserName == "Opera" && browserVersion >= 5) {
+  MTMUsableBrowser = true;
+}
+
+// frameset creation
+document.write('</head>');
+document.write('<frameset frameborder="0" framespacing="0" border="0" cols="*" rows="<!-- HEIGHT -->,*">')
+document.write('<frame marginwidth="0" marginheight="0" src="title.pl" name="heading" noresize scrolling="no">');
+document.write('<frameset frameborder="0" framespacing="0" border="0" cols="19%,1%,80%" rows="*">');
+
+document.write('<frameset rows="50,*">');
+document.write('<frame noresize scrolling="no" src="search.html">');
+
+if(MTMUsableBrowser) {
+  document.write('<frameset frameborder="0" framespacing="0" border="0" cols="*" rows="0,*">')
+  document.write('<frame marginwidth="0" marginheight="0" src="code.pl" name="code" noresize scrolling="no" frameborder="0">');
+  document.write('<frame marginwidth="5" marginheight="5" src="menu_empty.html" name="menu" noresize scrolling="auto" frameborder="0">');
+  document.write('</frameset>');
+} else {
+  document.write('<frame marginwidth="5" marginheight="5" src="menu.html" name="menu" noresize scrolling="auto" frameborder="0">');
+}
+document.write('</frameset>');
+
+document.write('<frame marginwidth="1" noresize marginheight="1" src="green_dot.html" scrolling="no" frameborder="0">');
+document.write('<frame marginwidth="5" marginheight="5" src="<!-- DEST_URL -->" name="text" noresize>');
+document.write('</frameset>');
+document.write('</frameset>');
+
+document.write('<frame marginwidth="5" marginheight="5" src="main.html" name="text" noresize>');
+document.write('</frameset>');
+document.write('</frameset>');
+document.write('</body>');
+document.write('</html>');
+document.close();
+
+}
+
+//-->
+</script>
+
+</head>
+<body marginwidth="0" marginheight="0" onLoad="this.focus()" bgcolor="#000033" text="#ffffcc" link="yellow" vlink="lime" alink="red">
+<h1>Zoovy Online Product Management</h1>
+
+You need to have Javascript enabled to utilize the Zoovy web based product
+manager. If this is a problem, or you have no idea what this means then 
+please contact Zoovy Technical support toll free at 877-ZOOVY-4U.<br>
+
+
+</body>
+</html>

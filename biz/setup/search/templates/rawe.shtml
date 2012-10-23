@@ -1,0 +1,25 @@
+<!-- SETUP_TAB -->
+
+<h2>Raw Elastic Interface:</h2>
+
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="RAWE-DEBUGPID">
+<h2>Debug Product</h2>
+PID: <input type="textbox" name="PID">
+<input type="submit" value=" Dump Product " class="button">
+</form>
+<br>
+<Br>
+
+
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="RAWE-QUERY">
+<h2>JSON Query or Filter</h2>
+<textarea cols=60 rows=3 name="QUERY"><!-- QUERY --></textarea><br>
+<input type="submit" value=" Run Query " class="button">
+</form>
+
+
+
+<!-- OUTPUT -->
+

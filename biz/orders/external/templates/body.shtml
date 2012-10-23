@@ -1,0 +1,5 @@
+<frameset rows="*,50" frameborder=0 framespacing=0 border=0 onLoad="">
+<frame src="<!-- BACKSAFEURL -->" name="main" frameborder=0 border=0></frame>
+<frame src="<!-- XFOOTER -->" name="footer" frameborder=0 border=0 noresize scrolling='no'></frame>
+</frameset>
+

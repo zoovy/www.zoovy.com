@@ -1,0 +1,34 @@
+<!-- SETUP_TAB -->
+
+
+<center>
+<table width="600">
+<tr><td nowrap>
+<h2>Administrator Setup</h2><br>
+
+<form name="thisFrm" action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="ADMINSAVE">
+<input type="hidden" name="UID" value="0">
+
+<!-- ERRORS -->
+
+<table class="zoovytable">
+<tr><td class="zoovytableheader">Zoovy Mail</td></tr>
+<tr><td>
+Password:
+<input type="textbox" name="FUSEMAIL-PASSWORD"><input class="button" type="button" onClick="thisFrm.ACTION.value='CHANGE-ADMIN-ZOOVYMAIL-PASS'; thisFrm.submit();" value="Change Password">
+
+</td></tr>
+</table>
+
+<center>
+<input type="submit" class="button" value=" Save " border="0"></a>
+<input type="button" class="button" value=" Exit " onClick="document.location='/biz/setup/usermgr';">
+</center>
+
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

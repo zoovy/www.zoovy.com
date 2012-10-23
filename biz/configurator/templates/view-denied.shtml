@@ -1,0 +1,19 @@
+<!-- NO_TAB -->
+<br>
+<center>
+<table width='600'>
+	<tr><td>
+	<!-- TRIAL_DENIED -->
+	<b>Bundle: <!-- BUNDLE --></b><br>
+	<b><!-- NAME --></b><br>
+	<!-- DESCRIPTION -->
+	Amount: <!-- AMOUNT -->
+	<br>
+	<i> Sorry this bundle is no longer available or you do not have the ability to purchase it with your account type.</i>	
+	
+	</td>
+	</tr>
+</table>
+<a href="/biz/configurator"><img border='0' src="/images/bizbuttons/return.gif"></a><br>
+
+</body>

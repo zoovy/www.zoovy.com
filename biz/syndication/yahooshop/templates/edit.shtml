@@ -1,0 +1,68 @@
+<!-- SETUP_TAB -->
+
+<center>
+<br>
+<table class="zoovytable" width="600" cellspacing='0' cellpadding='4'>
+<tr>
+	<td class="zoovytableheader">YahooShopping</td>
+</tr>
+<tr><td>
+
+<table>
+	<tr>
+		<td><b>Status:</b></td>
+		<td><!-- STATUS --></td>
+	</tr>
+	<tr>
+		<td><b>Yahoo Shopping File:</b></td>
+		<td><a target="_new" href="<!-- VIEW_URL -->">View Contents Here</a></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<form  name="thisFrm" id="thisFrm" method="post" action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<table>
+	<tr>
+		<td><b>FTP Server:</b></td>
+		<td><input type="textbox" name="ftpserver" value="<!-- FTPSERVER -->"></td>
+	</tr>
+	<tr>
+		<td><b>Username:</b></td>
+		<td><input type="textbox" name="user" value="<!-- USER -->"></td>
+	</tr>
+	<tr>
+		<td><b>Password:</b></td>
+		<td><input type="textbox" name="pass" value="<!-- PASS -->"></td>
+	</tr>
+	<tr>
+		<td><b>FTP Directory:</b></td>
+		<td><input type="textbox" name="dir" value="<!-- DIR -->"></td>
+	</tr>
+	<tr>
+		<td colspan='2' class='hint'>
+HINT: The username, password and ftp server are given to you by Yahoo.
+For more information please visit 
+<a href="http://www.zoovydocs.com/doc-50375" target="webdoc">ZoovyDocs.com</a>.
+<br>
+		</td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td><input type="submit" value=" Save Settings " class="button"></td>
+		<td><input type="button" class="button" value= "Delete" onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();"></td>
+		<td><input type="button" value=" Exit " class="button" onClick="document.location='index.cgi';"></td>
+	</tr>
+</table>
+
+
+<br>
+
+</td></tr></table>
+</form>
+
+</center>
+</body>

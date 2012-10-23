@@ -1,0 +1,78 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy offers exceptional integration with Google Checkout', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","GOOGLE");
+</script>
+
+
+<img src='/images/partner_pages/googlecheckout_header-462x85.gif' height="85" width="462" border='0' alt='Listing and selling on Amazon made easy' />
+
+
+<h2>Sell it with Zoovy.  Customers buy it with Google Checkout.</h2><br />
+
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style='margin-bottom:10px;'>
+<tr>
+	<td style='padding-right:15px;'>
+Online shoppers often start with Google. Our search advertising program, AdWords, helps them find you through targeted text ads that appear beside Google search results. And Google Product Search, our shopping search engine, allows shoppers to specifically search for and find products they want to buy.
+	</td>
+	<td style='BORDER-TOP: #C9D7F1 1px solid; BORDER-BOTTOM: #C9D7F1 1px solid; padding:5px 0px;'>
+<span><img src="//checkout.google.com/seller/images/quote_lightblue.gif" width="30" height="23" border="0" vspace="2"></span>&nbsp;<b>The new Google Checkout badge that appears on our AdWords advertisements has given us a 23 percent lift in clickthrough rate. And &hellip; customers that use Google Checkout convert 24 percent more frequently than those that go through our standard checkout process.&quot;</b><br>
+            <br>            <i>-- Fred Lerner, Ritz Interactive</i>
+	</td>
+</tr>
+</table>
+
+
+
+<p><img src="//checkout.google.com/seller/images/adwords_ad.gif" alt="AdWords ad" width="258" height="146" align="left" style="margin-right:10px;"> Now, with Google Checkout you can add the Checkout badge to your AdWords ads and Product Search listings to highlight your store. The badge is an icon that tells potential customers that shopping with you will be convenient and secure.</p>
+<p>Checkout also helps you more effectively turn your traffic into paying customers. Lengthy checkout processes frustrate online shoppers who then frequently abandon their shopping carts. With Google Checkout, the purchasing information of each Checkout user is stored in a single account, so they can buy from you by simply providing their username and password.</p>
+
+
+
+<h2>Protect yourself from fraud with Google Checkout.</h2>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style='margin-bottom:10px;margin-top:10px;'>
+<tr>
+	<td>
+	<table width="250"  border="0" align="right" cellpadding="0" cellspacing="0" style="margin:0 15px 20px 20px;padding:5px 5px 10px 5px; BORDER-TOP: #C9D7F1 1px solid; BORDER-BOTTOM: #C9D7F1 1px solid; color:#444">
+	<tr>
+		<td valign="top">
+<p><span class="quote"><b><img src="//checkout.google.com/seller/images/quote_lightblue.gif" width="30" height="23" border="0" vspace="2">&nbsp;We didn't even think of fraud protection when we started using Google Checkout, but we see virtually no fraud coming from that channel."</b>
+<br><br>
+<i>-- Jack Sheng, Eforcity.com</i><br>
+</span>
+</p>
+		</td>
+	</tr>
+	</table>
+
+<p>When using Google Checkout, you can sell with complete confidence. Google Checkout's industry-leading fraud protection program keeps you safe from fraud while helping you lower costs and increase sales. Here's how:</p>
+
+<ul type="disc">
+<li style='margin-bottom:10px;'><b>Guaranteed Payment:</b> Checkout's Payment Guarantee protects 98% of Checkout orders on average -- when an order is guaranteed, you get paid      even if it results in a chargeback.</li>
+<li style='margin-bottom:10px;'><b>Free Protection:</b> While merchants are typically charged for fraud protection services, Google's comprehensive protection is free.</li>
+<li style='margin-bottom:10px;'><b>Lower Fraud Costs:</b> Checkout's fraud detection systems reduce fraud and manual review costs by proactively filtering out fraudulent orders.</li>
+<li style='margin-bottom:10px;'><b>More Sales:</b> The same systems also help increase sales by identifying legitimate orders that you might otherwise mark as fraudulent.</li>
+<li style='margin-bottom:10px;'><b>Fair Treatment:</b> Unlike other services that immediately deduct funds from you for chargebacks, Google does so only after a decision has been made as to who is at fault.</li>
+</ul>
+	</td>
+</tr>
+</table>
+
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+% ## Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>
+</li></font></ul>

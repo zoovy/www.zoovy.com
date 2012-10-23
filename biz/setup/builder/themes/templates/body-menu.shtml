@@ -1,0 +1,23 @@
+<!-- SETUP_TAB -->
+
+<table width="100%">
+<tr>
+	<td valign='top'>
+	<!-- LEFT -->
+	
+	
+	<td>
+	<td width=100% class="zoovytable">
+	<div style="height: 600px" class="zoovytableframe">
+
+		<h1><!-- MENU_TITLE --></h1><br>
+		<!-- THEMELIST -->
+		
+	</div>
+	</td>
+</tr>
+</table>
+
+<center><a href="/biz/setup/builder"><img border=0 src="/images/bizbuttons/exit.gif"></a></center>
+
+<!-- FOOTER -->

@@ -1,0 +1,46 @@
+<head>
+<title>Learn about Zoovy Developer</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+  function openWindow(url) {
+   termsWin = window.open(url,'terms','status=no,width=500,height=500,menubar=yes,scrollbars=yes')
+   termsWin.focus(true);
+  }
+
+//-->
+</SCRIPT>
+</head>
+<body bgcolor="FFFFFF">
+
+<center>
+<table cellpadding="0" cellspacing="0" border="0" width='80%'>
+<tr>
+<td>
+<font face="Verdana, Arial">
+<center>
+<br>
+<br>
+<img src="/images/zoovy_main.gif"><br>
+</center>
+<br>
+<b><!-- MESSAGE --></b><br>
+<br>
+Our password recovery system will contact you shortly. If you prefer not to
+wait you should call us toll free at 1-877-ZOOVY-4U (1-877-966-8948) between the
+hours of 9am and 5pm PST. <br>
+<br>
+<br>
+<br>
+<br>
+
+</font>
+
+</td></tr>
+</table>
+</font>
+</center>
+
+
+
+
+</body>

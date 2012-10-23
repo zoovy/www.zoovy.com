@@ -1,0 +1,71 @@
+<!-- NO_TAB -->
+<body>
+
+<center>
+<table width=600><tr><td>
+<!-- DATE --><Br>
+<!-- OUTPUT -->
+<form action="validate.cgi">
+<Br>
+<input type="hidden" name="VERB" value="VALIDATE">
+<table>
+	<tr>
+		<td>Security Code:</td>
+		<td><input size=6 maxlength=6 type="textbox" value="<!-- CODE -->" name="KEY"> 
+		<input type="submit" value=" Validate "></td>
+	</tr>
+</table>
+</form>
+<br>
+<hr>
+<b>How this system works:</b><br>
+<br>
+Both Zoovy and the legitimate partners that we work with have access to
+generate valid authorization codes.
+All Zoovy partners should do this before they contact you.
+Anybody who claims to be representing Zoovy or in anyway affiliated with 
+Zoovy and does not have a valid security code is lying. <br>
+<br>
+You should *NEVER* give anybody access to your store who you do not
+implicitly trust. Virtually any amount of access can be exploited into
+something which can literally destroy your business. For example even giving
+a search engine optimization company access to tune keywords on your site - 
+can let them also embed malicious code into your site that breaks into your 
+customers computer, then intercepts and transmits the credit card numbers 
+back to them. 
+<br>
+Malicious hackers are even using sophisticated telephone boiler rooms with
+cracked VoIP phones to "social engineer" this information - it's nearly
+untracable. A single store can often net them hundreds of thousands of 
+dollars in revenue in just a few hours. 
+Unfortunately it's a dangerous world we live in, you really can't be too 
+paranoid.<br>
+<br>
+Authorization codes are unique to a Zoovy account and vendor combination, 
+they are based on an algorithim that uses two independent shared secrets 
+a long with a secret encoding algorithim making it impossible to guess or
+share across accounts.<br>
+<br>
+Zoovy takes great care to ensure the legitimacy of our partners and their
+offerings. Together Zoovy merchants form a strong community of intelligent
+business owners that process millions of dollars in sales each month.
+We encourage all our merchants to utilize this system - by doing 
+this you protect the entire community - since hackers are less likely to
+target our userbase if they believe most or all attacks will be thwarted 
+and repeated.<br>
+<br>
+<i>Also - NEVER buy from a vendor who spammed you. Literally like 2 out of 3
+are scams. Legitimate businesses do not send email spam - ever.</i><br>
+<br>
+Finally - as you are probably already aware links in emails can be forged. 
+For this reason Zoovy and our partners will *NEVER* link to the validate script. 
+The only way you should ever legitimately access the validate script is by
+opening a new browser window and going www.zoovy.com, logging in, and
+entering your username and password and then typing in the validation
+code.<br>
+<br>
+ 
+</td></tr>
+</table>
+
+</body>

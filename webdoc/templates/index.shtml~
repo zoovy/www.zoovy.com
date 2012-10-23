@@ -1,0 +1,77 @@
+<head>
+<title>Zoovy WebDoc Search</title>
+<link rel="STYLESHEET" type="text/css" href="//www.zoovy.com/biz/webdoc.css">
+<style type="text/css">
+<!--
+.searchbox {height:21px; width:285px; border:#C4CCE9 2px inset;}
+-->
+</style>
+</head>
+
+<body>
+
+<div align="center" style="margin:20px 0px;"><img src="//static.zoovy.com/img/proshop/W150-H33-BFFFFFF/zoovy/logos/webdoc.gif"></div>
+
+<div align="center">
+<form action="//www.zoovy.com/webdoc/index.cgi" method="get" style="margin:0px; display:inline;">
+<input type="hidden" name="VERB" value="SEARCH">
+<input type="hidden" name="SESSION" value="<!-- SESSION -->">
+<table cellpadding="0" cellspacing="0" style="background-image:url(//www.zoovy.com/webdoc/images/webdoc_bgmid.gif);">
+<tr>
+	<td colspan="2"><img src="//www.zoovy.com/webdoc/images/webdoc_bgtop.gif" width="507" height="6"></td>
+</tr>
+<tr>
+	<td colspan="2" style="padding:40px 0px 4px 85px;"><b>Please type in your topic of interest here:</b></td>
+</tr>
+<tr>
+	<td style="padding-left:80px;"><input type="text" name="keywords" value="<!-- KEYWORDS -->" class="searchbox"></td>
+	<td style="padding-right:76px;">
+	<input type="image" src="//www.zoovy.com/webdoc/images/webdoc_submitbutton.gif" width="57" height="20"></td>
+</tr>
+<tr>
+	<td colspan=2>
+	<center>
+		Search Engine:  
+		<input <!-- engine_zoovy --> type="radio" name="engine" value="zoovy"> Zoovy 
+		&nbsp;
+		<input <!-- engine_google --> type="radio" name="engine" value="google"> Google
+	</center>
+	</td>
+<tr>
+	<td align="right" colspan="2" style="padding:30px 15px 8px 0px;">
+		<a href="?VERB=SITEMAP" style="padding:0px 4px;">sitemap</a>
+		<!-- 
+		<a href="/new" style="padding:0px 4px;">new</a>
+		-->
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><img src="//www.zoovy.com/webdoc/images/webdoc_bgbot.gif" width="507" height="6"></td>
+</tr>
+</table>
+</form>
+</div>
+
+<table>
+<!-- FAQ_RESULTS -->
+<!-- SEARCH_RESULTS -->
+</table>
+
+<br>
+<br>
+<!--
+<center>
+<table>
+<tr><td>
+<form action="http://www.google.com/cse" id="cse-search-box">
+<input name="cx" value="017949788311019015841:bts1i2nyxpm" type="hidden">
+<input style="border: 1px solid rgb(126, 157, 185); padding: 2px; background: rgb(255, 255, 255) url(//www.google.com/coop/intl/en/images/google_custom_search_watermark.gif) no-repeat scroll left center; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" name="q" size="40" type="text">
+<input name="sa" value="Search" type="submit">
+<script type="text/javascript" src="//www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+</td></tr>
+</form>
+</table>
+</center>
+-->
+</body>
+</html>

@@ -1,0 +1,54 @@
+#!/usr/bin/perl
+
+
+use strict;
+print "Content: text/plain\n\n";
+
+use Data::Dumper;
+use CGI;
+use lib "/httpd/modules";
+require DBINFO;
+
+
+my $q = CGI->new();
+my $payload = '{"pusher":{"name":"none"},"repository":{"name":"linktest","created_at":"2012-10-06T16:11:58-07:00","size":0,"has_wiki":true,"private":false,"watchers":0,"url":"https://github.com/brianhorakh/linktest","fork":false,"id":6107642,"pushed_at":"2012-10-06T16:11:58-07:00","open_issues":0,"has_downloads":true,"has_issues":true,"description":"linktest","stargazers":0,"forks":0,"owner":{"name":"brianhorakh","email":"brianh@zoovy.com"}},"forced":false,"after":"29ebef452b38b1bda426daa722381d57566dcd4e","head_commit":{"added":["README.md"],"modified":[],"timestamp":"2012-10-06T16:11:58-07:00","author":{"name":"brianhorakh","username":"brianhorakh","email":"brianh@zoovy.com"},"removed":[],"url":"https://github.com/brianhorakh/linktest/commit/29ebef452b38b1bda426daa722381d57566dcd4e","id":"29ebef452b38b1bda426daa722381d57566dcd4e","distinct":true,"message":"Initial commit","committer":{"name":"brianhorakh","username":"brianhorakh","email":"brianh@zoovy.com"}},"deleted":false,"ref":"refs/heads/master","commits":[],"before":"29ebef452b38b1bda426daa722381d57566dcd4e","compare":"https://github.com/brianhorakh/linktest/compare/29ebef452b38...29ebef452b38","created":false}';
+my $payload = '{"pusher":{"name":"brianhorakh","email":"brianh@zoovy.com"},"repository":{"name":"linktest","created_at":"2012-10-06T16:11:58-07:00","size":128,"has_wiki":true,"private":false,"watchers":0,"url":"https://github.com/brianhorakh/linktest","fork":false,"id":6107642,"pushed_at":"2012-10-06T17:04:37-07:00","open_issues":0,"has_downloads":true,"has_issues":true,"description":"linktest","stargazers":0,"forks":0,"owner":{"name":"brianhorakh","email":"brianh@zoovy.com"}},"forced":false,"after":"f43ce1b5c2a42a6e2966d41079c8098ef9ac669e","head_commit":{"added":["index.html"],"modified":[],"timestamp":"2012-10-06T17:04:19-07:00","author":{"name":"Brian Horakh","username":"brianhorakh","email":"brianh@zoovy.com"},"removed":[],"url":"https://github.com/brianhorakh/linktest/commit/f43ce1b5c2a42a6e2966d41079c8098ef9ac669e","id":"f43ce1b5c2a42a6e2966d41079c8098ef9ac669e","distinct":true,"message":"commit1","committer":{"name":"Brian Horakh","username":"brianhorakh","email":"brianh@zoovy.com"}},"deleted":false,"ref":"refs/heads/master","commits":[{"added":["index.html"],"modified":[],"timestamp":"2012-10-06T17:04:19-07:00","author":{"name":"Brian Horakh","username":"brianhorakh","email":"brianh@zoovy.com"},"removed":[],"url":"https://github.com/brianhorakh/linktest/commit/f43ce1b5c2a42a6e2966d41079c8098ef9ac669e","id":"f43ce1b5c2a42a6e2966d41079c8098ef9ac669e","distinct":true,"message":"commit1","committer":{"name":"Brian Horakh","username":"brianhorakh","email":"brianh@zoovy.com"}}],"before":"29ebef452b38b1bda426daa722381d57566dcd4e","compare":"https://github.com/brianhorakh/linktest/compare/29ebef452b38...f43ce1b5c2a4","created":false}';
+use JSON::XS;
+
+my $var = JSON::XS->new()->decode($payload);
+use Data::Dumper;
+print Dumper($var);
+
+my ($USERNAME,$UUID) = (); # ('erich','7C62B56A-101C-11E2-9284-F4273A9C');
+
+
+
+my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+my ($MID) = &ZOOVY::resolve_mid($USERNAME);
+my $pstmt = "select ID,SECRET from PROJECTS where MID=$MID and UUID=".$udbh->quote($UUID);
+my ($ID,$SECRET) = $udbh->selectrow_array($pstmt);
+my $userpath = &ZOOVY::resolve_userpath($USERNAME);
+print Dumper($ID,$SECRET);
+
+if (-d "$userpath/PROJECTS/$UUID") {
+	my $CMD = "cd $userpath/PROJECTS/$UUID; /usr/local/bin/git --git-dir=$userpath/PROJECTS/$UUID/.git pull";
+	print STDERR "$CMD\n";
+	system("$CMD >> /dev/null");
+	}
+
+open F, ">/tmp/git";
+print F Dumper(\%ENV,$q);
+close F;
+
+
+&DBINFO::db_user_close();
+
+
+
+__DATA__
+
+
+#{"pusher":{"name":"none"},"repository":{"name":"linktest","created_at":"2012-10-06T16:11:58-07:00","size":0,"has_wiki":true,"private":false,"watchers":0,"url":"https://github.com/brianhorakh/linktest","fork":false,"id":6107642,"pushed_at":"2012-10-06T16:11:58-07:00","open_issues":0,"has_downloads":true,"has_issues":true,"description":"linktest","stargazers":0,"forks":0,"owner":{"name":"brianhorakh","email":"brianh@zoovy.com"}},"forced":false,"after":"29ebef452b38b1bda426daa722381d57566dcd4e","head_commit":{"added":["README.md"],"modified":[],"timestamp":"2012-10-06T16:11:58-07:00","author":{"name":"brianhorakh","username":"brianhorakh","email":"brianh@zoovy.com"},"removed":[],"url":"https://github.com/brianhorakh/linktest/commit/29ebef452b38b1bda426daa722381d57566dcd4e","id":"29ebef452b38b1bda426daa722381d57566dcd4e","distinct":true,"message":"Initial commit","committer":{"name":"brianhorakh","username":"brianhorakh","email":"brianh@zoovy.com"}},"deleted":false,"ref":"refs/heads/master","commits":[],"before":"29ebef452b38b1bda426daa722381d57566dcd4e","compare":"https://github.com/brianhorakh/linktest/compare/29ebef452b38...29ebef452b38","created":false}
+
+
+

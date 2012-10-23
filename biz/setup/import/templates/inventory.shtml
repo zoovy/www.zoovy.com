@@ -1,0 +1,41 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+<table width='80%'>
+<Tr>
+	<td>
+	
+	<span class="alert"><!-- ERROR --></b></span>
+
+<table class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Load INVENTORY from CSV File</td>
+</tr>
+<tr>
+	<td align="left">
+
+<form name="thisFrm" id="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-INVENTORY'>
+
+<b>Inventory:</b><br>
+<input type='radio' name='TYPE' value='inventory.simple'> Simple Inventory (%SKU,%INVENTORY,%LOCATION,%MIN_QTY)<br>
+<input type='radio' name='TYPE' checked value='inventory'> Inventory (user specified header)<br>
+&nbsp;&nbsp;&nbsp; <input type="checkbox" name="ENABLEINVENTORY"> Enable Inventory for each SKU imported<br>
+&nbsp;&nbsp;&nbsp; <input type="checkbox" name="STRIPDASH"> Strip Dashes from SKU field.<br>
+&nbsp;&nbsp;&nbsp; <input type="checkbox" name="CHECKSKU"> Check/Verify SKU's exist.<br>
+(define advanced variables in the header)<br>
+<br>
+<!-- SWFUPLOAD -->
+
+&nbsp;&nbsp;&nbsp; <input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload CSV File ">
+</form>
+</td></tr>
+</table>
+
+</td></tr></table>
+</center>
+
+<br>
+</font>
+<!-- FOOTER -->

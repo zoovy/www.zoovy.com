@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+
+use CGI;
+use lib "/httpd/modules";
+use ZOOVY;
+
+use lib "/httpd/servers/overstock/modules";
+use OVERSTOCK;
+use Data::Dumper;
+
+$q = new CGI;
+print $q->header;
+my $v = &ZOOVY::attrib_handler_ref($q->unescape($q->param('ZOOVY')));
+$v->{'overstock:quantity'} = 1;
+my $errsref = &OVERSTOCK::hasErrors($v);
+
+print "<body bgcolor='white'>";
+if (defined $errsref) {
+	print "The following errors were encountered:<br>";
+	foreach my $e (@{$errsref}) {
+		print "<li> $e<br>";
+		}
+	}
+else {
+	## NO ERRORS - OKAY TO LAUNCH!
+	print $v->{'zoovy:html'}."<br>";
+	}
+print "</body>";
+# print '<pre>'.Dumper($v).'</pre>';

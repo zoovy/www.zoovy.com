@@ -1,0 +1,46 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="600"><tr><td>
+
+<table>
+	<tr>
+		<td><b>Status:</b></td>
+		<td><!-- STATUS --></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<table>
+	<tr>
+		<td> <input type="checkbox" name="enable" <!-- CHK_ENABLE -->> <b>Enable Publishing Service</b> </td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		<div class="hint">
+		HINT: Publishing a static sitemap is necessary if you have more than 500 pages on your site.
+		</div>
+		</td>
+	</tr>
+</table>
+
+<center>
+<table>
+<tr><td>
+<input type="submit" value=" Save " class="button">
+</td><td>
+<input type="button" value=" Exit " class="button" onClick="document.location='index.cgi';">
+</td></tr>
+</table>
+</center>
+</form>
+
+</td></tr>
+<tr><td>
+
+
+</center>
+</body>

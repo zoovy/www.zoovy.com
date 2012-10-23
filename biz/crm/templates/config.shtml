@@ -1,0 +1,110 @@
+<!-- TICKETS_TAB -->
+
+
+<center>
+<table width=800>
+<tr><td>
+<h1>Zoovy CRM Case Management/Returns Configuration</h1>
+
+<div class="warning">
+WARNING: Case Management/Returns is currently experimental. 
+Please <a target="webdoc" href="http://webdoc.zoovy.com/doc/51571">click here</a> to learn more.
+</div>
+
+<!-- ERRORS -->
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="CONFIG-SAVE">
+
+<table cellpadding=0 cellspacing=0 width=600 class="zoovytable">
+<tr cellpadding=0 cellspacing=0 class="zoovytableheader">
+	<td colspan=2>
+		CRM General
+	</td>
+</tr>
+<tr>
+	<td>Case Management/Returns:</td>
+	<td>
+		<select name="style">
+			<option <!-- STYLE_0 --> value="0">Internal only</option>
+			<option <!-- STYLE_10 --> value="10">Allow customers to open new tickets</option>
+		</select>
+	</td>
+</tr>
+<!--
+<tr>
+	<td>Primary Role Email:</td>
+	<td><input type="textbox" name="email" value=""></td>
+</tr>
+<tr>
+	<td colspan=2>
+<div class="hint">
+The primary role email address must be hosted by zoovy mail and should not
+belong to any user. The contents of this email address will be periodically
+downloaded and imported into the ticketing system and all messages will be
+deleted.
+	</div>
+	</td>
+</tr>
+-->
+	<tr>
+		<td>Ticket ID Format:</td>
+		<td>
+	<select name="sequence">
+		<option <!-- SELECT_TICKET_SEQ_ALPHA --> value="ALPHA">6 digit Alpha-Numeric</option>
+		<option <!-- SELECT_TICKET_SEQ_SEQ5 -->  value="SEQ5">Sequenced #####</option>
+		<option <!-- SELECT_TICKET_SEQ_DATEYYMM4 -->  value="DATEYYMM4">Hybrid Date+Sequence YYMM####</option>
+	</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Ticket Sequence #</td>
+		<td><input type="textbox" value="<!-- CRM_TICKET_NUMBER -->" size="5" name="ticket_number"></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<input class="button" type="submit" value="  Save  ">
+		</td>
+	</tr>
+</table>
+<br>
+
+<table cellpadding=0 cellspacing=0 width=600 class="zoovytable">
+	<tr cellpadding=0 cellspacing=0 class="zoovytableheader">
+		<td colspan=2>
+			CRM Email Configuration
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			This feature will automatically bring email from your inbox into the CRM ticketing system.<br>
+		<br>
+		<i>Warning: the contents of this email box will be emptied and brought into the CRM ticket system.</i><br>
+		<br>
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'>Email Box:</td>
+		<td>
+		<select name="EMAIL">
+			<!-- EMAILS -->
+		</select><br>
+	</td>
+	</tr>
+	<tr>
+		<td valign='top'>Status:</td>
+		<td><!-- EMAIL_STATUS --></td>
+	</tr>
+	<tr>
+		<td valign='top' colspan='2'>
+		<input type="checkbox" <!-- CHK_EMAIL_CLEANUP --> name="email_cleanup"> Clean Inbox: Delete Email Messages after creating ticket.
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<br>
+		<input class="button" type="submit" value="  Save  ">
+		</td>
+	</tr>
+</table>
+</form>
+</center>

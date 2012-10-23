@@ -1,0 +1,76 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy offers integration with AtLast Fulfillment', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<script type="text/javascript" src="/cookies.js"></script>
+<script type="text/javascript">
+setCookie("ZOOVY_AFFILIATE","ATLASTFULFILLMENT");
+</script>
+
+<div>
+<img src="/images/partner_pages/atlastfulfill_header-280x45.gif" width="280" height="45" alt="at last fulfillment logo">
+</div>
+
+<h2>What is AtLast Fulfillment?</h2>
+
+
+<div>
+<p>To increase dependability of shipping and order fulfillment, Zoovy has formed a partnership with AtLast Fulfillment, a leading provider of innovative outsourcing solutions for warehousing and fulfillment with leading-edge technology infrastructure to support eCommerce companies.</p>
+
+<p>With this new partnership, Zoovy merchants now have seamless access and integration with AtLast’s services, enabling them to ship more orders, reliably and cost effectively. AtLast Fulfillment simplifies the entire fulfillment process by storing, picking, packing and shipping orders. </p>
+
+</div>
+
+<h2>Why Should I Use AtLast Fulfillment?</h2>
+
+<p>Zoovy merchants can now utilize all of AtLast Fulfillment’s key services which include warehousing, inventory management, custom packing solutions, returns management, logistics management and real-time online reporting. By leveraging AtLast’s in-depth industry knowledge and leading edge technology, Zoovy merchants can benefit from more efficient operations, new ways of growing revenue, more satisfied customers and dramatic cost reductions. </p>
+
+<p>Their centrally located secure facility in Denver, CO is fully equipped with the latest technology for automated packing of batched orders and semi-automated lines for pick-n-pack orders. AtLast’s quality control programs apply to all clients for all shipments, inventory and return processing.</p>
+
+<p>AtLast gives Zoovy merchants immediate access to business infrastructure capabilities and new strategic markets without the capital investment and time delays associated with creating in-house capability. As a virtual extension of your business, our solutions deliver a superior experience that allows your business to:</p>
+<p><img src="../images/partner_pages/atlastfulfill_boxes-175x152.jpg" alt="AtLast ad" width="175" height="152" align="right" style="margin:0px 0px 10px 10px;"></p>
+<ul type="disc">
+	<li style="margin-bottom:5px;">Increase Sales</li>
+	<li style="margin-bottom:5px;">Reduce operating costs</li>
+	<li style="margin-bottom:5px;">Enhance customer satisfaction and retention</li>
+	<li style="margin-bottom:5px;">Focus on core capabilities</li>
+	<li style="margin-bottom:5px;">Scale Resource Management</li>
+	<li style="margin-bottom:5px;">Gain Access to the Latest Technology </li>
+</ul>
+
+
+<h2>The &quot;No Excuse&quot; Guarantee</h2>
+
+<div style='padding-right:15px;'>
+<p>"Making sure orders get out the door and into the customers' hands without a hitch is the single most important job we perform." Says Ted Tanner, President and Chief Executive Officer of AtLast Fulfillment, "No excuses, no reasons are acceptable for failing to execute each and every order flawlessly. It doesn’t matter how many orders need to be executed, it doesn’t matter how complex the order, only AtLast Fulfillment offers the exclusive <i>Excuse Proof Guarantee!</i>"</p>
+
+</div>
+
+<h2>Key Services</h2>
+
+<ul type="disc">
+	<li style="margin-bottom:5px;">Warehousing</li>
+	<li style="margin-bottom:5px;">Inventory Management</li>
+	<li style="margin-bottom:5px;">Pick, Pack and Ship</li>
+	<li style="margin-bottom:5px;">Custom Packaging Solutions</li>
+	<li style="margin-bottom:5px;">Returns Management</li>
+	<li style="margin-bottom:5px;">Logistics Management</li>
+	<li style="margin-bottom:5px;" >Real-Time Online Reporting</li>
+	<li style="margin-bottom:5px;">Gift Wrapping</li>
+	<li style="margin-bottom:5px;">Kitting & Assembly</li>
+</ul>
+
+<h2>Company Values</h2>
+<p>"Our values serve as the guide for how we treat our customers, our owners, our shareholders and our associates. We aspire to these values to make AtLast Fulfillment a great place to work and do business.</p>
+<p>"We succeed only when we meet and exceed the expectations of our customers, owners and shareholders. We have a passion for excellence and will deliver the highest standards of integrity and fairness.</p>
+<p>"We celebrate the diversity of people, ideas and cultures. We honor the dignity and value of individuals working as a team. We believe in environmental responsibility and protecting our planet. We improve the communities in which we work. We encourage innovation, accept accountability and embrace change. We seek knowledge and growth through learning. We share a sense of urgency, nimbleness and endeavor to have fun too."</p>
+<p align="right" style="padding-right:10px;">- Ted Tanner, President and Chief Executive Officer of AtLast Fulfillment</p>
+
+<h2 style='margin-top:30px;'>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+</div>
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

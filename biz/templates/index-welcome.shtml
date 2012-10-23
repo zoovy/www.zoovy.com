@@ -1,0 +1,196 @@
+<!-- NO_TAB -->
+
+
+<table cellspacing='10' cellpadding='0' border='0' width='100%'>
+<tr>
+
+<!-- video cell -->
+	<td valign='middle' width='30%'>
+
+
+<iframe width="315" height="200"
+src="//www.youtube.com/embed/fXvfHXd2OdA" frameborder="0"
+allowfullscreen></iframe>
+
+	</td>
+
+<!-- block o text and features pdf's -->
+	<td valign='top' width='65%'>
+<h1 style='margin:0;'>Welcome to anyCommerce</h1>
+
+<p>
+Welcome to anyCommerce.  Thanks for your interest!
+Please excuse our dust, we're still in soft-launch mode while we wrap up some development.
+anyCommerce is based off zoovy.com infrastructure with new enhanced cloud-app capabilities.
+What you see now is a modified version of a Zoovy.com trial, the features are functional and you're welcome to use it for free.
+You will receive an email as new apps become available, after we go into full-launch mode.
+In the meantime if there is anything we can do to assist you in your evaluation please don't hesitate to let us know. 
+
+</p>
+
+<h3>Learn more about anyCommerce's powerful features:</h3>
+
+<table cellspacing='4' cellpadding='0'>
+<tr>
+	<td valign=top><a href='/pdf/amazon.pdf' class='file'>Amazon</a></td>
+	<td valign=top><a href='/pdf/crm_and_newsletters.pdf' class='file'>CRM &amp; newsletters</a></td>
+	<td valign=top><a href='/pdf/comparison_shopping.pdf' class='file'>Comparison shopping</a></td>
+</tr>
+
+<tr>
+	<td valign=top><a href='/pdf/auction_bundle.pdf' class='file'>eBay</a></td>
+	<td valign=top><a href='/pdf/multi_stores.pdf' class='file'>Multiple stores</a></td>
+	<td valign=top><a href='/pdf/order_manager.pdf' class='file'>Order Manager</a></td>
+</tr>
+
+<tr>
+	<td valign=top><a href='/pdf/shipping_bundle.pdf' class='file'>Shipping</a></td>
+	<td valign=top><a href='/pdf/supply_chain.pdf' class='file'>Supply chain</a></td>
+	<td valign=top><a href='/pdf/syndication.pdf' class='file'>Syndication</a></td>
+</tr>
+
+<tr>
+	<td valign=top><a href='/pdf/website_bonding.pdf' class='file'>Website bonding (BuySAFE)</a></td>
+</tr>
+
+</table>
+
+	</td>
+	
+<!-- banners and links -->
+
+	<td valign='top' width='5%' align='right'>
+	<!--
+!!!!!!!!!!!!!!!!!!!!   DON'T FORGET TO LINK THESE TWO BANNERS!!!!!!!!!!!!!!!!!!! -->
+<div style='margin-bottom:5px;'>
+<a target="_blank" href="http://www.facebook.com/anycommerce"><img src='/biz/images/trial/follow_on_facebook-181x54.png' width='181' height='54' alt='follow anyCommerce on FaceBook' border='0'></a>
+</div>
+
+
+<div style='background:#eef1fa; text-align:left; margin-left:5px;'>
+	<div style='background:url(/biz/images/trial/section_header_bg-1x27.gif) repeat-x top #d5ddf3; padding:4px;'><h2 style="margin:0;">Learn more about anyCommerce</h2></div>
+	<div style='padding:5px 10px;'>
+
+<div style='margin-left:10px;padding-bottom:5px;'>
+<a href='/pdf/sheet_zoovy_overview.pdf'>anyCommerce</a><br>
+
+	</div>
+</div>
+
+
+	</td>
+	
+</tr>
+<tr>
+	<td valign='top'>
+	<div id='case_studies'>
+
+<div style='background:url(/biz/images/trial/section_header_bg-1x27.gif) repeat-x top #d5ddf3; padding:4px;'>
+<h2 style="margin:0;">Headlines</h2>
+</div>
+
+
+
+<div id='case_studies_list'>
+
+
+<marquee scrollamount="2" direction="up" loop="true" width="100%">
+
+<b>Partner Updates:</b><br>
+
+<div id="mpo">
+<a target="_partner" href="http://www.marketplaceoptimization.com?sender=anycom">
+<img border=0 width=90 src="//static.zoovy.com/img/proshop/W90-Bffffff/zoovy/logos/mpo.jpg"><br>
+</a><br>
+Learn more about how anyCommerce and Marketplace Optimization can grow sales faster than SEO!
+</div><br>
+<br>
+<hr>
+
+<div id="paypal">
+<a target="_partner" href="/biz/setup/payment">
+<img border=0 width=90 src="//static.zoovy.com/img/proshop/W90-Bffffff/zoovy/logos/paypal.gif"><br>
+</a><br>
+anyCommerce participates in Paypal's Express Checkout Accelerated Boarding Program. 
+This account is already configured to accept Paypal payments!
+</div><br>
+<br>
+<hr>
+
+	</div>
+	</td>
+
+	<td valign='top' colspan='2'>
+
+<div style='background:url(/biz/images/trial/section_header_bg-1x27.gif) repeat-x top #d5ddf3; padding:4px;'>
+<h2 style="margin:0;">Get started on your anyCommerce app</h2>
+</div>	
+<div style='margin-bottom:20px;'>
+<table cellspacing='4' cellpadding='0'>
+<tr>
+<!-- webdoc icon and text -->
+	<td width='1%'><a target="_blank" href='/webdoc' target="webdoc"><img src="/biz/images/trial/doc_icon-73x65.gif" width="73" height="65" alt='webdoc' border='0'></a></td>
+	<td width='49%'>
+	<div style='margin:0 20px 0 0;'>
+<div><b><a target="_blank" href='/webdoc' target="webdoc">Documentation Library</a></b></div>
+<div class='hint'>Webdoc.zoovy.com is our knowledgebase and comprehensive documentation archive.</div>
+	
+	</div>
+	</td>	
+</tr>
+</table>
+</div>
+
+
+
+
+<div style='background:url(/biz/images/trial/section_header_bg-1x27.gif) repeat-x top #d5ddf3; padding:4px;'>
+<h1 style="margin:0;">Still want more?</h1>
+</div>	
+
+<table cellspacing='6' cellpadding='0' width='100%'>
+<tr>
+<!-- webdoc icon and text -->
+	<td width='1%'>
+	<a target="_blank" href='#'><img src="/biz/images/trial/chat_icon-65x57.gif" width="65" height="57" alt='webdoc' border='0'></a></td>
+	<td width='49%' valign=top>
+	<div style='margin:0 20px 0 0;'>
+<div><b>Chat with a specialist</b></div>
+<div class='hint'>
+<!-- BEGIN ProvideSupport.com Graphics Chat Button Code -->
+<div id="ciB4MQ" style="z-index: 100; position: absolute;"></div><div id="scB4MQ" style="display: inline;"><a href="#" onclick="psB4MQow(); return false;"><img name="psB4MQimage" src="https://image.providesupport.com/image/zoovy/offline-206975285.gif" width="93" border="0" height="33"></a></div><div id="sdB4MQ" style="display: none;"><script src="https://image.providesupport.com/js/zoovy/safe-standard.js?ps_h=B4MQ&amp;ps_t=1244270328240&amp;username=brian*ADMIN" type="text/javascript"></script></div><script type="text/javascript">var seB4MQ=document.createElement("script");seB4MQ.type="text/javascript";var seB4MQs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/zoovy/safe-standard.js?ps_h=B4MQ\u0026ps_t="+new Date().getTime()+"\u0026username=brian*ADMIN";setTimeout("seB4MQ.src=seB4MQs;document.getElementById('sdB4MQ').appendChild(seB4MQ)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=zoovy">Live Customer Support</a></div></noscript>
+<!-- END ProvideSupport.com Graphics Chat Button Code -->
+</div>
+	
+	</div></td>
+	
+<!-- video icon and text -->
+	<td width='1%'><img src="/biz/images/trial/phone_icon-65x57.gif" width="65" height="57" alt='webdoc' border='0'></td>
+	<td width='49%' valign=top>
+	<div style='margin:0 20px 0 0;'>
+<div><b>Try our phenomenal support</b></div>
+<div class='hint'>
+Success driven e-commerce isn't just our slogan, we 
+want all our customers to be the biggest success they can be.
+<a href="/biz/support">Try our support!</a>
+</div>
+	
+	</div></td>
+	
+	
+</tr>
+</table>
+
+	</td>
+
+
+</tr>
+
+</table>
+
+
+
+
+
+</body>
+</html>

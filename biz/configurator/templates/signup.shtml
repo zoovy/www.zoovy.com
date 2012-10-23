@@ -1,0 +1,167 @@
+<!-- NO_TAB -->
+<body onLoad="sumIt();" bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<br>
+<div align="center">
+<form action="index.cgi" method="POST" name="signupFrm">
+<input type="hidden" name="VERB" value="PROCESS_SALE">
+<input type="hidden" name="PKG" value="<!-- PACKAGE_ID -->">
+<!-- ERRORS -->
+<!-- EMAIL_ERROR -->
+
+
+
+
+<table cellspacing="0" cellpadding="0" width="645" border="0" class="zoovytable">
+<tr>
+	<td class="zoovytableheader" height="16">Selected Package</td>
+	<td class="zoovytableheader" align="center" width="75">Setup</td>
+	<td class="zoovytableheader" width="75">Monthly</td>
+</tr>
+<tr>
+	<td valign=top><p style="margin: 3px;">
+		<strong><!-- PACKAGE_NAME --></strong>
+		<div class="hint"><!-- PACKAGE_DESC --></div>
+	</td>
+	<td valign=top align="center"><strong>Setup Fee: $<!-- PACKAGE_SETUPFEE --></strong></td>
+	<td valign=top align="center"><strong>Monthly Minimum Fee: $<!-- PACKAGE_MONTHLYFEE --></strong></td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+</tr>
+
+<tr>
+	<td valign="top" colspan='10'>
+
+		<table cellpadding='0' cellspacing='0' width='100%' border='0'>
+			<tr>
+			<td class="zoovytableheader" width="50" align="center" height="16">Add</td>
+			<td class="zoovytableheader" width="70">&nbsp;</td>
+			<td class="zoovytableheader" width="200">&nbsp;Bundle</td>
+			<td width="2" rowspan='10'></td>
+			<td class="zoovytableheader" width="50" align="center">&nbsp;Add</td>
+			<td class="zoovytableheader" width="70">&nbsp;</td>
+			<td class="zoovytableheader" width="200">&nbsp;Bundle</td>
+			</tr>
+			<!-- PACKAGE_UPSELL -->
+		</table>
+		<br>
+	</td>
+</tr>
+
+<tr>
+	<td colspan='10'class="zoovytableheader" height="16">&nbsp;Payment Information</td>
+</tr>
+
+<tr>
+	<td valign="top" colspan='10'>
+	<table width="100%">
+	<tr>
+		<td valign="top" width="70%">
+
+			<table>
+			<!-- ERROR_CREDIT_CARD -->
+			<tr>
+				<td>Company Name:</td>
+				<td><input type="textbox" name="COMPANY_NAME" value="<!-- COMPANY_NAME -->"></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input type="textbox" name="COMPANY_EMAIL" value="<!-- COMPANY_EMAIL -->"></td>
+			</tr>
+			<tr>
+				<td>Phone:</td>
+				<td><input type="textbox" name="COMPANY_PHONE" value="<!-- COMPANY_PHONE -->"></td>
+			</tr>
+			<tr>
+				<td>Cardholder Name:</td>
+				<td><input type="textbox" name="CARD_NAME" value="<!-- CARD_NAME -->" size="40"></td>
+			</tr>
+			<tr>
+				<td>Card Number:</td>
+				<td><input type="textbox" value="<!-- CC_NUM -->" name="CC_NUM" size="20"><img src='/images/setup/key.gif'></td>
+			</tr>
+			<tr>
+				<td>Expiration:</td>
+				<td><select name="CC_EXP_MO">
+				  <option value="01">January (01)</option>
+				  <option value="02">February (02)</option>
+				  <option value="03">March (03)</option>
+				  <option value="04">April (04)</option>
+				  <option value="05">May (05)</option>
+				  <option value="06">June (06)</option>
+				  <option value="07">July (07)</option>
+				  <option value="08">August (08)</option>
+				  <option value="09">September (09)</option>
+				  <option value="10">October (10)</option>
+				  <option value="11">November (11)</option>
+				  <option value="12">December (12)</option>
+					</select>
+					<select name="CC_EXP_YR">
+				  <option value="09">2009</option>				  
+				  <option value="10">2010</option>				  
+				  <option value="11">2011</option>				  
+				  <option value="12">2012</option>
+				  <option value="13">2013</option>	
+				  <option value="14">2014</option>
+				  <option value="15">2015</option>			  
+					</select>
+				</td>
+			</tr>
+			</table>
+		</td>
+		<td valign="top" width="50%" align="right">
+			<img src="images/payment_thawte.gif" width="170" height="75" alt="" border="0">
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td colspan='10'>
+	<table width=100% cellpadding=3><tr><td>
+	
+	<b>Your account will be charged a one time setup fee of $<!-- PACKAGE_SETUPFEE --> - you will NOT receive another invoice for <!-- PACKAGE_SKIPBILLDAYS --> days.</b> 
+	The setup fee includes the first <!-- PACKAGE_SKIPBILLDAYS --> days of access and <!-- PACKAGE_PREPAIDHOURS --> hours of pre-paid LIVE support time.
+	If you have questions please contact a sales representative at 1-877-966-8948 x 2.
+	
+	<br>
+<!--
+	&nbsp;	<input type='checkbox' name='agree'> I agree to the <a target="_blank" href=\"http://www.zoovy.com/legal/tos/">terms of service</a><br>
+	&nbsp;	<input type='checkbox' name='agree'> I have read the support polices <a target="_blank" href=\"http://www.zoovy.com/legal/tos/">terms of service</a><br>
+	&nbsp;	<input type='checkbox' name='agree'> I have read the billing and cancellation polices <a target="_blank" href=\"http://www.zoovy.com/legal/tos/">terms of service</a><br>
+-->
+	<br>
+
+	<b>Change Username:</b> <br>
+			<i>Before you start conducting any real business is the best time to change your username. 
+			Take a moment and consider if you're going to be happy typing "<!-- USERNAME -->" to login every day.
+			Your Zoovy website will also be accessible at http://<!-- USERNAME -->.zoovy.com 
+			(thats in addition to any domain names you choose to add).</i><br>
+			<br>
+			<!-- ERROR_USERNAME -->
+			<center>
+			<table>
+				<tr>
+					<td><b>Trial Username:</b></td>
+					<td><!-- USERNAME --></td>
+				</tr>
+				<tr>
+					<td><b>Permanent Username:</b></td>
+					<td><input type='textbox' size='20' name='NEW_USERNAME' value='<!-- NEW_USERNAME -->'></td>
+				</tr>
+			</table>
+	
+	<center>
+		<input type="submit" value=" Setup my Account ">
+	</center>
+	<br>
+	</td></tr></table>
+	</td>
+</tr>
+</form>
+
+</table>
+</div>
+</body>
+</html>

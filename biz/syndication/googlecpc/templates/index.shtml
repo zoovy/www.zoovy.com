@@ -1,0 +1,30 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+<form method="POST" id="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" value="EXPORT">
+<input type="hidden" name="SAFE" value="">
+
+Adgroup #1: 
+<input type="textbox" name="adgroup1a" size="25"><br>
+<input type="textbox" name="adgroup1a" size="35"><br>
+<input type="textbox" name="adgroup1a" size="35"><br>
+<br>
+Adgroup #2: 
+<input type="textbox" name="adgroup1b" size="25"><br>
+<input type="textbox" name="adgroup1b" size="35"><br>
+<input type="textbox" name="adgroup1b" size="35"><br>
+
+<table class='zoovytable' cellspacing=0 width="500">
+<tr><td class='zoovytableheader'>Google Adwords</td></tr>
+
+<!-- CATEGORIES -->
+
+
+</table>
+</form>
+
+
+</center>
+</body>

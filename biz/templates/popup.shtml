@@ -1,0 +1,72 @@
+<head>
+<title>Get Started with Zoovy.com</title>
+<SCRIPT>
+<!--//
+	
+function openWindow(url) {
+	popupWin = window.open(url, 'popup','status=yes,resizable=yes,width=638,height=450,menubar=yes,scrollbars=yes')
+	popupWin.focus(true);
+}
+//-->
+</SCRIPT>
+<STYLE TYPE="text/css">
+<!--
+	FONT.A { font-family: Verdana, Arial, Helvetica; font-size: 12px; color: 43A143; }
+	TD.menubar { font-family: Helvetica, Arial, Verdana; color: 330066; font-size: 9pt; background-color: AAAADD; text-indent: 9pt; }
+	TD.menubody { font-family: Helvetica, Arial, Verdana;  color: 000000; font-size: 9pt; background-color: FFFFFF; text-indent: 2px; }
+	TD.bigmenubar {  font-family: Helvetica, Arial, Verdana; color: FFFFFF; font-size: 9pt; background-color: 330066; text-indent: 9pt; }
+	TD.bigmenubody {  font-family: Helvetica, Arial, Verdana;  color: 000000; font-size: 9pt; background-color: FFFFFF; text-indent: 2px; }
+	TD.menuitem {  font-family: Helvetica, Arial, Verdana;  color: 000000; font-size: 9pt; background-color: FFFFFF; }
+	TD.tipmenubar {  font-family: Helvetica, Arial, Verdana; color: FFFFFF; font-size: 9pt;	background-color: 663399; text-indent: 5px; }
+	TD.tipmenubody { font-family: Helvetica, Arial, Verdana;  color: 000000; font-size: 9pt; background-color: FFFFFF; text-indent: 2px; }
+-->
+</STYLE> 
+</head>
+<body bgcolor='DDDDDD' onLoad='this.focus();'>
+<font face='arial' size='2'>
+<center><b>Z O O V Y &nbsp; S E T U P &nbsp; A S S I S T A N T</b><br><i>takes about 5 minutes</i></center>
+<Br>
+<table bgcolor='330066' width='100%' cellspacing='0' cellpadding='1' border='0'><Tr><td>
+<table bgcolor='AAAADD' width='100%' cellspacing='0' cellpadding='4' border='0'>
+<Tr><td class='menubar'><b>Build a new e-Commerce Store</b></td></tr>
+<tr><td class='menubody'>
+<table cellpadding='1' cellspacing='0' border='0'>
+<tr>
+	<td><img src='<!-- HAS_THEME -->'></td>
+	<td class='menuitem'><a href="#" onClick="opener.location.href='/biz/setup/themes';">Select a Website Theme</a></td>
+</tr>
+<tr>
+	<td><img src='<!-- HAS_HOME -->'></td>
+	<td class='menuitem'><a href="#" onClick="opener.location.href='/biz/setup/builder/wizard.cgi?PG=homepage&FS=H';">Customize Homepage</a></td>
+</tr>
+<!--
+<tr>
+	<td><img src='<!-- HAS_SHIP -->'></td>
+	<td class='menuitem'><a href="#" onClick="opener.location.href='/biz/setup/shipping';">Configure Shipping</a></td>
+</tr>
+<tr>
+	<td><img src='<!-- HAS_PAY -->'></td>
+	<td class='menuitem'><a href="#" onClick="opener.location.href='/biz/setup/payment';">Configure Accepted Payment</a></td>
+</tr>
+-->
+<tr>
+	<td><img src='<!-- HAS_PROD -->'></td>
+	<td class='menuitem'><a href="#" onClick="opener.location.href='/biz/product/index.cgi?goto=create_product.cgi';">Add Products</a></td>
+</tr>
+<tr>
+	<td><img src='images/todo.gif'></td>
+	<td class='menuitem'><a href="javascript:openWindow('/biz/signup/index.cgi');">Select Account Type</a></td>
+</tr>
+</table>
+<Br>
+<center>
+	<a href="javascript:openWindow('/biz/wizard');"><b>Click Here to try the new Configuration Wizard</b></a>
+</center>
+<br>
+</td></tr></table>
+</td></tr></table>
+<br>
+Click "Home" to reload this page.
+If you need help please email <a href="mailto:support@zoovy.com">support@zoovy.com</a>.
+</font>
+</body>

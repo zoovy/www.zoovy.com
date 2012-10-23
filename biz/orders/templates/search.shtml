@@ -1,0 +1,92 @@
+<head>
+	<title>Order Management</title>
+	<link rel="STYLESHEET" type="text/css" href="/biz/standard.css">  
+</head>
+<body>
+
+<center>
+<br>
+<br>
+<form action='search-bounce.cgi' method="POST">
+<input type='hidden' name='CMD' value='SEARCH'>
+
+<table class='zoovytable' width='500' cellspacing='0' cellpadding='1' border='0'>
+<tr><Td class='zoovytableheader'>Search Orders</td></tr>
+<tr><td>
+
+<table width='100%' cellspacing='0' cellpadding='2' border='0' bgcolor='ffffff'>
+<tr>
+	<td valign=CENTER NOWRAP bgcolor='EEEEEE'>
+<font face='arial' size='3'><b>Search For:</b>
+	<INPUT TYPE="textbox" NAME="find_text" VALUE="" SIZE="25" MAXLENGTH="100">
+	<input class="button" type='submit' value='  Search Now  '>
+</font>
+</td></tr><Tr><Td>
+<hr>
+
+<table width='100%' border='0'>
+<tr><td valign='top'>
+<B>Order Status:</B><Br>
+<input type='radio' name='search_field' VALUE='ANY' checked>Order #<br>
+<div class="hint">HINT: It is exponentially faster to use a fully qualified order # ex: 2010-01-1234</div>
+<input type='radio' name='search_field' VALUE='DATA'>Order Contents<br>
+<input type='radio' name='search_field' VALUE='EMAIL'>Email<br>
+<input type='radio' name='search_field' VALUE='BILL_FULLNAME'>Billing Name (First or Last)<br>
+<!--
+NOT CURRENTLY INDEXED:
+<input type='radio' name='search_field' VALUE='BILL_PHONE'>Billing Phone Number<br>
+-->
+<input type='radio' name='search_field' VALUE='GOOGLECHECKOUT'>Google Checkout Order #<br>
+<input type='radio' name='search_field' VALUE='AMAZON'>Amazon Order #<br>
+<input type='radio' name='search_field' VALUE='EBAY'>eBay Item #<br>
+<input type='radio' name='search_field' VALUE='EREFID'>ERef ID #<br>
+<br>
+
+<b>Order Status:</b><br>
+<input type='radio' name='find_status' VALUE=''> Any<br>
+<input type='radio' name='find_status' VALUE='RECENT'>Recent<br>
+<input type='radio' name='find_status' VALUE='PENDING'>Pending<br>
+<input type='radio' name='find_status' VALUE='APPROVED'>Approved<br>
+<input type='radio' name='find_status' VALUE='PROCESS'>Processing<br>
+<input type='radio' name='find_status' VALUE='COMPLETED'>Complete<br>
+<input type='radio' name='find_status' VALUE='CANCELED'>Canceled<br>
+<input type='radio' name='find_status' VALUE='BACKORDER'>Backordered<br>
+
+</td>
+</table>
+
+</td></tr></table>
+</td></tr></table>
+</form>
+
+<br>
+
+<table width='500' class='zoovytable' cellspacing='0' cellpadding='1' border='0'>
+<tr><Td class='zoovytableheader'>Search Incomplete (Marketplace) Items</td></tr>
+<tr><td>
+<table width='100%' cellspacing='0' cellpadding='2' border='0' bgcolor='ffffff'>
+<tr><td VALIGN=CENTER NOWRAP bgcolor='FFFFFF'>
+<form target="body" action="/biz/orders/external/body.cgi" method="POST">
+<font face='arial'>
+<input type='hidden' name='REDIRECT' value='main.cgi'>
+<input type='hidden' name='FOOTER' value='main-footer.shtml'>
+<input type='hidden' name='CMD' value='SEARCH'>
+<br>
+Search For: <input type='textbox' name='TEXT'>
+<br>
+<center><input type='submit' value='  Begin Search  '><br></center>
+<br>
+
+
+<br>
+</form>
+</td></tr></table>
+</td></tr></table>
+
+
+
+
+
+
+
+</body>

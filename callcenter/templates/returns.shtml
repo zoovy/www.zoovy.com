@@ -1,0 +1,18 @@
+<!-- HEADER -->
+
+<!-- POLICIES_MSG -->
+
+<b>Returns...</b>
+
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="RETURN_LOOKUP">
+<tr>
+	<td>RMA: #<input type="textbox"></td>
+</tr>
+<tr>
+	<td><input type="submit" value=" Lookup ">
+</tr>
+</table>
+
+<!-- FOOTER -->
+

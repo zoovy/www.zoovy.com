@@ -1,0 +1,50 @@
+[%- IF attribute_set_id %]
+<AttributeSetArray>
+  [%- FOREACH at_set_id = attribute_set_id %]
+  [%- IF at_set_id != 2135 %]
+  <AttributeSet attributeSetID="[% at_set_id %]">
+    [%- FOREACH attribute_id = attributes.keys %]
+    [%- IF attribute_id AND attributes.$attribute_id %]
+    <Attribute attributeID="[% attribute_id %]">
+      [%- FOREACH value = attributes.$attribute_id.value %]
+    <Value>
+[%- IF value.match('[\-\d]') %][% type = attributes.$attribute_id.type %][% ELSE %][% type = 'ValueLiteral' %][% END -%]
+	    <[% type %]>[% value %]</[% type %]>
+    </Value>
+      [%- END %]
+    </Attribute>
+    [%- END %]
+    [%- END %]
+  </AttributeSet>
+  [%- END %]
+  [%- END %]
+  [%# return policy %]
+  [%- IF ret_policy_attributes %]
+  <AttributeSet attributeSetID="2135">
+    [%- FOREACH attribute_id = ret_policy_attributes.keys %]
+    [%- IF attribute_id AND ret_policy_attributes.$attribute_id %]
+    [%- value = ret_policy_attributes.$attribute_id.value %]
+    <Attribute attributeID="[% attribute_id %]">
+      <Value>
+  	  <[% ret_policy_attributes.$attribute_id.type %]>[% value %]</[% ret_policy_attributes.$attribute_id.type %]>
+     </Value>
+    </Attribute>
+    [%- END %]
+    [%- END %]
+  </AttributeSet>
+  [%- END %]
+</AttributeSetArray>
+[%- END %]
+
+[%- IF custom_specifics %]
+<ItemSpecifics>
+[%- FOREACH cs = custom_specifics.keys %]
+  <NameValueList>
+    <Name>[% cs %]</Name>
+    [%- FOREACH cs_value = custom_specifics.$cs %]
+    <Value>[% cs_value %]</Value>
+    [%- END %]
+  </NameValueList>
+[%- END %]
+</ItemSpecifics>
+[%- END %]

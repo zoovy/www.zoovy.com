@@ -1,0 +1,712 @@
+#!/usr/bin/perl
+
+use strict;
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use strict;
+use AMAZON;
+
+my $dbh = &DBINFO::db_zoovy_connect();	
+
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_P&16');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+
+# my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/syndication",2,'_P&16');
+
+
+my $q = new CGI;
+my $qtUSERNAME = $dbh->quote($USERNAME);
+
+my $template_file = '';
+my $help = '#50378';
+
+
+
+my $VERB = $q->param('VERB');
+
+print STDERR "VERB: $VERB\n";
+
+my @BC = ();
+push @BC, { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', };
+push @BC, { name=>'Amazon',link=>'http://www.zoovy.com/biz/syndication/amazon','target'=>'_top', };
+
+#if (1) {
+#	$template_file = 'maintenance.shtml';
+#	$VERB = 'MAINTENANCE';
+#	}
+
+if ($FLAGS !~ /,AMZ,/) {
+	$template_file = 'deny.shtml';
+	$VERB = 'DENY';
+	}
+
+if ($VERB eq '') { 
+	$VERB = 'CONFIG'; 
+	}
+
+
+if ($VERB eq 'CONFIG-SAVE') {
+#	my $pstmt = "select count(*) from AMAZON_FEEDS where MID=$MID /* USERNAME=$qtUSERNAME */ and PRT=$PRT";
+#	my $sth = $dbh->prepare($pstmt);
+#	$sth->execute();
+#	my ($count) = $sth->fetchrow();
+#	$sth->finish();
+
+	#print STDERR Dumper($q);
+	my $upc_creation = ($q->param('upc_creation')==1)?1:0;
+	my $email_conf = ($q->param('email_conf')==1)?1:0;
+
+	&DBINFO::insert($dbh,'AMAZON_FEEDS',{
+		USERNAME=>$USERNAME,
+		MID=>$MID,
+		UPC_CREATION=>$upc_creation,
+		EMAIL_CONFIRMATIONS=>$email_conf,
+		PRICING_SCHEDULE=>$q->param('pricing_schedule'),
+		PRT=>$PRT,		
+		},key=>['MID','PRT'],update=>1);
+	&ZWEBSITE::save_website_attrib($USERNAME,'amazon',time());
+	$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<font color=red>Your Amazon settings have been saved.</font>";
+
+#	my $ERROR = '';
+#	if ($count>0) {
+#		$pstmt = "update AMAZON_FEEDS set IS_ERROR=0,STATUS='Updated settings, pending submission',".
+#					"UPDATED=0,PRICING_SCHEDULE=".$dbh->quote($q->param('pricing_schedule')).",".
+#					"UPC_CREATION=$upc_creation where PRT=$PRT and MID=".$MID;
+#
+#		print STDERR $pstmt."\n";
+#		$dbh->do($pstmt);
+		
+	## added 2008-04-29 - patti
+	## reset products
+	if ($q->param('reset') eq 'on') {
+		require PRODUCT::BATCH;
+		my ($product_count) = PRODUCT::BATCH::updatetss($USERNAME);
+		print STDERR "Products reset \n";
+
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} .= "<br><font color=red>Your Amazon Feed has been reset.</font>";
+		}
+
+	$VERB = 'CONFIG';
+	}
+
+	
+if ($VERB eq 'CONFIG') {
+	my $hashref = {};
+
+	my ($hashref) = AMAZON::fetch_merchant($USERNAME,$PRT);
+
+	#print STDERR Dumper($hashref);
+
+	## if Product Syndication has been turned, ALERT merchant
+	if (!($hashref->{'FEED_PERMISSIONS'} & 1)) {
+		$GTOOLS::TAG{'<!-- FEED_PERMISSIONS -->'} = "Your product syndication has been turned off!! Go to Setup | Amazon to turn back on.";
+		}
+	else { $GTOOLS::TAG{'<!-- FEED_PERMISSIONS -->'} = '';}
+
+	my $warning = "<font color=red>Configure this value in Setup | Amazon, if you have already done this please press save.</font>";
+	$GTOOLS::TAG{'<!-- MERCHANT -->'} = ($hashref->{'AMAZON_MERCHANT'})?$hashref->{'AMAZON_MERCHANT'}:$warning;
+	$GTOOLS::TAG{'<!-- MERCHANTID -->'} = $hashref->{'AMAZON_MERCHANTID'};
+	$GTOOLS::TAG{'<!-- USERID -->'} = $hashref->{'USERID'};
+	$GTOOLS::TAG{'<!-- PASSWORD -->'} = $hashref->{'PASSWORD'};
+	$GTOOLS::TAG{'<!-- TOKEN -->'} = $hashref->{'AMAZON_TOKEN'};
+	$GTOOLS::TAG{'<!-- UPC_CREATION -->'} = ($hashref->{'UPC_CREATION'}==1)?"checked":'';
+	$GTOOLS::TAG{'<!-- EMAIL_CONF -->'} = ($hashref->{'EMAIL_CONFIRMATIONS'}==1)?"checked":'';
+
+	my $out = qq~<select name="pricing_schedule"><option value="">None</option>~;
+
+	require WHOLESALE;
+	foreach my $sid (@{&WHOLESALE::list_schedules($USERNAME)}) {
+		my ($S) = &WHOLESALE::load_schedule($USERNAME,$sid);
+		if ($S->{'TITLE'} eq '') { $S->{'TITLE'} = "Untitled Schedule"; }
+		my $selected = ($hashref->{'PRICING_SCHEDULE'} eq $sid)?'selected':'';
+		$out .= "<option $selected value=\"$sid\">$sid - $S->{'TITLE'}</option>\n";
+		}
+	$out .= "</select>";
+
+	$GTOOLS::TAG{'<!-- SCHEDULE -->'} = $out;
+	$GTOOLS::TAG{'<!-- STATUS -->'} = $hashref->{'STATUS'};
+	if ($hashref->{'IS_ERROR'} > 0) { 
+		$GTOOLS::TAG{'<!-- LAST_UPDATE -->'} = '<font color="red">Error(s) found on last syndication, please check Logs.</font>';
+		}
+
+	## this info should pull from PRODUCTS_GMT (not UPDATED)
+	#elsif ($hashref->{'UPDATED'} == 0) {
+	#	$GTOOLS::TAG{'<!-- LAST_UPDATE -->'} = 'Pending - next 24 hours, all Products have been reset';
+	#	}
+	#else {
+	#	$GTOOLS::TAG{'<!-- LAST_UPDATE -->'} = &ZTOOLKIT::pretty_date($hashref->{'UPDATED'},1);
+	#	}
+	elsif ($hashref->{'PRODUCTS_GMT'} == 0) {
+		$GTOOLS::TAG{'<!-- LAST_UPDATE -->'} = 'Pending - next 24 hours, all Products have been reset';
+		}
+	else {
+		$GTOOLS::TAG{'<!-- LAST_UPDATE -->'} = &ZTOOLKIT::pretty_date($hashref->{'PRODUCTS_GMT'},1);
+		}
+	
+	## link for webdoc
+	my ($helplink, $helphtml) = GTOOLS::help_link('Amazon Merchant Feed Webdoc', 50378);
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helphtml;
+
+	push @BC, { 'name'=>'Config' };
+	$template_file = 'config.shtml';
+	}
+
+
+########################################################
+if ($VERB eq 'CATEGORIES-SAVE') {
+	my $changed = 0;
+   my ($NC) = NAVCAT->new($USERNAME,PRT=>$PRT);
+   foreach my $safe (sort $NC->paths()) {
+		next if (not defined $q->param('navcat-'.$safe));
+		#next if ($q->param('navcat-'.$safe) eq '');
+      my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if ($metaref->{'AMAZON_THE'} eq $q->param('navcat-'.$safe));
+		$metaref->{'AMAZON_THE'} = $q->param('navcat-'.$safe);
+      $NC->set($safe,metaref=>$metaref);
+		}
+	$NC->save();
+	undef $NC;
+	$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<font color='blue'>Updated categories</font><br><br>";
+	$VERB = 'CATEGORIES';
+	}
+
+if ($VERB eq 'CATEGORIES') {
+	my $c = '';
+	use Data::Dumper;
+   my ($NC) = NAVCAT->new($USERNAME,PRT=>$PRT);
+	my $theref = &AMAZON::fetch_thesaurus($USERNAME);
+   foreach my $safe (sort $NC->paths()) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+      my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+
+		# commented out 9/13/2005 patti, per customer
+		#next if (substr($pretty,0,1) eq '!');
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		my $name = ''; foreach (split(/\./,$safe)) { $name .= "&nbsp;"; } $name .= $pretty;
+		if ($safe eq '.') { $name = 'HOMEPAGE'; }
+		my $val = $metaref->{'AMAZON_THE'};
+		$c .= '<tr><td>'.$name.'</td><td><select name="navcat-'.$safe.'"><option value="">Not Set</option>';
+		my @values = ZTOOLKIT::value_sort($theref);
+		foreach my $id (@values) {
+			$c .= "<option ".(($id==$val)?'selected':'')." value='$id'>$theref->{$id}</a>";
+			}
+		$c .= '</select></td></tr>';
+		}
+
+	if	($c eq '') { $c = '<tr><td><i>Uh-oh! No website categories exist??</i></td></tr>'; }
+	else { $c = "<tr><td><b>Category</b></td><td><b>Thesaurus</b></td></tr>".$c; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+	push @BC, { 'name'=>'Categories' };
+	$template_file = 'categories.shtml';
+	$help = '#50391';
+
+	}
+
+## 
+if ($VERB eq 'UNCONFIRMED') {
+	require ORDER;
+
+	$template_file = 'unconfirmed.shtml';
+	push @BC, { 'name'=>'Unconfirmed Orders' };
+	my $out = '<table><tr><th></th><th>Created</th><th>Amazon Order ID</th><th>Zoovy Order ID</th></tr>';
+
+	my $PATH = ZOOVY::resolve_userpath($USERNAME);
+
+	## only select from the last 50 days
+	my $pstmt = "select CREATED_GMT,AMZ_ORDERID,ZVY_ORDERID from AMAZON_ORDER ".
+					"where CREATED_GMT >unix_timestamp(now())-(50*86400) and TRACK_GMT=0 and MID=".$dbh->quote($MID).
+					" and PRT=$PRT /* $USERNAME */ and ZVY_ORDERID <> '' order by ID desc";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute;
+	my $ctr =0;
+	while(my ($CREATED_GMT,$AMZ_ORDERID,$ZVY_ORDERID) = $sth->fetchrow()) {
+
+		
+		my $created = ZTOOLKIT::pretty_date($CREATED_GMT,1);
+
+		my $cancelled = 0;
+		my ($O) = ORDER->new($USERNAME,$ZVY_ORDERID);
+		if (not defined $O) {
+			$cancelled = 1;
+			}
+		elsif (defined $O->get_attrib('cancelled') && $O->get_attrib('cancelled') > 0) {
+			$cancelled = 1;
+			}
+		$ctr++;
+		$out .= qq~<tr>~.
+				   qq~<td width=30>$ctr</td>~.
+					qq~<td width="200">$created</td>~.
+				   qq~<td width="200">$AMZ_ORDERID</td>~.
+				   qq~<td width="200"><a href="https://www.zoovy.com/biz/orders/index.cgi?VERB=QUICKSEARCH&find_text=$ZVY_ORDERID&find_status=ANY&x=13&y=5">$ZVY_ORDERID~;
+		if ($cancelled) { $out .= "**"; }
+		$out .= "</a></td></tr>";
+		}		
+ 	$sth->finish;
+	$GTOOLS::TAG{'<!-- UNCONFIRMED_DATA -->'} = $out."</table><br><br><br><br>** Indicates cancelled orders.";
+
+	if ($ctr==0) { $GTOOLS::TAG{'<!-- UNCONFIRMED_DATA -->'} = "<font color=red>No data available at this time</font><br><br>"; }
+	}
+
+
+## now called SETTLEMENTS
+if ($VERB eq 'REPORTS') {
+	my $URL = "http://static.zoovy.com/merchant/".$USERNAME."/amz_settlement_report_";
+	
+	$template_file = 'reports.shtml';
+	push @BC, { 'name'=>'Settlements' };
+	my $out = '<table><tr><th>Start Date</th><th>End Date</th><th>Rows</th></tr>';
+
+	my $PATH = ZOOVY::resolve_userpath($USERNAME);
+	my $pstmt = "select DOCID,REPORTID,START_DATE,END_DATE,ROWS from AMAZON_REPORTS ".
+					"where type = 'Settlement' and mid = $MID".
+					" and PRT=$PRT order by START_DATE desc";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute;
+	my $ctr =0;
+	while(my ($DOCID,$REPORTID,$START_DATE,$END_DATE,$ROWS) = $sth->fetchrow()) {
+		my $start = $START_DATE;
+		$start =~ s/(\d\d\d\d)(\d\d)(\d\d)/$1-$2-$3/;
+		my $end = $END_DATE;
+		$end =~ s/(\d\d\d\d)(\d\d)(\d\d)/$1-$2-$3/;
+		
+		## implemented ROWS at the same time as the addition of start_date in the URL
+		if ($ROWS > 0) {
+		  $out .= qq~<tr><td width="300">$start</td>~.
+				  qq~<td width="300"><a href="~.$URL.$START_DATE."_".$END_DATE.qq~.csv">$end</a></td><td>$ROWS</td></tr>~;
+		  }
+      else {
+        $out .= qq~<tr><td width="300">$start</td>~.
+				  qq~<td width="300"><a href="~.$URL.$END_DATE.qq~.csv">$end</a></td><td>NA</td></tr>~;
+		  }
+		$ctr++;
+		}		
+ 	$sth->finish;
+	$GTOOLS::TAG{'<!-- REPORT_DATA -->'} = $out."</table><br><br>";
+
+	if ($ctr==0) { $GTOOLS::TAG{'<!-- REPORT_DATA -->'} = "<font color=red>No data available at this time</font><br><br>"; }
+	}
+
+#################################################################################################
+##
+##	
+##
+
+my $thesaurusinfo = undef;
+
+if ($VERB eq 'THESAURUS-CONFIRM-DELETE') {
+	$template_file = "confirm-delete.shtml";	
+	$GTOOLS::TAG{'<!-- ID -->'} = $ZOOVY::cgiv->{'ID'};
+	$GTOOLS::TAG{'<!-- THESAURUS -->'} = $ZOOVY::cgiv->{'THESAURUS'};
+	$help = '#50390';
+	}
+
+if ($VERB eq 'THESAURUS-DELETE') {
+	
+	$VERB = 'THESAURUS';
+	my $pstmt = "delete from AMAZON_THESAURUS where MID=$MID and ID=".int($ZOOVY::cgiv->{'ID'});
+	print STDERR $pstmt."\n";
+	$dbh->do($pstmt);
+	}
+
+if ($VERB eq 'THESAURUS-SAVE') {
+	$VERB = 'THESAURUS-EDIT';
+	
+	my $name = $ZOOVY::cgiv->{'name'};
+	$name = uc($name);
+	$name =~ s/[^\w]+/_/gs;
+
+	$ZOOVY::cgiv->{'search_terms'} =~ s/\s+/ /g;
+	$ZOOVY::cgiv->{'search_terms'} =~ s/, /,/g;
+	$ZOOVY::cgiv->{'search_terms'} = substr($ZOOVY::cgiv->{'search_terms'},0,250);
+
+	if (int($ZOOVY::cgiv->{'ID'})>0) {
+		my $pstmt = "update AMAZON_THESAURUS set PROFILE=".$dbh->quote($name);
+		$pstmt .= ",ITEMTYPE=".$dbh->quote($ZOOVY::cgiv->{'itemtype'});
+		$pstmt .= ",USEDFOR=".$dbh->quote($ZOOVY::cgiv->{'usedfor'});
+		#$pstmt .= ",SEARCH_TERMS_1=".$dbh->quote($ZOOVY::cgiv->{'search_terms_1'});
+		#$pstmt .= ",SEARCH_TERMS_2=".$dbh->quote($ZOOVY::cgiv->{'search_terms_2'});
+		#$pstmt .= ",SEARCH_TERMS_3=".$dbh->quote($ZOOVY::cgiv->{'search_terms_3'});
+		#$pstmt .= ",SEARCH_TERMS_4=".$dbh->quote($ZOOVY::cgiv->{'search_terms_4'});
+		#$pstmt .= ",SEARCH_TERMS_5=".$dbh->quote($ZOOVY::cgiv->{'search_terms_5'});
+		$pstmt .= ",SEARCH_TERMS=".$dbh->quote($ZOOVY::cgiv->{'search_terms'});
+		$pstmt .= ",OTHERITEM=".$dbh->quote($ZOOVY::cgiv->{'otherattribs'});
+		$pstmt .= ",SUBJECTCONTENT=".$dbh->quote($ZOOVY::cgiv->{'subjectcontent'});
+		$pstmt .= ",TARGETAUDIENCE=".$dbh->quote($ZOOVY::cgiv->{'targetaudience'});
+		$pstmt .= ",ISGIFTWRAPAVAILABLE=".$dbh->quote($ZOOVY::cgiv->{'isgiftwrapavailable'});
+		$pstmt .= ",ISGIFTMESSAGEAVAILABLE=".$dbh->quote($ZOOVY::cgiv->{'isgiftmessageavailable'});
+		$pstmt .= ",ADDITIONALATTRIBS=".$dbh->quote($ZOOVY::cgiv->{'additionalattribs'});
+		$pstmt .= " where MID=$MID and ID=".int($ZOOVY::cgiv->{'ID'})." limit 1";
+		$dbh->do($pstmt);
+		}
+	else {
+		## insert		
+		my $pstmt = "insert into AMAZON_THESAURUS ".
+						"(MID,CREATED_GMT,PROFILE,ITEMTYPE,USEDFOR,OTHERITEM,SUBJECTCONTENT,TARGETAUDIENCE,ISGIFTWRAPAVAILABLE,".
+						"ISGIFTMESSAGEAVAILABLE,ADDITIONALATTRIBS,".
+						#"SEARCH_TERMS_1,SEARCH_TERMS_2,SEARCH_TERMS_3,SEARCH_TERMS_4,SEARCH_TERMS_5) ".
+						"SEARCH_TERMS) ".
+						"values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		my $sth = $dbh->prepare($pstmt);
+		$sth->execute($MID,time(),$name,$ZOOVY::cgiv->{'itemtype'},$ZOOVY::cgiv->{'usedfor'},
+		 $ZOOVY::cgiv->{'otherattribs'},$ZOOVY::cgiv->{'subjectcontent'},$ZOOVY::cgiv->{'targetaudience'},
+		 $ZOOVY::cgiv->{'isgiftwrapavailable'}, $ZOOVY::cgiv->{'isgiftmessageavailable'},
+		 $ZOOVY::cgiv->{'additionalattribs'},$ZOOVY::cgiv->{'search_terms'});
+#$ZOOVY::cgiv->{'search_terms_1'},$ZOOVY::cgiv->{'search_terms_2'},,$ZOOVY::cgiv->{'search_terms_3'},$ZOOVY::cgiv->{'search_terms_4'},$ZOOVY::cgiv->{'search_terms_5'});
+		$sth->finish();
+		}
+
+	$GTOOLS::TAG{'<!-- MSG -->'} = "Successfully Saved changes<br><br>";
+		
+	}
+
+if ($VERB eq 'THESAURUS-EDIT') {
+	$VERB = 'THESAURUS';
+	my $pstmt = "select * from AMAZON_THESAURUS where MID=$MID and ID=".int($ZOOVY::cgiv->{'ID'});
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	$thesaurusinfo = $sth->fetchrow_hashref();
+	$sth->finish();
+
+	}
+
+
+if ($VERB eq 'THESAURUS') {
+	my $pstmt = "select ID,PROFILE,ITEMTYPE,USEDFOR from AMAZON_THESAURUS where MID=$MID";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	my $c = '';
+	while ( my ($id,$profile,$itemtype,$usedfor) = $sth->fetchrow()) {
+		$c .= "<tr><td><a href=\"index.cgi?VERB=THESAURUS-CONFIRM-DELETE&ID=$id&THESAURUS=$profile\">[Del]</a> <a href=\"index.cgi?VERB=THESAURUS-EDIT&ID=$id\">[Edit]</a></td><td>$profile</td><td>$itemtype: $usedfor</td></tr>\n";
+		}
+	if ($c eq '') { $c .= "<i>No profiles defined - you will NOT be able to transmit products to Amazon</i>"; }
+	else { $c = "<tr><td></td><td><b>Profile</b></td><td><b>Item Type: Used For</b></td></tr>".$c; }
+	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+
+	$GTOOLS::TAG{'<!-- TITLE -->'} = ($thesaurusinfo->{'PROFILE'} eq '')?'Add New Thesaurus Profile':'Edit Thesaurus Profile '.$thesaurusinfo->{'PROFILE'};
+	$GTOOLS::TAG{'<!-- ID -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'ID'}:'0';
+	$GTOOLS::TAG{'<!-- NAME -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'PROFILE'}:'';
+	$GTOOLS::TAG{'<!-- ITEMTYPE -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'ITEMTYPE'}:'';
+	$GTOOLS::TAG{'<!-- SEARCH_TERMS -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS'}:'';
+	#$GTOOLS::TAG{'<!-- SEARCH_TERMS_1 -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS_1'}:'';
+	#$GTOOLS::TAG{'<!-- SEARCH_TERMS_2 -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS_2'}:'';
+	#$GTOOLS::TAG{'<!-- SEARCH_TERMS_3 -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS_3'}:'';
+	#$GTOOLS::TAG{'<!-- SEARCH_TERMS_4 -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS_4'}:'';
+	#$GTOOLS::TAG{'<!-- SEARCH_TERMS_5 -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SEARCH_TERMS_5'}:'';
+
+	$GTOOLS::TAG{'<!-- USEDFOR -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'USEDFOR'}:'';
+	$GTOOLS::TAG{'<!-- SUBJECTCONTENT -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SUBJECTCONTENT'}:'';
+	
+	$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} = qq~<select name="isgiftwrapavailable">~;
+	if ($thesaurusinfo->{'ISGIFTWRAPAVAILABLE'} == 1) {
+		$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} .= qq~<option value=0>No</option>~.
+																		qq~<option selected value=1>Yes</option>~;
+		}
+	else { 
+		$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} .= qq~<option select value=0>No</option>~.
+                                                      qq~<option value=1>Yes</option>~;
+		}
+	$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} .= "</select>";
+	
+	$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} = qq~<select name="isgiftmessageavailable">~;
+	if ($thesaurusinfo->{'ISGIFTMESSAGEAVAILABLE'} == 1) {
+		$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} .= qq~<option value=0>No</option>~.
+																		qq~<option selected value=1>Yes</option>~;
+		}
+	else { 
+		$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} .= qq~<option select value=0>No</option>~.
+                                                      qq~<option value=1>Yes</option>~;
+		}
+	$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} .= "</select>";
+
+
+	
+	$GTOOLS::TAG{'<!-- OTHERATTRIBS -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'OTHERITEM'}:'';
+	$GTOOLS::TAG{'<!-- TARGETAUDIENCE -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'TARGETAUDIENCE'}:'';
+	$GTOOLS::TAG{'<!-- ADDITIONALATTRIBS -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'ADDITIONALATTRIBS'}:'';
+
+	## link for webdoc
+	my ($helplink, $helphtml) = GTOOLS::help_link('Amazon Thesaurus Profiles Webdoc', 50390);
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helphtml;
+
+
+	$help = '#50390';
+	$template_file = 'thesaurus.shtml';
+	push @BC, { 'name'=>'Thesaurus / Item Classification' };
+	}
+
+
+#################################################################################################
+##
+##	SHIPPING MAP
+##
+
+if ($VERB eq 'SHIPPING-SAVE') {
+	print STDERR "VERB: $VERB\n";
+
+	$VERB = 'SHIPPING';
+		
+
+	print STDERR "VERB: $VERB\n";
+	my $mapref = ();
+	foreach my $method ("Standard", "Expedited","Scheduled","NextDay","SecondDay") {
+		$mapref->{$method}=$ZOOVY::cgiv->{$method};
+		}
+
+	my $map = ZTOOLKIT::buildparams($mapref);
+
+	my $pstmt = "update AMAZON_FEEDS set SHIPPING_MAP = ".$dbh->quote($map);
+	$pstmt .= " where MID=$MID";
+	print STDERR $pstmt."\n";
+
+	$dbh->do($pstmt);
+	}
+
+if ($VERB eq 'SHIPPING') {
+
+	print STDERR "VERB: $VERB\n";
+
+	my $mapref = AMAZON::fetch_shippingmap($USERNAME);
+
+	my $shp_methods = ();
+	## add FEDEX shipping methods
+	require ZSHIP::FEDEXAPI;
+	foreach my $value (values %ZSHIP::FEDEXAPI::DOM_NAMES) {
+		my ($code, $pretty) = split(/\|/,$value);
+		$shp_methods->{$code} = $pretty;
+		}
+	## add UPS shipping methods
+	require ZSHIP::UPSAPI;
+	foreach my $value (values %ZSHIP::UPSAPI::CODES) {
+		my ($code, $pretty) = split(/\|/,$value);
+		## skip intl methods for now
+		next if ($pretty =~ /Canada/ || $pretty =~ /Worldwide/);
+		$shp_methods->{$code} = $pretty;
+		}
+	## add USPS shipping methods
+	$shp_methods->{'ESPP'} = "U.S.P.S Standard Mail";
+	$shp_methods->{'EXPR'} = "U.S.P.S Express Mail";
+	$shp_methods->{'EPRI'} = "U.S.P.S Priority Mail";
+	
+	
+	#print STDERR "SHP_METHODS: ".Dumper($shp_methods)."\n\n";
+
+	$GTOOLS::TAG{'<!-- TITLE -->'} = 'Edit Shipping Map';
+
+	my $c = '<table>';
+	foreach my $method ("Standard", "Expedited","Scheduled","NextDay","SecondDay") {
+		$c .= "<tr><td>$method</td><td><select name=$method><option value=''>";
+		foreach my $shp_method (sort keys %{$shp_methods}) {
+			$c .= qq~<option value="$shp_method"~.(($shp_method eq $mapref->{$method})?'selected':''). ">$shp_methods->{$shp_method}</option>";
+			}
+		$c .= "</select></td></tr>";
+		}
+	$c .= "</table>";
+
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+
+	## link for webdoc
+	my ($helplink, $helphtml) = GTOOLS::help_link('Amazon Shipping Map Webdoc', 0);
+	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $helphtml;
+
+
+	$help = '#0';
+	$template_file = 'shipping.shtml';
+	push @BC, { 'name'=>'Shipping Map' };
+	}
+
+
+
+
+
+#################################################################################################
+##
+##
+##
+
+if ($VERB eq 'BROWSEPROFILES') {
+
+	$template_file = 'browseprofiles.shtml';
+	push @BC, { 'name'=>'Browse Tree Profiles' };
+	}
+
+#################################################################################################
+##
+##
+##
+
+if ($VERB eq 'ORDERS') {
+	$template_file = 'orders.shtml';
+	push @BC, { 'name'=>'Orders' };
+	}
+
+#################################################################################################
+##
+##
+##
+
+if ($VERB eq 'SELLERCENTRAL') {
+	$template_file = 'sellercentral.shtml';
+	push @BC, { 'name'=>'Seller Central' };
+	}
+
+
+#################################################################################################
+##
+##
+## now called UPLOADS
+if ($VERB eq 'PRODUCTS') {
+	$template_file = 'products.shtml';
+	
+	my $pstmt = "select AMZ_MERCHANT_ID from AMAZON_FEEDS where PRT=$PRT and mid = ".$dbh->quote($MID);
+	my $sth = $dbh->prepare($pstmt);
+   $sth->execute();
+	my ($amz_merchant_id) = $sth->fetchrow();
+	$sth->finish;
+
+	if ($amz_merchant_id eq '') {
+		$GTOOLS::TAG{'<!-- MSG -->'} = "Unfortunately you do not currently have your 'Amazon Merchant ID' configured.".
+				"This means this Upload report will not automatically update on a nightly basis. Please reference the ".
+				"webdoc for instructions on finding and configuring this value.";
+		}
+	else {
+		$GTOOLS::TAG{'<!-- MSG -->'} = "This Uploads report runs on a nightly basis. It is as accurate as possible, ie".
+				" there have been reports of some categories not returning ASINs as they should. Please submit a ticket with ".
+				"'Amazon Uploads report' in your subject if you need to report an issue.";
+		}
+
+	my $pstmt = "select STATUS, PID, ASIN, from_unixtime(UPLOADED_GMT) DATE ".
+					"from PID_UPCS where mid = ".$dbh->quote($MID).
+					" order by substring(from_unixtime(UPLOADED_GMT), 1, 10) desc, PID";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+
+	my $ctr = 1;
+	my $removals = 0;
+	my $errors = 0;
+	my $c = "** Removed SKUs<br><br><center><table border=1 width=650 cellspacing=1><tr><th></th><th>SKU</th>".
+	        "<th>Inv</th><th>ASIN</th><th>Update Time</th></tr>";
+
+	my %skus = ();
+	my @orders = ();
+	while (my $hashref = $sth->fetchrow_hashref()) {
+		$skus{$hashref->{'PID'}} = $hashref;
+		push @orders, $hashref->{'DATE'}."|".$hashref->{'PID'};
+		}
+
+   my @pids = keys %skus;
+   use INVENTORY;
+	my ($invref,$reserveref,$locref) = INVENTORY::fetch_qty($USERNAME,\@pids);
+
+
+	foreach my $order (reverse sort @orders) {
+		my ($date, $pid) = split(/\|/,$order);
+		my $hashref = $skus{$pid}; 
+		my $qty = $invref->{$pid} - $reserveref->{$pid};
+
+		my $note = '';
+		if ($hashref->{'STATUS'} < 0) { 
+			$note = '** '; 
+			$hashref->{'ASIN'} = "removed"; 
+			$removals++; 
+			}
+
+		$c .= qq~<tr><td>~.$ctr++.qq~</td>~.
+				qq~<td>$note<a target="_new" href="/biz/product/edit.cgi?PID=$hashref->{'PID'}">$hashref->{'PID'}</a></td>~.
+				qq~<td>$qty</td><td>~;
+		if ($hashref->{'ASIN'} =~ /^[B|7]/) { $c .= qq~<a target="_new" href="http://www.amazon.com/o/ASIN/$hashref->{'ASIN'}">~; }
+		elsif ($hashref->{'STATUS'} >= 0) { $errors++; }
+		$c .=	qq~$hashref->{'ASIN'}</a></td><td>$date</td></tr>~;
+
+		}
+	$sth->finish;
+	$c .= "</table></center>";
+
+	$c .= "<br>Total Errors: $errors<br>"; 
+	$c .= "<br>Total Removals: $removals<br>";
+	$c .= "<br>Total Live: ".($ctr-$errors-$removals-1)."<br>";
+	  
+	$help = '#50393';
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+	push @BC, { 'name'=>'Uploads' };
+	}
+	
+
+#################################################################################################
+##
+##
+##
+if ($VERB eq 'LOGS') {
+
+#mysql> desc AMAZON_LOG;
+#+-------------+---------------------------+------+-----+---------+----------------+
+#| Field       | Type                      | Null | Key | Default | Extra          |
+#+-------------+---------------------------+------+-----+---------+----------------+
+#| ID          | int(10) unsigned          |      | PRI | NULL    | auto_increment |
+#| USERNAME    | varchar(20)               |      |     |         |                |
+#| MID         | int(10) unsigned          |      | MUL | 0       |                |
+#| DOCID       | bigint(20)                |      |     | 0       |                |
+#| CREATED_GMT | int(10) unsigned          |      |     | 0       |                |
+#| TYPE        | enum('INFO','WARN','ERR') | YES  |     | INFO    |                |
+#| MESSAGE     | varchar(60)               | YES  |     | NULL    |                |
+#+-------------+---------------------------+------+-----+---------+----------------+
+#	my $pstmt = "select count(1), DOCID,CREATED_GMT,TYPE,MESSAGE from AMAZON_LOG where MESSAGE not like '6000:%' and MID=$MID and CREATED_GMT>(unix_timestamp(now())-(86400*30)) group by DOCID,CREATED_GMT,TYPE,MESSAGE order by ID desc limit 0,500";
+	my $pstmt = "select count(1),DOCID,CREATED_GMT,TYPE,MESSAGE,PRODUCT,MSGTYPE from AMAZON_LOG where MID=$MID /* $USERNAME */ and PRT=$PRT and CREATED_GMT>(unix_timestamp(now())-(86400*30)) and (type = 'ERR' or type = 'WARN') group by DOCID,CREATED_GMT,TYPE,MESSAGE order by created_gmt desc limit 0,500";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	my $c = "<tr><th>Created</th><th>Type</th><th>Docid</th><th>Product</th><th>MessageType</th><th>Message</th></tr>";
+	while ( my ($count,$docid,$ts,$type,$message,$product,$msgtype) = $sth->fetchrow() ) {
+	        $count = ($count != 1)?"($count) ":'';
+		## date : type : docid : msgtype : $message 
+		$message =~ s/ERROR: //;
+		$message =~ s/WARN: //;
+		$message =~ s/for $product//;
+		$c .= "<tr><td>".&ZTOOLKIT::pretty_date($ts,1)."</td><td>$type</td><td>$docid</td><td>$product</td><td>$msgtype</td><td>$message</td></tr>";
+		}
+	if ($c eq '') { $c .= "<tr><td colspan='6'><i>No log entries have been recorded in the last 30 days</i></td></tr>"; }
+	$GTOOLS::TAG{'<!-- LOGS -->'} = $c;
+	
+	$help = '#50393';
+	$template_file = 'logs.shtml';	
+	push @BC, { 'name'=>'Logs' };
+	}
+
+&GTOOLS::output(
+   'title'=>'Amazon @Merchant Syndication',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>$help,
+   'tabs'=>[
+		{ name=>'Config', selected=>($VERB eq 'CONFIG')?1:0, link=>'index.cgi?VERB=CONFIG' },
+#		{ name=>'Browse Profiles', link=>'index.cgi?VERB=BROWSEPROFILES' },
+		{ name=>'Thesaurus', selected=>($VERB eq 'THESAURUS')?1:0,  link=>'index.cgi?VERB=THESAURUS' },
+		{ name=>'Categories', selected=>($VERB eq 'CATEGORIES')?1:0,  link=>'index.cgi?VERB=CATEGORIES' },
+		{ name=>'Logs', selected=>($VERB eq 'LOGS')?1:0,  link=>'index.cgi?VERB=LOGS', },
+#		{ name=>'Uploads', link=>'index.cgi?VERB=PRODUCTS', },
+		{ name=>'Uploads',selected=>($VERB eq 'UPLOADS')?1:0,  link=>'/biz/reports/output.cgi?ACTION=NEW&REPORT=AMAZON_UPLOADS', },
+#		{ name=>'Orders', link=>'index.cgi?VERB=ORDERS', },
+		{ name=>'Settlements', selected=>($VERB eq 'SETTLEMENTS')?1:0,  link=>'index.cgi?VERB=REPORTS', },
+		{ name=>'Unconfirmed Orders',  selected=>($VERB eq 'UNCONFIRMED')?1:0,  link=>'index.cgi?VERB=UNCONFIRMED', },
+		{ name=>'Shipping Map',  selected=>($VERB eq 'SHIPPING')?1:0,  link=>'index.cgi?VERB=SHIPPING', },
+#		{ name=>'Seller Central', link=>'index.cgi?VERB=SELLERCENTRAL', },
+      ],
+   'bc'=>\@BC,
+   );
+
+
+&DBINFO::db_zoovy_close();
+

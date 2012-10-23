@@ -1,0 +1,19 @@
+<!-- SITES_TAB -->
+
+
+<center>
+<table width=600><tr><td>
+<b>Partitions</b><br>
+<table cellpadding=2 border=0 cellspacing=0 class="zoovytable" width=300>
+	<tr class="zoovytableheader">
+		<td>Login</td>
+		<td>#</td>
+		<td>Name</td>
+		<td></td>
+	</tr>
+	<!-- PARTITIONS -->
+</table>
+</td></tr></table>
+</center>
+
+<!-- FOOTER -->

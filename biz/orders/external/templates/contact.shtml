@@ -1,0 +1,40 @@
+<head>
+</head>
+<body bgcolor='ffffff'>
+<form action='contact.cgi' method='post'>
+<input type='hidden' name='CMD' value='SAVE'>
+<br>
+
+<center>
+<table bgcolor='330066'>
+<tr><td>
+
+<table>
+<tr>
+	<td><font color='white' face='arial'><b>To:</b></font></td>
+	<td><input type='textbox' name='RECIPIENT' value='<!-- RECIPIENT -->'></td>
+</tr>
+<tr>
+	<td><font color='white' face='arial'><b>From:</b></font></td>
+	<td><font color='white'><!-- FROM --></font></td>
+</tr>
+<tr>
+	<td><font color='white' face='arial'><b>Subject:</b></font></td>
+	<td><font color='white'><input type='textbox' name='SUBJECT' size='80' value='<!-- TITLE -->'></font></td>
+</tr>
+</table>
+
+</td></tr>
+<tr><td>
+<textarea name="BODY" rows='15' cols='76'><!-- BODY --></textarea>
+</td></tr>
+</table>
+</center>
+
+<center>
+<input type='image' src='/images/bizbuttons/save.gif'>
+<a href='main.cgi'><img src='/images/bizbuttons/back.gif' border='0'></a>
+</center>
+
+</form>
+</body>

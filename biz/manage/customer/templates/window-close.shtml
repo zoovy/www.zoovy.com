@@ -1,0 +1,27 @@
+
+<!-- HIDDEN_TABS -->
+<div align="center">
+<form name="topFrm" method="post" action="index.cgi" style="margin: 0px;">
+<input type="hidden" name="CID" value="<!-- CID -->">
+<input type='hidden' name="VERB" value=''>
+
+<table class="zoovytable" cellspacing="0" cellpadding="0" width="600">
+<tr class="zoovytableheader" style="height: 22px;">
+	<td align="left" class="zoovytableheader"><b>&nbsp;Customer: <!-- EMAIL --></b></td>
+	<td align="right" nowrap class="zoovytableheader"><b>Cid: <!-- CID --> | Prt: <!-- PRT --></b></td>
+</tr>
+<tr>
+<td colspan="2">
+
+<!-- MSG -->
+
+<br>
+<center>
+<input class="button2" type="button" onClick="window.close();" value=" Close Window ">
+</center>
+<br>
+</td>
+</tr>
+</table>
+
+</form>

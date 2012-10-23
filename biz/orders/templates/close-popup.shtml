@@ -1,0 +1,17 @@
+<html>
+<head>
+<SCRIPT language="JavaScript">
+<!--//
+function doSomethin() {
+	window.opener.document.forms[0].reset();
+	//window.opener.document.refresh();
+	window.opener.document.forms[0].submit();
+	self.close(true);
+}
+//-->
+</SCRIPT>
+</head>
+<body bgcolor="#FFFFFF" onLoad="doSomethin();" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+You can close this window!
+</body>
+</html>

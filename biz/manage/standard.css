@@ -1,0 +1,125 @@
+// for boxes
+TABLE { padding: 1px; margin: 0px; }
+A { color: blue; }
+
+// general stuff
+BODY { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+TD { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+FONT { font-size: 8pt; font-family: arial, helvetica, sans-serif; }
+INPUT { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+SELECT { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+TEXTAREA { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; }
+BUTTON.button { font-size: 8pt; font-family: sans-serif, arial, helvetica; color: black; width: 100px; }
+
+// titles, changing of font sizes, etc:
+FONT.smallnote { font-size: 8pt; font-weight: fancy; color: black; }
+FONT.small { font-size: 8pt; font-weight: normal; color: black; }
+FONT.smalltitle { font-size: 8pt; font-weight: bold; color: black; }
+FONT.teeny { font-size: 8pt; font-weight: normal; color; black; }
+FONT.teenygrey { font-size: 8pt; font-weight: normal; color: #444444; text-decoration: none; }
+FONT.bigtitle { font-size: 14pt; font-weight: bold; color: black; }
+FONT.title { font-family: arial; font-size: 10pt; font-weight: bold; }
+FONT.sub { font-family: arial; font-size: 10pt; font-weight: normal; }
+FONT.boxtitle { font-size: 8pt; color: white; font-weight: bold; }
+FONT.mout   { font-size: 8pt; font-family: arial, sans-serif, Verdana, Arial, Helvetica; text-decoration: underline; color: blue; }
+
+// active channels report
+A.title {
+   font-family:  Helvetica, Arial;
+   font-size: 10pt;
+   color: #FFFFFF;
+	font-color: white;
+	font-weight: bold;
+	}
+
+A.pgoff { font-family: sans-serif, Verdana, Arial, Helvetica; font-size: 10pt; color: blue; font-weight: bold; }
+
+A.pgon { font-family: sans-serif, Verdana, Arial, Helvetica; font-size: 10pt; color: red; bgcolor: blue; font-weight: bold; }
+
+TR.line {
+	vertical-align: top;
+   font-family: Sans-serif, Arial;
+   font-size: 8pt;
+   color: 000000; 
+	}
+
+TD.mid {
+	vertical-align: top;
+   font-family: Sans-serif, Arial;
+   font-size: 8pt;
+   color: 000000; 
+	}
+
+// from channellist
+TD.title {
+   font-family: Verdana, Arial, Helvetica;
+   font-size: 12px;
+   color: FFFFFF;
+	font-weight: bold;
+	}
+
+TD.line {
+	vertical-align: top;
+   font-family: Arial, Helvetica;
+   font-size: 13px;
+   color: 000000; 
+	}
+
+TD.col1 {
+	padding-left: 10;
+	padding-right: 10;
+	vertical-align: top;
+   font-family: Arial, Helvetica;
+   font-size: 14px;
+   color: 000000; 
+	}
+
+// from channel manager
+
+A.pgoff { font-family: sans-serif, Verdana, Arial, Helvetica; font-size: 10pt; color: blue; font-weight: bold; }
+
+A.pgon { font-family: sans-serif, Verdana, Arial, Helvetica; font-size: 10pt; color: red; bgcolor: blue; font-weight: bold; }
+
+TD.smallest {
+	vertical-align: top;
+   font-family: Helvetica, Sans-serif, Arial;
+   font-size: 8pt;
+   color: 3366CC; 
+	}
+
+TD.small {
+	vertical-align: top;
+   font-family: Helvetica, Sans-serif, Arial;
+   font-size: 8pt;
+   color: 000000; 
+	}
+
+		TD.a 
+			{ 
+			vertical-align: middle;
+			text-align: left;
+			text-indent: 2px;
+			font-family: verdana, arial, helvetica;
+			font-size: 14px;
+			}
+		TD.otitle
+			{ 
+			vertical-align: middle;
+			text-align: left;
+			font-family: helvetica, arial;
+			font-size: 10pt;
+			color: white;
+			}
+		TD.title
+			{ 
+			vertical-align: middle;
+			text-align: left;
+			font-family: arial, helvetica;
+			font-size: 10px;
+			}
+		FONT.B
+			{ 
+			text-indent: 2px;
+			font-family: verdana, arial, helvetica;
+			font-size: 12px;
+			}

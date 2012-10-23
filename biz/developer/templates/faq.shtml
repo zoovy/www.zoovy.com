@@ -1,0 +1,13 @@
+<body>
+<Pre>
+1. How do I configure the information in these files? i.e. news.cgis, return.cgis etc.
+>> news.cgis is no longer used.
+>> returns.cgis is the return policy, which can be configured from the website builder. 
+
+2. Can I create a link for customers to join my mailing list without having to go through checkout?
+>> yes, subscribe.cgis
+
+3. Is there a link for customers to un-subscribe from my mailing list?
+>> yes, https://northwindpottery.zoovy.com/customer_main.cgis
+</pre>
+</body>

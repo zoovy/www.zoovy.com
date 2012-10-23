@@ -1,0 +1,36 @@
+<head>
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<!-- REPORT_TAB -->
+<br>
+<center>
+<table width='500'>
+<!-- MESSAGE -->
+<form action='index.cgi' method="POST">
+<h2> Disk Space Tools</h2>
+
+<table>
+<tr><td>
+
+<input type='radio' name='ACTION' value='COMPUTESPACE'><b> Compute Space</b> <br>
+<font size='2'> Computes and displays the amount of disk space used</font><Br>
+<br>
+
+<input type='radio' name='ACTION' value='IMAGES'><b> Remove Orphan Images</b><br>
+<font size='2'>
+Displays any image which is not associated to a product, page, or logo.<br>
+</font><Br>
+</td></tr></table>
+<br>
+<input type='submit' value='  Proceed  '>
+</form>
+</table>
+<br>
+<table>
+<tr><td>
+<!-- OUTPUT -->
+</td></tr>
+</table>
+</center>
+</body>

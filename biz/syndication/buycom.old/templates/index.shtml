@@ -1,0 +1,115 @@
+<!-- SETUP_TAB -->
+
+<form method="post" name="thisFrm" id="thisFrm" action="index.cgi">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<input type="hidden" name="VERB" value="SAVE">
+
+<center>
+<table width="600"><tr><td>
+<h1>Buy.Com Configuration</h1>
+
+<br>
+<table class=zoovytable>
+	<tr>
+		<td valign=top  colspan=3 class="zoovytableheader">Syndication Status</td>
+	</tr>
+	<tr>
+		<td valign=top  nowrap colspan=2>Status: <!-- STATUS --></td>
+		<td valign=top  width=99%>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign=top  nowrap>Last Products:</td>
+		<td valign=top  nowrap>
+			<!-- LAST_PRODUCTS --><br>
+			<!-- PRODUCT_VALIDATION --><br>
+			<a href="/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=BUY&PROFILE=<!-- PROFILE -->&GUID=<!-- GUID -->">PUBLISH</a><br>
+		</td>
+	</tr>
+	<tr>
+		<td valign=top  colspan=3>
+			<div class="hint">
+Unlike other syndications the buycom:ts field defaults to zero, you must
+implicitly enable buy.com for each product. This is due to the complex data requirements
+and the fact a NewSku feed (the file which uploads new products) has a single
+error buy.com will reject the entire file.
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign=top nowrap>Inventory to Buy.com</td>
+		<td valign=top nowrap>(<!-- LAST_INVENTORY -->)
+		<div class="hint">When Zoovy last transferred product inventory levels to buy.com</div> 
+		</td>
+	</tr>
+	<tr>
+		<td valign=top nowrap>Orders from Buy.com</td>
+		<td valign=top nowrap>(<!-- LAST_ORDERS -->)
+		<div class="hint">Zoovy has received all orders from buy.com as of this time.</div> 
+		</td>
+	</tr>
+	<tr>
+		<td valign=top nowrap>Tracking to Buy.com</td>
+		<td valign=top nowrap>(<!-- LAST_TRACKING -->)
+		<div class="hint">Zoovy has sent all shipping notifications up to this moment.</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<input align="right" type="button" class="button" onClick="document.thisFrm.submit();" value=" Request Updates ">
+		</td>
+	</tr>
+</table>
+
+<br>
+<br>
+<table class="zoovytable">
+	<tr>
+		<td colspan=3 class="zoovytableheader">Configuration</td>
+	</tr>
+	<tr>
+		<td colspan=3><font color='red'><!-- ERROR --></font></td>
+	</tr>
+	<tr>
+		<td nowrap><input <!-- CB_ENABLE --> type="checkbox" name="enable"> <b>Enable Buy.com Syndication</b></td>
+	</tr>
+	<tr>
+		<td nowrap><b>Buy.com Seller ID:</b></td>
+		<td nowrap><input type="textbox" name="sellerid" value="<!-- SELLERID -->"></td>
+	</tr>
+	<tr>
+		<td nowrap><b>Buy.com Seller Password:</b></td>
+		<td nowrap><input type="textbox" name="sellerpass" value="<!-- SELLERPASS -->"></td>
+	</tr>
+	<tr>
+		<td nowrap><b>FTP Username:</b></td>
+		<td nowrap><input type="textbox" name="ftp_user" value="<!-- FTP_USER -->"></td>
+	</tr>
+	<tr>
+		<td nowrap><b>FTP Password:</b></td>
+		<td nowrap><input type="textbox" name="ftp_pass" value="<!-- FTP_PASS -->"></td>
+	</tr>
+   <tr>
+      <td>Pricing Schedule:</td>
+      <td><select name="SCHEDULE"><!-- SCHEDULE --></select> <i>(Requires Wholesale Bundle)</i><br></td>
+   </tr>
+	<tr>
+		<td colspan=2>
+		<input type="button" class="button" onClick="document.thisFrm.submit();" value=" Save ">
+		</td>
+		<td width=99%>&nbsp;</td>
+	</tr>
+</table>
+<br>
+
+</td></tr></table>
+<br>
+
+
+
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

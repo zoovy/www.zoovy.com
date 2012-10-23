@@ -1,0 +1,105 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Turnkey ecommerce | Professional Web Design', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+% ## this include will put the new top level navigation bar across the top so that users can jump between pages easily.
+<&| /includes/navbar-20100514/index.html, highlight=>'design' &></&>
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/embedbar-howitworks-20090707/index.html, highlight=>'design' &></&>
+
+
+<!-- Spot 3: Wholesale & supply chain -->
+<div id="wholesale" class="tabset_content">
+<h1>Zoovy’s in-house design studio creates brands that sell.</h1>
+<p>Creating a consistent and compelling company image is essential to building up a profitable e-business, and Zoovy helps 
+companies do this with custom web design. </p>
+
+<p>A company image should be carried throughout the e-business’s website, auctions, emails and print materials. This allows them to brand their company, stand out among the competition, and build up a strong and solid reputation. With a well branded company image, an e-business can achieve increased sales and a loyal customer base.</p>
+
+<p>Custom work allows for more flexibility and choices in the design of these materials so companies can build their own powerful identity in the ecommerce industry. When customers are searching through the many online stores, custom designed websites stand out among the rest and express to the customers exactly what the company offers.</p>
+
+<p>By teaming the company’s knowledge of their products and customers with the Zoovy design team’s expertise in graphic design and marketing, custom web design allows for the most powerful image to be communicated to shoppers. The team uses the company’s input to develop a successful company image that flows throughout the web store, auctions and marketing materials.</p>
+
+<p>Zoovy’s top sellers use custom designed storefronts because it leads to increased sales and customers.</p> 
+
+<div>
+<div class="callout" style="float:left">Zoovy customer, ‘TikiMaster’ saw a 300% increase in sales after switching from a default template to a custom design.</div>
+<div style="float:right"><a href="http://www.tikimaster.com" target="_blank" border="0"><img src="http://www.zoovy.com/howitworks/design/images/tikimaster.jpg" border="0" /></a></div>
+</div>
+
+
+<h2>Stand out against the competition</h2>
+<ul>
+<li>A custom website has its own unique look and feel that is specific to the store.</li>
+<li>A customized web store and auction speaks directly to the customers.</li>
+<li>Custom designed sites have a higher level of quality, building the company’s reputation and credibility.</li>
+</ul>
+</p>
+
+<h2>Branding a powerful company image</h2>
+<ul>
+<li>Custom designs can be carried throughout the e-business’s website, auctions, emails, newsletters, and marketing materials for a consistent image.</li>
+<li>Customers can easily identify what the company sells and the quality of the products and service.</li>
+<li>The consistent image is an excellent marketing tool, increasing brand identification.</li>
+<li>E-businesses can create a unique and persuasive image that defines the company and creates character with the assistance of Zoovy’s experienced and talented design team.</li>
+</ul>
+
+<h2>Increase Sales</h2>
+<ul>
+<li>The company image can be designed to speak directly to the needs and desires of customers, encouraging them to buy.</li>
+<li>High quality and distinct designs communicate quality products and service.</li>
+<li>Brand identification leads to loyal repeat customers.</li>
+</ul>
+
+<h1 style="margin-top:30px;">Features</h1>
+
+<h2>Custom Theme</h2>
+<ul>
+<li>Zoovy can help e-businesses create a unique look and feel that communicates to customers the company products, services and character.</li>
+<li>This theme can present throughout everything the company communicates.</li>
+</ul>
+<h2>Custom Page Content</h2>
+<ul>
+<li>E-businesses can utilize customized templates for their products, categories and homepage for a consistent image that is easy to use.</li>
+</ul>
+<h2>Custom Auctions</h2>
+<ul>
+<li>Zoovy can help companies develop customized auction templates that can be used for various marketplaces.</li>
+<li>These auctions can display the same image as the storefronts so customers can identify the company across markets, building a consistent reputation across channels.</li>
+</ul>
+<h2>Custom Newsletters</h2>
+<ul>
+<li>E-businesses can communicate with their customers through e-newsletters that have the same look and feel as the web store.</li>
+<li>These customized newsletter templates make it quick and easy to communicate information to customers on a regular basis.</li>
+</ul>
+<h2>Custom Emails</h2>
+<ul>
+<li>E-businesses can send customized emails that can be sent to targeted customers and communicate order information.</li>
+<li>These emails will display the distinct and consistent company image so they will be easily recognizable and increase brand identity.</li>
+</ul>
+<h2>Custom Features</h2>
+<ul>
+<li>E-businesses can choose which Zoovy features to implement that will be appropriate to their store and customers.</li>
+<li>This provides for a user friendly website and efficient backend operations.</li>
+</ul>
+<p>Zoovy custom work provides e-businesses with unmatched flexibility and options in the way they run and present their online store and auctions. </p>
+
+<p>The Zoovy design team has years of experience building e-commerce websites, allowing them to provide top-notch 
+assistance to all types of businesses. The Zoovy team works with the store owners to create a truly one-of-a-kind company image. </p>
+<p>Despite the level of web or graphic design experience, any e-business can have a high quality web site that stands out against the cookie cutter sites that clutter the internet. With a custom designed web store, e-businesses can watch their sales increase and customers return for more.</p>
+	
+</div>
+
+
+% ## this include will put the navigation bar across the top so that users can jump between pages easily.
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

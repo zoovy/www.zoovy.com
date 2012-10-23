@@ -1,0 +1,51 @@
+<!-- SETUP_TAB -->
+<center>
+<!-- MESSAGE -->
+<table width="80%">
+<tr><td>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="SAVE">
+<input type="hidden" name="TAB" value="ADVANCED">
+<font face="Arial, Helevetica">
+
+<center><table width="500"><tr><td>
+<br>
+<h2>Developer Payment Settings</h2>
+<font face="Arial, Helvetica">
+<br>
+<b>Custom Payment Method:</b><br>
+A Custom Payment Method appears at checkout as a payment option, e.g. "Pay by Phone". If enabled you should also configure the custom
+checkout message by clicking on Setup | Checkout Properties | Customize Checkout Messages, and editing the "Custom Payment Method Message".
+Please note this feature requires a GOLD account.
+<br>
+<br>
+Custom Payment Method Mode: <br>
+<select name="pay_custom" style="font-size: 8pt; font-family: arial;">
+<option <!-- PAY_CUSTOM_0_SELECTED --> value="0">Do not allow customers to choose this payment type</option>
+<option <!-- PAY_CUSTOM_1_SELECTED --> value="1">Allow for United States Destinations Only</option>
+<option <!-- PAY_CUSTOM_3_SELECTED --> value="3">Allow for United States and Canada</option>
+<option <!-- PAY_CUSTOM_7_SELECTED --> value="7">Allow for United States + Low Risk International Destinations</option>
+<option <!-- PAY_CUSTOM_15_SELECTED --> value="15">Allow United States + Low & High Risk International Destinations</option>
+</select><br>
+<br>
+Custom Payment Method Description:<br>
+<input type="textbox" name="pay_custom_desc" value="<!-- PAY_CUSTOM_DESC -->" size="30" maxlength="30"><br>
+<br>
+</td></tr></table>
+
+<table>
+<tr><td><input type="image" height="31" width="81" alt="Save Settings" src="/images/bizbuttons/save.gif" border="0"></td>
+<td><a target="_top" href=".."><img border="0" height="31" width="81" alt="Exit"
+src="/images/bizbuttons/exit.gif"></td></tr>
+</table>
+
+
+</form>
+</center>
+
+</font>
+</td></tr>
+
+</table>
+</center>
+<!-- FOOTER -->

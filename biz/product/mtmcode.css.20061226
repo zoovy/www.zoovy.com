@@ -1,0 +1,145 @@
+// from inventory
+TR.base { vertical-align: top; text-align: left; font-size: 8pt; font-family:  arial, helvetica, sans-serif; background-color: EEEEEE; }
+TD.on { vertical-align: top; text-align: left; font-size: 8pt; font-family:  arial, helvetica, sans-serif; background-color: cccccc; }
+TD.off { vertical-align: top; text-align: left; font-size: 8pt; font-family:  arial, helvetica, sans-serif; background-color: ffffff; }
+TD.title { font-size: 11pt; font-weight: bold; font-family:  arial, helvetica, sans-serif; color: FFFFFF; background-color: 3366CC; }
+INPUT.min { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+
+
+// from search
+TD.NAME { font-family:  arial, helvetica, sans-serif; font-size: 10pt; }
+TD.ID { font-family:  arial, helvetica, sans-serif; font-size: 12pt; }
+
+
+// from create product
+  FONT.norm {
+	background-color: white;
+	text-align: left;
+	font-family:  arial, helvetica, sans-serif;
+	color: black;
+	}
+  TD.data {
+	background-color: white;
+	text-align: right;
+	vertical-align: middle;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: black;
+	}
+  TD.datar {
+	background-color: white;
+	text-align: left;
+	vertical-align: middle;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: black;
+	}
+  TD.input {
+	text-align: left;
+	vertical-align: middle;
+	}
+
+
+// carried over from modify product
+  FONT.norm {
+	font-family:  arial, helvetica, sans-serif;
+	color: black;
+	font-size: 8pt;
+	}
+  TD.dataleft {
+	vertical-align: top;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: black;
+	text-indent: 14pt; 
+	}
+  TD.dataleftni {
+	vertical-align: top;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: black;
+	}
+  TD.bodytxt {
+	vertical-align: top;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 8pt;
+	color: #000000;
+	}
+  
+X {
+	vertical-align: middle;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #0000FF;
+	}
+
+INPUT.button { font-size: 8pt; font-weight: bold; font-family:  arial, helvetica, sans-serif; width: 150px; }
+TEXTAREA { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+INPUT.textbox { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+
+
+// all this stuff is carried over from setup
+
+// for boxes
+TABLE { padding: 1px; margin: 0px; }
+
+// general stuff
+BODY { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+TD { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+FONT { font-size: 8pt; font-family:  arial, helvetica, sans-serif; }
+INPUT { font-size: 8pt; font-family:  arial, helvetica, sans-serif; color: black; }
+SELECT { font-size: 8pt; font-family:  arial, helvetica, sans-serif; color: black; }
+TEXTAREA { font-size: 8pt; font-family:  arial, helvetica, sans-serif; color: black; }
+BUTTON.button { font-size: 8pt; font-family:  arial, helvetica, sans-serif; color: black; width: 100px; }
+
+// titles, changing of font sizes, etc:
+FONT.smallnote { font-size: 8pt; font-weight: fancy; color: black; }
+FONT.small { font-size: 8pt; font-weight: normal; color: black; }
+FONT.smalltitle { font-size: 8pt; font-weight: bold; color: black; }
+FONT.teeny { font-size: 7pt; font-weight: normal; color; black; }
+FONT.teenygrey { font-size: 7pt; font-weight: normal; color: #888888; text-decoration: none; }
+FONT.bigtitle { font-size: 14pt; font-weight: bold; color: black; }
+FONT.title { font-family:  arial, helvetica, sans-serif; font-size: 10pt; font-weight: bold; }
+FONT.sub { font-family:  arial, helvetica, sans-serif; font-size: 10pt; font-weight: normal; }
+TD.col1 { font-family:  arial, helvetica, sans-serif; font-size: 10pt; font-weight: bold; }
+TD.col2 { font-family:  arial, helvetica, sans-serif; font-size: 8pt; font-weight: normal; }
+FONT.boxtitle { font-size: 8pt; color: white; font-weight: bold; }
+
+// imglib stuff
+FONT.norm {
+	vertical-align: middle;
+	font-family:  arial, helvetica, sans-serif;
+	text-align: center;
+	color: black;
+	font-size: 10px;
+	text-align: center;
+}
+
+FONT.NOTFOLDER {
+	color: #777777;
+	font-family:  arial, helvetica, sans-serif;
+	vertical-align: middle;
+	font-size: 14px;
+}
+A.FOLDER { 
+	color: blue;
+	font-family:  arial, helvetica, sans-serif;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: strong, bold;
+	font-size: 16px;
+}
+FONT.SELECTED { 
+	color: white;
+	font-family:  arial, helvetica, sans-serif;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: strong, bold;
+	font-size: 16px;
+}
+

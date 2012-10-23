@@ -1,0 +1,69 @@
+<!-- REPORT_TAB -->
+
+<center>
+<br>
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="SAVE-SIGNUP">
+<table class="zoovytable" cellpadding="2" cellspacing="0" border='0' width='400'>
+	<tr>
+		<td class="zoovytableheader">Wholesale Signup Form<br></td>
+	</tr>
+	<tr>
+		<td>
+		Usage: This area lets you configure a signup form, which is typically used to allow wholesale clients
+to register themselves for accounts on a store.  The form fields are
+described in the JSON below, and can be customized to suite your specific
+needs.   Fields such as resale/tax id, requested credit limit, credit
+references can be enabled/disabled by modifying changing "ignore":0 to "ignore":1 or vice versa depending on your needs.
+In addition the messaging displayed to the customer can be customized in setup / system
+messages, finally you can customize your notification preferences to
+determine how you are notified when a client uses the signup form. 
+
+The signup link is <a target="_signup" href="<!-- SIGNUP_LINK -->"><!-- SIGNUP_LINK --></a>. 
+		</td>
+	</tr>
+	<tr>
+		<td>
+
+<b>JSON Form Fields:</b><br>
+<textarea onFocus="this.rows='10';" cols=70 rows=3 name="json"><!-- JSON --></textarea><br>
+<div class="hint">You can add/remove custom fields by modifying the JSON object above.</div>
+<br>
+
+<b>Setup Method:</b><br>
+<div>
+<input <!-- CHK_ENABLED --> type="checkbox" name="enabled">Enable signup form functionality at /customer/signup (required)<br>
+</div>
+
+<div>
+<input <!-- CHK_AUTO_LOCK --> type="checkbox" name="auto_lock">Lock new Accounts<br>
+<div class="hint">
+Use this if you have a private site and do not wish to give immediate access.
+</div>
+</div>
+
+<div>
+Initial Schedule: 
+<select name="initial_schedule">
+<option value="">-</option>
+<!-- SCHEDULES -->
+</select>
+<div class="hint">New clients will be immediately placed on the specified schedule prior to any approval 
+(otherwise they will receive default/retail pricing).</div>
+</div>
+
+<b>Notification:</b>
+<div><input <!-- CHK_SEND_EMAIL --> type="checkbox" name="send_email">Send Email Notification</div>
+<div><input <!-- CHK_MAKE_TODO -->  type="checkbox" name="make_todo">Add Task to Todo List</div>
+<div><input <!-- CHK_MAKE_TICKET --> type="checkbox" name="make_ticket">Open Ticket in CRM System</div>
+		
+		<input type="submit" class="button" value=" Save ">
+		</td>
+	</tr>
+</table>
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

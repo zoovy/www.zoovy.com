@@ -1,0 +1,88 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width=80%><tr><td>
+
+<table class="zoovytable" border='0' cellspacing='0' width="600">
+<!-- CATALOG_LIST -->
+</table>
+<br>
+
+<br>
+<form name='addfrm' action='index.cgi' method='post'>
+<input type='hidden' name='ACTION' value='ADD'>
+
+<table class='zoovytable' width=600 cellspacing=0>
+	<tr class='zoovytableheader'>
+		<td colspan='2'>Create a New Catalog </td>
+	</tr>
+	<tr>
+		<td width="100" valign='top' align="left">
+			Catalog Code:
+			<a href="#" onClick="$('#help-catalog').toggle();">[?]</a><Br>
+		</td>
+		<td valign='top' align="left">
+			<input type='textbox' id='CATALOG' name='CATALOG' size='15' class="formed">
+			<div id="help-catalog" style="display: none;"><div>
+			<b>Catalog Code:</b> is an alphanumeric code that will be used by you to uniquely identify this catalog.
+			Later on when you are asked to select a catalog for a particular wrapper or page layout you will be able to choose 
+			from a list of codes.  Certain catalog always exist for example 'COMMON'
+			</div></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<b>Available Indexed Fields:</b>
+		<table>
+		<tr>
+			<td><input type="checkbox" name="field:id"></td>
+			<td>product id / sku</td>
+			<td>id</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="field:tags"></td>
+			<td>product tags</td>
+			<td>tags</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="field:options"></td>
+			<td>product option detail/text</td>
+			<td>options</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" name="field:pogs"></td>
+			<td>product option codes</td>
+			<td>pogs</td>
+		</tr>
+		<!-- INDEXED_FIELDS -->
+		</table>
+
+		<input type='submit' class="button" value='Add Catalog'>
+		<div class="hint">
+		HINT: Create a catalog with an ID:PRIMARY to override the default 'COMMON' search.
+		</div>
+		</td>
+	</tr>
+	</table>
+</form>
+<br>
+<br>
+
+<b>Search Logs:</b>
+<table cellspacing=0 width=600 class="zoovytable">
+<tr class="zoovytableheader">
+	<td><b>Catalog</td><td><b>File</td><td><b>Last Updated</td><td><b>Actions</td>
+</tr>
+<!-- LOG_FILES -->
+<tr>
+	<td colspan='3'>Hints: 
+	<ul>
+	<li> You can remove/reset log files by going into your custom files directory.
+	<li> The format for the log file is: epoch time[tab] mode[tab] term[tab] matches[tab] ip address[tab] cart/session id[CR]
+	</ul>
+	</td>
+</tr>
+</table>	
+
+</td></tr></table>
+</center>

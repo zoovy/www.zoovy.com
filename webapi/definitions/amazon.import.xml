@@ -1,0 +1,60 @@
+<DEFINITION NAME="import">
+<!--
+
+amazon.import definition by Zoovy
+
+-->
+	<DIV NAME="ALPHA" TITLE="Welcome!">
+		<META TYPE="TITLE">
+Amazon Auction Import (BETA)
+			</META>
+		<META TYPE="DESCRIPTION">
+Questions regarding the Amazon Auction Import should be directed to support@zoovy.com.  
+			</META>
+		<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+		<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+		<DISPLAY TYPE="TITLE">Required Information</DISPLAY>
+
+		<INPUT TYPE="TEXTBOX" 
+				NAME="merchant:amazon:username" 
+				PROMPT="Username" 
+				COLS="60" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="PASSWORD" 
+				NAME="merchant:amazon:password" 
+				PROMPT="Password" 
+				COLS="20" 
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX" 
+				NAME="channel:amazon:auctionid" 
+				PROMPT="Single Auction ID" 
+				COLS="20" 
+				MANDATORY="Y">
+			</INPUT>
+
+		
+		<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+	</DIV>
+
+	<DIV NAME="OMEGA">
+
+		<META TYPE="TITLE"> Amazon Auction Import Submit</META>
+
+		<META TYPE="DESCRIPTION">
+WARNING: The Amazon Auction Import is currently in open beta state, which means you are welcome to submit your Amazon Auctions
+for processing, however they may not be immediately processed. Questions regarding the Amazon Auction Import should be directed to
+support@zoovy.com. Please allow 72 hours for processing of Imported Auctions. We expect the Full version of the Amazon Auction Import to be available no later than Nov. 1st.  
+			</META>
+
+
+		<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+		<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+	</DIV>
+
+
+</DEFINITION>

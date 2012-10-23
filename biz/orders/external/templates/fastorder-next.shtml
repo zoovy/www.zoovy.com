@@ -1,0 +1,6 @@
+<body onLoad="top.document.location='/biz/orders/index.cgi?main=/biz/orders/view.cgi%3FID=<!-- ORDER_ID -->';">
+<h2>
+this page should automatically reload. If it does not then please
+<a target="_top" href="/biz/orders/index.cgi?main=/biz/orders/view.cgi%3FID=<!-- ORDER_ID -->">click here.</a><br>
+</h2>
+</body>

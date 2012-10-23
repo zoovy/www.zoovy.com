@@ -1,0 +1,29 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table class="zoovytable" width="600">
+<tr>
+	<td class="zoovytableheader">Publish Feed</td>
+</tr>
+<tr>
+	<td>
+<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="PUBLISH-NOW">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<div>
+If you are attempting to debug a file, or you need to send a sample of the
+data then put your email address below and we will transfer all related
+files (including transport data files, validation logs) to the email
+address.  Leave the email address BLANK to transfer the feed using the
+normal mechanism.
+</div>
+<br>
+Email: <input type="textbox" name="email"><br>
+<br>
+<input type="submit" class="button" value=" Publish Now ">
+</form>
+	</td>
+</tr>
+</table>
+</center>

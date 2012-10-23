@@ -1,0 +1,65 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="500" class="zoovytable">
+<tr><td class="zoovytableheader">Imshopping.com Syndication</td></tr>
+<tr><td>
+
+<table>
+	<tr>
+		<td valign='top'><b>Status:</b></td>
+		<td valign='top'><!-- STATUS --></td>
+	</tr>
+	<tr>
+		<td valign='top'><b>Imshopping File:</b></td>
+		<td valign='top'><a href="<!-- VIEW_URL -->" target="_new">View Contents Here</a></td>
+	</tr>
+</table>
+<!-- ERROR -->
+<br>
+<br>
+<form name="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<table>
+	<tr>
+		<td><b>Imshopping Web Login Username:</b></td>
+		<td><input type="textbox" name="user" value="<!-- USER -->"></td>
+	</tr>
+	<tr>
+		<td><b>Imshopping Web Login Password:</b></td>
+		<td><input type="textbox" name="pass" value="<!-- PASS -->"></td>
+	</tr>
+	<tr>
+		<td><b>Imshopping FTP Directory:</b></td>
+		<td><input type="textbox" name="ftp_dir" value="<!-- FTP_DIR -->"></td>
+	</tr>
+
+	<tr>
+		<td colspan='2'>
+<i>HINT: The usernames and passwords are given to you by Imshopping.
+For more information please visit the 
+<a href="http://www.zoovy.com/webdoc/?VERB=DOC&DOCID=51488" target="webdoc">webdocs</a>.
+</i><br>
+		</td>
+	</tr>
+   <tr>
+      <td>Pricing Schedule:</td>
+      <td><select name="SCHEDULE"><!-- SCHEDULE --></select> <i>(Requires Wholesale Bundle)</i><br></td>
+   </tr>
+</table>
+<br>
+<center>
+<input type="image" src="/images/bizbuttons/save.gif" value=" Save Settings  ">
+<input type="image" onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();" 
+src="/images/bizbuttons/delete.gif" value=" Delete  ">
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+</center>
+<br>
+<br>
+</form>
+</td></tr>
+</table>
+
+</center>
+</body>

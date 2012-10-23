@@ -1,0 +1,75 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+
+
+<table class='zoovytable' cellspacing=0 width="800">
+	<tr><td class='zoovytableheader'>Plugins</td></tr>	
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=BUYSAFE-AUTO">Buysafe Website Bonding</a><br>
+		</td>
+	</tr>
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=FACEBOOK-APP">Facebook App/Authentication</a><br>
+		</td>
+	</tr>
+<!--
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=GOOGAPI">Google API Access</a><br>
+		</td>
+	</tr>
+-->
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=UPIC">UPIC Discount Shipping Insurance</a><br>
+		</td>
+	</tr>
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=KOUNT">KOUNT Fraud Screen</a><br>
+		</td>
+	</tr>
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=DEBUG">Debugger</a><br>
+		</td>
+	</tr>
+<!--
+	<tr>
+		<td class="r0">
+		- <a href="index.cgi?VERB=BLINKLOGIC">BlinkLogic Business Intelligence</a><br>
+		</td>
+	</tr>
+-->
+	<tr>
+		<td class="r0">
+		- <a href="http://www.terapeak.com/signup/zoovy/?rid=$USERNAME">TeraPeak.com eBay Analytics Data/Mining service</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		- Profile Analytics/ROI Tracker Display: <!-- CHKOUT_ROI_DISPLAY_HINT --><br>
+		<div class="hint">
+		HINT: The display behavior can be changed in <a href="/biz/setup/checkout">Setup / Checkout Settings</a>.
+		</div>
+		</td>
+	</tr>
+</table>
+<br>
+
+<table class='zoovytable' cellspacing=0 width="800">
+<tr><td colspan=4 class='zoovytableheader'>Profiles</td></tr>
+<!-- PROFILES -->
+
+</table>
+
+<center>
+<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+</center>
+
+</center>
+</body>

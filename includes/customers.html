@@ -1,0 +1,97 @@
+
+<%perl>
+
+##
+## this file contains *customer* driven content.. makes it easier to it all together.
+##
+
+sub inc_customers_get {
+	my (%filters) = @_;
+	
+	my @CUSTOMERS = (
+#		{
+#		'username'=>'877myjuicer',
+#		'logo'=>'//static.zoovy.com/img/877myjuicer/W200-H100-Bffffff/8/877logozoovy',
+#		'domain'=>'www.877myjuicer.com',
+#		'quotes'=>[
+#			'The Zoovy Amazon syndication has been huge for us, allowing us to streamline our Amazon sales.',
+#			],
+#		},
+		{
+		'username'=>'andreasinc',
+		'logo'=>'//www.zoovy.com/images/testimonials/andreasinc_logo_200x56.gif',
+		'domain'=>'www.andreasinc.com',
+		'owner'=>'Andreas Georgiou',
+		'title'=>'AndreasInc.com',
+		'pdf'=>'/pdf/casestudy_andreasinc.pdf',
+		'quotes'=>[
+			'We started off selling one to two items every other day, steadily increasing that to three to four a day. &ldquo; Says Andreas. &ldquo;But when I signed up with Zoovy back in 2004 is when things really started to explode. All of a sudden I was exposed to a much greater marketplace. My company sales seemed to double every year, and last year I did half a million in sales.',
+			],
+		},
+		{
+		'username'=>'summitfashions',
+		'logo'=>'/images/testimonials/summitfashions_logo_200x56.gif',
+		'domain'=>'www.summitfashions.com',
+		'owner'=>'Debbie Cosentino',
+		'title'=>'summitfashions.com',
+		'pdf'=>'/pdf/casestudy_summitfashions.pdf',
+		'quotes'=>[
+			'The foundation of our business depended on being able to keep track of what we had through automation, rather than manually decrementing and incrementing inventory. At that point, about 3 years ago, we surveyed the top e-commerce systems and decided to give Zoovy a try. The core concept of Zoovy, having a unifi ed back-end serving a number of different syndication methods like eBay, Amazon, Overstock, BizRate, as well as a website, is the only way to go. I can&rsquo;t imagine having a website without the multi-site capability that Zoovy has.',
+			],
+		},
+		{
+		'username'=>'tikimaster',
+		'logo'=>'/images/testimonials/tikimaster_logo_200x56.gif',
+		'domain'=>'www.tikimaster.com',
+		'owner'=>'Jerome Coudrier',
+		'title'=>'tikimaster.com',
+		'pdf'=>'/pdf/casestudy_tikimaster.pdf',
+		'quotes'=>[
+			'The change was pretty instantaneous,&rdquo; Jerome said, &ldquo;Our sales had quadrupled within the first few months alone. Last year in 2007 we were just slightly shy of 1 million dollars in sales. That&rsquo;s a huge jump considering we only started 3 years ago. I went from 100% Ebay sales down to only 20%. 80% is through my Zoovy store plus I nearly doubled my sales thanks to Zoovy Syndication.',
+			],
+		},
+		{
+		'username'=>'cubworld',
+		'domain'=>'www.cubworld.com',
+		'owner'=>'Bradley Rosen',
+		'title'=>'CubWorld.com',
+		'quotes'=>[
+			## 6-27-07
+			qq~Just to let you know, I get more compliments on our site then I ever have.  I'm so proud of it and we've come a long way since moving over to Zoovy!~,
+			qq~We launched on April 9th and have been able to implement a ton of extras, and syndications since then.  I know that this was time consuming, and I thank you all!~,
+			],
+		},
+		);
+	
+	my @RESULTS = ();
+	foreach my $c (@CUSTOMERS) {
+		## skip if we have no quotes and we need quotes.
+		next if ( (defined $filters{'quotes'}) && ( (not defined $c->{'quotes'}) || (scalar(@{$c->{'quotes'}})==0) ) );
+		## skip if we have no logo and we need a logo.
+		next if ( (defined $filters{'logo'}) && ( not defined $c->{'logo'} ) );
+		## skip if we have no pdf and we need a pdf.
+		next if ( (defined $filters{'pdf'}) && ( not defined $c->{'pdf'} ) );
+		
+		if ((not defined $c->{'link'}) && (defined $c->{'domain'})) {
+			$c->{'link'} = sprintf("//%s/",$c->{'domain'});
+			}
+		
+		push @RESULTS, $c;
+		}
+	
+	return(@RESULTS);
+	}
+
+sub get_quotes {
+	my (%filters) = @_;
+	}
+
+
+sub get_casestudies {
+	my (%filters) = @_;
+
+	
+
+	}
+
+</%perl>

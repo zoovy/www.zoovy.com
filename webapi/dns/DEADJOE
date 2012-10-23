@@ -1,0 +1,17 @@
+
+*** Modified files in JOE when it aborted on Wed Jan 25 11:19:37 2012
+*** JOE was aborted by signal 15
+
+*** File '(Unnamed)'
+$zdb h
+$dbh
+
+*** File '(Unnamed)'
+dump.cgi
+dump.cgi
+dump.cgi
+dump.cgi
+dump.cgi
+dump.cgi
+dump.cgi
+dump.cgi

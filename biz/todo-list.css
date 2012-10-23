@@ -1,0 +1,132 @@
+/*
+*
+* Styles for the TODO LIST
+*
+*/
+
+/* TODO LIST */
+div.available	{font-family:inherit;}  /* this doesn't do anything, but having it gives us options */
+div.unavailable, div.unavailable a	{color: #cccccc;}
+.todo	{background:url(/biz/todo/images/mini_to_do_label-39x14.gif) no-repeat right center; padding-right:40px;}  /* if you use the other todo graphic (no star) set reduce the right padding */
+div.todo_list	{margin-bottom:10px;}
+div.todo_list table	{border:1px solid #cccccc;}
+div.undone	{padding-left:30px; background:url(/biz/todo/images/todo_unchecked_grey-19x16.gif) no-repeat left bottom;}  /* there is also an unchecked (no _grey) image if you prefer. it's orange. */
+div.done	{padding-left:30px; background:url(/biz/todo/images/todo_checked-19x16.gif) no-repeat left bottom;}
+
+
+a#show_me_button {
+	display:block;
+	width:212px;
+	height:49px;
+	margin-top:10px;
+	background-image: url(/biz/todo/images/show_me_how-212x49.jpg); background-repeat:no-repeat}
+	
+a#show_me_button:hover {
+	background-image: url(/biz/todo/images/show_me_how_over-212x49.jpg); background-repeat:no-repeat}
+	
+a#to_do_button {
+	display:block;
+	width:212px;
+	height:49px;
+	margin-top:10px;
+	background-image: url(/biz/todo/images/my_to_do_list-212x49.jpg); background-repeat:no-repeat}
+	
+a#to_do_button:hover {
+	background-image: url(/biz/todo/images/my_to_do_list_over-212x49.jpg); background-repeat:no-repeat}
+
+a#remove_button {
+	display:block;
+	width:212px;
+	height:49px;
+	margin-top:10px;
+	background-image: url(/biz/todo/images/remove-179x47.gif); background-repeat:no-repeat}
+	
+a#remove_button:hover {
+	background-image: url(/biz/todo/images/remove_over-179x47.gif); background-repeat:no-repeat}
+
+a#do_it_now_button {
+	display:block;
+	width:179px;
+	height:47px;
+	background-image: url(/biz/todo/images/do_it_now-179x47.gif); background-repeat:no-repeat}
+	
+a#do_it_now_button:hover {
+	background-image: url(/biz/todo/images/do_it_now_over-179x47.gif); background-repeat:no-repeat}
+	
+a#next_button {
+	display:block;
+	width:179px;
+	height:47px;
+	background-image: url(/biz/todo/images/next-179x47.gif); background-repeat:no-repeat}
+	
+a#next_button:hover {
+	background-image: url(/biz/todo/images/next_over-179x47.gif); background-repeat:no-repeat}
+
+a#skip_button {
+	display:block;
+	width:179px;
+	height:47px;
+	background-image: url(/biz/todo/images/skip-179x47.gif); background-repeat:no-repeat}
+	
+a#skip_button:hover {
+	background-image: url(/biz/todo/images/skip_over-179x47.gif); background-repeat:no-repeat}
+
+a#tab_button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-decoration:none;
+	display:block;
+	width:111px;
+	height:32px;
+	text-indent:4px;
+	color: #ffffff;
+	vertical-align:middle;
+	line-height:30px;
+	background-image: url(/biz/todo/images/gray_button_back-111x32.gif); background-repeat:no-repeat
+	}
+
+a#tab_button:hover{
+	color: #444444;
+	background-image: url(/biz/todo/images/gray_button_back_over-111x32.gif); background-repeat:no-repeat
+}
+
+.active_tab{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-decoration:none;
+	display:block;
+	width:111px;
+	height:32px;
+	text-indent:4px;
+	color: #444444;
+	vertical-align:middle;
+	line-height:30px;
+	background-image: url(/biz/todo/images/gray_button_back_over-111x32.gif); background-repeat:no-repeat
+}
+
+
+.orange_heading {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 23px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #ff8313;
+}
+
+.form_body_copy {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	line-height:18px;
+	color: #000000;
+}
+

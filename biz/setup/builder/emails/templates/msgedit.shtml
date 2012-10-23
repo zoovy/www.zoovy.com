@@ -1,0 +1,119 @@
+<!-- SETUP_TAB -->
+
+<br>
+
+<center>
+<!-- ERROR -->
+
+<table width=600 border=0 cellspacing=0 cellpadding=0 class="zoovytable">
+<tr>
+	<td valign="top" class="zoovytableheader"> &nbsp; Edit Message:</td>
+</tr>
+<tr>
+<td valign="top">
+	<form name="thisFrm" id="thisFrm" method="POST" action="index.cgi">
+	<input type="hidden" name="VERB" value="MSGSAVE">
+	<input type="hidden" name="NS" value="<!-- NS -->">
+	<input type="hidden" name="MSGID" value="<!-- MSGID -->">
+	<input type="hidden" name="MSGTYPE" value="<!-- MSGTYPE -->">
+				
+	<table width="100%" cellspacing=5>
+	<tr>
+		<td valign="top" valign='top' width='100px'><b>Last Edit:</b></td>
+		<td valign="top">
+		<!-- CREATED -->
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" valign='top' width='100px'><b>Type:</b></td>
+		<td valign="top">
+		<!-- MSGTYPE -->
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><b>Message ID:</b></td>
+		<td valign="top"><!-- MSGID --></td>
+	</tr>
+	<tr>
+		<td valign="top"><b>Subject:</b></td>
+		<td valign="top"><input type="textbox" size="60" name="MSGSUBJECT" value="<!-- MSGSUBJECT -->"></td>
+	</tr>
+	<tr>
+		<td valign="top"><b>From Email:</b></td>
+		<td valign="top">
+			<input type="textbox" size="35" name="MSGFROM" value="<!-- MSGFROM -->"> 
+			<input type="button" class="button" value=" Test " onClick="thisFrm.VERB.value='MSGTEST'; thisFrm.submit();">
+			<div class="hint">(leave blank to use profile default)</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><b>BCC Email:</b></td>
+		<td valign="top">
+			<input type="textbox" size="35" name="MSGBCC" value="<!-- MSGBCC -->">
+			<div class="hint">(a comma separated list of email addresses to receive copies of this message)</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" valign='top' width='100px'><b>Format:</b></td>
+		<td valign="top">
+		<input type="radio" name="MSGFORMAT" value="WIKI" <!-- MSGFORMAT_WIKI -->>Wiki &nbsp; 
+		<input type="radio" name="MSGFORMAT" value="HTML" <!-- MSGFORMAT_HTML -->>HTML &nbsp; 
+		<input type="radio" name="MSGFORMAT" value="TEXT" <!-- MSGFORMAT_TEXT -->>Text	
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" colspan=2>
+		<b>Body:</b><br>
+		<textarea cols="60" rows="15" name="MSGBODY"><!-- MSGBODY --></textarea>
+		</td>
+	</tr>
+	</table>
+	<center>
+		<input type="submit" class="button" value=" Save ">
+		&nbsp; 
+		<input type="button" class="button" value=" Exit " onClick="thisFrm.VERB.value=''; thisFrm.submit();">
+		&nbsp;
+		<input type="button" class="button" value=" Delete " onClick="thisFrm.VERB.value='MSGNUKE'; thisFrm.submit();">
+		
+	</center>
+	<br>
+<div class="hint">&nbsp; HINT: To reset a system message back to it's default - just delete it!</div>
+
+</td>
+</tr>
+<tr>
+	<td valign="top" class="zoovytableheader">Available Macros:</td>
+</tr>
+<tr>
+	<td valign="top">
+	<table bgcolor="ffffff">
+	<tr>
+		<td class="av" valign="top">Variable</td>
+		<td class="av" valign="top">Description</td>
+	</tr>
+	<!-- MACROHELP -->
+	<tr>
+		<td class="av" valign="top">&#37;WEBSITE&#37;</td>
+		<td class="av" valign="top">The address of your website formatted like http://yourname.zoovy.com<br></td>
+	</tr>	
+	<tr>
+		<td class="av" valign="top">&#37;COMPANYNAME&#37;</td>
+		<td class="av" valign="top">The name of your company.</td>
+	</tr>
+	<tr>
+	   <td class="av">&#37;SUPPORTPHONE&#37;</td>
+  	 <td class="av">The sellers phone number (if available)</td>
+	</tr>
+	<tr>
+	   <td class="av">&#37;SUPPORTEMAIL&#37;</td>
+	   <td class="av">The sellers support email.</td>
+	</tr>
+	</table>
+
+	<center><font color='red'>Warning:</font> Only the variables above are supported, do NOT attempt to use variables from other messages.<br></center>
+	</td>
+</tr>
+</table>
+</center>
+<br>
+<br>

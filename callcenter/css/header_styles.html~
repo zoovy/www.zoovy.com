@@ -1,0 +1,45 @@
+<html>
+
+<head>
+</head>
+<link rel="stylesheet" type="text/css" href="cc_styles.css">
+<body>
+
+<div align='center'>
+	<div style='position:relative; width:600px; text-align:left'>
+<table cellspacing='0' cellpadding='0' style='border-bottom:1px solid #0066FF; margin-bottom:5px;' width='600'>
+<tr>
+	<td width='150'>logo?</td>
+	<td width='450' align='right'><div style='width:auto; float:right;'>
+	<div class='tab tab_on'><a href=''>process order</a></div>
+	<div class='tab '><a href=''>track order</a></div>
+	<div class='tab '><a href=''>search faq</a></div>
+	<div class='tab'><a href=''>pick nose</a></div>
+	</div>
+	</td>
+</tr>
+</table>
+
+
+<p>Lorem ipsum dolor sit amet, perspiciatis vivamus et donec sapien ultricies, fermentum nunc vestibulum nullam aptent vestibulum, enim justo magna faucibus. Suspendisse ligula, nunc ultrices nonummy at netus iste ac. Enim purus vestibulum viverra mauris nisl est, enim rhoncus ac cras justo elementum, id odio arcu eu. </p>
+
+<p class='wiki_script'>Nisl cursus eget, sit adipiscing duis praesent quam, quis lacinia, quam nulla fringilla purus vel sed. Dui pede lobortis arcu eu, amet non magna lectus suspendisse diam, magna condimentum tincidunt tempor consectetuer vivamus integer, wisi neque. Sed condimentum primis est accumsan, facilisis id viverra congue, convallis donec ut. Aliquet ac arcu.</p>
+
+<p class='wiki_require'>Lorem ipsum dolor sit amet, perspiciatis vivamus et donec sapien ultricies, fermentum nunc vestibulum nullam aptent vestibulum, enim justo magna faucibus. Suspendisse ligula, nunc ultrices nonummy at netus iste ac. Enim purus vestibulum viverra mauris nisl est, enim rhoncus ac cras justo elementum, id odio arcu eu. </p>
+
+<div>
+<div class='wiki_actions'><a href=''>Action 1</a></div>
+<div class='wiki_actions'><a href=''>Action 2</a></div>
+<div class='wiki_actions'><a href=''>Action 3</a></div>
+<div class='wiki_actions'><a href=''>Action 4</a></div>
+</div>
+
+
+<p class='wiki_hint'>Lorem ipsum dolor sit amet, perspiciatis vivamus et donec sapien ultricies, fermentum nunc vestibulum nullam aptent vestibulum, enim justo magna faucibus. Suspendisse ligula, nunc ultrices nonummy at netus iste ac. Enim purus vestibulum viverra mauris nisl est, enim rhoncus ac cras justo elementum, id odio arcu eu. </p>
+
+	</div>
+</div>
+ 
+</body>
+
+</html>

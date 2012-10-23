@@ -1,0 +1,19 @@
+<!-- SETUP_TAB -->
+
+<br>
+<center>
+<table class="zoovytable" width="650">
+
+<Tr><td class="zoovytableheader">eBay Store Syndication Functions</td></tr>
+<tr><td>
+<br>
+<ul>
+<li> <a href="index.cgi?VERB=UPDATENOW&PROFILE=<!-- PROFILE -->">Update Now</a><br>
+<div class="hint">Causes syndication to run at the next available time -- usually within an hour.</div>
+</ul>
+
+</td></tr>
+</table>
+
+</center>
+</body>

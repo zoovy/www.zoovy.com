@@ -1,0 +1,179 @@
+#!/usr/bin/perl
+
+
+use lib "/httpd/modules";
+require ZOOVY;
+require INVENTORY;
+use CGI;
+use Compress::Bzip2;
+use strict; 
+
+#$USERNAME = 'adeal';
+#$TIMESTAMP = '1073609853';
+#my ($foo) = &parse_data($USERNAME,undef,$TIMESTAMP);
+#use Data::Dumper;
+#print Dumper($foo);
+#exit;
+
+my $q = new CGI;
+
+my $USERNAME = $q->param("USERNAME");
+my $PASSWORD = $q->param("PASSWORD");
+my $COMPRESS = uc($q->param('COMPRESS'));
+my $TIMESTAMP = $q->param('TIMESTAMP');
+print STDERR "TIMESTAMP: $TIMESTAMP\n";
+
+if (!$USERNAME) 
+   { 
+   print $q->header(-type=>"text/error");
+   print "ERROR: No username specified.\n"; exit(0); 
+   }
+
+if (!$PASSWORD) 
+   { 
+   print $q->header(-type=>"text/error");
+   print "ERROR: No password for $USERNAME specified.\n"; exit(0); 
+   }
+
+if (!ZOOVY::verifypassword($USERNAME,$PASSWORD,1))
+   { 
+   print $q->header(-type=>"text/error");
+   print "ERROR: Invalid Username/Password\n"; exit(0); 
+   }
+
+my $METHOD = $q->param('METHOD');
+print STDERR "sync_inventory METHOD: $METHOD\n";
+
+if ($METHOD eq 'UPLOAD' || $METHOD eq 'UPLOADONLY') {
+	my $BUFFER = "";
+
+	if (defined $q->param('FILENAME')) {
+		my $filename = $q->param('FILENAME');	
+		print STDERR "Filename is: $filename\n";
+		$/ = undef;
+		while (<$filename>) { $BUFFER .= $_; }
+		$/ = "\n";
+		}
+	elsif (defined $q->param('CONTENTS')) {
+		$BUFFER = $q->param('CONTENTS');
+		}
+
+	open F, ">/tmp/inventory.bz";
+	print F $BUFFER;
+	close F;
+
+	print STDERR "BUFFER BEFORE DECOMPRESS IS=[$BUFFER]\n\n";
+
+
+	if ($COMPRESS eq 'BZIP')	
+		{
+		my $in = $BUFFER;
+		$BUFFER = undef;
+		my $ratio = 20;
+		while (!defined($BUFFER) && ($ratio < 200))
+			{
+			$BUFFER = &Compress::Bzip2::decompress($in,$ratio); 
+			$ratio *= 2;
+			print STDERR "Ratio is now: $ratio\n";
+			}
+		print STDERR "Decompressed - buffer is now ".length($BUFFER)." bytes\n";
+		}
+
+	open F, ">/tmp/syncinventory.txt";
+	print F $BUFFER;	
+	close F;
+	print STDERR "BUFFER AFTER DECOMPRESS IS=[$BUFFER]\n\n";
+
+	if ($METHOD eq 'UPLOADONLY') { 
+		## note: a blank timestamp will return no values!
+		$TIMESTAMP = undef; 
+		}
+	
+	my ($OUTREF) = &parse_data($USERNAME,\$BUFFER,$TIMESTAMP);
+
+	# end of DOWNLOAD
+	print "Content-type: text/plain\n\n";
+	print ${$OUTREF};
+	} 
+elsif ($METHOD eq 'DOWNLOAD') {
+
+	my ($OUTREF) = &parse_data($USERNAME,undef,$TIMESTAMP);
+	print "Content-type: text/success\n\n";
+	print ${$OUTREF};
+
+	} 
+else {
+	print "Content-type: text/error\n\n";
+	print "Invalid Method ($METHOD)\n"; 
+	}	
+
+
+
+##
+## basic premise:
+##
+sub parse_data
+{
+	my ($USERNAME, $BUFREF, $TIMESTAMP) = @_;
+
+	my $OUTPUT = '';
+	&DBINFO::db_zoovy_connect();
+
+
+	if (defined $BUFREF) {
+	${$BUFREF} =~ s/[\n\r]+//g;
+	foreach my $line (split('</SKU>',${$BUFREF}))
+		{
+		print STDERR "INPUT LINE: $line\n";
+		next unless (substr($line,0,4) eq '<SKU');
+
+		my $ref = '';
+		my $qty = '';		
+		my $loc = '';
+		if ($line =~ /REF=\"(.*?)\"/) { $ref = $1; }
+		if ($line =~ /LOC=\"(.*?)\"/) { $loc = $1; }
+		if ($line =~ /\>(.*?)$/) { $qty = $1; }
+
+		print STDERR "INPUT PARSED QTY=[$qty] REF=[$ref] LOC=[$loc]\n";
+
+		if ((index($qty,'-')>-1) || (index($qty,'+')>-1)) {
+			print STDERR "Found Inventory Plus/Minus [$ref]=[$qty] loc:$loc\n";
+			$qty =~ s/[^0-9\+\-]//g;	# strip anything funny
+			&INVENTORY::add_incremental($USERNAME,$ref,'I',$qty);
+			&INVENTORY::set_location($USERNAME,$ref,$loc);
+			if (not defined $TIMESTAMP) {
+				# LEGACY
+				my ($actual,$reserve,$loc) = &INVENTORY::fetch_incremental($USERNAME,$ref);
+				$OUTPUT .= "<SKU LOC=\"$loc\" REF=\"$ref\">".$actual."</SKU>";
+				}
+			}
+		elsif (index($qty,'=')>-1) {
+			print STDERR "Found Absolute Inventory [$ref]=[$qty]\n";
+			$qty = substr($qty,1);
+			&INVENTORY::add_incremental($USERNAME,$ref,'U',$qty);
+			&INVENTORY::set_location($USERNAME,$ref,$loc);
+			if (not defined $TIMESTAMP) {
+				my ($actual, $reserve, $loc) = &INVENTORY::fetch_incremental($USERNAME,$ref);
+				$OUTPUT .= "<SKU LOC=\"$loc\" REF=\"$ref\">$actual</SKU>";
+				}
+			}		
+		}
+	}
+
+	if (defined $TIMESTAMP) {
+		my ($arref,$ts) = &INVENTORY::get_since_timestamps($USERNAME,$TIMESTAMP);
+		$OUTPUT = "<INVENTORY TS=\"$ts\">\n";
+		my ($invref,$reserveref,$locref) = &INVENTORY::fetch_incrementals($USERNAME,$arref,undef,1);	
+		foreach my $sku (keys %{$invref}) {
+			$OUTPUT .= "<SKU ID=\"$sku\" QTY=\"$invref->{$sku}\" RESERVE=\"$reserveref->{$sku}\" LOC=\"$locref->{$sku}\"\/>\n";
+			}	
+		$OUTPUT .= '</INVENTORY>';
+		}
+
+
+	&DBINFO::db_zoovy_close();
+	print STDERR "OUTPUT: $OUTPUT\n";
+	return(\$OUTPUT);
+}
+
+

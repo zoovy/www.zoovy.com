@@ -1,0 +1,155 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use CGI;
+use ZSHIP;
+use ZOOVY;
+use strict;
+use ZWEBSITE;
+require CART;
+$|++;
+my $q = new CGI;
+
+##
+## this is used by the shipping calculator
+##
+
+# Make an upper case reference to hash.
+my %PARAMS = ();
+my $k;
+foreach $k ($q->param()) { $PARAMS{uc($k)} = $q->param($k); }
+
+if ($PARAMS{'DEBUG'}) {
+	print "Content-type: text/plain\n\n";
+	print "Debugging enabled raw output below:\n";
+	}
+
+my $ERROR = '';
+if (not defined $PARAMS{'USERNAME'}) {
+	my $URI = $ENV{'REQUEST_URI'};
+	if ($URI =~ /USERNAME=([\w]+)[\/]?/) { $PARAMS{'USERNAME'} = $1; }
+	}
+
+if (not defined $PARAMS{'USERNAME'}) { $ERROR = 'No valid username specified'; }
+
+if (defined $PARAMS{'APPKEY'} ) {
+	## Shipping Calculator
+	if ($PARAMS{'APPKEY'} eq 'FizzyWigDingleBerry') {
+		}
+	else {
+		$ERROR = 'Invalid APPKEY specified';
+		}
+
+	}
+else {
+	## LEGACY MODE
+	## 	accepts: 
+	##			PASSWORD=zoovy_password  OR if not password, then they must have webdb/ship_external_security > 0
+	##			COUNTRY/ZIP
+	##			CART = <product
+
+	if (not defined $PARAMS{'PASSWORD'}) {
+		# if password was NOT supplied, then we see if the person has allow world
+		my $security = &ZWEBSITE::fetch_website_attrib($PARAMS{'USERNAME'},'ship_external_security');
+		if (!defined($security)) { $security = 0; } 
+		if ($security<1) { $ERROR = "No password for $PARAMS{'USERNAME'} specified, and security is not configured for World access."; } 
+		}
+	elsif (!ZOOVY::verifypassword($PARAMS{'USERNAME'},$PARAMS{'PASSWORD'},1)) { $ERROR = 'Invalid username/password combination'; }
+	}
+
+
+##
+## Parameters: USERNAME, PASSWORD, COUNTRY, ZIP, WEIGHT, PRICE<br>
+##
+my $CART = CART->new($PARAMS{'USERNAME'},'*');
+if (defined $PARAMS{'COUNTRY'}) { $CART->save_property('cgi.country',$PARAMS{'COUNTRY'}); }
+if (defined $PARAMS{'ZIP'}) { $CART->save_property('cgi.zip',$PARAMS{'ZIP'}); }
+if (defined $PARAMS{'STATE'}) { $CART->save_property('cgi.state',$PARAMS{'STATE'}); }
+if (defined $PARAMS{'COD'}) { $CART->save_property('cgi.cod',$PARAMS{'COD'}); }
+
+if ((defined $PARAMS{'CART'}) || (defined $PARAMS{'content'}) || (defined $PARAMS{'PRODUCT'})) {
+	## LEGACY: CONTENTS BASED METHODS
+	my $CONTENTS = undef;
+	if (defined $PARAMS{'CART'}) {
+		$CONTENTS = uc($PARAMS{"CART"});
+		} 
+	elsif (defined $PARAMS{'content'}) {
+		print STDERR "WEBAPI CALCSHIPPING CONTENT: ".$q->param('content')."\n";
+		my $xml = $PARAMS{'content'};
+		if ($xml =~ /<country>(.*?)<\/country>/s) { $CART->save_property('cgi.country',$1); }
+		if ($xml =~ /<zip>(.*?)<\/zip>/s) { $CART->save_property('cgi.zip',$1); }
+		if ($xml =~ /<state>(.*?)<\/state>/s) { $CART->save_property('cgi.state',$1); }
+		if ($xml =~ /<is_cod>(.*?)<\/is_cod>/s) { $CART->save_property('cgi.cod',$1); }
+		if ($xml =~ /<cart>(.*?)<\/cart>/s) { $CONTENTS = $1; }
+		}
+	elsif ($PARAMS{'PRODUCT'}) {
+		my $wt = &ZOOVY::fetchproduct_attrib($PARAMS{'USERNAME'},$PARAMS{'PRODUCT'},'zoovy:base_weight');
+		my $price = sprintf("%.2f",&ZOOVY::fetchproduct_attrib($PARAMS{'USERNAME'},$PARAMS{'PRODUCT'},'zoovy:base_price'));
+		$CONTENTS = "<product id=\"$PARAMS{'PRODUCT'}\" price=\"$price\" qty=\"1\" wt=\"$wt\">product name</product>\n";
+		}
+
+	my $stuff = $CART->stuff()->legacy_xmlcontents_to_stuff($PARAMS{'USERNAME'},$CONTENTS);	
+	}
+elsif (defined $PARAMS{'ORDER_ID'}) {
+	require ORDER;
+	my $ORDER_ID = uc($PARAMS{'ORDER_ID'});
+	my ($o,$err) = ORDER->new($PARAMS{'USERNAME'},$ORDER_ID);
+	if (not $err) { $CART = CART->new($PARAMS{'USERNAME'},'*',order=>$o);	} else { $ERROR = "Invalid order id $ORDER_ID"; }
+	}
+elsif (defined $PARAMS{'STUFF'}) {
+	require STUFF::CGI;
+	my @ERRORS = ();
+	STUFF::CGI::parse_products($PARAMS{'USERNAME'},\%PARAMS,0,\@ERRORS);
+	if (scalar(@ERRORS)>0) {
+		$ERROR = join(" ",@ERRORS);
+		}
+	}
+
+
+##
+##
+##
+
+my $out = '';
+if ($ERROR eq '') {
+	$CART->shipping();
+	$out = &ZSHIP::xml_out($CART,1);
+	if ($PARAMS{'FORMAT'} eq 'XML') { $out = "<Rates>$out</Rates>"; }
+	&output('ok',$out,\%PARAMS);
+	}
+else {
+	&output('error',$ERROR,\%PARAMS);	
+	}
+
+exit(0);
+
+sub output {
+	my ($type,$msg,$paramsref) = @_;
+
+	if ($paramsref->{'FORMAT'} eq 'XML') {
+		if ($type eq 'ok') {
+			print "Content-type: text/xml-success\n\n";
+			print "<?xml version=\"1.0\"?>\n";
+			print "<CalcShipping>";
+			print "$msg";
+			print "</CalcShipping>";
+			}
+		else {
+			print "Content-type: text/xml-error\n\n";
+			print "<?xml version=\"1.0\"?>\n";
+			print "<CalcShipping>";
+			print "<Error>$msg</Error>";
+			print "</CalcShipping>";
+			}
+		}
+	else {
+		if ($type eq 'ok') {
+			print "Content-type: text/html\n\n";
+			print $msg;
+			}
+		else {
+			print "Content-type: text/error\n\n";
+			print "ERROR: $msg\n\n";
+			}
+		}
+}

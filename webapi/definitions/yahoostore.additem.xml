@@ -1,0 +1,13 @@
+<DEFINITION NAME="additem">
+
+<DIV NAME="ALPHA" TITLE="Main">
+	<BUTTON TYPE="EXIT" PROMPT="Quit"></BUTTON>
+	<META TYPE="TITLE">Yahoo Stores Product Export Tool</META>
+	<META TYPE="DESCRIPTION">
+This tool is no longer active.
+Please use the CSV product export in the Setup / Yahoo Store Management feature instead.
+	</META>
+
+</DIV>
+
+</DEFINITION>

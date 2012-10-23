@@ -1,0 +1,57 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<h2>Newsletter Management</h2>
+
+<!-- SUBSCRIPTION LISTS  -->
+<form method="POST" action="index.cgi">
+<font face="arial, verdana, helvetica">
+
+<font color="blue"><!-- MESSAGE --></font>
+
+<br>
+
+<!-- CAMPAIGNS  -->
+<form method="POST" action="index.cgi">
+<input type="hidden" name="VERB" value="CREATE_CAMPAIGN">
+
+<!-- SIZING TABLE  -->
+   <table cellspacing=0 cellpadding=0 border=0 width="800" class="zoovytable">
+   <tr>
+      <td class='zoovytableheader'>Campaigns:</td>
+   </tr>
+   <tr>
+		<td>
+		<table width="100%">
+			<tr>
+				<td>
+				<div class="hint">
+				<br>
+				Campaigns are created to send emails (Newsletters) to your customers. Please follow the following steps to create your campaign:<br>
+				<ul>
+				<li><font size=-2>Step 1: Setup the basics of your campaign
+				<li><font size=-2>Step 2: Choose a page layout
+				<li><font size=-2>Step 3: Edit the content in your layout 
+				<li><font size=-2>Step 4: Preview/Send your newsletter in HTML and TEXT
+				<li><font size=-2>Step 5: Approve and Schedule your campaign 
+				</ul>
+				</div>
+         	<center><input type="submit" name="submit" value="Create New Campaign" class="button"></center>
+				</td>
+			</tr>
+
+
+			<!-- PENDING -->
+			<!-- APPROVED -->
+			<!-- QUEUED -->
+			<!-- FINISHED -->
+			
+		</table>
+
+
+		</td>	
+	</tr>
+	</table>
+
+</form>
+</center>

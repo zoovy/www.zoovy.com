@@ -1,0 +1,22 @@
+[%- page_title = 'eBay Category Suggest' -%]
+
+[%- INSERT '_round_corners_top.tt2' %]
+  <div id="category-tree">
+  <p style="text-align:center;"><a class="category" href="/biz/ebay/catchooser2008/index.cgi/" style="text-decoration:underline;">Browse for eBay Categories</a></p>
+  <br />
+  [% IF category_count == 0 %]
+  <p>eBay replies, that no categories match to your item...</p>
+  [% END %]
+  <ul>
+  [% FOREACH category = categories -%]
+    <li class="spacing1"><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %]</a> - [% category.percentage %]% items match</li>
+  [% END -%]
+  </ul>
+  </div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="suggest-form-block">
+[% INCLUDE '_suggest_categories_form.tt2' %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]

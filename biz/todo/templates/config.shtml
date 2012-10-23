@@ -1,0 +1,24 @@
+<!-- NO_TAB -->
+<br>
+<center>
+<form action="/biz/todo/index.cgi">
+<!-- MESSAGE -->
+
+<input type="hidden" name="ACTION" value="CONFIG-SAVE">
+<table width=800 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">To Do Settings</td>
+</tr>
+<tr>
+	<td>
+	<input <!-- CHK_SETUP --> type="checkbox" name="SETUP"> Enable "Setup Tasks" Interface on site.
+	
+	<br>
+	<input type="checkbox" name="TESTING"> load test tasks.<br>
+	<br>
+	<input class="button" type="submit" value=" Save ">
+	</td>
+</tr>
+</table>
+</form>
+</center>

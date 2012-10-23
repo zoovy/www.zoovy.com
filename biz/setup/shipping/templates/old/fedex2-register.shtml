@@ -1,0 +1,91 @@
+<!-- SETUP_TAB -->
+<center>
+<br>
+<!-- MYTODO -->
+
+<br>
+<table width=400 class="zoovytable">
+<tr><td class="zoovytableheader">FedEx&reg; API License Agreement</td></tr>
+<tr><td>
+
+<div align="center">
+<img src="http://www.zoovy.com/images/logos/fedex.gif" border="0" align="center"><br>
+</div>
+<font color='red'><!-- ERROR --></font>
+
+<form method="post" action="fedex2.cgi">
+<input type='hidden' name='VERB' value='REGISTER-SAVE'>
+<input type='hidden' name='META' value='<!-- META -->'>
+<br>
+Please provide the information needed below to setup your FedEx&reg; meter:<br>
+<br>
+<table>
+	<tr>
+		<td valign=top>Fedex&reg; Account Number:</td>
+		<td valign=top><input type="textbox" name="ACCOUNT" value="<!-- ACCOUNT -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Contact First Name</td>	
+		<td valign=top><input type="textbox" name="FIRSTNAME" value="<!-- FIRSTNAME -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Contact Last Name</td>	
+		<td valign=top><input type="textbox" name="LASTNAME" value="<!-- LASTNAME -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Company Name</td>	
+		<td valign=top><input type="textbox" name="COMPANY" value="<!-- COMPANY -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Address Line 1</td>	
+		<td valign=top><input type="textbox" name="ADDRESS1" value="<!-- ADDRESS1 -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Address Line 2</td>	
+		<td valign=top><input type="textbox" name="ADDRESS2" value="<!-- ADDRESS2 -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>City</td>	
+		<td valign=top><input type="textbox" name="CITY" value="<!-- CITY -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>State Code</td>	
+		<td valign=top><input type="textbox" name="STATE" value="<!-- STATE -->"><br>
+		<i>(required for Canada or US)</i></td>
+	</tr>
+	<tr>
+		<td valign=top>Postal/Zip Code</td>	
+		<td valign=top><input type="textbox" name="ZIP" value="<!-- ZIP -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Country Code</td>	
+		<td valign=top><input size=2 type="textbox" name="COUNTRY" value="<!-- COUNTRY -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Phone Number</td>	
+		<td valign=top><input type="textbox" name="PHONE" value="<!-- PHONE -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Email Address</td>	
+		<td valign=top><input type="textbox" name="EMAIL" value="<!-- EMAIL -->"></td>
+	</tr>
+	<tr>
+		<td valign=top>Fax Number</td>	
+		<td valign=top><input type="textbox" name="FAX" value="<!-- FAX -->"></td>
+	</tr>
+</table>
+<div class="hint">
+</div>
+<br>
+<input type="submit" class="button" value="  Next  ">
+</form>
+
+<br><div class="hint">FedEx logo used by permission. All rights reserved.</div>
+
+</td></tr></table>
+
+</center>
+</font>
+
+</body>
+</html>

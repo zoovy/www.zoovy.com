@@ -1,0 +1,17 @@
+
+*** Modified files in JOE when it aborted on Fri Oct  5 09:01:21 2012
+*** JOE was aborted by signal 15
+
+*** File '(Unnamed)'
+sub add_payment
+return
+@CHANGES
+
+*** File '(Unnamed)'
+/httpd/modules/CART2.pm
+/httpd/modules/CART2.pm
+payment.cgi
+payment.cgi
+payment.cgi
+payment.cgi
+payment.cgi

@@ -1,0 +1,68 @@
+<html>
+<head>
+<META http-equiv="Content-type" content="text/html; charset=ISO-8859-1">
+<TITLE>Zoovy - Login <!-- HOSTNAME --></TITLE>
+<STYLE TYPE="text/css">\@import url(/style/style.css)</STYLE>
+<SCRIPT type="text/javascript" language="JavaScript"><!--
+
+if (top != self) { top.location.href = self.location.href; }
+
+function isEnter(key) {
+  if (key==13) 
+     { document.forms[0].submit() }
+	}
+
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+	return null;
+	}
+
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor="#FFFFFF"  marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" BGCOLOR="#FFFFFF"
+onload="window.document.FrmLogin.submit();" TEXT="#000000">
+<CENTER>
+<!-- NO_TAB -->
+<FORM target="_top" METHOD="GET" name="FrmLoginx" ACTION="<!-- SENDTO -->">
+
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666699" width='300'>
+<tr><td align='center'>
+<font face='helvetica, arial' size='3' color='white'><b>Logging into Zoovy</b></font>
+</td></tr>
+<tr><td>
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#FFFFFF" width='100%'><tr><td align='center'>
+
+<table cellpadding="5"><tr><td valign="center" align="center">
+<Font face="Verdana, Helvetica, Arial" size="1" color="red">
+<!-- MESSAGE -->
+<!-- TIMECHECK -->
+</font></td></tr></table>
+</font>
+<a href="<!-- SENDTO -->">try me</a><br>
+
+SENDTO: <!-- SENDTO --><br>
+AUTH_TOKEN: <!-- AUTH_TOKEN --><br>
+<pre>
+<!-- DEBUG -->
+</pre>
+
+<input type="hidden" name="authenticate" value="true">
+<input type="hidden" name="sendto" value="<!-- SENDTO -->">
+</form>
+<br>
+</td></tr></table>
+</td></tr></table>
+
+</center>
+<br><br>
+<br>
+

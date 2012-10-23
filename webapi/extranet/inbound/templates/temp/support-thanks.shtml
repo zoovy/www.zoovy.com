@@ -1,0 +1,20 @@
+<!-- HEADER -->
+
+<div class="say">
+<br>
+Okay, I've [[added|updated]] an electronic support ticket.<br>
+<br>
+The ticket number is <!-- TICKET -->.<br>
+<br>
+You can add or update this online, or just call back if want to add more information.<br>
+<br>
+A technician should be on this shortly and they'll follow up with you then.<br>
+<br>
+</div>
+
+<div class="hint">
+<i><b>[[ PLEASE ENCOURAGE THE CLIENT TO ADD EXAMPLES TO THE TICKET - 
+TICKETS WITH EXAMPLES GET ANSWERED MUCH FASTER. ]]</b></i>
+</div>
+
+<!-- FOOTER -->

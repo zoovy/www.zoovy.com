@@ -1,0 +1,158 @@
+<!-- UTILITIES_TAB -->
+
+<script name="javascript">
+<!--
+
+// necessary for media library - wholesale company logo:
+
+function openWindow(url) {
+      var popupWin =
+window.open(url,'popupWin','status=yes,resizable=yes,width=638,height=450,menubar=yes,scrollbars=yes')
+      popupWin.focus(true);
+            }
+//-->
+</script>
+            
+
+<div align="center">
+<form name="topFrm" method="post" action="index.cgi" style="margin: 0px;">
+<input type="hidden" name="CID" value="<!-- CID -->">
+<input type='hidden' name="VERB" value='SAVE'>
+
+
+<table class="zoovytable" cellspacing="0" cellpadding="0" width="800">
+<tr class="zoovytableheader" style="height: 22px;">
+	<td align="left" class="zoovytableheader"><b>&nbsp;Customer Edit: <!-- EMAIL --></b></td>
+	<td align="right" nowrap class="zoovytableheader"><b>Cid: <!-- CID --> | Prt: <!-- PRT --> | Created: <!-- CREATED -->&nbsp;</b></td>
+</tr>
+<tr>
+<td colspan="2">
+
+<!-- ERRORS -->
+	
+<!-- BEGIN CONTENT -->
+<table width="100%" cellspacing="1" cellpadding="2"><tr>
+	<td class="zoovysub2header">General Account Information</span></td>
+	<td class="zoovysub2header">Security Options</span></td>
+</tr>
+<tr>
+	<td valign='top'>
+	<table>
+		<tr><td>Email:</td><td><input type="textbox" name="email" value="<!-- EMAIL -->"></td></tr>
+		<tr><td>First Name:</td><td><input size="15" type="textbox" name="firstname" value="<!-- FIRSTNAME -->"></td></tr>
+		<tr><td>Last Name:</td><td><input size="15" type="textbox" name="lastname" value="<!-- LASTNAME -->"></td></tr>					
+		<!-- WHOLESALE -->
+	</table>
+	</td>
+	<td valign='top'>
+	<table>
+		<tr><td>Password: <input type='textbox' name='pass' value="<!-- PASSWORD -->"></td></tr>
+		<tr><td><input type="checkbox" name="reset_hint"> Remove Password Hint<br><div class="hint">(password recovery can be done via email only)</div></td></tr>
+		<tr><td><input <!-- CHK_IS_LOCKED --> type="checkbox" name="is_locked"> Lock customer account</td></tr>
+	</table>
+	</td>
+</tr>
+</table>
+
+<!-- NEWSLETTER and REWARDS SECTION -->
+<table cellspacing="1" cellpadding="2" width="100%">
+<tr style="height: 22px;">
+	<td class="zoovysub2header">Newsletter(s)</span></td>
+	<td class="zoovysub2header">Rewards</span></td>
+</tr>
+<tr>
+	<td bgcolor="#ffffff" valign='top'>
+		<table width="100%">
+		<tr><td><input name="newsletter_1" <!-- CHK_NEWSLETTER_1 --> type="checkbox">&nbsp;General</td></tr>
+		<!-- NEWSLETTERS -->
+		</table>
+	</td>
+	<td bgcolor="#ffffff" valign="top">
+	Not Available
+	<!--
+		Historical Accumulted: 8954<br>
+		Used: 456<br>
+		Expired: 4567<br>
+		Available: 123
+	-->
+	</td>
+</tr></table>
+<!-- REWARDS -->
+<!-- CRM -->
+<table cellspacing="1" cellpadding="2" border="0" width="100%">
+	<tr class="zoovysub2header" style="height: 22px;">
+		<td colspan=4 width=100%>
+		Stored Payment Methods (Wallets)
+		</td>
+	</tr>
+	<!-- PAYMENT_METHODS -->
+</table>
+
+
+<!-- SHIPPING, WHOLESALE AND BILLING INFO -->
+<table cellspacing="1" cellpadding="2" border="0" width="100%">
+<tr class="zoovysub2header" style="height: 22px;">
+	<td width="50%">
+	<table>
+		<tr>
+			<td align="right"><a href="index.cgi?VERB=CREATEADDR&TYPE=bill&CID=<!-- CID -->"><b>[+]</b></a></td>
+			<td>Billing Address</td>
+		</tr>
+	</table>
+	<td>
+	<table>
+		<tr>
+			<td align="right"><a href="index.cgi?VERB=CREATEADDR&TYPE=ship&CID=<!-- CID -->"><b>[+]</b></a></td>
+			<td>Shipping Address(es)</td>
+		</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td valign="top">
+		<!-- BILLING_ADDRESS -->
+	</td>
+	<td valign="top">
+		<!-- SHIPPING_ADDRESS -->
+	</td>
+</tr>
+<!-- DROPSHIP -->
+
+</table>	
+
+</td>
+</tr></table>
+<br>
+<table>
+<tr>
+<td align=center>
+	<input type="submit" class="button" value=" Save "> 
+	&nbsp; 
+	<input type="button" class="button" onClick="openWindow('index.cgi?VERB=EMAIL&CID=<!-- CID -->');" value=" Email ">
+	&nbsp; 
+	<input type="button" class="button" onClick="openWindow('index.cgi?VERB=LOGIN&CID=<!-- CID -->');" value=" Login ">
+	&nbsp; 
+	<input type="button" class="button" onClick="document.location='index.cgi?VERB=DELETE&CID=<!-- CID -->';" value=" Remove ">
+</td>
+</tr>
+</table>
+<br>
+
+<table class="zoovytable" width='800' cellpadding='2' cellspacing='1' border='0'>
+<tr>
+	<td class="zoovytableheader" colspan="4" style="height: 22px;">Order History</td>
+</tr>
+<tr>
+	<td class="zoovysub2header">Order ID</td>
+	<td class="zoovysub2header">Status</td>
+	<td class="zoovysub2header">Amount</td>
+	<td class="zoovysub2header">Payment Type</td>
+</tr>
+<!-- ORDER_TABLE -->
+</table>
+<br>
+
+</form>
+
+</div>
+</body>

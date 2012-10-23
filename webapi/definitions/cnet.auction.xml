@@ -1,0 +1,381 @@
+<DEFINITION NAME="auction">
+<!--
+
+CNET Auction Template
+
+-->
+
+<LIST NAME="DURATION" TYPE="TEXT">
+	<OPTION VALUE="1"  PROMPT="1 days"></OPTION>
+	<OPTION VALUE="2"  PROMPT="2 days"></OPTION>
+	<OPTION VALUE="3"  PROMPT="3 days"></OPTION>
+	<OPTION VALUE="4"  PROMPT="4 days"></OPTION>
+	<OPTION VALUE="5"  PROMPT="5 days"></OPTION>
+	<OPTION VALUE="6"  PROMPT="6 days"></OPTION>
+	<OPTION VALUE="7"  PROMPT="7 days"></OPTION>
+	<OPTION VALUE="0"  PROMPT="End Now!"></OPTION>
+</LIST>
+
+<LIST NAME="ALTSHIP" TYPE="TEXT">
+	<OPTION VALUE="" PROMPT=""></OPTION>
+	<OPTION VALUE="US Mail" PROMPT="US Mail"></OPTION>
+	<OPTION VALUE="UPS 3 Day" PROMPT="UPS 3 Day"></OPTION>
+	<OPTION VALUE="Fed Ex 3 Day Saver" PROMPT="Fed Ex 3 Day Saver"></OPTION>
+	<OPTION VALUE="UPS 2nd day air" PROMPT="UPS 2nd day"></OPTION>
+	<OPTION VALUE="Fed Ex 2nd day" PROMPT="Fed Ex 2nd day"></OPTION>
+	<OPTION VALUE="UPS Next day air" PROMPT="UPS Next day"></OPTION>
+	<OPTION VALUE="Fed Ex Next day" PROMPT="Fed Ex Next day"></OPTION>
+</LIST>
+
+<LIST NAME="CONDITION" TYPE="TEXT">
+                      <OPTION VALUE="Brand New" PROMPT="Brand New"></OPTION>
+                      <OPTION VALUE="Remanufactured" PROMPT="Remanufactured"></OPTION>
+                      <OPTION VALUE="Open Box" PROMPT="Open Box"></OPTION>
+                      <OPTION VALUE="Used Working Condition" PROMPT="Used Working Condition"></OPTION>
+                      <OPTION VALUE="Used Non-working Condition" PROMPT="Used Non-working Condition"></OPTION>
+</LIST>
+
+<LIST NAME="CATEGORY" TYPE="TEXT">
+<OPTION VALUE="000" PROMPT="Please Select"></OPTION>
+<OPTION VALUE="325"  PROMPT=" Accessories/ Carrying cases"></OPTION>
+<OPTION VALUE="326"  PROMPT=" Accessories/ Cases &amp; covers"></OPTION>
+<OPTION VALUE="327"  PROMPT=" Accessories/ Bulk cables"></OPTION>
+<OPTION VALUE="328"  PROMPT=" Accessories/ Patch cords"></OPTION>
+<OPTION VALUE="329"  PROMPT=" Accessories/ Mac cables"></OPTION>
+<OPTION VALUE="330"  PROMPT=" Accessories/ Other accessories"></OPTION>
+<OPTION VALUE="297"  PROMPT=" Cameras/ Still photo cameras"></OPTION>
+<OPTION VALUE="298"  PROMPT=" Cameras/ Webcams"></OPTION>
+<OPTION VALUE="299"  PROMPT=" Cameras/ Other cameras"></OPTION>
+<OPTION VALUE="265"  PROMPT=" Components/ Intel processors"></OPTION>
+<OPTION VALUE="267"  PROMPT=" Components/ AMD processors"></OPTION>
+<OPTION VALUE="357"  PROMPT=" Components/ Other processors"></OPTION>
+<OPTION VALUE="266"  PROMPT=" Components/ Motherboards"></OPTION>
+<OPTION VALUE="268"  PROMPT=" Components/ System boards"></OPTION>
+<OPTION VALUE="269"  PROMPT=" Components/ I-O boards"></OPTION>
+<OPTION VALUE="358"  PROMPT=" Components/ Cases-Power Supplies"></OPTION>
+<OPTION VALUE="315"  PROMPT=" Components/ UPS systems"></OPTION>
+<OPTION VALUE="359"  PROMPT=" Components/ Accessories"></OPTION>
+<OPTION VALUE="341"  PROMPT=" Consumer Electronics/ Audio Speakers"></OPTION>
+<OPTION VALUE="342"  PROMPT=" Consumer Electronics/ Audio Systems"></OPTION>
+<OPTION VALUE="343"  PROMPT=" Consumer Electronics/ Camcorders"></OPTION>
+<OPTION VALUE="344"  PROMPT=" Consumer Electronics/ CD Players"></OPTION>
+<OPTION VALUE="345"  PROMPT=" Consumer Electronics/ Game Systems"></OPTION>
+<OPTION VALUE="346"  PROMPT=" Consumer Electronics/ Televisions"></OPTION>
+<OPTION VALUE="347"  PROMPT=" Consumer Electronics/ VCRs"></OPTION>
+<OPTION VALUE="348"  PROMPT=" Consumer Electronics/ Wireless"></OPTION>
+<OPTION VALUE="313"  PROMPT=" Consumer Electronics/ DVD Players"></OPTION>
+<OPTION VALUE="339"  PROMPT=" Consumer Electronics/ MP3 Players"></OPTION>
+<OPTION VALUE="349"  PROMPT=" Consumer Electronics/ Accessories"></OPTION>
+<OPTION VALUE="242"  PROMPT=" Desktop Systems/ Pentium"></OPTION>
+<OPTION VALUE="243"  PROMPT=" Desktop Systems/ Pentium-II"></OPTION>
+<OPTION VALUE="244"  PROMPT=" Desktop Systems/ Pentium-III"></OPTION>
+<OPTION VALUE="246"  PROMPT=" Desktop Systems/ Pentium-IV"></OPTION>
+<OPTION VALUE="245"  PROMPT=" Desktop Systems/ AMD K6-Athlon"></OPTION>
+<OPTION VALUE="119"  PROMPT=" Desktop Systems/ Others"></OPTION>
+<OPTION VALUE="302"  PROMPT=" Scanners/ Flatbed"></OPTION>
+<OPTION VALUE="303"  PROMPT=" Scanners/ Sheet-fed"></OPTION>
+<OPTION VALUE="312"  PROMPT=" Scanners/ Other scanners"></OPTION>
+<OPTION VALUE="353"  PROMPT=" Handhelds/ Palm OS"></OPTION>
+<OPTION VALUE="331"  PROMPT=" Handhelds/ Handspring"></OPTION>
+<OPTION VALUE="332"  PROMPT=" Handhelds/ Pro-Edge-Prism"></OPTION>
+<OPTION VALUE="333"  PROMPT=" Handhelds/ Neo-Platinum"></OPTION>
+<OPTION VALUE="338"  PROMPT=" Handhelds/ Deluxe"></OPTION>
+<OPTION VALUE="354"  PROMPT=" Handhelds/ Windows CE"></OPTION>
+<OPTION VALUE="355"  PROMPT=" Handhelds/ Others"></OPTION>
+<OPTION VALUE="356"  PROMPT=" Handhelds/ Accessories"></OPTION>
+<OPTION VALUE="317"  PROMPT=" Input Devices/ Keyboards"></OPTION>
+<OPTION VALUE="318"  PROMPT=" Input Devices/ Mice"></OPTION>
+<OPTION VALUE="319"  PROMPT=" Input Devices/ Joysticks"></OPTION>
+<OPTION VALUE="320"  PROMPT=" Input Devices/ Trackballs"></OPTION>
+<OPTION VALUE="321"  PROMPT=" Input Devices/ Mac input devices"></OPTION>
+<OPTION VALUE="322"  PROMPT=" Input Devices/ Tablets"></OPTION>
+<OPTION VALUE="323"  PROMPT=" Input Devices/ Other input devices"></OPTION>
+<OPTION VALUE="253"  PROMPT=" Memory/ Generic memory"></OPTION>
+<OPTION VALUE="254"  PROMPT=" Memory/ Brand-name memory"></OPTION>
+<OPTION VALUE="255"  PROMPT=" Memory/ Notebook memory"></OPTION>
+<OPTION VALUE="256"  PROMPT=" Memory/ Flash memory"></OPTION>
+<OPTION VALUE="292"  PROMPT=" Modems/ External modems"></OPTION>
+<OPTION VALUE="293"  PROMPT=" Modems/ Internal modems"></OPTION>
+<OPTION VALUE="294"  PROMPT=" Modems/ Mac modems"></OPTION>
+<OPTION VALUE="295"  PROMPT=" Modems/ PC card modems"></OPTION>
+<OPTION VALUE="258"  PROMPT=" Monitors/ 15-inch &amp; Below"></OPTION>
+<OPTION VALUE="259"  PROMPT=" Monitors/ 17-inch"></OPTION>
+<OPTION VALUE="260"  PROMPT=" Monitors/ 19-inch"></OPTION>
+<OPTION VALUE="261"  PROMPT=" Monitors/ 20-inch &amp; Above"></OPTION>
+<OPTION VALUE="262"  PROMPT=" Monitors/ Flat panel displays"></OPTION>
+<OPTION VALUE="263"  PROMPT=" Monitors/ Other Monitors"></OPTION>
+<OPTION VALUE="335"  PROMPT=" Multimedia/ Sound cards"></OPTION>
+<OPTION VALUE="337"  PROMPT=" Multimedia/ Speakers"></OPTION>
+<OPTION VALUE="301"  PROMPT=" Multimedia/ Graphics Accelerators"></OPTION>
+<OPTION VALUE="287"  PROMPT=" Multimedia/ CD-ROM drives"></OPTION>
+<OPTION VALUE="288"  PROMPT=" Multimedia/ DVD"></OPTION>
+<OPTION VALUE="289"  PROMPT=" Multimedia/ CD-RW"></OPTION>
+<OPTION VALUE="336"  PROMPT=" Multimedia/ Other multimedia"></OPTION>
+<OPTION VALUE="305"  PROMPT=" Networking/ Bridges-routers-gateways"></OPTION>
+<OPTION VALUE="306"  PROMPT=" Networking/  HUBS &amp; MAUs"></OPTION>
+<OPTION VALUE="307"  PROMPT=" Networking/  Mac networking"></OPTION>
+<OPTION VALUE="308"  PROMPT=" Networking/  Repeaters"></OPTION>
+<OPTION VALUE="309"  PROMPT=" Networking/  Switches &amp; cases"></OPTION>
+<OPTION VALUE="310"  PROMPT=" Networking/  Adapters &amp; interfaces"></OPTION>
+<OPTION VALUE="247"  PROMPT=" Notebooks/ Pentium class"></OPTION>
+<OPTION VALUE="248"  PROMPT=" Notebooks/ Pentium II class"></OPTION>
+<OPTION VALUE="249"  PROMPT=" Notebooks/ Pentium III class"></OPTION>
+<OPTION VALUE="250"  PROMPT=" Notebooks/ K6-2-Athlon"></OPTION>
+<OPTION VALUE="350"  PROMPT=" Notebooks/ Mac-Apple OS"></OPTION>
+<OPTION VALUE="351"  PROMPT=" Notebooks/ Others"></OPTION>
+<OPTION VALUE="352"  PROMPT=" Notebooks/ Accessories"></OPTION>
+<OPTION VALUE="281"  PROMPT=" Printers/ Laser printers"></OPTION>
+<OPTION VALUE="282"  PROMPT=" Printers/ Ink jet printers"></OPTION>
+<OPTION VALUE="283"  PROMPT=" Printers/ Mac printers"></OPTION>
+<OPTION VALUE="284"  PROMPT=" Printers/ Other printers"></OPTION>
+<OPTION VALUE="360"  PROMPT=" Printers/ Accessories"></OPTION>
+<OPTION VALUE="332"  PROMPT=" Services/ Domain names"></OPTION>
+<OPTION VALUE="333"  PROMPT=" Services/ Web hosting"></OPTION>
+<OPTION VALUE="338"  PROMPT=" Services/ General"></OPTION>
+<OPTION VALUE="271"  PROMPT=" Software/ Business applications"></OPTION>
+<OPTION VALUE="272"  PROMPT=" Software/ Games"></OPTION>
+<OPTION VALUE="273"  PROMPT=" Software/ Mac software"></OPTION>
+<OPTION VALUE="274"  PROMPT=" Software/ Internet applications"></OPTION>
+<OPTION VALUE="275"  PROMPT=" Software/ Utilities"></OPTION>
+<OPTION VALUE="276"  PROMPT=" Software/ Desktop publishing"></OPTION>
+<OPTION VALUE="277"  PROMPT=" Software/ Education"></OPTION>
+<OPTION VALUE="278"  PROMPT=" Software/ Graphics"></OPTION>
+<OPTION VALUE="279"  PROMPT=" Software/ Operating systems"></OPTION>
+<OPTION VALUE="286"  PROMPT=" Storage/ IDE hard drives"></OPTION>
+<OPTION VALUE="361"  PROMPT=" Storage/ SCSI hard drives"></OPTION>
+<OPTION VALUE="362"  PROMPT=" Storage/ Tape drives"></OPTION>
+<OPTION VALUE="363"  PROMPT=" Storage/ Media"></OPTION>
+<OPTION VALUE="290"  PROMPT=" Storage/ Other storage devices"></OPTION>
+<OPTION VALUE="364"  PROMPT=" Storage/ Accessories"></OPTION>
+</LIST>
+
+	<DIV NAME="ALPHA" TITLE="CNET Auction Listing">
+		<META TYPE="TITLE">C|Net Auction Listing
+			</META>
+		<META TYPE="DESCRIPTION">
+Please note: Listing on CNET is FREE for Zoovy customers who create their account through the register link in Zoovy. 
+			</META>
+		<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Review"></BUTTON>
+		<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit"></BUTTON>
+
+	<DISPLAY TYPE="TITLE">Step 1: Enter Item Information</DISPLAY>
+
+
+		<INPUT TYPE="SELECT" 
+				PROMPT="CNET Category"
+				NAME="product:cnet:category"
+				LOADFROM="merchant:cnet:category"
+				HELP="Choose a category from the pull down area to the right. Please post your item in the correct category of that product."
+				STICKY="Y"
+				LIST="CATEGORY"
+				MANDATORY="Y">
+			</INPUT>
+
+
+		<INPUT TYPE="TEXTBOX" 
+				PROMPT="Title:" 
+				NAME="product:cnet:title"
+				LOADFROM="product:zoovy:prod_name" 
+				HELP="(Limited to 40 characters)"
+				COLS="40" 
+				MAXLENGTH="40"
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX" 
+				PROMPT="Manufacturer:" 
+				NAME="product:zoovy:manufacturer"
+				HELP="(example Dell, IBM, Compaq)"
+				COLS="40" 
+				MAXLENGTH="40"
+				MANDATORY="Y">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX" 
+				PROMPT="Manufacturer SKU:" 
+				NAME="product:zoovy:mfgsku"
+				HELP="This will be helpful to the buyer when evaluating your auction."
+				COLS="40" 
+				MAXLENGTH="40">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX" 
+				PROMPT="Manufacturer URL:" 
+				NAME="product:zoovy:mfgurl"
+				HELP="(example http://www.acer.com)"
+				COLS="40" 
+				MAXLENGTH="40">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX" 
+				PROMPT="Technical Support #:" 
+				NAME="merchant:zoovy:support_phone"
+				HELP="This is where the buyer can call for tech support."
+				COLS="40" 
+				MAXLENGTH="40">
+			</INPUT>
+			
+		<INPUT TYPE="SELECT" 
+				PROMPT="Product Condition:"
+				NAME="product:cnet:condition"
+                                                                                     LIST="CONDITION"
+                                                                                     LOADFROM="merchant:cnet:condtion"
+                                                                                     STICKY="Y"
+				HELP="It is important you make as honest an assessment of your item's condition as possible. Your rating as a seller is positively affected by selling an item that meets the expectations of a buyer.">
+			</INPUT>
+			
+		<INPUT TYPE="TEXTBOX"
+				PROMPT="Product Warranty:"
+				NAME="product:zoovy:warranty"
+				STICKY="Y"
+				LOADFROM="merchant:cnet:warranty"
+				HELP="A product warranty improves buyer confidence. Typically a warranty is 30 days or more."
+				COLS="40" 
+				MAXLENGTH="40">
+			</INPUT>
+			
+		<INPUT TYPE="TEXTAREA"
+				PROMPT="Product Description"
+				NAME="product:zoovy:html"
+				HELP="Get creative! This is where you describe your product to the potential buyer. The more useful information you provide, the more likely you will have a satisfied buyer. You can use basic HTML or simple text, whichever you prefer. Please Note: We no longer allow links to outside sites in the description field. The item description can only be used to describe, promote and facilitate the sale of the item listing - it cannot refer to or promote your individual web site, off CNET Auctions sales or other businesses."
+				OPTIONS="HTML" HTMLWIZ="1"
+				ROWS="8" COLS="70">
+			</INPUT>
+			
+		<INPUT TYPE="IMAGE" 
+				PROMPT="Product Image"
+				NAME="product:zoovy:prod_image1">
+			</INPUT>
+
+
+	<DISPLAY TYPE="TITLE">Step 2: Shipping Information</DISPLAY>
+
+		<INPUT TYPE="NUMBER"
+				PROMPT="UPS Ground Shipping"
+				NAME="product:cnet:shipprice"
+				LOADFROM="product:zoovy:shipping"
+				HELP="You must enter a price for UPS Ground Shipping"
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+			
+		<INPUT TYPE="SELECT"
+				PROMPT="Alternate Shipping"
+				NAME="product:cnet:altship"
+				HELP="Enter appropriate shipping charges for the product you are selling. Buyers seek accurate information in this area, so be precise."
+				LIST="ALTSHIP">
+			</INPUT>
+
+		<INPUT TYPE="NUMBER"
+				PROMPT="Alternate Price"
+				NAME="product:cnet:altprice"
+				LOADFROM="product:zoovy:shipping"
+				HELP=""
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+		
+
+	<DISPLAY TYPE="TITLE">Step 3: Enter Bidding Information</DISPLAY>
+		
+
+		<INPUT TYPE="NUMBER"
+				PROMPT="Starting Bid"
+				NAME="product:cnet:startbid"
+				LOADFROM="merchant:cnet:startbid"
+				HELP="This is where you decide what to start the bidding at on your auction. If you are unsure of what to price your product at, visit CNET Shopper.com to search for the retail price on thousands of products"
+				STICKY="Y"
+				MAXLENGTH="13"
+				COLS="8"
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+
+		<INPUT TYPE="NUMBER"
+				PROMPT="Bid Increment"
+				NAME="merchant:cnet:bidinc"
+				STICKY="Y"
+				MAXLENGTH="13"
+				COLS="8"
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+			
+		<INPUT TYPE="NUMBER"
+				PROMPT="Reserve"
+				NAME="product:cnet:reserve"
+				LOADFROM="merchant:cnet:reserve"
+				HELP="The reserve price is the minimum price you will allow a product to be sold for.  This reserve price is not shown to the bidders."
+				STICKY="Y"
+				MAXLENGTH="13"
+				COLS="8"
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+			
+		
+		
+		<INPUT TYPE="NUMBER"
+				INVENTORY="1" 
+				PROMPT="Quantity Available"
+				NAME="product:cnet:qty"
+				LOADFROM="merchant:cnet:qty"
+				HELP="This is the total quantity of this product that you wish to sell on c|net"
+				STICKY="Y"
+				MAXLENGTH="13"
+				COLS="8"
+				PRECISION="2"
+				CURRENCY="USD">
+			</INPUT>
+			
+		<INPUT TYPE="SELECT"
+				PROMPT="Duration"
+				NAME="merchant:cnet:duration"
+				HELP="Number of days the auction will run."
+				LIST="DURATION"
+				>
+			</INPUT>
+
+	<DISPLAY TYPE="TITLE">Step 4: Enter c|net user information</DISPLAY>
+
+		<INPUT TYPE="TEXTBOX"
+				PROMPT="C|NET Email"
+				NAME="product:cnet:username"
+				STICKY="Y"
+				HELP="The email address that is associated with your C|Net username"
+				COLS="40" 
+				VALIDATION="EMAIL" 
+				MAXLENGTH="40">
+			</INPUT>
+
+		<INPUT TYPE="TEXTBOX"
+				PROMPT="C|NET Password"
+				NAME="product:cnet:password"
+				STICKY="Y"
+				HELP="Your c|net password."
+				COLS="40" 
+				MAXLENGTH="40">
+			</INPUT>
+
+		<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review and Launch"></BUTTON>
+	</DIV>
+
+	<DIV NAME="OMEGA" TITLE="Review Information">
+		<META TYPE="TITLE">
+Please review before submitting
+			</META>
+		<META TYPE="DESCRIPTION">
+If the information below is accurate, please press "Submit Channel" to launch this listing to C|Net auctions. 
+			</META>
+
+
+		<DISPLAY TYPE="BYVALUE" PROMPT="Title" NAME="product:cnet:title"></DISPLAY>
+		<DISPLAY TYPE="BYPROMPT" LIST="CATEGORY" PROMPT="Category" NAME="product:cnet:category"></DISPLAY>
+		<DISPLAY TYPE="BYVALUE" PROMPT="Starting Bid" NAME="product:cnet:startbid"></DISPLAY>
+
+		<BUTTON TYPE="SUBMIT" PROMPT="Submit Channel"></BUTTON>
+		<BUTTON TYPE="LAST" PROMPT="Back to Edit"></BUTTON>
+	</DIV>
+
+
+</DEFINITION>

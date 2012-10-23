@@ -1,0 +1,1124 @@
+$VAR1 = {
+          '_rcmd' => 'pipeline',
+          '_uuid' => 1031,
+          '@rcmds' => [
+                        {
+                          '_uuid' => 1004,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [
+                                          {
+                                            'BLOG_URL' => '',
+                                            'CID' => '-1',
+                                            'ID' => '1139',
+                                            'PID' => 'MODEL01',
+                                            'LOCATION' => 'Springfield',
+                                            'SUBJECT' => 'This is the subject line',
+                                            'USEFUL_YES' => 0,
+                                            'CUSTOMER_NAME' => 'Lisa Simpson',
+                                            'RATINGDECIMAL' => '2.5',
+                                            'USEFUL_NO' => 0,
+                                            'CREATED_GMT' => '1173120206',
+                                            'RATING' => '5',
+                                            'APPROVED_GMT' => '1173123207',
+                                            'USEFUL_SUM' => 0,
+                                            'MESSAGE' => 'This is my review.  I hope that you enjoy it.'
+                                          },
+                                          {
+                                            'BLOG_URL' => '',
+                                            'CID' => '-1',
+                                            'ID' => '1138',
+                                            'PID' => 'MODEL01',
+                                            'LOCATION' => 'Springfield',
+                                            'SUBJECT' => 'Eat my Shorts',
+                                            'USEFUL_YES' => 0,
+                                            'CUSTOMER_NAME' => 'Bart Simpson',
+                                            'RATINGDECIMAL' => '3.0',
+                                            'USEFUL_NO' => 0,
+                                            'CREATED_GMT' => '1173119581',
+                                            'RATING' => '6',
+                                            'APPROVED_GMT' => '1173120257',
+                                            'USEFUL_SUM' => 0,
+                                            'MESSAGE' => 'This is the new review.'
+                                          },
+                                          {
+                                            'BLOG_URL' => '',
+                                            'CID' => '-1',
+                                            'ID' => '999',
+                                            'PID' => 'MODEL01',
+                                            'LOCATION' => 'Zoovy, Inc.',
+                                            'SUBJECT' => 'This is a good one',
+                                            'USEFUL_YES' => 0,
+                                            'CUSTOMER_NAME' => 'JT',
+                                            'RATINGDECIMAL' => '3.0',
+                                            'USEFUL_NO' => 0,
+                                            'CREATED_GMT' => '1171542567',
+                                            'RATING' => '6',
+                                            'APPROVED_GMT' => '1173120255',
+                                            'USEFUL_SUM' => 0,
+                                            'MESSAGE' => 'I like to leave good reviews everywhere just because.'
+                                          }
+                                        ],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL01'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL01',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL01'
+                                     },
+                          '_uuid' => 1005,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'sony',
+                                          'zoovy:prod_salesrank' => '20100202',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'is:newarrival' => 1,
+                                          'zoovy:prod_condition' => 'New',
+                                          'zoovy:accessory_products' => 'TITANIUM,BABYLON5,SWEATSHIRT,MODEL08,MODEL04,',
+                                          'zoovy:prod_name' => 'massa molestie magna rhoncus nibh.',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => '<iframe width="560" height="349" src="//www.youtube.com/embed/JHP60sKuClc" frameborder="0" allowfullscreen></iframe>
+
+=Lorem ipsum dolor sit amet (title 1)=
+sed fringilla in tellus, eros sit a quis ipsum ipsum sociis. Semper nibh velit tristique sed pede venenatis, sed vehicula ac, in vivamus senectus minim ut tincidunt, amet erat in mauris urna, wisi ac ligula, in nibh libero consequat pulvinar ac velit, eget arcu odio fringilla accumsan, viverra felis. 
+
+*Et sit augue blandit
+*sem fusce imperdiet.
+
+
+
+==Quam consectetuer faucibus at (Title 2)==
+ platea neque ut, pellentesque litora. Nibh libero, ante dolor nam. Ullamcorper ultricies rhoncus dictum diam, aliquam hymenaeos eu, eu phasellus nec pulvinar. Nec at vel ad massa condimentum vitae. Donec ut, luctus sed integer fusce mi, vestibulum libero vitae lectus id eu, in bibendum debitis dignissim integer, faucibus sed lacus vel ipsum. Nec ipsum exercitation volutpat vivamus. Magnis et senectus eget justo ut luctus aenean, auctor id tellus neque aliquet turpis, parturient bibendum.
+',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19753,
+                                          'amz:catalog' => '-- Not Set --',
+                                          'amz:ts' => '0',
+                                          'zoovy:prod_thumb' => 'models/30350365_square',
+                                          'is:specialorder' => 1,
+                                          'zoovy:prod_is_tags' => 'IS_SPECIALORDER,IS_BESTSELLER,IS_SALE,IS_NEWARRIVAL',
+                                          'zoovy:inv_enable' => '5',
+                                          'zoovy:prod_is' => '23552',
+                                          'amz:fba' => '0',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1311101601',
+                                          'zoovy:related_products' => 'MODEL05,MODEL08,MODEL07,MODEL09,MODEL02,MODEL04,MODEL10,',
+                                          'is:sale' => 1,
+                                          'zoovy:prod_folder' => '',
+                                          'zoovy:digest' => '8ml+/tcGqGEjs7Sfs//9Dg',
+                                          'zoovy:ship_cost1' => '24.95',
+                                          'zoovy:prod_image1' => 'models/30350365',
+                                          'amz' => '0',
+                                          'zoovy:prod_msrp' => '1399.95',
+                                          'zoovy:base_price' => '1199.95',
+                                          'is:bestseller' => 1,
+                                          'zoovy:pogs' => '<pog id="AK" prompt="radio button prompt" inv="0" global="1" optional="0" type="radio" sog="AK-radio_button_prompt" amz="" ghint="Group hints are the coolest thing ever!">
+<option v="00" m="p=+24.95" html="The%20cheesier%2C%20the%20better.">I like cheese</option>
+<option v="01" m="w=23#|p=-2.00">I like bananas</option>
+<option v="02" html="crackers%20also%20go%20great%20with%20cheese">I like crackers</option>
+<option v="03" html="mmmmm......%20beer.">I like beer</option>
+</pog>
+<pog id="#Z" prompt="inventoryable pog" inv="1" type="select" iname="1263928110" ghint="">
+<option v="00">red</option>
+<option v="01">blue</option>
+<option v="02">green</option>
+</pog>
+<pog id="#Y" prompt="another inventory pog" inv="1" type="radio" iname="1263928267" ghint="">
+<option v="00" m="p=+2.00" html="sdf%20asdf%20asdfasdf%20asd">small</option>
+<option v="01" m="w=+5.00">medium</option>
+<option v="02" m="p=-5.00">excessively large</option>
+</pog>
+'
+                                        },
+                          '%SKU' => {
+                                      'MODEL01:#Z02:#Y02' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'green / excessively large',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z01:#Y02' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'blue / excessively large',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z02:#Y01' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'green / medium',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z01:#Y01' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'blue / medium',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z00:#Y01' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'red / medium',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z02:#Y00' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'green / small',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z01:#Y00' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'blue / small',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z00:#Y02' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'red / excessively large',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           },
+                                      'MODEL01:#Z00:#Y00' => {
+                                                             'zoovy:base_cost' => '',
+                                                             'amz:asin' => '',
+                                                             'zoovy:sku_pogdesc' => 'red / small',
+                                                             'zoovy:prod_mfgid' => '',
+                                                             'zoovy:prod_upc' => ''
+                                                           }
+                                    }
+                        },
+                        {
+                          '_uuid' => 1006,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL02'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL02',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL02'
+                                     },
+                          '_uuid' => 1007,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'sony',
+                                          'zoovy:prod_salesrank' => '20100101',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'is:newarrival' => 1,
+                                          'zoovy:prod_condition' => 'New',
+                                          'zoovy:prod_name' => 'amet erat in mauris urna',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Parturient turpis ut sapien, nec vivamus cras justo luctus sed risus, vitae aliquam. Pellentesque laoreet rhoncus massa, iste aliquet dis, etiam vehicula mauris minus rhoncus sodales, tellus leo ut occaecat vel quis semper. ut quis sagittis, pede sem in scelerisque sagittis justo amet, magnis nam vel vitae platea adipiscing.
+
+
+=This is a title 1=
+
+
+imperdiet hendrerit vel odio adipiscing pretium. Quam sed vitae est iaculis, semper torquent dictum, vel orci fusce sed. Quis auctor tortor vivamus auctor id, natoque posuere sed ut amet, sodales a est mauris scelerisque tristique dolor. Magna nisl posuere, et malesuada, magnis suscipit, consequat neque ornare.
+
+
+
+
+==This is a title 2==
+
+
+Turpis ligula a, neque nam sit in vitae velit sem, eu nibh felis. Duis justo orci, faucibus suspendisse, sem libero molestie aenean nisl tempus, et congue lorem vel aliquet magna. Ipsum suspendisse sit sit rhoncus nec, libero nec turpis sapien lacus nunc luctus, amet fusce nec consectetur nisl.
+===This is a title 3===
+Orci hendrerit ligula, nulla eu morbi consequat sit nulla non, lobortis non curabitur. Cursus duis consectetuer pulvinar eget laoreet, malesuada vehicula dolor nam magna elit molestie, augue phasellus massa molestie magna rhoncus nibh.
+',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19754,
+                                          'amz:catalog' => '-- Not Set --',
+                                          'zoovy:schedule_eur' => '199.95',
+                                          'amz:ts' => '0',
+                                          'zoovy:prod_thumb' => 'models/30357846_square',
+                                          'zoovy:prod_is_tags' => 'IS_NEWARRIVAL',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_is' => '16384',
+                                          'amz:fba' => '0',
+                                          'zoovy:prod_modified_gmt' => '1306539409',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:digest' => 'WZibSxuAryjd4IIIpC+WGw',
+                                          'zoovy:ship_cost1' => '219.00',
+                                          'zoovy:prod_image1' => 'models/30357846',
+                                          'amz' => '0',
+                                          'zoovy:base_price' => '1299.95',
+                                          'zoovy:pogs' => '<pog id="A8" prompt="image grid" inv="0" global="0" optional="0" type="imggrid" sog="A8-image_grid" cols="4" width="75" amz="" height="75" zoom="on" ghint="Aenean pellentesque, enim eu dictum auctor, lorem turpis ornare risus, a blandit magna ligula eu sem. Sed cursus volutpat magna, vel porttitor mi ultricies ullamcorper. Morbi nisl purus, mattis eget porttitor non, aliquet id ante. Phasellus vel dolor non sem commodo " img_type="sku_image">
+<option v="00" m="w=|p=|img=models/30350365_square" html="bibendum%20mollis%20tellus%2C%20ac%20iaculis%20diam%20congue%20nec.%20Phasellus%20auctor%2C%20purus%20vitae%20sollicitudin%20tincidunt">model 1</option>
+<option v="01" m="w=|p=|img=models/30357846_square">model 2</option>
+<option v="02" m="w=|p=|img=models/9778474_square" html="Suspendisse%20aliquet%20leo%20ut%20eros%20euismod%20ut%20interdum%20mauris%20facilisis.%20Curabitur%20ac%20metus%20risus%2C%20convallis%20elementum%20tellus.%20Ut%20facilisis%20vulputate%20augue%20in%20molestie.%20Duis%20commodo%20diam%20in%20urna%20bibendum%20non%20faucibus%20quam%20auctor.%20Morbi%20pulvinar%20tempus%20lectus%20nec%20facilisis">model 3</option>
+<option v="03" m="w=|p=|img=models/30766479_square">model 4</option>
+<option v="04" m="w=|p=|img=mara/dsc01091">model 5</option>
+<option v="05" m="w=|p=|img=mara/dsc01132">model 6</option>
+</pog>
+'
+                                        },
+                          '%SKU' => {
+                                      'MODEL02' => {}
+                                    }
+                        },
+                        {
+                          '_uuid' => 1008,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [
+                                          {
+                                            'BLOG_URL' => '',
+                                            'CID' => '-1',
+                                            'ID' => '983',
+                                            'PID' => 'MODEL03',
+                                            'LOCATION' => 'Testing, CA',
+                                            'SUBJECT' => '',
+                                            'USEFUL_YES' => 0,
+                                            'CUSTOMER_NAME' => 'Model 03 test',
+                                            'RATINGDECIMAL' => '-0.5',
+                                            'USEFUL_NO' => 0,
+                                            'CREATED_GMT' => '1171301099',
+                                            'RATING' => '-1',
+                                            'APPROVED_GMT' => '1171267201',
+                                            'USEFUL_SUM' => 0,
+                                            'MESSAGE' => 'This is a test (content)'
+                                          }
+                                        ],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL03'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL03',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL03'
+                                     },
+                          '_uuid' => 1009,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:prod_thumb' => 'models/30390436_square',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'sony',
+                                          'zoovy:prod_salesrank' => '20090516',
+                                          'zoovy:prod_is_tags' => 'IS_NEWARRIVAL',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'is:newarrival' => 1,
+                                          'zoovy:prod_is' => '16384',
+                                          'amz:fba' => '0',
+                                          'zoovy:prod_condition' => 'New',
+                                          'zoovy:prod_name' => 'Page title goes here',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539406',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Nec at vel ad massa condimentum vitae. Donec ut, luctus sed integer fusce mi, vestibulum libero vitae lectus id eu, in bibendum debitis dignissim integer, faucibus sed lacus vel ipsum. Nec ipsum exercitation volutpat vivamus. Magnis et ac ipsum turpis neque sodales, eros ante nonummy posuere ligula eget, pellentesque ornare, dolor accumsan. Nec senectus eget justo ut luctus aenean, auctor id tellus neque aliquet turpis, parturient bibendum.
+
+Parturient turpis ut sapien, nec vivamus cras justo luctus sed risus, vitae aliquam. Pellentesque laoreet rhoncus massa, iste aliquet dis, etiam vehicula mauris minus rhoncus sodales, tellus leo ut occaecat vel quis semper. Volutpat volutpat commodo mauris diam justo parturient, pede at eu, bibendum id porttitor maecenas fermentum nascetur velit, vivamus suspendisse nibh aliquam ipsum, sodales a est mauris scelerisque tristique dolor. Magna nisl posuere, et malesuada, magnis suscipit, consequat neque ornare.
+
+[[This should open a new window]:popup=http://www.zoovy.com].  Shine on you crazy diamond.',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19755,
+                                          'amz:catalog' => '-- Not Set --',
+                                          'zoovy:digest' => 'RR5QDUou7JGJF77b+graog',
+                                          'zoovy:prod_image1' => 'models/30390436',
+                                          'amz' => '0',
+                                          'zoovy:base_price' => '399.95',
+                                          'amz:ts' => '0',
+                                          'zoovy:pogs' => '<pog id="AG" prompt="calendar" inv="0" global="1" optional="0" type="calendar" sog="AG-calendar" amz="" ghint="Vestibulum adipiscing, leo ut venenatis cursus, ligula quam tempor lacus, hendrerit feugiat velit metus eu nisl." flags="0" fee_rush="2.00" rush_msg="This is the rush message. Yee Haw!" rush_days="2" rush_prompt="Rush Prompt is this">
+</pog>
+'
+                                        },
+                          '%SKU' => {
+                                      'MODEL03' => {}
+                                    }
+                        },
+                        {
+                          '_uuid' => 1010,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL05'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL05',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL05'
+                                     },
+                          '_uuid' => 1011,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'pricegrabber:ts' => '1',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'Panasonic',
+                                          'zoovy:prod_prodlist_style' => '&SORTBY=NONE&FORMAT=CUSTOM&SRC=LIST%3A%24models&ALTERNATE=0&SHOWSKU=&',
+                                          'ebay:storeqty' => '1',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'zoovy:prod_condition' => 'New',
+                                          'zoovy:prod_name' => 'Ullamcorper ultricies rhoncus dictum diam',
+                                          'nextag:ts' => '1',
+                                          'ebaystores:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet',
+                                          'thefind:ts' => '0',
+                                          'ebay:fixed_qty' => '1',
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19757,
+                                          'mysimon:ts' => '1',
+                                          'pricegrabber:quantity' => '1',
+                                          'dijipop:ts' => '0',
+                                          'smarter:ts' => '0',
+                                          'amz:ts' => '-1',
+                                          'zoovy:prod_thumb' => 'models/30459756_square',
+                                          'become:ts' => '0',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_is' => '0',
+                                          'pronto:ts' => '0',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1308151868',
+                                          'zoovy:related_products' => 'MODEL03,MODEL08,MODEL07,MODEL10,MODEL04,MODEL09,MODEL02,',
+                                          'amz:digest' => '9R+Kw/cyplj9LL9hYD08aw',
+                                          'linkshare:ts' => '0',
+                                          'zoovy:prod_folder' => '',
+                                          'zoovy:digest' => 'ImIGvqBPICuJRKOXg5UbNw',
+                                          'zoovy:prod_image1' => 'models/30459756',
+                                          'bing:ts' => '1',
+                                          'overstock:ts' => '0',
+                                          'zoovy:base_price' => '599.95',
+                                          'shopping:ts' => '1',
+                                          'zoovy:pogs' => '<pog id="AF" prompt="select list (global)" inv="0" global="1" optional="0" type="select" sog="AF-select_list_global_" amz="" ghint="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non elit in magna pulvinar tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas">
+<option v="00">asdfasdf</option>
+<option v="01">df asdf dfa sd</option>
+<option v="02" m="p=+21.00" html="asd%20fasdf%20asdf%20asdf%20asdf%20asdfa%20sdf">rqwerqwe </option>
+</pog>
+'
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1012,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL06'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL06',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL06'
+                                     },
+                          '_uuid' => 1013,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'pricegrabber:ts' => '1',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'panasonic',
+                                          'ebay:storeqty' => '1',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'zoovy:prod_name' => 'aliquam hymenaeos eu',
+                                          'nextag:ts' => '1',
+                                          'ebaystores:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => '&#187; Quam consectetuer faucibus at platea neque ut, pellentesque litora. Nibh libero, ante dolor nam. Ullamcorper ultricies rhoncus dictum diam, aliquam hymenaeos eu, eu phasellus nec pulvinar. Nec at vel ad massa condimentum vitae. Donec ut, luctus sed integer fusce mi, vestibulum libero vitae lectus id eu, in bibendum debitis dignissim integer, faucibus sed lacus vel ipsum.  Nec ipsum exercitation volutpat vivamus. Magnis et ac ipsum turpis neque sodales, eros ante nonummy arcu. Wisi cras, at hendrerit ut id iaculis pharetra, faucibus maecenas. Vel vestibulum sed potenti augue. Ac posuere ligula eget, pellentesque ornare, dolor accumsan. Nec senectus eget justo ut luctus aenean, auctor id tellus neque aliquet turpis, parturient bibendum.
+
+
+',
+                                          'thefind:ts' => '0',
+                                          'ebay:fixed_qty' => '1',
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19758,
+                                          'mysimon:ts' => '1',
+                                          'pricegrabber:quantity' => '1',
+                                          'dijipop:ts' => '0',
+                                          'smarter:ts' => '0',
+                                          'amz:ts' => '0',
+                                          'zoovy:prod_thumb' => 'models/30746883_square',
+                                          'become:ts' => '0',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '1',
+                                          'zoovy:prod_is' => '0',
+                                          'pronto:ts' => '0',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539408',
+                                          'linkshare:ts' => '0',
+                                          'zoovy:digest' => 'Kg4iRj2XrLYyGinUIWJg3A',
+                                          'bing:ts' => '1',
+                                          'zoovy:prod_image1' => 'models/30746883',
+                                          'overstock:ts' => '0',
+                                          'zoovy:base_price' => '699.95',
+                                          'shopping:ts' => '1',
+                                          'zoovy:pogs' => '<pog id="AQ" prompt="Bigger is better" inv="0" global="1" optional="0" type="biglist" sog="AQ-bigger_is_better" amz="" ghint=" 	Big List:
+A Big List is a dynamic, two level menu. A Big List may have a maximum of 1296 options. At this time - you may not have price and weight modifiers on Big Lists. ">
+<option v="00" m="">Drinks|Soda</option>
+<option v="01" m="">Drinks|Beer</option>
+<option v="02" m="">Drinks|Wine</option>
+<option v="03" m="">Snacks|Chips</option>
+<option v="04" m="">Snacks|Pretzels</option>
+<option v="05" m="">Snacks|Doughnuts</option>
+<option v="06" m="">Drinks|out of order</option>
+<option v="07" m="">Snacks|also out of order</option>
+</pog>
+'
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1014,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL07'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL07',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL07'
+                                     },
+                          '_uuid' => 1015,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'pricegrabber:ts' => '1',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'panasonic',
+                                          'ebay:storeqty' => '1',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'zoovy:prod_name' => 'Quam sed vitae est iaculis',
+                                          'nextag:ts' => '1',
+                                          'ebaystores:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => '<p>This is HTML, not wiki</p>
+
+
+<p>Parturient turpis ut sapien, nec vivamus cras justo luctus sed risus, vitae aliquam. Pellentesque laoreet rhoncus massa, iste aliquet dis, etiam vehicula mauris minus rhoncus sodales, tellus leo ut occaecat vel quis semper. Volutpat volutpat commodo mauris diam justo parturient, pede at eu, bibendum id porttitor maecenas fermentum nascetur velit, vivamus suspendisse nibh aliquam ipsum libero. Donec dis, nascetur in porta, magna mollis consequat suspendisse quis, accumsan dictum habitasse vivamus arcu massa ullamco. </p>
+<hr>
+<p>Ornare eget tempor facilisis ut quis sagittis, pede sem in scelerisque sagittis justo amet, magnis nam vel vitae platea adipiscing, imperdiet hendrerit vel odio adipiscing pretium. Quam sed vitae est iaculis, semper torquent dictum, vel orci fusce sed. Quis auctor tortor vivamus auctor id, natoque posuere sed ut amet, sodales a est mauris scelerisque tristique dolor. Magna nisl posuere, et malesuada, magnis suscipit, consequat neque ornare.</p>',
+                                          'thefind:ts' => '0',
+                                          'ebay:fixed_qty' => '1',
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19759,
+                                          'mysimon:ts' => '1',
+                                          'pricegrabber:quantity' => '1',
+                                          'dijipop:ts' => '0',
+                                          'smarter:ts' => '0',
+                                          'amz:ts' => '0',
+                                          'zoovy:prod_thumb' => 'models/30754228_square',
+                                          'become:ts' => '0',
+                                          'zoovy:prod_is_tags' => 'IS_SALE',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_is' => '4096',
+                                          'pronto:ts' => '0',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539409',
+                                          'linkshare:ts' => '0',
+                                          'is:sale' => 1,
+                                          'zoovy:digest' => 'aZmkL/vIXO4zI0Iow3b2jQ',
+                                          'bing:ts' => '1',
+                                          'zoovy:prod_image1' => 'models/30754228',
+                                          'overstock:ts' => '0',
+                                          'zoovy:base_price' => '799.95',
+                                          'shopping:ts' => '1',
+                                          'zoovy:pogs' => '<pog id="AP" prompt="image select" inv="0" global="1" optional="0" type="imgselect" sog="AP-image_select" width="125" amz="" height="125" zoom="on" ghint="this is the group hint for the  image select list." img_type="sku_image">
+<option v="00" m="img=C/coffeemug_profile">options are great</option>
+<option v="01" m="p=+25.00|img=C/computer_case" html="I%20can%27t%20think%20of%20one%20reason%20I%20wouldn%27t%20want%20a%20ton%20of%20options">every product should have 100</option>
+<option v="02" m="w=+2|p=-5.00|img=9/9778979">yee haw</option>
+</pog>
+'
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1016,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL09'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL09',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL09'
+                                     },
+                          '_uuid' => 1017,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'pricegrabber:ts' => '1',
+                                          'zoovy:fl' => 'p-20060921',
+                                          'zoovy:prod_mfg' => 'LOG',
+                                          'ebay:storeqty' => '1',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'zoovy:prod_condition' => 'New',
+                                          'zoovy:prod_name' => 'consectetuer pulvinar  - price set to 0.00',
+                                          'nextag:ts' => '1',
+                                          'ebaystores:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Parturient turpis ut sapien, nec vivamus cras justo luctus sed risus, vitae aliquam. Pellentesque laoreet rhoncus massa, iste aliquet dis, etiam vehicula mauris minus rhoncus sodales, tellus leo ut occaecat vel quis semper. Volutpat volutpat commodo mauris diam justo parturient, pede at eu, bibendum id porttitor maecenas fermentum nascetur velit, vivamus suspendisse nibh aliquam ipsum libero. 
+
+
+
+
+
+
+Donec dis, nascetur in porta, magna mollis consequat suspendisse quis, accumsan dictum habitasse vivamus arcu massa ullamco. Ornare eget tempor facilisis ut quis sagittis, pede sem in scelerisque sagittis justo amet, magnis nam vel vitae platea adipiscing, imperdiet hendrerit vel odio adipiscing pretium. Quam sed vitae est iaculis, semper torquent dictum, vel orci fusce sed. Quis auctor tortor vivamus auctor id, natoque posuere sed ut amet, sodales a est mauris scelerisque tristique dolor. Magna nisl posuere, et malesuada, magnis suscipit, consequat neque ornare.',
+                                          'thefind:ts' => '0',
+                                          'ebay:fixed_qty' => '1',
+                                          'amz:catalog' => 'CLOTHING',
+                                          'db:id' => 19761,
+                                          'ebay:fixed_duration' => undef,
+                                          'mysimon:ts' => '1',
+                                          'is:shipfree' => 1,
+                                          'pricegrabber:quantity' => '1',
+                                          'dijipop:ts' => '0',
+                                          'smarter:ts' => '0',
+                                          'amz:ts' => '0',
+                                          'zoovy:prod_thumb' => 'models/8075518_square',
+                                          'become:ts' => '0',
+                                          'is:specialorder' => 1,
+                                          'zoovy:prod_is_tags' => 'IS_SPECIALORDER,IS_SALE,IS_SHIPFREE',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_is' => '13312',
+                                          'amz:fba' => '0',
+                                          'pronto:ts' => '0',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1309373963',
+                                          'linkshare:ts' => '0',
+                                          'is:sale' => 1,
+                                          'zoovy:digest' => 'qgFz3saA//HvJiWEvSFCnw',
+                                          'zoovy:prod_image1' => 'models/8075518',
+                                          'bing:ts' => '1',
+                                          'zoovy:prod_msrp' => '500.00',
+                                          'amz' => '0',
+                                          'overstock:ts' => '0',
+                                          'zoovy:base_price' => '0.00',
+                                          'shopping:ts' => '1',
+                                          'zoovy:pogs' => ''
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1018,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL10'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL10',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL10'
+                                     },
+                          '_uuid' => 1019,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:prod_thumb' => 'models/9778474_square',
+                                          'is:specialorder' => 1,
+                                          'zoovy:fl' => '~product_tester',
+                                          'is:fresh' => 1,
+                                          'zoovy:prod_is_tags' => 'IS_FRESH,IS_SPECIALORDER,IS_BESTSELLER,IS_SALE,IS_SHIPFREE',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'zoovy:prod_is' => '15361',
+                                          'zoovy:accessory_products' => 'MODEL09,',
+                                          'zoovy:prod_name' => 'Per integer pellentesque quam sem',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1310498640',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Quam consectetuer faucibus at platea neque ut, pellentesque litora. Nibh libero, ante dolor nam. Ullamcorper ultricies rhoncus dictum diam, aliquam hymenaeos eu, eu phasellus nec pulvinar. Nec at vel ad massa condimentum vitae. Donec ut, luctus sed integer fusce mi, vestibulum libero vitae lectus id eu, in bibendum debitis dignissim integer, faucibus sed lacus vel ipsum. Nec ipsum exercitation volutpat vivamus. Magnis et.
+
+
+
+
+
+
+
+
+
+
+
+
+Parturient turpis ut sapien, nec vivamus cras justo luctus sed risus, vitae aliquam. Pellentesque laoreet rhoncus massa, iste aliquet dis, etiam vehicula mauris minus rhoncus sodales, tellus leo ut occaecat vel quis semper. Volutpat volutpat commodo mauris diam justo parturient, pede at eu, bibendum id porttitor maecenas fermentum nascetur velit, vivamus suspendisse nibh aliquam ipsum.
+',
+                                          'zoovy:prod_asm' => 'MODEL09*2,MODEL08*2,MODEL07*3',
+                                          'is:sale' => 1,
+                                          'zoovy:prod_folder' => '',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 19762,
+                                          'zoovy:digest' => 'RlZKaXbyP74gN7R43h3/sQ',
+                                          'zoovy:prod_image1' => 'models/9778474',
+                                          'is:shipfree' => 1,
+                                          'zoovy:base_price' => '99.95',
+                                          'is:bestseller' => 1,
+                                          'amz:ts' => '0',
+                                          'zoovy:pogs' => '<pog id="AM" prompt="My Hidden option" inv="0" global="1" optional="0" type="hidden" sog="AM-my_hidden_option" maxlength="50" default="This is the default text for the hidden one" amz="" ghint=" asd fasdf as dfa sdf sd" fee_line="0.00" fee_word="5.00" fee_char="3.00">
+</pog>
+'
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1020,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL11'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL11',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL11'
+                                     },
+                          '_uuid' => 1021,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'zoovy:prod_is' => '0',
+                                          'zoovy:prod_name' => 'Non vulputate mauris ultrices id',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539403',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu malesuada nulla. Cras commodo, tortor in vehicula feugiat, arcu libero ultrices dolor, in aliquet est justo vitae tortor. Pellentesque vehicula nisl ut mauris aliquet bibendum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Quisque nec nulla sapien. Nullam vitae ultricies quam. Sed gravida lectus non nisl accumsan hendrerit. Aliquam blandit ullamcorper massa, id volutpat sapien sodales hendrerit. Nulla commodo eros non elit porttitor eget tincidunt mauris auctor. Ut tincidunt, turpis sit amet sollicitudin pulvinar, justo diam pretium lorem, vel sagittis eros odio a odio. Donec bibendum vehicula metus porttitor egestas. Nunc pharetra nulla nec libero porttitor ultricies. Pellentesque a orci tellus. Donec sem risus, pellentesque vel ornare eu, dignissim ut eros. Ut dignissim urna viverra ligula pellentesque accumsan. Curabitur sem urna, mollis ut interdum a, condimentum nec ipsum. Aliquam erat volutpat. Phasellus vulputate pulvinar nisi, non vulputate mauris ultrices id. Morbi mollis nulla ut mauris sollicitudin blandit. ',
+                                          'ebay:fixed_qty' => undef,
+                                          'zoovy:digest' => 'Em8QpJbExh04fd00smxiwA',
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 38327,
+                                          'zoovy:prod_image1' => '1/shutterstock_16226131.jpg',
+                                          'zoovy:base_price' => '565',
+                                          'amz:ts' => '0',
+                                          'zoovy:pogs' => ''
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1022,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL12'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL12',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL12'
+                                     },
+                          '_uuid' => 1023,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'zoovy:prod_is' => '0',
+                                          'zoovy:prod_name' => 'Non vulputate mauris ultrices id',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539407',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu malesuada nulla. Cras commodo, tortor in vehicula feugiat, arcu libero ultrices dolor, in aliquet est justo vitae tortor. Pellentesque vehicula nisl ut mauris aliquet bibendum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Quisque nec nulla sapien. Nullam vitae ultricies quam. Sed gravida lectus non nisl accumsan hendrerit. Aliquam blandit ullamcorper massa, id volutpat sapien sodales hendrerit. Nulla commodo eros non elit porttitor eget tincidunt mauris auctor. Ut tincidunt, turpis sit amet sollicitudin pulvinar, justo diam pretium lorem, vel sagittis eros odio a odio. Donec bibendum vehicula metus porttitor egestas. Nunc pharetra nulla nec libero porttitor ultricies. Pellentesque a orci tellus. Donec sem risus, pellentesque vel ornare eu, dignissim ut eros. Ut dignissim urna viverra ligula pellentesque accumsan. Curabitur sem urna, mollis ut interdum a, condimentum nec ipsum. Aliquam erat volutpat. Phasellus vulputate pulvinar nisi, non vulputate mauris ultrices id. Morbi mollis nulla ut mauris sollicitudin blandit. ',
+                                          'ebay:fixed_qty' => undef,
+                                          'zoovy:digest' => 'K4e+CC5WPgm3wPSg97MyMg',
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 38328,
+                                          'zoovy:prod_image1' => 'S/shutterstock_67397209.jpg',
+                                          'zoovy:base_price' => '54',
+                                          'amz:ts' => '0',
+                                          'zoovy:pogs' => ''
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_uuid' => 1024,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL13'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL13',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL13'
+                                     },
+                          '_uuid' => 1025,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'zoovy:prod_thumb' => '',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'zoovy:prod_is' => '0',
+                                          'zoovy:prod_name' => 'Non vulputate mauris ultrices id',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1306539406',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu malesuada nulla. Cras commodo, tortor in vehicula feugiat, arcu libero ultrices dolor, in aliquet est justo vitae tortor. Pellentesque vehicula nisl ut mauris aliquet bibendum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Quisque nec nulla sapien. Nullam vitae ultricies quam. Sed gravida lectus non nisl accumsan hendrerit. Aliquam blandit ullamcorper massa, id volutpat sapien sodales hendrerit. Nulla commodo eros non elit porttitor eget tincidunt mauris auctor. Ut tincidunt, turpis sit amet sollicitudin pulvinar, justo diam pretium lorem, vel sagittis eros odio a odio. Donec bibendum vehicula metus porttitor egestas. Nunc pharetra nulla nec libero porttitor ultricies. Pellentesque a orci tellus. Donec sem risus, pellentesque vel ornare eu, dignissim ut eros. Ut dignissim urna viverra ligula pellentesque accumsan. Curabitur sem urna, mollis ut interdum a, condimentum nec ipsum. Aliquam erat volutpat. Phasellus vulputate pulvinar nisi, non vulputate mauris ultrices id. Morbi mollis nulla ut mauris sollicitudin blandit. ',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 38329,
+                                          'zoovy:digest' => 'VIPCZBxyCGosYjZdXMgNig',
+                                          'zoovy:prod_image1' => 'K/shutterstock_67866511.jpg',
+                                          'zoovy:base_price' => '546',
+                                          'amz:ts' => '0',
+                                          'zoovy:pogs' => ''
+                                        },
+                          '%SKU' => {
+                                      'MODEL13' => {
+                                                   'zoovy:sku_pogdesc' => ''
+                                                 }
+                                    }
+                        },
+                        {
+                          '_uuid' => 1026,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [
+                                          {
+                                            'BLOG_URL' => '',
+                                            'CID' => '-1',
+                                            'ID' => '18018',
+                                            'PID' => 'MODEL14',
+                                            'LOCATION' => 'Springfield',
+                                            'SUBJECT' => 'This is barts first review',
+                                            'USEFUL_YES' => 0,
+                                            'CUSTOMER_NAME' => 'Bart Simpson',
+                                            'RATINGDECIMAL' => '4.5',
+                                            'USEFUL_NO' => 0,
+                                            'CREATED_GMT' => '1309967054',
+                                            'RATING' => '9',
+                                            'APPROVED_GMT' => '1309967109',
+                                            'USEFUL_SUM' => 0,
+                                            'MESSAGE' => 'sl consectetur elit, vitae faucibus nunc ante quis elit. Curabitur velit magna, condimentum et molestie at, placerat eget orci. Nullam fermentum ullamcorper tellus. Vestibulum ultrices varius sapien. Aenean laoreet erat a elit fringilla sit amet semper metus vulputate. Fusce laoreet volutpat pellentesque. Maecenas nunc eros, ultrices vitae varius vitae, ultricies nec ante. Quisque lorem elit, varius ac mollis euismod, rutrum sit amet nunc. Nullam facilisis malesuada dui, ac vehicula lacus aliquet ultrices. In sit amet hendrer'
+                                          }
+                                        ],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|MODEL14'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'MODEL14',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|MODEL14'
+                                     },
+                          '_uuid' => 1027,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'wishpot:ts' => '1',
+                                          'pricegrabber:ts' => '1',
+                                          'arp:ts' => '1',
+                                          'us6:ts' => '1',
+                                          'zoovy:prod_created_gmt' => '0',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'zoovy:prod_condition' => 'New',
+                                          'us2:ts' => '1',
+                                          'us5:ts' => '1',
+                                          'zoovy:prod_name' => 'Non vulputate mauris ultrices id',
+                                          'us1:ts' => '1',
+                                          'nextag:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu malesuada nulla. Cras commodo, tortor in vehicula feugiat, arcu libero ultrices dolor, in aliquet est justo vitae tortor. Pellentesque vehicula nisl ut mauris aliquet bibendum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Quisque nec nulla sapien. Nullam vitae ultricies quam. Sed gravida lectus non nisl accumsan hendrerit. Aliquam blandit ullamcorper massa, id volutpat sapien sodales hendrerit. Nulla commodo eros non elit porttitor eget tincidunt mauris auctor.
+
+[[model]]
+
+[[Linked phrase]:search=spork]
+
+[[visit a domain]:url=http://www.starwars.com]
+
+[[open a window]:popup=http://www.google.com]
+
+[[email us]:url=mailto:jt@zoovy.com]
+
+[[has dot no slash]:category=.subcategories.subcat_9]
+
+[[no dot no slash]:category=subcategories.subcat_9]
+
+[[has dot has slash]:category=.subcategories.subcat_9/]
+
+[[no dot has slash]:category=subcategories.subcat_9/]
+
+[[product]:product=OUTFIT]
+
+[[product with apostrophe de\'lally]:product=OUTFIT]
+
+[[customer phrase]:customer=login]
+
+[[my Account]:customer=]
+',
+                                          'hsn:ts' => '1',
+                                          'buysafe:ts' => '1',
+                                          'ebay:fixed_qty' => undef,
+                                          'amz:catalog' => 'APPAREL',
+                                          'db:id' => 38330,
+                                          'ebay:fixed_duration' => undef,
+                                          'ebay:title' => 'Non vulputate mauris ultrices id',
+                                          'amz:ts' => '0',
+                                          'ebay:ts' => '1',
+                                          'zoovy:prod_thumb' => '',
+                                          'cj:ts' => '1',
+                                          'zoovy:prod_detail' => ' Ut tincidunt, turpis sit amet sollicitudin pulvinar, justo diam pretium lorem, vel sagittis eros odio a odio. Donec bibendum vehicula metus porttitor egestas. Nunc pharetra nulla nec libero porttitor ultricies. Pellentesque a orci tellus. Donec sem risus, pellentesque vel ornare eu, dignissim ut eros. Ut dignissim urna viverra ligula pellentesque accumsan. Curabitur sem urna, mollis ut interdum a, condimentum nec ipsum. Aliquam erat volutpat. Phasellus vulputate pulvinar nisi, non vulputate mauris ultrices id. Morbi mollis nulla ut mauris sollicitudin blandit. ',
+                                          'ebay:digest' => 'rJ5N29tt8da7GK99HQHhLA',
+                                          'zoovy:prod_is_tags' => '',
+                                          'zoovy:inv_enable' => '1',
+                                          'us4:ts' => '1',
+                                          'zoovy:prod_is' => '0',
+                                          'amz:fba' => '0',
+                                          'veruta:ts' => '1',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1317332427',
+                                          'zoovy:digest' => 'bggJCRGKDdy1aFV6ryqAVw',
+                                          'zoovy:prod_image1' => 'W/shutterstock_64467820.jpg',
+                                          'bing:ts' => '1',
+                                          'amz' => '0',
+                                          'us3:ts' => '1',
+                                          'zoovy:base_price' => '10.00',
+                                          'zoovy:qty_price' => '2/5,3/7.50,4/10',
+                                          'zoovy:pogs' => '',
+                                          'shopping:ts' => '1'
+                                        },
+                          '%SKU' => {
+                                      'MODEL14' => {
+                                                   'zoovy:base_cost' => '',
+                                                   'amz:asin' => '',
+                                                   'zoovy:prod_mfgid' => '',
+                                                   'zoovy:prod_upc' => ''
+                                                 }
+                                    }
+                        },
+                        {
+                          '_uuid' => 1028,
+                          '_msgs' => 1,
+                          '_msg_1_id' => 0,
+                          '@reviews' => [],
+                          '_rcmd' => 'getReviews',
+                          '_rtag' => {
+                                       'datapointer' => 'getReviews|WIKITEST'
+                                     },
+                          '_msg_1_type' => 'success',
+                          '_msg_1_txt' => undef
+                        },
+                        {
+                          '_rcmd' => 'getProduct',
+                          'pid' => 'WIKITEST',
+                          '_rtag' => {
+                                       'callback' => 'getProdForList',
+                                       'datapointer' => 'getProduct|WIKITEST'
+                                     },
+                          '_uuid' => 1029,
+                          '%attribs' => {
+                                          'zoovy:profile' => 'DEFAULT',
+                                          'wishpot:ts' => '1',
+                                          'pricegrabber:ts' => '1',
+                                          'arp:ts' => '1',
+                                          'us6:ts' => '1',
+                                          'is:fresh' => 1,
+                                          'zoovy:prod_created_gmt' => '1315351821',
+                                          'zoovy:base_weight' => '',
+                                          'amzpa:ts' => '1',
+                                          'bizrate:ts' => '1',
+                                          'gbase:ts' => '1',
+                                          'us2:ts' => '1',
+                                          'us5:ts' => '1',
+                                          'zoovy:prod_name' => 'A good product for testing wiki on',
+                                          'us1:ts' => '1',
+                                          'nextag:ts' => '1',
+                                          'zoovy:prod_rev' => 3,
+                                          'zoovy:prod_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis felis elit. Nullam tempor adipiscing rutrum. Donec aliquet vulputate felis a pulvinar. Nunc sapien lorem, consequat in dictum et, sagittis ut velit. Vestibulum ornare, felis vitae fermentum pretium, orci turpis euismod diam, nec laoreet purus neque ut justo. 
+
+
+
+
+[[model]]
+
+[[Linked phrase]:search=spork]
+
+[[visit a domain]:url=http://www.starwars.com]
+
+[[open a window]:popup=http://www.google.com]
+
+[[email us]:url=mailto:jt@zoovy.com]
+
+[[has dot no slash]:category=.subcategories.subcat_9]
+
+[[no dot no slash]:category=subcategories.subcat_9]
+
+[[has dot has slash]:category=.subcategories.subcat_9/]
+
+[[no dot has slash]:category=subcategories.subcat_9/]
+
+[[product]:product=OUTFIT]
+
+[[product with apostrophe de\'lally]:product=OUTFIT]
+
+[[customer phrase]:customer=login]
+
+[[my Account]:customer=]
+
+
+=Header 1=
+==header 2==
+Vestibulum aliquet dignissim orci sit amet placerat. Quisque orci elit, porta eu accumsan tincidunt, rutrum varius sem. Phasellus sed lorem libero, quis facilisis neque. 
+===HEADER3===
+Vivamus tristique venenatis vestibulum. Curabitur feugiat elementum molestie. Fusce egestas leo sed nulla adipiscing commodo. Ut massa enim, rutrum et facilisis sed, mollis vitae justo.
+
+*Nam pulvinar commodo leo eget volutpat.
+*Pellentesque vel eros erat, eget hendrerit leo.
+*Morbi aliquam ante in nulla consectetur porttitor.
+*Ut nunc turpis, accumsan in dapibus eu.
+
+
+Oorper ac enim. Suspendisse tellus neque, vehicula at aliquet at, suscipit in risus. Curabitur consequat est vel mi faucibus eget egestas tortor suscipit. Sed in lectus sem. Curabitur enim urna, fermentum non venenatis id, adipiscing sit amet lacus. Aliquam erat volutpat. In feugiat arcu eget dui molestie vestibulum. 
+
+=wiki table to follow:==
+
+|=Heading A|=Heading B|=Heading C
+|1a|1b|1c
+|2a|2b|2c',
+                                          'hsn:ts' => '1',
+                                          'buysafe:ts' => '1',
+                                          'ebay:fixed_qty' => undef,
+                                          'ebay:fixed_duration' => undef,
+                                          'db:id' => 43839,
+                                          'amz:ts' => '0',
+                                          'ebay:ts' => '1',
+                                          'cj:ts' => '1',
+                                          'ebay:digest' => '4k6gKJ90LA7wWih1ZjTt7Q',
+                                          'zoovy:prod_is_tags' => 'IS_FRESH',
+                                          'us4:ts' => '1',
+                                          'zoovy:inv_enable' => '33',
+                                          'zoovy:prod_is' => '1',
+                                          'veruta:ts' => '1',
+                                          'zoovy:taxable' => '1',
+                                          'zoovy:prod_modified_gmt' => '1315352066',
+                                          'zoovy:digest' => 'iY/hdRZeR9l0a2+WWK1BUQ',
+                                          'bing:ts' => '1',
+                                          'us3:ts' => '1',
+                                          'zoovy:base_price' => '999.00',
+                                          'shopping:ts' => '1',
+                                          'zoovy:pkg_exclusive' => '0'
+                                        },
+                          '%SKU' => undef
+                        },
+                        {
+                          '_rcmd' => 'ping',
+                          '_rtag' => {
+                                       'datapointer' => 'getResults|model'
+                                     },
+                          '_uuid' => 1030,
+                          'pong' => 1
+                        }
+                      ]
+        };

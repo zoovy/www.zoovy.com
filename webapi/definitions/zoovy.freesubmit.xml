@@ -1,0 +1,58 @@
+<DEFINITION NAME="freesubmit">
+
+<DIV NAME="ALPHA" TITLE="Search Engine Submit">
+
+<BUTTON TYPE="NEXT" TARGET="OMEGA"></BUTTON>
+<META TYPE="TITLE">Search Engine Submit - Step 1/1</META>
+<META TYPE="DESCRIPTION">
+This tool will automatically register your website to many of the free submit search engines, 
+this is a great starting point to getting your website out on the Internet. The registration 
+will occur within 24 hours so if you have not already done so you should add Meta tags to your website.
+
+In addition to using this tool customers are encouraged to consider looking into using services 
+such as Overture or Google AdWord, Yahoo Priority Submission, and Looksmart in addition to using this tool. 
+
+By popular request this tool no longer saves information back to your store settings.
+</META>
+
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:website_url"  PROMPT="Your Website URL" COLS="45" LOADFROM=""></INPUT>
+<INPUT TYPE="TEXTAREA" rows="6" cols="60"  NAME="merchant:zoovy:business_description" PROMPT="Business Description"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:email" LOADFROM="merchant:zoovy:support_email,merchant:zoovy:email" PROMPT="Contact Email"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:company_name" PROMPT="Company Name" LOADFROM="merchant:zoovy:company_name" COLS="60"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:firstname" PROMPT="First Name" LOADFROM="merchant:zoovy:firstname" COLS="20"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:lastname" PROMPT="Last Name" LOADFROM="merchant:zoovy:lastname" COLS="20"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:address1" PROMPT="Street Address1" LOADFROM="merchant:zoovy:address1" COLS="60"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:address2" PROMPT="Street Address2" LOADFROM="merchant:zoovy:address2" COLS="60"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:city" PROMPT="City" LOADFROM="merchant:zoovy:city" COLS="25"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:state" PROMPT="State" LOADFROM="merchant:zoovy:state" COLS="2"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:zip" PROMPT="Zip"  LOADFROM="merchant:zoovy:zip" COLS="5"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:country" PROMPT="Country"  LOADFROM="merchant:zoovy:country" COLS="10"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:phone" PROMPT="Phone"  LOADFROM="merchant:zoovy:phone" COLS="15"></INPUT>
+<INPUT TYPE="TEXTBOX" NAME="channel:zoovy:facsimile" PROMPT="Facsimile"  LOADFROM="merchant:zoovy:facsimile" COLS="15"></INPUT>
+<INPUT TYPE="TEXTAREA" rows="3" cols="60" NAME="merchant:zoovy:keywords"  LOADFROM="" PROMPT="Please enter keywords separated by commas"></INPUT>		
+
+<BUTTON TYPE="PEER" TARGET="OMEGA" PROMPT="Review Settings"></BUTTON>
+
+</DIV>
+
+<DIV NAME="OMEGA" TITLE="Review">
+<BUTTON TYPE="LAST" PROMPT="Back to Edit Data"></BUTTON>
+<META TYPE="TITLE">Search Engine Submit - Review</META>
+<META TYPE="DESCRIPTION">Please review your settings.</META>
+
+<DISPLAY TYPE="LABEL">
+In the next 24 hours your business will be submitted to over 200 search engines. You will receive email 
+confirmations from several of them. Over the next few weeks those search engines will visit the website 
+listed below and catalog the pages. While your account is active Zoovy will automatically re-submit your 
+site once each month.
+</DISPLAY>
+	<INPUT TYPE="BLANK"></INPUT>
+	<DISPLAY TYPE="BYVALUE" NAME="channel:zoovy:company_name" PROMPT="Company Name" ERROR="Unknown??"></DISPLAY>
+	<DISPLAY TYPE="BYVALUE" NAME="channel:zoovy:website_url" PROMPT="Website URL" ERROR="website address not configured"></DISPLAY>
+	<DISPLAY TYPE="BYVALUE" NAME="channel:zoovy:keywords" PROMPT="Keywords" ERROR="Unknown??"></DISPLAY>
+
+<BUTTON TYPE="SUBMIT" PROMPT="Register Now!"></BUTTON>
+
+</DIV>
+
+</DEFINITION>

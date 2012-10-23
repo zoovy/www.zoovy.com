@@ -1,0 +1,93 @@
+<!-- SETUP_TAB -->
+<br>
+<center>
+<table width='600' border='0' cellpadding='1' cellspacing='0'><tr><td align='left'><strong>Custom Page Layouts</strong><br><span class="alert"><!-- MESSAGE --></span></td></tr></table><br>
+<!-- begin upload new-->
+<table width='600' border='0' cellpadding='1' cellspacing='0' class="table_stroke"><form action='index.cgi' method='POST' enctype='multipart/form-data'>
+<input type='hidden' name='ACTION' value='UPLOAD'><tr>
+		<Td class="table_top"><span class="header">Add New</span></td>
+	</tr>
+	<tr>
+		<td align="center"><table width='100%' border='0' cellpadding='5' border='0' cellspacing='0'><tr>
+			<td><b>File Type:</b><br>
+			<table>
+				<tr>
+					<td valign="top"><input type="radio" name="TYPE" value="wrapper"> Wrapper</td>
+					<td valign="top">Used to control the overall site look and appearance.</td>
+				<tr>
+					<td valign="top" nowrap><input type="radio" name="TYPE" value="layout"> Page Layout</td>
+					<td valign="top">Fits within the wrapper, this is the template which controls the page specific content.</td>
+				<tr>
+					<td valign="top"><input type="radio" name="TYPE" value="wizard"> Wizard</td>
+					<td valign="top">Used for creating the HTML in Auction or Marketplace listings.</td>
+				<tr>
+					<td valign="top"><input type="radio" name="TYPE" value="defintion"> Definition</td>
+					<td valign="top">Used to customize the data input fields for a particular marketplace.</td>
+				<tr>
+					<td valign="top"><input type="radio" name="TYPE" value="include"> Include File</td>
+					<td valign="top">Utility files which can be loaded from any other file type.</td>
+			</table>
+			</td>
+	</tr>
+	<tr>
+		<td align="center"><table width='100%' border='0' cellpadding='5' border='0' cellspacing='0'><tr>
+			<td align="right"><b>File:</b></td><td align="left"><input type='file' name='FILENAME'></td>
+	</tr>
+	<tr>
+			<td align="right"><b>Name:</b></td><td align="left"><input type='textbox' name='DOCID'></td>
+		</tr><tr>
+			<td align="right"><b>Thumbnail Image:</b></td>
+			<td align="left"><input type='file' name='IMGFILENAME'> (optional - GIF format)</td>
+		</tr>
+		</TABLE><input type='submit' value='  Upload  '></td>
+	</tr></form></table>
+<!-- end upload new-->
+
+<!-- begin existing layouts-->
+<br>
+<table width='600' border='0' cellpadding='1' cellspacing='0' class="table_stroke"><tr>
+	<Td class="table_top"><span class="header">Manage Existing</span></td>
+</tr><tr>
+	<td><table width='100%' border='0' cellpadding='5' border='0' cellspacing='0'><tr>
+		<td align="left"><!-- EXISTINGFLOWS --></td>
+	</tr></table></td>
+</tr></table>
+
+<!-- end existing layouts-->
+
+<!-- begin -->
+<br>
+<table width='600' border='0' cellpadding='1' cellspacing='0' class="table_stroke">
+<form action='index.cgi'><input type='hidden' name='ACTION' value='DOWNLOAD'><tr>
+	<Td class="table_top">
+	<span class="header">Existing File</span></td>
+</tr><tr>
+	<td>
+	
+	<b>Output Format:</b><br>
+	<input type="radio" name="format"> Strict XML - document is properly formatted XML, 
+	useful for loading into another software application or XML editor. <br>
+	HINT: More advanced documents (which contain multiple sub documents) may be easier to edit in this format.<br>
+	<input type="radio" name="format"> Loose HTML - a format designed for people who are editing the file in a
+	regular text editor such as notepad. Formats all fields which may need escaping in CDATA statements to make
+	them easier to maintain. (RECOMMENDED)<br>
+	<input type="radio" name="format"> HTML Plugin - a format designed for people who are using the dreamweaver 
+	plugin developed by Zoovy. All attributes are encoded as part of the <ELEMENT tag, which makes it harder to read
+	the source code, but is necessary for the plugin to interpret. When accessing the system via FTP this is the 
+	only format available.<br>
+	
+	<table width='100%' border='0' cellpadding='5' border='0' cellspacing='0'>
+	<tr>
+		<td>Layout Number: </td>
+		<td><select name='DOCID' style='font-size: 8pt; width: 400px;'><!-- ALLLAYOUTS --></select></td>
+		<td><input type='submit' value='  Download  '></td>
+	</tr>
+	</table>
+</td>
+</tr></form></table>
+
+<!-- end -->
+<a target="_top" href=".."><img border='0' border='0' src="/images/bizbuttons/exit.gif"></a>
+
+</center>
+</body>

@@ -1,0 +1,374 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+
+<table class="zoovytable" width=800>
+<tr>
+	<td class="zoovytableheader">Payment Methods</td>
+</tr>
+<tr>
+	<td>
+	<div class="box">Quick Links:</div>
+	<center><!-- HELP_LINKS --></center>
+	<br>
+	<span class="small">
+	<div class="class box">Useful Tips:</div>
+	<ul>
+	<li> Credit cards are the preferred method of payment online.
+	<li> Accepting only Offline methods such as check, wire transfers, etc. will reduce the number of potential buyers
+for your products.
+	<li> Many online shoppers prefer to use wallets such as Paypal, Google Checkout and Amazon Payments.
+	<li> To process credit cards online you will need both a merchant
+account, and a gateway. A merchant account is provided by a bank, or MSP
+(Merchant Service Provider), and a gateway connects your Merchant Account to
+the Internet. 
+	<li> Paypal provides three different types of service: 
+Express Checkout (Paypal Wallet + Credit Card processing),
+Paypal Website Payments (Credit Card Processing + Gateway),
+and Verisign/Paypal Payflow Pro (Gateway Only).
+	</ul>
+	</span>
+	</td>
+</tr>
+</table>
+
+<br>
+
+<table class="zoovytable" width=800>
+<tr>
+	<td class="zoovytableheader">Quickstart Wizard</td>
+</tr>
+<tr>
+	<td style="padding-top: 5px">
+
+<style type='text/css'>
+
+div.step1	{background:url(/biz/setup/payment/images/ppwiz_number1-37x36.png) no-repeat; padding:6px 0 10px 50px;}
+
+div.step2	{background:url(/biz/setup/payment/images/ppwiz_number2-37x36.png) no-repeat; padding:6px 0 10px 50px;}
+
+div.step3	{background:url(/biz/setup/payment/images/ppwiz_number3-37x36.png) no-repeat; padding:6px 0 10px 50px;}
+
+h2	{color:#ff3c00; font-size:16pt;}
+h3	{margin:0px; padding:5px; font-size:12pt;}
+h4	{margin:0px; padding:5px; color:#ffffff; font-size:12pt;}
+
+div.radio_container	{padding-top:5px;}
+</style>
+
+<script type='text/javascript'>
+<!--
+
+//any new div added that needs to appear or disappear should have the id added to the list below.
+var divIDs = new Array('ppandcc_info','cconly_info','final_ppwebstd','final_ppwebpro','final_qbms','final_authorizenet','final_payflowpro','final_linkpoint');
+
+
+function spew(showThese)	{
+	var ass = new Array;
+	// populate associative array (ass)
+	for(i=0; i < showThese.length; i++) {
+		ass[showThese[i]] = showThese[i];
+		}
+	// now go through and show the ones that look like ass
+	for(i=0; i < divIDs.length; i++)	{
+		var divId = divIDs[i];
+//		alert(divId);
+		if ($(divId) == undefined) {
+			alert("Cant find div: "+divId);
+			}
+		else if (ass[divId]) {
+			if ($(divId).style.display == 'block') {
+				// leave it alone!
+				// $(divId).style.display = 'block';
+				}
+			else {
+				new Effect.Appear(divId);
+				}
+			}
+		else {
+			$(divId).style.display =  'none';
+			}
+		}
+	}
+//-->
+</script>
+
+
+<form action='#' name='paypalWizardFrm' id='paypalWizardFrm' method='get'>
+<div align='center'>
+<div style='width:780px; text-align:left;'>
+
+<!-- step 1 -->
+
+<div class='step1' id='step1_content'>
+
+	<h2>Do you plan to offer:</h2>
+	
+	<div class='radio_container'><input type='radio' name='step1' id='step1_ppandcc' value='ppandcc' onClick="spew(['ppandcc_info']);" /><label for='step1_ppandcc'>Combined PayPal &amp; Credit Card Service</label> -
+<b><font color='pink'>******RECOMMENDED******</font></b></div>
+	
+	<div class='radio_container'><input type='radio' name='step1' id='step1_cconly' value='cconly'  onClick="spew(['cconly_info']);" /><label for='step1_cconly'>Credit Card Gateway</label>
+	<div style='padding-left:20px;' class='hint'> for PayPal PayFlowPro, Authorizenet, Card Service Linkpoint or QuickBooks Merchant Services  users (don't worry - this is still compatible with PayPal)</div></div>
+
+</div>
+
+
+
+<!-- step 2 - paypal AND credit cards -->
+<div id='ppandcc_info' style='display:none;' class='step2'>
+	<h2>Step 2: Which solution makes sense for you?</h2>
+
+<!-- paypal website payments standard -->
+<div style='float:left; border:1px solid #cccccc; width:345px; margin-right:10px;'>
+
+	<h3>PayPal Website Payments <em>Standard</em></h3>
+	<div style='background:url(/biz/setup/payment/images/ppwiz_orng2wht_horgrad-332x1.png) repeat-y left;'>
+	<h4>Easy to get started.<br>
+	No monthly fees</h4>
+	</div>
+
+	<div style='padding:5px;'>
+	<ul>
+	<li>Accept Visa, MC, Amex, Discover, Paypal and more at one low rate<br>
+	<li>Buyers enter credit card information on secure PayPal pages and
+immediately return to your site.  Your buyers <i>do not</i> need a PayPal
+account<br>
+	<li>Start selling as soon as you sign up<br>
+	<br>
+	<u>Pricing</u><br>
+	<li>No monthly fees<br>
+	<li>No setup or cancellation fees<br>
+	<li>Transaction fees: 1.9% - 2.9% + $0.30 USD (based on sales volume)<br>
+	</ul>
+	</div>
+	
+	<div align='center' style='margin:5px;'><a href="#" onClick="spew(['ppandcc_info','final_ppwebstd']); return false;"><img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a></div>
+	
+</div>
+	
+<!-- paypal website payments pro -->	
+<div style='float:left; border:1px solid #cccccc; width:345px;'>
+
+	<h3>PayPal Website Payments <em>Pro</em></h3>
+	<div style='background:url(/biz/setup/payment/images/ppwiz_orng2wht_horgrad-332x1.png) repeat-y left;'>
+	<h4>Easy to get started.<br>
+	No monthly fees</h4>
+	</div>
+
+	<div style='padding:5px;'>
+	<ul>
+	<li>Accept Visa, MC, Amex, Discover, PayPal and more at one low rate<br>
+	<li>Buyers enter credit card info directly on your site and <i>do not</i>
+need a PayPal account<br>
+	<li>Business credit application required to start selling, decision
+usually comes within 24 hours<br>
+	<li>Includes Virtual Terminal - accept payments for orders taken via
+phone, fax and mail<br>
+<br>
+<u>Pricing</u><br>
+	<li>$30 per month<br>
+	<li>No setup or cancellation fees<br>
+	<li>Transaction fees: 2.2% to 2.9% + $0.30 USD (based on sales
+volume)<br>
+	</ul>
+	</div>
+	
+	<div align='center' style='margin:5px;'><a href="#" onClick="spew(['ppandcc_info','final_ppwebpro']); return false;"><img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a></div>
+	
+</div>
+
+
+
+	
+<!--
+	<div style='clear:both; padding-top:3px;'>Don't see what you are looking for?  click here (LINK ME) for the full list of payment providers</div>
+-->
+
+</div>
+
+
+
+<!-- step 2 - credit cards only -->
+
+<div id='cconly_info' style='display:none;' class='step2'>
+	<h2>Step 2: Choose a Solution to accept credit cards:</h2>
+
+
+<!-- all in one solution -->	
+
+<div style='float:left; border:1px solid #cccccc; width:345px; padding:5px; margin-right:10px;'>
+
+	<div>I want an <strong>all-in-one payment solution</strong> that includes a payment gateway and an internet merchant account.</div>
+
+	<div id='payment_options'>
+
+
+<div>Choose your all-in-one solution:</div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='payments_standard' value='payments_standard' onClick="spew(['cconly_info','final_ppwebstd']);" /><label for='payments_standard'>PayPal Website Payments Standard</label></div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='payments_pro' value='payments_pro'  onClick="spew(['cconly_info','final_ppwebpro']);"/><label for='payments_pro'>PayPal Website Payments Pro</label></div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='payments_qbms' value='payments_qbms'  onClick="spew(['cconly_info','final_qbms']);"/><label for='payments_qbms'>QuickBooks Merchant Services</label></div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='payments_linkpoint' value='payments_linkpoint'  onClick="spew(['cconly_info','final_linkpoint']);"/><label for='payments_linkpoint'>LinkPoint</label></div>
+	
+	</div>
+
+</div>
+	
+	
+<!-- gateway only solution -->	
+	
+<div style='float:left; border:1px solid #cccccc; width:345px; padding:5px;'>
+
+	<div>I prefer a payment gateway that works with my <strong>existing internet merchant account</strong>.</div>
+
+
+	<div  id='gateway_options'>
+
+
+<div>Choose your gateway:</div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='gateway_payflowpro' value='payflowpro'  onClick="spew(['cconly_info','final_payflowpro']);" /><label for='gateway_payflowpro'>PayPal PayFlow Pro</label></div>
+
+<div class='radio_container'><input type='radio' name='payment_solution' id='gateway_authorizenet' value='authorizenet' onClick="spew(['cconly_info','final_authorizenet']);" /><label for='gateway_authorizenet'>Authorizenet</label></div>
+
+
+	</div>
+</div>
+
+
+	<div style='clear:both;'></div>
+
+</div>
+
+
+
+
+<!-- here follows the step 3's.  the div id clearly indicates which div is which.  i like cheese -->
+
+<div id='final_linkpoint' style='display:none' class='step3'>
+
+<h2>Step 3:  LinkPoint</h2>
+
+	<div align='center' style='margin:5px;'><a href="index.cgi?TAB=PROCESSOR&ACTION=LINKPOINT">
+	<img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a>
+	</div>
+
+</div>
+
+
+
+
+<div id='final_ppwebstd' style='display:none' class='step3'>
+
+<h2>Step 3:  PayPal Website Payments Standard</h2>
+
+<p>Now there's a fast, affordable way to start accepting credit cards and
+PayPal payments online.  Buyers pay by entering their credit card
+information on secure PayPal pages and promptly return to your site.  Your
+buyers <i>do not</i> need a PayPal account.  Start selling immediately -- you
+don't need to go through a lengthy approval process or pay any setup or
+monthly fees.</p>
+
+	
+<div align='center' style='margin:5px;'>
+<a href="/biz/setup/payment/index.cgi?TAB=PAYPALEC">
+<img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a>
+</div>
+
+
+</div>
+
+
+
+
+<div id='final_ppwebpro' style='display:none' class='step3'>
+
+<h2>Step 3:  PayPal Website Payments Pro</h2>
+
+<p>PayPal Website Payments Pro is a proven, all-in-one solution to accept
+credit cards and PayPal at one low rate.  Buyers can enter their credit card
+numbers directly on your site.  Pro also includes Virtual Terminal to
+accept payments for orders taken via phone.</p>
+
+<p>To sign up for PayPal Website Payments Pro please click the link below:
+<br>
+<br>
+<a target="_blank" href="https://registration.paypal.com/welcomePage.do?bundleCode=C3&country=US&partner=PayPal&pal=VJF2DVU4WFP8L">https://registration.paypal.com/welcomePage.do?bundleCode=C3&country=US&partner=PayPal&pal=VJF2DVU4WFP8L</a> 
+	<div align='center' style='margin:5px;'><a href="index.cgi?TAB=PROCESSOR&ACTION=PAYPALWP"><img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a></div>
+</p>
+
+</div>
+
+
+<div id='final_qbms' style='display:none' class='step3'>
+
+<h2>Step 3:  QuickBooks Merchant Services</h2>
+
+<p>
+	<div align='center' style='margin:5px;'><a href="index.cgi?TAB=PROCESSOR&ACTION=QBMS">
+	<img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a>
+	</div>
+</p>
+
+</div>
+
+
+
+<div id='final_authorizenet' style='display:none' class='step3'>
+<h2>Step 3:  Authorizenet</h2>
+
+<p>Authorize.net is compatible with a majority of merchant processors.</p>
+
+	<div align='center' style='margin:5px;'><a href="index.cgi?TAB=PROCESSOR&ACTION=AUTHORIZENET">
+	<img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a>
+	</div>
+
+</div>
+
+
+
+<div id='final_payflowpro' style='display:none' class='step3'>
+
+<h2>Step 3:  PayPal PayFlowPro</h2>
+
+<p>Payflow Pro, a market-leading payment gateway, connects your online store
+to your existing internet merchant account.  It enables your business
+to:<li><b>Accept credit cards, debit cards,</b> more.  Plus accept PayPal too
+(U.S. only).
+<li><b>Optimize the customer experience</b> by letting shoppers complete the
+checkout process without leaving your website.
+<li><b>Stay secure</b> with access to one of the most powerful
+risk-management systems.<br>
+<br>
+<p>To sign up for PayPal PayFlow Pro please click the link below:
+<br>
+<a target="_blank" href="https://registration.paypal.com/welcomePage.do?producttype=C2&country=US">https://registration.paypal.com/welcomePage.do?producttype=C2&country=US</a>
+</p>
+
+	<div align='center' style='margin:5px;'><a href="index.cgi?TAB=PROCESSOR&ACTION=VERISIGN">
+	<img src='/biz/setup/payment/images/ppwiz_btn_select-92x24.png' width='92' height='24' alt='select' border='0'></a>
+	</div>
+
+</div>
+
+
+
+
+
+</div>
+</div>
+</form>
+</td>
+</tr>
+</table>
+
+
+
+
+
+</center>
+<!-- FOOTER -->

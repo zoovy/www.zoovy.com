@@ -1,0 +1,488 @@
+% my $menu = 'register';
+
+<&| /includes/header/index.html, title => 'Zoovy - Create Account', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<br>
+<br>
+
+
+<%perl>
+
+use strict;
+use Data::GUID;
+use CGI;
+use ZTOOLKIT;
+use DBINFO;
+
+## create a persistant handle
+my $q = new CGI;
+my $zdbh = &DBINFO::db_zoovy_connect();
+
+#my $PACKAGE = $q->param('PACKAGE');
+#if ($PACKAGE eq '') { $PACKAGE = 'ONE'; }
+## Source Tracking, pass source= or set cookie ZOOVY_LEAD
+## see /httpd/htdocs/track.cgi for more info on how the ZOOVY_LEAD cookie is formatted
+##
+my $SOURCE = undef;
+if (not defined $SOURCE) { $SOURCE = $q->cookie('ZOOVY_LEAD'); }
+#if (lc($SOURCE) eq 'msol') {
+#	$PACKAGE = 'MSOL';
+#	}	
+#if ( (not defined $SOURCE) && (defined $q->cookie('ZOOVY_AFFILIATE')) ) { 
+#	$SOURCE = "WEB|".$q->cookie('ZOOVY_AFFILIATE');  ## the ZOOVY_AFFILIATE cookie predated the ZOOVY_LEAD so we reformat it.
+#	} 
+#if (not defined $SOURCE) { 
+#	$SOURCE = $q->param('ZOOVY_LEAD'); 
+#	}
+#if ($SOURCE eq '||') { $SOURCE = undef; }
+#if (not defined $SOURCE) { 
+#	$SOURCE = $q->param('source'); 
+#	}
+#if ((not defined $SOURCE) || ($SOURCE eq '')) {
+#	$SOURCE = $q->param('refer');
+#	}
+
+if (not defined $SOURCE) { 
+	## UWEB - undefined web.  That way if blank is set elsewhere from 
+	$SOURCE = 'UWEB'; 
+	}  
+		
+## some other lead source, we at least know this came in from the web.
+my ($src,$opid,$meta) = split(/\|/,$SOURCE,3); 
+
+my $VERB = $q->param('VERB');
+$VERB =~ s/[^A-Z\-]+//g;
+
+
+my $leadid = -1;
+my $uuid = &ZTOOLKIT::xssdeclaw($q->param('uuid'));
+if ($uuid ne '') { 
+	$uuid = Data::GUID->as_string(); 
+	}
+else {
+	my $pstmt = "select ID from LEADS where SUGARGUID=".$zdbh->quote($uuid);
+	($leadid) = $zdbh->selectrow_array($pstmt);
+	}
+
+my $firstname = &ZTOOLKIT::xssdeclaw($q->param('firstname'));
+my $lastname = &ZTOOLKIT::xssdeclaw($q->param('lastname'));
+my $phone = &ZTOOLKIT::xssdeclaw($q->param('phone'));
+my $email = &ZTOOLKIT::xssdeclaw($q->param('email'));
+my $url = &ZTOOLKIT::xssdeclaw($q->param('url')); 
+my $domain = &ZTOOLKIT::xssdeclaw($q->param('domain'));
+
+my $company = $q->param('company');
+if ($company eq '') { $company = $q->param('domain'); }
+$company =~ s/^http\:\/\///g;
+$company =~ s/[\<\>\"\']+//gs;
+
+
+
+
+## VERB stages are 
+##		'' or INIT	
+##		INIT-RETRY (shows errors)
+##		VERIFY
+##		CREATE
+##		SUCCESS
+
+
+my @errors = ();
+
+if ($VERB eq 'SAVE') { 
+	 if (!defined($phone)) { $VERB = ''; }
+ 	 if ($firstname =~ /[\d]+/) { push @errors, "Sorry, numbers are not allowed in your first name"; }
+ 	 elsif ($lastname =~ /[\d]+/) { push @errors, "Sorry, numbers are not allowed in your last name"; }
+	 elsif ($phone =~ /^0/) {
+		push @errors, "Sorry, Zoovy does not provide services for non US Businesses at this time.";
+		}
+	 elsif ( 
+		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/) || 
+		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/) || 
+		($phone =~ /^[1]+$/) || ($phone =~ /^[2]+$/) || ($phone =~ /^[3]+$/)) {
+		push @errors, "Wow! Thats a pretty amazing phone number, are you sure it's correct? (Try again)";
+		}
+	 elsif ($phone =~ /5551212$/) {
+		push @errors, "Please supply a valid phone number.";
+		}
+ 	elsif (not &ZTOOLKIT::validate_phone($phone,'')) {
+		push @errors, "Phone number missing or invalid.";
+ 		}
+	 if ($firstname eq '' || $lastname eq '') {
+		push @errors, "Please supply a first and last name.";
+		} 
+	 if ($email eq '') {
+		push @errors, 'Please supply a valid email address.';
+		} 
+ 	elsif (!&ZTOOLKIT::validate_email($email)) {
+		push @errors, 'Email address appears invalid. Please try again.';
+		} 
+ 	else {
+		# email okay
+		}
+	
+	if (scalar(@errors)>0) { 
+		$VERB = 'TRYAGAIN'; 
+		}
+	
+	if ($VERB eq 'SAVE') {
+		require SITE;
+		my ($whatis) = &SITE::whatis($ENV{'REMOTE_ADDR'},$ENV{'HTTP_USER_AGENT'},$ENV{'SERVER_NAME'},$ENV{'REQUEST_URI'});
+		if (($whatis eq 'SCAN') || ($whatis eq 'BOT')) {
+			$VERB = 'SORRY';
+			}
+		}
+
+	if ($VERB eq 'SAVE') {
+		$VERB = 'CREATE';
+		}
+ 	}
+
+
+
+if ($VERB eq 'SORRY') {
+</%perl>
+	Sorry, but we've identified you as a bot or security scanner so we can't create a trial for you.
+	If you believe you've received this message in error please contact our sales department at 877-966-8948.
+<%perl>
+	}
+
+
+
+if ($VERB eq 'CREATE') {
+	# only reached if @errors is empty
+
+	if (not defined $opid) { $opid = 'NONE'; }
+	if (not defined $src) { $src = 'WEB'; }
+	if (not defined $firstname) { $firstname = ''; }
+	if (not defined $lastname) { $lastname = ''; }
+	if (not defined $meta) { $meta = ''; }
+	if (not defined $phone) { $phone = ''; }
+	if (not defined $url) { $url = ''; }
+	if (not defined $email) { $email = ''; }
+	my $ipaddress = $ENV{'REMOTE_ADDR'};
+
+	my $pstmt = DBINFO::insert($zdbh,'LEADS',{ 
+		SUGARGUID=>$uuid,
+ 		SRC=>$src,OPERATORID=>$opid,CREATED=>&ZTOOLKIT::mysql_from_unixtime(time()),
+ 		COMPANY_NAME=>$company,CONTACT_FIRSTNAME=>$firstname,CONTACT_LASTNAME=>$lastname,
+ 		META=>$meta,
+		IPADDRESS=>$ipaddress,
+		PHONE_NUMBER=>$phone,WEBSITE=>$url,EMAIL=>$email},debug=>2);
+
+	print STDERR $pstmt."\n";
+
+	if ($pstmt ne '') {
+		$zdbh->do($pstmt);
+		}
+
+  	my ($leadid) = &DBINFO::last_insert_id($zdbh);
+	if ($leadid == 0) {
+		push @errors, "internal database error - support has been notified";
+		&ZOOVY::confess("","error trying to create lead",justkidding=>1);
+		}
+
+  
+  $VERB = 'CREATE';
+  }
+	
+ 	
+
+
+if (($VERB eq 'CREATE') || ($VERB eq 'CREATE-TYPE')) {
+	##
+	## ACTUALLY CREATE A USER AND LET THEM LOGIN
+	##
+	
+	## some fool told msol accounts they could have an extra 4 days.
+	## my $DAYS = ($::SRC eq 'MSOL')?14:14;
+	my $DAYS = -1;
+
+	# print STDERR "LEADID'=>$leadid,'PACKAGE'=>$PACKAGE,'DURATION'=>$DAYS\n";
+	
+	require ZSETUP;
+	my ($result) = &ZSETUP::createuser('LEADID'=>$leadid,'PACKAGE'=>'ANYONE','DURATION'=>$DAYS);
+
+	my $USERNAME = $result->{'USERNAME'};
+
+	my $ZJSID = '';
+	if (defined $result->{'@errors'}) {
+		print join("<li> ERROR: ",@{$result->{'@errors'}});
+		print "<hr>";
+		}
+	else {
+		require AUTH;
+		my ($TOKEN) = &AUTH::create_session($USERNAME,'ADMIN',$ENV{'REMOTE_ADDR'},'');
+		($ZJSID,my $ERROR) = &AUTH::authorize_session($USERNAME,'ADMIN',$TOKEN,0);
+		}	
+
+</%perl>
+Your account has been created and an email has been sent with the auto-generated password. 
+Simply the link below to login!<br>
+<br>
+<table>
+	<tr>
+		<td><b>UUID:</b></td>
+		<td><b><% $uuid %></b></td>
+	</tr>
+	<tr>
+		<td><b>LEAD:</b></td>
+		<td><b><% $leadid %></b></td>
+	</tr>
+	<tr>
+		<td><b>Username:</b></td>
+		<td><b><% $USERNAME %></b></td>
+	</tr>
+	<tr>
+		<td><b>Password:</b></td>
+		<td><b><% ($result->{'PASSWORD'} eq '')?'**Check your Email**':$result->{'PASSWORD'} %></b></td>
+	</tr>
+</table>
+<i>Please write down this information.</i><br>
+<br>
+
+<a href="http://www.zoovy.com/biz/index.cgi?zjsid=<% $ZJSID %>">
+<b>Click Here to Login</b>
+</a>
+
+<br>
+<br>
+
+<%perl>
+
+	my $pstmt = "update LEADS set PROCESSED_GMT=0,ASSIGN_MID=".int($result->{'ASSIGN_MID'}).",ASSIGN_USERNAME=".$zdbh->quote($result->{'USERNAME'}).",PHONE_VERIFIED=1 where ID=".int($leadid);
+	$zdbh->do($pstmt);
+
+	}
+
+
+
+
+ 	
+if ($VERB eq 'GOTO-CALL') {
+</%perl>
+	
+<h1>Regrettably, we need to verify you're actually human before we can let you access pricing, 
+and start setting up your store.</h1><br>
+
+<h2>Approach #1: Automated Phone Verification</h2>
+<p>Our automated system will call you within about 30 seconds, available 24/7/365.</p>
+<form action="/register/index.html">
+<input type="hidden" name="VERB" value="CALLME">
+<input type="hidden" name="leadid" value="<% $leadid %>">
+Phone: <input size="13" type="textbox" name="phone" value="<% $phone %>"><br>
+<input type="submit" value=" Phone Verify: Call Me ">
+</form>
+
+<br>
+<br>
+<h2>Approach #2: Talk to a Live Person</h2>
+<p>You can call toll free right now: 877.966.8948 and ask for the verification pin.</p>
+<br>
+
+<!-- Google Code for lead Conversion Page -->
+<script language="JavaScript" type="text/javascript">
+<!--
+var google_conversion_id = 1072354289;
+var google_conversion_language = "en_US";
+var google_conversion_format = "1";
+var google_conversion_color = "FFFFFF";
+if (1) {
+	var google_conversion_value = 1;
+	}
+var google_conversion_label = "lead";
+//-->
+</script>
+<script language="JavaScript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<img height=1 width=1 border=0 src="//www.googleadservices.com/pagead/conversion/1072354289/imp.gif?value=1&label=lead&script=0">
+</noscript>
+
+
+<%perl>
+ 	}
+
+if (($VERB eq '') || ($VERB eq 'TRYAGAIN')) {
+
+</%perl>
+
+<!-- <p>
+<b>To instantly access the system and view online pricing: </b> 
+please register to receive instant access, with  
+% ## msol accounts get 14 days instead of 10
+% print (($::SRC eq 'MSOL')?14:14);
+-days of complimentary access to assist in your evaluation. 
+No credit card or billing information will be requested during this registration process.
+</p>
+-->
+
+<table width='100%'>
+<tr>
+
+	<td>
+<h1>Make Selling Online Easy!</h1>
+<h2>Zoovy is an Easy to Manage All-in-One e-Commerce Solution</h2>
+
+<table cellspacing='0' cellpadding='0'>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/marketing-65x65.png' width='65' height='65' alt='marketing services' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Marketplaces</h3>
+Zoovy has well established partnerships with Amazon, Buy.com & eBay.  Increase
+exposure while automating product listings and tracking.
+	
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/comparison-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Comparison Shopping</h3>
+Create & Manage feeds easily from one central location.  Nextag, Shopping.com,
+Amazon Product Ads
+
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/inventory-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Inventory Management</h3>
+Real-time inventory that tracks across multiple sales channels. Control product
+behavior on website based on inventory configuration.
+
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/orderprocess-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Order Processing</h3>
+All from one easy to use interface: capture funds, update orders and customer
+information.  Enabled fraud protection
+
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/shipping-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Integrated Shipping</h3>
+Avoid shipping mistakes with automatic data transfer ensuring accuracy.  No
+more copying and pasting order information to shipping labels!
+Major carriers FedEx, UPS, and USPS built in. 
+
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/multiplestores-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Multiple Stores</h3>
+Create specialized, niche sites, for better targeting and increased sales. 
+Manage multiple webstores all from one interface.
+
+	</td>
+</tr>
+<tr>
+	<td><div style='margin:0 25px 25px 0;'><img src='images/accounting-65x65.png' width='65' height='65' alt='Comparison shopping' /></div></td>
+	<td valign='top'>
+<h3 style='margin:0px;'>Accounting</h3>
+Integration with popular accounting and billing software, such as Quickbooks,
+makes your billing process easier, faster, and more accurate.
+
+	</td>
+</tr>
+</table>
+
+
+	</td>
+
+	<td valign='top' width='1%'>
+	<div style='margin-left:20px;'>
+
+
+	
+	
+<form action="/register/index.html">
+<input type="hidden" name="VERB" value="SAVE" />
+
+<div style='width:234px; background:url(images/try_before_you_buy_bg-234x1.gif) repeat-y;'>
+
+	<div><img src='images/try_before_you_buy_head-234x125.gif' width='234' height='125' alt='try before you buy - no credit card required' /></div>
+	
+	<div>
+<table align='center' cellspacing='0' cellpadding='2'>
+<tr>
+	<td colspan='2' class='small' style='padding-bottom:8px;'>please register to receive instant access</td>
+</tr>
+<tr>
+	<td colspan='2'  style='border-top:1px solid #cccccc;'><img src='/images/blank.gif' width='1' height='1' alt='' /></td>
+</tr>
+<tr>
+	<td class='small' colspan='2'>
+
+<%perl>
+	if (scalar(@errors)>0) {
+		print "<font color='red'><b>Some required information was missing:</b></font><br>"; 
+		foreach my $err (@errors) { print "<li> <font color='red'>$err</font></li>"; }
+	   }
+	else{
+	}	
+</%perl>
+
+	</td>
+</tr>
+<tr>
+	<td class='small'><span style='color:#b15f07;'>*</span>First Name</td>
+	<td><input type="text" value="<% $firstname %>" name="firstname" class="formed" /></td>
+</tr>
+<tr>
+	<td class='small'><span style='color:#b15f07;'>*</span>Last Name</td>
+	<td><input type="text" value="<% $lastname %>" name="lastname" class="formed" /></td>
+</tr>
+<tr>
+	<td class='small'><span style='color:#b15f07;'>*</span>Email:</td>
+	<td><input type="text" value="<% $email %>" name="email" class="formed" /></td>
+</tr>
+<tr>
+	<td class='small'><span style='color:#b15f07;'>*</span>Phone #:</td>
+	<td><input type="text" value="<% $phone %>" name="phone" class="formed" /></td>
+</tr>
+<tr>
+	<td class='small'>Company:</td>
+	<td><input type="text" value="<% $company %>" name="company" class="formed" /></td>
+</tr>
+<tr>
+	<td class='small'>URL/Domain:</td>
+	<td><input type="text" value="<% $url %>" name="url" class="formed" /></td>
+</tr>
+<tr>
+	<td colspan='2' align='right'><input type="image" src="images/start_free_trial_bluebutton-159x26.gif" style='margin-top:5px;' /></td>
+</tr>
+</table>
+	</div>
+	<div><img src='images/try_before_you_buy_foot-234x18.gif' width='234' height='18' alt='' /></div>
+</div>
+</form>
+<br />
+<p>If you have any questions or require assistance during your evaluation
+please call us toll free at <strong>1.877.966.8948 ext. 2</strong>
+</p>
+
+	</div>
+</td>
+
+</tr>
+</table>
+
+<br />
+
+<%perl>
+	}
+&DBINFO::db_zoovy_close();
+
+print "VERB: $VERB";
+</%perl>
+
+
+<&| /includes/footer/index.html, menu => $menu &></&>
+
+<!-- end of page -->

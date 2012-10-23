@@ -1,0 +1,599 @@
+#!/usr/bin/perl -w
+
+# use strict;
+use strict;
+use lib "/httpd/modules";
+require GTOOLS;
+require ZOOVY;
+require ZTOOLKIT;
+require DBINFO;
+require ORDER::BATCH;
+require ORDER;
+use Date::Calc;
+
+&ZOOVY::init();
+&GTOOLS::init();
+
+&DBINFO::db_zoovy_connect();
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_O&2');
+if ($USERNAME eq '') { exit; }
+if (!$USERNAME) { exit; }
+
+my $CMD = uc($ZOOVY::cgiv->{'CMD'});
+
+if ($CMD eq '') { $CMD = 'RECENT'; }
+$GTOOLS::TAG{'<!-- CMD -->'} = $CMD;
+
+my ($orderset,$statusref,$createdref,$resultar);
+
+my $startts = time()-(86400*180);
+
+if ($CMD eq 'RECENT')
+   {
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Recent';	
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   my ($orderset,$statusref,$createdref,$resultar) = &ORDER::BATCH::list_orders($USERNAME, "RECENT",0,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   }
+elsif ($CMD eq 'PENDING')
+   {
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Pending';
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+ 	($orderset,$statusref, $createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME, "PENDING",0,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   }
+elsif ($CMD eq 'APPROVED')
+   {
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Approved';
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   ($orderset,$statusref, $createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME, "APPROVED",0,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   }
+elsif ($CMD eq 'PROCESS')
+   {
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Process';
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   ($orderset,$statusref, $createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME, "PROCESS",0,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   }
+elsif ($CMD eq 'COMPLETED')
+	{
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Completed';
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   ($orderset,$statusref, $createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME, "COMPLETED",$startts,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+	# $buffer = '<b>due to system load - this feature has been disabled</b>'; 
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+	$GTOOLS::TAG{'<!-- MESSAGE -->'} = '<i>Note: orders will only appear in this list for 180 days after being last modified/synced - please search by order # to bring up orders beyond that time.</i>';
+	if ($count==5000) { 	
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = '<font color="red">Maximum order count of 5,000 reached. Please use search to find specific orders.</font>';
+		}
+   }
+elsif ($CMD eq 'CANCELLED')
+	{
+	$GTOOLS::TAG{'<!-- AREA -->'} = 'Cancelled';
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   ($orderset,$statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME, "CANCELED",$startts,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   $GTOOLS::TAG{'<!-- MESSAGE -->'} = '<i>Note: orders will only appear in this list for 180 days after being last modified/synced - please search by order # to bring up orders beyond that time.</i>';
+	if ($count==5000) { 	
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = '<font color="red">Maximum order count of 5,000 reached. Please use search to find specific orders.</font>';
+		}
+   } 
+elsif ($CMD eq 'BACKORDER')
+   {
+   $GTOOLS::TAG{'<!-- AREA -->'} = 'Backordered';
+   $GTOOLS::TAG{'<!-- NEXT -->'} = '';
+   ($orderset,$statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,$CMD,0,5000);
+   my ($buffer, $total, $count) = &render_orders($USERNAME,$orderset,0,$createdref,$CMD,$resultar);
+   $GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+   $GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+   if ($count==5000) {
+      $GTOOLS::TAG{'<!-- MESSAGE -->'} = '<font color="red">Maximum order count of 5,000 reached. Please use search to find specific orders.</font>';
+      }
+   }
+elsif ($CMD eq 'SEARCH')
+	{
+	$GTOOLS::TAG{'<!-- NEXT -->'} = '';
+	my $find_text = $ZOOVY::cgiv->{'find_text'};
+	my %resultset = ();
+	my %searchset = ();
+
+	$find_text =~ s/^[ ]+//gs; 	# strip leading spaces
+	$find_text =~ s/[ ]+$//gs; 	# strip trailing spaces
+
+
+	# check if they just searched for an order, if so then just do a quick lookup
+	if ($find_text =~ /\d{4}-\d{2}-\d+$/) {
+		# fake a resultset
+		$find_text =~ s/[^\d\-]//g;		# strip out whitespace, etc.
+		my ($o, $error) = ORDER->new($USERNAME, $find_text);
+		if (defined $o) {
+			$resultset{$find_text} = 1;
+			$createdref->{$find_text} = $o->get_attrib('created');
+			$statusref->{$find_text} = $o->get_attrib('pool');
+			}
+		}
+	elsif (&ZTOOLKIT::validate_email($find_text)) {
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,'',0,0,'ORDER_BILL_EMAIL',$find_text);
+		&search_orders($find_text,\%resultset,$orderset);
+		}
+	elsif ($ZOOVY::cgiv->{'find_status'} eq 'GOOGLECHECKOUT') {
+		require ZPAY::GOOGLE;
+		my ($USERNAME,$ORDERID) = &ZPAY::GOOGLE::resolve_orderid($find_text);
+
+		if (defined $ORDERID) {
+			$resultset{$ORDERID}++;
+			}
+		}
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "ANY")  {
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,'');
+		&search_orders($find_text,\%resultset,$orderset);
+  	 	} 
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "RECENT") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"RECENT");
+		&search_orders($find_text,\%resultset,$orderset); 
+		}
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "PENDING") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"PENDING");
+		&search_orders($find_text,\%resultset,$orderset); 
+		} 
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "CANCELED") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"CANCELED");
+		&search_orders($find_text,\%resultset,$orderset); 
+		} 
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "PROCESS") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"PROCESS");
+		&search_orders($find_text,\%resultset,$orderset); 
+		} 
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "APPROVED") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"APPROVED");
+		&search_orders($find_text,\%resultset,$orderset); 
+		} 
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "COMPLETED") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"COMPLETED");
+		&search_orders($find_text,\%resultset,$orderset); 
+		}   
+	elsif ($ZOOVY::cgiv->{'find_status'} eq "BACKORDER") { 
+		($orderset, $statusref,$createdref, $resultar) = &ORDER::BATCH::list_orders($USERNAME,"BACKORDER");
+		&search_orders($find_text,\%resultset,$orderset); 
+		}   
+
+	my ($buffer, $total, $count) = &render_orders_old($USERNAME,\%resultset,1,$createdref,$CMD,$statusref);
+	$GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%.2f",$total);
+	$GTOOLS::TAG{'<!-- ORDER_TABLE -->'} = $buffer;
+   $GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $count;
+
+   # OVERRIDE
+   $GTOOLS::TAG{'<!-- AREA -->'} = "Searching for \"$find_text\" in ".$ZOOVY::cgiv->{'find_status'};
+	}
+
+my $template_file = "main.shtml";
+&GTOOLS::output(file=>$template_file,header=>1);
+
+&DBINFO::db_zoovy_close();
+
+exit;
+
+
+sub search_orders
+{
+	my ($text, $resultref, $orderset) = @_;
+
+	if ($text eq "") { return; }
+
+	my $month = $ZOOVY::cgiv->{'find_month'};
+	if ($month ne '') { $month = '-'.$month.'-'; }
+#	print STDERR "MONTH is: $month\n";
+
+	foreach my $order (keys %{$orderset}) {
+		
+		next unless ((!$month) || (index($order,$month)>=0));
+
+		if ($order eq $text) { 
+			# if we match the order id, then don't bother loading the order.
+			${$resultref}{$order} = '';
+			}
+		else {
+			my ($o, $error) = ORDER->new($USERNAME, $order);
+			if (defined $o) {
+				my $ref = $o->get_attribs();
+				foreach my $k (keys %{$ref}) {
+					if ($ref->{$k} =~ /$text/i) { ${$resultref}{$order} = ""; }
+					}
+		
+				$ref = $o->stuff->make_contents();
+				foreach my $k (keys %{$ref}) {
+					if ($k =~ /$text/i) { ${$resultref}{$order} = ""; }
+					elsif ($ref->{$k} =~ /$text/i) { ${$resultref}{$order} = ""; }
+					}
+				}	# end if $error
+			}
+		}
+}
+
+
+
+sub render_orders {
+
+#mysql> desc ORDER_POOLS_S;
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+#| Field                | Type                                                                                          | Null | Key | Default | Extra          |
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+#| ID                   | int(11) unsigned                                                                              | NO   | PRI | NULL    | auto_increment |
+#| MERCHANT             | varchar(20)                                                                                   | NO   | MUL | NULL    |                |
+#| MID                  | int(11) unsigned                                                                              | NO   | MUL | 0       |                |
+#| ORDERID              | varchar(20)                                                                                   | NO   |     | NULL    |                |
+#| BS_SETTLEMENT        | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| CREATED_GMT          | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| MODIFIED_GMT         | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| CUSTOMER             | int(11) unsigned                                                                              | NO   |     | 0       |                |
+#| POOL                 | enum('RECENT','PENDING','APPROVED','PROCESS','COMPLETED','DELETED','BACKORDER','PREORDER','') | NO   |     | NULL    |                |
+#| ORDER_BILL_NAME      | varchar(30)                                                                                   | NO   |     | NULL    |                |
+#| ORDER_BILL_EMAIL     | varchar(30)                                                                                   | NO   |     | NULL    |                |
+#| ORDER_BILL_ZONE      | varchar(9)                                                                                    | NO   |     | NULL    |                |
+#| ORDER_PAYMENT_STATUS | char(3)                                                                                       | NO   |     | NULL    |                |
+#| ORDER_PAYMENT_METHOD | varchar(4)                                                                                    | NO   |     | NULL    |                |
+#| ORDER_TOTAL          | decimal(10,2)                                                                                 | NO   |     | 0.00    |                |
+#| ORDER_SPECIAL        | varchar(40)                                                                                   | NO   |     | NULL    |                |
+#| MKT                  | int(10) unsigned                                                                              | YES  |     | 0       |                |
+#| ITEMS                | tinyint(3) unsigned                                                                           | NO   |     | 0       |                |
+#| PAID_GMT             | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| PAID_TXN             | varchar(12)                                                                                   | NO   |     | NULL    |                |
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+#20 rows in set (0.02 sec)
+  my ($USERNAME, $ORDER_PTR, $IS_SEARCH, $CREATEDREF, $CMD, $RESULTAR) = @_;
+  my $c = "";
+
+	my %ORDERS = ();
+
+
+	my $BGCOLOR = "CCCCCC";
+	$c .= "<table width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"0\"><tr>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"#\" onClick=\"toggleAll();\"><img border=\"0\" width=\"18\" height=\"18\" src=\"images/green_check.gif\"></a></td>"; 
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ID');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>ID</a></font></td>";
+	if ($IS_SEARCH) { 
+		$c .= "<td bgcolor=\"$BGCOLOR\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>STATUS</font></td>"; 
+		}
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ORDER_BILL_NAME');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Customer</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ORDER_SHIP_ZONE');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Ship Dest</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ORDER_TOTAL');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Amount</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ORDER_PAYMENT_STATUS');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Pay Status</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ORDER_PAYMENT_METHOD');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Payment Type</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('CREATED_GMT');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Created</a></font></a></td>";
+	$c .= "</tr>";
+
+	my $ORDERIDS = $ZOOVY::cgiv->{'ORDERIDS'};
+	if (not defined $ORDERIDS) { $ORDERIDS = ''; }
+
+	# Now figure out which !@#$% key we need to sort by
+	my $SORTBY = uc($ZOOVY::cgiv->{'SORTBY'});
+	#if (!defined($SORTBY) || $SORTBY eq '') { $SORTBY = 'ID'; } 
+	if (!defined($SORTBY) || $SORTBY eq '') { $SORTBY = 'CREATED_GMT'; } 
+	## SORTBY can be ORDER_BILL_NAME ORDER_SHIP_ZONE etc.
+
+	## in order to sort, we need to read in all the appropriate orders
+	my %sortthis = ();
+	my $count = 0;
+
+	foreach my $ref (@{$RESULTAR}) {
+		my $id = $ref->{'ORDERID'};
+		next if ($id eq '');	## how bizarre .. sometimes orders are blank
+		$count++;
+		$ORDERS{$id} = $ref;
+
+		if ($SORTBY eq 'ID') {
+			$sortthis{$id} = $id; 
+			$sortthis{$id} =~ s/-//g;
+			} 
+		else {
+			$sortthis{$id} = $ref->{$SORTBY};
+			} 
+		}
+
+	## At this point $sortthis has the sort value in the 
+	my $counter = 0;
+	my $order_sum = 0;
+	my $class = '';
+	my ($checked);
+
+	my $style = 'alphabetically';
+	if ($SORTBY eq 'ID' || $SORTBY eq 'CREATED_GMT' || $SORTBY eq 'ORDER_TOTAL') {
+		$style = 'numerically';
+		}
+
+	my @ids = ZTOOLKIT::value_sort(\%sortthis,$style);
+	if (($SORTBY eq 'ID') || ($SORTBY eq 'CREATED_GMT') || ($SORTBY eq 'ORDER_TOTAL')) {
+		## numnerical sorts always go up down
+		@ids = reverse @ids;
+		}
+
+	foreach my $id (@ids) {
+		if ($counter++ % 2) { $class = "item_on"; } else { $class="item_off"; }
+		my $ref = $ORDERS{$id};
+
+#mysql> desc ORDER_POOLS_G;
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+#| Field                | Type                                                                                          | Null | Key | Default | Extra          |
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+#| ID                   | int(11) unsigned                                                                              | NO   | PRI | NULL    | auto_increment |
+#| MERCHANT             | varchar(20)                                                                                   | NO   | MUL | NULL    |                |
+#| MID                  | int(11) unsigned                                                                              | NO   | MUL | 0       |                |
+#| ORDERID              | varchar(20)                                                                                   | NO   |     | NULL    |                |
+#| BS_SETTLEMENT        | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| CREATED_GMT          | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| MODIFIED_GMT         | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| CUSTOMER             | int(11) unsigned                                                                              | NO   |     | 0       |                |
+#| POOL                 | enum('RECENT','PENDING','APPROVED','PROCESS','COMPLETED','DELETED','BACKORDER','PREORDER','') | NO   |     | NULL    |                |
+#| ORDER_BILL_NAME      | varchar(30)                                                                                   | NO   |     | NULL    |                |
+#| ORDER_BILL_EMAIL     | varchar(30)                                                                                   | NO   |     | NULL    |                |
+#| ORDER_BILL_ZONE      | varchar(9)                                                                                    | NO   |     | NULL    |                |
+#| ORDER_PAYMENT_STATUS | char(3)                                                                                       | NO   |     | NULL    |                |
+#| ORDER_PAYMENT_METHOD | varchar(4)                                                                                    | NO   |     | NULL    |                |
+#| ORDER_TOTAL          | decimal(10,2)                                                                                 | NO   |     | 0.00    |                |
+#| ORDER_SPECIAL        | varchar(40)                                                                                   | NO   |     | NULL    |                |
+#| MKT                  | int(10) unsigned                                                                              | YES  |     | 0       |                |
+#| ITEMS                | tinyint(3) unsigned                                                                           | NO   |     | 0       |                |
+#| PAID_GMT             | int(10) unsigned                                                                              | NO   |     | 0       |                |
+#| PAID_TXN             | varchar(12)                                                                                   | NO   |     | NULL    |                |
+#+----------------------+-----------------------------------------------------------------------------------------------+------+-----+---------+----------------+
+    my $order_total = $ref->{'ORDER_TOTAL'};
+
+    if (!defined($order_total)) { $order_total = 0; }
+    $order_total = &ZOOVY::incode($order_total);
+
+	# $id = quotemeta($id);
+	my $qtID = quotemeta($id);
+	if ($ORDERIDS =~ /$qtID,/) { $checked='checked'; } else { $checked = ''; }
+	my $customer_dest = '';
+
+	if (not defined $ref->{'ORDER_SHIP_ZONE'}) {
+		$ref->{'ORDER_SHIP_ZONE'} = '';
+		}
+
+	$ref->{'ship_country'} = substr($ref->{'ORDER_SHIP_ZONE'},0,2);
+	if (not defined $ref->{'ship_country'}) { $ref->{'ship_country'} = ''; }
+
+	if ($ref->{'ship_country'} eq 'US') {
+		$ref->{'ship_state'} = substr($ref->{'ORDER_SHIP_ZONE'},2,2); 
+		if (length($ref->{'ORDER_SHIP_ZONE'})==9) {
+			$ref->{'ship_zip'} = substr($ref->{'ORDER_SHIP_ZONE'},4);		## get rid of USCA (Country/State)
+			}
+		if (not defined $ref->{'ship_country'}) { $ref->{'ship_country'} = ''; }
+		if (not defined $ref->{'ship_state'}) { $ref->{'ship_state'} = ''; }
+		if (not defined $ref->{'ship_zip'}) { $ref->{'ship_zip'} = ''; }
+
+		$customer_dest = &ZOOVY::incode($ref->{'ship_country'}.", ".$ref->{'ship_state'}." ".$ref->{'ship_zip'})." ";
+		} 
+	else {
+		if (not defined $ref->{'ship_city'})    { $ref->{'ship_city'} = ''; }
+		if (not defined $ref->{'ship_state'})   { $ref->{'ship_state'} = ''; }
+		if (not defined $ref->{'ship_int_zip'}) { $ref->{'ship_int_zip'} = ''; }
+		$ref->{'ORDER_SHIP_ZONE'} = substr($ref->{'ORDER_SHIP_ZONE'},0,2).' '.substr($ref->{'ORDER_SHIP_ZONE'},2);
+		$customer_dest = &ZOOVY::incode($ref->{'ORDER_SHIP_ZONE'});
+		}
+
+	if ($ref->{'ORDER_PAYMENT_METHOD'} eq 'CRED') { $ref->{'ORDER_PAYMENT_METHOD'} = 'CREDIT'; }
+	elsif ($ref->{'ORDER_PAYMENT_METHOD'} eq 'GOOG') { $ref->{'ORDER_PAYMENT_METHOD'} = 'GOOGLE'; }
+	elsif ($ref->{'ORDER_PAYMENT_METHOD'} eq 'PAYP') { $ref->{'ORDER_PAYMENT_METHOD'} = 'PAYPAL'; }
+	elsif ($ref->{'ORDER_PAYMENT_METHOD'} eq 'PPEC') { $ref->{'ORDER_PAYMENT_METHOD'} = 'PAYPAL-EC'; }
+	elsif ($ref->{'ORDER_PAYMENT_METHOD'} eq 'AMAZ') { 
+		$ref->{'ORDER_PAYMENT_METHOD'} = 'AMAZON'; 
+		# $customer_dest = 'n/a';
+		}
+		
+	$c .= "<tr class=\"$class\">";
+	$c .= "<td><input type=\"checkbox\" $checked name=\"order-$id\"></td>"; 
+	$c .= "<td><a target=\"body\" href=\"view.cgi?ID=$id\">$id</a></td>";
+ 	if ($IS_SEARCH) { $c .= "<td>$ref->{'POOL'}</td>"; }
+	if (not defined $ref->{'ORDER_BILL_NAME'}) { $ref->{'ORDER_BILL_NAME'} = ''; }
+	$c .= "<td>".$ref->{'ORDER_BILL_NAME'}."&nbsp;</td>";
+#	$c .= "<td>".Dumper($ref)."</td>";
+	$c .= "<td>$customer_dest&nbsp;</td>";
+	$c .= "<td>".sprintf("%.2f",$order_total);
+	$order_sum += $order_total;
+	$c .= "</td>";
+	
+	my $status = $ref->{'ORDER_PAYMENT_STATUS'};
+	if (not defined $status) { $status = 100; }
+
+	# if it's a new payment status
+	# if (length($status)==3) { $status = substr($status,0,1); } 
+
+	if (substr("$status",0,1) eq '0') { $status = '<font color="3377FF"><b>PAID</b></font>'; }
+	elsif (substr("$status",0,1) eq '1') { $status = '<font color="444444">Pending</font>'; }
+	elsif (substr("$status",0,1) eq '2') { $status = '<font color="red">Denied</font>'; }
+	elsif (substr("$status",0,1) eq '3') { $status = 'Cancelled ['.$status.']'; }
+	elsif (substr("$status",0,1) eq '4') { $status = '<font color="red">Review</font>'; }
+	elsif (substr("$status",0,1) eq '5') { $status = '<font color="red">Processing</font>'; }
+	else { $status = 'Error'; }
+
+	$c .= "<td>$status &nbsp;</td>";
+   if (not defined $ref->{'ORDER_PAYMENT_METHOD'}) { $ref->{'ORDER_PAYMENT_METHOD'} = ''; }
+	$c .= "<td>$ref->{'ORDER_PAYMENT_METHOD'}&nbsp;</td>";
+	$c .= "<td>".&ZTOOLKIT::pretty_date($ref->{'CREATED_GMT'})."</td>";
+ 	$c .= "</tr>";
+ 	}
+  $c .= "</table>";
+
+  return($c,$order_sum,$count);	
+
+	}
+
+
+
+sub render_orders_old {
+  my ($USERNAME, $ORDER_PTR, $IS_SEARCH, $CREATEDREF, $CMD,$STATUS_REF, $RESULTHASH) = @_;
+  my $c = "";
+  my %ORDER = ();
+
+	my $BGCOLOR = "CCCCCC";
+	$c .= "<table width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"0\"><tr>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"#\" onClick=\"toggleAll();\"><img border=\"0\" width=\"18\" height=\"18\" src=\"images/green_check.gif\"></a></td>"; 
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ID');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>ID</a></font></td>";
+	if ($IS_SEARCH) { $c .= "<td bgcolor=\"$BGCOLOR\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>STATUS</font></td>"; }
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ship_fullname');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Customer</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('ship_state');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Destination</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('order_total');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Amount</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('payment_status');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Pay Status</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('payment_method');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Payment Type</a></font></td>";
+	$c .= "<td bgcolor=\"$BGCOLOR\"><a href=\"javascript:sortBy('CREATED');\"><font size=\"2\" face=\"Arial\" color=\"000000\"><b>Created</a></font></a></td>";
+	$c .= "</tr>";
+
+	my $ORDERIDS = $ZOOVY::cgiv->{'ORDERIDS'};
+	if (not defined $ORDERIDS) { $ORDERIDS = ''; }
+	study($ORDERIDS);
+
+	# Now figure out which !@#$% key we need to sort by
+	my $SORTBY = lc($ZOOVY::cgiv->{'SORTBY'});
+	if (!defined($SORTBY) || $SORTBY eq '') { $SORTBY = 'id'; } 
+
+## in order to sort, we need to read in all the appropriate orders
+my %ORDERS = ();
+my %sortthis = ();
+my $count = 0;
+foreach my $id (keys %{$ORDER_PTR}) {
+	my $ref = undef;
+	next if ($id eq '');	## how bizarre .. sometimes orders are blank
+
+	my ($o) = ORDER->new($USERNAME,$id);
+	next if (not defined $o);
+
+	$ref = $o->get_attribs();
+	$count++;
+
+	if (not defined $ref->{'ship_firstname'}) { $ref->{'ship_firstname'} = ''}
+	if (not defined $ref->{'ship_lastname'})  { $ref->{'ship_lastname'} = ''}
+	my $customer_name = &ZOOVY::incode(ucfirst($ref->{'ship_firstname'}).' '.ucfirst($ref->{'ship_lastname'}));
+	if ($customer_name eq ' ') { $customer_name = &ZOOVY::incode($ref->{'ship_fullname'}); }
+	$ref->{'ship_fullname'} = $customer_name;
+
+	if (not defined $ref->{'ship_state'}) { $ref->{'ship_state'} = ''; }
+	$ref->{'ship_state'} = uc($ref->{'ship_state'});
+
+	$ORDERS{$id} = $ref;
+
+	if ($SORTBY ne 'id' && $SORTBY ne 'created') {
+		$sortthis{$id} = $ref->{$SORTBY};
+		} 
+	elsif ($SORTBY eq 'id') {
+		$sortthis{$id} = $id; 
+		$sortthis{$id} =~ s/-//g;
+		} 
+	elsif ($SORTBY eq 'created') {
+		$sortthis{$id} = $CREATEDREF->{$id};
+		}
+
+	}
+## At this point $sortthis has the sort value in the 
+
+my $counter = 0;
+my $order_sum = 0;
+my $class = '';
+my ($checked);
+
+if (not defined $SORTBY) { $SORTBY = ''; }
+
+my $style = 'alphabetically';
+if ($SORTBY eq 'id' || $SORTBY eq 'created' || $SORTBY eq 'order_total') {
+	$style = 'numerically';
+	}
+
+my @ids = ZTOOLKIT::value_sort(\%sortthis,$style);
+
+if ($SORTBY eq 'id' || $SORTBY eq 'created' || $SORTBY eq 'order_total') {
+	@ids = reverse @ids;
+	}
+
+foreach my $id (@ids) {
+	if ($counter++ % 2) { $class = "item_on"; } else { $class="item_off"; }
+
+	my $ref = $ORDERS{$id};
+
+    my $order_total = $ref->{'order_total'};
+
+    if (!defined($order_total)) { $order_total = 0; }
+    $order_total = &ZOOVY::incode($order_total);
+
+	# $id = quotemeta($id);
+	my $qtID = quotemeta($id);
+	if ($ORDERIDS =~ /$qtID,/) { $checked='checked'; } else { $checked = ''; }
+	my $customer_dest = '';
+	
+	if (not defined $ref->{'ship_country'}) { $ref->{'ship_country'} = ''; }
+	if ($ref->{'ship_country'} eq 'USA') { $ref->{'ship_country'} = ''; }
+	if ($ref->{'ship_country'} eq 'United States') { $ref->{'ship_country'} = ''; }
+
+	if ($ref->{'ship_country'} eq '')
+		{
+		if (not defined $ref->{'ship_city'})    { $ref->{'ship_city'} = ''; }
+		if (not defined $ref->{'ship_state'})   { $ref->{'ship_state'} = ''; }
+		if (not defined $ref->{'ship_zip'}) { $ref->{'ship_zip'} = ''; }
+		$customer_dest = &ZOOVY::incode($ref->{'ship_city'}.", ".$ref->{'ship_state'}." ".$ref->{'ship_zip'})." ";
+		} else {
+		if (not defined $ref->{'ship_city'})    { $ref->{'ship_city'} = ''; }
+		if (not defined $ref->{'ship_state'})   { $ref->{'ship_state'} = ''; }
+		if (not defined $ref->{'ship_int_zip'}) { $ref->{'ship_int_zip'} = ''; }
+
+#		print STDERR &ZOOVY::incode($ref->{'ship_city'}.", ".$ref->{'ship_state'}." ".$ref->{'ship_int_zip'})." ".$ref->{'ship_country'}."\n";
+		$customer_dest = &ZOOVY::incode($ref->{'ship_city'}.", ".$ref->{'ship_state'}." ".$ref->{'ship_int_zip'})." ".$ref->{'ship_country'};
+		}
+		
+
+		$c .= "<tr class=\"$class\">";
+		$c .= "<td><input type=\"checkbox\" $checked name=\"order-$id\"></td>"; 
+		$c .= "<td><a target=\"body\" href=\"view.cgi?ID=$id\">$id</a></td>";
+ 		if ($IS_SEARCH) { $c .= "<td>$STATUS_REF->{$id}</td>"; }
+		if (not defined $ref->{'ship_fullname'}) { $ref->{'ship_fullname'} = ''; }
+		$c .= "<td>".$ref->{'ship_fullname'}."&nbsp;</td>";
+		$c .= "<td>$customer_dest&nbsp;</td>";
+		$c .= "<td>".sprintf("%.2f",$order_total);
+		$order_sum += $order_total;
+		$c .= "</td>";
+	
+	my $status = $ref->{'payment_status'};
+	if (not defined $status) { $status = 100; }
+
+	# if it's a new payment status
+	# if (length($status)==3) { $status = substr($status,0,1); } 
+
+	if (substr("$status",0,1) eq '0') { $status = '<font color="3377FF"><b>PAID</b></font>'; }
+	elsif (substr("$status",0,1) eq '1') { $status = '<font color="444444">Pending</font>'; }
+	elsif (substr("$status",0,1) eq '2') { $status = '<font color="red">Denied</font>'; }
+	elsif (substr("$status",0,1) eq '3') { $status = 'Cancelled ['.$status.']'; }
+	elsif (substr("$status",0,1) eq '4') { $status = '<font color="red">Review</font>'; }
+	elsif (substr("$status",0,1) eq '5') { $status = '<font color="red">Processing</font>'; }
+	else { $status = 'Error'; }
+
+	$c .= "<td>$status &nbsp;</td>";
+        if (not defined $ref->{'payment_method'}) { $ref->{'payment_method'} = ''; }
+	$c .= "<td>$ref->{'payment_method'}&nbsp;</td>";
+	$c .= "<td>".&ZTOOLKIT::pretty_date($CREATEDREF->{$id})."</td>";
+ 	$c .= "</tr>";
+ 	}
+  $c .= "</table>";
+
+  return($c,$order_sum,$count);	
+}
+
+
+
+	

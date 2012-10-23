@@ -1,0 +1,156 @@
+<!-- SETUP_TAB -->
+<center>
+<!-- MYTODO -->
+<!-- MESSAGE -->
+</center>
+
+<br>
+<form name="myfrm" onsubmit="validate()" action="index.cgi" method="POST">
+<input type="hidden" name="TAB" value="PAYPALEC-SAVE">
+
+<center>
+<table class="zoovytable" width="800">
+<tr>
+	<td class="zoovytableheader">
+	Paypal Website Payments Standard / Express Checkout<br>
+	</td>
+</tr>
+<tr>
+	<td>
+
+
+<div class="box">SETUP INSTRUCTIONS</div>
+Setup instructions:
+<a target="_webdoc" href="http://www.zoovy.com/webdoc/index.cgi?VERB=DOC&DOCID=50910">Webdoc 50910: Paypal Express Checkout Setup</a><br>
+<br>
+<br>
+<div class="box">PROCESSING CONFIGURATION</div>
+
+<table>
+<tr>
+	<td valign="top">Capture Funds:</td>
+	<td valign="top">
+		<select name="cc_instant_capture" style="font-size: 12px; font-family: arial, helvetica">
+		<option value=""></option>
+		<option <!-- CC_INSTANT_CAPTURE_ALWAYS_SELECTED --> value="ALWAYS">Instant Capture (authorization and transfer of funds occurs at time of checkout)</option>
+		<option <!-- CC_INSTANT_CAPTURE_NEVER_SELECTED -->  value="NEVER">Delayed Capture (only authorization occurs at checkout, funds transferred later by merchant)</option>
+		<option <!-- CC_INSTANT_CAPTURE_NOAUTH_DELAY_SELECTED --> value="NOAUTH_DELAY">No Authorization (store in wallet then process later)</option>
+		</select>
+		<div class="hint">
+		WARNING: capture funds setting is a "store setting", and is shared between paypal and credit card processing configurations.
+		NO AUTHORIZATION settings will behave like "Delayed Capture" for Paypal EC transactions regardless of setting above.
+		</div>
+	</td>
+</tr>
+<tr>
+	<td valign="top">Confirmed Address:</td>
+	<td valign="top">
+		<select name="paypal_api_reqconfirmship" style="font-size: 12px; font-family: arial, helvetica">
+		<option <!-- PAYPAL_API_REQCONFIRMSHIP_0 --> value="0"> Optional</option>
+		<option <!-- PAYPAL_API_REQCONFIRMSHIP_1 -->  value="1"> Required</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td valign="top">Use Callbacks:</td>
+	<td valign="top">
+		<select name="paypal_api_callbacks" style="font-size: 12px; font-family: arial, helvetica">
+		<option <!-- PAYPAL_API_CALLBACKS_0 --> value="0"> Disabled</option>
+		<option <!-- PAYPAL_API_CALLBACKS_1 --> value="1"> Enabled (RECOMMENDED)</option>
+		</select>
+		<div class="hint">Callbacks are still experimental, you can enable them but they will onl work for beta/sandbox users.</div>
+	</td>
+</tr>
+<tr>
+	<td valign=top>Paypal Email:</td>
+	<td valign=top>
+		<input type="textbox" name="paypal_email" value="<!-- PAYPAL_EMAIL -->">
+	</td>
+</tr>
+<tr>
+	<td>Environment:</td>
+	<td>
+	<select name="paypal_api_env">
+		<option></option>
+		<option <!-- PAYPAL_API_ENV_2 --> value="2">LIVE (PRODUCTION)</option>
+		<option <!-- PAYPAL_API_ENV_0 --> value="0">DISABLE</option>
+		<option <!-- PAYPAL_API_ENV_1 --> value="1">TEST (PUBLIC SANDBOX)</option>
+		<option <!-- PAYPAL_API_ENV_3 --> value="3">BETA (BETA SANDBOX)</option>
+	</select>
+	</td>
+</tr>
+</table>
+
+<center>
+<input type="submit" value=" Save " class="button showLoadingModal"
+</center>
+
+<br>
+<div class="box">*OPTIONAL CONFIGURATION* Paypal First-Party Processing Configuration</div>
+<div class="warning">
+This is *NOT* a necessary step, and is not necessary or recommended on most accounts.
+</div>
+<div class="hint">
+Paypal offers two different methods of authentication for api requests.
+<ul>
+<li> 1st party: where you create your own unique credentials
+<li> 3rd party: where you give paypal_api1.zoovy.com access to your account (recommended, easier)
+</ul>
+** IF YOU HAVE ALREADY GRANTED API ACCESS TO paypal_api1.zoovy.com ON PAYPAL.COM THEN LEAVE ALL
+THE FIELDS BELOW EMPTY OR THE CONFIGURATION WILL NOT WORK.
+</div>
+
+<table>
+<tr>
+	<td>Paypal API Username:</td>
+	<td width=99%>
+		<input type="textbox" name="paypal_api_user" value="<!-- PAYPAL_API_USER -->">
+	</td>
+</tr>
+<tr>
+	<td>Paypal API Password:</td>
+	<td>
+		<input type="textbox" name="paypal_api_pass" value="<!-- PAYPAL_API_PASS -->">
+	</td>
+</tr>
+<tr>
+	<td>Paypal API Signature:</td>
+	<td>
+		<input type="textbox" name="paypal_api_sig" value="<!-- PAYPAL_API_SIG -->">
+	</td>
+</tr>
+</table>
+REMEMBER: API Username, Password, Signature should be EMPTY
+if you have given proper access to paypal_api1.zoovy.com.  For more
+information review webdoc 50910.
+
+
+<input type="hidden" name="pay_credit" value="15">
+<input type="hidden" name="cc_type_visa" value="checked">
+<input type="hidden" name="cc_type_amex" value="checked">
+<input type="hidden" name="cc_type_mc" value="checked">
+<input type="hidden" name="cc_type_novus" value="checked">
+<input type="hidden" name="VISA_TRANSFEE" value="0">
+<input type="hidden" name="VISA_DISCRATE" value="0">
+<input type="hidden" name="MC_TRANSFEE" value="0">
+<input type="hidden" name="MC_DISCRATE" value="0">
+<input type="hidden" name="AMEX_TRANSFEE" value="0">
+<input type="hidden" name="AMEX_DISCRATE" value="0">
+<input type="hidden" name="NOVUS_TRANSFEE" value="0">
+<input type="hidden" name="NOVUS_DISCRATE" value="0">
+<input type="hidden" name="cc_avs_require" value="NONE">
+<input type="hidden" name="cc_avs_fail_code" value="402">
+<input type="hidden" name="cc_cvvcid" value="0">
+<input type="hidden" name="cc_report_voice_fail" value="ALWAYS">
+<input type="hidden" name="cc_voice_fail_code" value="202">
+
+
+<br>
+
+	</td>
+</tr>
+</table>
+</form>
+
+
+<!-- FOOTER -->

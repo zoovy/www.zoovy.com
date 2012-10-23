@@ -1,0 +1,31 @@
+[% IF error %]
+<p>[% error %]</p>
+<p>You still can continue with <a href="/biz/ebay/catchooser2008/index.cgi/describe_item?id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>
+[% ELSE %]
+  <p>Choose item similar to one you are selling to get prefilled attributes form:</p>
+  [% counter = 1 %]
+  [% FOREACH product = products -%]
+    <div class="found-item">
+      <div class="counter">[% counter %].</div>
+      <div class="item-details">
+      <img class="stock-photo" src="[% product.stock_photo_url or '/biz/ebay/catchooser2008/images/no_image.png' %]">
+      [% FOREACH key = product.characteristics.keys -%]
+        [% key %] - [% product.characteristics.$key or 'UNKNOWN' %]<br/>
+      [% END -%]
+      [% IF product.details_url -%]
+        <a href="[% product.details_url %]" target="_blank" onClick="popupWin = window.open(this.href, 'Item Details', 'scrollbars,location,width=600,height=500,top=0'); popupWin.focus(); return false;">Product Details</a><br/>
+      [% END -%]
+        <br/>
+      </div>
+      <form method="POST" action="/biz/ebay/catchooser2008/index.cgi/get_product_selling_pages">
+        <input type="hidden" name="product_id" value="[% product.id %]" />
+        <input type="hidden" name="attribute_set_id" value="[% attribute_set_id %]" />
+        <input type="hidden" name="id" value="[% selected_category.id %]" />
+        <input type="submit" value="Sell" />
+      </form>
+    </div>
+    <hr>
+  [% counter = counter + 1 %]
+  [% END -%]
+  <p>Or simply continue with <a class="describe" href="/biz/ebay/catchooser2008/index.cgi/describe_item?id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>
+[% END %]

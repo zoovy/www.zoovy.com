@@ -1,0 +1,26 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<br>
+<table class="zoovytable" width=800>
+<tr class="zoovytableheader">
+	<td>Logs</td>
+</tr>
+<tr>
+	<td>
+
+<h2>Enable Diagnostic Logs:</h2>
+<form id="thisFrm" name="thisFrm" action="/biz/manage/support/index.cgi">
+<input type="hidden" name="VERB" value="LOGS-SAVE">
+<input type="checkbox" name="LOG-TRAFFIC"> Traffic (all)<br>
+<input type="checkbox" name="LOG-TRAFFIC-404"> 404 Pages<br>
+<input type="checkbox" name="LOG-MEMCACHE"> Memcache HIT/MISS<br>
+<input type="checkbox" name="LOG-SLOW"> Slow Pages<br>
+
+	</td>
+</tr>
+</table>
+
+</center>
+
+<!-- FOOTER -->

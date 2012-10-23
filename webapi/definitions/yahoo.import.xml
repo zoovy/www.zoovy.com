@@ -1,0 +1,68 @@
+<DEFINITION NAME="import">
+
+<LIST TYPE="TEXT" NAME="FEEDBACK">
+	<OPTION VALUE="0" PROMPT="Do not automatically leave feedback"></OPTION>
+	<OPTION VALUE="1" PROMPT="Leave feedback after purchase - never leave bad feedback."></OPTION>
+	<OPTION VALUE="2" PROMPT="Leave feedback after purchase - leave bad feedback after two weeks."></OPTION>
+</LIST>
+
+<DIV NAME="ALPHA" TITLE="Data Entry">
+	<BUTTON TYPE="NEXT" TARGET="OMEGA" PROMPT="Import Auctions"></BUTTON>
+	<BUTTON TYPE="EXIT" TARGET="OMEGA" PROMPT="Exit Auction Creation"></BUTTON>
+	<META TYPE="TITLE">Yahoo Auction Import Assistant</META>
+	<META TYPE="DESCRIPTION">This tool lets you import one or more auctions which were created on Yahoo.</META>
+
+	<INPUT TYPE="TEXTBOX" NAME="merchant:yahoo:username" PROMPT="Yahoo Username"></INPUT>
+	<INPUT TYPE="PASSWORD" NAME="merchant:yahoo:password" PROMPT="Yahoo Password"></INPUT>
+	<INPUT TYPE="TEXTBOX" NAME="merchant:yahoo:bulk_weight" PROMPT="Weight of Each Item" COLS="10"></INPUT>
+	<INPUT TYPE="TEXTAREA" NAME="channel:yahoo:bulk_ids" PROMPT="Enter Yahoo Auction Numbers, one per line please!" ROWS="10" COLS="15"></INPUT>
+
+	<BUTTON NAME="REVIEW" TYPE="PEER" TARGET="OMEGA" PROMPT="Review Settings"></BUTTON>
+</DIV>
+
+<CODE NAME="REVIEWCODE">
+	<CONDITION TARGET="ERROR1" NAME="channel:yahoo:bulk_ids" OPERATOR="EQ" VALUE="">
+	</CONDITION>
+	<CONDITION TARGET="ERROR2" NAME="merchant:yahoo:username" OPERATOR="EQ" VALUE="">
+	</CONDITION>
+	<CONDITION NAME="merchant:yahoo:username" OPERATOR="NE" VALUE="">
+		<CONDITION TARGET="BADMRGATES" NAME="merchant:yahoo:username" OPERATOR="EQ" VALUE="allyourbase"></CONDITION>
+	</CONDITION>
+</CODE>
+
+<DIV NAME="OMEGA" TITLE="Review">
+	<BUTTON TYPE="LAST" PROMPT="Go Back" TARGET="ALPHA"></BUTTON>
+	<META TYPE="TITLE">Yahoo Auction Import Assistant</META>
+	<META TYPE="DESCRIPTION">Please review your settings before submitting to Yahoo</META>
+	<DISPLAY TYPE="LABEL">Please verify the information below is correct:</DISPLAY>
+	<DISPLAY TYPE="BYVALUE" PROMPT="Yahoo Username" NAME="merchant:yahoo:username"></DISPLAY>
+	<DISPLAY TYPE="BYVALUE" PROMPT="Yahoo Auction IDs" NAME="channel:yahoo:bulk_ids"></DISPLAY>
+	<DISPLAY TYPE="BYVALUE" PROMPT="Reclaim Fees" NAME="merchant:yahoo:reclaim_fees"></DISPLAY>
+	<BUTTON TYPE="SUBMIT" PROMPT="Launch Auction!"></BUTTON>
+</DIV>
+
+<DIV NAME="ERROR1" TITLE="Error1">
+	<META TYPE="TITLE">Yahoo Auction Import Assistant</META>
+	<META TYPE="DESCRIPTION"></META>
+	<BUTTON TYPE="LAST" PROMPT="Go Back"></BUTTON>
+	<META TYPE="DESCRIPTION">Error!</META>
+	<DISPLAY TYPE="LABEL">No Auction ID's found to import</DISPLAY>
+</DIV>
+
+<DIV NAME="ERROR2" TITLE="Error2">
+	<META TYPE="TITLE">Yahoo Auction Import Assistant</META>
+	<META TYPE="DESCRIPTION"></META>
+	<BUTTON TYPE="LAST" PROMPT="Go Back"></BUTTON>
+	<META TYPE="DESCRIPTION">Error!</META>
+	<DISPLAY TYPE="LABEL">Yahoo username is required!</DISPLAY>
+</DIV>
+
+<DIV NAME="BADMRGATES" TITLE="die!!!">
+	<META TYPE="TITLE">Yahoo Auction Import Assistant</META>
+	<META TYPE="DESCRIPTION"></META>
+	<BUTTON TYPE="LAST" PROMPT="Play Again??"></BUTTON>
+	<META TYPE="DESCRIPTION">Make your time.</META>
+	<DISPLAY TYPE="LABEL">All Your Base are Belong to Us!</DISPLAY>
+</DIV>
+
+</DEFINITION>

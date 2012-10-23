@@ -1,0 +1,536 @@
+#!/usr/bin/perl -w
+
+$debug = 1;
+
+use CGI qw(:standard  escape unescape);
+use Data::Dumper;
+
+use lib '/httpd/modules';
+use ZOOVY;
+use GT;
+use ORDER;
+use ORDER::BATCH;
+use ZWEBSITE;
+use ZTOOLKIT;
+use URI::Escape;
+use Date::Calc;
+use Date::Parse;
+use strict;
+
+my ($USERNAME) = &ZOOVY::authenticate('/biz/reports/report.cgi');
+
+my $q = new CGI;
+
+my @months = ('January','February','March','April','May','June','July','August','September','October','November','December');
+
+my $debug = 0;
+my $report = $q->param('report');
+my $month = '';
+my $year = '';
+my $ts = '';
+my $begins = '';
+my $ends = '';
+my @orders = ();
+my $title = '';
+my %country_total_shipping = ();
+my %country_totaltax = ();
+my %country_total = ();
+
+# used for listorder mode
+my $view = $q->param('view');
+my $location = $q->param('location');
+
+# Default to the current month if no month and year are provided
+
+if ($q->param('report') eq 'monthyear') {
+	if ($q->param('month') && $q->param('year')) {
+		$month = $q->param('month');
+		$year = $q->param('year');
+	}
+	else {
+		$ts = &ZTOOLKIT::timetohash(time);
+		$month = $ts->{'mon'} + 1;
+		$year = $ts->{'year'} + 1900;
+	}
+	$month = &ZTOOLKIT::zeropad(2,$month);
+	$title = $months[$month - 1] . ' ' .  $year;
+
+	@orders = &ORDER::BATCH::orderlist_by_month($USERNAME,$month,$year);
+	if ($debug) {print STDERR "report.cgi: number of orders : '" . scalar(@orders) . "'\n";}
+}
+elsif ($q->param('report') eq 'period') {
+	$begins = $q->param('begins');
+	$ends = $q->param('ends');
+	my $dbh =&DBINFO::db_zoovy_connect();
+	my $begindt = &ZTOOLKIT::mysql_from_unixtime(str2time($begins));
+	my $enddt = &ZTOOLKIT::mysql_from_unixtime(str2time($ends));
+	my $pstmt = "select ORDERID,STATUS from ORDER_POOLS where MERCHANT=".$dbh->quote($USERNAME)." and CREATED>=$begindt and CREATED<$enddt";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ($orderid,$status) = $sth->fetchrow() ) {
+		next if ($status eq 'DELETED' || $status eq '');
+		push @orders, $orderid;
+		}
+	&DBINFO::db_zoovy_close();
+	$title = "begins $begins thru $ends";
+	$begins = uri_escape($begins);		# make sure there's nothing nasty here!
+	$ends = uri_escape($ends);
+}
+elsif ($q->param('report') eq 'today') {
+	my $dbh = &DBINFO::db_zoovy_connect();
+	my $begindt = str2time(Date::Calc::Date_to_Text(Date::Calc::Today));
+	my $enddt = $begindt + 86400;
+	$begindt = &ZTOOLKIT::mysql_from_unixtime($begindt);
+	$enddt = &ZTOOLKIT::mysql_from_unixtime($enddt);
+	my $pstmt = "select ORDERID,STATUS from ORDER_POOLS where MERCHANT=".$dbh->quote($USERNAME)." and CREATED>=$begindt and CREATED<$enddt";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ($orderid,$status) = $sth->fetchrow() ) {
+		next if ($status eq 'DELETED' || $status eq '');
+		push @orders, $orderid;
+		}
+	&DBINFO::db_zoovy_close();
+	$title = "Today";
+	$begins = uri_escape($begins);		# make sure there's nothing nasty here!
+	$ends = uri_escape($ends);
+}
+elsif ($q->param('report') eq '4week') {
+	my $dbh = &DBINFO::db_zoovy_connect();
+	my $begindt = &ZTOOLKIT::mysql_from_unixtime(time()-(86400*28) );
+	my $enddt = &ZTOOLKIT::mysql_from_unixtime( time() );
+	my $pstmt = "select ORDERID,STATUS from ORDER_POOLS where MERCHANT=".$dbh->quote($USERNAME)." and CREATED>=$begindt and CREATED<$enddt";
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ($orderid,$status) = $sth->fetchrow() ) {
+		next if ($status eq 'DELETED' || $status eq '');
+		push @orders, $orderid;
+		}
+	&DBINFO::db_zoovy_close();
+	$title = "Last 4 Weeks";
+	$begins = uri_escape($begins);		# make sure there's nothing nasty here!
+	$ends = uri_escape($ends);
+}
+elsif ($q->param('report') eq 'all') {
+	my $dbh = &DBINFO::db_zoovy_connect();
+	my $begindt = &ZTOOLKIT::mysql_from_unixtime(time()-(86400*28) );
+	my $enddt = &ZTOOLKIT::mysql_from_unixtime( time() );
+	my $pstmt = "select ORDERID,STATUS from ORDER_POOLS where MERCHANT=".$dbh->quote($USERNAME);
+	print STDERR $pstmt."\n";
+	my $sth = $dbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ($orderid,$status) = $sth->fetchrow() ) {
+		next if ($status eq 'DELETED' || $status eq '');
+		push @orders, $orderid;
+		}
+	&DBINFO::db_zoovy_close();
+	$title = "All Orders";
+	$begins = uri_escape($begins);		# make sure there's nothing nasty here!
+	$ends = uri_escape($ends);
+}
+
+print "Content-type: text/html\n\n";
+
+print STDERR "Month is: $month YEAR is: $year\n";
+
+
+# call this to initialize the $GT::TAG with the header and footer! 
+&GT::print_form("","");
+
+
+if ($q->param('mode') eq '') {
+
+print "<html>\n";
+print "<head>\n";
+print "<title>Sales Report for $title</title>\n";
+print '<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/manage/standard.css">';
+print "</head>\n";
+print '<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">';
+print "<center>";
+print $GT::TAG{"<!-- REPORT_TAB -->"};
+print "<table width='624'><tr><td>";
+print "<font face='Arial'>";
+print "<font size='+2'><b>Sales Report for $title</b></font><br>\n";
+
+my $total_sales = 0;
+my $total_tax_collected = 0;
+my $total_collected = 0;
+my $total_gross = 0;
+my $total_taxable = 0;
+my $total_shipping = 0;
+my $total_orders = 0;
+my (
+	%state_tax, %state_taxable, %state_total_orders, %state_total_gross, %state_totaltax, %state_orders,
+	%zip_tax, %zip_taxable, %zip_total_orders, %zip_total_gross, %zip_orders,
+	%country_total_orders, %country_total_gross, %country_orders
+);
+
+
+foreach my $order_id (@orders) {
+
+	print STDERR "$order_id\n";
+	if ($debug) {print STDERR "report.cgi: order_id : '$order_id'\n";}
+
+	my ($o,$error) = ORDER->new($USERNAME,$order_id);
+	next if (not defined $o);
+
+	my $status = $o->get_attrib('pool');
+	my $created = $o->get_attrib('created');
+	my $orderref = $o->get_attribs();
+
+	next if ($status eq 'DELETED' || $status eq '');
+
+	my $subtotal = &ZTOOLKIT::cleannum($orderref->{'order_subtotal'});
+	my $country = uc($orderref->{'ship_country'});
+
+	if ((not defined $country) || $country eq '') { $country = "United States" }
+	my $zip = $orderref->{'ship_zip'};
+	if (!defined($zip)) { $zip = ''; }
+	if ($zip =~ /^(\d\d\d\d\d).*$/) { $zip = $1 } else { $zip = "00000" }
+	my $state = uc($orderref->{'ship_state'});
+ 	my $shippingtotal = &ZTOOLKIT::cleannum($orderref->{'shp_total'});
+	my $ordertotal = &ZTOOLKIT::cleannum($orderref->{'order_total'});
+	my $totaltax = &ZTOOLKIT::cleannum($orderref->{'tax_total'});
+	my $taxablesubtotal = &ZTOOLKIT::cleannum($orderref->{'tax_subtotal'});
+	if (not defined $orderref->{'local_tax_rate'}) { $orderref->{'local_tax_rate'} = 0; }
+	if (not defined $orderref->{'tax_rate'}) { $orderref->{'tax_rate'} = 0; }
+
+	my $ziptax = ( (&ZTOOLKIT::cleannum($orderref->{'local_tax_rate'})/100) * $taxablesubtotal);
+	my $statetax = ( (&ZTOOLKIT::cleannum($orderref->{'state_tax_rate'})/100) * $taxablesubtotal);
+	if (($orderref->{'local_tax_rate'} == 0) && ($orderref->{'tax_rate'} == 0)) {
+		$taxablesubtotal = 0;
+		}
+
+	$total_tax_collected += $totaltax;
+	$total_gross += $subtotal;
+	$total_taxable +=  $taxablesubtotal;
+	$total_collected +=$ordertotal;
+	$total_shipping += $shippingtotal;
+
+	if (defined $country_total_gross{$country}) { $country_total_gross{$country} += $subtotal; }
+	else { $country_total_gross{$country} = $subtotal; }
+	if (defined $country_total{$country}) { $country_total{$country} += $ordertotal; }
+	else { $country_total{$country} = $ordertotal; }
+	if (defined $country_totaltax{$country}) { $country_totaltax{$country} += $totaltax; }
+	else { $country_totaltax{$country} = $totaltax; }
+	if (defined $country_total_shipping{$country}) { $country_total_shipping{$country} += $shippingtotal; }
+	else { $country_total_shipping{$country} = $shippingtotal; }
+	if (defined $country_total_orders{$country}) { $country_total_orders{$country}++; }
+	else { $country_total_orders{$country} = 1; }
+	push @{$country_orders{$country}}, $order_id;
+
+	if ($country eq 'United States') {
+
+		my $taxablesubtotal = &ZTOOLKIT::cleannum($orderref->{'tax_subtotal'});
+		if (defined $state_tax{$state}) { $state_tax{$state} += $statetax; }
+		else { $state_tax{$state} = $statetax; }
+		if (defined $state_taxable{$state}) { $state_taxable{$state} += $taxablesubtotal; }
+		else { $state_taxable{$state} = $taxablesubtotal; }
+		if (defined $state_total_gross{$state}) { $state_total_gross{$state} += $subtotal; }
+		else { $state_total_gross{$state} = $subtotal; }
+		if (defined $state_totaltax{$state}) { $state_totaltax{$state} += $totaltax; }
+		else { $state_totaltax{$state} = $totaltax; }
+		if (defined $state_total_orders{$state}) { $state_total_orders{$state}++; }
+		else { $state_total_orders{$state} = 1; }
+		push @{$state_orders{$state}}, $order_id;
+	
+		if (defined $zip_tax{$zip}) { $zip_tax{$zip} += $ziptax; }
+		else { $zip_tax{$zip} = $ziptax; }
+		if (defined $zip_taxable{$zip}) { $zip_taxable{$zip} += $taxablesubtotal; }
+		else { $zip_taxable{$zip} = $taxablesubtotal; }
+		if (defined $zip_total_gross{$zip}) { $zip_total_gross{$zip} += $subtotal; }
+		else { $zip_total_gross{$zip} = $subtotal; }
+		if (defined $zip_total_orders{$zip}) { $zip_total_orders{$zip}++; }
+		else { $zip_total_orders{$zip} = 1; }
+		push @{$zip_orders{$zip}}, $order_id;
+
+	}
+
+	$total_orders++;
+	$o = undef;
+}
+
+print "<hr><font size='+1'><b>Totals</b></font><br><br>\n";
+
+print "Total Number of Orders: <i>$total_orders</i><br>\n";
+print "Total Gross Sales: <i>" . &ZTOOLKIT::moneyformat($total_gross) . "</i><br>\n";
+print "Total Taxable Sales:<i> " . &ZTOOLKIT::moneyformat($total_taxable) . "</i><br>\n";
+print "Total Sales Tax: <i>" . &ZTOOLKIT::moneyformat($total_tax_collected) . "</i><br>\n";
+print "Total Shipping: <i>" . &ZTOOLKIT::moneyformat($total_shipping) . "</i><br>\n";
+print "Grand Total Collected (Including tax and shipping): <i>" . &ZTOOLKIT::moneyformat($total_collected) . "</i><br>\n";
+print "<br>\n";
+
+print "<hr><font size='+1'><b>Countries</b></font><br><br>\n";
+
+print "<table border=\"1\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\" border=\"1\">\n";
+print "<tr>";
+print "<td>Country</td>";
+print "<td>Orders</td>";
+print "<td>Gross Sales</td>";
+print "<td>Tax</td>";
+print "<td>Shipping</td>";
+print "<td>Grand Total</td>";
+print "</tr>\n";
+foreach my $this_country (keys %country_total_orders) {
+	$location = $q->escape($this_country);
+	print "<tr>";
+	print "<td><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=country&month=$month&year=$year&location=$location\">$this_country</a></td>";
+	print "<td align=\"right\"><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=country&month=$month&year=$year&location=$location\">" . $country_total_orders{$this_country} . "</a></td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat($country_total_gross{$this_country}) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat(&blank_if_zero($country_totaltax{$this_country})) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat($country_total_shipping{$this_country}) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat($country_total{$this_country}) . "</td>";
+	print "</tr>\n";
+}
+print "</table>\n";
+print "<br>\n";
+
+print "<hr><font size='+1'><b>US States</b></font><br><br>\n";
+
+print "<table border=\"1\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\" border=\"1\">\n";
+print "<tr>";
+print "<td>State</td>";
+print "<td>Orders</td>";
+print "<td>Gross Sales</td>";
+print "<td>Taxable Sales</td>";
+print "<td>State <nobr>Tax <font size=\"-1\"><sup>*</sup></font></nobr></td>";
+print "<td>Total <nobr>Tax<font size=\"-1\"><sup>**</sup></font></nobr></td></tr>\n";
+foreach my $this_state (keys %state_total_orders) {
+	$location = $q->escape($this_state);
+	print "<tr>";
+	print "<td><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=state&month=$month&year=$year&location=$location\">$this_state</a></td>";
+	print "<td align=\"right\"><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=state&month=$month&year=$year&location=$location\">" . $state_total_orders{$this_state} . "</a></td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat($state_total_gross{$this_state}) . "</td>";
+	print "<td align=\"right\">" .  &ZTOOLKIT::moneyformat(&blank_if_zero($state_taxable{$this_state})) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat(&blank_if_zero($state_tax{$this_state})) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat(&blank_if_zero($state_totaltax{$this_state})) . "</td>";
+	print "</tr>\n";
+}
+print "</table>\n";
+print "<font size=\"-1\">";
+print "<i>* Tax collected for a state, not including any additional local tax based on zip code</i><br>\n";
+print "<i>** Total tax collected for a state, including additional local tax based on zip code</i><br>\n";
+print "</font>";
+print "<br>\n";
+
+print "<hr><font size='+1'><b>US Zip Codes</b></font><br><br>\n";
+
+print "<table border=\"1\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\" border=\"1\">\n";
+print "<tr>";
+print "<td>Zip Code</td>";
+print "<td>Orders</td>";
+print "<td>Gross Sales</td>";
+print "<td>Taxable Sales</td>";
+print "<td>Local <nobr> Tax <font size=\"-1\"><sup>*</sup></font></nobr></td></tr>\n";
+foreach my $this_zip (keys %zip_taxable) {
+	$location = $q->escape($this_zip);
+	print "<tr>";
+	print "<td><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=zip&month=$month&year=$year&location=$location\">$this_zip</a></td>";
+	print "<td align=\"right\"><a href=\"report.cgi?mode=listorders&report=$report&begins=$begins&ends=$ends&view=zip&month=$month&year=$year&location=$location\">" . $zip_total_orders{$this_zip} . "</a></td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat($zip_total_gross{$this_zip}) . "</td>";
+	print "<td align=\"right\">" .  &ZTOOLKIT::moneyformat(&blank_if_zero($zip_taxable{$this_zip})) . "</td>";
+	print "<td align=\"right\">" . &ZTOOLKIT::moneyformat(&blank_if_zero($zip_tax{$this_zip})) . "</td>";
+	print "</tr>\n";
+}
+print "</table>\n";
+print "<font size=\"-1\">";
+print "<i>* Additional tax specifically for a zip code range, not including any state tax.</i><br>\n";
+print "</font>";
+print "<br>\n";
+
+print "<center><a href='.'><img border='0' src='/images/bizbuttons/okay.gif'></center></a>";
+print "</td></tr></table>";
+print "</center>";
+print "</body>\n";
+print "</html>\n";
+
+} elsif ($q->param('mode') eq 'listorders') {
+####################################################################################
+#	This is the listorder form
+#####################################################################################
+
+print "<html>\n";
+print "<head>\n";
+print "<title>$title</title>\n";
+print '<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/manage/standard.css">';
+print "</head>\n";
+print '<body bgcolor="#FFFFFF"  marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">';
+print "<center>";
+print $GT::TAG{"<!-- REPORT_TAB -->"};
+print "<table width='624'><tr><td>";
+print "<font face='Arial'>";
+print "<font size='+2'><b>".uc($location)." ".uc($view)." Detail $title</b><br></font><br>\n";
+
+# print "<pre>".Dumper(\@orders)."</pre>\n";
+
+my $error = '';
+if ($error) {
+	print $error;
+}
+else {
+	print "<table border=\"1\" width=\"100%\" cellpadding=\"2\" cellspacing=\"0\" border=\"1\">\n";
+	if ($view eq 'country') {
+		# The good ol' US gets preferential treatment!
+		if ($location eq 'United States') {
+			print "<tr>";
+			print "<td>Order</td>";
+			print "<td>Location</td>";
+			print "<td>Subtotal</td>";
+			print "<td>Tax</td>";
+			print "<td>Shipping</td>";
+			print "<td>Grand Total</td>";
+			print "</tr>";
+			foreach my $order_id (@orders) {
+				my ($o,$error) = ORDER->new($USERNAME,$order_id);
+				next if (not defined $o);
+				my $status = $o->get_attrib('pool');
+				my $created = $o->get_attrib('created');
+				next if ($status eq 'DELETED' || $status eq '');
+				my $orderref = $o->get_attribs();
+
+				next if ($orderref->{'ship_country'} ne '');
+				my $zip = $orderref->{'ship_zip'};
+				if ($zip =~ /^(\d\d\d\d\d).*$/) { $zip = $1 } else { $zip = "00000" }
+				print "<tr>";
+				print "<td><a href=\"/biz/orders/index.cgi?main=view.cgi%3FID=$order_id\">$order_id</a></td>";
+				print "<td>$orderref->{'ship_state'}, $zip</td>";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_subtotal'}) . "</td>\n";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'tax_total'}) . "</td>\n";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'shp_total'}) . "</td>\n";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_total'}) . "</td>\n";
+				print "</tr>";
+			}
+		}
+		else {
+			print "<tr>";
+			print "<td>Order</td>";
+			print "<td>Location</td>";
+			print "<td>Subtotal</td>";
+			print "<td>Shipping</td>";
+			print "<td>Grand Total</td>";
+			print "</tr>";
+			foreach my $order_id (sort @orders) {
+				my ($o,$error) = ORDER->new($USERNAME,$order_id);
+				next if (not defined $o);
+				my $status = $o->get_attrib('pool');
+				my $created = $o->get_attrib('created');
+				next if ($status eq 'DELETED' || $status eq '');
+				my $orderref = $o->get_attribs();
+				next if ($orderref->{'ship_country'} ne $location);
+				print "<tr>";
+				print "<td><a href=\"/biz/orders/view.cgi?ID=$order_id\">$order_id</a></td>";
+				print "<td>$orderref->{'ship_city'}, $orderref->{'ship_int_zip'}</td>";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_subtotal'}) . "</td>\n";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'shp_total'}) . "</td>\n";
+				print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_total'}) . "</td>\n";
+				print "</tr>";
+			}
+		}
+	}
+	elsif ($view eq 'state') {
+		print "<tr>";
+		print "<td>Order</td>";
+		print "<td>Zip Code</td>";
+		print "<td>Subtotal</td>";
+		print "<td>State Tax</td>";
+		print "<td>Local Tax</td>";
+		print "<td>Total Tax</td>";
+		print "<td>Shipping</td>";
+		print "<td>Grand Total</td>";
+		print "</tr>";
+		my $totaltax = 0; 
+		my $ziptax = 0;
+		my $statetax = 0;
+
+		foreach my $order_id (sort  @orders) {
+			my ($o,$error) = ORDER->new($USERNAME,$order_id);
+			next if (not defined $o);
+			my $status = $o->get_attrib('pool');
+			my $created = $o->get_attrib('created');
+			next if ($status eq 'DELETED' || $status eq '');
+			my $orderref = $o->get_attribs();
+
+			next if ($orderref->{'ship_state'} ne $location);
+			my $zip = $orderref->{'ship_zip'};
+			if ($zip =~ /^(\d\d\d\d\d).*$/) { $zip = $1 } else { $zip = "00000" }
+			my $taxablesubtotal = &ZTOOLKIT::cleannum($orderref->{'tax_subtotal'});
+			$totaltax = &ZTOOLKIT::cleannum($orderref->{'tax_total'});
+			my $ziptax = ( (&ZTOOLKIT::cleannum($orderref->{'local_tax_rate'})/100) * $taxablesubtotal);
+			my $statetax = ( (&ZTOOLKIT::cleannum($orderref->{'state_tax_rate'})/100) * $taxablesubtotal);
+
+			print "<tr>";
+			print "<td><nobr><a href=\"/biz/orders/view.cgi?ID=$order_id\">$order_id</a></nobr></td>";
+			print "<td>$zip</td>";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_subtotal'}) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($statetax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($ziptax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($totaltax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'shp_total'}) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_total'}) . "</td>\n";
+			print "</tr>";
+		}
+	}
+	elsif ($view eq 'zip') {
+		print "<tr>";
+		print "<td>Order</td>";
+		print "<td>Subtotal</td>";
+		print "<td>State Tax</td>";
+		print "<td>Local Tax</td>";
+		print "<td>Total Tax</td>";
+		print "<td>Shipping</td>";
+		print "<td>Grand Total</td>";
+		print "</tr>";
+		foreach my $order_id (sort  @orders) {
+			my ($o,$error) = ORDER->new($USERNAME,$order_id);
+			next if (not defined $o);
+			my $status = $o->get_attrib('pool');
+			my $created = $o->get_attrib('created');
+			next if ($status eq 'DELETED' || $status eq '');
+			my $orderref = $o->get_attribs();
+
+			my $taxablesubtotal = &ZTOOLKIT::cleannum($orderref->{'tax_subtotal'});
+			my $zip = $orderref->{'ship_zip'};
+			# print "USERNAME: $USERNAME - ORDER: $order_id<br>";
+			# print "Compare: [$location] to [$zip]<br>";
+			if ($zip =~ /^(\d\d\d\d\d).*$/) { $zip = $1 } else { $zip = "00000" }
+			# print "Compare: [$location] to [$zip]<br>";
+			next if ($zip ne $location);
+			my $totaltax = &ZTOOLKIT::cleannum($orderref->{'tax_total'});
+			my $ziptax = ( (&ZTOOLKIT::cleannum($orderref->{'local_tax_rate'})/100) * $taxablesubtotal);
+			my $statetax = ( (&ZTOOLKIT::cleannum($orderref->{'state_tax_rate'})/100) * $taxablesubtotal);
+			print "<tr>";
+			print "<td><nobr><a href=\"/biz/orders/view.cgi?ID=$order_id\">$order_id</a></nobr></td>";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_subtotal'}) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($statetax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($ziptax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($totaltax) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'shp_total'}) . "</td>\n";
+			print "<td>" . &ZTOOLKIT::moneyformat($orderref->{'order_total'}) . "</td>\n";
+			print "</tr>";
+		}
+	}
+	print "</table>";
+}
+print "<br>\n";
+
+print "<center><a href='.'><img border='0' src='/images/bizbuttons/okay.gif'></center></a>";
+print "</td></tr></table>";
+print $GT::TAG{"<!-- TAB_FOOTER -->"};
+print "</center>";
+print "</body>\n";
+print "</html>\n";
+}
+
+
+
+exit;
+
+sub blank_if_zero {
+	my $num = pop @_;
+	return ($num == 0) ? '&nbsp;' : $num ;
+}
+
+
+

@@ -1,0 +1,31 @@
+<!-- UTILITIES_TAB -->
+
+<center>
+<br>
+<table class="zoovytable" width=800>
+<tr class="zoovytableheader">
+	<td>FlexEdit</td>
+</tr>
+<tr>
+	<td>
+
+<h2>Add a favorite layout:</h2>
+<form id="thisFrm" name="thisFrm" action="/biz/manage/support/index.cgi" method="post">
+<input type="hidden" name="VERB" value="FLEXEDIT-SAVE">
+
+<h2>Custom:</h2>
+<textarea cols=100 rows=25 name="FLEXEDIT">
+<!-- FLEXEDIT -->
+</textarea><br>
+<input type="submit" class="button" value=" SAVE "><br>
+
+<h2>Standard</h2>
+<!-- STANDARD -->
+
+	</td>
+</tr>
+</table>
+
+</center>
+
+<!-- FOOTER -->

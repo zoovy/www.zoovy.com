@@ -1,0 +1,43 @@
+<!-- SETUP_TAB -->
+<center><table><tr><td>
+
+<font face="Arial, Helvetica">
+<form action="index.cgi" method="POST">
+<input type="hidden" name="ACTION" value="SAVE">
+<input type="hidden" name="TAB" value="SPECIAL">
+
+<center>
+<!-- MYTODO -->
+<!-- MESSAGE -->
+</center>
+<center>
+
+<br>
+<br>
+<table width="80%">
+<tr><td>
+
+<br>
+<img src="images/bidpay.gif"><Br>
+Enable WesternUnion BidPay Option: <input type="checkbox" name="pay_bidpay" <!-- PAY_BIDPAY_CHECKED -->><br>
+<br>
+<br>
+
+<br>
+<br>
+</td></tr>
+</table>
+<center>
+<table>
+<tr><td valign="top"><input type="image" alt="Save Settings" src="/images/bizbuttons/save.gif" border="0"></td>
+<td valign="top"><a target="_top" href=".."><img border="0" alt="Exit"
+src="/images/bizbuttons/exit.gif"></td></tr>
+</table>
+<br>
+<br>
+
+</center>
+</form>
+</td></tr></table></center>
+
+<!-- FOOTER -->

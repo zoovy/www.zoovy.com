@@ -1,0 +1,63 @@
+<!-- SETUP_TAB -->
+
+<br>
+<br>
+
+<center>
+<!-- DISCLAIMER -->
+<table class="zoovytable" cellspacing=0 width=600>
+<tr><td class="zoovytableheader">Other Providers (<!-- PROFILE -->)</td></tr>
+<tr><td>
+<i>Please use this area to put in other "non-supported" plugins</i>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="OTHER-SAVE">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+
+<br>
+<br>
+Head Non-Secure Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="head_nonsecure_code"><!-- HEAD_NONSECURE_CODE --></textarea><br>
+<div class="hint">This will be placed in the header of your site but ONLY on non-secure pages.</div>
+<br>
+Head Secure Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="head_secure_code"><!-- HEAD_SECURE_CODE --></textarea><br>
+<div class="hint">This will be placed in the header of your site but ONLY on secure pages.</div>
+
+<br>
+Head Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="head_code"><!-- HEAD_CODE --></textarea><br>
+<div class="hint">This will be placed in the header of your site. (both secure and non-secure)</div>
+<br>
+<br>
+Footer Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="footer_code"><!-- FOOTER_CODE --></textarea><br>
+<div class="hint">This will be placed in the header of your site.</div>
+<br>
+<br>Checkout Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="checkout_code"><!-- CHECKOUT_CODE --></textarea><br>
+<div class="hint">This will be displayed at the bottom of checkout (below order contents, payment messages).</div>
+<br>
+<br>Invoice Header Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="invoice_code"><!-- INVOICE_CODE --></textarea><br>
+<div class="hint">This will be displayed at the top of checkout (above order contents, payment messages).</div>
+<br>
+<br>Login Tracking Code:<br>
+<textarea onFocus="this.rows=25;" cols="70" rows="3" name="login_code"><!-- LOGIN_CODE --></textarea><br>
+<div class="hint">This will be displayed in various portions of your site after an existing customer 
+logs into their account. This is normally used for displaying supression pixels for
+marketing campaigns that wish to exclude existing clients.</div>
+<br>
+<input class="button" type="submit" value=" Save ">
+<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+</form>
+
+<!--
+<pre>
+Order Total: <% loadurp("CART::data.order_total"); print(); %>
+Order ID: <% loadurp("CART::chkout.order_id"); print(); %>
+</pre>
+-->
+
+</td></tr>
+</table>

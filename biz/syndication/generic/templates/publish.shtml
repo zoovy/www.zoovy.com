@@ -1,0 +1,22 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table class="zoovytable" width="600">
+<tr>
+	<td class="zoovytableheader">Files</td>
+</tr>
+<tr>
+	<td>
+<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
+<input type="hidden" name="VERB" value="PUBLISH-NOW">
+<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<b>Feed Type:</b><br>
+<!-- SUPPORTED_FEED_TYPES -->
+<div class="hint">NOTE: only available feed types will appear for a destination.</div>
+<br>
+<input type="submit" class="button" value=" Publish Now ">
+</form>
+	</td>
+</tr>
+</table>
+</center>

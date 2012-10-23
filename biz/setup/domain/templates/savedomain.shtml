@@ -1,0 +1,37 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<body bgcolor="FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+<table width="540">
+<tr><td>
+<font face="Arial, Helevetica">
+<center>
+</center>
+
+<FONT FACE="helvetica, arial" SIZE="2">
+<FONT SIZE="3"><B>Congratulations!</B></FONT>
+<BR>
+<BR>
+<B><!-- DOMAINNAME --></B> has been successfully added to our database and will be active within the next 24 hours.
+<BR>
+<BR>
+<B><FONT COLOR="red">IMPORTANT:</FONT></B> In order for your domain redirection and email forwarders to work, you will need to modify the nameservers on your domain records to use our nameservers:<BR><BR>
+Primary nameserver: <B>NS.ZOOVY.COM</B><BR>
+Secondary nameserver: <B>NS2.ZOOVY.COM</B>
+<BR>
+<BR>
+Please contact the registry responsible for your domain for further information on how to do this.
+</FONT>
+
+<center>
+	<a href="index.cgi" target="_top"><img src="/images/bizbuttons/proceed.gif" border='0' width='81' height='31'></a>
+</center>
+
+</font>
+</td></tr>
+</table>
+</center>
+</body>
+<!-- TEMPLATE ./biz/setup/redir/templates/notify.shtml -->

@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Untitled Document</title>
+
+<style>
+#sortable { list-style-type: none; margin: 0; padding: 0; }
+#sortable li {
+	margin: 5px 5px 0px 0;
+	padding: 0px;
+	float: left;
+	width: 32%; 
+	height: 100px;
+	text-align: center; 
+	cursor:pointer;
+/* include the border as part of the size attribute */
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border:1px solid #cccccc;
+	background:#efefef;
+	}
+
+
+
+
+
+
+/*
+message_box gets applied to all system (ui) messages.
+this class contains the generic styles that get applied to all messaging.
+
+individual message types have overriding styles to handle colors, background imagery, etc
+
+example message format is below. for a single message, use a P to output the message. for a multi response, use a ul.
+typically, you would have one or the other.
+
+<div class='message_box warning'>
+	<h4>title</h4>
+	<p>message, if needed</p>
+	<ul>
+		<li>multimessage 1</li>
+		<li>multimessage 2</li>
+	</ul>
+</div>
+
+*/
+
+
+.message_box	{
+	margin:3px 0px 3px 0px;
+	font-size:11px;
+	color:#333333;
+	border:1px solid #efefef;
+	font-weight: normal;
+	padding:5px 5px 5px 50px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	}
+
+.message_box p	{margin:0; padding:0;}
+.message_box ul	{margin:0; padding:0;}
+.message_box ul li	{margin:0 0 4px 10px; padding:0;}
+
+.message_box h4	{
+	margin:0;
+	font-size:15px;
+	font-weight:bold;
+	line-height:18px;
+	color:#333333;
+	}
+	
+	
+div.caution h4	{color:#CCCC00;}
+div.caution	{
+	background:url(/biz/images/general/icons/messagebox/flag_yellow-40x32.png) no-repeat 2px 4px;
+	}
+
+div.error h4	{color:#FF0000;}
+div.error	{
+	background:url(/biz/images/general/icons/messagebox/expoint_red-40x32.png) no-repeat 2px 4px;
+	}
+
+div.ise h4	{color:#FF0000;}
+div.ise	{
+	background:url(/biz/images/general/icons/messagebox/wrench_screw-40x36.png) no-repeat 2px 4px;
+	}
+
+div.fail h4	{color:#FF6633;}
+div.fail	{
+	background:url(/biz/images/general/icons/messagebox/x_orange-40x32.png) no-repeat 2px 4px;
+	}
+
+div.success h4	{color:#3fd2ff;}
+div.success	{
+	background:url(/biz/images/general/icons/messagebox/happyface_blue-35x35.png) no-repeat 5px 4px;
+	}
+
+div.bpp_go h4	{color:#006600;}
+div.bpp_go	{
+	background:url(/biz/images/general/icons/bppgo-29x33.png) no-repeat 8px 4px;
+	min-height:35px;
+	}
+
+div.bpp_warn h4	{color:#FF6633;}
+div.bpp_warn	{
+	background:url(/biz/images/general/icons/bppwarn-29x33.png) no-repeat 8px 4px;
+	min-height:35px;
+	}
+
+div.bpp_stop h4	{color:#FF0000;}
+div.bpp_stop	{
+	background:url(/biz/images/general/icons/bppstop-29x33.png) no-repeat 8px 4px;
+	min-height:35px;
+	}
+
+
+div.todo h4	{color:#000000;}
+div.todo	{
+	border:1px solid #6cab61;
+	background:url(/biz/images/general/icons/zman_pencil-31x50.jpg) no-repeat 2px 4px;
+	}
+
+div.todo_video	{
+	background:url(/biz/images/general/icons/zman_clapper-42x50.jpg) no-repeat;
+	}
+
+div.todo_video .video_button	{
+	background:url(/biz/images/general/icons/play_video-35x35.png) no-repeat center center #6cab61;
+	min-height:50px;
+	padding-top:20px;
+	padding-bottom:5px;
+	border:0;
+	text-align:center;
+	vertical-align:text-bottom;
+	color:#ffffff;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	font-weight:bold;
+	text-shadow: 1px 1px 1px #003300;
+	filter: dropshadow(color=#003300, offx=1, offy=1); 
+	float:right;
+	}
+
+
+
+</style>
+
+
+<!--
+<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA5DiQH1Cf6KX--HlRILVOrBSdU5xkzn2x-ui1hZSaI533IXLDvRTsQ3Qn31nDCBLa4wkqTR2oN5WCew"></script>
+<script type="text/javascript">
+google.load("jquery", "1.4.4");
+google.load("jqueryui", "1.8.7");
+</script>
+-->
+
+
+
+</head>
+
+<body style='font-family:Arial, Helvetica, sans-serif;'>
+
+
+<div class='message_box error'>
+	<h4>Uh Oh! An error occured.</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. </p>
+</div>
+
+
+<div class='message_box ise'>
+	<h4>Something very bad just happened... But don't worry, we're on it!</h4>
+	<p>Whatever you just tried to do didn't work and caused on error on our side. We've already notified our staff and you may be contacted if we need any futher details, so please remember everything you've done in zoovy today since you logged in.</p>
+</div>
+
+
+<div class='message_box fail'>
+	<h4>That's embarrasing. We've failed at something or other.</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. </p>
+</div>
+
+<div class='message_box caution'>
+	<h4>Proceed with caution...</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. </p>
+</div>
+
+
+<div class='message_box success'>
+	<h4>Something has happened... something wonderful.</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. </p>
+</div>
+
+
+
+<div class='message_box bpp_go'>
+	<h4>BPP Approved!</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. </p>
+</div>
+
+
+
+<div class='message_box bpp_warn'>
+	<h4>You're getting close to exceding our expectations</h4>
+	<p>Your account type supports up to 50 categories and you are at 47. Pretty soon you'll need to upgrade or stop adding categories.</p>
+</div>
+
+
+
+<div class='message_box bpp_stop'>
+	<h4>Oh No! You've done something evil (pronounced 'eeeevvvviiiiiilllll').</h4>
+	<p>Your account type supports up to 50 categories and you are at 50. you should do something about that.</p>
+</div>
+
+
+
+<div class='message_box todo'>
+	<h4>Well, looks like you're going to be busy...</h4>
+	<p>We've added the following items to your todo list:</p>
+	<ul>
+		<li>Pay your bill</li>
+		<li>Pay JT your protection money.</li>
+	</ul>
+</div>
+
+<div class='message_box todo todo_video'>
+	<button class='video_button' onClick='alert("i like videos about stuff");'>watch video</button>
+	<h4>Guess what?  We've got porn for you to watch</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor lectus eget tellus posuere tempor. Mauris sed eros vitae ante mollis viverra vel in justo.</p>
+</div>
+
+
+<!--
+<input type='button' value='get chart id order' onClick="alert(getElementOrder('sortable','li'));" title='this is the title attribute' />	
+
+	
+<table>
+<tr>
+	<td valign='top'>
+	<div style='width:220px; margin-right:30px;' class='menubox'>
+	
+		<div id='kpiAccordian'></div>
+	
+	</div>
+	</td>
+	<td width='99%' valign='top'>	
+
+<ul id="sortable">
+	<li class="ui-state-default" style='width:97%;' id='chart1'>1</li>
+	<li class="ui-state-default" id='chart7' style='height:205px;'>7</li>
+	<li class="ui-state-default" id='chart2'>2</li>
+	<li class="ui-state-default" id='chart3'>3</li>
+	<li class="ui-state-default" id='chart8' style='width:64%;'>8</li>
+	<li class="ui-state-default" id='chart9' style='width:64%;'>9</li>
+	<li class="ui-state-default" id='chart5'>5</li>
+	<li class="ui-state-default" id='chart4'>4</li>
+	<li class="ui-state-default" id='chart6'>6</li>
+</ul>
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+
+kpiJson = {
+	"orders" : {
+		"chart1" : {
+				"title" : "my chart name",
+				"type":"HCLineChart",
+				"subtitle":"",
+				"height":"250",
+				"width":"750"
+			},
+		"chart2" : {
+				"title" : "Resize test",
+				"type":"resizeTestChart",
+				"subtitle":"this one has a subtitle"
+			},
+		"chart3" : {
+				"title" : "o holy chartname",
+				"type":"pieChart",
+				"subtitle":"the sky is brightly shining"
+			},
+		"chart4" : {
+				"title" : "Charts are cool",
+				"type":"HCLineChart",
+				"subtitle":"so are subtitles"
+			},
+		"chart5" : {
+				"title" : "all your chart now belong to us",
+				"type":"column",
+				"subtitle":""
+			}
+		},
+	"product" : {
+		"chart21" : {
+				"title" : "this is a must",
+				"type":"column",
+				"subtitle":""
+			},
+		"chart22" : {
+				"title" : "titles have to be set",
+				"type":"pieChart",
+				"subtitle":""
+			},
+		"chart23" : {
+				"title" : "not unreasonable at all",
+				"type":"HCLineChart",
+				"subtitle":""
+			}
+		},
+	"traffic" : {
+		"chart31" : {
+				"title" : "chartastic",
+				"type":"pieChart",
+				"subtitle":""
+			}
+		}
+	}
+
+
+//loops through json object and creates accordian menu. added automatically to id kpiAccordian.
+//may want to update this function to make it more versatile.
+
+function kpiMenu()	{
+	$.each(kpiJson, function(id) {
+		$("#kpiAccordian").append("<h3>"+id+"</h3><div id='kpiAccordian"+id+"Container'></div>");
+  		$.each(this, function(k, v) {
+			$("#kpiAccordian"+id+"Container").append("<a href='#"+k+"' onClick=\"var chartObj_"+k+" = loadChart('"+id+"','"+k+"'); \">"+v.title+"</a>");
+	  		});
+		});
+//activate accordian menu
+	$(function() {
+		$("#kpiAccordian").accordion();
+		});
+	}
+
+
+//generate accordian menu.
+kpiMenu();
+
+
+//make id 'sortable' sortable.
+$(function() {
+	$( "#sortable" ).sortable();
+	$( "#sortable" ).disableSelection();
+	});
+
+
+/*
+go through all the children of the container id and return an array
+of all the id's of the child tagtype. Only returns immediate children (no depth)
+*/
+
+function getElementOrder(containerid,tagtype)	{
+	var arr = $('#'+containerid+' > '+tagtype).map(function(){
+	    return this.id;
+	}).get();
+	if(arr.length > 0)
+		return arr;
+	else
+		return null;
+	}
+
+
+</script>
+-->
+</body>
+</html>

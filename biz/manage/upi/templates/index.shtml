@@ -1,0 +1,105 @@
+<head>
+<title>Reports</title>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/manage/standard.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+
+function openWindow(url) {
+adviceWin = window.open(url, 'advice','status=no,width=638,height=400,menubar=yes,scrollbars=yes')
+adviceWin.focus(true);
+}
+
+//-->
+</SCRIPT>
+</head>
+<body bgcolor='FFFFFF' marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<center>
+<!-- REPORT_TAB -->
+<br>
+<table width='600' class="table_stroke" cellspacing=0><form action="index.cgi" method="post"><tr>
+	<td class="table_top"><span class="header">Bulk Actions: </span></td>
+</tr><tr>
+	<td><table border=0 ><tr>
+	<td><b>Unpaid Items:</b><br>
+	<input type="button" value="Dispute All Unpaid">
+	Older than: 
+		<select name="days">
+			<option value="3">older than 3 Days</option>
+			<option value="5">older than 5 Days</option>
+			<option value="7">older than 7 Days</option>
+			<option value="10">older than 10 Days</option>
+		</select><br>
+	<input type="checkbox" name=""> Highlight Only (do not actually change)<br>
+</td>
+</tr>
+
+<!--
+<tr>
+<td>
+		<b>Unqualified Bidders:</b><br>
+		<input type="button" Value="Dispute Unqualified">
+		<select name="unqualified">
+			<option value="20">Unsupported country</option>
+			<option value="21">Unconfirmed address</option>
+			<option value="22">Unsupported payment</option>
+		</select><br>
+	<input type="checkbox" name=""> Highlight Only (do not actually change)<br>
+</td>
+</tr>
+-->
+<!--
+<tr>
+<td>
+	<b>Refresh Disputes from eBay</b><br>
+	<input type="button" value="Refresh">
+</td></tr>
+-->
+</table>
+		
+
+<b>Items requiring UPI notification:</b><br>
+<table>
+	<tr>
+		<td><b>Status</b></td>
+		<td><b>Age</b></td>
+		<td><b>Action</b></td>
+		<td><b>eBay Id</b></td>
+		<td><b>Item Title</b></td>
+	</tr>
+	<!-- ITEMS_NEW -->	
+</table>
+<br>
+
+<!--
+<b>Items pending UPI:</b><br>
+<table>
+	<tr>
+		<td><b>Status</b></td>
+		<td><b>Action</b></td>
+		<td><b>eBay Id</b></td>
+		<td><b>Item Title</b></td>
+	</tr>
+	<!-- ITEMS_PENDING -->
+</table>
+<br>
+
+<b>UPI Process Completed:</b><br>
+<table>
+	<tr>
+		<td><b>Status</b></td>
+		<td><b>Action</b></td>
+		<td><b>eBay Id</b></td>
+		<td><b>Item Title</b></td>
+	</tr>
+	<!-- ITEMS_DONE -->
+</table>
+
+-->
+
+<center><input type="image" border="0" src="/images/bizbuttons/update.gif"></center>
+
+
+</td></tr></form></table>
+
+</body>

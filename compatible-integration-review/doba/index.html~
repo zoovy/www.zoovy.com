@@ -1,0 +1,100 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy & Doba Drop Shipping', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+<head>
+<script language="javascript">AC_FL_RunContent = 0;</script>
+<script src="AC_RunActiveContent.js" language="javascript"></script>
+</head>
+
+<script language="javascript">
+	if (AC_FL_RunContent == 0) {
+		alert("This page requires AC_RunActiveContent.js.");
+	} else {
+		AC_FL_RunContent(
+			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+			'width', '448',
+			'height', '258',
+			'src', 'doba',
+			'quality', 'high',
+			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+			'align', 'middle',
+			'play', 'true',
+			'loop', 'true',
+			'scale', 'showall',
+			'wmode', 'window',
+			'devicefont', 'false',
+			'id', 'doba',
+			'bgcolor', '#ffffff',
+			'name', 'doba',
+			'menu', 'true',
+			'allowFullScreen', 'false',
+			'allowScriptAccess','sameDomain',
+			'movie', 'doba',
+			'salign', ''
+			); //end AC code
+	}
+</script>
+<noscript>
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="448" height="258" id="doba" align="middle">
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="allowFullScreen" value="false" />
+	<param name="movie" value="doba.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="doba.swf" quality="high" bgcolor="#ffffff" width="448" height="258" name="doba" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+</noscript>
+  
+<p><img src='images/doba_slab-462x343.jpg' height="343" width="462" border='0' alt='Kount Fraud Protection' /><br />
+</p>
+<h1><br>
+Online Fraud Prevention...</h1>
+<h2>Take the offensive in the fight against fraud by taking advantage of Zoovy's new integration with the most sophisticated online fraud prevention service available.</h2>
+<br>
+<ul><li>Stops fraud upfront without declining good orders</li>
+<li>Provides an easy to use order review cue for merchants who want to review orders with higher than normal risk, rather than automatically decline or approve them.</li>
+<li>Customizable to the merchant's business rules and risk tolerances.</li></ul>
+
+Kount provides ecommerce merchants the ability to make rapid and accurate risk assessment decisions, saving valuable time and resources.
+
+<ul>
+<li>Don't wait until your business is hit by the fraud tidal wave, take advantage of Zoovy's new integration with the most sophisticated online fraud prevention service available.</li>
+<li>Protect your hard-earned profits by taking advantage of Zoovy's new integration with the most sophisticated online fraud prevention service available.</li>
+<li>Kount effectively and efficiently addresses fraud related credit card chargeback issues for online merchants.  </li>
+<li>In addition, Kount saves merchants valuable time and resources by automating their fraud prevention efforts with the most accurate, predictive and efficient online fraud prevention service available.</li></ul><br >
+  Get protection NOW by clicking here and following this simple 2-step process. Zoovy has already done the integration so the most sophisticated fraud prevention solution available to you NOW! <br>
+  <br />
+  
+  
+<script src="https://www.ispeakvideo.com/scripts/iSpeakVideosecure.js"
+type="text/javascript" language="javascript" ></script>
+<script language="javascript" type="text/javascript">
+   var video=new iSpeakVideo();
+  video.src='zoovy.swf';
+   video.height=320;
+   video.width=300;
+   video.positionFrom='fromTop';
+   video.Location.X=220;
+   video.Location.Y=370;
+   video.ReferenceID='imgReference';
+   video.anchorMode='absolute';
+   video.Intialize();
+  
+   function hideWhenFinished() {
+    video.HideWhenFinished();
+ }
+  </script>
+  </h2>  
+</p>
+<h2>Which area of your online business is inhibiting growth? Click below</h2>
+<&| /includes/embedbar-howitworks-20090707/index.html &></&>
+
+<&| /includes/panel-featured_pdfs-20090707/index.html &></&>
+
+% ## this include shows random thumbnails with links to Zoovy 1 customer web sites
+<&| /includes/panel-featured_stores-20090707/index.html &></&>
+
+% ## Do not touch anything below this line.
+
+<&| /includes/footer/index.html, menu => $menu &></&>
+</li></font></ul>

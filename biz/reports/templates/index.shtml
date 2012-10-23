@@ -1,0 +1,129 @@
+<!-- SETUP_TAB -->
+<br>
+<table width="100%" cellpadding=4 cellspacing=0><tr>
+	<td bgcolor="#ffffff" height=300 valign="top"><table cellspacing=0 cellpadding=4 border=0 width="100%"><tr>
+	<!-- WEBSITE REPORTING -->
+		<td valign="top" width="4%"><img src="/biz/images/tabs/icons/reports_website.gif" width="100" height="100" border=0></td>
+		<td valign="top" width="45%" align="left"><span  class="big_link">Website Statistics</span><br>
+		<p style="margin-bottom: 5px;">Learn what are visitors are doing on your site.</p>
+		- <a href="http://www.google.com/analytics">Google Analytics</a><br>
+		- <a href="/biz/setup/search/index.cgi?ACTION=LOGS">Website Search Logs</a><br>
+		<!--
+			<p>Learn about the traffic that your website is generating.  
+			Where is it coming from?  What are they looking at?</p>
+
+			- Page Hits + Visitors: 
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_PAGES&verb=stats&period=HR_MID">Today</a> |
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_PAGES&verb=stats&period=DAY_THISWEEK">This Week</a> |
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_PAGES&verb=stats&period=WK_THISMONTH">This Month</a><br>
+			- Referrers + Keywords: 
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_REFER&verb=stats&period=DAY_TODAY">Today</a> |
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_REFER&verb=stats&period=DAY_LAST7">This Week</a> |
+				<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=STAT_REFER&verb=stats&period=DAY_MTD">This Month</a><br>
+			- <a href="index.cgi?VERB=WEBSITE">more reports</a>
+-->			
+
+<!--
+			- <a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=NAVCAT">Categories</a><br>
+			- <a href="prodactivity/">Products</a><br>
+			- <a href="referrer/">Referers</a><br></td>
+-->
+
+	<td valign="top" width="2%"><img src="/biz/images/tabs/blank.gif" height=1 width=20></td>
+
+	<!-- ORDER REPORTING -->
+	<td valign="top" width="4%"><img src="/biz/images/tabs/icons/reports_orders.gif" width="100" height="100" border=0></td>
+	<td valign="top" width="45%" align="left"><span  class="big_link">Order Reporting</span><br>
+			<p style="margin-bottom: 5px;">Find out what products are selling and what's not.</p>
+			- Order Detail: 
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALES&PERIOD=today&GUID=<!-- GUID -->">Today</a> | 
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALES&PERIOD=yesterday&GUID=<!-- GUID -->">Yesterday</a> | 
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALES&PERIOD=thismonth&GUID=<!-- GUID -->">This Month</a><br>
+			- Order Summary: 
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALE_SUMMARY&PERIOD=today&GUID=<!-- GUID -->">Today</a> |
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALE_SUMMARY&PERIOD=thismonth&GUID=<!-- GUID -->">This Month</a> <br>
+			- Sales SKU Ranking: 
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALES_SKU_RANK&PERIOD=today&GUID=<!-- GUID -->">Today</a> |
+			<a href="/biz/reports/index.cgi?VERB=SALES-QUICK&REPORT=SALES_SKU_RANK&PERIOD=thismonth&GUID=<!-- GUID -->">This Month</a> <br>
+
+			<div style='margin-top:5px;'>
+			- <b><a href="/biz/reports/index.cgi?VERB=INDEX-SALES&GUID=<!-- GUID -->">More Options 
+			<img src='/biz/images/double_arrows-8x5.gif' border=0 style='margin-left:5px; margin-bottom:2px;' height='5' width='8'>
+			</a></b>			
+			</div>
+	</td>
+			
+
+</tr><tr>
+	<td colspan=5>&nbsp;</td>
+</tr><tr>
+<!-- SYNDICATION REPORTS -->
+	<td valign="top"><img src="/biz/images/tabs/icons/reports_syndicates.gif" width="100" height="100" border=0></td>
+	<td valign="top" align="left">
+		<span  class="big_link">Listings Reports</a></span><br>
+		<p style="margin-bottom: 5px;">Take a look at how many marketplaces each of your products is currently in.</p>
+<!--
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=CHANNEL_SCHEDULER&GUID=<!-- GUID -->">Channel Scheduler</a><br>
+-->
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=EBAY_POWER&detail=NONE&GUID=<!-- GUID -->">eBay Powerlister</a><br>
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=EBAY_LISTING&type=ACTIVE-ALL&detail=NONE&GUID=<!-- GUID -->">eBay Active Listing w/Detail</a><br>
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=PRODUCT_DISPOSITION&GUID=<!-- GUID -->"> Marketplace Disposition Report</a><br>
+	</td>	
+	<td>
+	</td>
+<!-- INVENTORY_REPORTS -->
+	<td valign="top">
+		<a href="/biz/reports/index.cgi?VERB=INDEX-INVENTORY">
+		<img src="/biz/images/tabs/icons/reports_inventory.gif" width="100" height="100" border=0>
+		</a>
+	</td>
+	<td valign="top" align="left">
+		<span class="big_link">Inventory Reports</span><br>
+		<p style="margin-bottom: 5px;">See how much inventory you have in stock, reserved and available to your customers.</p>
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=INVENTORY_SIMPLE&GUID=<!-- GUID -->">Inventory Simple</a><br>
+		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=INVENTORY_DETAIL&GUID=<!-- GUID -->">Inventory Detail</a><br>
+
+		<div style='margin-top:5px;'>
+		- <b><a href="/biz/reports/index.cgi?VERB=INDEX-INVENTORY">More Options
+		<img src='/biz/images/double_arrows-8x5.gif' border=0 style='margin-left:5px; margin-bottom:2px;' height='5' width='8'></a></b><br>
+		</div>
+<!--
+		- <a href="/biz/reports/inventory">Legacy Inventory Reports</a><br>
+-->
+	</td>
+</tr><tr>
+	<td colspan=5>&nbsp;</td>
+</tr>
+	<!-- SCHEDULE_REPORTS -->
+	<tr>
+	<!--
+	<td valign="top"><img src="/biz/images/tabs/icons/reports_scheduling.gif" width="100" height="100"></td>
+	<td valign="top" align="left">
+		<a href="index.cgi?VERB=SCHEDULE" class="big_link">Report Scheduling</a><br>
+		<p>Set up some auto reports to be mailed to you on a monthly, weekly or annual basis.</p>	
+		</td>	
+	<td></td>
+	-->
+	<!-- STORED REPORTS -->
+	<td valign="top"><img src="/biz/images/tabs/icons/reports_stored.gif" width="100" height="100"></td>
+	<td valign="top" align="left">
+		<a href="index.cgi?VERB=STORED" class="big_link">Stored Reports</a><br>
+		<p>Access reports you have stored.</p>	
+	</td>	
+	<td valign="top"><img src="/biz/images/blank.gif" width="100" height="100"></td>
+	<td valign="top" align="left">
+	<!--
+	<form action="batch.cgi">
+	<b>Custom Reports</b>
+	Report ID: <input type="textbox" size=10 name="report">
+	<input type="submit" class="button" value="Build Report">
+	</form>
+	-->
+	</td>
+	</tr>
+</table>
+
+
+</td></tr>
+</table>
+<!-- FOOTER -->

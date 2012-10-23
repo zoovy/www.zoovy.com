@@ -1,0 +1,75 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+
+<h1>Setup Supplier</h1>
+<br>Signup for your <a target=_new href="http://partner.shipwire.com/o.php?id=1900">ShipWire account</a>
+<form method="POST" action="index.cgi">
+<input type="hidden" name="ACTION" value="SAVE-EDIT">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<table>
+	<tr>
+		<td colspan=2><!-- RESULT --></td>
+	</tr>
+	<tr>
+		<td width=50%>Supplier Code:</td>
+		<td><!-- CODE --> (<!-- MODE -->)</td>
+	</tr>
+	<tr>
+		<td width=50%>Profile:</td>
+		<td><select name="PROFILE"><!-- PROFILE --></select></td>
+	</tr>
+
+	<tr>
+		<td> Default Markup: </td>
+		<td><input type="textbox" name="MARKUP" value="<!-- MARKUP -->" class="formed"> </td>
+	</tr>
+	<tr>	
+		<td>Account:</td>
+		<td><input type="textbox" name="COMPANY_ACCOUNT" value="<!-- COMPANY_ACCOUNT -->" class="formed"></td>
+	</tr>
+
+	<tr>
+		<td>Shipwire Username:</td>
+		<td><input type="textbox" name="PARTNER_USERNAME" value="<!-- PARTNER_USERNAME -->" class="formed"></td>
+	</tr>
+	<tr>
+		<td>Shipwire Password:</td>
+		<td><input type="textbox" name="PARTNER_PASSWORD" value="<!-- PARTNER_PASSWORD -->" class="formed"></td>
+	</tr>
+
+
+</table>
+
+<br>
+<table>
+	<tr>
+		<td><b>Products:</b></td>
+		<td>
+			<a href="index.cgi?ACTION=ADDPRODUCTS&CODE=<!-- CODE -->">Add Individual</a> |
+			<a href="index.cgi?ACTION=IMPORT&CODE=<!-- CODE -->">Import Batch</a> 
+		</td>
+	</tr>
+	<tr>
+		<td><b>Configure Shipping:</b></td>
+		<td><!-- CONFIGURE_SHIPPING --></td>
+	</tr>
+</table>
+
+<center>
+<table>
+	<tr>
+		<td><input type="image" src="/images/bizbuttons/save.gif"></td>
+		<td><a href="index.cgi"><img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+		<td><a href="index.cgi?ACTION=REMOVE&CODE=<!-- CODE -->"><img border=0 src="/images/bizbuttons/delete.gif"></a></td>
+	</tr>
+</table>
+</center>
+
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

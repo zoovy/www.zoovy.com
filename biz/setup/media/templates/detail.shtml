@@ -1,0 +1,73 @@
+<!-- SETUP_TAB -->
+
+<!-- HTML -->
+
+<form name="thisFrm" method="POST" action="index.cgi">
+<INPUT TYPE="HIDDEN" NAME="ACTION" value="">
+<INPUT TYPE="HIDDEN" NAME="FILE" value="<!-- FILE -->">
+<INPUT TYPE="HIDDEN" NAME="PWD" value="<!-- PWD -->">
+
+<table width="100%" cellpadding=4 cellspacing=0>
+<tr>
+	<td bgcolor="#ffffff" height=300 valign="top">
+	<table cellspacing=0 cellpadding=0 border=0 width="100%"><tr>
+
+	<td width="80%" valign="top" align="center">
+		<div align="left">
+		<table border="0" cellspacing="0" cellpadding="10" width="100%">
+		<tr>
+		<td width="5%" valign="top" align="center">
+			<img src="<!-- IMAGETHUMB --> " class="table_stroke" height=120 width=120 border=0 alt="<!-- IMAGETHUMB -->"></td>
+	<td width="90%" valign="top" align="left"><strong>Name:</strong> <!-- FULLFILE --><br>
+<strong>Original File Location:</strong> <a href="<!-- ORIGURL -->"><!-- ORIGURL --></a><br>
+<strong>Original File Size:</strong> <!-- FILESIZE --><br>
+
+<strong>Original Image Size:</strong> <!-- DIMENSIONS --> pixels<br>
+<strong>Original File Format:</strong> <!-- FORMAT --><br>
+<strong>Last Modified:</strong> <!-- MODIFIED --><br>
+<strong>Folder:</strong> <a href="index.cgi?PWD=<!-- PWD -->"><!-- PWD --></a>
+
+</td>
+<td valign="top">
+	  <table cellpadding='2' cellspacing='0' border='0' class="table_stroke" width=180>
+	  <tr><td class="table_top">
+			<span class="white">Generate HTML for Link:</span>
+		</td></tr>
+		<tr><td>
+			<table width='100%' bgcolor='FFFFFF' cellpadding='1' cellspacing='0' border='0'>
+			<tr>
+				<td colspan='2'><input type='checkbox' name='ZOOM'>Enable Click to Zoom<br></td>
+			</tr>
+			<tr>
+				<td align='right'>Width: &nbsp;</td><td><input type='textbox' name='WIDTH' value='' size='4'></td>
+			</tr>
+			<tr>
+				<td align='right'>Height: &nbsp;</td><td><input value='' type='textbox' name='HEIGHT' size='4'></td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+		  			<center><input type='button' onClick="window.document.thisFrm.ACTION.value='HTML'; window.document.thisFrm.submit();" value=' Generate '></center>
+				</td>
+			</tr>
+			</table>
+		</td></tr>
+		</table>
+</td>
+</tr>
+</table>
+</div>	
+	</td>
+</tr></table>
+
+<table cellspacing=0 cellpadding=5><tr>
+<td width=120>
+	<input type='button' style='width: 120px;'  value='  Delete Image  ' onClick="window.document.thisFrm.ACTION.value='DELETE'; window.document.thisFrm.submit();">
+</td>
+<td width=120>
+	<input type='button' style='width: 120px;'  value='  Exit  ' onClick="window.document.thisFrm.ACTION.value=''; window.document.thisFrm.submit();">
+</td>
+</tr></table>
+</form>
+
+<br>
+<!-- FOOTER -->

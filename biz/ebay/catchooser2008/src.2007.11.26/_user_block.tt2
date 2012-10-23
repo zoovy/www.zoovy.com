@@ -1,0 +1,17 @@
+[%- IF user.id %]
+[%- INSERT '_round_corners_top.tt2' %]
+<div id="user-block">
+  <p style="text-align:center">Logged in as [% user.username %]/[% user.subuser %]. <a class="category" href='/biz/ebay/catchooser2008/index.cgi/logout'>Logout</a></p>
+  [% IF user.last_categories %]
+  <p class="thinner">Last visited leaf categories:</p>
+  <ul>
+  [% count = 0 %]
+  [% FOREACH category = last_categories %]
+    [% category = category.category %]
+    <li>[% count = count+1; count%]. <a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %] [[% IF category.leaf %]leaf[% ELSE %][% category.categories.size || 0 %][% END %][% IF category.item_specifics_enabled %], Custom Item Specs Enabled[% END %]]</a></li>
+  [% END %]
+  </ul>
+  [% END %]
+</div>
+[%- INSERT '_round_corners_bottom.tt2' %]
+[%- END %]

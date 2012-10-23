@@ -1,0 +1,36 @@
+<!-- REPORT_TAB -->
+
+<center>
+<table width=80%><tr><Td>
+<h1>Import Products</h1>
+<!-- RESULT -->
+
+<form method="POST" enctype='multipart/form-data' action="index.cgi">
+<input type="hidden" name="ACTION" value="SAVE-GENERIC-IMPORT">
+<input type="hidden" name="CODE" value="<!-- CODE -->">
+<input type="hidden" name="DEBUG" value="<!-- DEBUG -->">
+<table>
+	<tr>
+		<td>Supplier Code: <!-- CODE --></td>
+	</tr>
+</table>
+<br>
+CSV File: <input type='file' name='FILENAME'><br>
+<input type='submit' value='  Load from CSV File  '>
+<br>
+
+<center>
+<table>
+   <tr>
+      <td><a href="index.cgi?ACTION=GENERIC-EDIT&CODE=<!-- CODE -->">
+      <img border=0 src="/images/bizbuttons/exit.gif"></a></td>
+   </tr>
+</table>
+</center>
+		
+</form>
+
+</td></tr></table>
+</center>
+<!-- FOOTER -->
+

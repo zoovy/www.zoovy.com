@@ -1,0 +1,22 @@
+<p>You can search for similar items (request to eBay takes some time):</p>
+<form id="sp-form" action="/biz/ebay/catchooser2008/index.cgi/get_product_search_results">
+  <input type="hidden" id="category_id" name="id" value="[% selected_category.id %]" />
+  <input type="hidden" id="attribute_set_id" name="attribute_set_id" value="[% attributes.0.attribute_set_id %]" />
+  <input type="hidden" name="sp_search" value="1" />
+  <label for="attribute_id">
+    [% IF attributes.size == 1 -%]
+      [% attributes.0.attribute.name %]
+      <input type="hidden" id="attribute_id" name="attribute_id" value="[% attributes.0.attribute_id %]" />
+    [%- ELSE %]
+      <select size="1" id="attribute_id" name="attribute_id">
+        [%- FOREACH attribute = attributes %]
+        <option value="[% attribute.attribute_id %]">[% attribute.attribute.name %]</option>
+        [%- END %]
+      </select>
+    [%- END %]
+  </label>
+  <input type="text" id="attribute_value" name="attribute_value" value="" />
+  <input type="submit" value="Search">
+</form>
+[% search_page_html %]
+<p>Or simply continue with <a class="describe" href="/biz/ebay/catchooser2008/index.cgi/describe_item?id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>

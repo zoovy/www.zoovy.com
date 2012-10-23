@@ -1,0 +1,56 @@
+<!-- SETUP_TAB -->
+
+<center>
+<!-- MYTODO -->
+
+<br>
+
+<table width='90%' cellspacing='0' cellpadding='2' border='0' class="zoovytable">
+<tr>
+	<td align="left" class="zoovytableheader">Load URL Rewrites from a CSV File</td>
+</tr><tr>
+	<td>
+
+<div class="hint">
+NOTE: You cannot rewrite/redirect a *valid* URL. For example you cannot redirect an existing category 
+or product page. That is because a rewrite lookup is only done immediately before a 404 page is served.
+</div>
+
+
+<span class="alert"><!-- ERROR --></b></span>
+<form id="thisFrm" name="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input type='hidden' name='VERB' value='UPLOAD-REWRITES'>
+<input type='hidden' name='TYPE' checked value='rewrites'>
+
+<input type="checkbox" name="REWRITE_DESTRUCTIVE"> Destructive Overwrite (deletes all existing rewrites).<br>
+
+
+<!-- SWFUPLOAD -->
+<input type="submit" id="btnSubmit" name="btnSubmit" class="button" value=" Upload CSV File ">
+
+</form>
+</td></tr></table>
+
+<br>
+<br>
+<table width='90%' class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Export Rewrites</td>
+</tr>
+<tr>
+	<td>
+<form id="xyz" name="xyz" action="rewriteexport.cgi/rewrites.csv">
+<div class="hint">
+</div>
+	<input class="button" type="submit" value=" Export ">
+</form>
+
+	</td>
+</tr>
+</table>
+<br>
+<br>
+
+
+
+<!-- FOOTER -->

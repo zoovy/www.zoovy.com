@@ -1,0 +1,47 @@
+<html>
+<head>
+<script type="text/javascript" src="/biz/ajax/jquery-1.6.4/jquery-1.6.4.min.js"></script>
+
+<script type='text/javascript' src='jquery.printElement.js'></script>
+
+<!-- media="print" means these styles will only be used by printing 
+  devices -->
+<style type="text/css" media="print">
+    .printable{ 
+      page-break-after: always;
+    }
+    .no_print{
+      display: none;
+    }
+</style>
+<!-- media="screen" means these styles will only be used by screen 
+  devices (e.g. monitors) -->
+<style type="text/css" media="screen">
+    .printable{
+      display: none;
+    }
+</style>
+<!-- media types can be combined with commas to affect multiple devices -->
+<style type="text/css" media="screen,print">
+    h1{
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: large;
+      font-weight: bold;
+    }
+</style>
+
+
+</head>
+<body>
+
+<div id="printme">
+<div style="page-break-after: always;">Hello World Page1</div>
+<div style="page-break-after: always;">Hello World Page2</div>
+</div>
+
+<input type="button" value="Print" onClick="$('#printme').printElement({printMode:'popup'});">
+
+
+
+</body>
+</html>

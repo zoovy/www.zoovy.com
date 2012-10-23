@@ -1,0 +1,12 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table>
+<form action="index.cgi">
+	<input type="hidden" name="VERB" value="MESSAGES-SAVE">
+	<input type="hidden" name="ID" value="<!-- ID -->">
+	<input type="hidden" name="LANG" value="<!-- LANG -->">	
+	<!-- EDITOR -->
+</form>
+</table>
+</center>

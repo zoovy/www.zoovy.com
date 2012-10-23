@@ -1,0 +1,55 @@
+<!-- SETUP_TAB -->
+<center>
+<table width="85%">
+<tr>
+
+<td width=""><center><font face="Helvetica, Arial, Verdana" size="3"><b><strong>Processor Options</b></strong></font></center></td>
+<td width="50">&nbsp;</td></tr>
+<tr><Td>
+
+<font face="arial">
+<center>
+<table border="2"><tr><td><font size="5" color="red" face="helvetica"><b>Sorry, you don"t have access to this feature!</b></font></td></tr></table>
+</center>
+</center>
+<br>
+<br>
+<b>ABOUT THIS AREA:</b><br>
+<font size="2">
+&nbsp;&nbsp;&nbsp; 
+This is this area where you would setup your Zoovy account to automatically process credit cards.
+A merchant account lets you easily accept credit cards. <br>
+<br>
+There are two ways to use a merchant account with Zoovy: Manual and Payment Gateway.<br>
+1. With Manual processing Zoovy will take credit cards during checkout, and simply validate the card number and expiration date and then 
+save the cardholder information with the order - it will be your responsibility to authorize payment using your own software or terminal and then flag the order as paid.<br>
+To enable this simply select the credit cards you will accept in the credit tab of the payment section.<br>
+<br>
+2. With a Payment Gateway, Zoovy will automatically authorize cards at the time the order is placed so you don"t have to do anything.
+Zoovy currently supports several payment gateways, call technical support for details.
+<!--
+Zoovy currently supports two payment gateway processors: Cardservice Linkpoint (comes with Cardservice Merchant accounts) and Verisign Payflow Pro (works with any merchant account).<br>
+<br>
+<a target="_blank" href="/goto/verisign.cgi">Click here for more information on Verisign Payment Gateway for your existing Merchant Account</a><br>
+<a href="/goto/cardservice.cgi" target="_blank">Click here for more information about a Cardservice Merchant Account and Linkpoint solution.</a></font>
+-->
+<br>
+<hr>
+<br>
+<center>
+<table>
+<td>
+<a href="index.cgi"><img border="0" alt="Exit" src="/images/bizbuttons/exit.gif"></td></tr>
+</table>
+
+</center>
+</form>
+</td></tr></table></center>
+<!-- END FORM TABLE -->
+
+</font>
+</td></tr>
+<tr><td><center><!-- TAB_FOOTER --></center></td></tr>
+</table>
+</center>
+<!-- FOOTER -->

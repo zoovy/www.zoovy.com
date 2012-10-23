@@ -1,0 +1,74 @@
+
+a	{color:#2461AA; text-decoration:none; }
+a:hover	{color:#E0C583; text-decoration:underline;}
+
+
+h1	{margin: 0px 0px 10px 0px; font-size: 13pt; color: #2461aa;}
+h2	{margin: 10px 0px 10px 0px; font-size: 10pt; color: #000000;}
+h3	{margin: 0px; font-size: 9pt; color: #828282;}
+h4	{margin: 0px; font-size: 9pt;}
+
+/* for small, disclaimer text */
+.small	{font-size:7pt; color:#666666; line-height:140%;}
+
+/* for small, hints used to communicate small help for the customers */
+.hint	{font-size:7pt; color:#666666; line-height:140%;}
+
+/* Global styling for large blocks of text.  Any text block should be placed into one of these three tags */
+div, table, p	{font-size:8pt; line-height:160%; color:#000000;}
+
+/* used for horizontal links with | between each.  each href should have the class on it to generate spaceing between links but not between words */
+.menu	{margin:0px 5px 0px 5px;}
+
+/*	Mozilla and IE treat padding and margins differently, especially when used in conjunction with a specified width.
+	This solves that problem and */
+div	{ box-sizing: border-box; -moz-box-sizing: border-box;}
+p	{margin:0px 0px 10px 0px}
+ul	{margin-bottom:10px;}
+
+/* for single items that needs a border */
+.border	{border:1px solid #2461AA; background-color:#FFFFFF;}
+
+/* for stacked items (tables or divs) that each need a border */
+.box	{border:1px solid #E7E7DB; margin-bottom:10px;}
+
+/* form styles.  All textboxes and text areas should have formed on them.  All buttons should use the button class. */
+form	{display:inline;}
+.formed	{border:1px solid #A6B4D1; font-size:8pt; background-color:#ffffff;}
+.button	{font-size:8pt; color:#000000;}
+
+/* only to be used when a style needs to be set to hide content.  Add no other styles to this class */
+.hidden	{display:none;}
+
+/* to be used when you have multiple text 'ads' listed vertically  */
+.ad_block	{margin-bottom:10px; line-height:110%; font-size:8pt; text-align:left;}
+
+/* these two styles are for the rss feed on the account login page. */
+div#rss_input ul {list-style: none; margin: 0; padding: 0; border: none;}
+div#rss_input li {border-bottom: 1px dotted #CCCCCC; margin: 0px; margin-bottom:6px; padding-bottom:6px;}
+
+/* these two styles are for the news feed on the home page */
+.newsfeed_body {font-size:12px; color:1d1d1d; font-family:Arial, Helvetica, sans-serif; border-bottom:solid 1px #cccccc; margin-bottom:8px; line-height:15px;}
+.newsfeed_title {font-size:12px; color:2461aa; font-family:Arial, Helvetica, sans-serif; font-weight:bold;}
+
+/* floating text callout or quote box  */
+.callout	{margin:10px 40px 20px 40px; font-size:18pt; text-align:left; font-family:"Times New Roman", Times, serif; font-style:italic; color:#333333; line-height: 24px}
+
+/* these styles are for the main rotating banner on the home page */
+#banners{width:774px; height:22px;}
+#banners a {text-decoration:none; color:ffffff; font-size:16px; font-family:Arial, Helvetica, sans-serif; font-weight:bold; background-color:#2461aa;}
+#banners div {width:774px; height:303px; display:none; margin:0px; }
+#banners #banner1 {display:block;}
+#banners table {width:350px;}
+#banners td {font-size:12px; height:210px; vertical-align:middle;}
+#banners ul {width:auto; margin:0px; text-align:center; padding:0px }
+#banners ul li {display: inline; padding:0px; margin:0px; position:relative;}
+#banners ul li a {padding:0px 27px;}
+#banners ul li a:hover {background-color:#666666; }
+
+
+/*  Color Pallete
+gunmetal grey: 	2F3C40						Zoovy Blue:  	2461AA
+medium grey: 	828282						light blue:  	C8D8EC
+light grey: 	ECECEC						yellow/orange: 	F7B135
+ */

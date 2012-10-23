@@ -1,0 +1,42 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table class="zoovytable" border=0 width=800>
+<tr>
+	<td class="zoovytableheader">BlinkLogic Configuration (PRT: <!-- PRT -->)</td>
+</tr>
+<tr>
+	<td>
+	<form action="index.cgi" method="POST">
+	<input type="hidden" name="VERB" value="BLINKLOGIC-SAVE">
+	
+	<table>
+	<tr>
+		<td>FTP User:</td>
+		<td><input type="textbox" name="ftp_user" value="<!-- FTP_USER -->"></td>
+	</tr>
+	<tr>
+		<td>FTP Pass:</td>
+		<td><input type="textbox" name="ftp_pass" value="<!-- FTP_PASS -->"></td>
+	</tr>
+	<tr>
+		<td>FTP Server:</td>
+		<td><input type="textbox" name="ftp_server" value="<!-- FTP_SERVER -->"></td>
+	</tr>
+	<tr>
+		<td>Status: </td>
+		<td> 
+			<select name="enable">
+			<option <!-- ENABLE_0 --> value="0">Disable</option>
+			<option <!-- ENABLE_1 --> value="1">Enable</option>
+			</select>
+		</td>
+	</tr>
+	</table>	
+
+	<input class="zoovybutton" type="submit" value="  Save  ">
+	</form>
+	</td>
+</tr>
+</table>
+</center>

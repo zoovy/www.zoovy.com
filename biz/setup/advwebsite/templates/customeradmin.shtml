@@ -1,0 +1,86 @@
+<!-- SETUP_TAB -->
+
+<div class="hint">
+This area configures the display options of the customer configuration area
+</div>
+
+<form action="index.cgi" method="POST">
+<input type="hidden" name="MODE" value="CUSTOMERADMIN-SAVE">
+
+<!--
+<h1>Header Panels</h1>
+<table>
+	<!-- HEADER_PANELS -->
+</table>
+
+<h1>Left 70% Body Panels</h1>
+<table>
+	<!-- LEFT70_BODY_PANELS -->
+</table>
+
+<h1>Right 30% Nav Panels</h1>
+<table>
+	<!-- RIGHT30_BODY_PANELS -->
+</table>
+
+<h1>Footer Panels</h1>
+<table>
+	<!-- FOOTER_PANELS -->
+</table>
+-->
+
+<h1>Customer Admin Config</h1>
+<table>
+<tr>
+	<td align="right" class="body" valign="top"><input type='checkbox' name='disable_cancel_order' <!-- DISABLE_CANCEL_ORDER --> ></td>
+	<td valign="top" class="body" align='left'>
+	Disable customer cancellation from order status<br>
+	<div class="hint">
+	RECOMMENDED: By default customers can cancel an order until you have changed it from 'Recent'.
+	</div><br>
+	</td>
+</tr>
+<tr>
+	<td align="right" class="body" valign="top"><input type='checkbox' name='order_status_disable_login' <!-- ORDER_STATUS_DISABLE_LOGIN_CHECKED -->></td>
+	<td valign="top" class="body" align='left'>
+	Enable bypass of login/password requirement for order status checking.<br>
+	<div class="hint">
+	RECOMMENDED: Several of the default messages include links to let customers automatically login. 
+	</div><br>
+	</td>
+</tr>
+<tr>
+	<td align="right" class="body" valign="top"><input type='checkbox' name='order_status_hide_events' <!-- ORDER_STATUS_HIDE_EVENTS_CHECKED -->></td>
+	<td valign="top" class="body" align='left'>
+	Suppress display of event messages to customers.<br>
+
+	<div class="hint">
+	RECOMMENDED: If a customer logs into their account and views the order history, 
+		the event status messages will show payment transaction history. 
+		Event status messages are the only way a customer can determine why a credit card was declined without contacting customer support.
+	</div><br>
+	</td>
+</tr>
+<tr>
+	<td align='right' class='body' valign='top'><input type='checkbox' <!-- ORDER_STATUS_NOTES_DISABLE --> name='order_status_notes_disable'></td>
+	<td valign='center' class='body' align='left'>
+		Disable viewing of order notes in customer order status.<br>
+	<div class="hint">NOT RECOMMENDED: Enable if your process updates order notes with private information.</div><br>
+	</td>
+</tr>
+<tr>
+	<td align='right' class='body' valign='top'><input type='checkbox' <!-- ORDER_STATUS_REORDER --> name='order_status_reorder'></td>
+	<td valign='center' class='body' align='left'> Enable re-order feature in customer order status.
+	<br>
+	<div class="hint">RECOMMENDED: Clients who change the values of their
+option groups will need to disable this feature.  If option groups are 
+changed then customers will accidentally re-order the wrong item. 
+If you need to change option groups, then rename the product id at the same time to prevent reorders on the product.
+	</div><br>
+	</td>
+</tr>
+</table>
+
+<input type="submit" value=" Save " class="button showLoadingModal">
+
+</form>

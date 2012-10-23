@@ -1,0 +1,44 @@
+<STYLE TYPE="text/css">
+	<!--
+	TD.a 
+		{ 
+		vertical-align: middle;
+		text-align: left;
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 12px;
+		}
+
+	FONT.title
+		{ 
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 14px;
+		font-weight: bold;
+	   color: #330066;
+		}
+	FONT.body
+		{ 
+		text-indent: 2px;
+		font-family: verdana, arial, helvetica;
+		font-size: 10px;
+		}
+	-->
+</STYLE>
+<body bgcolor="FFFFFF" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<center>
+<br>
+<br>
+<table width="500"><tr><td>
+<b><!-- MESSAGE --></b>
+</td></tr></table>
+<form method="POST" action="edit.cgi">
+<input type="hidden" name="CMD" value="<!-- CMD -->">
+<input type="hidden" name="ID" value="<!-- ID -->">
+<table>
+<tr><td><input type="image" border="0" src="/images/bizbuttons/ok.gif"></td>
+<td><a href="<!-- CANCEL -->"><img src="/images/bizbuttons/cancel.gif" border="0"></a></td>
+</center>
+</form>
+</font>
+</body>

@@ -1,0 +1,103 @@
+<!-- SETUP_TAB -->
+
+<script type="text/javascript">
+//function blah() {
+
+// document.observe('dom:loaded',function(){
+
+		
+
+ //styled examples use the window factory for a shared set of behavior  
+ var window_factory = function(container,options){  
+     var window_header = new Element('div',{  
+         className: 'window_header'  
+     });  
+     var window_title = new Element('div',{  
+         className: 'window_title'  
+     });  
+     var window_close = new Element('div',{  
+         className: 'window_close'  
+     });  
+     var window_contents = new Element('div',{  
+         className: 'window_contents'  
+     });  
+     var w = new Control.Window(container,Object.extend({  
+         className: 'window',  
+         closeOnClick: window_close,  
+         draggable: window_header,  
+         insertRemoteContentAt: window_contents,  
+         afterOpen: function(){  
+             window_title.update(container.readAttribute('title'))  
+         }  
+     },options || {}));  
+     w.container.insert(window_header);  
+     window_header.insert(window_title);  
+     window_header.insert(window_close);  
+     w.container.insert(window_contents);  
+     return w;  
+ };  
+
+// var styled_window_one = window_factory($('styled_window_one'));  
+  
+
+//		});
+	
+//}
+</script>
+
+
+<center>
+<table width=650 border=0 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Information</td>
+</tr>
+<tr>
+	<td>
+	<b>SiteWrapper: <!-- WRAPPER --></b><br>
+	<div class="hint">
+	Website Decals like Geotrust, McAfee Site Secure, Provide Support must be
+purchased.
+	Other decals like buySAFE, Amazon Payments, Google Checkout, and Paypal are free but require registration.
+	Additional decals such as FedEx, UPS, Visa/Mastercard/Amex/Discover may be utilized freely.
+
+
+	The sidebar on most themes can support an infinite number of logos or
+decals, in addition the theme designer may have designed specific
+locations where additional more, or less prominent decals may be displayed.
+	</div>
+	<br>
+	</td>
+</tr>
+<tr>
+	<td class="zoovytableheader">SideBar</td>
+</tr>
+<tr>
+	<td>
+	<i>sidebar chooser goes here</i>
+	<textarea id="xyz">
+	</textarea><input type="button" class="button" value="clickme" onClick="blah();">
+	<a id="modalxx" href="/images/zoovy_logo.gif">foo</a>
+	</td>
+</tr>
+<tr>
+	<td class="zoovytableheader">Additional Wrapper Specific Decals</td>
+</tr>
+<tr>
+	<td>
+	<table width=100%>
+	<!-- DECALS -->
+	</table>
+	</td>
+</tr>
+</table>
+
+<a href="http://www.zoovy.com/images/zoovy_logo.gif" id="styled_window_two" title="Test">Test</a>
+<script type="text/javascript">
+var styled_window_two = window_factory($('styled_window_two'));  	
+</script>
+
+
+
+
+</center>
+<!-- FOOTER -->

@@ -1,0 +1,132 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--//
+function openWindow(url) {
+  adviceWin = window.open(url,'advice','status=yes,width=638,height=400,menubar=yes,scrollbars=yes,resize=yes');
+  adviceWin.focus(true);
+}
+//-->
+</SCRIPT>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<!-- SETUP_TAB -->
+<center>
+<font face='arial, helvetica'>
+<br>
+<center><font face='helvetica' color='red' size='5'><b><!-- MESSAGE --></b></font></center>
+<center>
+<br>
+<center>
+<table cellspacing='0' cellpadding='1' bgcolor='3366CC' border='0' width='600'><tr><td>
+<table cellspacing='0' cellpadding='2' bgcolor='FFFFFF' border='0' width='100%'>
+<tr bgcolor='3366CC'><td class='title' colspan='2'> &nbsp;<b><font color='white'>Yahoo Store Inventory Synchronization</font></td></tr>
+<tr bgcolor='FFFFFF'>
+	<td colspan='2'>
+<form action='index.cgi' target="main">
+<input type='hidden' name='ACTION' value='SAVEINVENTORY'>
+This is a feature for people who use Yahoo stores in conjunction with Zoovy stores. First Enable the feature, then setup your Yahoo store to pull real time inventory from the URL: http://www.zoovy.com/webapi/yahoo/inventory.cgi/YOURNAME
+make sure you replace YOURNAME with the username of your Zoovy store.
+For information on how to setup Real-time inventory for a Yahoo store see the documentation on the Yahoo site, just do a search for "real-time inventory" in help.
+<br>
+<br>
+Yahoo Inventory:
+			<select name="yahoo_behavior">
+				<option <!-- YAHOO_ACTUAL --> value="actual"> Show Actual Inventory</option>
+				<option <!-- YAHOO_RESERVE --> value="reserve"> Show Reserve Inventory (Actual - Reserve)</option>
+				<option <!-- YAHOO_SAFE --> value="safe"> Show Safe adjusted inventory (Actual - (Safety+Reserve))</option>
+				<option <!-- YAHOO_INFLATED --> value="inflated"> Lie about inventory whenever safe (adds 10x to actual number)</option>
+			</select>
+<br>
+		<input type='checkbox' <!-- YAHOO_SYNC --> name='yahoo_sync'>Allow Yahoo Stores to Synchronize with Zoovy.<br>
+<br>
+<br>
+<input type='submit' value="  Save  ">
+</form>
+	</td>
+</tr>
+<tr bgcolor='3366CC'><td class='title' colspan='2'> &nbsp;<b><font color='white'>Yahoo Store Order Synchronization</font></td></tr>
+<tr bgcolor='F0F0F0'>
+	<td colspan='2'>
+<form action='index.cgi' target="main">
+<input type="hidden" name=ACTION value="SAVEORDER">
+<a href="javascript:openWindow('http://webdoc.zoovy.com/webmgr/index.php?GOTO=detail/yahoo-ordersync.php')">
+<img align='right' src="/images/setup/advice.gif" border="0" alt="Click This For Advice about Yahoo Order Sync Setup"></a>
+<input type='checkbox' <!-- YORDERSYNC --> name='yahoo_ordersync'> Allow transmission of orders from Yahoo store to Zoovy. (required to enable other changes)<br>
+<input type='checkbox' <!-- YORDERCUSTOMER --> name='yahoo_createcustomer'> Create Customer Records.<br>
+<input type='checkbox' <!-- YORDEROPTIN --> name='yahoo_optin'> Opt Customers into Mailing List.<br>
+<input type='checkbox' <!-- YORDERPROCESS --> name='yahoo_process'> Process incoming credit cards. [do not enable this if your Yahoo store also processes credit cards.]<br>
+<input type='checkbox' <!-- YORDERNOTIFY --> name='yahoo_notify'> Send order notification to customers.<br>
+<br>
+Order ID Behavior: <select name="yahoo_orderid">
+	<option <!-- YAHOO_ORDERID_0 --> value="0">Default (Format: YYYY-MM-[YAHOO#+10000])</option>	
+	<option <!-- YAHOO_ORDERID_1 --> value="1">Use Yahoo Order (Format: YYYY-MM-YAHOO#)</option>
+	<option <!-- YAHOO_ORDERID_2 --> value="2">Assign Zoovy # (Format: YYYY-MM-ZOOVY#)</option>
+</select><br>
+<Br>
+
+Please select a synchronization password using only upper and lower case letters and numbers, 10 digits or better is recommended.<br>
+Synchronization Password: <input type='textbox' name='yorderpass' value="<!-- YORDERPASS -->"><br>
+<br>
+Synchronization URL: https://www.zoovy.com/webapi/yahoo/ordersync.cgi/pass=PASSWORD/user=<!-- USERNAME --><br>
+Be sure to replace PASSWORD with your Yahoo synchronization password from above.<br>
+<br>
+<input type='submit' value="  Save  ">
+</form>
+	</td>
+</tr>
+<tr bgcolor='3366CC'><td class='title' colspan='2'> &nbsp;<b><font color='white'>Yahoo Shipping Synchronization</font></td></tr>
+<tr bgcolor='F0F0F0'>
+	<td colspan='2'>
+<a href="javascript:openWindow('http://webdoc.zoovy.com/webmgr/index.php?GOTO=detail/yahoo-shippingsync.php')">
+<img align='right' src="/images/setup/advice.gif" border="0" alt="Click This For Advice about Yahoo Shipping Sync Setup"></a>
+
+<br>
+Synchronization URL: https://webapi.zoovy.com/webapi/yahoo/shipping.cgi/user=<!-- USERNAME --><br>
+<br>
+	</td>
+
+</tr>
+<tr bgcolor='3366CC'><td class='title' colspan='2'> &nbsp;<b><font color='white'>Yahoo Store Export</font></td></tr>
+<tr bgcolor='FFFFFF'>
+	<td colspan='2'>
+	<a href="javascript:openWindow('http://webdoc.zoovy.com/webmgr/index.php?GOTO=detail/yahoo-prodsync.php')">
+	<img align='right' src="/images/setup/advice.gif" border="0" alt="Click This For Advice about Yahoo Prod Sync Setup"></a>
+	<form name="expFrm" action="" method=post>
+	<input type=hidden name=VERB>
+	<table>
+		<tr>
+			<td><b>RANGE:</b></td>
+			<td>
+				<select name="RANGE">
+					<option value="TODAY">Modified Today</option>
+					<option value="YESTERDAY">Modified Today &amp; Yesterday</option>
+					<option value="1WEEK">Modified 1 Week</option>
+					<option value="1STMONTH">Since 1st of the Month</option>
+					<option value="ALL">All Products</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+			<input type="button" onClick="expFrm.VERB.value='CSV'; expFrm.action='export.cgi/<!-- USERNAME -->.csv'; expFrm.submit();" value="Export Products">
+			<input type="button" onClick="expFrm.VERB.value='ZIP'; expFrm.action='export.cgi/<!-- USERNAME -->.zip'; expFrm.submit();" value="Export Images">
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>			
+				<br>
+				<!-- CATEGORY -->
+			</td>
+	</table>
+	</form>
+	<br>
+	</td>
+</tr>
+</table>
+</td></tr></table>
+<br>
+<center>
+<a href='..' target="_top"><img src='/images/bizbuttons/exit.gif' width='81' height='31' border='0' alt='exit'></a>
+</center>
+<body>

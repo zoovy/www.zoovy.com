@@ -1,0 +1,224 @@
+#!/usr/bin/perl
+
+use strict;
+
+use lib "/httpd/modules";
+require ZOOVY;
+require GTOOLS;
+require DOMAIN::TOOLS;
+require DOMAIN;
+require Data::GUID;
+require LUSER;
+require SITE::MSGS;
+
+
+use Data::Dumper;
+
+my ($LU) = LUSER->authenticate();
+if (not defined $LU) { warn "Auth"; exit; }
+
+#use Data::Dumper;
+#print STDERR Dumper($LU);
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { warn "No auth"; exit; }
+
+my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+
+my @MSGS = ();
+my @BC = (
+	{ name=>'Setup', link=>'/biz/setup' }, 
+	{ name=>'Call Center', link=>'/biz/setup/callcenter' },
+	);
+my $template_file = '';
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+
+$GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
+
+if ($VERB eq '') {
+	$VERB = 'ACCESS';
+	}
+
+
+if ($VERB eq 'MESSAGES') {
+	$template_file = 'messages.shtml';
+	}
+
+my ($webdbref) = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
+if (not defined $webdbref->{'%callcenter'}) {
+	$webdbref->{'%callcenter'} = {};
+	}
+my $CFG = $webdbref->{'%callcenter'};
+
+
+if ($VERB eq 'ACCESS-SAVE') {
+	if (not defined $CFG->{'guid'}) {
+  		require Data::GUID;
+		$CFG->{'guid_created'} = time();
+		($CFG->{'guid'}) = Data::GUID->new()->as_string();
+		}
+	$CFG->{'enabled'} = int($ZOOVY::cgiv->{'enabled'});
+	$CFG->{'private'} = (defined $ZOOVY::cgiv->{'private_callcenter'})?1:0;
+	$CFG->{'public'} = (defined $ZOOVY::cgiv->{'public_callcenter'})?1:0;
+	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref,$PRT);
+	$VERB = 'ACCESS';
+	}
+elsif (not defined $CFG->{'enabled'}) {
+	$VERB = 'ACCESS';
+	}
+
+
+if ($VERB eq 'ACCESS') {
+	$GTOOLS::TAG{'<!-- ENABLED_0 -->'} = ($CFG->{'enabled'}==0)?'selected':'';
+	$GTOOLS::TAG{'<!-- ENABLED_1 -->'} = ($CFG->{'enabled'}==1)?'selected':'';
+	$GTOOLS::TAG{'<!-- PRIVATE_CHECKED -->'} = ($CFG->{'private'}?'checked':'');
+	$GTOOLS::TAG{'<!-- PUBLIC_CHECKED -->'} = ($CFG->{'public'}?'checked':'');
+
+	if ($CFG->{'enabled'}) {
+	
+		$GTOOLS::TAG{'<!-- OPERATOR_DETAILS -->'} = qq~
+<tr><td nowrap>
+<b>Operator URL:</b><br>
+<a target="_callcenter" href="https://www.zoovy.com/callcenter?key=$USERNAME.$PRT.$CFG->{'guid'}">
+https://www.zoovy.com/callcenter?key=$USERNAME.$PRT.$CFG->{'guid'}</a>
+</td></tr>
+~;
+		}
+	$template_file = 'access.shtml';
+	}
+
+if ($VERB eq 'EDIT') {
+	$template_file = 'edit.shtml';	
+	}
+
+
+##
+##
+if ($VERB eq 'MESSAGES-SAVE') {
+	my ($SM) = SITE::MSGS->new($USERNAME,RAW=>1,PRT=>$PRT);
+	my $EDITID = $ZOOVY::cgiv->{'ID'};
+	my $LANG = $ZOOVY::cgiv->{'LANG'};
+	my ($result) = $SM->save($EDITID,$ZOOVY::cgiv->{'MSG'},$LANG,$LUSERNAME);
+	if ($result==0) {
+		$LU->log("SETUP.SYSTEMMSG","Reset/Restored System Message $EDITID ($LANG)","SAVE");
+		}
+	else {
+		$LU->log("SETUP.SYSTEMMSG","Updated Message $EDITID ($LANG)","SAVE");
+		}
+	push @MSGS, "SUCCESS|Saved '.$EDITID.' ('.$LANG.')";
+	$VERB = 'MESSAGES';
+	}
+
+
+##
+##
+if ($VERB eq 'MESSAGE-EDIT') {
+	my ($SM) = SITE::MSGS->new($USERNAME,RAW=>1,PRT=>$PRT);
+	my $EDITID = $ZOOVY::cgiv->{'ID'};
+	$GTOOLS::TAG{'<!-- ID -->'} = $EDITID;
+	my $LANG = $ZOOVY::cgiv->{'LANG'};
+	$GTOOLS::TAG{'<!-- LANG -->'} = $LANG;
+
+	my ($msgref) = $SM->getref($EDITID, $LANG);
+
+	my $jsorig = $msgref->{'defaultmsg'};
+	$jsorig = &ZOOVY::incode($jsorig);
+	$jsorig =~ s/'/\\'/gs;
+
+	$GTOOLS::TAG{'<!-- EDITOR -->'} = qq~
+<tr>
+	<td>Field Name: <b>$msgref->{'pretty'}</b></td>
+</tr>
+~;
+
+	if ($msgref->{'hint'} ne '') {
+		$GTOOLS::TAG{'<!-- EDITOR -->'} .= qq~
+<tr>
+	<td><span class="hint">$msgref->{'hint'}</span></td>
+</tr>
+~;
+			}
+
+	$GTOOLS::TAG{'<!-- EDITOR -->'} .= qq~
+<tr>
+	<td>
+	<textarea rows=3 cols=60 onFocus="this.rows=25;" style="font-size: 8pt;"  name="MSG">~.&ZOOVY::incode($msgref->{'msg'}).qq~</textarea>
+	</td>
+</tr>
+<tr>
+	<td>
+	<input type="submit" class="button" value=" Save ">
+	<input type="button" class="button" value=" Reset " onClick="document.thisFrm.MSG.value='$jsorig'; return(true);">
+	</td>
+</tr>
+~;
+	$template_file = 'message-edit.shtml';
+	}
+
+##
+##
+if ($VERB eq 'MESSAGES') {
+	$template_file = 'messages.shtml';
+	require SITE::MSGS;
+	my ($SM) = SITE::MSGS->new($USERNAME,RAW=>1,PRT=>$PRT);
+
+	$GTOOLS::TAG{'<!-- EDITOR -->'} = "<tr><td><i>Please select a message to edit.</i></td></tr>";
+	my $EDITID = '';
+	my $LANG = '';
+
+	my @msgids = ();
+	my $SMDREF = $SM->fetch_msgs();
+	@msgids = reverse sort keys %{$SMDREF};
+
+	my ($prtinfo) = &ZWEBSITE::prtinfo($USERNAME,$PRT);
+	my @LANGUAGES = split(',',$prtinfo->{'language'});
+	my $r = '';
+
+	my $c = '';
+	foreach my $msgid (@msgids) {
+		foreach my $lang (@LANGUAGES) {
+			my ($msgref) = $SM->getref($msgid,$lang);
+			next if ($msgref->{'cat'}!=20);
+
+			if (substr($msgid,0,1) eq '~') {
+				foreach my $k (keys %{$SMDREF->{$msgid}}) {
+					next if (defined $msgref->{$k});
+					$msgref->{$k} = $SMDREF->{$msgid}->{$k};
+					}
+				}
+
+			$r = ($r eq 'r0')?'r1':'r0';
+
+			if (($EDITID eq $msgid) && ($lang eq $LANG)) { $r = 'rs'; } ## display as currently selected.
+			$c .= "<tr class=\"$r\">";
+			$c .= "<td valign='top'><a href=\"index.cgi?VERB=MESSAGE-EDIT&LANG=$lang&ID=$msgid\">$msgid</a></td>";
+			$c .= "<td valign='top'>".&ZOOVY::incode($msgref->{'pretty'})."</td>";
+			$c .= "<td valign='top'>".&ZTOOLKIT::pretty_date($msgref->{'created_gmt'},-1)." : $msgref->{'luser'}</td>";
+			$c .= "<td align=center>$lang</td>";
+			$c .= "</tr>";
+			}
+		}
+	$GTOOLS::TAG{'<!-- MESSAGES -->'} = $c;
+	}
+
+my @TABS = ();
+push @TABS, { selected=>(($VERB eq 'ACCESSS')?1:0), link=>"index.cgi", name=>'Access Config' };
+
+if ($CFG->{'enabled'}) {
+	# push @TABS, { selected=>(($VERB eq 'LOGS')?1:0), link=>"index.cgi?VERB=LOGS", name=>'Access Log' },
+	push @TABS, { selected=>(($VERB eq 'MESSAGES')?1:0), link=>"index.cgi?VERB=MESSAGES", name=>'Agent Messaging' },
+	}
+
+&DBINFO::db_user_close();
+
+&GTOOLS::output(
+	file=>$template_file,
+	header=>1,
+	bc=>\@BC,
+	js=>2+4+8,
+	tabs=>\@TABS,
+	msgs=>\@MSGS,
+	);
+
+
+

@@ -1,0 +1,67 @@
+<!-- SETUP_TAB -->
+
+<center>
+<form action="index.cgi">
+	<input type="hidden" name="VERB" value="DEBUG-RUN">
+<table width=600 class="zoovytable">
+	<tr>
+		<td colspan=3 class="zoovytableheader">Diagnostics</td>
+	</tr>
+	<tr>
+		<td width=150>Marketplace:</td>
+		<td><!-- MARKETPLACE --></td>
+	</tr>
+	<tr>
+		<td>SKU</td>
+		<td><input type="textbox" name="SKU" value="<!-- SKU -->"></td>
+	</tr>
+	<tr>
+		<td>Strategy:</td>
+		<td>
+		<select name="strategy">
+			<!-- STRATEGIES -->
+		</select>
+		<div class="hint">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=3>
+		<div class="hint">
+		HINT: leave -- selected to use the strategy which is currently configured on the product/asin.
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<input type="checkbox" <!-- CHK_USE_STRATEGY --> name="use_strategy"> 
+		Update SKU with the selected strategy outside of debugger, and apply changes to marketplace immediately.
+		</td>
+	</tr>
+	<tr>
+		<td colspan=3>
+<div class="hint">
+HINT: if the strategy checkbox above is not checked, then the strategy selected in the debugger 
+will only be used inside the debugger (for testing).
+</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2><input type="submit" class="button" value=" Run "></td>
+	</tr>
+</table>
+</form>
+
+<br>
+<br>
+
+<table width=600 class="zoovytable">
+	<tr>
+		<td class="zoovytableheader">Diagnostic Output</td>
+	</tr>
+	<tr>
+		<td><!-- DEBUG_OUT --></td>
+	</tr>
+</table>
+
+</center>

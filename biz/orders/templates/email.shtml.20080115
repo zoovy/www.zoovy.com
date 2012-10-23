@@ -1,0 +1,88 @@
+<html>
+<head>
+	<STYLE>
+	<!--
+	FONT { font-face: helvetica,arial; font-size: 12pt; }
+	input.button { width: 100px; font-size: 8pt; font-face: arial; font-style: bold; }
+	TD { font-face: helvetica,arial; font-size: 10pt; }
+	--->
+	</STYLE>
+	<SCRIPT>
+	<!--//
+	function doIt(cmd)
+	{
+		var x = 0;
+		var okay = false;
+		for (x=0;x<window.document.myForm.message.length;x++) {
+			if (window.document.myForm.message[x].checked) { 
+				okay = true; 
+			}
+		}
+		if (!okay) {
+			alert('You must select one of choices to submit this request.');
+			return false;
+		}
+		else {
+			window.document.myForm.CMD.value = cmd;
+			window.document.myForm.submit();
+			return true;
+		}
+	}
+	//-->
+	</SCRIPT>
+</head>
+<body>
+
+<table width="60%" align="center"><tr><td>
+
+<form name="myForm" action="email.cgi">
+<input type="hidden" name="CMD" value="">
+<input type="hidden" name="ORDERS" value="<!-- ORDER_IDS -->">
+
+<font face="arial">
+<b>Sending Email to:</b><br><!-- ORDER_IDS --><br>
+<br>
+<b>Please select a message:</b><br>
+</font>
+
+<table>
+	<tr>
+		<td><input type="radio" name="message" value="BLANK" <!-- BLANK_CHECKED -->></td>
+		<td><b>Blank Message</b></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="message" value="OCREATE" <!-- OCREATE_CHECKED -->></td>
+		<td><b>Order Created:</b></td>
+		<td><!-- OCREATE --></td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="message" value="PAYREMIND" <!-- PAYREMIND_CHECKED -->></td>
+		<td><b>Payment Reminder:</b></td>
+		<td><!-- PAYREMIND --></td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="message" value="OCUSTOM1" <!-- OCUSTOM1_CHECKED -->></td>
+		<td><b>Custom Message 1:</b></td>
+		<td><!-- OCUSTOM1 --></td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="message" value="OCUSTOM2" <!-- OCUSTOM2_CHECKED -->></td>
+		<td><b>Custom Message 2:</b></td>
+		<td><!-- OCUSTOM2 --></td>
+	</tr>
+</table>
+<br>
+<br>
+<!--
+<input class="button" onClick="doIt('REVIEW');" type="button" value="  Review and Send  ">&nbsp;
+-->
+<input class="button" onClick="doIt('SENDNOW');" type="button" value="  Send Email  ">&nbsp;
+<input class="button" onClick="top.location='/biz/orders';" type="button" value="  Quit  ">
+
+</form>
+
+</td></tr></table>
+
+</body>
+</html>

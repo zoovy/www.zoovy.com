@@ -1,0 +1,23 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<title>Invoice <!-- ID --></title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<!-- SETUP_TAB -->
+
+<center>
+<table width='90%'>
+<tr><td>
+<a href='.'><font color='blue'><b>Return to Billing History</b></font></a><br>
+
+<pre>
+<!-- INVOICECOPY -->
+</pre>
+</td></tr>
+</table>
+
+<center><a href='.'><font color='blue'><b>Return</b></font></a><br></center>
+<br>
+<br>
+<br>
+</body>

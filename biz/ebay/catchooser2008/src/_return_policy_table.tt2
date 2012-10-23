@@ -1,0 +1,175 @@
+[% IF pf %]
+<script LANGUAGE="JavaScript1.1">
+<!--
+aus_dependent_choices = {
+		"attr2135_3804" : {
+				"attr32040" : [ 	["3 Days","32031" ],["7 Days","32032" ,"default"],["14 Days","32035" ],["30 Days","32036" ]]
+	},
+		"attr2135_3805" : {
+				"attr32040" : [ 	["Exchange","32038" ],["Merchandise Credit","32039" ],["Money Back","32037" ,"default"]]
+	}
+}
+
+
+aus_influencers = {
+"attr2135_3803" : [],
+"attr2135_3804" : ["attr2135_38043803"],
+"attr2135_3805" : ["attr2135_38053803"],
+"attr2135_3806" : []
+}
+
+aus_parent_child = {
+"attr2135_3803" : ["attr2135_3805","attr_hidden2135_3805","attr2135_3804","attr_hidden2135_3804"]
+}
+
+aus_disabled_labels = {
+"attr2135_3803" : "          ",
+"attr2135_3804" : "          ",
+"attr2135_3805" : "          ",
+"attr2135_3806" : "          "
+}
+aus_allow_other = {
+}
+
+
+aus_disabled_if_empty = {}
+
+
+
+					//--></script>
+[% END %]
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td align="left"><input type="hidden" name="vcsid" value="2135">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr valign="top">
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr align="left">
+<td valign="top" nowrap></td>
+</tr>
+<tr align="left">
+<td>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td valign="top"><input type="checkbox" value="32040" onClick="vvc_anyParent('attr2135_3803','attr32040');" name="attr2135_3803">
+<font size="2" face="Arial, Helvetica, Sans-Serif" align="left" bold="true" columns="1" type="checkbox"><b>Returns Accepted</b></font></td><td width="10">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<noscript></noscript>
+</table>
+</td><td><font face="Arial, Helvetica, Sans-Serif">- Specify a return policy. <A target=_new HREF="http://pages.ebay.com/help/sell/contextual/return-policy.html" onClick="if(window.openContextualHelpWindow){return openContextualHelpWindow(this.href)}" target="helpwin">Learn More</A>.</font></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr valign="top">
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr align="left">
+<td valign="middle" nowrap><font align="left" face="Arial, Helvetica, Sans-Serif" size="2">Item must be returned within</font>&nbsp;</td><td><select onChange="api_check_on_other('attr2135_3804',this.value);" name="attr2135_3804"><option value="32031">
+3 Days
+</option><option value="32032" selected>
+7 Days
+
+</option><option value="32035">
+14 Days
+</option><option value="32036">
+30 Days
+</option></select></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr valign="top">
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr align="left">
+<td valign="middle" nowrap><font align="left" face="Arial, Helvetica, Sans-Serif" size="2">Refund will be given as</font>&nbsp;</td><td><select onChange="api_check_on_other('attr2135_3805',this.value);" name="attr2135_3805"><option value="32038">
+Exchange
+</option><option value="32039">
+Merchandise Credit
+</option><option value="32037" selected>
+Money Back
+
+</option></select></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr valign="top">
+<td valign="top">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr align="left">
+<td valign="top" nowrap><font align="left" face="Arial, Helvetica, Sans-Serif" size="2">Return policy details</font></td>
+</tr>
+<tr align="left">
+<td><textarea name="attr_t2135_3806" width="450px" style="width:450px" rows="6"></textarea></td>
+</tr>
+<noscript></noscript>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan=""><font face="Arial, Helvetica, Sans-Serif" size="2">Note: 500 character limit</font></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<script>
+aus_init_cascades("attr2135_3803",1);
+</script>

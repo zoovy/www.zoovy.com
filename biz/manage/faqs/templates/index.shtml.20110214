@@ -1,0 +1,49 @@
+<!-- UTILITIES_TAB -->
+
+<form id="thisFrm" name="thisFrm" action="index.cgi">
+<input type="hidden" name="VERB" id="VERB">
+<input type="hidden" name="DATA" id="DATA">
+
+<center>
+<table  width="600" class='zoovytable'>
+	<tr><td class="zoovytableheader">Add Content: </td></tr>
+	<tr><td>
+		Topic: <input type="textbox" name="topic"> 
+			<input onClick="
+			window.document.thisFrm.VERB.value='ADDTOPIC';
+			window.document.thisFrm.submit();
+			" type="button" value="Add Topic" class="button">
+			
+			
+		<hr>
+		<table>
+		<tr><td valign=top>Topic:</td><td valign=top><select name="topicid"><!-- TOPICS --></select></td></tr>
+		<tr><td valign=top>Question:</td><td valign=top><input type="textbox" name="question"></td></tr>
+		<tr><td valign=top>Answer:</td><td valign=top><textarea name="answer"></textarea></td></tr>
+		<tr><td valign=top>Keywords:</td><td valign=top><input type="textbox" name="keywords"></td></tr>
+		<tr><td valign=top>Priority:</td><td valign=top><input size=3 type="textbox" name="priority" value="<!-- PRIORITY -->"><br>
+		<div class="hint">Priority determines sort order, and can contain a number between 0-99 where 0 is the highest priority</div></td></tr>
+		</table>
+			<input onClick="
+			window.document.thisFrm.VERB.value='ADDQANDA';
+			window.document.thisFrm.submit();
+			" type="button" value="Add FAQ" class="button">
+		
+			</td>
+	</tr>
+	<tr><td class="zoovytableheader">Existing Topics:</td></tr>
+	<tr>
+		<td>
+		<table border=0 cellspacing=0 cellpadding=0 width=100%>
+		<!-- OUTPUT -->
+		</table>
+		</td>
+	</tr>
+</table>
+</center>
+
+
+
+</form>
+
+<!-- FOOTER -->

@@ -1,0 +1,40 @@
+<head>
+<title>Help with Common Issues</title>
+</head>
+<body>
+<center>
+<table><tr><td>
+<font face='arial'>
+<h1>Preview Help</h1>
+<hr>
+The preview window displays a "what if" version of your website for a theme that you choose.
+Unfortunately due to the numerous different types of browsers on the market,  there are issues which may
+occur when you attempt to preview.<br>
+<br>
+<b>If the page does not change in preview mode:</b><br>
+When a page does not update it is usually due to a common browser feature called "Caching" that Zoovy 
+implements to improve website performance for your customers. Caching tells a web
+browser to keep a copy of a webpage on its local disk and not to request a fresh copy from the server for
+several hours. Unfortunately caching can get in the way while you are developing your website.<br>
+<br>
+To force your browser to ignore the cached copy do the following steps:<br>
+On a PC using Internet Explorer - hold down the shift key and press "Reload"<br>
+On a PC using Netscape - hold down the shift key and press "Refresh"<br>
+On a Macintosh - hold down the shift key and RELOAD<br>
+<br>
+<b>After previewing page the page does not change back to the original:</b><br>
+This is most likely also caused by caching. In these circumstances follow the steps outlined above
+for reloading the web document.<br>
+<Br>
+<b>Getting Additional Help</b><br>
+If this does not resolve the issue please email Zoovy technical support at support@zoovy.com.
+<Br>
+<center>
+<br>
+<a href="javascript:window.close()">Close this Window to Continue</a><br>
+</center>
+</font>
+
+</td></tr></table>
+</center>
+</body>

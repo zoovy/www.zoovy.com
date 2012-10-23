@@ -1,0 +1,6 @@
+User-agent: *
+Crawl-delay: 10
+Disallow: /biz/support
+Request-rate: 1/5
+Visit-time: 0600-0845
+SITEMAP: http://www.zoovy.com/sitemap.xml

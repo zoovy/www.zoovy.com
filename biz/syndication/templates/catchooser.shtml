@@ -1,0 +1,36 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="STYLESHEET" type="text/css" href="/biz/standard.css"/>
+</head>
+<body>
+
+<script>
+<!--
+
+function save(myselect) {
+	window.opener.document.forms['<!-- FRM -->']['<!-- NAVCAT -->'].value = myselect.value;
+	var span = window.opener.document.getElementById('txt!<!-- NAVCAT -->');
+	window.opener.focus();
+	span.innerHTML = myselect.options[myselect.selectedIndex].text;
+	window.close();
+	}
+
+
+//-->
+</script>
+
+Category: <!-- NAVCAT --><br>
+<br>
+
+<b>Please select a category:</b><br>
+
+<br>
+
+<form name="myFrm" id="myFrm">
+<input type="hidden" name="NAVCAT" value="<!-- NAVCAT -->">
+<select onChange="save(this);" style="font-size: 8pt; font-face: sans-serif, arial;" name="category">
+<option value="0">-- Not Selected --</option>
+<!-- CATEGORY -->
+</select>
+</form>
+</body>

@@ -1,0 +1,94 @@
+% my $menu;
+% $menu = 'company';
+
+<&| /includes/header/index.html, title => 'Zoovy in the News', menu => $menu, nav=>'company|znews' &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+
+<h1>Zoovy in the news</h1>	
+
+<table cellspacing=0 cellpadding=5 width="100%">
+
+
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.internetretailer.com/2010/11/01/making-connections"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/internetretailer.gif" border="0" alt="SmallBizTechnology" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>11/01/10</strong>&nbsp;-&nbsp;<a target="news" href="http://www.internetretailer.com/2010/11/01/making-connections">Making Connections: With cloud computing making integration easier, order management systems can deliver more than packages.</a></p></td>
+</tr>
+
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.auctionbytes.com/cab/abu/y210/m10/abu0273/s03"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/smallbiztechnology.gif" border="0" alt="SmallBizTechnology" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>10/24/10</strong>&nbsp;-&nbsp;<a target="news" href="http://www.auctionbytes.com/cab/abu/y210/m10/abu0273/s03">Zoovy Platform: For Online Retailers on the Brink of Growth</a></p></td>
+</tr>
+
+
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://smallbiztechnology.com/archive/2010/09/5-ways-to-sell-better-online-p.html"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/smallbiztechnology.gif" border="0" alt="SmallBizTechnology" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>09/15/10</strong>&nbsp;-&nbsp;<a target="news" href="http://smallbiztechnology.com/archive/2010/09/5-ways-to-sell-better-online-p.html">5 Ways To Sell Better Online (Psst...Make More Money)</a></p></td>
+</tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.tmcnet.com/usubmit/2009/10/02/4403870.htm"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/tmcnet.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>10/02/09</strong>&nbsp;-&nbsp;<a target="news" href="http://www.ecommerce-guide.com/news/news/article.php/3622576">Zoovy, Inc. Brings Seamless Mobile E-Commerce to Existing Zoovy Merchants at No Extra Cost</a></p></td>
+</tr>
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.reuters.com/article/idUS84540+15-Jun-2009+PRN20090615"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/reuters.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>06/15/09</strong>&nbsp;-&nbsp;<a target="news" href="http://www.ecommerce-guide.com/news/news/article.php/3622576">Zoovy, Inc. & Veruta solve cart abandonment. New technology reaches customers long after they have left a web store without buying anything.</a></p></td>
+</tr>
+
+
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.ecommerce-guide.com/news/news/article.php/3622576"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/ecommerceguide.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>07/26/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.ecommerce-guide.com/news/news/article.php/3622576">Secure Selling Beyond eBay</a></p></td>
+</tr>
+
+
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.marketwire.com/mw/release_html_b1?release_id=132456"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/marketwire.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>06/01/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.marketwire.com/mw/release_html_b1?release_id=132456">buySAFE Solves Retail Websites' Number One Problem: Gaining Buyer Confidence</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.auctionbytes.com/cab/abn/y06/m06/i01/s00"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/auctionbytes.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>06/01/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.auctionbytes.com/cab/abn/y06/m06/i01/s00">BuySafe Expands Beyond eBay</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.practicalecommerce.com/articles/213/BuySafecom-Founder-Steve-Woda/"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/practicalecommerce.gif" border="0" alt="" height="45" width="125"></a></td>
+	<td valign='middle' align='left'><p><strong>06/01/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.practicalecommerce.com/articles/213/BuySafecom-Founder-Steve-Woda/">Making Internet shopping safe for your mother</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.freshnews.com/news/computers-internet/article_32181.html?zoovy"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/freshnews.gif" border="0" alt="" height="45" width="125"></a></td>
+<td valign='middle' align='left'><p><strong>06/01/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.freshnews.com/news/computers-internet/article_32181.html?zoovy">Zoovy, Inc. Websites Are the First to Provide Worry-Free Shopping with a Guarantee</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.practicalecommerce.com/articles/191/Zoovy-CEO-David-Steel/"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/practicalecommerce.gif" border="0" alt="" height="45" width="125"></a></td>
+<td valign='middle' align='left'><p><strong>05/01/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.practicalecommerce.com/articles/191/Zoovy-CEO-David-Steel/">eCommerce pioneer discusses eBay evolution; new AJAX technology</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://auctionbytes.com/cab/abn/y06/m03/i15/s04"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/auctionbytes.gif" border="0" alt="" height="45" width="125"></a></td>
+<td valign='middle' align='left'><p><strong>03/15/06</strong>&nbsp;-&nbsp;<a target="news" href="http://auctionbytes.com/cab/abn/y06/m03/i15/s04">Zoovy, Inc. Releases New Order Manager 6.0</a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://www.freshnews.com/news/computers-internet/article_30054.html"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/freshnews.gif" border="0" alt="" height="45" width="125"></a></td>
+<td valign='middle' align='left'><p><strong>02/23/06</strong>&nbsp;-&nbsp;<a target="news" href="http://www.freshnews.com/news/computers-internet/article_30054.html">Zoovy, Inc. Launches JEDI Supply Chain </a></p></td></tr>
+
+<tr>
+	<td valign='top' align='left'><a target="news" href="http://auctionbytes.com/cab/abn/y06/m02/i23/s01"><img src="http://static.zoovy.com/img/proshop/W125-H45-Bffffff/zoovy/news_logos/auctionbytes.gif" border="0" alt="" height="45" width="125"></a></td>
+<td valign='middle' align='left'><p><strong>02/23/06</strong>&nbsp;-&nbsp;<a target="news" href="http://auctionbytes.com/cab/abn/y06/m02/i23/s01">Zoovy Launches JEDI Supply Chain Integration for Merchants</a></p></td></tr>
+</table>
+
+
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

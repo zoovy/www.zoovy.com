@@ -1,0 +1,240 @@
+#!/usr/bin/perl
+
+#
+# Categories located at: http://datafeeds.jellyfish.com/categories/categorylist.txt
+#
+#
+#
+
+use lib "/httpd/modules"; 
+use CGI;
+use GTOOLS;
+use ZOOVY;
+use ZWEBSITE;	
+use ZTOOLKIT;
+use DBINFO;
+use NAVCAT;
+use DOMAIN::TOOLS;
+use SYNDICATION;
+
+use strict;
+
+my $dbh = &DBINFO::db_zoovy_connect();	
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/syndication",2,'_P&16');
+if ($USERNAME eq '') { exit; }
+
+my $VERB = $ZOOVY::cgiv->{'VERB'};
+my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+$GTOOLS::TAG{'<!-- PROFILE -->'} = $PROFILE;
+
+my $template_file = 'index.shtml';
+if ($FLAGS !~ /,XSELL,/) {
+	$template_file = 'deny.shtml';
+	}
+
+my @TABS = ();
+
+
+my @BC = (
+      { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', },
+      { name=>'JellyFish',link=>'http://www.zoovy.com/biz/syndication/jellyfish','target'=>'_top', },
+		);
+
+if ($VERB eq 'SAVE') {
+
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'JLY');
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	$s{'.jfmid'} = $ZOOVY::cgiv->{'jfmid'};
+	$s{'.host'} = $ZOOVY::cgiv->{'host'};
+	$s{'.user'} = $ZOOVY::cgiv->{'user'};
+	$s{'.pass'} = $ZOOVY::cgiv->{'pass'};
+	$s{'.commission'} = $ZOOVY::cgiv->{'commission'};
+
+	my $ERROR = '';
+	if ($ERROR eq '' && $s{'.jfmid'} eq '') { $ERROR = "Jellyfish Merchant ID is required"; }
+	if ($ERROR eq '' && $s{'.host'} eq '') { $ERROR = "Jellyfish FTP Host is required"; }
+	if ($ERROR eq '' && $s{'.user'} eq '') { $ERROR = "Jellyfish username is required"; }
+	if ($ERROR eq '' && $s{'.pass'} eq '') { $ERROR = "Jellyfish password is required"; }
+	if ($ERROR eq '' && int($s{'.commission'}) < 2) { $ERROR = "Jellyfish commission must be between 2% and 100%"; }
+
+
+	if ($ERROR ne '') {
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>$ERROR</font>";
+		}
+	else {
+		$s{'IS_ACTIVE'} = 1;
+		$so->save();
+		&ZOOVY::savemerchantns_attrib($USERNAME,$PROFILE,"jellyfish:mid",$s{'.jfmid'});
+		&ZOOVY::savemerchantns_attrib($USERNAME,$PROFILE,"jellyfish:commission",$s{'.commission'});
+		&ZWEBSITE::save_website_attrib($USERNAME,'jellyfish',$^T);
+		}
+
+
+
+	$VERB  = 'EDIT';
+	}
+
+
+
+
+
+if ($VERB eq 'SAVE-CATEGORIES') {
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'JLY');
+	my ($DOMAIN,$ROOTPATH) = $so->syn_info();
+
+	my ($NC) = NAVCAT->new($USERNAME);
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		#my $SUBMIT = ($q->param('navcat-'.$safe) eq 'on')?'1':'';
+		my $SUBMIT = ($ZOOVY::cgiv->{'navcat-'.$safe} ne '')?$ZOOVY::cgiv->{'navcat-'.$safe}:'';
+
+		next if ($SUBMIT eq '' || $SUBMIT eq '- Not Selected -');
+
+		$metaref->{'JELLYFISH'} = $SUBMIT;
+		$NC->set($safe,metaref=>$metaref);
+		}
+	$NC->save();
+	undef $NC;
+	$GTOOLS::TAG{'<!-- MSG -->'} = "<font color='blue'>Successfully saved jellyfish categories.</font><br>";
+	$VERB = 'CATEGORIES';
+	}
+
+
+if ($VERB eq '') {
+	my $profref = &DOMAIN::TOOLS::syndication_profiles($USERNAME);
+	my $c = '';
+	my $cnt = 0;
+	foreach my $ns (sort keys %{$profref}) {
+		my $class = ($cnt++%2)?'r0':'r1';
+		$c .= "<tr><td class=\"$class\"><b>$ns =&gt; $profref->{$ns} (<a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>)</td></tr>";		
+		my ($s) = SYNDICATION->new($USERNAME,$ns,'JLY');
+		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td></tr>";
+		}
+	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+	$template_file = 'index.shtml';
+	}
+
+
+if ($PROFILE ne '') {
+	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
+	push @BC, { name=>'Profile: '.$PROFILE };
+	push @BC, { name=>($VERB eq 'EDIT')?'Config':'Categories' };
+	}
+
+
+if ($VERB eq 'EDIT') {
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'JLY');
+	my ($DOMAIN,$ROOTPATH) = $so->syn_info();
+	tie my %s, 'SYNDICATION', THIS=>$so;
+
+	$GTOOLS::TAG{'<!-- JFMID -->'} = $s{'.jfmid'};
+	$GTOOLS::TAG{'<!-- USER -->'} = $s{'.user'};
+	$GTOOLS::TAG{'<!-- PASS -->'} = $s{'.pass'};
+	$GTOOLS::TAG{'<!-- HOST -->'} = $s{'.host'};
+	$GTOOLS::TAG{'<!-- COMMISSION -->'} = $s{'.commission'};
+	$GTOOLS::TAG{'<!-- STATUS -->'} = $so->statustxt();
+	$GTOOLS::TAG{'<!-- FILENAME -->'} = "http://static.zoovy.com/merchant/$USERNAME/$PROFILE-jellyfish.csv";
+
+	$GTOOLS::TAG{'<!-- RATES_ZONE -->'} = '';
+	$GTOOLS::TAG{'<!-- RATES_FIXED -->'} = '';
+	$GTOOLS::TAG{'<!-- RATES_'.$s{'.rates'}.' -->'} = 'selected';
+
+	if (($s{'.jfmid'} eq '') || (length($s{'.jfmid'})<34) || (length($s{'.jfmid'})>36)) {
+		$GTOOLS::TAG{'<!-- WARN_BAD_JF_MID -->'} = "<br><font color='red'>WARNING: Jellyfish Merchant ID is always between 34 and 36 alphanumeric characters. Please check the body of the email titled \"Data feeds\" you received from Jellyfish. </font>";
+		}
+
+	if ($FLAGS =~ /,WS,/) {
+  		my $c = '<option value="">Not Set</option>';
+	   require WHOLESALE;
+		foreach my $sch (@{&WHOLESALE::list_schedules($USERNAME)}) {
+   	   $c .= "<option ".(($s{'.schedule'} eq $sch)?'selected':'')." value=\"$sch\">$sch</option>\n";
+	      }
+		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = $c;
+		}
+	else {
+		$s{'.schedule'} = '';
+ 		$GTOOLS::TAG{'<!-- SCHEDULE -->'} = '<option value="">Not Available</option>';
+	   }
+
+	my $logsref = $so->logs();
+	if (defined $logsref) {
+		my $c = '';
+		foreach my $logset (@{$logsref}) {
+			$logset->[1] =~ s/(zoovy:\w+)/<font color=red>$1<\/font>/g;
+			$logset->[1] =~ s/(gb_missing_\w+.csv)/<a href="http:\/\/static.zoovy.com\/merchant\/$USERNAME\/$1">$1<\/a>/g;
+			$c .= "<tr><td>$logset->[0]</td><td>$logset->[1]</td><td>".&ZTOOLKIT::pretty_date($logset->[2],1)."</td></tr>\n";
+			}
+		$GTOOLS::TAG{'<!-- LOGS -->'} = $c;
+		}
+	else {
+		$GTOOLS::TAG{"<!-- LOGS -->"} = '<tr><td><i>there are no logs recorded for this marketplace.</td></tr>';
+		}
+
+	$template_file = 'edit.shtml';
+	}
+
+
+if ($VERB eq 'CATEGORIES') {
+
+	require SYNDICATION::CATEGORIES;
+	my ($CDS) = SYNDICATION::CATEGORIES::CDSLoad('JLY');
+
+	my ($so) = SYNDICATION->new($USERNAME,$PROFILE,'JLY');
+	my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+	my ($DOMAIN,$ROOTPATH) = $so->syn_info();
+
+	my $c = '';
+	my $NC = NAVCAT->new($USERNAME);
+
+	my ($cdsflat) = SYNDICATION::CATEGORIES::CDSFlatten($CDS);
+
+	foreach my $safe (sort $NC->paths($ROOTPATH)) {
+		next if (substr($safe,0,1) eq '*');
+		next if ($safe eq '');
+		my ($pretty, $children, $productstr, $sortby, $metaref) = $NC->get($safe);
+		next if (substr($pretty,0,1) eq '!');
+	
+		my $name = ''; 
+		if ($pretty eq '') { $pretty = "UN-NAMED: $safe"; }
+		if (substr($safe,0,1) eq '.') {
+			foreach (split(/\./,substr($safe,1))) { $name .= "&nbsp; - &nbsp; "; } $name .= $pretty;
+			if ($safe eq '.') { $name = 'HOMEPAGE'; }
+			}
+		elsif (substr($safe,0,1) eq '$') {
+			$name = "LIST: ".$pretty;
+			}
+		my $val = $metaref->{'JELLYFISH'};
+		if ((not defined $val) || ($val == 0)) { $val = 0; }
+		$c .= "<tr>";
+		$c .= "<td nowrap>$name</td>";
+
+		my ($iref) = SYNDICATION::CATEGORIES::CDSInfo($CDS,$val);
+		$pretty = $iref->{'Path'};
+
+		$c .= qq~<td nowrap>~;
+		$c .= qq~<input class="button" type="button" onClick="selectCategory('JLY','navcat-$safe',document.catFrm['navcat-$safe'].value);" value="Config"> ~;
+		$c .= qq~<input type="textbox" onChange="ajaxUpdate('JLY',this);" value="$val" name="navcat-$safe" size="5"></td>~;
+		$c .= qq~<td nowrap><span id="txt!navcat-$safe">$pretty</span></td>~;
+		$c .= "</tr>\n";
+		}
+	if	($c eq '') { $c = '<tr><td><i>No website categories exist??</i></td></tr>'; }
+	$GTOOLS::TAG{'<!-- CATEGORIES -->'} = $c;
+
+	$template_file = 'categories.shtml';
+	}
+
+&GTOOLS::output(
+   'title'=>'JellyFish Syndication',
+   'file'=>$template_file,
+	'head'=>qq~<script language="JavaScript1.2" type="text/javascript" src="/biz/syndication/fastlookup.js"></script>~,
+   'header'=>'1',
+	'js'=>1+2,
+   'help'=>'#50918',
+   'tabs'=>\@TABS,
+   'bc'=>\@BC,
+   );
+
+&DBINFO::db_zoovy_close();
+

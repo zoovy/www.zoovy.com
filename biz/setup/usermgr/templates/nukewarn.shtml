@@ -1,0 +1,44 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<title>User Manager</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<center>
+<font face="Arial, Helevetica">
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<br>
+<br>
+<center>
+<table width=500>
+<tr><td>
+<font color='red'><b>WARNING:</b></font><br>
+<form action="index.cgi">
+<input type="hidden" name="ACTION" value="NUKECONFIRM">
+<input type="hidden" name="UID" value="<!-- UID -->">
+<Br>
+<b>You are about to remove user: <!-- LUSER --> from the system.</b>
+<br>
+<br>
+If this user has a private email inbox - all mail will also be deleted. 
+Email is permanently lost once the account has been removed.
+<Br>
+<br>
+
+<center>
+<table>
+<tr>
+	<td><input type="submit" value=" Confirm " class="button"></td.
+	<td><input type="button" class="button" value=" Back " onClick="document.location='index.cgi?ACTION=EDIT&UID=<!-- UID -->';"></a></td>
+</tr>
+</table>
+</center>
+	
+<br>
+</td></tr>
+</table>
+
+</center>
+</body>

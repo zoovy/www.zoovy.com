@@ -1,0 +1,39 @@
+% my $menu;
+% $menu = 'company';
+
+<&| /includes/header/index.html, title => 'Zoovy Customer Testimonials', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+
+<h1>Customer Testimonials</h1>		
+
+
+
+<!-- BEGIN /company/testimonials block -->
+<&| /includes/customers.html &></&>
+<table cellspacing=1 cellpadding=5 width="100%">
+<%perl>
+
+my @CUSTOMERS = inc_customers_get('logo'=>1,quotes=>1,pdf=>1);
+foreach my $c (@CUSTOMERS) {
+	print qq~<tr>~;
+	print qq~<td valign="top" style="padding-right:25px">~;
+	print qq~<a href="$c->{'link'}" target="_blank">~;
+	print qq~<img src="$c->{'logo'}" width='200' height='56' alt="$c->{'domain'} zoovy review" border="0"></a><br />~;
+	print qq~</p>~;
+	print qq~<p><a href="$c->{'pdf'}" alt="$c->{'domain'} zoovy review" target="_blank">Read the full PDF</a><br/>~;
+	print qq~</p>~;
+	print qq~<td><p>&ldquo;~;
+	print qq~$c->{'quotes'}->[0]~;
+	print qq~&rdquo;</p>~;
+	print qq~<div align="right"><strong>$c->{'owner'}<br>$c->{'title'}</strong></div></td>~;
+	print qq~</tr>~;
+	}
+
+</%perl>
+</table>
+<!-- END /company/testimonials block -->
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

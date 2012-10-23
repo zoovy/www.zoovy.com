@@ -1,0 +1,38 @@
+<!-- SETUP_TAB -->
+
+<div align="center">
+
+<!-- MESSAGE -->
+
+<form action="index.cgi" method="post">
+		<input type="hidden" name="ACTION" value="SAVE-SITEBUTTONS">
+		<input type="hidden" name="DOCID" value="<!-- DOCID -->">
+		<br>
+		<b>Wrapper Site Buttons</b><br>
+		<i>These are all of the buttons that appear inside the page, such as "Add to Cart","Continue Shopping", etc.</i><br>
+		<br>
+
+
+		<table>
+			<tr>
+				<td colspan='5'>
+					Preview of currently selected buttons:<br>
+					<table>
+					<!-- BUTTON_PREVIEW -->
+					</table>
+					<hr>
+					<br>
+					<input type="radio" select check checked selected name="sitebuttons" value=""> Existing: 
+					<input type="textbox" size="100" name="sitebuttons_txt" value="<!-- SITEBUTTONS_TXT -->"><br>
+					<i>Note: please do not edit this unless you're sure you know what you're doing</i><br>
+				</td>
+			</tr>
+		<!-- BUTTON_LIST -->
+		</table>
+				
+		<input type="submit" value="Save Theme Properties">
+		</td></tr></table>
+</form>
+
+</div>
+</body>

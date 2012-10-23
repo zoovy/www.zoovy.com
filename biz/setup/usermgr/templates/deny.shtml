@@ -1,0 +1,29 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+<title>User Manager</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+<center>
+<font face="Arial, Helevetica">
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<center>
+<table>
+<tr><td>
+<font color='red'><b>Access Denied</b></font><br>
+<Br>
+Sorry, you must have a 2.0 account to access this feature.
+<br>
+User Manager allows an administrative user to create sub-accounts for employees and 
+specify which portions of this site each employee may access. <br>
+<br>
+<center>
+<a href="/biz/setup"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+</center>
+</td></tr>
+</table>
+
+</center>
+</body>

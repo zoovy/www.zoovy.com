@@ -1,0 +1,414 @@
+#!/usr/bin/perl
+
+use lib "/httpd/modules";
+use GTOOLS;
+use ZOOVY;
+use IMGLIB;
+use Archive::Zip;
+use Text::CSV;
+use Spreadsheet::WriteExcel::Simple;
+use Spreadsheet::WriteExcel;
+use POSIX qw (strftime);
+use DBINFO;
+use PRODUCT;
+use ZWEBSITE;
+
+my $template_file = '';
+my $MAXOUT = 500;
+my $HOSTNAME = $ENV{'HOSTNAME'};
+if ($HOSTNAME eq 'webapi') { $MAXOUT = 5000; }
+
+&ZOOVY::init();
+&DBINFO::db_zoovy_connect();
+my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/manage",2,'_M&16');
+if ($USERNAME eq '') { exit; }
+if ($FLAGS =~ /,L1,/) { $FLAGS .= ',CSV,'; }
+
+
+if ($ZOOVY::cgiv->{'FIELDS'} ne '') {
+	&ZWEBSITE::save_website_attrib($USERNAME,'csv_fields',$ZOOVY::cgiv->{'FIELDS'});
+	my @ar = split(/,/,$ZOOVY::cgiv->{'FIELDS'});
+	my $fields = scalar(@ar);
+	$MAXOUT = int(250000 / $fields);
+	}
+
+
+
+my $ACTION = $ZOOVY::cgiv->{'ACTION'};
+if ($FLAGS !~ /,CSV,/) {
+	$ACTION = 'DENY';
+	}
+
+$GTOOLS::TAG{'<!-- USERDATE -->'} = $USERNAME."-".strftime("%e-%b-%Y", localtime()).'_'.time();
+$GTOOLS::TAG{'<!-- USERDATE -->'} =~ s/ /0/g;
+$GTOOLS::TAG{'<!-- TS -->'} = time();
+
+my ($tsref,$catref);
+my $PRODUCTS = $ZOOVY::cgiv->{'PRODUCTS'};
+
+if ($ZOOVY::cgiv->{'CATEGORIES'}) {
+	($tsref,$catref) = &ZOOVY::build_prodinfo_refs($USERNAME);
+	}
+
+if ($ZOOVY::cgiv->{'NAVCATS'}) {
+	require NAVCAT;
+	}
+
+if (not defined $ZOOVY::cgiv->{'FIELDS'}) {
+	$ZOOVY::cgiv->{'FIELDS'} = &ZWEBSITE::fetch_website_attrib($USERNAME,'csv_fields');
+	}
+$ZOOVY::cgiv->{'FIELDS'} =~ s/[\s]+//gs;
+
+if ($ACTION eq 'PACKAGE' || $ACTION eq 'SCREEN' || $ACTION eq 'EXCEL') {
+	&ZWEBSITE::save_website_attrib($USERNAME,'csv_fields',$ZOOVY::cgiv->{'FIELDS'});
+	my @ar= split(/,/,$PRODUCTS);
+	if (scalar(@ar)>$MAXOUT) { $ACTION = ''; }
+	if ($PRODUCTS eq '') { $ACTION = ''; }
+	}
+
+
+my $OUTPUT = '';
+if ($ACTION eq 'PACKAGE' || $ACTION eq 'SCREEN' || $ACTION eq 'EXCEL') {
+	require NAVCAT;
+	my $NC = NAVCAT->new($USERNAME);
+	my %ALLKEYS = ();
+
+   my $csv = Text::CSV->new();              # create a new object
+
+	# Fix up some keys
+	delete $ALLKEYS{''};
+	my $x = 1;	
+
+	my %FOUNDKEYS = ();			# contains a hash of keys we know we have.
+	
+	my @keyorder = ();
+	my $DYNAMICKEYS = 1;
+	if ($ZOOVY::cgiv->{'FIELDS'}) {
+		$DYNAMICKEYS = 0;
+		push @keyorder, (split(/,/,$ZOOVY::cgiv->{'FIELDS'}));
+		foreach my $k (keys %FOUNDKEYS) { $FOUNDKEYS{$k}++; } 
+		}
+
+	my $HTML = 0;
+	if ($ACTION eq 'EXCEL' || $ACTION eq 'SCREEN') { $HTML = 1; }
+
+	my @ar = sort split(/,/,$PRODUCTS);
+	my $batchesref = &PRODUCT::batchify(\@ar,100);
+	@ar = ();
+	
+	foreach my $batchref (@{$batchesref}) {
+
+		my $prodref = &ZOOVY::fetchproducts_into_hashref($USERNAME,$batchref);
+		my $out = '';
+		foreach my $prod (sort keys %{$prodref}) {
+			next if $prod eq '';
+			# print STDERR $prod."\n<br>";
+			$thisprod = $prodref->{$prod};	
+
+			if ($ZOOVY::cgiv->{'IMAGELIB'}) {
+				my $x = 1;
+				while ( defined $thisprod->{'zoovy:prod_image'.$x} ) { 
+					if ($thisprod->{'zoovy:prod_image'.$x} ne '') {
+						$thisprod->{'%IMGURL=zoovy:prod_image'.$x} = &GTOOLS::imageurl($USERNAME,$thisprod->{'zoovy:prod_image'.$x},undef,undef,undef,0,'jpg');		
+						}
+					delete $thisprod->{'zoovy:prod_image'.$x}; 
+					$x++;
+					}
+				if (defined $thisprod->{'zoovy:prod_thumb'}) {
+					if ($thisprod->{'zoovy:prod_thumb'} ne '') {
+						$thisprod->{'%IMGURL=zoovy:prod_thumb'} = &GTOOLS::imageurl($USERNAME,$thisprod->{'zoovy:prod_thumb'},undef,undef,undef,0,'jpg');
+							}
+					delete $thisprod->{'zoovy:prod_thumb'}; 
+					}
+				}
+		
+			if (defined $ZOOVY::cgiv->{'CATEGORIES'}) {
+				$thisprod->{'%CATEGORY'} = $catref->{$prod};
+				}
+	
+			if ((defined $ZOOVY::cgiv->{'NAVCATS'}) && (defined $NC)) {
+				my $count = 1;	
+				foreach my $path (@{$NC->paths_by_product($prod,1)}) {
+					$thisprod->{'%CATEGORY'.($count++).'%'} = $path;
+					}
+				}
+
+			if ($DYNAMICKEYS) {
+				## append any keys that we need to @keyorder
+				foreach my $k (keys %{$thisprod}) {
+					next if (defined $FOUNDKEYS{$k});
+					$FOUNDKEYS{$k}++; 
+					push @keyorder, $k; 
+					}
+				}
+
+			if ($HTML) {
+				$OUTPUT .= "<tr>\n";
+				$OUTPUT .= "<td>$prod</td>";
+				foreach my $k ( @keyorder ) {
+					$OUTPUT .= "<td>".&ZOOVY::incode($thisprod->{$k})."</td>\n";
+					}
+				$OUTPUT .= "</tr>\n";
+				}
+			else {
+				my @columns = ();
+				foreach my $k ( @keyorder ) {
+					$thisprod->{$k} =~ s/[\n\r]+//gs;
+					$thisprod->{$k} = strip_bad( $thisprod->{$k});
+					push @columns, $thisprod->{$k};
+					}
+				$status = $csv->combine(@columns);
+				$OUTPUT .= $prod.','.$csv->string()."\r\n";
+				}
+			}
+
+		}
+
+	my $header = '';
+	if ($HTML) {
+		$header = '<Tr style="font-weight: bold;">';
+		foreach ('%SKU',@keyorder) { $header .= "<td>$_</td>"; }
+		$header .= "</tr>\n";
+		}
+	else {
+		my $status = $csv->combine('%SKU',@keyorder);    # combine columns into a string
+		$header = $csv->string()."\n";               # get the combined string
+		}
+	$OUTPUT = $header.$OUTPUT;
+	}
+
+
+if ($ACTION eq 'PACKAGE') {
+	print "Content-type: text/csv\n\n";
+	print "$OUTPUT\n";
+	exit;
+	}
+
+if ($ACTION eq 'EXCEL') {
+	# print "Content-type: application/vnd.ms-excel\n\n";
+	print "Content-type: application/excel\n\n";
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $OUTPUT;
+	&GTOOLS::output(file=>'excel.shtml',header=>0);
+	exit;
+	}
+
+if ($ACTION eq 'SCREEN') {
+	print "Content-type: text/html\n\n";
+	print "<table>";
+	print "$OUTPUT";
+	print "</table>";
+	exit;
+	}
+
+
+if ($ACTION eq 'SELECT_RANGE') {
+	$c = qq~
+<input type='hidden' name='ACTION' value='SAVE_RANGE'>
+<b>Select Range of Products</b><br>
+<i>NOTE: Products are sorted alphanumerically (e.g. 1, 100, 101, 2, 3, 4, 40, 41, 42, A123, B001)</i><br>
+<br>
+<table>
+	<tr>
+		<td>First Product:</td>
+		<td><input type='textbox' name='RSTART'></td>
+	</tr>
+	<tr>
+		<td>Last Product:</td>
+		<td><input type='textbox' name='REND'></td>
+	</tr>
+</table>
+~.$c;
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+	$template_file = 'select.shtml';
+	}
+
+if ($ACTION eq 'SAVE_RANGE') {
+	my @list = &ZOOVY::fetchproduct_list_by_merchant($USERNAME);
+	my $start = $ZOOVY::cgiv->{'RSTART'};
+	my $end = $ZOOVY::cgiv->{'REND'};
+	if ($start gt $end) { my $t = $start; $start = $end; $end = $t; }
+	foreach my $p (@list) {
+		if (($start le $p) && ($end ge $p)) {
+			$PRODUCTS .= $p.',';
+			}
+		}
+	chop($PRODUCTS);
+	$ACTION = '';
+	}
+
+#######################################################################################
+
+#######################################################################################
+
+
+
+if ($ACTION eq 'SAVE_PRODUCTS') {
+	$PRODUCTS = '';
+	foreach my $k (keys %{$ZOOVY::cgiv}) {
+		if ($k =~ /product\-(.*?)$/) {
+			$PRODUCTS .= "$1,";
+			}
+		}
+	chop($PRODUCTS);
+	$ACTION = '';
+	}
+
+
+if ($ACTION eq 'SELECT_PRODUCTS') {
+	%prodhash = &ZOOVY::fetchproducts_by_name($USERNAME);
+	my %p = ();
+	foreach $k (split(',',$PRODUCTS)) { $p{$k}++; }
+	foreach $thisprod (sort keys %prodhash) {
+	   $prodhash{$thisprod} = &strip_html($prodhash{$thisprod});
+   	$c .= "<input type='CHECKBOX' ";
+		if (defined $p{$thisprod}) { $c .= 'checked'; }
+		$c .= " name=\"product-$thisprod\">$thisprod - ".$prodhash{$thisprod}."<br>\n";
+		}
+	$c = qq~
+<input type='hidden' name='ACTION' value='SAVE_PRODUCTS'>
+<b>Select Products</b><br>
+~.$c;
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+	$template_file = 'select.shtml';
+	}
+
+if ($ACTION eq 'SELECT_ALL') {
+	$PRODUCTS = '';
+	%prodhash = &ZOOVY::fetchproducts_by_name($USERNAME);
+	foreach my $k (keys %prodhash) {
+		$PRODUCTS .= "$k,";
+		}
+	chop($PRODUCTS);
+	$ACTION = '';
+	}
+
+
+#######################################################################################
+
+if ($ACTION eq 'SELECT_MANAGECAT') {
+	require CATEGORY;
+	$info = &CATEGORY::fetchcategories($USERNAME);
+	foreach $safe (sort keys %{$info}) {
+		$c .= "<input type='checkbox' name='mcat-$safe'> $safe<br>";
+		}
+	
+	$c = qq~
+<input type='hidden' name='ACTION' value='SAVE_MANAGECATS'>
+<b>Select from Management Categories</b><br>
+~.$c;
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+	$template_file = 'select.shtml';
+	}
+
+if ($ACTION eq 'SAVE_MANAGECATS') {
+	require CATEGORY;
+	$PRODUCTS = '';
+	$info = &CATEGORY::fetchcategories($USERNAME);
+	foreach my $k (keys %{$ZOOVY::cgiv}) {
+		if ($k =~ /mcat\-(.*?)$/) {
+			$safe = $1;
+			$PRODUCTS .= $info->{$safe}.',';
+			}
+		}
+	chop($PRODUCTS);
+	$ACTION = '';
+	}
+
+#######################################################################################
+
+if ($ACTION eq 'SAVE_NAVCATS') {
+	require NAVCAT;
+	$PRODUCTS = '';
+	$NC = NAVCAT->new($USERNAME);
+	foreach my $k (keys %{$ZOOVY::cgiv}) {
+		if ($k =~ /navcat\-(.*?)$/) {
+			$safe = $1;
+			my ($pretty, $children, $productstr, $sortby) = $NC->get($safe);
+			$PRODUCTS .= $productstr.',';
+			}
+		}
+	chop($PRODUCTS);
+	$ACTION = '';
+	}
+
+if ($ACTION eq 'SELECT_NAVCAT') {
+	require NAVCAT;
+	my $NC = NAVCAT->new($USERNAME);
+	foreach $safe (sort $NC->paths()) {
+		my ($pretty, $children, $productstr, $sortby) = $NC->get($safe);
+		$c .= "<input type='checkbox' name='navcat-$safe'> $safe<br>";
+		}
+	$c = qq~
+<input type='hidden' name='ACTION' value='SAVE_NAVCATS'>
+<b>Select from Navigation Categories</b><br>
+~.$c;
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
+	$template_file = 'select.shtml';
+	}
+
+
+if ($ACTION eq '') {
+	$template_file = 'index.shtml';
+	$c = '';
+	my @ar = split(/,/,$PRODUCTS);
+#	%prodhash = &ZOOVY::fetchproducts_by_name($USERNAME);
+#	foreach $thisprod (sort keys %prodhash) {
+#	   $prodhash{$thisprod} = &strip_html($prodhash{$thisprod});
+#   	$c .= "<input type='CHECKBOX' name=\"product-$thisprod\">$thisprod - ".$prodhash{$thisprod}."<br>\n";
+#		}
+	$GTOOLS::TAG{'<!-- PRODUCTS -->'} = $PRODUCTS;
+	if ($PRODUCTS eq '') {
+		$GTOOLS::TAG{'<!-- PRODUCT_WARNING -->'} = qq~
+<font color='red'>Please select some products</font><br>
+		~;
+		}
+	elsif (scalar(@ar)>$MAXOUT) {
+		$GTOOLS::TAG{'<!-- PRODUCT_WARNING -->'} = qq~
+<font color='red'>WARNING: You may not export more than $MAXOUT products at a time.<br>(hint: specify exactly which fields to increase the number of exportable products)</font><br>
+		~;
+		}
+	else {
+		$GTOOLS::TAG{'<!-- PRODUCT_WARNING -->'} = "<font color='blue'>".scalar(@ar)." products selected.</font><br>";
+		}
+	$PRODUCTS =~ s/,/, /gs;
+	$GTOOLS::TAG{'<!-- PRODUCTOUT -->'} = $PRODUCTS;
+	}
+
+if ($ACTION eq 'DENY') {
+	$template_file = 'denied.shtml';
+	}
+
+$GTOOLS::TAG{'<!-- FIELDS -->'} = $ZOOVY::cgiv->{'FIELDS'};
+&GTOOLS::output(
+   'title'=>'Product Export',
+   'file'=>$template_file,
+   'header'=>'1',
+   'help'=>'#50365',
+   'bc'=>[
+      { name=>'Utilities',link=>'https://www.zoovy.com/biz/utilities','target'=>'_top', },
+      { name=>'Product Export',link=>'','target'=>'_top', },
+      ],
+   );
+
+
+&DBINFO::db_zoovy_close();
+
+
+sub strip_html {
+   my ($foo) = @_;
+
+   $foo =~ s/\<.*?\>//gis;
+
+   return($foo);
+}
+
+sub strip_bad {
+	my ($foo) = @_;
+	$c = '';
+	foreach (split(//,$foo)) { 
+		next if (ord($_)>128);
+		next if (ord($_)<32);
+		$c .= $_;
+		}
+	return ($c);
+}

@@ -1,0 +1,9 @@
+<html>
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/setup/standard.css">
+</head>
+<frameset rows="95,*" frameborder=0 framespacing=0 border=0>
+<frame src="title.cgi" name="title" frameborder=0 border=0 marginwidth="0" marginheight="0" noresize scrolling='no'>
+<frame src="main.cgi" name="main" frameborder=0 border=0 marginwidth="0" marginheight="0">
+</frameset>
+</html>

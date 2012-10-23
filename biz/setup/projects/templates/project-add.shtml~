@@ -1,0 +1,29 @@
+<!-- SETUP_TAB -->
+
+<center>
+<table width="800" class="zoovytable">
+<tr><td class="zoovytableheader">Add Project</td></tr>
+<tr><td>
+
+<form action="index.cgi">
+<div class="stdform">
+<legend class="stdform">Add Project</legend>
+<input type="hidden" name="VERB" value="PROJECT-ADD-SAVE">
+
+<div>
+<label class="stdform" for="title">Project Title</label>
+<input class="stdform" id="title" name="title">
+</div>
+
+<div>
+<label class="stdform" for="title">GitHub Repo</label>
+<input class="stdform" id="repo" name="repo">
+</div>
+
+<input class="button" type="submit" value="Save">
+</div>
+</form>
+
+</td></tr>
+</table>
+</center>

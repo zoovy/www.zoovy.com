@@ -1,0 +1,25 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, pageid=>$ENV{"SCRIPT_NAME"}, title => 'Zoovy Services - domain registration', menu => $menu, nav=>"services|domainreg" &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+	
+
+
+<h1>Domain Registration</h1>
+<h3>Merchants have the option to use Zoovy as a domain registar.</h3>
+
+<br />
+<h4>Benefits:</h4>
+<ul>
+	<li>Automatic renewals, which means no down time due to expiration</li>
+	<li>Added security, DNS can not be changed without Zoovy being aware</li>
+	<li>Purchase domains directly through Zoovy interface</li>
+</ul>
+
+
+<h2>Zoovy becomes the registar, however merchant remains registered owner.</h2>
+
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => $menu &></&>

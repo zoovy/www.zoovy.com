@@ -1,0 +1,54 @@
+<!-- UTILITIES_TAB -->
+
+<!-- DEBUG -->
+<form action="index.cgi" method="POST">
+<input type="hidden" name="VERB" value="STRATEGY-SAVE">
+<input type="hidden" name="STRATEGY_ID" value="<!-- STRATEGY_ID -->">
+<center>
+<table class="zoovytable" width=600>
+<tr class="zoovytableheader">
+<td colspan=2>
+	Add/Update a Repricing Strategy
+</td>
+</tr>
+<tr>
+	<td>Amz Seller Name:</td>
+	<td><!-- SELLER --></td>
+</tr>
+<tr>
+	<td>Strategy ID:</td>
+	<td><!-- STRATEGY_ID --></td>
+</tr>
+<tr>
+	<td>Win By:</td>
+	<td>
+	<select name="lower_amount">
+		<!-- LOWER_AMOUNTS -->
+	</select>
+	</td>
+</tr>
+<tr>
+	<td>
+</tr>
+<tr>
+	<td>Ignored Sellers (one per line)</td>
+	<td>
+	<textarea name="ignore_sellers"><!-- IGNORE_SELLERS --></textarea>
+	<div class="hint">The pricing provided by these sellers will not be evaluated.</div>
+	</td>
+</tr>
+<tr>
+	<td>Bully Sellers (one per line)</td>
+	<td>
+	<textarea name="bully_sellers"><!-- BULLY_SELLERS --></textarea>
+	<div class="hint">The system will automatically adjust target position to always attempt to stay ahead of these sellers (but will not deviate from pricing rules).</div>
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><input class="button" type="submit" value=" Save "></td>
+</tr>
+</table>
+
+
+</form>
+</center>

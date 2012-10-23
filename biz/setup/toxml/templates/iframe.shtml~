@@ -1,0 +1,26 @@
+
+<html>
+<body>
+
+<link rel="STYLESHEET" type="text/css" href="http://www.zoovy.com/biz/images/tabs/styles.css">
+<style type="text/css">
+
+.clickable	{display: block;}
+.widthable	{width: 100%;}
+
+</style>
+
+
+<table width='100%' border='0' cellpadding='2' cellspacing='1'>
+	<tr class="table_colhead">
+		<th colspan="2"><span class="text_colhead">Name</span></th>
+		<th><span class="text_colhead">Features</span></th>
+		<th><span class="text_colhead">Styles</span></th>
+		<th><span class="text_colhead">Rank</span></th>
+		<th colspan=2 align="center"><span class="text_colhead">Actions</span></th>
+	</tr>
+		<!-- CUSTOM_TOXML -->
+		<!-- ZOOVY_TOXML -->
+</table>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!-- SETUP_TAB -->
+<br>
+
+<center>
+<form action="index.cgi" method="POST">
+
+<!-- MESSAGE -->
+
+<input type="hidden" name="ACTION" value="GENERAL-SAVE">
+<table class="zoovytable" cellspacing=0 width="800" cellpadding="0">
+
+<tr class="zoovytableheader">
+	<td colspan='2' align='left' valign='top'>&nbsp; <b>Checkout Style</b></td>
+</tr>
+<tr>
+	<td colspan=2 valign="top">
+	<div class="hint">
+	** IMPORTANT **: In December 2011 Zoovy announced a new one page checkout application that will offer
+a majority of buyers a superior checkout experience.  Unfortunately the new
+technology is not compatible with 100% of the wrappers and themes, so it
+cannot be used by all clients.   Our intention is to release additional
+functionality throughout the 2012 year that will enhance both the checkout
+and shopping experience and then terminate support for the existing checkout
+on January 1st, 2013 - giving clients a full year to transition. 
+	</div>
+	<br>
+	<div>
+	
+	<table align="center" class="zoovytable">
+	<tr class="zoovysub1header">
+		<th></th>
+		<th>Customer Acct.</th>
+		<th>Checkout</th>
+		<th>Compatibility</th>
+		<th>Try</th>
+	</tr>
+	
+	
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP5 --> value='op5'></td>
+		<td>Nice|Standard</td>
+		<td>One Page Release: 2012.04.26</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120426&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120426&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP4 --> value='op4'></td>
+		<td>Passive</td>
+		<td>One Page Release: 2012.04.16</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120416&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120416&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_LEGACY --> value=''></td>
+		<td>ANY/ALL</d>
+		<td>Legacy Multi-Step Checkout</td>	
+		<td></td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP3 --> value='op3'></td>
+		<td>DEPRECATED</td>
+		<td>Nice|Standard One Page Release: 2012.02.27</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120227&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120227&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP2 --> value='op2'></td>
+		<td>DEPRECATED</td>
+		<td>Passive One Page Release: 2012.02.26</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120226&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120226&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP1 --> value='op1'></td>
+		<td>DEPRECATED</td>
+		<td>Nice|Standard One-Page Release: 2011.10.31</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20111031&sender=CHECKOUT-TEST&_testharness=1">Check</a></td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20111031&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	</table>
+	
+	
+	<b>One Page Checkout notes:</b>
+	<ul>
+	<li> You must Select the one page checkout which is compatible with your customer account behavior.
+	<li> The setup checkout application, requires Javascript. 
+	<li> Not compatible with all wrappers (specifically incompatible with prototype javascript framework) including bluelicious, shoptastic, evolution.
+	<li> Requires Asynchronous Google Analytics code to be installed/configured properly.
+	<li> One Page Checkouts 2012.02.xx and later use the popular jQuery-UI theme style conventions, 
+			the checkout can be stylized using a custom Jquery-UI theme, a default style is provided.
+	</ul>
+
+	<div class="hint">
+	NOTE: Additional Checkout Apps are planned for release later in 2012. 
+	</div>
+	</td>
+</tr>
+
+
+<tr class="zoovytableheader">
+	<td colspan='2' align='left' valign='top'>&nbsp; <b>General Settings</b></td>
+</tr>
+<tr>
+	<td colspan=2 valign="top">
+	<br>
+	<u>Display Shipping Total in Cart:</u><br>
+	<input type='radio' name='cart_quoteshipping' value="0" <!-- CART_QUOTESHIPPING_0 -->> Do not quote shipping on shopping cart page<br>
+	<input type='radio' name='cart_quoteshipping' value="1" <!-- CART_QUOTESHIPPING_1 -->> Quote without ZIP code - You only use shipping that doesn't change based on destination (Simple, weight-based or price-based shipping, for example)<br>
+	<input type='radio' name='cart_quoteshipping' value="3" <!-- CART_QUOTESHIPPING_3 -->> Quote without ZIP code, lowest only - Same as above, but quotes only the lowest priced shipping in the cart<br>
+	<input type='radio' name='cart_quoteshipping' value="2" <!-- CART_QUOTESHIPPING_2 -->> Quote using ZIP code (required) - You will need to require ZIPs for realtime USPS, UPS and FedEx rates.  This will also quote sales tax if applicable.<br>
+	<input type='radio' name='cart_quoteshipping' value="4" <!-- CART_QUOTESHIPPING_4 -->> Quote using ZIP code (optional) - Same as above, except that quotes will be issued even before we have the ZIP code from the customer.  Useful for shipping promotions and tax calculation, etc.<br>
+	<Br>
+	</td>
+</tr>
+
+<tr class="zoovytableheader">
+	<td colspan='2' align='left' class='title' valign='top'>&nbsp; <b>Customer Account Behaviors</b></td>
+</tr>
+<tr>
+	<td colspan=2 valign="top" class="body" align='left'>
+<br>
+<u>Customer Account/CRM Behavior:</u><br>
+<table>
+	<tr>
+		<td colspan=2>
+<input type='radio' name='customer_management' <!-- CM_STANDARD --> value='STANDARD'><b>Standard:</b> Require customers to use/create accounts, require existing customers to login. [RECOMMENDED FOR CRM]<br>
+<input type='radio' name='customer_management' <!-- CM_NICE --> value='NICE'><b>Nice:</b> Prompt customers to use/create accounts, but always let them purchase, even without logging into their account.<br>
+<input type='radio' name='customer_management' <!-- CM_STRICT --> value='STRICT'><b>Strict:</b> Prompt customers to use/create accounts, and require a customer to login if they have an account.<br>
+<input type='radio' name='customer_management' <!-- CM_PASSIVE --> value='PASSIVE'><b>Passive:</b> Never ask customers to create an account, let Zoovy automatically correlate multiple sales by the same customer.<br>
+<input type='radio' name='customer_management' <!-- CM_DISABLED --> value='DISABLED'><b>Disabled:</b> Turn off all customer management and tracking.<br>
+<input type='radio' name='customer_management' <!-- CM_MEMBER --> value='MEMBER'><b>Members Only:</b> Allow anybody to browse site, but do NOT allow new customers to create an account, or make a purchase (customers must have an account on record to purchase).<br>
+<input type='radio' name='customer_management' <!-- CM_PRIVATE --> value='PRIVATE'><b>Private:</b> REQUIRE customer to login before they can access site, do NOT allow new customers to create an account, or make a purchase.<br>
+<div class="hint">
+HINT: If you configure customer accounts to either optional or disabled, you should immediately edit your "order created message"
+so it does not invite the customer to login and view order status. To edit the default order created message go to Setup | Email Messages, and 
+edit the "Order Created" message.
+</div>
+<br>
+</td>
+</tr>
+<tr>
+	<td colspan=2 valign="top" class="body" align='left'>
+<br><u>Privacy Settings:</u><br>
+	<input type='radio' name='customer_privacy' value='NONE' <!-- CP_NONE --> > Store full information including billing, shipping, and payment.<br>
+	<input type='radio' name='customer_privacy' value='SAFE' <!-- CP_SAFE --> > Store full information including billing and shipping. (RECOMMENDED)<br>
+	<input type='radio' name='customer_privacy' value='OTHER' <!-- CP_OTHER --> > Store no information, but username, password, and email address.<br>
+	<br>
+	</td>
+</tr>
+<tr>
+	<td align="right" class="body" valign="top">
+	<input type='checkbox' name='chkout_save_payment_disabled' <!-- CHKOUT_SAVE_PAYMENT_DISABLED_CHECKED -->></td>
+	<td valign="top" class="body" align='left'>
+	Do not store or retrieve payment-related information (i.e. credit card numbers) for returning users.<br>
+	<div class="hint">
+	RECOMMENDED: Zoovy will only store addresses and other contact information.
+	Only applicable if customer accounts are being created via the "Customer Account Behavior" setting above.
+	Keep in mind that customers will still be required to supply CVV/CID's for their cards.
+	</div><br>
+	</td>
+</tr>
+<tr>
+	<td align='right' class='body' valign='top'><input type='checkbox' <!-- CHKOUT_ROI_DISPLAY --> name='chkout_roi_display'></td>
+	<td valign='center' class='body' align='left'> Display ROI/Tracking codes even if payment failed.
+	<br>
+	<div class="hint">NOT RECOMMENDED: if you enable this then your affiliate
+programs and ROI trackers will be notified even if an order's payment status
+fails.
+	</div><br>
+	</td>
+</tr>
+
+
+
+
+<tr class="zoovytableheader">
+	<td colspan='2' bgcolor='CCCCCC' align='left' class='title' valign='top'>&nbsp; <b>Zoovy Checkout Behaviors</b></td>
+</tr>
+
+	<td align='right' class='body' valign='top'><input type='checkbox' name='chkout_billshipsame' <!-- CHKOUT_BILLSHIPSAME_CHECKED --> ></td>
+	<td valign='center' class='body' align='left'>
+		Require Bill To and Ship To be the same address.<br>
+	</td>
+</tr>
+
+<tr>
+	<td align="right" class="body" valign="top"><input type='checkbox' name='chkout_order_notes' <!-- CHKOUT_ORDER_NOTES_CHECKED -->> </td>
+	<td valign="top" class="body" align='left'>
+	Order Notes - enables a custom textbox the customer can use to provide additional order details.<br>
+	</td>
+</tr>
+
+<tr>
+	<td  valign='top' colspan='2' align='left'>
+<br>
+<u>Checkout Phone Number settings:</u><br>
+<input type='radio' name='chkout_phone' value='REQUIRED' <!-- CHKOUT_PHONE_REQUIRED -->> Customers MUST enter a phone number in order to checkout.<br>
+<input type='radio' name='chkout_phone' value='OPTIONAL' <!-- CHKOUT_PHONE_OPTIONAL -->> Customers are asked to give you a phone number, but it is not required.<br>
+<input type='radio' name='chkout_phone' value='UNREQUESTED' <!-- CHKOUT_PHONE_UNREQUESTED -->> Zoovy will not even ASK the customer for a phone number.<br>
+</font>
+	</td>
+</tr>
+
+<tr>
+	<td colspan="2" align='left'>
+	<br>
+	<center>
+	<input type="submit" class="button showLoadingModal" name="ACTION-SAVE" border="0" width="81" height="31" value="Save Information">
+	<br>
+	</center>
+	</td>
+</tr>
+</table>
+
+</form>
+
+</body>

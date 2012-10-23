@@ -1,0 +1,99 @@
+
+
+/*
+in most cases, a table will not have both of the following styles.
+you may have a table with _grid inside a table that has _border set
+*/
+
+table.ztable_grid	{background:#e5e5e5;} /* add this to all tables. set cellspacing to 1 for 'grid' mode */
+table.ztable_border	{border:1px solid #dedede; margin-top:10px;} /* only use if NOT in grid mode. */
+
+
+/*
+the 'row' of column headers should have a thead around it.
+each td should be a th instead.
+if the th has controls (such as clickable headers) set class='controls' on the thead
+*/
+
+thead	{background:#cbcbcb url(/biz/reports/images/th_bg-1x22.gif) repeat-x bottom; color:#ffffff;} /* default table headers */
+thead th		{font-size:12px;font-weight:bold; color:#ffffff;}
+thead.controls	{ background: url(/biz/reports/images/th_control_bg-1x22.gif) #8ebff8 repeat-x bottom;}  /* only use if headers have hrefs on them */
+thead.controls th a	{color:#FFFFFF; }
+
+
+/* styles for form elements 
+form_submit on all submit buttons 
+for_select on all select boxes
+form_text on all text inputs
+duh.
+*/
+
+input.form_submit	{background: url(/biz/reports/images/input_button_bg-1x26.gif) repeat-x top #f7e178; padding:1px 3px; cursor:pointer; border:ridge 1px #f2b93e; color:#ffffff; font-weight:bold;}
+
+input.form_button	{background: url(/biz/reports/images/th_control_bg-1x22.gif) #8ebff8 repeat-x bottom; padding:1px 3px; cursor:pointer; border:ridge 1px #2668d6; font-weight:bold; color:#ffffff;}
+
+select.form_select	{font-size:11px; color:#333333;}
+input.form_text		{font-size:11px; color:#333333;}
+
+
+/*
+tr controls is for a row that contains buttons or select lists that effect the content of the table.
+If only 1 row of controls is present, use control.
+If two rows of controls follow each other, use control on the taller row and control2 on the other.
+
+Rows of controllers should be above the th where practical.
+
+These will look best if the table has cellspacing set to 1, class='ztable_border' and only one column.
+
+*/
+
+tr.controls		{background:#ffffff url(/biz/reports/images/tr_control_bg-1x88.gif) repeat-x bottom; color:#666666;}
+tr.controls a	{color:#ffffff;}
+
+tr.controls2	{background:#efefef; color:#666666;}
+tr.controls2 a	{color:#666666;}
+
+
+/* 
+headings are used for non-thead or th rows/cells that need prominence.
+
+Typically, this would be a row that spans all the columns and is NOT linked. where pratical, colspan the entire table.
+Use heading first and then subheading in cases where second-level headings appear under a given header.
+
+Subheading should be used when headings are needed and a thead or th is present or class 'heading' is already being used.
+
+Frequently, these styles are used when nesting one table inside another. (like in report summaries)
+*/
+
+td.heading, tr.heading		{background:#d2e6ff; color:#878787; font-weight:bold; }
+
+td.subheading, tr.subheading	{background: #efefef; font-weight:bold; color:#878787;}
+
+
+table.nested	{border:1px solid #edf5ff;}
+
+
+/* alternating row colors for td. Always start with r0 */
+
+tr.r0 { color:#333333; background-color: #FFFFFF; font-size: 8pt; }
+tr.r1 { color:#333333; background-color: #f5f5f5; font-size: 8pt; }
+tr.rx { color:#333333; background-color: #f8eec2; font-size: 8pt; }  /* this is the 'selected' row */
+tr.rs { color:#333333; background-color: #f9dbdb; font-size: 8pt; }  /* for rows with checkboxes that are checked */
+
+
+/* table cells with editable content */
+td.re	{background:#d5f8c7;}
+td.res	{background:#f7fbe1;}  /* editable cell that is selected */
+
+td.title	{background:#efefef;}
+td.title h1	{margin:3px; font-size:15px; color:#666666; float:left;}
+td.title div.hint	{float:right; margin:4px 3px; font-size:11px; color:#666666;}
+
+
+/*
+used in the new recursive menus, such as the new media library. If we don't go live with this, delete these styles
+note - you need to have a class of recursive_menus on a div around the menu tree.
+*/
+
+div.recursive_menu div.indent	{padding-left:30px;} 
+div.recursive_menu a	{cursor: pointer; display:block;} 

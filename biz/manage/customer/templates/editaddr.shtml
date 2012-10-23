@@ -1,0 +1,82 @@
+<!-- UTILITIES_TAB -->
+
+
+<form action='index.cgi'>
+<input type='hidden' name='VERB' value='SAVEADDR'>
+<input type='hidden' name='CUSTOMER' value='<!-- CUSTOMER -->'>
+<input type='hidden' name='CID' value='<!-- CID -->'>
+<input type='hidden' name='TYPE' value='<!-- TYPE -->'>
+<input type='hidden' name='SHORTCUT' value='<!-- SHORTCUT -->'>
+<center>
+<!-- DEBUG -->
+<br>
+<table class="zoovytable">
+<tr>
+	<td colspan=2 class="zoovytableheader">Edit <!-- CUSTOMER --> <!-- TYPE --></td>
+</tr>
+<tr>
+	<td>SHORTCUT:</td>
+	<td><!-- SHOW_SHORTCUT --></td>
+</tr>
+<tr>
+	<td>Firstname:</td>
+	<td><input size="25" type='textbox' name='firstname' value="<!-- FIRSTNAME -->"></td>
+</tr>
+<tr>
+	<td>Lastname:</td>
+	<td><input size="25" type='textbox' name='lastname' value="<!-- LASTNAME -->"></td>
+</tr>
+<tr>
+	<td>Company:</td>
+	<td><input size="60" type='textbox' name='company' value="<!-- COMPANY -->"></td>
+</tr>
+<tr>
+	<td>Address:</td>
+	<td><input size="60" type='textbox' name='address1' value="<!-- ADDRESS1 -->"></td>
+</tr>
+<tr>
+	<td>Address2:</td>
+	<td><input size="60" type='textbox' name='address2' value="<!-- ADDRESS2 -->"></td>
+</tr>
+<tr>
+	<td>City:</td>
+	<td><input size="30" type='textbox' name='city' value="<!-- CITY -->"></td>
+</tr>
+<tr>
+	<td>State:</td>
+	<td><input type='textbox' name='state' value="<!-- STATE -->"></td>
+</tr>
+<tr>
+        <td>Province:</td>
+        <td><input type='textbox' name='province' value="<!-- PROVINCE -->"></td>
+</tr>
+<tr>
+	<td>Zip:</td>
+	<td><input type='textbox' name='zip' value="<!-- ZIP -->"></td>
+</tr>
+<tr>
+	<td>Country:</td>
+	<td><input type='textbox' name='country' value="<!-- COUNTRY -->"></td>
+</tr>
+<!-- BEGIN_HIDE_SHIP -->
+<tr>
+	<td>Email:</td>
+	<td><input type='textbox' size="30" name='email' value="<!-- EMAIL -->"></td>
+</tr>
+<!-- END_HIDE_SHIP -->
+<tr>
+	<td>Phone:</td>
+	<td><input type='textbox' size="30" name='phone' value="<!-- PHONE -->"></td>
+</tr>
+<!-- WHOLESALE -->
+<tr>
+	<td colspan='2'>
+	<center>
+		<input type='submit' class="button" value='  Save  '>
+		&nbsp;
+		<input type='button' class="button" onClick="<!-- CANCEL_URL -->" value='  Cancel  '>
+	</center>
+	</td>
+</tr>
+</form>
+</body>

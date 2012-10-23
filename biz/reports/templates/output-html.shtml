@@ -1,0 +1,69 @@
+<!-- REPORT_TAB -->
+
+<script Lanugage="Javascript">
+<!--//
+
+function openWindow(url) {
+   popupWin = window.open(url, 'popup','status=yes,resizable=yes,width=320,height=200,menubar=yes,scrollbars=yes');
+   popupWin.focus(true);
+	};
+
+function customAction(action,data) {
+	// this can be called to execute a customAction in the form
+	// the value passed to _ACTION should be a function in the customActions subroutine in the specific report module
+	
+	window.document.thisFrm.ACTION.value = 'CUSTOM';
+	window.document.thisFrm.elements['_ACTION'].value = action;
+	window.document.thisFrm.elements['_DATA'].value = data;
+	window.document.thisFrm.submit();
+	}
+
+-->
+</script>
+
+<table style="margin-top: 10px;" cellspacing=1 cellpadding=0 border=0 width="100%" class='ztable_border' align='center'>
+<tr class='controls'>
+	<td>
+	<!-- TOOLBAR_HEADER -->
+	</td>
+</tr>
+<tr class="controls2">
+	<td>
+	<!-- PAGINATION_HEADER -->
+	</td>
+</tr>
+</table>
+
+<table style="margin-top: 0px; border-top-width: 0px;"  cellspacing=1 cellpadding=0 border=0 width="100%" class='ztable_border' align='center'>
+<tr>
+	<td class="table_top">
+
+<form name="thisFrm" style="display:inline;" method="POST">
+<input type="hidden" name="SERIAL" value="">
+<input type="hidden" name="ACTION" value="">
+<input type="hidden" name="_ACTION" value="">
+<input type="hidden" name="_DATA" value="">
+<!-- HTMLTABLE -->
+</form>
+
+	
+	</td>
+</tr>
+</table>
+
+<table cellspacing=1 cellpadding=0 border=0 width="100%" class='ztable_border' align='center'>
+<tr class='controls'>
+	<td>
+	<!-- FOOTER -->
+	</td>
+</tr>
+</table>
+
+
+	
+
+	
+
+
+</div>
+

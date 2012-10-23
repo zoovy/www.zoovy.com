@@ -1,0 +1,90 @@
+<html>
+<head>
+	<STYLE>
+	<!--
+	FONT { font-face: helvetica,arial; font-size: 12pt; }
+	input.button { width: 100px; font-size: 8pt; font-face: arial; font-style: bold; }
+	TD { font-face: helvetica,arial; font-size: 10pt; }
+	--->
+	</STYLE>
+	<SCRIPT>
+	<!--//
+	function doIt(cmd)
+	{
+		var x = 0;
+		var okay = false;
+		window.document.myForm.CMD.value = cmd;
+		window.document.myForm.submit();
+		return true;
+	}
+	//-->
+	</SCRIPT>
+</head>
+<body>
+
+<table width="60%" align="center"><tr><td>
+
+<form name="myForm" action="export.cgi">
+<input type="hidden" name="CMD" value="">
+<input type="hidden" name="ORDERS" value="<!-- ORDER_IDS -->">
+
+<font face="arial">
+
+<b>Exporting Orders:</b><br><!-- ORDER_IDS -->
+
+</font>
+
+<b>Export Properties:</b><br>
+<table>
+	<tr>
+		<td valign="top"><font class="title">Dispatch Format:</font></td>
+		<td valign="middle">
+			<select name="order_format">
+				<option <!-- ORDER_FORMAT_ZOOVY --> value="zoovy">Zoovy Native Order Format</option>
+				<option <!-- ORDER_FORMAT_XML --> value="xml">Zoovy XML Order Format</option>
+				<option <!-- ORDER_FORMAT_OBI --> value="obi">Open Buying Interface (OBI) [BETA]</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><font class="title">Billing Information:<br></font></td>
+		<td valign="middle">
+			<input type="radio" <!-- BILLING_INFO_0 --> name="billing_info" value="0"> Do not include Billing Information.<br>
+			<input type="radio" <!-- BILLING_INFO_1 --> name="billing_info" value="1"> Include Billing Information from Order.<br>
+			<input type="radio" <!-- BILLING_INFO_2 --> name="billing_info" value="2"> Replace Billing Information with my information (Drop Ship Mode).<br>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><font class="title">Strip Prices</font></td>
+		<td>
+			<input type="checkbox" <!-- STRIP_PRICES_CHECKED --> name="strip_prices"> Strip Price Information.<br>
+			<input type="checkbox" <!-- STRIP_PAYMENT_CHECKED --> name="strip_payment"> Strip Payment Details.<br>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"><font class="title">Smart Recovery:</font></td>
+		<td>
+			<input type="checkbox" <!-- RECOVERY_CHECKED --> name="smart_recovery"> Enable Smart Recovery (only allows an order to be exported once)<br>
+		</td>
+	</tr>
+	<tr>
+		<td>Export URL:</td>
+		<td><input type="text" size="60" value="<!-- EXPORT_URL -->" name="dispatch_url"></td>
+	</tr>
+</table>
+<br>
+To configure default settings visit Setup > Order Dispatch<br>
+None of the changes to make here will be permanently saved.<Br>
+<Br>
+
+<input class="button" onClick="doIt('EXPORT');" type="button" value="  Export Batch  ">&nbsp;
+<input class="button" onClick="top.location='/biz/orders';" type="button" value="  Quit  ">
+
+</font>
+
+</form>
+
+</td></tr></table>
+
+</body>
+</html>

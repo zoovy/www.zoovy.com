@@ -1,0 +1,44 @@
+http://help.yahoo.com/help/us/store/edit/advanced/advanced-01.html
+
+
+Hey Brian,
+
+BTW, I have cleared my schedule for Monday as I'll be out from ~noon to 6 PM.
+Got the email about the check. Thanks.
+I hope Becky is feeling better.
+
+Yahoo! Store Fields:
+
+Path - Path is a field that you can use to determine the initial placement of an item/section page you're creating through a database upload. If you want to create a site that is several sections deep, you can do it by separating section names by colons in the path field. (Nonfiction:Computers:)
+
+Name - Name of this item, used wherever it is referred to.
+
+Code - Code you use to identify the item (SKU, Item number, ISBN, etc).
+
+Price - If price is entered, item is treated as product for sale. For quantity pricing, use several numbers: 12 2 20 10 80    means 1 for $12, 2 for $20, or 10 for $80.
+
+Sale-price - Price entered here overrides the regular price. Same format.
+
+Options - For items with multiple sizes, colors, etc. In each set of options, the first word is the title and the rest are the choices. Use a blank line to separate sets of options, and double-quotes to make several words be treated as one. Example: Size S M L XLColor Black White "Sea Green"
+
+Headline - If supplied, used instead of Name at the top of item's page, and when item is listed in a group or as an accessory. Linebreaks are preserved.
+
+Caption - Text for this item. Appears on the item's page or on the containing page if the item doesn't have its own. Use a blank line to separate paragraphs.
+
+Abstract - Used when text is needed for a description on another page.
+ 
+Label - If supplied, used as the text when item is one of the specials on the front page. Linebreaks are preserved, so by using this field you can pack specials closer on front page.
+
+Ship-weight - Shipping weight of this item. Only needed if your shipping charges go by weight.
+
+Orderable* -
+Taxable* -
+Gift-certificate* - *These are Yes/No fields. In your database you can use either Yes or 1 for the "Yes" value and No or 0 for "No" values. It is not currently possible to upload to any other fields or field types through a database upload.
+
+Availability - Posting information about when your items ship is a good way to show your customers that you mean business.  To make it easier for you to include and update this info in your store, we've added an Availability field to the editor. Just use the field on the Variables page to set availability info for all your items, or override the variable on individual pages to set it per item.
+
+YPath - Ypath is a field that allows you to place your items into specific Shopping product departments.  This will help ensure correct placement of your products into Yahoo! Shopping.  For information concerning the proper format required for the entries in this field, please consult our Ypath guide at the following URL:
+
+   http://shopping.yahoo.com/ypath/
+
+

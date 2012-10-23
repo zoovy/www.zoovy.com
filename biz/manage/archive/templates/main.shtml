@@ -1,0 +1,7 @@
+<!-- REPORT_TAB -->
+<center>
+<font face='Arial'>
+<br><br>
+<form method="get" action="report.cgi">
+<b>Sales Reports : </b>
+<select name="month">

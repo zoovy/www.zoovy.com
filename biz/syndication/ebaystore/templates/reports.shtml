@@ -1,0 +1,52 @@
+<head>
+<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!--//
+function openWindow(url) {	
+	var adviceWin = window.open(url,'advice','status=no,width=638,height=400,menubar=yes,scrollbars=yes');
+	adviceWin.focus(true);
+}
+//-->
+</SCRIPT>
+<title>eBay Store Feeds</title>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
+
+<center>
+<!-- SETUP_TAB -->
+</center>
+
+<form action="/biz/batch/index.cgi">
+	<input type="hidden" name="VERB" value="NEW">
+	<input type="hidden" name=".profile" value="<!-- PROFILE -->">
+	<input type="hidden" name="REPORT" value="EBAY_LISTING">
+	<input type="hidden" name="EXEC" value="REPORT">
+	<input type="hidden" name="GUID" value="<!-- GUID -->">
+
+<br>
+<table align='center' width='600' class='zoovytable' cellspacing='0' cellpadding='4'>
+<tr>
+	<td class='zoovytableheader'>
+Listing Status
+	</td>
+</tr>
+<tr>
+	<td>
+
+<input type="radio" name=".type" selected value="SYNDICATION-LIVE"> Live Syndication Listings<br>
+<input type="radio" name=".type" value="SYNDICATION-ENDED"> Ended Syndication Listings
+	</td>
+</tr>
+<tr>
+	<td>
+	<div class='zbutton_group'>
+	<input type='submit' value='Run Report' class='button2'>
+	</div>
+	</td>
+</tr>
+</table>
+
+</form>
+
+</center>
+</body>

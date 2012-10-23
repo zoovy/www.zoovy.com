@@ -1,0 +1,51 @@
+<!-- SETUP_TAB -->
+<center>
+<table>
+<tr><td>
+<form action='index.cgi' method='GET'>
+<input type="hidden" name="MODE" value="<!-- MODE -->">
+<input type='hidden' name='ACTION' value='RENAME-SAVE'>
+<input type='hidden' name='PATH' value="<!-- PATH -->">
+<input type='hidden' name='EXIT' value='<!-- EXIT -->'>
+
+<b>Rename Category: <!-- PATH --></b><br>
+<br>
+<table>
+<tr>	
+	<td><b>Current Name:</b></td>
+	<td><b><!-- PRETTYNAME --></b></td>
+</tr>
+<tr><td></td></tr>
+<tr>
+	<td valign='top'>New Name:</td>
+	<td valign='top'><input type='textbox' name='NEWNAME'></td>
+</tr>
+<tr>
+	<td valign='top'>Sort Order:</td>
+	<td valign='top'>
+		<select name='SORT'>
+			<option value="">None</option>
+			<!-- SORTSELECT -->
+		</select>
+	</td>
+</tr>
+</table>
+	
+<br>
+
+
+
+<center>
+<table>
+<tr>
+	<td valign='top'><input type='image' src='/images/bizbuttons/save.gif'></td>
+	<td valign='top'><a href='index.cgi'><img src='/images/bizbuttons/cancel.gif' border='0'></a></td>
+</tr>
+</table>
+</center>
+
+</form>
+</td></tr>
+</table>
+</center>
+</body>

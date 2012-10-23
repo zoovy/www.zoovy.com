@@ -1,0 +1,141 @@
+<!-- ORDER_TAB -->
+
+<SCRIPT language="JavaScript">
+<!--
+
+function savePanel(panel,cmd) {
+
+	new Effect.Highlight('panel!'+panel);
+	// $('panel!'+panel).innerHTML = '<center><img src="/biz/loading.gif"></center>';
+	
+	var postBody = 'm=ORDERS/SAVE&_oid=<!-- OID -->&_panel='+panel+'&_cmd='+cmd+'&'+Form.serialize($('orderFrm'));
+	// alert(postBody);
+	new Ajax.Request('/biz/ajax/prototype.pl/ORDERS/SAVE', { postBody: postBody, asynchronous: 1,onComplete: function(request){ handleResponse(request.responseText);} } ) ;			
+	// $('panel!'+panel).innerHTML = '';
+	}
+
+//-->
+</SCRIPT>
+
+<br>
+
+<center>
+<form method="POST" name="orderFrm" id="orderFrm" action="index.cgi">
+<input type="hidden" name="OID" value="<!-- OID -->">
+<table width=700 cellspacing=0 class="zoovytable">
+
+
+
+<tr>
+	<td colspan="2">
+	
+	<table cellspacing=0 cellpadding=4>
+	<tr>
+		<td class="zoovysub1header">Billing Address</td>
+		<td align="right" class="zoovysub1header">
+			<input class="button" type="button" value="Save" onClick="savePanel('billinfo','save');">
+		</td>
+		<td>&nbsp;</td>
+		<td class="zoovysub1header">Shipping Address</td>
+		<td align="right" class="zoovysub1header">
+			<input class="button" type="button" value="Save" onClick="savePanel('shipinfo','save');">
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2 valign=top>
+		<div id="panel!billinfo">
+		<!-- panel!billinfo -->
+		</div>
+		</td>
+		<td>&nbsp;</td>
+		<td colspan=2 valign=top>
+		<div id="panel!shipinfo">
+		<!-- panel!shipinfo -->
+		</div>
+		</td>
+	</tr>
+	</table>
+	
+	</td>
+</tr>
+
+<tr>	
+	<td class="zoovytableheader">Notes</td>
+	<td align="right" class="zoovytableheader">
+		<input class="button" type="button" value="Save" onClick="savePanel('notes','save');"> 
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+	<div id="panel!notes">	
+	<!-- panel!notes -->
+	</div>
+	</td>
+</tr>
+
+<tr>
+	<td class="zoovytableheader">Contents</td>
+	<td align="right" class="zoovytableheader">
+		<input class="button" type="button" value="Save" onClick="savePanel('contents','save');">
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+	<div id="panel!contents">
+	<!-- panel!contents -->
+	</div>
+	</td>
+</tr>
+
+<tr>
+	<td class="zoovytableheader">Payment Detail/Notes</td>
+	<td align="right" class="zoovytableheader">
+		<input class="button" type="button" value="Save" onClick="savePanel('payment','save');">
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+	<div id="panel!payment">
+	<!-- panel!payment -->
+	</div>
+	</td>
+</tr>
+
+<tr>
+	<td class="zoovytableheader">Shipping/Tracking</td>
+	<td align="right" class="zoovytableheader">
+		<input class="button" type="button" value="Save" onClick="savePanel('tracking','save');">
+	</td>
+	</tr>
+<tr>
+	<td colspan="2">
+	<div id="panel!tracking">
+	<!-- panel!tracking -->
+	</div>
+	</td>
+</tr>
+
+
+<tr>
+	<td class="zoovytableheader">Additional Information</td>
+	<td align="right" class="zoovytableheader">
+		<!-- <input class="button" type="button" value="Save" onClick="savePanel('moreinfo','save');"> -->
+	</td>
+	</tr>
+<tr>
+	<td colspan="2">
+	<div id="panel!moreinfo">
+	<!-- panel!moreinfo -->
+	</div>
+	</td>
+</tr>
+
+
+
+</table>
+</center>
+</form>
+<br>
+
+
+<!-- FOOTER -->

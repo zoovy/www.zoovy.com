@@ -1,0 +1,49 @@
+<!-- SETUP_TAB -->
+
+
+<!-- MESSAGE -->
+<div align='center'>
+<div style='width:850px; margin-top:10px; text-align:left;'>
+<h1>Coupons</h1>
+<form action="index.cgi">
+<input type="hidden" name="VERB" value="COUPON-NEW">
+<table cellspacing=0 class="zoovytable" width='100%'>
+<tr>
+	<td class="zoovytableheader">Add New Coupon</td>
+</tr>
+<tr>
+	<td>Code: <input size=8  maxlength=8 type="textbox" name="CODE"> <input class="button showLoadingModal" value=" Add " type="submit">
+	</td>
+</tr>
+<tr>
+	<td>
+	<div class="hint">Up to 8 digit coupon codes. Leave code blank to automatically generate a unique 5 digit coupon code</div>
+	</td>
+</tr>
+</table>
+</form>
+
+<br>
+
+
+
+<form name="frm2" action="index.cgi" method="POST">
+<input type='hidden' name='VERB' value='COUPON-SAVE'>
+<table width=100% cellpadding=3 cellspacing=0 class="zoovytable">
+<tr>
+	<td class="zoovytableheader">Coupons</td>
+</tr>
+<tr>
+	<td>
+<table cellspacing=0 width=100%>
+<!-- COUPONS -->
+</table>
+	</td>
+</tr>
+</table>
+
+</form>
+
+</div>
+</div>
+<!-- FOOTER -->

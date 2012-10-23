@@ -1,0 +1,30 @@
+% my $menu;
+% $menu = 'default';
+
+<&| /includes/header/index.html, title => 'Zoovy Features', menu => $menu &></&>
+% ## Do not touch anything above this line except for the value of the title var.
+
+
+
+<p>The content of this page has moved.  If you are looking for a specific feature, please use the form below to search our online documentation or <a href='/1/'>Click here</a> to learn more about Zoovy.</p>
+
+<p><a href='/partners/marketplace/'>Click here</a> to see <strong>integrated marketplaces</strong>.</p>
+
+
+<form action="http://webdoc.zoovy.com/index.cgi" method="get" target="webdoc" style="margin:0px; display:inline;">
+<input type="hidden" name="VERB" value="SEARCH">
+
+<b>Please enter your topic of interest:</b><br>
+
+<table>
+<tr>
+
+	<td><input type="text" name="keywords" value="" class="formed" style='width:120px;'></td>
+	<td><input type="submit" value="search" class='button'></td>
+
+</tr>
+</table>
+</form>
+
+% # Do not touch anything below this line.
+<&| /includes/footer/index.html, menu => 'home' &></&>
