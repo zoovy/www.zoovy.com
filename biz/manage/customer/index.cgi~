@@ -189,8 +189,8 @@ if ($VERB eq 'LOGIN') {
 
 	# $SITE::SREF->{'+sdomain'} = $sdomain;
 	if (not defined $sdomain) {
-		$url = "#SORRY_NO_PRIMARY_DOMAIN_CONFIGURED_FOR_USERNAME=$USERNAME\_PRT=$PRT"
-		print "Content-type: text/plain\n\n";
+		$url = "#SORRY_NO_PRIMARY_DOMAIN_CONFIGURED_FOR_USERNAME=$USERNAME\_PRT=$PRT";
+		print "Content-Type: text/plain\n\n";
 		print "NO PRIMARY DOMAIN FOR USER:$USERNAME PRT:$PRT\n";
 		}
 	else {

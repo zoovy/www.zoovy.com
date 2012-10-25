@@ -142,6 +142,20 @@ if ($VERB eq 'NEW-CONFIRMED') {
 			$VERB = 'CONFIG';
 			}
 		}
+	elsif ($ACTION eq 'NEW-SUBDOMAIN') {
+		my $lm = LISTING::MSGS->new($USERNAME,logfile=>'domains.log');
+		my %RESULT = ();
+		$RESULT{'REG_STATUS'} = 'Subdomain';
+		$RESULT{'REG_TYPE'} = 'SUBDOMAIN';
+		$RESULT{'PROFILE'} = $PROFILE;
+
+		my ($D) = DOMAIN->create($USERNAME,$DOMAINNAME,%RESULT);
+		if ($D) {
+			push @MSGS, "SUCCESS|Created entry in DOMAINS database (please allow 3-4 hours for changes to be visible)";
+			$VERB = 'CONFIG';
+			}
+ 
+		}
 	else {
 		push @MSGS, "ERROR|Unsupported action:$ACTION";
 		}
@@ -207,12 +221,12 @@ if ($VERB eq 'NEW-CONFIRM') {
 		}
 	elsif ($ACTION eq 'NEW-SUBDOMAIN') {
 		$GTOOLS::TAG{'<!-- ACTION_PRETTY -->'} = 'Add Subdomain';
-		my ($SUB,$DOMAIN) = split(/\./,$DOMAINNAME);
+		my ($SUB,$DOMAIN) = split(/\./,$DOMAINNAME,2);
 		my ($D) = DOMAIN->new($USERNAME,$DOMAIN);
 		if (not $D) {
 			push @ERRORS, "Domain $DOMAIN is not currently setup in your account, please register,transfer,delegate it first.";
 			}
-		push @ERRORS, "Sorry, but this functionality is currently offline - please check back later today.";
+		# push @ERRORS, "Sorry, but this functionality is currently offline - please check back later today.";
 		}
 	elsif ($ACTION eq 'NEW-TRANSFER') {
 		$GTOOLS::TAG{'<!-- ACTION_PRETTY -->'} = 'Transfer Domain';
@@ -304,6 +318,7 @@ if ($VERB eq 'NEW') {
 if ($VERB eq 'PROFILE-CREATE') {
    my $CODE = $ZOOVY::cgiv->{'CODE'};
    $CODE =~ s/[\W_]+//gs;
+	$CODE = uc($CODE);
    if (length($CODE)<3) {
 		push @MSGS, "ERROR|Profile must be at least 3 characters log";
 		}

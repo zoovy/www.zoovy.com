@@ -58,12 +58,9 @@ my $itemsref = (); my $promosref = (); my $taxtableref = ();
 
 
 if ($v{'order-calculations-error'}) {
-  ## hmm.. maybe generate a ticket?
-  open F, ">>/tmp/amazoncallback.err.".time();
-  print F Dumper(\%ENV,\%v);
-  close F;
-  die();
-  }
+	## hmm.. maybe generate a ticket?
+	&ZOOVY::confess($v{'_u'},"AMAZON CBA CALLBACK ERROR".Dumper(\%ENV,$v));
+	}
 
 ## dump request to temp file
 use Data::Dumper;
@@ -73,9 +70,8 @@ use Data::Dumper;
 
 ### to create the inbound signature we:
 ###	concatenate UUID and timestamp calculate HMAC_SHA1 using your access key id and then URI encode it.
-my ($x) = XML::Simple::XMLin(
-  $v{'order-calculations-request'}, 
-  ForceArray=>1);
+print STDERR Dumper($v{'order-calculations-request'});
+my ($x) = XML::Simple::XMLin($v{'order-calculations-request'}, ForceArray=>1);
 
 
 my ($CART2) = CART2->new_persist($v{'_u'},int($v{'_p'}),$v{'_c'});
@@ -87,7 +83,7 @@ $CART2->in_set('ship/region', $address->{'State'}->[0]);
 #$CART2->in_set('ship/countrycode', $address->{'CountryCode'}->[0]);
 ## made this change 2009-07-22 patti - should fix intl shipping issues
 $CART2->in_set('ship/countrycode', $address->{'CountryCode'}->[0]);
-$CART2->shipping('flush'=>1);  
+$CART2->shipmethods('flush'=>1);  
 
 my $itemshipxml = '';		## goes inside the <ShippingMethods>
 my $shipxml = '';		## goes inside the <ShippingMethodIds>
@@ -158,7 +154,7 @@ $taxxml .= "<TaxRules><TaxRule>\n";
 	
 ## Rate, use format .075 for 7.5%
 my $calculate_tax = 0;
-my $tax_rate = sprintf("%.4f",$CART2->in_get('this/tax_rate')/100);
+my $tax_rate = sprintf("%.4f",$CART2->in_get('our/tax_rate')/100);
 $taxxml .= &tag("Rate",$tax_rate);
 $taxxml .= &tag("IsShippingTaxed",($CART2->in_get('is/shp_taxable')==1?'true':'false'));
 $taxxml .= &tag("USZipRegion",$address->{'PostalCode'}->[0]);

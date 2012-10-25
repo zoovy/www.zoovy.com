@@ -4,11 +4,11 @@ use strict;
 
 use lib "/httpd/modules";
 use CGI;
-use ZOOVY;
+require ZOOVY;
 use Data::Dumper;
 use strict;
-use ZTOOLKIT;
-use TOXML::EDIT;
+require ZTOOLKIT;
+require TOXML::EDIT;
 
 
 my $q = new CGI;
@@ -60,7 +60,7 @@ if (not defined $P) {
 #my ($MARKET) = split(/\./,$SREF->{'_DOCID'},2);
 #my $OPTIONSTR = $SREF->{'_OPTIONSTR'};
 
-use EBAY2::PROFILE;
+require EBAY2::PROFILE;
 
 my $PROFILE = $P->fetch('zoovy:profile');
 # my $nsref = &EBAY2::PROFILE::fetch($USERNAME,$PRT,$CODE);;

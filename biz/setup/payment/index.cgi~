@@ -796,7 +796,8 @@ if ($TAB eq 'AMZPAY') {
 	if ($GTOOLS::TAG{'<!-- AMZ_SECRETKEY -->'} eq '') { $GTOOLS::TAG{'<!-- AMZ_SECRETKEY -->'} = "<i>Not set</i>"; }
 
 	my ($CART2) = CART2->new_memory($USERNAME,$PRT);
-	$GTOOLS::TAG{'<!-- BUTTON_HTML -->'} = &ZPAY::AMZPAY::button_html($CART2);
+	my ($SITE) = SITE->new($USERNAME,PRT=>$PRT);
+	$GTOOLS::TAG{'<!-- BUTTON_HTML -->'} = &ZPAY::AMZPAY::button_html($CART2,$SITE);
 
 	my $btnref = &ZTOOLKIT::parseparams($webdbref->{'amzpay_button'});
 	$GTOOLS::TAG{'<!-- color_orange -->'} = ($btnref->{'color'} eq 'orange')?'selected':'';

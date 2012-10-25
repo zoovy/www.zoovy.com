@@ -64,16 +64,15 @@ elsif ($ZOOVY::cgiv->{'PID'} ne '') {
 my ($MARKET) = "ebay";
 # my $OPTIONSTR = $SESSIONREF->{'_OPTIONSTR'};
 
+my $PROFILE = $SITE->profile();
 my ($P) = PRODUCT->new($SITE->username(),$SITE->pid(),'create'=>0);
 if (not defined $P) {
 	$P = PRODUCT->new($SITE->username(),$SITE->pid(),'tmp'=>1,'create'=>0);
 	}
-
-my $PROFILE = $SITE->profile();
-
-if ((not defined $PROFILE) || ($PROFILE eq '')) { 
-	if (defined $P) { $PROFILE = $P->fetch('zoovy:profile');  }
+else {
+	$PROFILE = $P->fetch('zoovy:profile'); 
 	}
+
 
 ## 
 my $epnsref = undef;
@@ -109,6 +108,7 @@ if (not defined $SITE->layout()) {
 else {
 #	my ($thisPRT) = &ZOOVY::profile_to_prt($USERNAME,$PROFILE);
 #	my ($SITE) = SITE->new($USERNAME,'NS'=>$PROFILE,'PRT'=>$thisPRT,'SKU'=>$PRODUCT,'%EBAYNSREF'=>$epnsref,'*P'=>$P);
+
 	$SITE::CART2 = CART2->new_memory($SITE->username(),$SITE->prt());
 	my ($toxml) = TOXML->new('WIZARD',$SITE->layout(),USERNAME=>$USERNAME);
 	if (defined $toxml) {

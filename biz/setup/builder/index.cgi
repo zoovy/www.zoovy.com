@@ -282,6 +282,7 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 
 if ($ACTION eq 'EDIT-WRAPPER') {
 	$ACTION = 'INITEDIT';
+	$ZOOVY::cgiv->{'FORMAT'} = 'WRAPPER';
 	}
 
 

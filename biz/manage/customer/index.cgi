@@ -785,28 +785,28 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		my $c = '';
 		foreach my $payref (@{$C->wallet_list()}) {
 			my ($DEFAULT,$DEFAULTBUTTON);
-			if ($payref->{'IS_DEFAULT'}) {
+			if ($payref->{'#*'}) {
 				$DEFAULT = '(DEFAULT)';
 				$DEFAULTBUTTON = '';
 				}
 			else {
 				$DEFAULT = '';
-				$DEFAULTBUTTON = qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-DEFAULT&CID=$CID&SECUREID=$payref->{'ID'}';" value="Default">~;
+				$DEFAULTBUTTON = qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-DEFAULT&CID=$CID&SECUREID=$payref->{'WI'}';" value="Default">~;
 				}
 
 			$c .= qq~<tr>
 			<td>
 			~;
-			$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-REMOVE&CID=$CID&SECUREID=$payref->{'ID'}';" value="Remove">~;
+			$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-REMOVE&CID=$CID&SECUREID=$payref->{'WI'}';" value="Remove">~;
 			if ($LU->is_admin()) {
-				$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-VIEW&CID=$CID&SECUREID=$payref->{'ID'}';" value="View">~;
+				$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-VIEW&CID=$CID&SECUREID=$payref->{'WI'}';" value="View">~;
 				}
 			$c .= qq~
 			$DEFAULTBUTTON
 			</td>
-			<td>$payref->{'DESCRIPTION'} $DEFAULT</td>
-			<td>$payref->{'CREATED'}</td>
-			<td>$payref->{'EXPIRES'}</td>
+			<td>$payref->{'TD'} $DEFAULT</td>
+			<td>$payref->{'TC'}</td>
+			<td>$payref->{'TE'}</td>
 			</tr>~;
 			}
 		

@@ -859,12 +859,16 @@ if ($TAB eq 'GOOGLE') {
 		push @MSGS, "WARNING|The tag 'parameterized-url' appears the Pixel URL field, this is almost certainly not correct and will not work.";
 		$has_bad_pixel++;
 		}
+	if ($webdbref->{'google_pixelurls'} =~ /\<input/s) {
+		push @MSGS, "WARNING|The xml/html tag 'input' appears the Pixel URL field, this absolutely not correct and will not work. ";
+		$has_bad_pixel++;
+		}
 	if ($webdbref->{'google_pixelurls'} =~ /<.*?>/s) {
 		push @MSGS, "WARNING|It appears there is HTML or XML in the Pixel URL field. This is most likely incorrect and probably won't work, and it will probably break google checkout.";
 		$has_bad_pixel++;
 		}
 	if ($has_bad_pixel) {
-		push @MSGS, "WARNING|You have one or more issues with your Pixel URL, the documentation you are using is wrong/outdated and probably not written for Zoovy anyway - please refer to webdoc #50737";
+		push @MSGS, "WARNING|You definitely have one or more issues with your Pixel URL (because you didn't create a URL at all and gave us XML/HTML instead), the documentation you are using is wrong/outdated and probably not written for Zoovy anyway.  The standard way Google provides examples make their integration only compatible with ONE PIXEL -- since many of our clients need MORE THAN ONE PIXEL -- we had to build something different - please refer to webdoc #50737";
 		}
 
 	my $i = 0;
