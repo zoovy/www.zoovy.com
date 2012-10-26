@@ -33,6 +33,43 @@
 		
 		</td>
  	</tr>
+ 	<tr>
+ 		<td colspan='2'><br><b><u>Domain Type:</u></b><br></td>
+ 	</tr>
+ 	<tr>
+ 		<td colspan='2'>
+ 			<input type='radio' <!-- HOST_TYPE_DEFAULT --> name="HOST_TYPE" value='DEFAULT'> Default/Primary Domain</td>
+			<table>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;</td>
+					<td><font size='2'>All pages will be hosted under the domain name specified, uses the DEFAULT profile.</font></td>
+				</tr>
+			</table>
+ 		</td>
+ 	</tr>
+	<tr>
+		<td colspan='2'>
+			<input type='radio' <!-- HOST_TYPE_SPECIALTY --> name="HOST_TYPE" value='SPECIALTY'> Specialty Site Mode - (requires Cross selling bundle access)<br>
+			<table>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;</td>
+					<td><font size='2'>Allows for a different wrapper, logo, and company information for this domain.</font></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+			<input type='radio' <!-- HOST_TYPE_REDIR --> name="HOST_TYPE" value='REDIR'> Redirect Domain<br>
+			<table>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;</td>
+					<td><font size='2'>Redirects all traffic for this domain to another domain when a visitor lands on the page. 
+					Frequently used for parked/placeholder domains e.g. yourname.net redirects yourname.com</font></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 	<tr><td><br>
 	<b><u>Mail Exchange (MX) Configuration</u></b><br>
 	<br>

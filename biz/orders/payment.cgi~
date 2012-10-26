@@ -882,7 +882,7 @@ to pay for this order.
 	#	$c .= "<option value='".$O2->in_get('our/payment_method')."' selected>".$O2->in_get('our/payment_method')."</option>";
 	#	}
 	$GTOOLS::TAG{"<!-- AVAILABLE_PAYMENTS -->"} = $c;
-	$GTOOLS::TAG{'<!-- IP_ADDRESS -->'} = $O2->in_get('our/ip_address');
+	$GTOOLS::TAG{'<!-- IP_ADDRESS -->'} = $O2->in_get('cart/ip_address');
 	$GTOOLS::TAG{'<!-- EREFID -->'} = $O2->in_get('want/erefid');
 
 	my $warnings = '';

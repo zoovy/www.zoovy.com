@@ -59,7 +59,7 @@ my $itemsref = (); my $promosref = (); my $taxtableref = ();
 
 if ($v{'order-calculations-error'}) {
 	## hmm.. maybe generate a ticket?
-	&ZOOVY::confess($v{'_u'},"AMAZON CBA CALLBACK ERROR".Dumper(\%ENV,$v));
+	&ZOOVY::confess($v{'_u'},"AMAZON CBA CALLBACK ERROR".Dumper(\%ENV,\%v));
 	}
 
 ## dump request to temp file

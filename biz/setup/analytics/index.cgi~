@@ -224,7 +224,7 @@ if ($VERB eq 'DEBUG-RUN') {
 	#$SITE::SREF->{'_NS'} = $PROFILE;
 
 	$SITE::CART2 = CART2->new_memory($USERNAME,$PRT);
-	$SITE::CART2->in_set('our/meta',$ZOOVY::cgiv->{'meta'});
+	$SITE::CART2->in_set('cart/refer',$ZOOVY::cgiv->{'meta'});
 	my ($SITE) = SITE->new($USERNAME,'PRT'=>$PRT,'NS'=>$PROFILE,'*CART2'=>$SITE::CART2);
 
 	my @MSGS = ();

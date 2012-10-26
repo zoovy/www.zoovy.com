@@ -243,13 +243,13 @@ if ($VERB eq 'LOGS') {
 
 
 
-if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-DEBUGPID') || ($VERB eq 'RAWE-QUERY')) {
+if (($VERB eq 'RAWE') || ($VERB =~ /^RAWE-/)) {
 	$template_file = 'rawe.shtml';
 
 	$GTOOLS::TAG{'<!-- OUTPUT -->'} = '';
 	
-	my ($PID,$QUERY) = undef;
-
+	my $QUERY = undef;
+	my $PID = $ZOOVY::cgiv->{'PID'};
 	my ($es) = &ZOOVY::getElasticSearch($USERNAME);		
 	if ($VERB eq 'RAWE') {
 		## not a "RUN"
@@ -260,14 +260,6 @@ if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-DEBUGPID') || ($VERB eq 'RAWE-QUERY')) 
 		if ($ZOOVY::cgiv->{'QUERY'} eq '') {
 			push @MSGS, "WARN|No query specified"; 
 			}
-		}
-	elsif ($VERB eq 'RAWE-DEBUGPID') {
-		$PID = $ZOOVY::cgiv->{'PID'};
-		if ($ZOOVY::cgiv->{'PID'} eq '') {
-			push @MSGS, "WARN|No PID specified"; 
-			}
-		}
-	else {
 		}
 
 	if (not defined $es) {
@@ -285,7 +277,23 @@ if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-DEBUGPID') || ($VERB eq 'RAWE-QUERY')) 
 			}
 		else {
 			$Q->{'index'} = lc("$USERNAME.public");
+			foreach my $k (keys %{$Q}) {
+				if (substr($k,0,1) eq '_') { 
+					push @MSGS, "INFO|+removed key '$k' because it started with an underscore and is not valid (just being helpful)";
+					delete $Q->{$k};
+					}
+				}
+			if ((not defined $Q->{'filter'}) && (not defined $Q->{'query'})) {
+				push @MSGS, "WARN|+No 'filter' or 'query' was specified, so this probably won't work real well.";
+				}
+
+			## www.elasticsearch.org/guide/reference/query-dsl/term-query.html
+			## filter should use:
+			
+			## query should use: 
 			}
+
+		print STDERR Dumper($Q,\@MSGS);
 
 		if ((defined $Q) && (defined $es)) {
 		   eval { $results = $es->search(%{$Q}); };
@@ -297,10 +305,30 @@ if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-DEBUGPID') || ($VERB eq 'RAWE-QUERY')) 
 		$GTOOLS::TAG{'<!-- QUERY -->'} = $QUERY;
 		$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Search Results:</h2>".Dumper($Q,$results)."</pre>";
 		}
-	elsif ($VERB eq 'RAWE-DEBUGPID') {
-     	my $result = $es->get(index =>lc("$USERNAME.public"),'type'=>'product','id'=>$PID);
-		$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Product Document Get:</h2>".Dumper($result)."</pre>";
+	elsif (($VERB eq 'RAWE-SHOWPID') || ($VERB eq 'RAWE-INDEXPID')) {
 
+		if ($PID eq '') {
+			push @MSGS, "ERROR|PID not specified";
+			}
+		elsif ($VERB eq 'RAWE-INDEXPID') {
+			my ($P) = PRODUCT->new($USERNAME,$PID);
+			if (not defined $P) {
+				push @MSGS, "ERROR|Product '$PID' does not exist in product database";
+				}
+			else {
+				push @MSGS, "SUCCESS|Product '$PID' was immediately indexed into elastic";
+				&ELASTIC::add_products($USERNAME,[$P],'*es'=>$es);
+				sleep(5);	# make them wait (avoids abuse, gives elastic a chance to catch up)
+				}
+			}
+
+		if ($PID ne '') {
+	     	my $result = $es->get(index =>lc("$USERNAME.public"),'type'=>'product','id'=>$PID);
+			$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Product Document Get:</h2>".Dumper($result)."</pre>";
+			}
+		}
+	else {
+		push @MSGS, "ERROR|+Invalid VERB:$VERB";
 		}
 
 	$VERB = 'RAWE';

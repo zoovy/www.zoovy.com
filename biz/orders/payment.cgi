@@ -245,7 +245,8 @@ if ($VERB eq 'ADD-PAYMENT') {
 			}
 		}
 	elsif ($tender =~ /^WALLET\:([\d]+)$/) {
-		$params{'ID'} = $1;
+		# $params{'ID'} = $1;
+		$params{'WI'} = $1;
 		($payrec) = $O2->add_payment('WALLET',$amt,%params);
 		($payrec) = $O2->process_payment('INIT',$payrec,%params);
 		}

@@ -1635,7 +1635,7 @@ if (($VERB eq 'BUYSAFE-SAVE') || ($VERB eq 'BUYSAFE-REFRESH')) {
 			}
 		}
 
-	my @domainrefs = &DOMAIN::TOOLS::domains($USERNAME,PRT=>$PRT,HOST_TYPE=>['PRIMARY','SPECIALTY'],DETAIL=>1);
+	my @domainrefs = &DOMAIN::TOOLS::domains($USERNAME,PRT=>$PRT,DETAIL=>1);
 	foreach my $domain (@domainrefs) {
 		my $profile = $domain->{'PROFILE'};
 		if ($profile eq '') { $profile = 'DEFAULT'; }

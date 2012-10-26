@@ -1,0 +1,26 @@
+<!-- SETUP_TAB -->
+
+<h2>Raw Elastic Interface:</h2>
+
+<form method="POST" id="productForm" name="productForm" action="index.cgi">
+<input type="hidden" name="ACTION" value="RAWE-SHOWPID">
+<h2>Debug Product</h2>
+PID: <input type="textbox" name="PID">
+<input type="button" onClick="productForm.ACTION='RAWE-SHOWPID'; productForm.submit(); " value=" Dump Product (in Elastic) " class="button">
+<input type="button" onClick="productForm.ACTION='RAWE-INDEXPID'; productForm.submit();" value=" Reindex Product Now " class="button">
+</form>
+<br>
+<Br>
+
+
+<form method="POST" action="index.cgi">
+<input type="hidden" name="ACTION" value="RAWE-QUERY">
+<h2>JSON Query or Filter</h2>
+<textarea cols=60 rows=3 name="QUERY"><!-- QUERY --></textarea><br>
+<input type="submit" value=" Run Query " class="button">
+</form>
+
+
+
+<!-- OUTPUT -->
+

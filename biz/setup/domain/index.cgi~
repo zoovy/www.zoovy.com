@@ -575,6 +575,7 @@ if ($VERB eq 'SUBDOMAIN-SAVE') {
 	my ($d) = DOMAIN->new($USERNAME,$domain,subdomain=>1);
 	$d->{'EMAIL_TYPE'} = 'NONE';
 	$d->{'REG_TYPE'} = 'SUBDOMAIN';
+	$d->{'HOST_TYPE'} = 'PRIMARY';
 	$d->{'PRT'} = $PRT;
 	$d->gen_dkim_keys('save'=>0);
 	$d->save();
@@ -665,6 +666,7 @@ if ($VERB eq 'LINK-SAVE') {
 		}
 	else {
 		my ($d) = DOMAIN->new($USERNAME,$domain);
+		$d->{'HOST_TYPE'} = $ZOOVY::cgiv->{'HOST_TYPE'};
 		$d->{'EMAIL_TYPE'} = $ZOOVY::cgiv->{'EMAIL_TYPE'};
 		if (not defined $d->{'EMAIL_TYPE'}) { $d->{'EMAIL_TYPE'} = 'NONE'; }
 		$d->{'EXTERNAL_MX1'} = $ZOOVY::cgiv->{'EXTERNAL_MX1'};
@@ -681,6 +683,9 @@ if ($VERB eq 'LINK') {
 	push @BC, { name=>'Link Domain' };
 	$GTOOLS::TAG{'<!-- DOMAINNAME -->'} = $ZOOVY::cgiv->{'DOMAIN'};
 	$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
+	$GTOOLS::TAG{'<!-- HOST_TYPE_PRIMARY -->'} = 'selected';
+	$GTOOLS::TAG{'<!-- HOST_TYPE_SPECIALTY -->'} = '';
+	$GTOOLS::TAG{'<!-- HOST_TYPE_REDIR -->'} = '';
 	$GTOOLS::TAG{'<!-- MXMODE_ZM -->'} = 'selected';
 	$GTOOLS::TAG{'<!-- MXMODE_MX -->'} = '';
 	$GTOOLS::TAG{'<!-- EXTERNAL_MX1 -->'} = '';

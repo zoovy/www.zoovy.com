@@ -762,12 +762,12 @@ if ($VERB eq 'DISASSOCIATE') {
 if ($VERB eq 'PRODUCTS') {
 
 	my ($sup_to_prodref,$prod_to_supref) = $S->fetch_supplier_products();
-	my @prods = (sort keys %{$prod_to_supref});
+	my @skus = (sort keys %{$prod_to_supref});
 	my $c = '';
 
 	my $PAGE = int($ZOOVY::cgiv->{'PAGE'});	## current page we are on, starts at zero.
 	my $PAGESIZE = 500;
-	my $PAGES = int(scalar(@prods)/$PAGESIZE);
+	my $PAGES = int(scalar(@skus)/$PAGESIZE);
 	$GTOOLS::TAG{'<!-- PAGES -->'} = $PAGES;	
 	$GTOOLS::TAG{'<!-- PAGE -->'} = $PAGE+1;
 	
@@ -778,21 +778,21 @@ if ($VERB eq 'PRODUCTS') {
 		$GTOOLS::TAG{'<!-- NAVIGATION -->'} .= qq~&nbsp; <a href="/biz/manage/suppliers/?VERB=PRODUCTS&CODE=$CODE&PAGE=~.($PAGE+1).qq~">Next &gt;&gt;</a> ~;
 		}
 
-	@prods = splice(@prods, $PAGE*$PAGESIZE, $PAGESIZE);
+	@skus = splice(@skus, $PAGE*$PAGESIZE, $PAGESIZE);
 
-	if (scalar(@prods) > 1000) {
-		$c .= "<tr><td valign=top colspan=10>Sorry, you have more than 500 SKUs (you have: ".scalar(@prods)."), cannot display</td></tr>";	
+	if (scalar(@skus) > 1000) {
+		$c .= "<tr><td valign=top colspan=10>Sorry, you have more than 500 SKUs (you have: ".scalar(@skus)."), cannot display</td></tr>";	
 		}
 	else {
 		my $jedi_username = lc($S->fetch_property('.jedi.username'));
-		my ($invref) = &INVENTORY::fetch_qty($USERNAME,\@prods);
+		my ($invref) = &INVENTORY::fetch_qty($USERNAME,\@skus);
 
 		my $count = 0;
-		my $prodsref = &PRODUCT::group_into_hashref($USERNAME,\@prods);
+		my $prodsref = &PRODUCT::group_into_hashref($USERNAME,\@skus);
 	
-		foreach my $pid (sort (@prods)) {
+		foreach my $sku (sort (@skus)) {
 			my $class = ($count++%2)?'r0':'r1';
-
+			my ($pid) = PRODUCT::stid_to_pid($sku);
 			my ($P) = $prodsref->{$pid};
 			if (not defined $P) {
 				## is this ever actually run/necesary?
