@@ -3,7 +3,7 @@
 <center>
 <!-- MESSAGE -->
 <br>
-<form id="thisFrm" name="thisFrm" action="index.cgi" method="POST">
+<form id="thisFrm" name="thisFrm" action="/biz/setup/rss/index.cgi" method="POST">
 <input type="hidden" name="VERB" value="SAVE">
 <input type="hidden" name="ID" value="<!-- ID -->">
 <table width=500 class='zoovytable'>

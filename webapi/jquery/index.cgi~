@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use utf8 qw();
 use strict;
 use Data::Dumper;
 use JSON::XS;
@@ -9,28 +10,34 @@ require JSONAPI;
 require DOMAIN::TOOLS;
 require SITE;
 
+
 $ENV{'REQUEST_METHOD'} =~ tr/a-z/A-Z/;
 
 ## NOTE: this code is mirrored in SITE::Vstore
 print "X-XSS-Protection: 0\n";
 print "Access-Control-Allow-Origin: *\n";
 print "Access-Control-Allow-Methods: POST, GET, OPTIONS\n";
-print "Access-Control-Max-Age: 1000\n";
+print STDERR Dumper(\%ENV);
+## HTTP_ACCESS_CONTROL_REQUEST_HEADERS content-type,x-auth,x-authtoken,x-cliendid,x-deviceid
+##print "Access-Control-Headers: Content-Type, content-type, x-authtoken, authtoken\n";
+print "Access-Control-Max-Age: 0\n";
 ## NOTE: Access-Control-Allow-Headers does NOT work with * you must specify something (ex: Content-Type)
-print "Access-Control-Allow-Headers: Content-Type\n";
+print "Access-Control-Allow-Headers: Content-Type, x-authtoken, x-version, x-clientid, x-deviceid, x-userid, x-domain\n";
+## print "Access-Control-Headers: $ENV{'HTTP_ACCESS_CONTROL_REQUEST_HEADERS'}\n";
 print "Vary: Accept-Encoding\n";
 if ($ENV{'REQUEST_METHOD'} eq 'OPTIONS') {
 	print STDERR "ACKNOWLEDGED OPTIONS HEADER\n";
+	foreach my $k (split(/,/,$ENV{'HTTP_ACCESS_CONTROL_REQUEST_HEADERS'})) {
+		next if ($k eq 'content-type');
+		next if ($k eq 'x-auth');
+		next if ($k eq 'x-authtoken');
+		}
 	print "Content-Length: 0\n";
 	print "Keep-Alive: timeout=2, max=100\n";
 	print "Connection: Keep-Alive\n";
 	print "Content-type: text/plain\n\n";
 	exit;
 	}
-
-
-
-my $ERROR = undef;
 
 # &ZOOVY::init(); can't run zoovy init.
 
@@ -49,19 +56,25 @@ elsif ($ENV{'REQUEST_METHOD'} eq "POST") {
 	read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
 	}
 
+
+
 ## NOW we need to decide 
 # print STDERR 'REQUEST: '.Dumper(\%ENV,{$ENV{'CONTENT_TYPE'}=>$buffer});
 # print STDERR "BUFFER: $buffer\n";
 
 # Split information into name/value pairs
 my $VARS = undef;
+my $R = undef;
 if ($buffer eq '') {
 	warn "No content received\n";
 	}
 elsif ($ENV{'CONTENT_TYPE'} =~ /^(text|application)\/json/) {
 	## text/json
 	## application/json
-	$VARS = JSON::XS::decode_json($buffer);
+	eval { $VARS = JSON::XS::decode_json($buffer); };
+	if ($@) {
+		&JSONAPI::set_error($R = {}, 'iseerr', 1, "decode json $@"); 
+		}
 	}
 else {
 	warn "content-type other\n";
@@ -131,163 +144,139 @@ if ($ENV{'HTTP_COOKIE'} ne '') {
 
 # print STDERR 'COOKIES:'.Dumper($ZOOVY::cookies,$VARS);
 
-my $CMDS = [];
-if ((defined $VARS->{'_cmd'}) && ($VARS->{'_cmd'} eq 'pipeline') && (defined $VARS->{'@cmds'}) && (ref($VARS->{'@cmds'}) eq 'ARRAY')) {
-	$CMDS = $VARS->{'@cmds'};
-	}
-elsif (defined $VARS->{'_cmd'}) {
-	$CMDS = [ $VARS ];
-	}
-else {
-	$ERROR = "No CMDS found in request";
-	warn "*** CMDS WAS NOT DETECTED ***";
-	}
 
 
 ## lookup domain, and from that we can get everything else.
 
-my $SITE = undef;
-if (substr($VARS->{'_zjsid'},0,2) eq '**') {
-	## admin session.
-	require AUTH;
-	my ($result) = AUTH::fast_validate_session($VARS->{'_zjsid'});
-
-	if ($result) {
-		$SITE = SITE->new($result->{'USERNAME'}, 'PRT'=>$result->{'PRT'}, 'NS'=>$result->{'PROFILE'}, 'DOMAIN'=>$result->{'DOMAIN'} );
-		}
-	}
-elsif (substr($VARS->{'_zjsid'},0,1) eq '*') {
-	## possibly a provisional token issued
-	require AUTH;
-	my %PAIRS = ();
-	foreach my $chunk (split(/\|/,$VARS->{'_zjsid'})) {
-		my ($k,$v) = split(/=/,$chunk);
-		$PAIRS{$k} = $v;
-		}
-	if ($PAIRS{'USERNAME'}) { 
-		$SITE = SITE->new($PAIRS{'USERNAME'});
-		}
-	print STDERR "SITE::MERCHANT_ID: $PAIRS{'USERNAME'}\n"; 
-	}
-elsif ($ENV{'REQUEST_URI'} =~ /index\.cgi\/(.*?)$/) {
-	my $SDOMAIN = $1;
-	my ($USERNAME,$SSL_DOMAIN,$PRT,$PROFILE) = &DOMAIN::TOOLS::fast_resolve_domain_to_user($SDOMAIN);
-	$SITE = SITE->new($USERNAME, 'PRT'=>$PRT, 'NS'=>$PROFILE, 'DOMAIN'=>$SDOMAIN);
-	}
-
-if (defined $ERROR) {
-	}
-elsif (scalar(@{$CMDS})==0) {
-	$ERROR = "No commands found";
-	warn "**** NO COMMANDS ****";
-	}
-elsif (not defined $SITE) {
-	## gosh, hopefully it's a login call.
-	print STDERR "*** BLANK ZJSID LOOK FOR appAdminInit CMD and use LOGIN for now. ***\n";
-
-	foreach my $cmdref (@{$CMDS}) {
-		if (defined $SITE) {
-			}
-		elsif ($cmdref->{'domain'}) {
-			my ($USERNAME) = &DOMAIN::TOOLS::fast_resolve_domain_to_user($cmdref->{'domain'});
-			$SITE = SITE->new($USERNAME);
-			}
-		elsif ($cmdref->{'login'}) {
-			require AUTH;
-			my ($user,$luser) = &AUTH::parse_login($cmdref->{'login'});
-			$SITE = SITE->new($user,'LUSER'=>$luser,'IS_SITE'=>0);
-			}
-		}
-	}
-
-#elsif (1) {
-#	## not sure what would break if I take this out, I think it was used before login was moved to the top.
-#	warn "UNHANDLED REQUEST URI\n";
+#if (substr($VARS->{'_zjsid'},0,2) eq '**') {
+#	## admin session.
+#	require AUTH;
+#	my ($result) = AUTH::fast_validate_session($VARS->{'_zjsid'});
+#
+#	if ($result) {
+#		$SITE = SITE->new($result->{'USERNAME'}, 'PRT'=>$result->{'PRT'}, 'NS'=>$result->{'PROFILE'}, 'DOMAIN'=>$result->{'DOMAIN'} );
+#		}
+#	}
+#elsif (substr($VARS->{'_zjsid'},0,1) eq '*') {
+#	## possibly a provisional token issued
+#	require AUTH;
+#	my %PAIRS = ();
+#	foreach my $chunk (split(/\|/,$VARS->{'_zjsid'})) {
+#		my ($k,$v) = split(/=/,$chunk);
+#		$PAIRS{$k} = $v;
+#		}
+#	if ($PAIRS{'USERNAME'}) { 
+#		$SITE = SITE->new($PAIRS{'USERNAME'});
+#		}
+#	print STDERR "SITE::MERCHANT_ID: $PAIRS{'USERNAME'}\n"; 
+#	}
+#if ($ENV{'REQUEST_URI'} =~ /index\.cgi\/(.*?)$/) {
+#	my $SDOMAIN = $1;
+#	my ($USERNAME,$SSL_DOMAIN,$PRT,$PROFILE) = &DOMAIN::TOOLS::fast_resolve_domain_to_user($SDOMAIN);
+#	$SITE = SITE->new($USERNAME, 'PRT'=>$PRT, 'NS'=>$PROFILE, 'DOMAIN'=>$SDOMAIN);
 #	}
 
-if (defined $ERROR) {
+#if (defined $ERROR) {
+#	}
+#elsif (scalar(@{$CMDS})==0) {
+#	$ERROR = "No commands found";
+#	warn "**** NO COMMANDS ****";
+#	}
+#elsif (not defined $SITE) {
+#	## gosh, hopefully it's a login call.
+#	## print STDERR "*** BLANK ZJSID LOOK FOR appAdminInit CMD and use LOGIN for now. ***\n";
+#
+#	foreach my $cmdref (@{$CMDS}) {
+#		if (defined $SITE) {
+#			}
+#		elsif ($cmdref->{'domain'}) {
+#			my ($USERNAME) = &DOMAIN::TOOLS::fast_resolve_domain_to_user($cmdref->{'domain'});
+#			$SITE = SITE->new($USERNAME);
+#			}
+#		elsif ($cmdref->{'login'}) {
+#			require AUTH;
+#			my ($user,$luser) = &AUTH::parse_login($cmdref->{'login'});
+#			$SITE = SITE->new($user,'LUSER'=>$luser,'IS_SITE'=>0);
+#			}
+#		}
+#	}
+
+
+my $JSAPI = JSONAPI->new();
+
+if (not defined $R) {
+	$R = $JSAPI->init($VARS,'%ENV'=>\%ENV);
 	}
-elsif (defined $SITE) {
-	}
-else {
-	$ERROR = "Username could not be found";
-	}
+
 
 
 my ($utf8_encoded_json_text);
-
-if (defined $ERROR) {
-	print STDERR "ERROR: $ERROR\n";
-	my %R = ();
-	$R{'_rcmd'} = 'err';
-	$R{'errid'} = 1;
-	$R{'errmsg'} = $ERROR;
-
-	($utf8_encoded_json_text) = JSON::XS->new->utf8->allow_blessed(1)->convert_blessed(1)->encode(\%R);
+if ($R) {
+	## preflight error
+	$R->{'_rcmd'} = 'err';
+	($utf8_encoded_json_text) = JSON::XS->new->utf8->allow_blessed(1)->convert_blessed(1)->encode($R);
 	}
-elsif ((defined $SITE->username()) && ($SITE->username() ne '')) {
+else {
+	my ($udbh) = &DBINFO::db_user_connect($JSAPI->username());
 
-	my ($udbh) = &DBINFO::db_user_connect($SITE->username());
-	my $JSAPI = JSONAPI->new( $SITE->username(), $SITE->prt(), '*SITE'=>$SITE );
-	$JSAPI->set_version_from_request($VARS);
-
-	my ($R,$cmdlines) = $JSAPI->handle($ENV{'REQUEST_URI'},$VARS);
-	# my ($R,$cmdlines) = PAGE::JQUERY::handle($ENV{'REQUEST_URI'},$VARS);
-
-	if (&ZOOVY::servername() eq 'newdev') {
-		use Clone;
-		open Fx, ">>/tmp/trace.log";
-		print Fx $$.Dumper($cmdlines)."\n";
-		print Fx "-------------------------------------------------\n";
-		close Fx;
+	my ($R,$cmdlines);
+	eval { ($R,$cmdlines) = $JSAPI->handle($ENV{'REQUEST_URI'},$VARS); };
+	if ($@) {
+		&JSONAPI::set_error($R = {}, 'iseerr', 1, "Internal Error $@");
+		&ZOOVY::confess( $JSAPI->username(), "JSONAPI $@", justkidding=>1 );
 		}
 
-	($utf8_encoded_json_text) = JSON::XS->new->utf8->allow_blessed(1)->convert_blessed(1)->encode($R);
+	#if (&ZOOVY::servername() eq 'newdev') {
+	#	use Clone;
+	#	open Fx, ">>/tmp/trace.log";
+	#	print Fx $$.Dumper($cmdlines)."\n";
+	#	print Fx "-------------------------------------------------\n";
+	#	close Fx;
+	#	}
 
-#	print STDERR 'PAGE::JQUERY::handle response: '.Dumper($R,$cmdlines,$utf8_encoded_json_text);
-	
-	if (defined $PAGE::JQUERY::CART2) {
-		# print STDERR "PAGE::JQUERY::CART->save()\n";
-		$PAGE::JQUERY::CART2->save();
+	## NOTE: utf8 crashes prodlists (talk to jt -- for now ascii is fine)
+	## ($utf8_encoded_json_text) = JSON::XS->new->utf8()->allow_blessed(1)->convert_blessed(1)->encode($R);
+	($utf8_encoded_json_text) = JSON::XS->new->ascii()->allow_blessed(1)->convert_blessed(1)->encode($R);
+
+	#	print STDERR 'PAGE::JQUERY::handle response: '.Dumper($R,$cmdlines,$utf8_encoded_json_text);
+	if ($JSAPI->has_cart2()) {
+		$JSAPI->cart2()->save();
 		}
 
 	&DBINFO::db_user_close();
 	}
-else {
-	warn "PAGE::JQUERY::handle response: **NO SITE MERCHANT_ID**\n";
-	}
 
 
 
-if (0) {
-	## hmm. if we have an error AND it wasn't a valid request type then we should run this code which displays
-	## browser/user interpretable code
-	warn "returning - could not determine credentials\n";
-	warn "ZJSID:$VARS->{'_zjsid'}\n";
-	print "Content-type: text/plain\n\n";
-	print "could not determine credentials, login or domain in request\n";
-	exit;
-	}
-elsif ($VARS->{'_callback'}) {
-	# $ENV{'PATH_INFO'} eq '/jsonp.js') {
-	## specialized ie8 handler, leaves a file, which is picked up later.
+#if (0) {
+#	## hmm. if we have an error AND it wasn't a valid request type then we should run this code which displays
+#	## browser/user interpretable code
+#	warn "returning - could not determine credentials\n";
+#	warn "ZJSID:$VARS->{'_zjsid'}\n";
+#	print "Content-type: text/plain\n\n";
+#	print "could not determine credentials, login or domain in request\n";
+#	exit;
+#	}
+#if ($VARS->{'_callback'}) {
+#	# $ENV{'PATH_INFO'} eq '/jsonp.js') {
+#	## specialized ie8 handler, leaves a file, which is picked up later.
 #	require MEDIA;
 #	print "Content-type: image/gif\n\n";
 #	print MEDIA::blankout();
-	# print "Content-type: text/javascript\n\n";
-	print "Content-type: application/json\n\n";
-	my $callbackjs = sprintf("%s(%s);\n",$VARS->{'_callback'},$utf8_encoded_json_text);
-	print $callbackjs;
-	open F, sprintf(">/tmp/callback-%s.js",$VARS->{'_uuid'});
-	print F $callbackjs;
-	close F;
-	}
-else {
+#	# print "Content-type: text/javascript\n\n";
+#	print "Content-type: application/json\n\n";
+#	my $callbackjs = sprintf("%s(%s);\n",$VARS->{'_callback'},$utf8_encoded_json_text);
+#	print $callbackjs;
+#	open F, sprintf(">/tmp/callback-%s.js",$VARS->{'_uuid'});
+#	print F $callbackjs;
+#	close F;
+#	}
+#else {
 	print "Content-type: text/json\n";
 	print "Content-Length: ".length($utf8_encoded_json_text)."\n";
 	print "\n";
 	print $utf8_encoded_json_text;
-	}
+#	}
 #print STDERR "UFT8 RESPONSE: $utf8_encoded_json_text\n";
 
 1;

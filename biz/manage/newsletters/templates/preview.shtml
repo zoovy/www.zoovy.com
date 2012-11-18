@@ -55,9 +55,9 @@ iFrameDoc.close();
 		</tr>
 		<tr>
 			<td class='table_top' align="center">
-			<input type="submit" name="BUTTON" value="Back" class="showLoadingModal button" onClick="document.location='index.cgi?VERB=CAMPAIGN-EDIT&ID=<!-- ID -->';">
+			<input type="submit" name="BUTTON" value="Back" class="showLoadingModal button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-EDIT&ID=<!-- ID -->');">
 			&nbsp;&nbsp;
-			<input type="submit" name="BUTTON" value="Exit" class="showLoadingModal button" onClick="document.location='index.cgi?VERB=CAMPAIGNS';">
+			<input type="submit" name="BUTTON" value="Exit" class="showLoadingModal button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGNS');">
 			</td>
 		</tr>
 	</table>

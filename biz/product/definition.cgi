@@ -49,6 +49,7 @@ else {
 		}
 
 	my $file = lc("$dir/$DOCID.json");
+	print STDERR "FILE:$file\n";
 	my $json = '';
 	if (-f $file) {
 		$json = &File::Slurp::read_file($file);
@@ -60,7 +61,6 @@ else {
 	else {
 		print "Content-type: text/plain\n\n";
 		print "MISSING FILE: $file\n"; 
-		die();
 		}
 	}
 

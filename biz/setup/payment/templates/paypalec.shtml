@@ -58,7 +58,6 @@ Setup instructions:
 		<option <!-- PAYPAL_API_CALLBACKS_0 --> value="0"> Disabled</option>
 		<option <!-- PAYPAL_API_CALLBACKS_1 --> value="1"> Enabled (RECOMMENDED)</option>
 		</select>
-		<div class="hint">Callbacks are still experimental, you can enable them but they will onl work for beta/sandbox users.</div>
 	</td>
 </tr>
 <tr>

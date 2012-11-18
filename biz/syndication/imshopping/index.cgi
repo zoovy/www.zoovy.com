@@ -27,12 +27,12 @@ my $VERB = $ZOOVY::cgiv->{'VERB'};
 
 my @TABS = ();
 if ($PROFILE ne '') {
-	push @TABS,	{ name=>'Config',selected=>($VERB eq '')?1:0, link=>'index.cgi' };
-	push @TABS, { name=>'Edit',selected=>($VERB eq 'EDIT')?1:0, link=> "?VERB=EDIT&PROFILE=$PROFILE", };
+	push @TABS,	{ name=>'Config',selected=>($VERB eq '')?1:0, link=>'/biz/syndication/imshopping/index.cgi' };
+	push @TABS, { name=>'Edit',selected=>($VERB eq 'EDIT')?1:0, link=> "/biz/syndication/imshopping/index.cgi?VERB=EDIT&PROFILE=$PROFILE", };
 #	push @TABS,	{ name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
-	push @TABS,	{ name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"?VERB=LOGS&PROFILE=$PROFILE", };
-	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG&PROFILE=$PROFILE", };
-	push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=51488&PROFILE=$PROFILE", };
+	push @TABS,	{ name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"/biz/syndication/imshopping/index.cgi?VERB=LOGS&PROFILE=$PROFILE", };
+	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz/syndication/imshopping/index.cgi?VERB=DEBUG&PROFILE=$PROFILE", };
+	push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"/biz/syndication/imshopping/index.cgi?VERB=WEBDOC&DOC=51488&PROFILE=$PROFILE", };
 
 	}
 
@@ -147,7 +147,7 @@ if ($VERB eq '') {
 		my $class = ($cnt++%2)?'r0':'r1';
 		$c .= "<tr>";
 		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
-		$c .= "<a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>";
+		$c .= "<a href=\"/biz/syndication/imshopping/index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>";
 		$c .= " | ";
 		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=IMS&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
 		$c .= "</td>";

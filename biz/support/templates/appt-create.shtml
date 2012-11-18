@@ -53,7 +53,7 @@
 <table>
 <tr>
 	<td><input type='submit' class="button" value=' Confirm Appointment '></td>
-	<td><input type='button' class="button" onClick='document.location="index.cgi?VERB=CALENDAR&CLASS=<!-- CLASS -->";' value=' Cancel Appointment '></td>
+	<td><input type='button' class="button" onClick="navigateTo('/biz/support/index.cgi?VERB=CALENDAR&CLASS=<!-- CLASS -->');" value=' Cancel Appointment '></td>
 </tr>
 </table>
 <table>

@@ -14,9 +14,9 @@
 <!-- ERROR -->
 <br>
 <br>
-<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
-<input type="hidden" name="VERB" value="SAVE">
-<input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
+<form name="thisFrm" id="thisFrm" action="<!-- PATH -->/index.cgi" method="post">
+<input type="hidden" id="VERB" name="VERB" value="SAVE">
+<input type="hidden" id="PROFILE" name="PROFILE" value="<!-- PROFILE -->">
 
 <table>
 	<!-- ZOOVY_MARKETING -->
@@ -55,12 +55,15 @@ These settings *MUST* match the settings in your <!-- MARKETPLACE --> account.
 </table>
 <br>
 <center>
-<input type="button" class="button" onClick="thisFrm.VERB.value='SAVE-AND-PUBLISH'; thisFrm.submit();" src="/images/bizbuttons/save.gif" value=" Publish ">
+<button class="button" 
+	onClick="thisFrm.VERB.value='SAVE-AND-PUBLISH'; thisFrm.submit();">Publish</button>
 &nbsp;
 
-<input type="button" class="button" onClick="thisFrm.VERB.value='SAVE'; thisFrm.submit();" src="/images/bizbuttons/save.gif" value=" Save ">
+<button class="button" 
+	onClick="thisFrm.VERB.value='SAVE'; thisFrm.submit();">Save</button>
 &nbsp;
-<input type="button" class="button" onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();" src="/images/bizbuttons/delete.gif" value=" Delete  ">
+<button class="button" 
+	onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();">Delete</button>
 
 </center>
 <br>

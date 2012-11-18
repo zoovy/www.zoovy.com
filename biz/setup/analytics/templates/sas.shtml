@@ -20,7 +20,7 @@
 <div class="hint">This will be displayed at the bottom of checkout.</div>
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 </form>
 
 </td></tr>

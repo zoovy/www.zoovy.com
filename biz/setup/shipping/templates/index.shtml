@@ -1,7 +1,7 @@
-e<!-- SETUP_TAB -->
+<!-- SETUP_TAB -->
 
 
-<form name="thisFrm" target="_top" action="index.cgi" method="POST">
+<form name="thisFrm" action="/biz/setup/shipping/index.cgi" method="POST">
 <input type="hidden" name="ACTION" value="SAVE">
 <center>
 <span class="alert"><b><!-- MESSAGE --></b></span>
@@ -77,12 +77,11 @@ e<!-- SETUP_TAB -->
 <br>
 
 <center>
-<form id="uniFrm" name="uniFrm" action="universal.cgi">
 <table class="zoovytable" cellspacing='0' cellpadding='1' border='0' width='800'>
 <tr class='zoovytableheader'>
 	<td align="left" class="zoovytableheader">Flexible Shipping Methods:</td>
 	<td align="right">
-	<select name="_HANDLER">
+	<select id="_HANDLER" name="_HANDLER">
 	<option value="FIXED">Fixed Price</option>
 	<option value="WEIGHT">Weight Based</option>
 	<option value="PRICE">Price Based</option>
@@ -112,7 +111,6 @@ e<!-- SETUP_TAB -->
 	</td>
 </tr>
 </table>
-</form>
 
 <br>
 
@@ -130,7 +128,7 @@ e<!-- SETUP_TAB -->
 <tr>
 	<td valign="middle" align="center" >
 		<a href='index.cgi?VERB=FEDEX-PRT-INIT'>
-		<img src='images/fedex.gif' border='0'><br>
+		<img src='/biz/setup/shipping/images/fedex.gif' border='0'><br>
 		</a>
 	</td>
 	<td valign="middle"><font size='2' face="Arial"><!-- DISPLAY_FEDEXAPI_DOM --></td>
@@ -140,7 +138,7 @@ e<!-- SETUP_TAB -->
 
 <tr>
 	<td valign="middle" align="center" ><font size='2' face="Arial">
-		<a href='usps.cgi'><img src='images/usps.gif' border='0'></a></td>
+		<a href='/biz/setup/shipping/usps.cgi'><img src='/biz/setup/shipping/images/usps.gif' border='0'></a></td>
 	<td valign="middle" ><font size='2' face="Arial"><!-- DISPLAY_USPS_DOM --></td>
 	<td valign="middle" ><font size='2' face="Arial"><!-- DISPLAY_USPS_INT --></td>
 	<td><a target="webdoc" href="http://www.zoovy.com/webdoc/index.cgi?VERB=DOC&DOCID=50815">[Webdoc]</a></td>
@@ -149,8 +147,8 @@ e<!-- SETUP_TAB -->
 <tr>
 	<td valign="middle" align="center" >
 		<font size='2' face="Arial">
-		<a href='upsapi.cgi'>
-		<img src='images/ups_logo.gif' border='0'><br>
+		<a href='/biz/setup/shipping/upsapi.cgi'>
+		<img src='/biz/setup/shipping/images/ups_logo.gif' border='0'><br>
 		UPS OnLine&reg; Tools</a>
 	</td>
 	<td valign="middle" ><font size='2' face="Arial"><!-- DISPLAY_UPSAPI_DOM --></td>
@@ -167,13 +165,13 @@ e<!-- SETUP_TAB -->
 <Tr>
 	<td>
 		<center>
-		<input class="button showLoadingModal" style="width: 200px;" type="button" value="  Handling  " onClick="window.document.location='handling.cgi'"><br>
+		<button class="button showLoadingModal" style="width: 200px;" type="button" onClick="navigateTo('/biz/setup/shipping/handling.cgi')">Handling</button><br>
 		<a target="webdoc" href="http://webdoc.zoovy.com/doc/50381">[Webdoc]</a>
 		</center>
 	</td>
 	<td>
 		<center>
-		<input class="button showLoadingModal" style="width: 200px;" type="button" value="  Insurance  " onClick="window.document.location='insurance.cgi';"><br>
+		<button class="button showLoadingModal" style="width: 200px;" type="button" onClick="navigateTo('/biz/setup/shipping/insurance.cgi');">Insurance</button><br>
 		<a target="webdoc" href="http://webdoc.zoovy.com/doc/50382">[Webdoc]</a>
 		</center>
 	</td>
@@ -188,7 +186,6 @@ e<!-- SETUP_TAB -->
 </td></tr>
 <tr><td>
 </table>
-</form>
 <br>
 </center>
 

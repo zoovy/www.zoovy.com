@@ -133,8 +133,8 @@ if ($ACTION eq '')
 	}
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Weight Based' };
 
 &GTOOLS::output(title=>"Shipping: Weight Based Shipping",help=>'#50816',file=>$template_file,header=>1,bc=>\@BC);

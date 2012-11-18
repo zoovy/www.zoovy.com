@@ -90,7 +90,7 @@ sure. My mind is made up. There is absolutely nothing you can do to talk me out 
 		</tr>
 	</table>
 	<input class="button" type="submit" value=" Remove Profile "> &nbsp;
-	<input class="button" type="button" onClick="document.location='index.cgi';" value=" Cancel "> &nbsp;
+	<input class="button" type="button" onClick="navigateTo('/biz/setup/ebay/index.cgi');" value=" Cancel "> &nbsp;
 	</form>	
 	</td>
 </tr>

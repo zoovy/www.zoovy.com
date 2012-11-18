@@ -59,24 +59,24 @@ my @TABS = ();
 ## determine tabs available 
 ## WEB flag should see layout and wrapper tabs
 if (index($FLAGS,',WEB,') > 0 ) {
-	push @TABS, { name=>'Wrappers', link=>'index.cgi?FORMAT=WRAPPER', },
-					{ name=>'Layouts', link=>'index.cgi?FORMAT=LAYOUT', },
-					{ name=>'Emails', link=>'index.cgi?FORMAT=ZEMAIL', },
-					{ name=>'Orders', link=>'index.cgi?FORMAT=ORDER', },
+	push @TABS, { name=>'Wrappers', link=>'/biz/setup/toxml/index.cgi?FORMAT=WRAPPER', },
+					{ name=>'Layouts', link=>'/biz/setup/toxml/index.cgi?FORMAT=LAYOUT', },
+					{ name=>'Emails', link=>'/biz/setup/toxml/index.cgi?FORMAT=ZEMAIL', },
+					{ name=>'Orders', link=>'/biz/setup/toxml/index.cgi?FORMAT=ORDER', },
 	}
 ## EBAY flag should see the wizard tab
 if (index($FLAGS,',EBAY,') > 0 ) {
-	push @TABS, { name=>'Wizards', link=>'index.cgi?FORMAT=WIZARD', };
+	push @TABS, { name=>'Wizards', link=>'/biz/setup/toxml/index.cgi?FORMAT=WIZARD', };
 	}
 
 ## API flag should see the definitions and includes tabs
 if (index($FLAGS,',API,') > 0 ) {				
-	push @TABS, { name=>'Definitions', link=>'index.cgi?FORMAT=DEFINITION', },
-					{ name=>'Includes', link=>'index.cgi?FORMAT=INCLUDE', };
+	push @TABS, { name=>'Definitions', link=>'/biz/setup/toxml/index.cgi?FORMAT=DEFINITION', },
+					{ name=>'Includes', link=>'/biz/setup/toxml/index.cgi?FORMAT=INCLUDE', };
 	}
 
 ## no authorization to edit TOXML
-push @TABS, { name=>'Help', link=>'index.cgi?ACTION=HELP', };
+push @TABS, { name=>'Help', link=>'/biz/setup/toxml/index.cgi?ACTION=HELP', };
 
 my $q = new CGI;
 my $ACTION = $ZOOVY::cgiv->{'ACTION'};
@@ -92,7 +92,7 @@ my $DOCID = $ZOOVY::cgiv->{'DOCID'};
 #print "Content-type: text/plain\n\n"; print Dumper($ZOOVY::cgiv,$ACTION); die();
 
 ## choices from top page
-if ($ACTION eq "Edit") {	
+if ($ACTION eq "Edit XML") {	
 	&ZWEBSITE::save_website_attrib($USERNAME,'pref_template_fmt',uc($q->param('TYPE')));
 	if ($q->param('TYPE') eq "xml") { $ACTION = "EDITXML"; }
 	elsif ($q->param('TYPE') eq "html") { $ACTION = "EDITHTML"; }
@@ -114,8 +114,8 @@ print STDERR "ACTION=$ACTION FORMAT=$FORMAT DOCID=$DOCID\n";
 
 
 my @BC = ();
-push @BC, 	{ name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      	 	{ name=>'Template Manager',link=>'http://www.zoovy.com/biz/setup/toxml/index.cgi?ACTION=HELP','target'=>'_top', };
+push @BC, 	{ name=>'Setup',link=>'/biz/setup','target'=>'_top', },
+      	 	{ name=>'Template Manager',link=>'/biz/setup/toxml/index.cgi?ACTION=HELP','target'=>'_top', };
     
 
 
@@ -330,9 +330,8 @@ if ($ACTION eq 'TOP') {
 		my $name = $inforef->{'TITLE'};	
 
 		# only look at userland flows
-		$c .= "<a href='index.cgi?ACTION=EDITXML&DOCID=".CGI->escape($k)."'>[EDIT XML]</a> ";
-		# $c .= "<a href='index.cgi?ACTION=EDITHTML&DOCID=".CGI->escape($k)."'>[EDIT HTML]</a> ";
-		$c .= "<a href='index.cgi?ACTION=ACKDELETE&DOCID=".CGI->escape($k)."'>[REMOVE]</a> ($k) $name<br>\n";
+		$c .= "<a href='/biz/setup/toxml/index.cgi?ACTION=EDITXML&DOCID=".CGI->escape($k)."'>[EDIT XML]</a> ";
+		$c .= "<a href='/biz/setup/toxml/index.cgi?ACTION=ACKDELETE&DOCID=".CGI->escape($k)."'>[REMOVE]</a> ($k) $name<br>\n";
 		}
 	if ($c eq '') { $c = '<i>None</i>'; }
 	$GTOOLS::TAG{'<!-- EXISTINGFLOWS -->'} = $c;
@@ -465,7 +464,7 @@ if ($ACTION eq '') {
 	if ($FORMAT ne '') {
 	$GTOOLS::TAG{'<!-- UPLOAD_FORM -->'} = qq~
 <!-- begin upload new-->
-<form action='index.cgi' method='POST' enctype='multipart/form-data'>
+<form action='/biz/setup/toxml/index.cgi' method='POST' enctype='multipart/form-data'>
 <input type='hidden' name='ACTION' value='UPLOAD'>
 <input type='hidden' name='FORMAT' value='$FORMAT'>
 <table width='800' border='0' cellpadding='0' cellspacing='0' class="zoovytable" align='center'>
@@ -544,11 +543,11 @@ if ($ACTION eq '') {
 			$c .= qq~
 					<tr class="$c_row">
 						<td>$inforef->{'FORMAT'}.$DOCID
-							<a href="index.cgi?ACTION=ACKDELETE&FORMAT=$FORMAT&DOCID=$DOCID">
+							<a href="/biz/setup/toxml/index.cgi?ACTION=ACKDELETE&FORMAT=$FORMAT&DOCID=$DOCID">
 							<font color=red size="-3"><i>(remove)</i></font></a></td>
 						<td>$TITLE</td> 
 						<td align="right" nowrap>
-							<form action="index.cgi" method="POST" style='display:inline'>
+							<form action="/biz/setup/toxml/index.cgi" method="POST" style='display:inline'>
 								<input type=hidden name="DOCID" value="$DOCID">
 								<input type=hidden name="FORMAT" value="$inforef->{'FORMAT'}">
 								<input type=hidden name="TYPE" value="xml">
@@ -564,7 +563,7 @@ if ($ACTION eq '') {
 ## Removed this per JT since its broked and unnecessary - 5/19/10
 #			if ($FORMAT eq 'WRAPPER') {
 #				$c .= qq~
-#					<form action="index.cgi" method="GET" style='display:inline;'>
+#					<form action="/biz/setup/toxml/index.cgi" method="GET" style='display:inline;'>
 #						<input type=hidden name="DOCID" value="$DOCID">
 #						<input type=hidden name="FORMAT" value="$FORMAT">
 #						<input type=hidden name="ACTION" value="SITEBUTTONS">
@@ -587,7 +586,7 @@ if ($ACTION eq '') {
 						<td>$DOCID</td>
 						<td>$TITLE</td>
 						<td align="right" nowrap>
-						<a href="index.cgi?ACTION=DOWNLOAD&FORMAT=$inforef->{'FORMAT'}&DOCID=$DOCID">[ View/Copy ]</a></td>
+						<a href="/biz/setup/toxml/index.cgi?ACTION=DOWNLOAD&FORMAT=$inforef->{'FORMAT'}&DOCID=$DOCID">[ View/Copy ]</a></td>
 					</tr>~;
 			$z_row = ($z_row eq "r1")?"r0":"r1";
 			}			

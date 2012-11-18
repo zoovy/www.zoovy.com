@@ -388,9 +388,9 @@ if ($VERB eq 'REPORTS') {
 #		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td>";
 #		$c .= qq~
 #<td class="$class">
-#		<input type="button" onClick="document.location='index.cgi?VERB=EDIT&PROFILE=$ns';" class="button" value=" Edit ">
-#		<input type="button" onClick="document.location='index.cgi?VERB=UPDATENOW&PROFILE=$ns';" class="button" value="Update Now">
-#		<input type="button" onClick="document.location='index.cgi?VERB=CHECKSTATUS&PROFILE=$ns';" class="button" value="Check Status">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=EDIT&PROFILE=$ns');" class="button" value=" Edit ">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=UPDATENOW&PROFILE=$ns');" class="button" value="Update Now">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=CHECKSTATUS&PROFILE=$ns');" class="button" value="Check Status">
 #</td>
 #		~;
 #		$c .= "</tr>";

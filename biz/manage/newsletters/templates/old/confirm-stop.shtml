@@ -41,7 +41,7 @@ will need to be re-APPROVED to send. If you have changed your mind about stoppin
 
 			<input type="submit" name="BUTTON" value="Stop" class="button" onClick="thisFrm.submit();">
                         &nbsp;&nbsp;
-         <input type="button" name="BUTTON" value="Cancel" class="button" onClick="document.location='index.cgi?VERB=CAMPAIGNS';">
+         <input type="button" name="BUTTON" value="Cancel" class="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGNS');">
 
 			</td>
 			</tr>

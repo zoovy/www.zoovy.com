@@ -42,10 +42,10 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan='2'><br><input type="button" name="BUTTON" value="Configure UPS Meter Number" class="button" onClick="document.location='/biz/setup/shipping/upsapi.cgi?mode=apply&SUPPLIER_ID=<!-- CODE -->';"></td>
+					<td colspan='2'><br><input type="button" name="BUTTON" value="Configure UPS Meter Number" class="button" onClick="navigateTo('/biz/setup/shipping/upsapi.cgi?mode=apply&SUPPLIER_ID=<!-- CODE -->');"></td>
 				</tr>
 				<tr>
-					<td colspan='2'><input type="button" name="BUTTON" value="Configure Fedex Meter Number" class="button" onClick="document.location='/biz/setup/shipping/index.cgi?VERB=FEDEX-SUPPLIER-REGISTER&SUPPLIER_ID=<!-- CODE -->';"></td>
+					<td colspan='2'><input type="button" name="BUTTON" value="Configure Fedex Meter Number" class="button" onClick="navigateTo('/biz/setup/shipping/index.cgi?VERB=FEDEX-SUPPLIER-REGISTER&SUPPLIER_ID=<!-- CODE -->');"></td>
 				</tr>
 				<tr>
 					<td colspan='2'>
@@ -84,7 +84,7 @@
 <table>
    <tr>
       <td><input type="submit" class="button" value=" Save "></td>
-      <td><input type="button" class="button" value=" Exit " onClick="document.location='index.cgi?VERB=GENERIC-EDIT&CODE=<!-- CODE -->';"></td>
+      <td><input type="button" class="button" value=" Exit " onClick="navigateTo('/biz/manage/suppliers/index.cgi?VERB=GENERIC-EDIT&CODE=<!-- CODE -->');"></td>
    </tr>
 </table>
 </center>

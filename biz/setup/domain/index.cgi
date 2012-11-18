@@ -23,8 +23,8 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { warn "No auth"; exit; }
 
 my @BC = [
-      { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      { name=>'Domain Hosting',link=>'http://www.zoovy.com/biz/setup/domain','target'=>'_top', },
+      { name=>'Setup', link=>'/biz/setup/index.cgi' },
+      { name=>'Domain Hosting', link=>'/biz/setup/domain/index.cgi' },
       ];
 my $help = "#50334";
 
@@ -462,7 +462,7 @@ Password/login urls are displayed because you are an Admin user
 
 		$c .= qq~
 <br>
-<form action="index.cgi">
+<form action="/biz/setup/domain/index.cgi">
 <input type="hidden" name="VERB" value="FUSEMAIL-SYNC">
 <input class="button" type="submit" value="Verify Settings">
 </form>
@@ -694,53 +694,55 @@ if ($VERB eq 'CONFIG') {
 	require AJAX::PANELS;
 	require DOMAIN::PANELS;
 
-	my $buf     = '';                         # temporarily garbage variable.
-	my $class = 'r1';
-	my $PRT_PRIMARY = undef;
-	my @domains = &DOMAIN::TOOLS::domains($USERNAME,PRT=>$PRT);
-	foreach my $domain (@domains) {
-		my ($d) = DOMAIN->new($USERNAME,$domain);
-		if ($d->{'IS_PRT_PRIMARY'}) { $PRT_PRIMARY = $domain; }
-		if ($class eq 'r0') { $class = 'r1'; } else { $class = 'r0'; }
-
-		my $panel = 'DOMAIN:'.$d->{'DOMAIN'};
-
-		my ($content,$state) = ('',0);
-		if (defined $LU) { ($state) = $LU->get('domain.'.$panel,0); }
-
-		$content = ($state)?&DOMAIN::PANELS::panel_domain($LU,'','LOAD',$d,{VERB=>''}):'';
-		# if ($state) { $content = 'test'; }
-		my $warnings = '';
-
-		$buf .= &AJAX::PANELS::render_panel($panel,$d->{'DOMAIN'}.'<br><font size=1>'.$d->{'STATUSMSG'}.'</font>'.$warnings,$state,$content);
-		} ## end foreach my $line (sort @ar)
-
-	if ($buf eq '') {
-		$buf .= "<tr><td>No domains exist yet - use \"Domain Setup\" to get started.</td></tr>";
-		}
-	if (not defined $PRT_PRIMARY) {
-		push @MSGS, "WARN|No domain is configured as Primary for this partition";
-		}
+#	my $buf     = '';                         # temporarily garbage variable.
+#	my $class = 'r1';
+#	my $PRT_PRIMARY = undef;
+#	my @domains = &DOMAIN::TOOLS::domains($USERNAME,PRT=>$PRT);
+#	foreach my $domain (@domains) {
+#		my ($d) = DOMAIN->new($USERNAME,$domain);
+#		if ($d->{'IS_PRT_PRIMARY'}) { $PRT_PRIMARY = $domain; }
+#		if ($class eq 'r0') { $class = 'r1'; } else { $class = 'r0'; }
+#
+#		my $panel = 'DOMAIN:'.$d->{'DOMAIN'};
+#
+#		#my ($content,$state) = ('',0);
+#		#if (defined $LU) { ($state) = $LU->get('domain.'.$panel,0); }
+#		# $content = ($state)?&DOMAIN::PANELS::panel_domain($LU,'','LOAD',$d,{VERB=>''}):'';
+#		# if ($state) { $content = 'test'; }
+#		#my $warnings = '';
+#		#$buf .= &AJAX::PANELS::render_panel($panel,$d->{'DOMAIN'}.'<br><font size=1>'.$d->{'STATUSMSG'}.'</font>'.$warnings,$state,$content);
+#
+#		} 
+#	if ($buf eq '') {
+#		$buf .= "<tr><td>No domains exist yet - use \"Domain Setup\" to get started.</td></tr>";
+#		}
+#	if (not defined $PRT_PRIMARY) {
+#		push @MSGS, "WARN|No domain is configured as Primary for this partition";
+#		}
 
 	$template_file = 'config.shtml';
-	$GTOOLS::TAG{"<!-- EXISTING_DOMAINS -->"} = $buf;
+#	$GTOOLS::TAG{"<!-- EXISTING_DOMAINS -->"} = $buf;
 	}
 
 
 my @TABS = ();
-push @TABS, { name=>'Add Domains', link=>'index.cgi?VERB=NEW', selected=>($VERB eq 'NEW')?1:0 };
-push @TABS, { name=>'Domain Config', link=>'index.cgi?VERB=CONFIG', selected=>($VERB eq 'CONFIG')?1:0 };
+push @TABS, { name=>'Add Domains', link=>'/biz/setup/domain/index.cgi?VERB=NEW', selected=>($VERB eq 'NEW')?1:0 };
+push @TABS, { name=>'Domain Config', 
+	link=>'/biz/setup/domain/index.cgi?VERB=CONFIG', 
+	# link=>'#!domainConfigPanel',
+	selected=>($VERB eq 'CONFIG')?1:0 
+	};
 if ($FLAGS =~ /,ZM,/) {
-	push @TABS, { name=>'FuseMail', link=>'index.cgi?VERB=FUSEMAIL', selected=>($VERB eq 'FUSEMAIL')?1:0 };
+	push @TABS, { name=>'FuseMail', link=>'/biz/setup/domain/index.cgi?VERB=FUSEMAIL', selected=>($VERB eq 'FUSEMAIL')?1:0 };
 	}
 if ($LU->is_admin()) {
-	push @TABS, { name=>'Profiles &amp; Partitions', link=>'index.cgi?VERB=PROFILES', selected=>($VERB eq 'PROFILES')?1:0 };
+	push @TABS, { name=>'Profiles &amp; Partitions', link=>'/biz/setup/domain/index.cgi?VERB=PROFILES', selected=>($VERB eq 'PROFILES')?1:0 };
 	}
 
 &GTOOLS::output(
    'title'=>'Setup : Domain Hosting',
    'file'=>$template_file,
-	'head'=>&AJAX::PANELS::header('DOMAINEDIT','','index.cgi'),
+	'head'=>&AJAX::PANELS::header('DOMAINEDIT','','/biz/setup/domain/index.cgi'),
    'header'=>'1',
    'help'=>$help,
 	'jquery'=>1,

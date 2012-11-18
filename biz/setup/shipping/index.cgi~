@@ -23,8 +23,8 @@ my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 my @MSGS = ();
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping/index.cgi','target'=>'_top', };
 
 
 $GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
@@ -33,13 +33,15 @@ my $VERB = $ZOOVY::cgiv->{'ACTION'};
 if ($VERB eq '') { $VERB = $ZOOVY::cgiv->{'VERB'}; }
 
 
+print STDERR Dumper($ZOOVY::cgiv);
+
 if ($FLAGS !~ /,SHIP,/) {
 	$GTOOLS::TAG{'<!-- ADVANCED_BEGIN -->'} = '<!--';
 	$GTOOLS::TAG{'<!-- ADVANCED_END -->'} = '-->';
 	}
 
 if (defined($ZOOVY::cgiv->{'MESSAGE'})) {
-	$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<br><table border='2' width='80%' align='center'><tr><td><center><font color='red' size='4' face='helvetica'><b>".$ZOOVY::cgiv->{'MESSAGE'}."</b></font></center></td></tr></table><br>";
+	push @MSGS, "INFO|+$ZOOVY::cgiv->{'MESSAGE'}";
 	}
 
 
@@ -255,7 +257,7 @@ if ($VERB eq 'FEDEX-CONFIG') {
 	$GTOOLS::TAG{'<!-- INT_GROUND -->'} = ($fdxcfg->{'int.ground'})?'checked':'';
 
 	$GTOOLS::TAG{'<!-- METER_LINK -->'} = qq~
-		<input class='button' type='button' onClick='document.location="index.cgi?VERB=FEDEX-PRT-REGISTER";' value='New Meter'>
+		<input class='button' type='button' onClick="navigateTo('/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-REGISTER');" value='New Meter'>
 		~;
 
 	$template_file = 'fedexws-config.shtml';
@@ -370,7 +372,7 @@ if ($VERB eq 'BANNED') {
 	foreach my $line (split(/[\n\r]+/,$webdbref->{'banned'})) {
 		my ($type,$match,$created) = split(/\|/,$line);
 		$c .= "<tr>";
-		$c .= "<td><a href='index.cgi?ACTION=BANNED-NUKE&ID=$i'>[Del]</a></td>";
+		$c .= "<td><a href='/biz/setup/shipping/index.cgi?ACTION=BANNED-NUKE&ID=$i'>[Del]</a></td>";
 		$c .= "<td>$type</td>";
 		$c .= "<td>$match</td>";
 		$c .= "<td>".&ZTOOLKIT::pretty_date($created,2)."</td>";
@@ -409,16 +411,13 @@ if ($VERB eq 'FILTER-DELBLOCK') {
 if ($VERB eq 'COUNTRIES') {
 	$template_file = 'index-filters.shtml';	
 
-	if ($webdbref->{'paypal_email'}) {
-		push @MSGS, "WARN|+Paypal Express checkout, Google Checkout, and Checkout by Amazon, and Checkout Applications (One Page Checkout) will be able to place orders that avoid this block list.";
-		}
 
 	if ($FLAGS =~ /,SHIP,/) {
 		my $c = '';
 		foreach my $isox (split(/,/,$webdbref->{'ship_blacklist'})) {
 			next if ($isox eq '');
 			my ($info) = &ZSHIP::resolve_country(ISOX=>$isox);
-			$c .= "<tr><td><a href='index.cgi?ACTION=FILTER-DELBLOCK&ISOX=$isox'>[Del]</a></td><td>$info->{'Z'} ($isox)</td></tr>";
+			$c .= "<tr><td><a href='/biz/setup/shipping/index.cgi?ACTION=FILTER-DELBLOCK&ISOX=$isox'>[Del]</a></td><td>$info->{'Z'} ($isox)</td></tr>";
 			}
 		$GTOOLS::TAG{'<!-- BLOCK_LIST -->'} = $c;
 	
@@ -436,6 +435,12 @@ if ($VERB eq 'COUNTRIES') {
 
 	}
 
+
+if (($VERB eq 'COUNTRIES') || ($VERB eq 'BANNED')) {
+	if ($webdbref->{'paypal_email'}) {
+		push @MSGS, "WARN|Paypal Express checkout, Google Checkout, and Checkout by Amazon, and Checkout Applications (One Page Checkout) will be able to place orders that avoid this block list.";
+		}
+	}
 
 
 
@@ -514,7 +519,8 @@ NOTE: Simple Promotion will give FREE SHIPPING on orders over %.2f
 
 			$c .= qq~
 <tr class="$r">
-	<td valign=top><input type="button" class="button" value="Edit" onClick="
+	<td valign=top>
+<input type="button" class="button" value="Edit" onClick="
 document.uniFrm.VERB.value='EDIT';
 document.uniFrm.ID.value='$m->{'id'}';
 document.uniFrm.submit();
@@ -594,9 +600,9 @@ if ($LU->get('todo.setup')) {
 
 
 my @TABS = ();
-push @TABS, { name=>'General', selected=>($VERB eq '')?1:0, link=>'index.cgi?ACTION=' };
-push @TABS, { name=>'Countries', selected=>($VERB eq 'COUNTRIES')?1:0, link=>'index.cgi?ACTION=COUNTRIES' };
-push @TABS, { name=>'Block-List', selected=>($VERB eq 'BANNED')?1:0, link=>'index.cgi?ACTION=BANNED' };
+push @TABS, { name=>'General', selected=>($VERB eq '')?1:0, link=>'/biz/setup/shipping/index.cgi?ACTION=' };
+push @TABS, { name=>'Countries', selected=>($VERB eq 'COUNTRIES')?1:0, link=>'/biz/setup/shipping/index.cgi?ACTION=COUNTRIES' };
+push @TABS, { name=>'Block-List', selected=>($VERB eq 'BANNED')?1:0, link=>'/biz/setup/shipping/index.cgi?ACTION=BANNED' };
 push @TABS, { name=>'Debugger', link=>'debug.cgi' };
 
 &GTOOLS::output(

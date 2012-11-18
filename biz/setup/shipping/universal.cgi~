@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+
 use strict;
 use lib "/httpd/modules";
 use ZOOVY;
@@ -24,8 +25,8 @@ my $HANDLER = ''; ## FIXED, WEIGHT, PRICE, PICKUP, SIMPLE
 my $HELP = '';
 my $template_file = 'universal.shtml';
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping/index.cgi','target'=>'_top', };
 
 #          {
 #            'country' => 'US',
@@ -719,8 +720,6 @@ Pricing cannot be configured on a per product basis, use this if all items you s
 if ( ($VERB =~ /^(SAVE|UPDATE)([\:]?.*?)$/) && ($HANDLER eq 'WEIGHT')) {
 	$VERB = $1;
 	my ($SUBVERB) = ($VERB eq 'UPDATE')?$2:'';	
-
-	require ZSHIP::WEIGHT;
 	require ZSHIP;
 
 	my $changes++;
@@ -772,8 +771,6 @@ if ( ($VERB =~ /^(SAVE|UPDATE)([\:]?.*?)$/) && ($HANDLER eq 'WEIGHT')) {
 ##
 ##
 if (($VERB eq 'EDIT') && ($HANDLER eq 'WEIGHT')) {
-	require ZSHIP::WEIGHT;
-
 	push @BC, { name=>'Weight Based' };
 	$GTOOLS::TAG{'<!-- TITLE -->'} = 'Weight based shipping';
 	$GTOOLS::TAG{'<!-- ABOUT -->'} = qq~

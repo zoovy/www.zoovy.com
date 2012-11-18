@@ -243,13 +243,13 @@ if ($VERB eq 'LOGS') {
 
 
 
-if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-SHOWPID') || ($VERB eq 'RAWE-RESETPID') || ($VERB eq 'RAWE-QUERY')) {
+if (($VERB eq 'RAWE') || ($VERB =~ /^RAWE-/)) {
 	$template_file = 'rawe.shtml';
 
 	$GTOOLS::TAG{'<!-- OUTPUT -->'} = '';
 	
-	my ($PID,$QUERY) = undef;
-
+	my $QUERY = undef;
+	my $PID = $ZOOVY::cgiv->{'PID'};
 	my ($es) = &ZOOVY::getElasticSearch($USERNAME);		
 	if ($VERB eq 'RAWE') {
 		## not a "RUN"
@@ -260,14 +260,6 @@ if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-SHOWPID') || ($VERB eq 'RAWE-RESETPID')
 		if ($ZOOVY::cgiv->{'QUERY'} eq '') {
 			push @MSGS, "WARN|No query specified"; 
 			}
-		}
-	elsif ($VERB eq 'RAWE-DEBUGPID') {
-		$PID = $ZOOVY::cgiv->{'PID'};
-		if ($ZOOVY::cgiv->{'PID'} eq '') {
-			push @MSGS, "WARN|No PID specified"; 
-			}
-		}
-	else {
 		}
 
 	if (not defined $es) {
@@ -314,20 +306,29 @@ if (($VERB eq 'RAWE') || ($VERB eq 'RAWE-SHOWPID') || ($VERB eq 'RAWE-RESETPID')
 		$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Search Results:</h2>".Dumper($Q,$results)."</pre>";
 		}
 	elsif (($VERB eq 'RAWE-SHOWPID') || ($VERB eq 'RAWE-INDEXPID')) {
-		if ($VERB eq 'RAWE-INDEXPID') {
+
+		if ($PID eq '') {
+			push @MSGS, "ERROR|PID not specified";
+			}
+		elsif ($VERB eq 'RAWE-INDEXPID') {
 			my ($P) = PRODUCT->new($USERNAME,$PID);
 			if (not defined $P) {
 				push @MSGS, "ERROR|Product '$PID' does not exist in product database";
 				}
 			else {
-				&ELASTIC::add_products($USERNAME,[$P]);
+				push @MSGS, "SUCCESS|Product '$PID' was immediately indexed into elastic";
+				&ELASTIC::add_products($USERNAME,[$P],'*es'=>$es);
 				sleep(5);	# make them wait (avoids abuse, gives elastic a chance to catch up)
 				}
 			}
 
-
-     	my $result = $es->get(index =>lc("$USERNAME.public"),'type'=>'product','id'=>$PID);
-		$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Product Document Get:</h2>".Dumper($result)."</pre>";
+		if ($PID ne '') {
+	     	my $result = $es->get(index =>lc("$USERNAME.public"),'type'=>'product','id'=>$PID);
+			$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<pre><h2>Product Document Get:</h2>".Dumper($result)."</pre>";
+			}
+		}
+	else {
+		push @MSGS, "ERROR|+Invalid VERB:$VERB";
 		}
 
 	$VERB = 'RAWE';

@@ -27,7 +27,7 @@ at the checkout page</div>
 
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 
 </form>
 </td></tr>

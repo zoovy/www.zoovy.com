@@ -1,8 +1,5 @@
 <!-- UTILITIES_TAB -->
 
-<script language="JavaScript" src="/biz/js/calendar/calendar2.js"></script><!-- Date only with year scrolling -->
-
-<br>
 <form name="promo_form" method="POST" action="index.cgi">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <input type="hidden" name="VERB" value="COUPON-SAVE">
@@ -37,16 +34,14 @@ customers receive a message "this coupon has expired"</div>
 	<tr>
 		<td valign="top">Valid From:</td>
 		<td valign="top">
-			<input type="text" name="begins" value="<!-- BEGINS -->" maxlength="20">
-			<a href="javascript:cal1.popup();"><img src="img/cal.gif" width="16" height="16" border="0" alt="Click Here to Pick the date"></a><br>
+			<input class="datepicker" type="datetime" name="begins" value="<!-- BEGINS -->" maxlength="20">
 			<div class='hint'>HINT: Leave expires empty for "never"</div>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top">Valid Until:</td>
 		<td valign="top">
-			<input type="text" name="expires" value="<!-- EXPIRES -->" maxlength="20">
-			<a href="javascript:cal2.popup();"><img src="img/cal.gif" width="16" height="16" border="0" alt="Click Here to Pick the date"></a><br>
+			<input class="datepicker" type="datetime" name="expires" value="<!-- EXPIRES -->" maxlength="20">
 			<div class='hint'>HINT: Leave expires empty for "never"</div>
 		</td>
 	</tr>
@@ -94,33 +89,22 @@ If this is enabled the coupon MAY NOT be added directly to the cart from "Coupon
 		<table width=100%>
 		<!-- EXISTING_RULES -->
 		</table>
-		<a href="index.cgi?VERB=COUPON-RULE-ADD&CODE=<!-- CODE -->">Add New</a>
+		<button class="button2" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-ADD&CODE=<!-- CODE -->');">Add New</button>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" align='center' colspan='2'>
-			<input type="submit" class="button" value=" Save ">
-			<input type="button" class="button" value=" Exit " onClick="document.location='index.cgi?VERB=COUPON';">
-			<input type="button" class="button" value=" Delete " onClick="document.location='index.cgi?VERB=COUPON-DELETE&CODE=<!-- CODE -->';">
+			<button class="button" onClick="this.submit();">Save</button>
+			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON');">Edit</button>
+			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-DELETE&CODE=<!-- CODE -->');">Delete</button>
 		</td>
 	</tr>
 </table>
 </div>
  
 </form>
-<script language="JavaScript">
-<!-- // create calendar object(s) just after form tag closed
-             // specify form element as the only parameter
-            var cal2 = new
-calendar2(document.forms['promo_form'].elements['expires']);
-            cal2.year_scroll = true;
-            cal2.time_comp = true;
-
-            var cal1 = new
-calendar2(document.forms['promo_form'].elements['begins']);
-            cal1.year_scroll = true;
-            cal1.time_comp = true;
-//-->
+<script>
+$(function() { $( ".datepicker" ).datepicker(); });
 </script>
 
 </body>

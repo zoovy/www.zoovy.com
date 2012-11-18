@@ -143,7 +143,7 @@ Accepted Cards and Fees:<br>
 		<option <!-- CC_INSTANT_CAPTURE_ALWAYS_SELECTED --> value="ALWAYS">Instant Capture (authorization and transfer of funds occurs at time of checkout)</option>
 		<option <!-- CC_INSTANT_CAPTURE_NEVER_SELECTED --> value="NEVER">Authorize w/Delayed Capture (only authorization occurs at checkout, funds transferred later by merchant)</option>
 		<option <!-- CC_INSTANT_CAPTURE_NOAUTH_DELAY_SELECTED --> value="NOAUTH_DELAY">No Authorization (store in wallet then process later)</option>
-		<option <!-- CC_INSTANT_CAPTURE_SELECTED --> value="">--</option>
+		<option <!-- CC_INSTANT_CAPTURE__SELECTED --> value="">--</option>
 		</select>
 	</td>
 </tr>

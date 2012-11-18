@@ -36,7 +36,6 @@ my @TABS = ();
 my @MSGS = ();
 
 my @BC = ();
-my @MSGS = ();
 use strict;
 push @BC, {title=>'Support' };
 
@@ -148,7 +147,7 @@ if ($VERB eq 'HISTORY') {
 
 			$c .= "<tr>";
 			$c .= "<td class='$r' style='vertical-align: top; font-size: 7pt;'>";
-			$c .= "<a href='index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'TICKET_ID'}'>";
+			$c .= "<a href='/biz/support/index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'TICKET_ID'}'>";
 				$c .= "$hashref->{'TICKET_ID'}";
 			$c .= "</a></td>";
 			$c .= "<td class='$r' style='vertical-align: top; font-size: 7pt;'>$hashref->{'DURATION'}</td>";
@@ -302,13 +301,13 @@ if ($VERB eq 'BILLING') {
 	}
 
 
-push @TABS, { name=>"Create Ticket", selected=>($VERB eq 'TICKET-CREATE')?1:0, link=>"index.cgi?VERB=TICKET-CREATE" };
-push @TABS, { name=>"Active Tickets" };
+push @TABS, { name=>"Create Ticket", selected=>($VERB eq 'TICKET-CREATE')?1:0, link=>"/biz/support/index.cgi?VERB=TICKET-CREATE" };
+push @TABS, { name=>"Active Tickets", link=>"/biz/support/index.cgi" };
 
-# push @TABS, { name=>"Contact Details", selected=>($VERB eq 'CONTACT')?1:0, link=>"index.cgi?VERB=CONTACT" };
+# push @TABS, { name=>"Contact Details", selected=>($VERB eq 'CONTACT')?1:0, link=>"/biz/support/index.cgi?VERB=CONTACT" };
 if (($VERB eq 'BILLING') || ($VERB eq 'HISTORY')) {
-	push @TABS, { name=>"Unused Time", selected=>($VERB eq 'BILLING')?1:0, link=>"index.cgi?VERB=BILLING" };
-	push @TABS, { name=>"Billing History", selected=>($VERB eq 'HISTORY')?1:0, link=>"index.cgi?VERB=HISTORY" };
+	push @TABS, { name=>"Unused Time", selected=>($VERB eq 'BILLING')?1:0, link=>"/biz/support/index.cgi?VERB=BILLING" };
+	push @TABS, { name=>"Billing History", selected=>($VERB eq 'HISTORY')?1:0, link=>"/biz/support/index.cgi?VERB=HISTORY" };
 	}
 
 
@@ -477,20 +476,18 @@ if ($VERB eq 'APPT-CONFIRM') {
 
 	if ($ZOOVY::cgiv->{'sameday'} eq '') {
 		$VERB = 'APPT-CREATE';
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must accept the same day appointment terms.';
+		push @MSGS, 'ERROR|+You must accept the same day appointment terms.';
 		}
 	elsif ($ZOOVY::cgiv->{'phone1'} eq '') {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must have a phone number!';
+		push @MSGS, "ERROR|+ERROR: You must have a phone number!";
 		$VERB = 'APPT-CREATE';
 		}
 	elsif ($count>0) {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: Appointment already scheduled.';
-		&GTOOLS::print_form('','error.shtml',1);
-		exit;
+		push @MSGS, 'ERROR|+Appointment already scheduled.';
 		}
 	elsif ( length($ZOOVY::cgiv->{'TOPIC'})<10 ) {
 		$VERB = 'APPT-CREATE';
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must specify a topic of at least 10 characters';
+		push @MSGS, 'ERROR|+You must specify a topic of at least 10 characters';
 		}
 	else {
 
@@ -890,12 +887,12 @@ if ($VERB eq 'CALENDAR') {
 				$c .= qq~<span class='hint'>( <a href='javascript:changeDisplay("uniqueDivID")'>details</a> )</span><br>~;
 				$c .= "tech: $tech<br>$m min @ $begin PST<br>";
 				$c .= "<div id='uniqueDivID' style='display:none;' class='hint'>$topic</div>";
-				$c .= "[<a href=\"index.cgi?CLASS=$CLASS&VERB=APPT-CANCEL&ID=$id\">CANCEL</a>]<br></div>";
+				$c .= "[<a href=\"/biz/support/index.cgi?CLASS=$CLASS&VERB=APPT-CANCEL&ID=$id\">CANCEL</a>]<br></div>";
 				}
 			}
 		else {
 			### Okay, so nobody else has grabbed this appointment.
-			$c .= "<a href='index.cgi?CLASS=$CLASS&VERB=APPT-CREATE&TECH=$tech&ID=$id&DATE=$year-$month-$day'>$tech</a>";
+			$c .= "<a href='/biz/support/index.cgi?CLASS=$CLASS&VERB=APPT-CREATE&TECH=$tech&ID=$id&DATE=$year-$month-$day'>$tech</a>";
 			#if ($MYTECH ne '') {
 			#	if ($MYTECH ne $tech && $XTECHS ne '') { $c .= " <font color='777777'>"; } else { $c .= "<b>"; }
 			#	}
@@ -1214,7 +1211,7 @@ if ($VERB eq 'TICKET-VIEW') {
 			if ($stageref->{'customer'}>0) {
 				$c .= "<tr class=\"$r\"><td colspan=7><table width=100% cellpadding=0 cellspacing=0><tr><td nowrap>&nbsp;&nbsp;&nbsp;</td><td>";
 				$c .= qq~
-<form name="frm$taskid" action="index.cgi" method="post">
+<form name="frm$taskid" action="/biz/support/index.cgi" method="post">
 <input type="hidden" name='VERB' value='TASK-UPDATE'>
 <input type="hidden" name="TASK" value="$taskid">
 <input type='hidden' name='ID' value='$TICKETID'>
@@ -1538,7 +1535,7 @@ if ($VERB eq 'TICKET-UPDATE') {
 	print STDERR $pstmt."\n";
 	$zdbh->do($pstmt);
 	
-	print "Location: index.cgi?msg=Updated+Ticket+".$TICKETID."\n\n";
+	print "Location: /biz/support/index.cgi?msg=Updated+Ticket+".$TICKETID."\n\n";
 	}
 
 if ($VERB eq 'TICKET-END') {
@@ -1782,11 +1779,11 @@ if ($VERB eq 'CALLBACK-SAVE') {
 
 	my $errors = 0;
 	if (length($phone1)<10) {
-		$GTOOLS::TAG{'<!-- PHONE1_ERROR -->'} = '<font color="red"><br>Phone number is required</font>';
+		push @MSGS, 'ERROR|+Phone number is required';
 		$errors++;
 		}
 	if (length($contact)<5) {
-		$GTOOLS::TAG{'<!-- CONTACT_ERROR -->'} = '<font color="red"><br>Contact name is required</font>';
+		push @MSGS, 'ERROR|+Contact name is required';
 		$errors++;
 		}
 
@@ -1847,7 +1844,7 @@ if ($VERB eq 'CALLBACK-SAVE') {
 		$VERB = '';
 		}
 	else {	
-		$GTOOLS::TAG{'<!-- ERRORS -->'} = "Something bad happened";
+		push @MSGS, "ERROR|+Something bad happened";
 		$VERB = 'CALLBACK';
 		}
 	}
@@ -1960,7 +1957,7 @@ if (($VERB eq '') || ($VERB eq 'REPORT-ACTIVE') || ($VERB eq 'REPORT-HISTORY') |
 		$c .= qq~
 		<table border='0' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td class="zoovysub1header"><input type='button' class='button' value='Edit' onClick="document.location='index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'ID'}';"> #$hashref->{'ID'}: $hashref->{'SUBJECT'}</a></td>
+			<td class="zoovysub1header"><input type='button' class='button' value='Edit' onClick="navigateTo('/biz/support/index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'ID'}');"> #$hashref->{'ID'}: $hashref->{'SUBJECT'}</a></td>
 			<td valign=top align=right class="zoovysub1header"></td>
 		</tr>
 		<tr>
@@ -2039,7 +2036,7 @@ if (1) {
 	while ( my ($TICKET,$SUBJECT) = $sth->fetchrow() ) {
 		next if (defined $TICKETS{$TICKET}); $TICKETS{$TICKET}++;
 		$SUBJECT =~ s/^PROJECT:[\s]+//gs;
-		$PROJECTS .= qq~<tr><td class="small" valign='top'><a href="index.cgi?VERB=TICKET-VIEW&ID=$TICKET">#$TICKET</a></td><td class="small" valign='top'>$SUBJECT</td></tr>~;
+		$PROJECTS .= qq~<tr><td class="small" valign='top'><a href="/biz/support/index.cgi?VERB=TICKET-VIEW&ID=$TICKET">#$TICKET</a></td><td class="small" valign='top'>$SUBJECT</td></tr>~;
 		}
 	$sth->finish();
 
@@ -2050,7 +2047,7 @@ if (1) {
 	while (my ($TICKET,$SUBJECT) = $sth->fetchrow()) {
 		next if (defined $TICKETS{$TICKET}); $TICKETS{$TICKET}++;
 		$SUBJECT =~ s/^PROJECT:[\s]+//gs;
-		$PROJECTS .= qq~<tr><td class="small" valign='top'><a href="index.cgi?VERB=TICKET-VIEW&ID=$TICKET">#$TICKET</a></td><td class="small" valign='top'>$SUBJECT</td></tr>~;
+		$PROJECTS .= qq~<tr><td class="small" valign='top'><a href="/biz/support/index.cgi?VERB=TICKET-VIEW&ID=$TICKET">#$TICKET</a></td><td class="small" valign='top'>$SUBJECT</td></tr>~;
 		}
 	$sth->finish();
 
@@ -2068,7 +2065,7 @@ if (1) {
 	$sth = $zdbh->prepare($pstmt);
 	$sth->execute();
 	while ( my ($id,$tech,$begin_gmt,$duration,$scheduleid,$topic) = $sth->fetchrow() ) {
-		$APPOINTMENTS .= "<tr><td><div class=\"box_body small\">($duration min) ".&ZTOOLKIT::pretty_date($begin_gmt,1)."<br> w/$tech <a href=\"index.cgi?VERB=APPT-CANCEL&ID=$id\">[CANCEL]</a></div></td></tr>";
+		$APPOINTMENTS .= "<tr><td><div class=\"box_body small\">($duration min) ".&ZTOOLKIT::pretty_date($begin_gmt,1)."<br> w/$tech <a href=\"/biz/support/index.cgi?VERB=APPT-CANCEL&ID=$id\">[CANCEL]</a></div></td></tr>";
 		}
 	$sth->finish();
 	if ($APPOINTMENTS ne '') { $APPOINTMENTS = "<table width=100%><tr><td class='zoovysub2header'>Upcoming Appointments</td></tr>$APPOINTMENTS</table>"; }

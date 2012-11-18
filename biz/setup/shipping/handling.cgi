@@ -16,10 +16,12 @@ if (not defined $LU) { exit; }
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
+my @MSGS = ();
+
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Handling' };
 
 my $template_file = 'handling.shtml';
@@ -29,6 +31,8 @@ if ($FLAGS !~ /,SHIP,/) {
 	}
 
 my $webdb = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
+
+use Data::Dumper; print STDERR Dumper($ZOOVY::cgiv);
 
 if ($ZOOVY::cgiv->{'ACTION'} eq 'WEIGHT_EDIT') {
 
@@ -64,6 +68,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'SAVE') {
 
 	$webdb->{'hand_weight'} = ($ZOOVY::cgiv->{'weight'})?1:0;
 
+	push @MSGS, "SUCCESS|+saved";
 	$LU->log("SETUP.SHIPPING.HANDLING","Saved Settings","SAVE");	
 	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);	
 	}
@@ -123,5 +128,5 @@ sub build_weight_tb {
 	help=>'#50381',
 	file=>$template_file,
 	header=>1,
-	bc=>\@BC,
+	bc=>\@BC, msgs=>\@MSGS,
 	);

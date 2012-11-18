@@ -78,7 +78,7 @@ function MM_openBrWindow(theURL,winName,features) {
 		<center>
 			<input type='submit' class="button" value=' Review '> 
 			&nbsp;
-			<input type="button" class="button" value=" Exit " onClick="document.location='index.cgi';">
+			<input type="button" class="button" value=" Exit " onClick="navigateTo('/biz/support/index.cgi');">
 		</center>
 
 		</td>

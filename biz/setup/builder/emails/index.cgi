@@ -20,10 +20,12 @@ if ($MID<=0) { warn "No auth"; exit; }
 
 my ($VERB) = $ZOOVY::cgiv->{'VERB'};
 if ($VERB eq '') { $VERB = 'EDIT'; }
+print STDERR "VERB: $VERB\n";
 
 my ($NS) = $ZOOVY::cgiv->{'NS'};
 $GTOOLS::TAG{'<!-- NS -->'} = $NS;
 my @TABS = ();
+my @MSGS = ();
 
 my $template_file = '';
 my ($SITE) = SITE->new($USERNAME,'PROFILE'=>$NS,'PRT'=>$PRT);
@@ -32,7 +34,8 @@ my ($SE) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE,RAW=>1);
 if ($VERB eq 'MSGNUKE') {
 	my $MSGID = $ZOOVY::cgiv->{'MSGID'};
 	$SE->save($MSGID,"NUKE"=>1);
-	$VERB = 'EDIT';
+	push @MSGS, "SUCCESS|+Deleted message $MSGID";
+	$VERB = '';
 	}
 
 ##
@@ -45,10 +48,10 @@ if ($VERB eq 'MSGTEST') {
 
 	if ($err) {
 		my $errmsg = $SITE::EMAILS::ERRORS{$err};
-		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>ERROR[$err] $errmsg</font><br>";
+		push @MSGS, "ERROR|+$errmsg";
 		}
 	else {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = '<font color="blue">Successfully sent test email.</font>';
+		push @MSGS, "SUCCESS|+Successfully sent test email.";
 		}
 	}
 
@@ -77,7 +80,7 @@ if ($VERB eq 'MSGSAVE') {
 		$options{'FORMAT'} = $ZOOVY::cgiv->{'MSGFORMAT'};
 		}
 	
-	$GTOOLS::TAG{'<!-- ERROR -->'} = '<font color="blue">Successfully saved.</font>';
+	push @MSGS, "SUCCESS|Successfully saved.";
 	
 	$SE->save($MSGID, %options);
 	$VERB = 'MSGEDIT';
@@ -152,7 +155,7 @@ if ($VERB eq 'EDIT') {
 
 			$r = ($r eq 'r0')?'r1':'r0';
 			$c .= "<tr class='$r'>";
-			$c .= "<td width='50px'><input type='button' class='button' value=' Edit ' onClick=\"document.location='index.cgi?NS=$NS&VERB=MSGEDIT&MSGID=".$msgref->{'MSGID'}."'\"></td>";
+			$c .= "<td width='50px'><input type='button' class='button' value=' Edit ' onClick=\"navigateTo('/biz/setup/builder/emails/index.cgi?NS=$NS&VERB=MSGEDIT&MSGID=$msgref->{'MSGID'}');\"></td>";
 			$c .= "<td width='100px'>".&ZOOVY::incode($msgref->{'MSGID'})."</td>";
 			$c .= "<td>".&ZOOVY::incode($title)."</td>";
 			if (not defined $msgref->{'CREATED_GMT'}) { $msgref->{'CREATED_GMT'} = 0; }
@@ -181,5 +184,5 @@ push @BC, { name=>"Setup", link=>'/biz/setup' };
 push @BC, { name=>"Builder", link=>'/biz/setup/builder' };
 push @BC, { name=>"Emails", link=>'/biz/setup/builder/emails' };
 
-&GTOOLS::output(file=>$template_file,header=>1,tabs=>\@TABS, bc=>\@BC);
+&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS, bc=>\@BC);
 

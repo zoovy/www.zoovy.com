@@ -29,7 +29,7 @@ $TEMPLATE::NS = substr($CODE,0,10);
 
 
 my @BC = ();
-push @BC, { name=>'Setup', link=>'http://www.zoovy.com/biz/setup', target=>'_top' };
+push @BC, { name=>'Setup', link=>'/biz/setup', target=>'_top' };
 push @BC, { name=>'eBay ', link=>'/biz/setup/ebay', target=>'_top' };
 
 

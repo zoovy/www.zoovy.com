@@ -58,14 +58,14 @@ appointment.<br>
 <tr>
 	<td>
 	<!-- FEED_STATUS -->
-	<input class="button" type="button" onClick="document.location='/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=WSH&PROFILE=<!-- PROFILE -->&GUID=<!-- GUID -->';" value=" Submit Feed Now ">
+	<input class="button" type="button" onClick="navigateTo('/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=WSH&PROFILE=<!-- PROFILE -->&GUID=<!-- GUID -->');" value=" Submit Feed Now ">
 	</td>
 </tr>
 </table>
 
 <br>
-<input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="submit" value=" Save "> 
+<input class="button" type="button" onClick="navigateTo('/biz/batch/index.cgi');" value=" Back ">
 
 </td></tr>
 </table>

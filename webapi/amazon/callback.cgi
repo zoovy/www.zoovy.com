@@ -128,6 +128,38 @@ my $itemsref = (); my $promosref = (); my $taxtableref = ();
         );
 
 
+%v = (
+          '_prt' => '0',
+          'aws-access-key-id' => 'AKIAIR62HCONZEQMDAPA',
+          '_u' => 'smbsi',
+          'order-calculations-request' => '<?xml version="1.0" encoding="UTF-8"?><OrderCalculationsError xmlns="http://payments.amazon.com/checkout/2008-11-30/"><OrderCalculationsErrorCode>HttpError</OrderCalculationsErrorCode><OrderCalculationsErrorMessage>Either there was a problem connecting to your endpoint or the merchant endpoint returned an invalid response status code.</OrderCalculationsErrorMessage><OrderCalculationsRequest xmlns="http://payments.amazon.com/checkout/2008-11-30/"><CallbackReferenceId>2-bcaffab2-db57-48fc-b59d-656cd8dafb6d</CallbackReferenceId><OrderCalculationCallbacks><CalculateTaxRates>true</CalculateTaxRates>
+<CalculatePromotions>false</CalculatePromotions>
+<CalculateShippingRates>true</CalculateShippingRates>
+<OrderCallbackEndpoint>https://webapi.zoovy.com/webapi/amazon/callback.cgi/u=smbsi/prt=0/c=1ziOHi9S2j1opV12MhpXv4r4L</OrderCallbackEndpoint>
+<ProcessOrderOnCallbackFailure>false</ProcessOrderOnCallbackFailure>
+</OrderCalculationCallbacks><ClientRequestId>1ziOHi9S2j1opV12MhpXv4r4L</ClientRequestId><IntegratorId>ZOOVY</IntegratorId><IntegratorName>ZOOVY</IntegratorName><Cart>
+<Items>
+<Item><SKU>UDESBLAZE</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>URBAN DECAY Eye Shadow - Blaze</Title>
+<Price><Amount>10.99</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>4</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+</Items>
+
+</Cart><CallbackOrders><CallbackOrder><Address><AddressId>jnmpkrjsll</AddressId></Address><CallbackOrderItems><CallbackOrderItem><SKU>UDESBLAZE</SKU></CallbackOrderItem></CallbackOrderItems></CallbackOrder></CallbackOrders></OrderCalculationsRequest><OrderCalculationsResponse><![CDATA[The OrderCalculationsResponse provided was not returned or was considered invalid. Please consult the documentation for the valid response format.]]></OrderCalculationsResponse></OrderCalculationsError>',
+          'Timestamp' => '2012-10-31T03:02:06.072Z',
+          'Signature' => 'LBSBp3BgBKG4JFwquS8Ne35YN8c=',
+          '_c' => '1ziOHi9S2j1opV12MhpXv4r4L',
+          'UUID' => '342bff27-c6a3-460a-9125-81c817d0ce74'
+        );
+
+
+
 my ($udbh) = &DBINFO::db_user_connect($v{'_u'});
 
 if ($v{'order-calculations-error'}) {

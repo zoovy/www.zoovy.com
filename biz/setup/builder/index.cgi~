@@ -35,10 +35,23 @@ if (not defined $LU) { exit; }
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
+my @TABS = ();
+my @BC = ();
+
+
+##
+## generate tabs and breadcrumbs (we must do this after save so $ACTION is set properly)
+##
+push @BC, { name=>'Setup', link=>'/biz/setup/index.cgi', };
+if ($LU->is_level('3')) {
+	push @BC, { name=>'Website Builder', link=>'/biz/setup/builder/index.cgi', };
+	}
+
+
 
 my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 my $ACTION = $ZOOVY::cgiv->{'ACTION'};
-
+print STDERR "ACTION:$ACTION\n";
 
 
 my $template_file = "index.shtml";
@@ -48,7 +61,7 @@ $GTOOLS::TAG{"<!-- REV -->"} = time();
 
 # print STDERR "ACTION: $ACTION\n";
 if ($ACTION eq 'DECALS-SAVE') {
-	
+
 	}
 
 ##
@@ -56,6 +69,7 @@ if ($ACTION eq 'DECALS-SAVE') {
 ##
 if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 	my ($CHANGES) = 0;
+	push @BC, { link=>"/biz/setup/builder/index.cgi?ACTION=DECALS", name=>"Decals" };
 
 	require PRODUCT::FLEXEDIT;
 
@@ -145,6 +159,7 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 			$c .= "<tr class='zoovysub1header'><td>$pretty ($width by $height)</td></tr>";
 			}
 
+
 		my $hint = $el->{'HELP'};
 		if ($hint eq '') { $hint = $el->{'HELPER'}; }
 		if ($hint ne '') { $hint .= "<br>"; }
@@ -177,7 +192,9 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 			}
 		## hint row
 		$c .= qq~<tr><td valign=top><div class="hint">$hint</div></td></tr>~;
+
 		$c .= qq~<tr><td><table>~;
+
 
 		## DECAL has 1 slot, SIDEBAR has > 0
 		my @SLOTS = ($nsref->{$DATASRC});
@@ -200,6 +217,7 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 		foreach my $slotvar (@SLOTS) {
 			## body row
 			## @SLOTS is an array of configured DECALID's
+
 			$PREVIEW = '';
 			my $options = '';
 			foreach my $did (sort keys %TOXML::RENDER::DECALS) {
@@ -238,8 +256,14 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 			$c .= qq~<select name=\"ELEMENT:$el->{'ID'}.$pos\">$options</select>~;
 			$c .= qq~<br><!-- slot=[$pos] --> SSL: $IS_SSL~;
 			$c .= qq~</td>~;
+			# $PREVIEW = &ZOOVY::incode($PREVIEW);
+			if ($PREVIEW =~ /\<script/i) {
+				$PREVIEW =~ s/\<script.*?\>.*?\<\/script\>//gs;
+				$PREVIEW .= "<div class=\"caution hint\">NOTE: JAVASCRIPT NOT AVAILABLE IN PREVIEW</div>";
+				}
+	
 			$c .= qq~<td valign=top>$PREVIEW</td>~;
-			$c .= "<td valign=top>";
+			$c .= qq~<td valign="top">~;
 
 			## okay now we'll show any flexedit fields.
 			my @FLEXFIELDS = ();
@@ -282,6 +306,7 @@ if (($ACTION eq 'DECALS') || ($ACTION eq 'DECALS-SAVE')) {
 
 if ($ACTION eq 'EDIT-WRAPPER') {
 	$ACTION = 'INITEDIT';
+	$ZOOVY::cgiv->{'FORMAT'} = 'WRAPPER';
 	}
 
 
@@ -384,9 +409,9 @@ elsif ($ACTION eq 'INITEDIT') {
 	$SITEstr =  $SITE->siteserialize();
 	}
 
-if (&ZOOVY::is_zoovy_ip()) {
-	push @MSGS, "DEBUG|ZOOVY STAFF ACTION[$ACTION] DEBUG: ".Dumper($SITE);
-	}
+#if (&ZOOVY::is_zoovy_ip()) {
+#	push @MSGS, "DEBUG|ZOOVY STAFF ACTION[$ACTION] DEBUG: ".Dumper($SITE);
+#	}
 
 if ($ACTION eq 'DIVSELECT') {
 	$SITE->{'_DIV'} = $ZOOVY::cgiv->{'DIV'};
@@ -549,6 +574,7 @@ if ($ACTION eq 'COMPANYSAVE') {
 	if ((!defined($height)) || ($height>300) || ($height<1)) { $height = 100; }
 	$ref->{'zoovy:logo_invoice_xy'} = int($width)."x".int($height);
 
+	push @MSGS, "SUCCESS|+Saved settings for profile $NS | prt:$ref->{'prt:id'} root:$ref->{'zoovy:site_rootcat'} wrapper:$ref->{'zoovy:site_wrapper'}";
 	$LU->log('SETUP.BUILDER.COMPANY',"Saved settings for profile $NS | prt:$ref->{'prt:id'} root:$ref->{'zoovy:site_rootcat'} wrapper:$ref->{'zoovy:site_wrapper'}","SAVE");
 	&ZOOVY::savemerchantns_ref($USERNAME,$NS,$ref);
 	$ACTION = 'COMPANYEDIT';
@@ -556,17 +582,6 @@ if ($ACTION eq 'COMPANYSAVE') {
 
 
 
-my @TABS = ();
-my @BC = ();
-
-
-##
-## generate tabs and breadcrumbs (we must do this after save so $ACTION is set properly)
-##
-push @BC, { name=>'Setup', link=>'/biz/setup', };
-if ($LU->is_level('3')) {
-	push @BC, { name=>'Website Builder', link=>'/biz/setup/builder', };
-	}
 
 print STDERR "ACTION: $ACTION\n";
 $GTOOLS::TAG{'<!-- SREF -->'} = $SITEstr;
@@ -588,13 +603,15 @@ elsif ($SITE->layout() eq '') {
 	push @BC, { name=>"profile:".$SITE->profile()." | format:".$SITE->format()." | pageid:".$SITE->pageid() };
 	}
 elsif ($SITE->format() eq 'PRODUCT') {
+	my $PID = $SITE->pid();
 	$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
 	<center>
-		<input type="submit" name="BUTTON" value="Return to Product Editor" class="button2" onClick="document.location='/biz/product/edit.cgi?PID=".$SITE->pid()."';">
+		<button class="button2" onClick="navigateTo('/biz/product/edit.cgi?PID=$PID');">Return to Product Editor</button>
 	</center>
 		~;	
 
 	$SITEstr =  $SITE->siteserialize();
+	push @TABS, { name=>'Product Editor', 'jsexec'=>"app.ext.admin_prodEdit.a.showPanelsFor('$PID');", };
 	push @TABS, { name=>'Layout', link=>'/biz/setup/builder/index.cgi?ACTION=CHOOSER&_SREF='.$SITEstr, color=>(($ACTION eq 'CHOOSER')?'orange':undef), };
 	push @TABS, { name=>'Page Edit', link=>'/biz/setup/builder/index.cgi?ACTION=EDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'EDIT')?'orange':undef), };
 	if (($webdbref->{'pref_template_fmt'} ne '') && (index($FLAGS,',WEB,')>=0) && (substr($SITE->{'_FL'},0,1) eq '~')) {
@@ -605,7 +622,7 @@ elsif ($SITE->format() eq 'PRODUCT') {
 elsif ($SITE->format() eq 'NEWSLETTER') {
 	$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
 	<center>
-		<input type="submit" name="BUTTON" value="Exit" class="button2" onClick="top.location='/biz/setup/builder/index.cgi';">
+		<button class="button2" onClick="navigateTo('/biz/setup/builder/index.cgi');">Exit</button>
 	</center>
 	~;
 	push @TABS, { name=>'Page Edit', link=>'/biz/setup/builder/index.cgi?ACTION=EDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'EDIT')?'orange':undef), };
@@ -617,7 +634,7 @@ elsif ($SITE->format() eq 'NEWSLETTER') {
 elsif ($SITE->format() eq 'PAGE') {
 	$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
 	<center>
-		<input type="submit" name="BUTTON" value="Exit" class="button2" onClick="top.location='/biz/setup/builder/index.cgi';">
+		<input type="submit" name="BUTTON" value="Exit" class="button2" onClick="navigateTo('/biz/setup/builder/index.cgi');">
 	</center>
 	~;
 	$SITEstr =  $SITE->siteserialize();
@@ -630,15 +647,15 @@ elsif ($SITE->format() eq 'PAGE') {
 		## no live preview for special pages
 		}
 	else {
-		push @TABS, { name=>'Live Preview', link=>'index.cgi?ACTION=LIVEPREVIEW&_SREF='.$SITEstr, color=>(($ACTION eq 'LIVEPREVIEW')?'orange':undef), };
+		push @TABS, { name=>'Live Preview', link=>'/biz/setup/builder/index.cgi?ACTION=LIVEPREVIEW&_SREF='.$SITEstr, color=>(($ACTION eq 'LIVEPREVIEW')?'orange':undef), };
 		}
-	push @TABS, { name=>'Meta Tags', link=>'index.cgi?ACTION=METAEDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'METAEDIT')?'orange':undef), };
+	push @TABS, { name=>'Meta Tags', link=>'/biz/setup/builder/index.cgi?ACTION=METAEDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'METAEDIT')?'orange':undef), };
 	push @BC, { name=>"Edit profile:".$SITE->profile()." format:".$SITE->format()." pageid:".$SITE->pageid()." layout:".$SITE->layout() };
 	}	
 elsif ($SITE->format() eq 'WRAPPER') {
 	$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
 	<center>
-		<input type="submit" name="BUTTON" value="Exit" class="button2" onClick="top.location='/biz/setup/builder/index.cgi';">
+		<input type="submit" name="BUTTON" value="Exit" class="button2" onClick="navigateTo('/biz/setup/builder/index.cgi');">
 	</center>
 	~;
 	push @TABS, { name=>'Page Edit', link=>'/biz/setup/builder/index.cgi?ACTION=EDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'EDIT')?'orange':undef), };
@@ -935,9 +952,7 @@ Changes you make here will also be made to any auction listings.</p>
 	<tr>
 		<td valign="middle" align="center">
 		<img name="invoiceimg" src="$invoice_logo_url" width='$logo_invoice_width' height='$logo_invoice_height'>
-		<input type="button" class="button"
-onClick="javascript:openWindow('/biz/setup/media/popup.cgi?mode=ilogo&profile=$NS');" 
-value=" Change ">
+		<input type="button" class="button" onClick="mediaLibrary($('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
 		</td>
 	</tr>
 	</table>
@@ -1012,9 +1027,7 @@ if ($ACTION eq 'CHOOSER') {
 		}	
 
 	print STDERR "SUBTYPE: ".$SITE->fs()."\n";
-	$GTOOLS::TAG{'<!-- FLOW_CHOOSER -->'} = &TOXML::CHOOSER::buildChooser($SITE->username(),$SITE->format(),SUBTYPE=>$SITE->fs(),selected=>$SITE->layout(),'*LU'=>$LU);
-	$SITEstr =  $SITE->siteserialize();
-	$GTOOLS::TAG{'<!-- SREF -->'} = $SITEstr;
+	$GTOOLS::TAG{'<!-- FLOW_CHOOSER -->'} = &TOXML::CHOOSER::buildChooser($SITE->username(),$SITE->format(),SREF=>$SITE->siteserialize(),SUBTYPE=>$SITE->fs(),selected=>$SITE->layout(),'*LU'=>$LU);
 	}
 
 
@@ -1148,7 +1161,7 @@ if ($ACTION eq 'EDIT') {
 				# $BUF .= qq~<tr><td><input style="text-align: left; width: 120px; margin-bottom: 3px;" 
 				#onClick="document.location='index.cgi?ACTION=DIVSELECT&DIV=$divref->{'ID'}&_SREF=$SITEstr';"
 				#type="button" class="$class" value="$divref->{'TITLE'}"></td></tr>~;
-				$BUF .= qq~<tr><td class="$class"><a href="index.cgi?ACTION=DIVSELECT&DIV=$divref->{'ID'}&_SREF=$SITEstr"
+				$BUF .= qq~<tr><td class="$class"><a href="/biz/setup/builder/index.cgi?ACTION=DIVSELECT&DIV=$divref->{'ID'}&_SREF=$SITEstr"
 class="$class">$divref->{'TITLE'}</a></td></tr>~;
 				#onClick="document.location='';"
 				#type="button" class="$class" value="$divref->{'TITLE'}"></td></tr>~;
@@ -1160,14 +1173,11 @@ $BUF
 </table>
 </td>~;
 
-		# $BUF = &TOXML::PREVIEW::render_page($toxml,$SITE); 
 		require TOXML::PREVIEW;
 		require TOXML::EDIT;
 		require SITE;
 
 		($BUF) = $toxml->render('*SITE'=>$SITE,DIV=>$SITE->{'_DIV'});
-#		$BUF = '<pre>'.Dumper({SREF=>$SITE,PREVIEW=>1,PROFILE=>$SITE->profile(),USERNAME=>$USERNAME,DIV=>$SITE->{'_DIV'}}).'</pre>';
-#		$BUF .= Dumper($toxml);
 		}
 	else {
 		$BUF = qq~
@@ -1323,13 +1333,13 @@ if ($ACTION eq '') {
 
 		my $panel = 'BUILDER:'.$ns;
 
-		my ($content,$state) = ('',0);
-		if (($SHOW_PROFILE ne '') && ($SHOW_PROFILE eq $ns)) {
-			($state)++;
-			}
-		elsif (defined $LU) { 
-			($state) = $LU->get('builder.'.$panel,0); 
-			}
+		my ($content,$state) = ('',1);
+		#if (($SHOW_PROFILE ne '') && ($SHOW_PROFILE eq $ns)) {
+		#	($state)++;
+		#	}
+		#elsif (defined $LU) { 
+		#	($state) = $LU->get('builder.'.$panel,0); 
+		#	}
 		
 		$content = '';
 		if ($state) {
@@ -1342,7 +1352,7 @@ if ($ACTION eq '') {
 
 	if (($prtinfo->{'p_navcats'}>0) || ($PRT==0)) {
 		## only show navcat's on partition 0, or when the partition has it's own navigation.
-		my ($content,$state) = ('',0);
+		my ($content,$state) = ('',1);
 		if (defined $LU) { ($state) = $LU->get('builder.navcat',0); }
 		$content = ($state)?&DOMAIN::PANELS::panel_navcat($LU,'','LOAD',undef,{}):'';
 		$out .= &AJAX::PANELS::render_panel('NAVCAT','Website Navigation Categories',$state,$content);
@@ -1368,7 +1378,7 @@ if ((defined $SITE) && ($SITE->pid() ne '')) {
 &GTOOLS::output(file=>$template_file,header=>1,
 	'js'=>($ACTION eq 'COMPANYEDIT')?1:0,
 	help=>"#50361",
-	'head'=>($ACTION eq '')?&AJAX::PANELS::header('BUILDEREDIT','','index.cgi'):'',
+	'head'=>($ACTION eq '')?&AJAX::PANELS::header('BUILDEREDIT','','/biz/setup/builder/index.cgi'):'',
 	tabs=>\@TABS,
 	msgs=>\@MSGS,
 	'jquery'=>'1',

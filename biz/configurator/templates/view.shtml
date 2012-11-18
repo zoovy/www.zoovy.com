@@ -24,7 +24,7 @@
 	<input type="hidden" name="BUNDLE" value="<!-- BUNDLE -->">
 	<!-- QUANTITY -->
 	<input class="button" type="submit" value="  Add Feature Now  ">
-	<input type="button" class="button" value="  Cancel  " onClick="document.location='/biz/configurator';">
+	<input type="button" class="button" value="  Cancel  " onClick="navigateTo('/biz/configurator');">
 	</form>
 	</td>
 	</tr>

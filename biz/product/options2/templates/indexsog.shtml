@@ -36,7 +36,7 @@
 			<!-- SOGS_OUTPUT -->
 			<tr>
 				<td colspan="2">
-				<input type="button" class="button" value=" Create New " onClick="document.location='index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->';"><br>
+				<input type="button" class="button" value=" Create New " onClick="navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');"><br>
 				</td>
 			</tr>
 			</tbody>

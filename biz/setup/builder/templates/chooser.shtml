@@ -2,29 +2,21 @@
 <!-- MSGS -->
 <center>
 
-<script type="text/javascript" language="javascript1.2">
-<!--
-
-function doSelect(docid) {
-	document.thisFrm.FL.value = docid;
-	document.thisFrm.submit();
-	}
-
-//-->
-</script>
-
 <form method="POST" name="thisFrm" action="/biz/setup/builder/index.cgi">
 	<input type="hidden" name="ACTION" value="CHOOSERSAVE">
 	<input type="hidden" name="FL" value="">
 	<input type="hidden" name="_SREF" value="<!-- SREF -->">
-</form>
 
 <center>
 <table class="zoovytable" width=640>
 <tr><td>
+
 <!-- FLOW_CHOOSER -->
+
 </td></tr></table>
 </center>
+
+</form>
 
 <!-- BUTTONS -->
 <!-- FOOTER -->

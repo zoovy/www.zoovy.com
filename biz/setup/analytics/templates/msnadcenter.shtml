@@ -23,7 +23,7 @@ JavaScript Checkout Tracking Code:<br>
 <div class="hint">This is the javascript which MSN tells you to include on your site.</div>
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 
 </form>
 </td></tr>

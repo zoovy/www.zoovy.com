@@ -76,7 +76,7 @@ purchased.
 				</td>
 			</tr>
 			</table>
-			<input class="button" value=" Add New " type="button" onclick="document.location='index.cgi?VERB=ADD-AUTOMATION';">
+			<input class="button" value=" Add New " type="button" onclick="navigateTo('index.cgi?VERB=ADD-AUTOMATION');">
 			</td>
 		</tr>
 	</table>

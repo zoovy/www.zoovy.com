@@ -1109,58 +1109,58 @@ if ($TAB eq 'SPECIAL') {
 	}
 
 my @TABS = ();
-##push @TABS, { name=>'All Payments',link=>'index.cgi?TAB=ALL','target'=>'_top', };
-push @TABS, { name=>'Help',selected=>($TAB eq 'HELP')?1:0,link=>'index.cgi?TAB=HELP','target'=>'_top', };
-push @TABS, { name=>'Offline',selected=>($TAB eq 'OFFLINE')?1:0,link=>'index.cgi?TAB=OFFLINE','target'=>'_top', };
-push @TABS, { name=>'Credit Cards',selected=>($TAB eq 'PROCESSOR')?1:0,link=>'index.cgi?TAB=PROCESSOR','target'=>'_top', };
+##push @TABS, { name=>'All Payments',link=>'/biz/setup/payment/index.cgi?TAB=ALL','target'=>'_top', };
+push @TABS, { name=>'Help',selected=>($TAB eq 'HELP')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=HELP','target'=>'_top', };
+push @TABS, { name=>'Offline',selected=>($TAB eq 'OFFLINE')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=OFFLINE','target'=>'_top', };
+push @TABS, { name=>'Credit Cards',selected=>($TAB eq 'PROCESSOR')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=PROCESSOR','target'=>'_top', };
 
 #http://www.zoovy.com/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=PAYPALVT&x=54&y=18
 if ($webdbref->{'cc_processor'} eq 'QBMS') {
-	push @TABS, { name=>'QBMS Gateway', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=QBMS' };
+	push @TABS, { name=>'QBMS Gateway', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=QBMS' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'PAYPALWP') {
-	push @TABS, { name=>'Paypal Website Payments Pro', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=PAYPALWP' };
+	push @TABS, { name=>'Paypal Website Payments Pro', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=PAYPALWP' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'AUTHORIZENET') {
-	push @TABS, { name=>'Authorize.Net', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=AUTHORIZENET' };
+	push @TABS, { name=>'Authorize.Net', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=AUTHORIZENET' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'VERISIGN') {
-	push @TABS, { name=>'Paypal Payflow Pro', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=VERISIGN' };
+	push @TABS, { name=>'Paypal Payflow Pro', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=VERISIGN' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'LINKPOINT') {
-	push @TABS, { name=>'Cardservice Linkpoint', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=LINKPOINT' };
+	push @TABS, { name=>'Cardservice Linkpoint', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=LINKPOINT' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'ECHO') {
-	push @TABS, { name=>'ECHO', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=ECHO' };
+	push @TABS, { name=>'ECHO', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=ECHO' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'SKIPJACK') {
-	push @TABS, { name=>'SkipJack', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=SKIPJACK' };
+	push @TABS, { name=>'SkipJack', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=SKIPJACK' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'MANUAL') {
-	push @TABS, { name=>'Manual CC', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=MANUAL' };
+	push @TABS, { name=>'Manual CC', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=MANUAL' };
 	}
 elsif ($webdbref->{'cc_processor'} eq 'NONE') {
 	}
 elsif ($webdbref->{'cc_processor'} eq 'TESTING') {
-	push @TABS, { name=>'Testing Logs', selected=>($TAB eq 'CREDIT')?1:0,link=>'index.cgi?TAB=CREDIT&ACTION=TESTING' };
+	push @TABS, { name=>'Testing Logs', selected=>($TAB eq 'CREDIT')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=TESTING' };
 	}
 else {
 	push @TABS, { name=>'Unknown: '.$webdbref->{'cc_processor'} };
 	}
 
 
-push @TABS, { name=>'GoogleCheckout',link=>'index.cgi?TAB=GOOGLE','target'=>'_top', };
-push @TABS, { name=>'Paypal EC',selected=>($TAB eq 'PAYPALEC')?1:0, link=>'index.cgi?TAB=PAYPALEC','target'=>'_top', };
-push @TABS, { name=>'Amazon',selected=>($TAB eq 'AMZPAY')?1:0, link=>'index.cgi?TAB=AMZPAY','target'=>'_top', };
+push @TABS, { name=>'GoogleCheckout',link=>'/biz/setup/payment/index.cgi?TAB=GOOGLE','target'=>'_top', };
+push @TABS, { name=>'Paypal EC',selected=>($TAB eq 'PAYPALEC')?1:0, link=>'/biz/setup/payment/index.cgi?TAB=PAYPALEC','target'=>'_top', };
+push @TABS, { name=>'Amazon',selected=>($TAB eq 'AMZPAY')?1:0, link=>'/biz/setup/payment/index.cgi?TAB=AMZPAY','target'=>'_top', };
 
 if ($FLAGS =~ /,EBAY,/) {
-	push @TABS, { name=>'Paypal Legacy',selected=>($TAB eq 'PAYPALIPN')?1:0,link=>'index.cgi?TAB=PAYPALIPN','target'=>'_top', };
-	push @TABS, { name=>'Special',selected=>($TAB eq 'SPECIAL')?1:0,link=>'index.cgi?TAB=SPECIAL','target'=>'_top', };
+#	push @TABS, { name=>'Paypal Legacy',selected=>($TAB eq 'PAYPALIPN')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=PAYPALIPN','target'=>'_top', };
+#	push @TABS, { name=>'Special',selected=>($TAB eq 'SPECIAL')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=SPECIAL','target'=>'_top', };
 	}
 
 
 if (index($FLAGS,',API2,')>=0) {
-	push @TABS, { name=>'Advanced',link=>'index.cgi?TAB=ADVANCED','target'=>'_top', };
+	push @TABS, { name=>'Advanced',link=>'/biz/setup/payment/index.cgi?TAB=ADVANCED','target'=>'_top', };
 	}
 
 ##End of script: outputting

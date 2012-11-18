@@ -155,8 +155,8 @@ if ($VERB eq '') {
 	foreach my $vref (@{$vendorsref}) {
 		$c .= "<tr>";
 		$c .= "<td>";
-			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Edit\" onClick=\"document.location='index.cgi?VERB=EDIT&CODE=%s'\">",$vref->code());
-			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Delete\" onClick=\"document.location='index.cgi?VERB=DELETE&CODE=%s'\">",$vref->code());
+			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Edit\" onClick=\"navigateTo('/biz/manage/vendors/index.cgi?VERB=EDIT&CODE=%s');\">",$vref->code());
+			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Delete\" onClick=\"navigateTo('/biz/manage/vendors/index.cgi?VERB=DELETE&CODE=%s');\">",$vref->code());
 		$c .= "</td>";
 		$c .= sprintf("<td>%s</td>",$vref->code());
 		$c .= sprintf("<td>%s</td>",$vref->get('VENDOR_NAME'));
@@ -178,8 +178,8 @@ $c
 	}
 
 my @TABS = ();
-push @TABS, { name=>'Current Vendors', link=>"index.cgi", selected=>(($VERB eq '')?1:0) };
-push @TABS, { name=>'New Vendor', link=>"index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
+push @TABS, { name=>'Current Vendors', link=>"/biz/manage/vendors/index.cgi", selected=>(($VERB eq '')?1:0) };
+push @TABS, { name=>'New Vendor', link=>"/biz/manage/vendors/index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
 
 &DBINFO::db_user_close();
 &GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);

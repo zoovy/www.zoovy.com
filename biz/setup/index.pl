@@ -47,8 +47,10 @@ if ($LU->get('todo.setup')) {
 	}
 
 my @TABS = ();
+
+
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup' };
 
 if (not defined $ZOOVY::cgiv->{'MODE'}) { $ZOOVY::cgiv->{'MODE'} = ''; }
 
@@ -88,13 +90,13 @@ my @LINKS = ();
 ## MANAGE TAB
 @LINKS = ();
 if ($FLAGS =~ /,PKG=SHOPCART,/) {
-	push @LINKS, { min=>0, link=>"/biz/setup/apphost", title=>"App Hosting", about=>"Domain/app hosting", };
+	push @LINKS, { min=>0, link=>"/biz/setup/apphost/index.cgi", title=>"App Hosting", about=>"Domain/app hosting", };
 	}
 
-push @LINKS, { min=>1, link=>'/biz/setup/domain', title=>'Domain Hosting', about=>'Register and Link Domains.', };
-push @LINKS, { min=>0, link=>"/biz/setup/projects", title=>"App Hosting", about=>"Manage Hosted Application Projects", };
+push @LINKS, { min=>1, link=>'/biz/setup/domain/index.cgi', title=>'Domain Hosting', about=>'Register and Link Domains.', };
+push @LINKS, { min=>0, link=>"/biz/setup/projects/index.cgi", title=>"App Hosting", about=>"Manage Hosted Application Projects", };
 if (not $ANYCOM) {
-	push @LINKS, { min=>0, link=>"/biz/setup/builder", title=>"Site Builder", about=>"Build the content for your storefront.  Select page layouts and add product to categories and lists.", };
+	push @LINKS, { min=>0, link=>"/biz/setup/builder/index.cgi", title=>"Site Builder", about=>"Build the content for your storefront.  Select page layouts and add product to categories and lists.", };
 	}
 push @LINKS, { todo=>($NEEDREF->{'company'})?1:0, min=>2, link=>'/biz/setup/builder/index.cgi?ACTION=COMPANYEDIT&NS=DEFAULT', title=>'Company Information', about=>'Put in Logo, Address, Policies, etc.' };
 if (not $ANYCOM) {
@@ -104,15 +106,16 @@ if (not $ANYCOM) {
 	push @LINKS, { min=>2, link=>'/biz/setup/builder/themes/index.cgi?NS=DEFAULT&SUBTYPE=E', title=>'Select Email Theme', about=>'Pick a style for a header and footer for an email.' };
 	}
 push @LINKS, { min=>2, link=>'/biz/setup/builder/emails/index.cgi?VERB=EDIT&NS=DEFAULT', title=>'Edit Email Messages', about=>'Customize the emails that are sent to customers.' };
-push @LINKS, { min=>0, link=>"/biz/setup/media/index.cgi", title=>"Media Library", about=>'Upload and manage your images, sounds, movies, documents and flash.' };
-push @LINKS, { min=>2, link=>'/biz/setup/media/', title=>'Upload New Image', about=>'' };
-push @LINKS, { min=>2, link=>'/biz/setup/customfiles', title=>'Public Files Library', about=>'' };
+push @LINKS, { min=>0, link=>"#!mediaLibraryManageMode", title=>"Media Library", about=>'Upload and manage your images, sounds, movies, documents and flash.' };
+push @LINKS, { min=>2, link=>'#!mediaLibraryManageMode', title=>'Upload New Image', about=>'' };
+push @LINKS, { min=>2, link=>'/biz/setup/customfiles/index.cgi', title=>'Public Files Library', about=>'' };
 push @LINKS, { min=>3 }; ## a brea;
-push @LINKS, { min=>0, link=>"/biz/setup/navcats", title=>"Categories &amp; Lists", about=>'Build your store category tree or add product lists.' },;
+push @LINKS, { min=>0, link=>"/biz/setup/navcats/index.cgi", title=>"Categories &amp; Lists", about=>'Build your store category tree or add product lists.' },;
 
 push @LINKS, { min=>1, link=>'/biz/setup/analytics/index.cgi', title=>'Analytics &amp; Plugins', about=>'Integrate approved 3rd party applications with your site.' };
 push @LINKS, { min=>1, link=>'/biz/setup/rss/index.cgi', title=>'RSS Feeds', about=>'Create RSS Feeds to easily share your product lists with affiliate sites.' };
-my $MANAGE_DIV = build_panel('MANAGE',"Manage Apps/Website", "images/icons/website_32x32.gif",'navcat_0',1,\@LINKS);
+my $MANAGE_DIV = build_panel('MANAGE',"Manage Apps/Website", "/biz/setup/images/icons/website_32x32.gif",'navcat_0',1,\@LINKS);
+
 
 
 ## MARKET TAB
@@ -136,7 +139,7 @@ push @LINKS, {
 #if (scalar(@LINKS)==0) {
 #	push @LINKS, { min=>3, title=>'No integrated marketplaces enabled. (<a href="/biz/configurator/index.cgi?VERB=VIEW&BUNDLE=EBAY">eBay</a> or <a href="/biz/configurator/index.cgi?VERB=ADD&BUNDLE=AMZ">Amazon</a> bundles required)', };
 #	}
-my $MARKET_DIV = build_panel('MARKET','Integrated Marketplaces','images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
+my $MARKET_DIV = build_panel('MARKET','Integrated Marketplaces','/biz/setup/images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
 
 ## MPO TAB
 @LINKS = ();
@@ -144,32 +147,32 @@ push @LINKS, {
 	min=>1, link=>'/biz/setup/repricing/index.cgi', title=>'Amazon Repricing', about=>q~
 Let Zoovy automatically raise/lower pricing on Marketplaces to beat competitors.~, 
 	};
-my $MPO_DIV = build_panel('MPO','Marketplace Optimization','images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
+my $MPO_DIV = build_panel('MPO','Marketplace Optimization','/biz/setup/images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
 
 
 ## PROPERTIES
 @LINKS = ();
-push @LINKS, { todo=>($NEEDREF->{'shipping'})?1:0, min=>1, link=>'/biz/setup/shipping', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.' };
-push @LINKS, { todo=>($NEEDREF->{'payment'})?1:0, min=>1, link=>'/biz/setup/payment', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.' };
-push @LINKS, { todo=>($NEEDREF->{'tax'})?1:0, min=>1, link=>'/biz/setup/tax', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.' };
-push @LINKS, { min=>0, link=>'/biz/setup/promotions', title=>'Coupons/Promotions', about=>'Create discounts for special purchases' };
-push @LINKS, { min=>0, link=>'/biz/setup/checkout?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.' };
-push @LINKS, { min=>0, link=>'/biz/setup/checkout?MODE=CUSTOMERADMIN', title=>'Customer Admin Config', about=>'Configure what options customers have when they login to their accounts on your store.'};
-push @LINKS, { min=>1, link=>'/biz/setup/checkout?MODE=SYS-MESSAGES', title=>'System Messages', about=>'Customize System Messages used throughout the site' };
-push @LINKS, { min=>1, link=>'/biz/setup/checkout?MODE=CHK-MESSAGES', title=>'Checkout Messages', about=>'Customize Checkout Messaging used during checkout.' };
+push @LINKS, { todo=>($NEEDREF->{'shipping'})?1:0, min=>1, link=>'/biz/setup/shipping/index.cgi', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.' };
+push @LINKS, { todo=>($NEEDREF->{'payment'})?1:0, min=>1, link=>'/biz/setup/payment/index.cgi', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.' };
+push @LINKS, { todo=>($NEEDREF->{'tax'})?1:0, min=>1, link=>'/biz/setup/tax/index.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.' };
+push @LINKS, { min=>0, link=>'/biz/setup/promotions/index.cgi', title=>'Coupons/Promotions', about=>'Create discounts for special purchases' };
+push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.' };
+push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=CUSTOMERADMIN', title=>'Customer Admin Config', about=>'Configure what options customers have when they login to their accounts on your store.'};
+push @LINKS, { min=>1, link=>'/biz/setup/checkout/index.cgi?MODE=SYS-MESSAGES', title=>'System Messages', about=>'Customize System Messages used throughout the site' };
+push @LINKS, { min=>1, link=>'/biz/setup/checkout/index.cgi?MODE=CHK-MESSAGES', title=>'Checkout Messages', about=>'Customize Checkout Messaging used during checkout.' };
 use Data::Dumper; print STDERR Dumper($LU);
 if ($LEVEL>=7) {
-	push @LINKS, { min=>1, link=>'/biz/setup/checkout?MODE=INTERNATIONAL', title=>'Languages &amp; Currencies', about=>'Configure which languages and currencies are available.' };
+	push @LINKS, { min=>1, link=>'/biz/setup/checkout/index.cgi?MODE=INTERNATIONAL', title=>'Languages &amp; Currencies', about=>'Configure which languages and currencies are available.' };
 	}
 if ($FLAGS =~ /,CRM,/) {
 	push @LINKS, { min=>1, link=>'/biz/crm/index.cgi?VERB=CONFIG', title=>'CRM Behaviors', about=>'Configure preferences in the CRM area.' };
 	}
 # push @LINKS, { min=>1, link=>'/biz/setup/callcenter/index.cgi', title=>'Call Center', about=>'Manage call center scripts associated with your sites.' };
-my $PROPERTIES_DIV = build_panel('PROPERTIES','Store Properties','images/icons/properties_32x32.gif', 'navcat_2',1,\@LINKS);
+my $PROPERTIES_DIV = build_panel('PROPERTIES','Store Properties','/biz/setup/images/icons/properties_32x32.gif', 'navcat_2',1,\@LINKS);
 
 ## UTILITIES
 @LINKS = ();
-push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'/biz/setup/import', title=>'CSV Import Utility', about=>'Import data from a variety of formats.', };
+push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'#import?verb=product', title=>'CSV Import Utility', about=>'Import data from a variety of formats.', };
 ## No longer configurable:
 #if ($FLAGS =~ /,EBAY,/) {
 #	push @LINKS, { min=>1, link=>'/biz/setup/reminder', title=>'Payment Reminders', about=>'Configure feedback/payment reminders.', };
@@ -178,32 +181,32 @@ push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'/biz/setup/impor
 #	push @LINKS, { min=>1, link=>'/biz/setup/automation', title=>'Automation', about=>'Configure Automation/Events', };
 #	}
 if ($FLAGS =~ /,WEB,/) {
-	push @LINKS, { min=>0, link=>'/biz/setup/search', title=>'Manage Search Catalogs', about=>'Create custom searchable indexes of your product database.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/search/index.cgi', title=>'Manage Search Catalogs', about=>'Create custom searchable indexes of your product database.', };
 	}
-my $UTILITY_DIV = build_panel('UTILITY','Utility Features','images/icons/advanced_32x32.gif','navcat_1',1, \@LINKS);
+my $UTILITY_DIV = build_panel('UTILITY','Utility Features','/biz/setup/images/icons/advanced_32x32.gif','navcat_1',1, \@LINKS);
 
 ## ACCOUNT
 @LINKS = ();
-push @LINKS, { min=>1, link=>'/biz/setup/account', title=>'Contact Information', about=>'Change Administrative/Billing Information' };
+push @LINKS, { min=>1, link=>'/biz/setup/account/index.cgi', title=>'Contact Information', about=>'Change Administrative/Billing Information' };
 if ($FLAGS =~ /,SITEHOST,/) {
 	push @LINKS, { todo=>($NEEDREF->{'hosting'})?1:0, min=>0, link=>"/biz/setup/hosting", title=>"Hosting Setup", about=>"Enter URLS for your storefront.  Select page layouts and add product to categories and lists.", };
 	}
 #if (($LEVEL>3) || ($FLAGS =~ /,EBAY,/)) {
 #	## PROFILES are only available to LEVEL3 or EBAY
-#	push @LINKS, { min=>0, link=>'/biz/setup/profiles', title=>'Company Profiles', about=>'Profiles can be used to create separate policies for different domains/products.' };
+#	push @LINKS, { min=>0, link=>'/biz/setup/profiles/index.cgi', title=>'Company Profiles', about=>'Profiles can be used to create separate policies for different domains/products.' };
 #	}
-push @LINKS, { min=>1, link=>'/biz/setup/global', title=>'Global Settings', about=>'Inventory &amp; Order settings in this area affect all sites managed from this account.' };
+push @LINKS, { min=>1, link=>'/biz/setup/global/index.cgi', title=>'Global Settings', about=>'Inventory &amp; Order settings in this area affect all sites managed from this account.' };
 if ($LEVEL>=7) {
 	push @LINKS, { min=>0, link=>'/biz/setup/global/index.cgi?VERB=PARTITIONS', title=>'Partitions', about=>'The ability to segment your settings, and databases for each site associated with this account.' };
 	}
 
-push @LINKS, { min=>1, link=>'/biz/setup/usermgr', title=>'Manage Users/Devices', about=>'Manage which users and devices can access your account.' };
-push @LINKS, { min=>0, link=>'/biz/setup/password', title=>'Change Password', about=>'You should change your password every 60 days.' };
-push @LINKS, { min=>1, link=>'/biz/configurator', title=>'Add/Remove Features', about=>'Manage feature bundles installed on this account.' };
-push @LINKS, { min=>0, link=>'/biz/setup/billing', title=>'Billing History', about=>'View your billing history, update payment information.' };
-if (not $ANYCOM) {
-	push @LINKS, { min=>1, link=>'/biz/setup/proshop.cgi', title=>'Zoovy proShop Access', about=>'A showcase of design functionality &amp; services for your store.' };
-	}
+push @LINKS, { min=>1, link=>'/biz/setup/usermgr/index.cgi', title=>'Manage Users/Devices', about=>'Manage which users and devices can access your account.' };
+push @LINKS, { min=>0, link=>'/biz/setup/password/index.cgi', title=>'Change Password', about=>'You should change your password every 60 days.' };
+push @LINKS, { min=>1, link=>'/biz/configurator/index.cgi', title=>'Add/Remove Features', about=>'Manage feature bundles installed on this account.' };
+push @LINKS, { min=>0, link=>'/biz/setup/billing/index.cgi', title=>'Billing History', about=>'View your billing history, update payment information.' };
+#if (not $ANYCOM) {
+#	push @LINKS, { min=>1, link=>'/biz/setup/proshop.cgi', title=>'Zoovy proShop Access', about=>'A showcase of design functionality &amp; services for your store.' };
+#	}
 
 if (($FLAGS =~ /,PKG=SHOPCART,/) && ($FLAGS !~ /,SITEHOST,/)) {
 	## this is strictly for upsetlling.
@@ -222,63 +225,63 @@ if (($FLAGS =~ /,PKG=SHOPCART,/) && ($FLAGS !~ /,ZID,/)) {
 		about=>'Windows software for processing orders, printing airbills/shipping labels, integrates with Quickbooks and more!',
 		};
 	}
-my $ACCOUNT_DIV = build_panel('ACCOUNT','Account Settings','images/icons/account_32x32.gif','navcat_4',1, \@LINKS);
+my $ACCOUNT_DIV = build_panel('ACCOUNT','Account Settings','/biz/setup/images/icons/account_32x32.gif','navcat_4',1, \@LINKS);
 
 ## DEVELOPER
 @LINKS = ();
 push @LINKS, {
-	min=>1, link=>'/biz/setup/private', title=>'Private Files', about=>'Private files include diagnostic logs, reports, and ticket attachments.'
+	min=>1, link=>'/biz/setup/private/index.cgi', title=>'Private Files', about=>'Private files include diagnostic logs, reports, and ticket attachments.'
 	};
 push @LINKS, {
 	min=>1, title=>'Developer SDK', about=>'Use this to easily custom integrations or apps',
+	target=>"_blank",
 	link=>'https://github.com/zoovy/Zoovy-MVC-Framework-JQuery-Plugin',
 	};
 push @LINKS, {
 	min=>1, title=>'Dev Wiki', about=>'Learn more about what is possible, and what is included in the SDK.',
+	target=>"_blank",
 	link=>'https://github.com/zoovy/Zoovy-MVC-Framework-JQuery-Plugin/wiki',
 	};
 if (not $ANYCOM) {
 	push @LINKS, { 
 		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
-		min=>0, link=>'/biz/setup/toxml/index.cgi?ACTION=HELP', title=>'TOXML Editor', about=>'Create Custom Templates for your site, emails, auctions,etc.', 
+		min=>0, link=>'/biz/setup/toxml/index.cgi?ACTION=HELP', title=>'Legacy toxml edit', about=>'Mange Legacy Custom VSTORE Templates for your site, emails, auctions,etc.', 
 		};
-	push @LINKS, { 
-		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
-		min=>2, link=>'toxml/index.cgi?MODE=WRAPPER', title=>'Site Themes', about=>'Templates which control the navigation and maintain consistency throughout your store.', 
-		};
-	push @LINKS, { 
-		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
-		min=>2, link=>'toxml/index.cgi?MODE=LAYOUT', title=>'Page Layouts &amp; Newsletters', about=>'Templates which control the editing/formatting of each page on your store.', 
-		};
-	push @LINKS, { 
-		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
-		min=>2, link=>'toxml/index.cgi?MODE=WIZARD', title=>'Auction Templates (Wizards)', about=>'Templates which are used to create all-in-one pages suitable for auctions.', 
-		};
-	push @LINKS, { 
-		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
-		min=>2, link=>'toxml/index.cgi?MODE=ZEMAIL', title=>'Email Templates', about=>'Templates which are used when sending automated emails.', 
-		};
-	push @LINKS, { 
-		requires=>(($FLAGS !~ /,API,/)?'API':''),
-		min=>1, link=>'/biz/setup/dispatch', title=>'API Integration', about=>'Automatically transmit orders to a remote server.', 
-		};
-	push @LINKS, {
-		min=>1, link=>'/biz/setup/interface', title=>'User Interface', about=>'Configure your user interface to increase employee productivity',
-		};
-	if ($LEVEL>=8) {
-		push @LINKS, { min=>1, link=>'/biz/setup/developer', title=>'Site Integrator (API2)', about=>'Configure integration with non-zoovy websites.', };
-		}
+#	push @LINKS, { 
+#		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
+#		min=>2, link=>'toxml/index.cgi?MODE=WRAPPER', title=>'Site Themes', about=>'Templates which control the navigation and maintain consistency throughout your store.', 
+#		};
+#	push @LINKS, { 
+#		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
+#		min=>2, link=>'toxml/index.cgi?MODE=LAYOUT', title=>'Page Layouts &amp; Newsletters', about=>'Templates which control the editing/formatting of each page on your store.', 
+#		};
+#	push @LINKS, { 
+#		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
+#		min=>2, link=>'toxml/index.cgi?MODE=WIZARD', title=>'Auction Templates (Wizards)', about=>'Templates which are used to create all-in-one pages suitable for auctions.', 
+#		};
+#	push @LINKS, { 
+#		requires=>(($FLAGS !~ /,WEB,/)?'WEB':''),
+#		min=>2, link=>'toxml/index.cgi?MODE=ZEMAIL', title=>'Email Templates', about=>'Templates which are used when sending automated emails.', 
+#		};
+#	push @LINKS, { 
+#		requires=>(($FLAGS !~ /,API,/)?'API':''),
+#		min=>1, link=>'/biz/setup/dispatch/index.cgi', title=>'API Integration', about=>'Automatically transmit orders to a remote server.', 
+#		};
+#	push @LINKS, {
+#		min=>1, link=>'/biz/setup/interface/index.cgi', title=>'User Interface', about=>'Configure your user interface to increase employee productivity',
+#		};
+#	if ($LEVEL>=8) {
+#		push @LINKS, { min=>1, link=>'/biz/setup/developer', title=>'Site Integrator (API2)', about=>'Configure integration with non-zoovy websites.', };
+#		}
 	}
 
-my $DEVELOPER_DIV = build_panel('DEVELOPER','Developer Tools','images/icons/advanced_32x32.gif','navcat_4',1,\@LINKS);
+my $DEVELOPER_DIV = build_panel('DEVELOPER','Developer Tools','/biz/setup/images/icons/advanced_32x32.gif','navcat_4',1,\@LINKS);
 
 ##
 ## 
 ##############################################################################
 my $html = qq~
 <!-- SETUP_TAB -->
-
-<script type="text/javascript" src="/biz/ajax/zoovy-jquery.js"></script>
 
 
 <script type="text/javascript">
@@ -294,16 +297,17 @@ function moreOrLess(section,show) {
 		val = jQuery('#'+section+'\\\\!state').val(); 
 		if (val=='0') { val = '1'; } else { val = '0'; }
 		}
-	
+
+	val = 1;	
 	if (val=='1') {
 		jQuery('#'+section+'\\\\!min').hide();
 		jQuery('#'+section+'\\\\!max').show();
-		jQuery('#'+section+'\\\\!prompt').html(' &#187; <a onClick="moreOrLess(\\''+section+'\\');"  href="#"><strong>Less Choices..</strong></a>');		
+		// jQuery('#'+section+'\\\\!prompt').html(' &#187; <a onClick="moreOrLess(\\''+section+'\\');"  href="#"><strong>Less Choices..</strong></a>');		
 		}
 	else {
 		jQuery('#'+section+'\\\\!min').show();
 		jQuery('#'+section+'\\\\!max').hide();
-		jQuery('#'+section+'\\\\!prompt').html(' &#187; <a onClick="moreOrLess(\\''+section+'\\');"  href="#"><strong>More Choices..</strong></a>');	
+		// jQuery('#'+section+'\\\\!prompt').html(' &#187; <a onClick="moreOrLess(\\''+section+'\\');"  href="#"><strong>More Choices..</strong></a>');	
 		}
 
 	jQuery('#'+section+'\\\\!state').val(val);
@@ -377,26 +381,26 @@ if ($PRT>0) {
 	push @BC, { name=>"Partition: $prtinfo->{'name'}" };
 
 	my @LINKS = ();
-	push @LINKS, { min=>0, link=>'/biz/setup/domain', title=>'Domain Hosting', about=>'Associate Domains to this Partition.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/promotions', title=>'Coupons/Promotions', about=>'Create discounts for special purchases', };
-	push @LINKS, { min=>0, link=>'/biz/setup/tax', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/shipping', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/payment', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/checkout?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/checkout?MODE=CUSTOMERADMIN', title=>'Customer Admin Setup', about=>'Settings that affect what your customers can do in their admin area.', };
-	push @LINKS, { min=>0, link=>'/biz/setup/checkout?MODE=SYS-MESSAGES', title=>'System Messages', about=>'Customize System Messages that are displayed to your customers', };
-	push @LINKS, { min=>0, link=>'/biz/setup/builder', title=>'Site Builder', about=>'Build the content for your storefront.  Select page layouts and add product to categories and lists.', };
-	push @LINKS, { min=>0, link=>'analytics/index.cgi', title=>'Analytics &amp; Plugins', about=>'Integrate approved 3rd party applications with your site.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/domain/index.cgi', title=>'Domain Hosting', about=>'Associate Domains to this Partition.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/promotions/index.cgi', title=>'Coupons/Promotions', about=>'Create discounts for special purchases', };
+	push @LINKS, { min=>0, link=>'/biz/setup/tax/idnex.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/shipping/index.cgi', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/payment/index.cgi', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=CUSTOMERADMIN', title=>'Customer Admin Setup', about=>'Settings that affect what your customers can do in their admin area.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=SYS-MESSAGES', title=>'System Messages', about=>'Customize System Messages that are displayed to your customers', };
+	push @LINKS, { min=>0, link=>'/biz/setup/builder/index.cgi', title=>'Site Builder', about=>'Build the content for your storefront.  Select page layouts and add product to categories and lists.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/analytics/index.cgi', title=>'Analytics &amp; Plugins', about=>'Integrate approved 3rd party applications with your site.', };
 	push @LINKS, { min=>0, link=>'/biz/syndication/amazon/index.cgi', title=>'Amazon', about=>'Amazon', };
-	push @LINKS, { min=>0, link=>'/biz/setup/ebay', title=>'eBay.com', about=>'eBay Setup', };
+	push @LINKS, { min=>0, link=>'/biz/setup/ebay/index.cgi', title=>'eBay.com', about=>'eBay Setup', };
 	if ($prtinfo->{'p_navcats'}>0) {
-		push @LINKS, { min=>0, link=>'/biz/setup/navcats', title=>'Categories &amp; Lists', about=>'Build your store category tree or add product lists.</di', };
-		push @LINKS, { min=>0, link=>'/biz/setup/import', title=>'CSV Import Utility', about=>'Import Customer or Category data.', };
+		push @LINKS, { min=>0, link=>'/biz/setup/navcats/index.cgi', title=>'Categories &amp; Lists', about=>'Build your store category tree or add product lists.</di', };
+		push @LINKS, { min=>0, link=>'/biz/setup/import/index.cgi', title=>'CSV Import Utility', about=>'Import Customer or Category data.', };
 		push @LINKS, { min=>0, link=>'/biz/setup/rss/index.cgi', title=>'RSS Feeds', about=>'Create RSS Feeds to easily share your product lists with affiliate sites.' };
 		push @LINKS, { min=>0, link=>"/biz/setup/media/index.cgi", title=>"Media Library", about=>'Upload and manage your images, sounds, movies, documents and flash.' };
 		}	
 
-	my $PROPERTIES_DIV = build_panel('PROPERTIES','Store Properties','images/icons/properties_32x32.gif', 'navcat_2', 0, \@LINKS);
+	my $PROPERTIES_DIV = build_panel('PROPERTIES','Store Properties','/biz/setup/images/icons/properties_32x32.gif', 'navcat_2', 0, \@LINKS);
 
 	$html = qq~<!-- SETUP_TAB -->
 <body>
@@ -450,8 +454,11 @@ sub build_panel {
 		if ((defined $set->{'todo'}) && ($set->{'todo'}>0)) { $class = "todo"; }
 
 		next if ($set->{'requires'});		## we never minimize requires
-		
-		$mintxt .= qq~<img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > <a class="$class" href="$set->{'link'}">$set->{'title'}</a><br />\n~;
+
+		my $link = &GTOOLS::link_fixup($set->{'link'});
+		$mintxt .= qq~<img src="/biz/images/tabs/graphics/b.gif" width="15" height="15" > 
+			<a class="$class" href="$link">$set->{'title'}</a>
+			<br />\n~;
 		}
 
 
@@ -484,7 +491,8 @@ sub build_panel {
 			my $gif = '/biz/images/tabs/graphics/b.gif';
 			if ($set->{'requires'}) { $gif = '/biz/images/tabs/graphics/b_off.gif'; }
 
-			$maxtxt .= qq~<img src="$gif" width="15" height="15" > <a class="$class" $style href="$set->{'link'}">$set->{'title'}</a><br />\n~;;
+			my $link = &GTOOLS::link_fixup($set->{'link'});
+			$maxtxt .= qq~<img src="$gif" width="15" height="15" > <a class="$class" $style href="$link">$set->{'title'}</a><br />\n~;;
 			if ($set->{'about'} ne '') { $maxtxt .= qq~<div $stylesub class="subtitle0">$set->{'about'}</div>\n~; }
 			}
 		}
@@ -512,7 +520,9 @@ $maxtxt
 
 <!-- This should change to 'fewer choices' if more has been selected -->
 <div id="$panel!prompt" style="text-align:right; margin-top:4px;">
+<!--
  &#187; <a onClick="moreOrLess('$panel');" href="#"><strong>Fewer Choices..</strong></a></div>
+-->
 
 </td></tr></table>
 <!-- /$panel --></div>~;

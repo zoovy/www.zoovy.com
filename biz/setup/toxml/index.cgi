@@ -59,24 +59,24 @@ my @TABS = ();
 ## determine tabs available 
 ## WEB flag should see layout and wrapper tabs
 if (index($FLAGS,',WEB,') > 0 ) {
-	push @TABS, { name=>'Wrappers', link=>'index.cgi?FORMAT=WRAPPER', },
-					{ name=>'Layouts', link=>'index.cgi?FORMAT=LAYOUT', },
-					{ name=>'Emails', link=>'index.cgi?FORMAT=ZEMAIL', },
-					{ name=>'Orders', link=>'index.cgi?FORMAT=ORDER', },
+	push @TABS, { name=>'Wrappers', link=>'/biz/setup/toxml/index.cgi?FORMAT=WRAPPER', },
+					{ name=>'Layouts', link=>'/biz/setup/toxml/index.cgi?FORMAT=LAYOUT', },
+					{ name=>'Emails', link=>'/biz/setup/toxml/index.cgi?FORMAT=ZEMAIL', },
+					{ name=>'Orders', link=>'/biz/setup/toxml/index.cgi?FORMAT=ORDER', },
 	}
 ## EBAY flag should see the wizard tab
 if (index($FLAGS,',EBAY,') > 0 ) {
-	push @TABS, { name=>'Wizards', link=>'index.cgi?FORMAT=WIZARD', };
+	push @TABS, { name=>'Wizards', link=>'/biz/setup/toxml/index.cgi?FORMAT=WIZARD', };
 	}
 
 ## API flag should see the definitions and includes tabs
 if (index($FLAGS,',API,') > 0 ) {				
-	push @TABS, { name=>'Definitions', link=>'index.cgi?FORMAT=DEFINITION', },
-					{ name=>'Includes', link=>'index.cgi?FORMAT=INCLUDE', };
+	push @TABS, { name=>'Definitions', link=>'/biz/setup/toxml/index.cgi?FORMAT=DEFINITION', },
+					{ name=>'Includes', link=>'/biz/setup/toxml/index.cgi?FORMAT=INCLUDE', };
 	}
 
 ## no authorization to edit TOXML
-push @TABS, { name=>'Help', link=>'index.cgi?ACTION=HELP', };
+push @TABS, { name=>'Help', link=>'/biz/setup/toxml/index.cgi?ACTION=HELP', };
 
 my $q = new CGI;
 my $ACTION = $ZOOVY::cgiv->{'ACTION'};
@@ -114,8 +114,8 @@ print STDERR "ACTION=$ACTION FORMAT=$FORMAT DOCID=$DOCID\n";
 
 
 my @BC = ();
-push @BC, 	{ name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      	 	{ name=>'Template Manager',link=>'http://www.zoovy.com/biz/setup/toxml/index.cgi?ACTION=HELP','target'=>'_top', };
+push @BC, 	{ name=>'Setup',link=>'/biz/setup','target'=>'_top', },
+      	 	{ name=>'Template Manager',link=>'/biz/setup/toxml/index.cgi?ACTION=HELP','target'=>'_top', };
     
 
 
@@ -229,80 +229,81 @@ if ($ACTION eq 'DELETE') {
 
 
 print STDERR "ACTION: $ACTION\n";
-if ($ACTION eq 'UPLOAD') {
-	my $fh = $q->upload("FILENAME");
-	my $BUFFER = "";
-	my $filename = $q->param("FILENAME");
-	if (!defined($filename)) { $filename = time(); }
-	while (<$fh>) { $BUFFER .= $_; }
-	print STDERR "file is: $filename\n";
-
-
-	my $DOCID = $q->param('DOCID');
-	if ($DOCID eq '') { $DOCID = lc($filename); }
-	$DOCID =~ s/[^\w\-\_]+//gs;
-	if (substr($DOCID,0,1) ne '~') { $DOCID = "~$DOCID"; }
-	## Grab the preview image if one exists.
-	my $ERROR = undef;
-
-	if ($BUFFER !~ /CONFIG/) { $ERROR = "Document does not have a valid CONFIG element (this can't possibly work)"; }
-
-	my $toxml = undef; 
-	if (defined $ERROR) {
-		## shit already happened.
-		}
-	elsif (($filename =~ /\.xml$/) || ($filename =~ /\.html/)) {
-		($toxml) = TOXML::COMPILE::fromXML($FORMAT,$DOCID,$BUFFER,USERNAME=>$USERNAME,MID=>$MID);
-		my ($configel) = $toxml->findElements('CONFIG');
-		if ($toxml->{'_HASERRORS'}) {
-			$ERROR = 'page layout contains errors.';
-			}
-		elsif (not defined $configel) {
-			$ERROR = 'could not load config element from compiled toxml document'; 
-			# $ERROR = &ZOOVY::incode(Dumper($toxml));
-			}
-		else {
-			$LU->log("SETUP.TOXML","Uploaded TOXML file FORMAT=$FORMAT DOCID=$DOCID","SAVE");
-			$toxml->save(LUSER=>$LUSERNAME);
-			}
-		}
-	else {
-		$ERROR = "File must end in either .xml or .html extension";
-		}
-
-	if (defined $ERROR) {
-		## shit already happened!
-		}
-	elsif (not defined $toxml) {
-		$ERROR = 'unknown file type - must be .xml, .html, or .flow';
-		}
-	elsif ((defined $toxml) && (ref($toxml) eq 'TOXML')) {
-		my $path = &ZOOVY::resolve_userpath($USERNAME).'/TOXML';
-		my $BUFFER = '';
-		my $fh = $q->upload("IMGFILENAME");
-		my $filename = $q->param("IMGFILENAME");
-		if (!defined($filename)) { $filename = time(); }
-		while (<$fh>) { $BUFFER .= $_; }
-		print STDERR "file is: $filename\n";
-	
-		if ($BUFFER ne '') {
-			open F, ">$path/$DOCID.gif";
-			print F $BUFFER;
-			close F;
-			}
-	
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "successfully uploaded type=$FORMAT docid=$DOCID";
-		}
-	else {
-		$ERROR = "Unknown error (but toxml object was definitely not returned from compile)";
-		}
-
-	if (defined $ERROR) {
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = $ERROR;
-		warn "ERROR: $ERROR\n";
-		}
-	$ACTION = '';
-	}
+#if ($ACTION eq 'UPLOAD') {
+#	my $fh = $q->upload("FILENAME");
+#	my $BUFFER = "";
+#	my $filename = $q->param("FILENAME");
+#	if (!defined($filename)) { $filename = time(); }
+#	while (<$fh>) { $BUFFER .= $_; }
+#	print STDERR "file is: $filename\n";
+#
+#
+#	my $DOCID = $q->param('DOCID');
+#	if ($DOCID eq '') { $DOCID = lc($filename); }
+#	$DOCID =~ s/[^\w\-\_]+//gs;
+#	if (substr($DOCID,0,1) ne '~') { $DOCID = "~$DOCID"; }
+#	## Grab the preview image if one exists.
+#	my $ERROR = undef;
+#
+#	if ($BUFFER !~ /CONFIG/) { $ERROR = "Document does not have a valid CONFIG element (this can't possibly work)"; }
+#
+#	my $toxml = undef; 
+#	if (defined $ERROR) {
+#		## shit already happened.
+#		}
+#	elsif (($filename =~ /\.xml$/) || ($filename =~ /\.html/)) {
+#		($toxml) = TOXML::COMPILE::fromXML($FORMAT,$DOCID,$BUFFER,USERNAME=>$USERNAME,MID=>$MID);
+#		my ($configel) = $toxml->findElements('CONFIG');
+#		if ($toxml->{'_HASERRORS'}) {
+#			$ERROR = 'page layout contains errors.';
+#			}
+#		elsif (not defined $configel) {
+#			$ERROR = 'could not load config element from compiled toxml document'; 
+#			# $ERROR = &ZOOVY::incode(Dumper($toxml));
+#			}
+#		else {
+#			$LU->log("SETUP.TOXML","Uploaded TOXML file FORMAT=$FORMAT DOCID=$DOCID","SAVE");
+#			$toxml->save(LUSER=>$LUSERNAME);
+#			}
+#		}
+#	else {
+#		$ERROR = "File must end in either .xml or .html extension";
+#		}
+#
+#	if (defined $ERROR) {
+#		## shit already happened!
+#		}
+#	elsif (not defined $toxml) {
+#		$ERROR = 'unknown file type - must be .xml, .html, or .flow';
+#		}
+#	elsif ((defined $toxml) && (ref($toxml) eq 'TOXML')) {
+#		my $path = &ZOOVY::resolve_userpath($USERNAME).'/TOXML';
+#		my $BUFFER = '';
+#		my $fh = $q->upload("IMGFILENAME");
+#		my $filename = $q->param("IMGFILENAME");
+#		if (!defined($filename)) { $filename = time(); }
+#		while (<$fh>) { $BUFFER .= $_; }
+#		print STDERR "file is: $filename\n";
+#	
+#		if ($BUFFER ne '') {
+#			open F, ">$path/$DOCID.gif";
+#			print F $BUFFER;
+#			close F;
+#			}
+#	
+#		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "successfully uploaded type=$FORMAT docid=$DOCID";
+#		}
+#	else {
+#		$ERROR = "Unknown error (but toxml object was definitely not returned from compile)";
+#		}
+#
+#	if (defined $ERROR) {
+#		$GTOOLS::TAG{'<!-- MESSAGE -->'} = $ERROR;
+#		warn "ERROR: $ERROR\n";
+#		}
+#	$ACTION = '';
+#	}
+#
 
 if ($ACTION eq 'ACKDELETE') {
 	$GTOOLS::TAG{'<!-- DOCID -->'} = $q->param('DOCID');
@@ -330,9 +331,8 @@ if ($ACTION eq 'TOP') {
 		my $name = $inforef->{'TITLE'};	
 
 		# only look at userland flows
-		$c .= "<a href='index.cgi?ACTION=EDITXML&DOCID=".CGI->escape($k)."'>[EDIT XML]</a> ";
-		# $c .= "<a href='index.cgi?ACTION=EDITHTML&DOCID=".CGI->escape($k)."'>[EDIT HTML]</a> ";
-		$c .= "<a href='index.cgi?ACTION=ACKDELETE&DOCID=".CGI->escape($k)."'>[REMOVE]</a> ($k) $name<br>\n";
+		$c .= "<a href='/biz/setup/toxml/index.cgi?ACTION=EDITXML&DOCID=".CGI->escape($k)."'>[EDIT XML]</a> ";
+		$c .= "<a href='/biz/setup/toxml/index.cgi?ACTION=ACKDELETE&DOCID=".CGI->escape($k)."'>[REMOVE]</a> ($k) $name<br>\n";
 		}
 	if ($c eq '') { $c = '<i>None</i>'; }
 	$GTOOLS::TAG{'<!-- EXISTINGFLOWS -->'} = $c;
@@ -462,46 +462,45 @@ if ($ACTION eq '') {
 	$GTOOLS::TAG{'<!-- FORMAT_PRETTY -->'} = ucfirst($pretty);
 
 
-	if ($FORMAT ne '') {
-	$GTOOLS::TAG{'<!-- UPLOAD_FORM -->'} = qq~
-<!-- begin upload new-->
-<form action='index.cgi' method='POST' enctype='multipart/form-data'>
-<input type='hidden' name='ACTION' value='UPLOAD'>
-<input type='hidden' name='FORMAT' value='$FORMAT'>
-<table width='800' border='0' cellpadding='0' cellspacing='0' class="zoovytable" align='center'>
-<thead>
-<tr>
-	<th class='zoovytableheader'>Add New <!-- FORMAT_PRETTY --></th>
-</tr>
-</thead>
-<tr>
-	<td align="center">
-	<table border='0' cellpadding='5' border='0' cellspacing='0'>
-	<tr>
-		<td align="right"><b>File:</b></td>
-		<td align="left"><input type='file' name='FILENAME'></td>
-	</tr>
-	<tr>
-		<td align="right"><b>Name:</b></td>
-		<td align="left"><input type='textbox' name='DOCID' class='form_text' style='width:200px;'></td>
-	</tr>
-	<tr>
-		<td align="right"><b>Thumbnail Image:</b></td>
-		<td align="left"><input type='file' name='IMGFILENAME'> (optional - GIF format)</td>
-	</tr>
-	<tr>
-		<td colspan='2' align='center'><input type='submit' value='  Upload  ' class='button2'></td>
-	</tr>
-	</table>
-	
-	</td>
-</tr>
-</table>
-</form>
-<!-- end upload new-->
-~;
-	}
-
+#	if ($FORMAT ne '') {
+#	$GTOOLS::TAG{'<!-- UPLOAD_FORM -->'} = qq~
+#<!-- begin upload new-->
+#<form action='/biz/setup/toxml/index.cgi' method='POST' enctype='multipart/form-data'>
+#<input type='hidden' name='ACTION' value='UPLOAD'>
+#<input type='hidden' name='FORMAT' value='$FORMAT'>
+#<table width='800' border='0' cellpadding='0' cellspacing='0' class="zoovytable" align='center'>
+#<thead>
+#<tr>
+#	<th class='zoovytableheader'>Add New <!-- FORMAT_PRETTY --></th>
+#</tr>
+#</thead>
+#<tr>
+#	<td align="center">
+#	<table border='0' cellpadding='5' border='0' cellspacing='0'>
+#	<tr>
+#		<td align="right"><b>File:</b></td>
+#		<td align="left"><input type='file' name='FILENAME'></td>
+#	</tr>
+#	<tr>
+#		<td align="right"><b>Name:</b></td>
+#		<td align="left"><input type='textbox' name='DOCID' class='form_text' style='width:200px;'></td>
+#	</tr>
+#	<tr>
+#		<td align="right"><b>Thumbnail Image:</b></td>
+#		<td align="left"><input type='file' name='IMGFILENAME'> (optional - GIF format)</td>
+#	</tr>
+#	<tr>
+#		<td colspan='2' align='center'><input type='submit' value='  Upload  ' class='button2'></td>
+#	</tr>
+#	</table>
+#	
+#	</td>
+#</tr>
+#</table>
+#</form>
+#<!-- end upload new-->
+#~;
+#	}
 
 
 	## Load the full theme list.
@@ -544,27 +543,16 @@ if ($ACTION eq '') {
 			$c .= qq~
 					<tr class="$c_row">
 						<td>$inforef->{'FORMAT'}.$DOCID
-							<a href="index.cgi?ACTION=ACKDELETE&FORMAT=$FORMAT&DOCID=$DOCID">
+							<a href="/biz/setup/toxml/index.cgi?ACTION=ACKDELETE&FORMAT=$FORMAT&DOCID=$DOCID">
 							<font color=red size="-3"><i>(remove)</i></font></a></td>
 						<td>$TITLE</td> 
 						<td align="right" nowrap>
-							<form action="index.cgi" method="POST" style='display:inline'>
-								<input type=hidden name="DOCID" value="$DOCID">
-								<input type=hidden name="FORMAT" value="$inforef->{'FORMAT'}">
-								<input type=hidden name="TYPE" value="xml">
-								<!--
-								<input $xml_checked type=radio name="TYPE" value="xml">XML&nbsp;&nbsp;
-							 	<input $html_checked type=radio name="TYPE" value="html">HTML&nbsp;&nbsp;
-								<input \$plugin_checked type=radio name="TYPE" value="plugin">Plugin&nbsp;&nbsp;
-								-->
-							 	<input type=submit class="button" name="ACTION" value="Edit XML">
-							</form>
-						
+							<button onClick="navigateTo('/biz/setup/toxml/index.cgi?DOCID=$DOCID&FORMAT=$inforef->{'FORMAT'}&TYPE=xml'); return false;">Edit XML</button>
 							~;
 ## Removed this per JT since its broked and unnecessary - 5/19/10
 #			if ($FORMAT eq 'WRAPPER') {
 #				$c .= qq~
-#					<form action="index.cgi" method="GET" style='display:inline;'>
+#					<form action="/biz/setup/toxml/index.cgi" method="GET" style='display:inline;'>
 #						<input type=hidden name="DOCID" value="$DOCID">
 #						<input type=hidden name="FORMAT" value="$FORMAT">
 #						<input type=hidden name="ACTION" value="SITEBUTTONS">
@@ -587,7 +575,7 @@ if ($ACTION eq '') {
 						<td>$DOCID</td>
 						<td>$TITLE</td>
 						<td align="right" nowrap>
-						<a href="index.cgi?ACTION=DOWNLOAD&FORMAT=$inforef->{'FORMAT'}&DOCID=$DOCID">[ View/Copy ]</a></td>
+						<a href="/biz/setup/toxml/index.cgi?ACTION=DOWNLOAD&FORMAT=$inforef->{'FORMAT'}&DOCID=$DOCID">[ View/Copy ]</a></td>
 					</tr>~;
 			$z_row = ($z_row eq "r1")?"r0":"r1";
 			}			

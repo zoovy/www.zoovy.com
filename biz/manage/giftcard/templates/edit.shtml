@@ -1,7 +1,5 @@
 <!-- UTILITIES_TAB -->
 
-<script language="JavaScript" src="/biz/js/calendar/calendar2.js"></script><!-- Date only with year scrolling -->
-
 <br>
 <form name="thisFrm" method="POST" action="index.cgi">
 <input type="hidden" name="GCID" value="<!-- GCID -->">
@@ -40,8 +38,7 @@
 	<tr>
 		<td nowrap valign='top'>Expires:</td>
 		<td valign="top">
-			<input type="text" value="<!-- EXPIRES -->" name="expires" maxlength="10">
-			<a href="javascript:cal2.popup();"><img src="img/cal.gif" width="16" height="16" border="0" alt="Click Here to Pick up the date"></a><br>
+			<input class="datepicker" type="date" value="<!-- EXPIRES -->" name="expires" maxlength="10">
 			<div class='hint'>HINT: Leave expires empty for "never".</div>
 			<div class='hint'>HINT: Many states require you do not expire gift cards if you sell them for cash value.
 However gift cards that you include discounted, or free with an order are usually exempt. 
@@ -68,7 +65,7 @@ However gift cards that you include discounted, or free with an order are usuall
 		<center>
 		<table><tr>
 		<td align='center'><input type="submit" class="button" value=" Save "></td>
-		<td align='center'><input type="button" onClick="document.location='index.cgi';" class="button" value=" Exit "></td>
+		<td align='center'><input type="button" onClick="navigateTo('/biz/manage/giftcard/index.cgi');" class="button" value=" Exit "></td>
 		</tr></table>
 		</center>
 		</td>
@@ -97,6 +94,12 @@ calendar2(document.forms['thisFrm'].elements['expires']);
 	<!-- TRANSACTION_LOG -->
 </table>
 </div>
+
+<script>
+$(function() { $( ".datepicker" ).datepicker(); });
+</script>
+
+
 
 
 </body>

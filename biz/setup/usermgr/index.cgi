@@ -12,7 +12,7 @@ require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_ADMIN');
 if (not defined $LU) { exit; }
 
-my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+my ($MID,$USERNAME,$LUSER,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
 # $LU->log('PRODEDIT.NUKEIMG',"[PID:$PID] Nuking image $img ".$prodref->{'zoovy:prod_image'.$img},'INFO');
@@ -23,8 +23,6 @@ my @MSGS = ();
 &ZOOVY::init();
 &GTOOLS::init();
 my $zdbh = &DBINFO::db_zoovy_connect();
-my ($USERNAME,$FLAGS,$MID,$LUSER) = &ZOOVY::authenticate('/biz',2,'_ADMIN');
-$FLAGS = ",$FLAGS,";
 if ($USERNAME eq '') { exit; }
 $GTOOLS::TAG{'<!-- MERCHANT -->'} = $USERNAME;
 my $VERB = $ZOOVY::cgiv->{'ACTION'};
@@ -441,7 +439,7 @@ if ($VERB eq 'ADD-USER' || $VERB eq 'EDIT-USER') {
 		}
 
 	if ($VERB eq 'EDIT-USER') {
-		$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = qq~<td><input type="button" class="button" value=" Remove " onClick="document.location='index.cgi?ACTION=NUKE&LUSER=$UREF->{'LUSER'}&UID=$UREF->{'UID'}';"></td>~;		
+		$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = qq~<td><input type="button" class="button" value=" Remove " onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=NUKE&LUSER=$UREF->{'LUSER'}&UID=$UREF->{'UID'}');"></td>~;		
 		}
 	
 	$template_file = 'useredit.shtml';
@@ -466,10 +464,10 @@ if ($VERB eq '') {
 	foreach my $hashref (@ROWS) {
 		$c .= "<tr>";	
 		if ($hashref->{'UID'}==0) {
-			$c .= qq~<td><input type="button" class="button" value=" Edit " onClick="document.location='index.cgi?ACTION=ADMINEDIT&UID=$hashref->{'UID'}';"></td>~;
+			$c .= qq~<td><input type="button" class="button" value=" Edit " onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=ADMINEDIT&UID=$hashref->{'UID'}');"></td>~;
 			}
 		else {
-			$c .= qq~<td><input type="button" class="button" value=" Edit " onClick="document.location='index.cgi?ACTION=EDIT-USER&UID=$hashref->{'UID'}';"></td>~;
+			$c .= qq~<td><input type="button" class="button" value=" Edit " onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=EDIT-USER&UID=$hashref->{'UID'}');"></td>~;
 			}
 		$c .= "<td>$USERNAME*$hashref->{'LUSER'}</td>";
 		$c .= "<td>$hashref->{'FULLNAME'} / $hashref->{'JOBTITLE'}</td>";
@@ -497,7 +495,7 @@ if ($VERB eq '') {
 	$sth->execute();
 	while ( my $hashref = $sth->fetchrow_hashref() ) {
 		$c .= "<tr>";
-		$c .= "<td><input type='button' onClick=\"document.location='index.cgi?VERB=VIEW-DEVICE&hwaddr=$hashref->{'HWADDR'}';\" value='View'></td>";
+		$c .= "<td><input type='button' onClick=\"navigateTo('/biz/setup/usermgr/index.cgi?VERB=VIEW-DEVICE&hwaddr=$hashref->{'HWADDR'}');\" value='View'></td>";
 		$c .= "<td>$hashref->{'HWADDR'}</td>";
 		$c .= "<td>$hashref->{'NAME'}</td>";
 		$c .= "<td>$hashref->{'GEO'}</td>";
@@ -539,4 +537,5 @@ push @TABS, { name=>'User/Device Manager', link=>'/biz/setup/usermgr/index.cgi?V
 		{ name=>'User Manager' },	
 		],
 	);
+
 &DBINFO::db_zoovy_close();

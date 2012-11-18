@@ -1,9 +1,20 @@
-#!/usr/bin/perl -w
-use strict;
+#!/usr/bin/perl
 
+use strict;
 use POSIX qw (strftime);
 use Date::Parse;
 use YAML::Syck;
+use Data::Dumper;
+
+
+#if ($ENV{'HTTP_ORIGIN'} eq '') {
+#	## this is for JT
+#	}
+#elsif ($ENV{'HTTP_REFERER'} !~ /^https?\:\/\/.*?\/biz\/app\/(admin|index)\.html/) {
+#	print STDERR Dumper($ENV{'HTTP_REFERER'});
+#	print "Location: /biz/app/admin.html\n\n";
+#	exit;
+#	}
 
 use lib "/httpd/modules";
 require GTOOLS;
@@ -15,41 +26,10 @@ require ZWEBSITE;
 require TODO;
 require SUPPORT;
 
-&ZOOVY::init();
-&GTOOLS::init();
-
 require LUSER;
 
-#use Data::Dumper;
-#print STDERR Dumper(\%ENV,$ZOOVY::cgiv);
-
-my $LU = undef;
-my $ZJSID = $ZOOVY::cgiv->{'zjsid'};
-if (not defined $ZJSID) { $ZJSID = $ZOOVY::cgiv->{'_zjsid'}; }
-
-if (defined $ZJSID) {
-   ## if we receive a zjsid parameter, set the cookie to that.
-	# print STDERR "AUTH-SET-COOKIE: $ZJSID\n";
-	require AUTH;
-   &AUTH::set_zjsid_cookie($ZJSID);
-	($LU) = LUSER->authenticate(sendto=>"/biz",zjsid=>$ZJSID,nocache=>1,basic=>0);
-   }
-else {
-	print STDERR "NO AUTH-SET-COOKIE\n";
-	($LU) = LUSER->authenticate(sendto=>"/biz",nocache=>1,basic=>0);
-	}
-
-#if (not &ZOOVY::is_true($ENV{'HTTPS'})) {
-#	print "Location: https://www.zoovy.com/$ENV{'REQUEST_URI'}\n\n";
-#	exit;
-#	}
-
-
-if ((not defined $LU) || (ref($LU) ne 'LUSER')) {
-	print "Location: /login\n\n";
-	exit;
-	}
-
+my ($LU) = LUSER->authenticate();
+if (not defined $LU) { warn "Auth"; exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT,$RESELLER) = $LU->authinfo();
 if ($RESELLER eq '') { $RESELLER = 'ZOOVY'; }
@@ -57,36 +37,6 @@ if ($MID<=0) { exit; }
 my @ERRORTASKS = ();
 
 print STDERR "USERNAME:$USERNAME\n";
-
-if ($FLAGS =~ /,PKG=Z4FX,/) {
-	}
-elsif ($FLAGS =~ /,TRIAL,/) {
-	## ADMIN IS FINE FOR TRIALS.
-	my $dbh = &DBINFO::db_zoovy_connect();
-	my $pstmt = "select from_days(TO_DAYS(CREATED)+PERIOD),(TO_DAYS(CREATED)+PERIOD)-TO_DAYS(now()) from EXCEPTION_FLAGS where MID=$MID and FLAGS like '%TRIAL%' order by ID desc";
-	print STDERR $pstmt."\n";
-	my ($expires,$daysleft) = $dbh->selectrow_array($pstmt);
-	&DBINFO::db_zoovy_close();
-
-	$GTOOLS::TAG{'<!-- TRIAL_DAYSLEFT -->'} = $daysleft;
-
-	push @ERRORTASKS, {
-		TITLE=>"TRIAL ACCESS",
-		DETAIL=>qq~
-You are currently accessing the system via a free trial which will expire on $expires<br>
-<a href="https://www.zoovy.com/biz/configurator/index.cgi">Sign-up Online</a> or call: 877-966-8948
-~,
-		};
-	}
-else {
-
-
-	}
-
-
-if (not defined $FLAGS) { $FLAGS = ''; }
-if ($USERNAME eq '') { exit; }
-
 $GTOOLS::TAG{'<!-- MERCHANT -->'} = $USERNAME;
 $GTOOLS::TAG{'<!-- USERNAME -->'} = $LUSERNAME;
 
@@ -100,42 +50,11 @@ my ($cluster) = &ZOOVY::resolve_cluster($USERNAME);
 my $NOUN = ($LU->is_anycom())?'anyCommerce':'Zoovy';
 my $TITLE = "Logged in to $NOUN connected to server '$host' on cluster '$cluster'";
 
-if (index($FLAGS,',PKG=NOTLIVE,')>=0) {
-	push @ERRORTASKS, {
-		TITLE=>'CURRENT LICENSE: NOT LIVE',
-		DETAIL=>'This account is currently licensed as "NOT LIVE", please email Client Services (billing@zoovy.com) to activate prior to conducting any actual sales.',
-		};
-	$template_file = 'index.shtml'; $TITLE = "Not Live (host:$host cluster:$cluster)";
-	}
-elsif (index($FLAGS,',LOCKOUT,')>=0) {
-	$template_file = 'index-lockout.shtml'; $TITLE = 'Account Locked';
-	$VERB = 'LOCKOUT';
-	}
-elsif (index($FLAGS,',DISABLE,')>=0) {
-	$template_file = 'index-disable.shtml'; $TITLE = 'Disable';
-	$VERB = 'DISABLE';
-	}
-#elsif (index($FLAGS,',BASIC,')<=-1) {
-#	
-#	if ($VERB ne 'TRIAL-EXTENSION') {
-#		$VERB = 'EXPIRED-TRIAL';
-#		$template_file = 'expired.shtml'; $TITLE = 'Expired Trial';
-#		}
-#	else {
-#		require ZACCOUNT;
-#		&ZACCOUNT::create_exception_flags($USERNAME,"TRIAL,BASIC",1,'EXTENSION');
-#		$VERB = '';
-#		require ZMAIL;
-#		&ZMAIL::sendmail($USERNAME,"mitchf\@zoovy.com","Trial Extension: $USERNAME","Trial extension: $USERNAME");
-#		}
-#	}
-
 my $todo = TODO->new($USERNAME,LUSER=>$LUSERNAME);
 if ($VERB eq 'DISMISS') {
 	$todo->delete(int($ZOOVY::cgiv->{'ID'}));
 	$VERB = '';
 	}
-
 
 if ($VERB eq 'DISABLE-TODO') {
 	$LU->set('todo.setup',0);
@@ -150,31 +69,6 @@ if ($VERB eq 'DISABLE-TODO-TASK') {
 	}
 
 
-if ($VERB eq 'ADD-SERIES') {
-	require TODO::SETUP;
-	my ($count) = 0;
-	my @MSGS = ();
-	foreach my $param (keys %{$ZOOVY::cgiv}) {
-		if ($param =~ /^SERIES:(.*?)$/) {
-			my ($success,$msg) = TODO::SETUP::add_series($LU,"series_$1",$todo);
-			if ($success) {
-				push @MSGS, "success|Success ... $msg to your Setup Tasks";
-				}
-			else {
-				push @MSGS, "alert|Error ... $msg";
-				}
-			}
-		}
-
-	if (scalar(@MSGS)==0) {
-		push @MSGS, "alert|Could not find any training sets to add";
-		}
-	foreach my $msg (@MSGS) {
-		my ($class,$msg) = split(/\|/,$msg,2);
-		$GTOOLS::TAG{'<!-- MESSAGES -->'} .= "<div class='$class'>$msg</div><br>";
-		}
-	$VERB = 'TODO';
-	}
 
 if ($VERB eq '') { 
 	$VERB = 'NEWS'; 
@@ -541,6 +435,8 @@ if (($VERB eq 'NEWS') || ($VERB eq 'WELCOME')) {
 	}
 
 
+my @MSGS = ();
+
 ##
 ##
 ##
@@ -598,8 +494,6 @@ if ($VERB eq 'NEWS') {
 You should go to Setup / User Manager and create unique logins for each person who has access to this account.~,
 			};
 		}
-
-
 
 
 	$GTOOLS::TAG{'<!-- RSS_SECUREKEY -->'} = &ZTOOLKIT::SECUREKEY::gen_key($USERNAME,'RS');
@@ -718,6 +612,7 @@ pageTracker._trackPageview();
 &GTOOLS::output(
 	header=>1,
 	bc=>\@BC,
+	'msgs'=>\@MSGS,
 	tabs=>\@TABS,
 	head=>$HEAD,
 	title=>$TITLE,
@@ -728,3 +623,4 @@ pageTracker._trackPageview();
 	);
 
 exit();
+

@@ -6,30 +6,7 @@
 <div>
 <table class="zoovytable" width=600>
 <tr class="zoovytableheader">
-	<td>Upload File</td>
-</tr>
-<tr>
-	<td>
-<form action="index.cgi" method='post' enctype='multipart/form-data'>
-<input type="hidden" name="VERB" value="PROJECT-UPLOAD">
-<input type="hidden" name="ID" value="<!-- ID -->">
-<input type="file" name="upfile">
-<input type="submit" value=" Upload ">
-</form>
-<div class="hint">
-Individual files will be uploaded to the root directory, otherwise upload a zip file with directories.
-</div>
-	</td>
-</tr>
-</table>
-</div>
-<br>
-<br>
-
-<div>
-<table class="zoovytable" width=600>
-<tr class="zoovytableheader">
-	<td colspan=4>Existing Files</td>
+	<td colspan=4>Files in Project</td>
 </tr>
 <tr class="zoovysub1header">
 	<td>DIR</td>

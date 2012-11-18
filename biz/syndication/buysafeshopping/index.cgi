@@ -121,11 +121,11 @@ if ($VERB eq '') {
 		$c .= "<tr>";
 		my ($s) = SYNDICATION->new($USERNAME,$PROFILE,'BSS');
 		
-		my $link = "<a href=\"index.cgi?VERB=EDIT&PROFILE=$PROFILE\">EDIT</a>";
+		my $link = "<a href=\"/biz/syndication/buysafeshopping/index.cgi?VERB=EDIT&PROFILE=$PROFILE\">EDIT</a>";
 		my $status = '';
 		if (($s->get('.bsstoken') ne $TOKEN) || (not $s->get('IS_ACTIVE'))) {
 			$status = "Not Enabled";
-			$link = "<a href=\"index.cgi?VERB=ENABLE&PROFILE=$PROFILE&TOKEN=$TOKEN&DOMAIN=$DOMAIN\">ENABLE</a>";
+			$link = "<a href=\"/biz/syndication/buysafeshopping/index.cgi?VERB=ENABLE&PROFILE=$PROFILE&TOKEN=$TOKEN&DOMAIN=$DOMAIN\">ENABLE</a>";
 			}
 		else {
 			$status = $s->statustxt();
@@ -152,7 +152,7 @@ if ($VERB eq '') {
 #	my $cnt = 0;
 #	foreach my $ns (sort keys %{$profref}) {
 #		my $class = ($cnt++%2)?'r0':'r1';
-#		$c .= "<tr><td class=\"$class\"><b>$ns =&gt; $profref->{$ns} (<a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>)</td></tr>";		
+#		$c .= "<tr><td class=\"$class\"><b>$ns =&gt; $profref->{$ns} (<a href=\"/biz/syndication/buysafeshopping/index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>)</td></tr>";		
 #		my ($s) = SYNDICATION->new($USERNAME,$ns,'BSS');
 #		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td></tr>";
 #		}
@@ -162,8 +162,8 @@ if ($VERB eq '') {
 
 
 if ($PROFILE ne '') {
-	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
-	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'/biz/syndication/buysafeshopping/index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'/biz/syndication/buysafeshopping/index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
 	push @BC, { name=>'Profile: '.$PROFILE };
 	push @BC, { name=>($VERB eq 'EDIT')?'Config':'Categories' };
 	}

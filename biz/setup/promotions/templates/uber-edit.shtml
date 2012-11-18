@@ -75,7 +75,7 @@ ITEM Matching rules: extended total (qty * price) <br>
 <tr>
 	<td valign='top'><b>Image:</b></td>
 	<td>
-	<a href="#" onClick="openWindow('/biz/setup/media/popup.cgi?mode=promo&promo=<!-- ID -->');">
+	<a href="#" onClick="mediaLibrary($('#IMAGE'), $('#THUMBURL'),'mode=promo&promo=<!-- ID -->','Choose Promo Thumbnail');">
 	<img id="THUMBURL" name="THUMBURL" height=50 width=50 border=0 src="<!-- THUMBURL -->"><br>[ Edit ]</a> 
 	<input type="hidden" name="IMAGE" value="<!-- IMAGE -->"> (for use with image carts)</td>
 </tr>
@@ -85,8 +85,8 @@ ITEM Matching rules: extended total (qty * price) <br>
 <center>
 <table>
 <tr>
-<td><input border='0' type="image" src="/images/bizbuttons/save.gif"></td>
-<td><a href="index.cgi?VERB=UBER"><img border="0" src="/images/bizbuttons/cancel.gif"></a></td>
+<td><input type="submit" class="button" value=" Save "></td> 
+<td><button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=UBER');">Cancel</button></td>
 <!-- DELETE_BUTTON -->
 </tr>
 </table>

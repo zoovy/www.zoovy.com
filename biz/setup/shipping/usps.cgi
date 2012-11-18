@@ -6,22 +6,18 @@ require GTOOLS;
 require ZOOVY;
 require ZWEBSITE;
 require LUSER;
+
 my ($LU) = LUSER->authenticate(flags=>'_S&8');
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
-
-
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_S&8');
-if ($USERNAME eq '') { exit; }
-
 if ($FLAGS =~ /L2/) { $FLAGS .= ',BASIC,'; }
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'US Postal Service' };
 
 

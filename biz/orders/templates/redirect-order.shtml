@@ -1,8 +1,0 @@
-<body onLoad="redirFrm.submit();">
-<form name="redirFrm" id="redirFrm" target="_top" action='index.cgi'>
-<input type="hidden" name="VERB" value="LOAD-ORDER">
-<input type="hidden" name="ID" value="<!-- ORDERID -->">
-Loading <!-- ORDERID -->..
-</form>
-
-</body>

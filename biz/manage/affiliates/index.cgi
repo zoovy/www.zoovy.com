@@ -87,7 +87,7 @@ if ($VERB eq '') {
 
 		if ($PROGRAM_COUNTS{ $hashref->{'ID'} }==0) {
 			## only show delete if no participants.
-			$c .= qq~<a href="index.cgi?VERB=PACKAGE-NUKE&ID=$hashref->{'ID'}">[Delete]</a>~;
+			$c .= qq~<a href="/biz/manage/affiliates/index.cgi?VERB=PACKAGE-NUKE&ID=$hashref->{'ID'}">[Delete]</a>~;
 			}
 
 		$c .= "</td>";
@@ -141,9 +141,9 @@ $c
 	}
 
 my @TABS = ();
-push @TABS, { name=>'Current Programs', link=>"index.cgi", selected=>(($VERB eq '')?1:0) };
-push @TABS, { name=>'New Program', link=>"index.cgi?VERB=PACKAGE-NEW", selected=>(($VERB eq 'PACKAGE-NEW')?1:0) };
-push @TABS, { name=>'Enroll Affiliates', link=>"index.cgi?VERB=ENROLL", selected=>(($VERB eq 'ENROLL')?1:0) };
+push @TABS, { name=>'Current Programs', link=>"/biz/manage/affiliates/index.cgi", selected=>(($VERB eq '')?1:0) };
+push @TABS, { name=>'New Program', link=>"/biz/manage/affiliates/index.cgi?VERB=PACKAGE-NEW", selected=>(($VERB eq 'PACKAGE-NEW')?1:0) };
+push @TABS, { name=>'Enroll Affiliates', link=>"/biz/manage/affiliates/index.cgi?VERB=ENROLL", selected=>(($VERB eq 'ENROLL')?1:0) };
 
 &DBINFO::db_user_close();
 &GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS);

@@ -8,6 +8,7 @@ require WHOLESALE;
 use strict;
 
 require LUSER;
+
 my ($LU) = LUSER->authenticate(flags=>'_S&8');
 if (not defined $LU) { exit; }
 
@@ -17,9 +18,10 @@ if ($MID<=0) { exit; }
 my $q = new CGI;
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 
+my @MSGS = ();
 
 my $THIS = $q->param('THIS');
 my $ACTION = '';
@@ -55,7 +57,7 @@ else {
 			## rules can run .. iz okay!
 			}
 		else {
-			$GTOOLS::TAG{'<!-- WARNING -->'} = "<font color='red'>Warning: UPS Rule processing is currently disabled. To enable rule processing return the UPS Online Tools Setup area.</font>";
+			push @MSGS, "WARN|+UPS Rule processing is currently disabled. To enable rule processing return the UPS Online Tools Setup area.";
 			}
 		}
 
@@ -146,8 +148,7 @@ if ($ACTION eq "EDIT") {
 			$GTOOLS::TAG{"<!-- SCHEDULES -->"} .= "<option ".(($hash{'SCHEDULE'} eq $s)?'selected':'')." value=\"$s\">$s</option>";
       	}
 		if ($hash{'SCHEDULE'} eq '*') {
-			$GTOOLS::TAG{'<!-- SCHEDULE_WARNING -->'} = qq~<div class="warning">
-NOTE: the "Any" setting requires a schedule be set.<br>
+			push @MSGS, qq~WARN|+NOTE: the 'Any' setting requires a schedule be set.\n\n
 If no schedule is set the rule will be ignored/skipped.<br>
 The Match_All is provided as a convenience shortcut rule for stores that have many pricing schedules, <br>
 but desire to have only one set of rules for all schedules.<br>
@@ -260,10 +261,10 @@ elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTEARLY(\.[\d]+)?$/) { $method = 'FedEx'
 elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTNOON(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Next Noon'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
 elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_2DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International 2 Day'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
 elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_GROUND(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Ground'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FIXED_SINGLE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Single Item'; $script = 'legacyfixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-FIXED_MULTI(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Multi Item'; $script = 'legacyfixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-FIXED_COMBO(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Combo Item'; $script = 'legacyfixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-FIXED_STORE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Store Only'; $script = 'legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_SINGLE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Single Item'; $script = 'legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_MULTI(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Multi Item'; $script = 'legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_COMBO(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Combo Item'; $script = 'legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_STORE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Store Only'; $script = 'legacyfixed.cgi'; }
 elsif ($METHOD =~ /^SHIP-HANDLING(\.[\d]+)?$/) { $method = 'Handling'; $desc = 'General'; $script = 'handling.cgi'; }
 elsif ($METHOD =~ /^SHIP-INSURANCE(\.[\d]+)?$/) { $method = 'Insurance'; $desc = 'General'; $script = 'insurance.cgi'; }
 elsif ($METHOD =~ /^SHIP-PRICE_DOM(\.[\d]+)?$/) { $method = 'Price Based'; $desc = 'Domestic'; $script = 'price.cgi'; }
@@ -375,6 +376,7 @@ $template_file = "rulebuilder.shtml";
 	help=>"#50339",
 	file=>$template_file,
 	jquery=>1,
+	msgs=>\@MSGS,
 	header=>1,
 	bc=>\@BC);
 

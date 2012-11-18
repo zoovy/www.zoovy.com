@@ -36,7 +36,6 @@ my @TABS = ();
 my @MSGS = ();
 
 my @BC = ();
-my @MSGS = ();
 use strict;
 push @BC, {title=>'Support' };
 
@@ -477,20 +476,18 @@ if ($VERB eq 'APPT-CONFIRM') {
 
 	if ($ZOOVY::cgiv->{'sameday'} eq '') {
 		$VERB = 'APPT-CREATE';
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must accept the same day appointment terms.';
+		push @MSGS, 'ERROR|+You must accept the same day appointment terms.';
 		}
 	elsif ($ZOOVY::cgiv->{'phone1'} eq '') {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must have a phone number!';
+		push @MSGS, "ERROR|+ERROR: You must have a phone number!";
 		$VERB = 'APPT-CREATE';
 		}
 	elsif ($count>0) {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: Appointment already scheduled.';
-		&GTOOLS::print_form('','error.shtml',1);
-		exit;
+		push @MSGS, 'ERROR|+Appointment already scheduled.';
 		}
 	elsif ( length($ZOOVY::cgiv->{'TOPIC'})<10 ) {
 		$VERB = 'APPT-CREATE';
-		$GTOOLS::TAG{'<!-- ERROR -->'} = 'ERROR: You must specify a topic of at least 10 characters';
+		push @MSGS, 'ERROR|+You must specify a topic of at least 10 characters';
 		}
 	else {
 
@@ -1481,7 +1478,7 @@ understand what is an acceptable use of this service:
 <ul>
 <li> If you got an Internal Server Error on a critical service - Acceptable Use, Free. Please let us know right now. 
 <li> When the home page or category is not loading (or corrupt), or cart is not letting items be added, or all customers in US cannot checkout - Acceptable Use, free (assuming it's not a blatant configuration issue)
-<li> An employee ran a batch job which just created your store with no backup - Acceptable Use, it will be billable, but getting back online is probably more important. 
+<li> An employee ran a batch job which just cratered your store with no backup - Acceptable Use, it will be billable, but getting back online is probably more important. 
 <li> You need to get new amazing XYZ service working because it will increase sales by 1000% - Unacceptable. it will be a $500 minimum fee, warning, possible sanctions.
 <li> You have a radio/tv/media campaign going live in 1 hour and a coupon isn't working - Acceptable.  Billable, $500 minimum fee, warning, possible future sanctions for repeated abuse. (A lack of planning on your part is NOT an emergency on ours)
 <li> You're angry about another (already known) ticket/issue and you want to let us know what a crappy job you think we're doing - Unacceptable. $500 minimum fee, warning or 1 year ban from high priority tickets, or potential account termination.
@@ -1782,11 +1779,11 @@ if ($VERB eq 'CALLBACK-SAVE') {
 
 	my $errors = 0;
 	if (length($phone1)<10) {
-		$GTOOLS::TAG{'<!-- PHONE1_ERROR -->'} = '<font color="red"><br>Phone number is required</font>';
+		push @MSGS, 'ERROR|+Phone number is required';
 		$errors++;
 		}
 	if (length($contact)<5) {
-		$GTOOLS::TAG{'<!-- CONTACT_ERROR -->'} = '<font color="red"><br>Contact name is required</font>';
+		push @MSGS, 'ERROR|+Contact name is required';
 		$errors++;
 		}
 
@@ -1847,7 +1844,7 @@ if ($VERB eq 'CALLBACK-SAVE') {
 		$VERB = '';
 		}
 	else {	
-		$GTOOLS::TAG{'<!-- ERRORS -->'} = "Something bad happened";
+		push @MSGS, "ERROR|+Something bad happened";
 		$VERB = 'CALLBACK';
 		}
 	}
@@ -1960,7 +1957,7 @@ if (($VERB eq '') || ($VERB eq 'REPORT-ACTIVE') || ($VERB eq 'REPORT-HISTORY') |
 		$c .= qq~
 		<table border='0' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td class="zoovysub1header"><input type='button' class='button' value='Edit' onClick="document.location='index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'ID'}';"> #$hashref->{'ID'}: $hashref->{'SUBJECT'}</a></td>
+			<td class="zoovysub1header"><input type='button' class='button' value='Edit' onClick="navigateTo('index.cgi?VERB=TICKET-VIEW&ID=$hashref->{'ID'}');"> #$hashref->{'ID'}: $hashref->{'SUBJECT'}</a></td>
 			<td valign=top align=right class="zoovysub1header"></td>
 		</tr>
 		<tr>

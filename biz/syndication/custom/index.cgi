@@ -88,7 +88,7 @@ if ($VERB eq '') {
 
 		my $class = ($cnt++%2)?'r0':'r1';
 		$c .= "<tr>";
-		$c .= "<td valign=top class=\"$class\"><a href='index.cgi?VERB=DELETE&ID=$id'>[DEL]</a></td>";		
+		$c .= "<td valign=top class=\"$class\"><a href='/biz/syndication/custom/index.cgi?VERB=DELETE&ID=$id'>[DEL]</a></td>";		
 		$c .= "<td valign=top class=\"$class\">$id</td>";		
 		$c .= "<td valign=top class=\"$class\">";
 		$c .= "<b>$title</b><br>MAP: $map<br>URL: $url<br>";
@@ -104,8 +104,8 @@ if ($VERB eq '') {
 
 
 if ($PROFILE ne '') {
-	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
-#	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'/biz/syndication/custom/index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
+#	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'/biz/syndication/custom/index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
 	push @BC, { name=>'Profile: '.$PROFILE };
 #	push @BC, { name=>($VERB eq 'EDIT')?'Config':'Categories' };
 	}

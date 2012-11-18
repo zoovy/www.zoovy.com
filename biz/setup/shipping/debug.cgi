@@ -14,8 +14,8 @@ use Data::Dumper;
 my @MSGS = ();
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Debugger' };
 
 my %FONTS = (
@@ -177,6 +177,12 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'DEBUG') {
 				}
 			elsif ($type eq 'SUBTITLE') { 
 				$style = 'font-size: 10pt; background-color: #FFB300; border: thin dashed; font-weight: normal; color: #444444;'; 
+				}
+			elsif (($type eq 'API-REQUEST') || ($type eq 'API-RESPONSE')) {
+				## API-REQUEST
+				## API-RESPONSE
+				$style = "font-size: 8px; border: thin dashed; font-weight: normal; color: #666699;";
+				$d->{'+'} = &ZOOVY::incode( $d->{'+'} );
 				}
 			else {
 				}

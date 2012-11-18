@@ -1,7 +1,7 @@
 <!-- HIDDEN_TABS -->
 
 <div align="center">
-<form name="topFrm" method="post" action="index.cgi" style="margin: 0px;">
+<form id="topFrm" name="topFrm" method="post" action="index.cgi" style="margin: 0px;">
 <input type="hidden" name="CID" value="<!-- CID -->">
 <input type='hidden' name="VERB" value='SAVE'>
 
@@ -41,9 +41,9 @@ Subject: <input type="textbox" size="80" maxlength="100" name="MSGSUBJECT"><br>
 <textarea rows=5 cols=60 name="MSGBODY"></textarea><br>
 
 <center>
-<input class="button2" type="button" onClick="topFrm.VERB.value='EMAIL-SEND'; topFrm.submit(); " value=" Send ">
+<button class="button2" type="button" onClick="jQuery('#VERB').val('EMAIL-SEND'); jQuery('#topFrm').submit(); ">Send</button>
 &nbsp;
-<input class="button2" type="button" onClick="topFrm.VERB.value='EDIT'; topFrm.submit();" value=" Back ">
+<button class="button2" type="button" onClick="jQuery('#VERB').val('EDIT'); jQuery('#topFrm').submit();">Back</button>
 </center>
 <br>
 </td>

@@ -19,16 +19,11 @@ my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2
 if ($USERNAME eq '') { exit; }
 $GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
 
-if (index($FLAGS,',WEB,')==-1 ) {
-	$GTOOLS::TAG{'<!-- FLAGS -->'} = $FLAGS;
-	print "Content-type: text/html\n\n";
-	&GTOOLS::print_form('','deny.shtml');
-	exit;
-	}
 
 my $q = new CGI;
 my $ACTION = $q->param('ACTION');
 my $FORMAT = $q->param('FORMAT');
+
 
 my $SUBTYPE = 'P';
 
@@ -40,13 +35,17 @@ my $header = 1;
 
 
 my @TABS = ();
-push @TABS, { name=>'Help', link=>'index.cgi', };
+push @TABS, { name=>'Help', link=>'/biz/setup/toxml/chooser.cgi', };
 
 my @BC = ();
-push @BC, 	{ name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      	 	{ name=>'Custom Page Wizard',link=>'http://www.zoovy.com/biz/setup/toxml','target'=>'_top', };
+push @BC, 	{ name=>'Setup',link=>'/biz/setup','target'=>'_top', },
+      	 	{ name=>'Custom Page Wizard',link=>'/biz/setup/toxml','target'=>'_top', };
 
 
+if (index($FLAGS,',WEB,')==-1 ) {
+	$ACTION = 'DENY';
+	$template_file = 'deny.shtml';
+	}
 
 if ($ACTION eq '') {
 	my $c = '';

@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+
 use strict;
 use lib "/httpd/modules";
 use ZOOVY;
@@ -24,8 +25,8 @@ my $HANDLER = ''; ## FIXED, WEIGHT, PRICE, PICKUP, SIMPLE
 my $HELP = '';
 my $template_file = 'universal.shtml';
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping/index.cgi','target'=>'_top', };
 
 #          {
 #            'country' => 'US',
@@ -357,12 +358,12 @@ if (($VERB eq 'EDIT') || ($VERB eq 'SAVE')) {
 			$c .= "<tr>";
 			$c .= "<td class='$row'>$counter</td><td class='A'>";
 			# Print the UP arrow
-			if ($counter>0) { $c .= "<a href='rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+			if ($counter>0) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 			$c .= '&nbsp;';
 			# Print the DOWN arrow
-			if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+			if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 			$c .= '&nbsp;';
-			$c .= "<a href='rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='images/change.gif'></a>";
+			$c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='images/change.gif'></a>";
 			$c .= "</td><td class='A'>".$MATCH."</td>";
 			$c .= "<td class='$row'>".$rulehash->{'FILTER'}."</td>";
 			$c .= "<td class='$row'>".$EXEC."</td>";
@@ -377,7 +378,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'SAVE')) {
 		}
 
 	if ($FLAGS =~ /,SHIP,/)  {
-		$c .= qq~<tr><td colspan=7 bgcolor='FFFFFF'><a href="rulebuilder.cgi?ACTION=APPEND&method=$METHOD&id=0">[Add Rule]</a></td></tr>~;
+		$c .= qq~<tr><td colspan=7 bgcolor='FFFFFF'><a href="/biz/setup/shipping/rulebuilder.cgi?ACTION=APPEND&method=$METHOD&id=0">[Add Rule]</a></td></tr>~;
 		}
 	else {
 		$c .= qq~<tr><td colspan=7 bgcolor='FFFFFF'>WARNING: Shipping Bundle not enabled, rules may not work after next system upgrade.</td></tr>~;

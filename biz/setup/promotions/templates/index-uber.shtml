@@ -41,7 +41,7 @@
 			<!-- EXISTING_RULES -->
 			</table>
 			<br>
-			<input type="button" class="button showLoadingModal" value=" Add New " onClick="document.location='index.cgi?VERB=UBER-EDIT&THIS=-1&METHOD=<!-- METHOD -->';">
+			<input type="button" class="button showLoadingModal" value=" Add New " onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=UBER-EDIT&THIS=-1&METHOD=<!-- METHOD -->');">
 		</td>
 	</tr>
 </table>

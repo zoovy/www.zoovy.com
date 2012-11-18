@@ -32,7 +32,7 @@
 <tr><td>
 <input type="submit" value=" Save " class="button">
 </td><td>
-<input type="button" value=" Exit " class="button" onClick="document.location='index.cgi';">
+<input type="button" value=" Exit " class="button" onClick="navigateTo('/biz/syndication/index.cgi');">
 </td></tr>
 </table>
 </center>

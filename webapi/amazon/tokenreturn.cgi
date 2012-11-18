@@ -34,14 +34,15 @@ if ($ERROR) {
 	print "ERROR: $ERROR\n";
 	}
 else {
-	my ($webdb) = &ZWEBSITE::fetch_website_dbref($LU->username(),$REQPRT);
-	$webdb->{'amz_token'} = "marketplaceId=$mktId&merchantId=$amzId";
-	&ZWEBSITE::save_website_dbref($LU->username(),$webdb,$REQPRT);
+#	my ($webdb) = &ZWEBSITE::fetch_website_dbref($LU->username(),$REQPRT);
+#	$webdb->{'amz_token'} = "marketplaceId=$mktId&merchantId=$amzId";
+#	&ZWEBSITE::save_website_dbref($LU->username(),$webdb,$REQPRT);
 
 	require SYNDICATION;
 	my ($so) = SYNDICATION->new($LU->username(),"#$REQPRT","AMZ");
-	$so->set('aws_mktid',$mktId);
-	$so->set('aws_mid',$amzId);
+	$so->set('.aws_mktid',$mktId);
+	$so->set('.aws_mid',$amzId);
+	$so->set('.amz_token',"marketplaceId=$mktId&merchantId=$amzId");
 	$so->save();
 
 	print "Location: https://www.zoovy.com/biz/syndication/amazon\n\n";

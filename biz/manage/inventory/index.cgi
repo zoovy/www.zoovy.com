@@ -147,7 +147,7 @@ if ($VERB eq 'UPDATE' || $VERB eq '') {
    <td><input type="textbox" name="location" value=$ZOOVY::cgiv->{'location'}></td>~;
 
 	
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "index.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/inventory/index.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "DISPLAY";
 	
 
@@ -156,7 +156,7 @@ if ($VERB eq 'UPDATE' || $VERB eq '') {
 	}
 ## DISPLAY
 else {
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "index.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/inventory/index.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "UPDATE";
 	}
 
@@ -171,9 +171,9 @@ if ($output ne '') {
 $GTOOLS::TAG{'<!-- OUTPUT -->'} = $output; 
 
 my @TABS = ();
-push @TABS, { name=>"Welcome", link=>"index.cgi?VERB=", selected=>($VERB eq '')?1:0, };
-push @TABS, { name=>"Cycle Count", link=>"index.cgi?VERB=CYCLECOUNT", selected=>($VERB eq 'SUBSCRIBER-LISTS')?1:0, };
-push @TABS, { name=>"Update", link=>"index.cgi?VERB=Update", selected=>($VERB eq 'CAMPAIGNS')?1:0, };
+push @TABS, { name=>"Welcome", link=>"/biz/manage/inventory/index.cgi?VERB=", selected=>($VERB eq '')?1:0, };
+push @TABS, { name=>"Cycle Count", link=>"/biz/manage/inventory/index.cgi?VERB=CYCLECOUNT", selected=>($VERB eq 'SUBSCRIBER-LISTS')?1:0, };
+push @TABS, { name=>"Update", link=>"/biz/manage/inventory/index.cgi?VERB=Update", selected=>($VERB eq 'CAMPAIGNS')?1:0, };
 
 &GTOOLS::output(file=>'index.shtml',
 	tabs=>\@TABS,

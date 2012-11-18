@@ -14,8 +14,8 @@ use Data::Dumper;
 my @MSGS = ();
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Debugger' };
 
 my %FONTS = (
@@ -96,8 +96,8 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'DEBUG') {
 			my $variations = STUFF2::variation_suggestions_to_selections($suggested_variations);
 			$SITE::CART2->stuff2()->cram( $STID, $QTY, $variations, '*P'=>$P, '*LM'=>$lm );
 			}	
-		$SITE::CART2->in_set('ship/zip', $ZOOVY::cgiv->{'ZIP'});
-		$SITE::CART2->in_set('ship/state', $ZOOVY::cgiv->{'STATE'});
+		$SITE::CART2->in_set('ship/postal', $ZOOVY::cgiv->{'ZIP'});
+		$SITE::CART2->in_set('ship/region', $ZOOVY::cgiv->{'STATE'});
 		}
 	elsif ($SRC eq 'CART') {
 		## USE AN EXISTING CART
@@ -177,6 +177,12 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'DEBUG') {
 				}
 			elsif ($type eq 'SUBTITLE') { 
 				$style = 'font-size: 10pt; background-color: #FFB300; border: thin dashed; font-weight: normal; color: #444444;'; 
+				}
+			elsif (($type eq 'API-REQUEST') || ($type eq 'API-RESPONSE')) {
+				## API-REQUEST
+				## API-RESPONSE
+				$style = "font-size: 8pt; font-weight: normal; color: #Ef3077;";
+				$d->{'+'} = &ZOOVY::incode( $d->{'+'} );
 				}
 			else {
 				}

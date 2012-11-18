@@ -24,7 +24,7 @@ Checkout/Conversion HTML Code (Step4):
 <br>
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';"
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');"
 value=" Back ">
 
 <br>

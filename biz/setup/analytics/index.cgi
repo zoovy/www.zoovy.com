@@ -305,20 +305,21 @@ if ($VERB eq 'GOOGAPI') {
 	}
 
 
-if ($VERB eq 'RM-SAVE') {
-	$NSREF->{'razormo:chkoutjs'} = $ZOOVY::cgiv->{'checkout_code'};
-	&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$NSREF);
-	$VERB = 'RM';
-	}
-
-if ($VERB eq 'RM') {
-	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'razormo:chkoutjs'});
-	if ($NSREF->{'razormo:chkoutjs'} =~ /http:/) {
-		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
-		}
-	$template_file = 'rm.shtml';
-	push @BC, { name=>'RazorMouth' };	
-	}
+#if ($VERB eq 'RM-SAVE') {
+#	$NSREF->{'razormo:chkoutjs'} = $ZOOVY::cgiv->{'checkout_code'};
+#	&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$NSREF);
+#	$VERB = 'RM';
+#	}
+#
+#if ($VERB eq 'RM') {
+#	push @BC, { name=>'RazorMouth' };	
+#	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'razormo:chkoutjs'});
+#	if ($NSREF->{'razormo:chkoutjs'} =~ /http:/) {
+#		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
+#		}
+#	$template_file = 'rm.shtml';
+#	push @BC, { name=>'RazorMouth' };	
+#	}
 
 
 ##
@@ -687,6 +688,8 @@ if ($VERB eq 'GOOGLEWMT') {
 	$template_file = 'googlewmt.shtml';
 	$help = "#50596";
 
+	push @BC, { name=>'Google Webmaster' };	
+
 	$GTOOLS::TAG{'<!-- TS -->'} = time();
 	$GTOOLS::TAG{'<!-- NS -->'} = $PROFILE;
 	my $out = '';
@@ -782,6 +785,8 @@ if ($VERB eq 'SAVE-YAHOOWMT') {
 if ($VERB eq 'YAHOOWMT') {
 	$template_file = 'yahoowmt.shtml';
 	$help = "#50596";
+
+	push @BC, { name=>'Yahoo Webmaster' };	
 
 	$GTOOLS::TAG{'<!-- TS -->'} = time();
 	$GTOOLS::TAG{'<!-- NS -->'} = $PROFILE;
@@ -1107,6 +1112,7 @@ if ($VERB eq 'WISHPOT') {
 
 
 if ($VERB eq 'VERUTA') {
+	push @BC, { name=>'Veruta' };	
 	$template_file = 'veruta.shtml';
 	}
 
@@ -1125,6 +1131,7 @@ if ($VERB eq 'FETCHBACK-SAVE') {
 	}
 
 if ($VERB eq 'FETCHBACK') {
+	push @BC, { name=>'Fetchback' };	
 	$GTOOLS::TAG{'<!-- LOGINJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:loginjs'});
 	$GTOOLS::TAG{'<!-- CHKOUTJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:chkoutjs'});
 	$GTOOLS::TAG{'<!-- CARTJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:cartjs'});
@@ -1380,6 +1387,7 @@ if ($VERB eq 'PRICEGRABBER') {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
 		}
 	$template_file = 'pricegrabber.shtml';
+	push @BC, { name=>'PriceGrabber' };	
 	}
 
 ##
@@ -1394,6 +1402,8 @@ if ($VERB eq 'CJ-SAVE') {
 	}
 
 if ($VERB eq 'CJ') {
+
+	push @BC, { name=>'Commission Junction' };	
 	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'cj:chkoutjs'});
 	if ($NSREF->{'cj:chkoutjs'} =~ /http:/) {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
@@ -1415,6 +1425,8 @@ if ($VERB eq 'OMNISTAR-SAVE') {
 	}
 
 if ($VERB eq 'OMNISTAR') {
+
+	push @BC, { name=>'Omnistar' };	
 	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'omnistar:chkoutjs'});
 	if ($NSREF->{'omnistar:chkoutjs'} =~ /http:/) {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
@@ -1778,54 +1790,54 @@ if ($VERB eq '') {
 		$c .= "<tr><td width=20 class=\"$class\">&nbsp;</td>";
 		$c .= "<td width=260 valign=top class=\"$class\">";
 		$c .= "<br><b>Trust &amp; Seals:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=GOOGLETS&PROFILE=$ns\">Google Trusted Stores</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLETS&PROFILE=$ns\">Google Trusted Stores</a><br>";
 		$c .= "<br><b>SiteMap/Analytics:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=GOOGLEAN&PROFILE=$ns\">Google Analytics</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=GOOGLEWMT&PROFILE=$ns\">Google Webmaster/SiteMap</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=BINGWMT&PROFILE=$ns\">Bing Webmaster/SiteMap</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=YAHOOWMT&PROFILE=$ns\">Yahoo Site Explorer</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLEAN&PROFILE=$ns\">Google Analytics</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLEWMT&PROFILE=$ns\">Google Webmaster/SiteMap</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=BINGWMT&PROFILE=$ns\">Bing Webmaster/SiteMap</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=YAHOOWMT&PROFILE=$ns\">Yahoo Site Explorer</a><br>";
 		$c .= "<br><b>Affiliate Programs:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=SAS&PROFILE=$ns\">Share-A-Sale</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=OMNISTAR&PROFILE=$ns\">Omnistar</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=CJ&PROFILE=$ns\">Commission Junction</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=RM&PROFILE=$ns\">RazorMouth</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=KOWABUNGA&PROFILE=$ns\">MyAffiliateProgram/MyAP/KowaBunga!</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=LINKSHARE&PROFILE=$ns\">Linkshare.com</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=SAS&PROFILE=$ns\">Share-A-Sale</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=OMNISTAR&PROFILE=$ns\">Omnistar</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=CJ&PROFILE=$ns\">Commission Junction</a><br>";
+		# $c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=RM&PROFILE=$ns\">RazorMouth</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=KOWABUNGA&PROFILE=$ns\">MyAffiliateProgram/MyAP/KowaBunga!</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=LINKSHARE&PROFILE=$ns\">Linkshare.com</a><br>";
 
 		$c .= "<br></td><td width=260 valign=top class=\"$class\">";
 		$c .= "<br><b>Remarketing:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=VERUTA&PROFILE=$ns\">Veruta</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=FETCHBACK&PROFILE=$ns\">FetchBack</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=VERUTA&PROFILE=$ns\">Veruta</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=FETCHBACK&PROFILE=$ns\">FetchBack</a><br>";
 		$c .= "<br><b>ROI Tracking:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=GOOGLEAW&PROFILE=$ns\">Google Adwords</a><br>";
-		# $c .= "- <a href=\"index.cgi?VERB=YAHOO&PROFILE=$ns\">Yahoo Shopping / CPC</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=SHOPCOM&PROFILE=$ns\">Shopping.com</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=BIZRATE&PROFILE=$ns\">Shopzilla/BizRate</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=PRONTO&PROFILE=$ns\">Pronto</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=MSNADCENTER&PROFILE=$ns\">MSN AdCenter</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=NEXTAG&PROFILE=$ns\">NexTag</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=PRICEGRABBER&PROFILE=$ns\">Pricegrabber</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=BECOME&PROFILE=$ns\">Become.com</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLEAW&PROFILE=$ns\">Google Adwords</a><br>";
+		# $c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=YAHOO&PROFILE=$ns\">Yahoo Shopping / CPC</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=SHOPCOM&PROFILE=$ns\">Shopping.com</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=BIZRATE&PROFILE=$ns\">Shopzilla/BizRate</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=PRONTO&PROFILE=$ns\">Pronto</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=MSNADCENTER&PROFILE=$ns\">MSN AdCenter</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=NEXTAG&PROFILE=$ns\">NexTag</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=PRICEGRABBER&PROFILE=$ns\">Pricegrabber</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=BECOME&PROFILE=$ns\">Become.com</a><br>";
 
 		$c .= "<br></td><td width=260 valign=top class=\"$class\">";
 		$c .= "<br><b>Customer Service/Relations:</b><br>";
-		$c .= "- <a href=\"index.cgi?VERB=FACEBOOK&PROFILE=$ns\">Facebook</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=TWITTER&PROFILE=$ns\">Twitter</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=POWERREVIEWS&PROFILE=$ns\">PowerReviews</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=PROVIDESUPPORT&PROFILE=$ns\">ProvideSupport Chat</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=OLARK&PROFILE=$ns\">OLark Chat</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=FACEBOOK&PROFILE=$ns\">Facebook</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=TWITTER&PROFILE=$ns\">Twitter</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=POWERREVIEWS&PROFILE=$ns\">PowerReviews</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=PROVIDESUPPORT&PROFILE=$ns\">ProvideSupport Chat</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=OLARK&PROFILE=$ns\">OLark Chat</a><br>";
 		if ($NSREF->{'livechat:tracking'} ne '') {
-			$c .= "- <a href=\"index.cgi?VERB=LIVECHAT&PROFILE=$ns\">LIVECHAT Software</a> (Deprecated)<br>";
+			$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=LIVECHAT&PROFILE=$ns\">LIVECHAT Software</a> (Deprecated)<br>";
 			}
-		$c .= "- <a href=\"index.cgi?VERB=WISHPOT&PROFILE=$ns\">Wishpot (Social Shopping &amp; Wishlist)</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=UPSELLIT&PROFILE=$ns\">Upsellit</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=WISHPOT&PROFILE=$ns\">Wishpot (Social Shopping &amp; Wishlist)</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=UPSELLIT&PROFILE=$ns\">Upsellit</a><br>";
 		$c .= "<br><b>Other/Non Supported:</b><br>";
-#		$c .= "- <a href=\"index.cgi?VERB=DECALS&PROFILE=$ns\">Website Decals</a><br>";
-		$c .= "- <a href=\"index.cgi?VERB=OTHER&PROFILE=$ns\">Other: Non Supported Application</a><br>";
-#		$c .= "- <a href=\"index.cgi?VERB=OMNITURE&PROFILE=$ns\">Omniture SiteCatalyst / SilverPop</a><br>";
-#		$c .= "- <a href=\"index.cgi?VERB=GOOGLE&PROFILE=$ns\">LivePerson</a><br>";
-#		$c .= "- <a href=\"index.cgi?VERB=GOOGLE&PROFILE=$ns\">Kowabunga</a><br>";
-#		$c .= "- <a href=\"index.cgi?VERB=GOOGLE&PROFILE=$ns\">SecondBite</a><br>";
+#		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=DECALS&PROFILE=$ns\">Website Decals</a><br>";
+		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=OTHER&PROFILE=$ns\">Other: Non Supported Application</a><br>";
+#		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=OMNITURE&PROFILE=$ns\">Omniture SiteCatalyst / SilverPop</a><br>";
+#		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLE&PROFILE=$ns\">LivePerson</a><br>";
+#		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLE&PROFILE=$ns\">Kowabunga</a><br>";
+#		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=GOOGLE&PROFILE=$ns\">SecondBite</a><br>";
 
 		$c .= "<Br>";
 		$c .= "</td></tr>";

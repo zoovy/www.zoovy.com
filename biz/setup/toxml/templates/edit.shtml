@@ -11,8 +11,6 @@
 
 <textarea name="CONTENT" style="font-size: 8pt; font-family: courier;" cols="120" rows="25"><!-- CONTENT --></textarea>
 <br>
-<input type="checkbox" name="BACKUP"> Create Backup Copy / Restore Point<br>
-<input type="checkbox" name="REQUESTQA"> Request Quality Assurance perform testing.<br>
 <input class="button" type="submit" value="Save <!-- DOCID -->">
 
 </form>

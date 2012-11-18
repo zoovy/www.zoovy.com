@@ -15,8 +15,6 @@ use strict;
 
 my @MSGS = ();
 
-&DBINFO::db_zoovy_connect();
-&GTOOLS::init();
 
 require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_O&4');
@@ -32,15 +30,16 @@ $GTOOLS::TAG{'<!-- TIME -->'} = time();
 
 my $a = "";   # this is used throughout the program as scratch
 
-my $CMD = defined($ZOOVY::cgiv->{"CMD"}) ? $ZOOVY::cgiv->{"CMD"} : '';
-$CMD = uc($CMD);
-my $ID = $ZOOVY::cgiv->{'ID'};
-$GTOOLS::TAG{"<!-- ID -->"} = $ID;
+my $VERB = defined($ZOOVY::cgiv->{"VERB"}) ? $ZOOVY::cgiv->{"VERB"} : '';
+$VERB = uc($VERB);
+my $OID = $ZOOVY::cgiv->{'OID'};
+$GTOOLS::TAG{"<!-- OID -->"} = $OID;
 
-if ($ID eq '') {
-	$CMD = 'ERROR';
+
+if ($OID eq '') {
+	$VERB = 'ERROR';
 	print "Content-type: text/plain\n\n";
-	print "INTERNAL ERROR - NO ORDER ID WAS RECEIVED! PLEASE CONTACT ZOOVY SUPPORT AND LET THEM KNOW THE ORDER # YOU WERE WORKING ON.\n";
+	print "INTERNAL ERROR - NO ORDER OID WAS RECEIVED! PLEASE CONTACT ZOOVY SUPPORT AND LET THEM KNOW THE ORDER # YOU WERE WORKING ON.\n";
 	exit;
 	}
 
@@ -48,22 +47,19 @@ if ($ID eq '') {
 my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 my $gref = &ZWEBSITE::fetch_globalref($USERNAME);
 
-my $cname = &ZOOVY::fetchmerchant_attrib($USERNAME,"zoovy:company_name");
-if (length($cname)<1) { $cname = $USERNAME; }
-$GTOOLS::TAG{"<!-- COMPANY_NAME -->"} = $cname;
-
-
-my ($O2) = CART2->new_from_oid($USERNAME,$ID);
+my ($O2) = CART2->new_from_oid($USERNAME,$OID);
 my $stuff2 = $O2->stuff2();
 my %oref = ();
 tie %oref, 'CART2', 'CART2'=>$O2;
+
+my $xml = $O2->as_xml(220);
 
 my $template_file = '';
 
 
 ########  TAX POPUP EVENT CHAIN RUNS THROUGH EDIT.CGI #############
 
-if ($CMD =~ /CHANGE-TAX/) {
+if ($VERB =~ /CHANGE-TAX/) {
 	my %taxes = &ZSHIP::getTaxes($USERNAME,$PRT,webdb=>$webdbref,
 		state=>$oref{"ship/region"},
 		zip=>$oref{"ship/postal"},
@@ -82,38 +78,37 @@ if ($CMD =~ /CHANGE-TAX/) {
 
 # if they have javascript then enable the POPUP variable to be set, so when we submit we know to close
 # the window, rather than reload form.
-if ($CMD eq "CHANGE-TAX-POPUP")
-  { $GTOOLS::TAG{"<!-- DEFINE_POPUP -->"} = "<input type='hidden' name='POPUP' value='1'>"; }
-#
+if ($VERB eq "CHANGE-TAX-POPUP") { 
+	$GTOOLS::TAG{"<!-- DEFINE_POPUP -->"} = "<input type='hidden' name='POPUP' value='1'>"; 
+	}
+
 # if they don't have a javascript, then reload the edit page
-if ($CMD eq "HIT-SAVE-TAX" && !$ZOOVY::cgiv->{'POPUP'})
-  { $template_file = "edit.shtml";  $CMD = "EDIT"; }	
+if ($VERB eq "HIT-SAVE-TAX" && !$ZOOVY::cgiv->{'POPUP'}) { 
+	$template_file = "edit.shtml";  $VERB = "EDIT"; 
+	}	
 
 # if they have javascript just close the window, since the parent will still be there!
-if ($CMD eq "HIT-SAVE-TAX" && $ZOOVY::cgiv->{'POPUP'})
+if ($VERB eq "HIT-SAVE-TAX" && $ZOOVY::cgiv->{'POPUP'})
   { $template_file = "close-popup.shtml"; } 
 
 # we still need to do the actual save too!
-if ($CMD eq "HIT-SAVE-TAX") {
+if ($VERB eq "HIT-SAVE-TAX") {
    $oref{"sum/tax_rate_zone"} = $ZOOVY::cgiv->{'LOCAL_RATE'};
    $oref{"sum/tax_rate_state"} = $ZOOVY::cgiv->{'STATE_RATE'};
 	$oref{"our/tax_rate"} = $ZOOVY::cgiv->{'LOCAL_RATE'} + $ZOOVY::cgiv->{'STATE_RATE'};
 	$oref{'is/shp_taxable'} = (defined($ZOOVY::cgiv->{'TAX_SHIPPING'}))?1:0;
 
 	$O2->add_history("Updated tax",undef,0,$LU->login());
-	$LU->log('ORDER.EDIT.TAX',"Updated tax for order $ID","SAVE");
+	$LU->log('ORDER.EDIT.TAX',"Updated tax for order $OID","SAVE");
 	$O2->order_save();
 	}
-
 ################ END OF TAX MODIFICATION POPUP/HANDOFF ######################
 
 
 
 
-
 ########  SHIPPING POPUP EVENT CHAIN RUNS THROUGH EDIT.CGI #############
-	
-if ($CMD =~ /CHANGE-SHIPPING/) {
+if ($VERB =~ /CHANGE-SHIPPING/) {
 
 	my %hash = ();
 	my %extra = ();
@@ -143,19 +138,19 @@ if ($CMD =~ /CHANGE-SHIPPING/) {
 
 # if they have javascript then enable the POPUP variable to be set, so when we submit we know to close
 # the window, rather than reload form.
-if ($CMD eq "CHANGE-SHIPPING-POPUP")
+if ($VERB eq "CHANGE-SHIPPING-POPUP")
   { $GTOOLS::TAG{"<!-- DEFINE_POPUP -->"} = "<input type='hidden' name='POPUP' value='1'>"; }
 
 # if they don't have a javascript, then reload the edit page
-if ($CMD eq "HIT-SAVE-SHIPPING" && !$ZOOVY::cgiv->{'POPUP'})
-  { $template_file = "edit.shtml";  $CMD = "EDIT"; }	
+if ($VERB eq "HIT-SAVE-SHIPPING" && !$ZOOVY::cgiv->{'POPUP'})
+  { $template_file = "edit.shtml";  $VERB = "EDIT"; }	
 
 # if they have javascript just close the window, since the parent will still be there!
-if ($CMD eq "HIT-SAVE-SHIPPING" && $ZOOVY::cgiv->{'POPUP'})
+if ($VERB eq "HIT-SAVE-SHIPPING" && $ZOOVY::cgiv->{'POPUP'})
   { $template_file = "close-popup.shtml"; } 
 
 # we still need to do the actual save too!
-if ($CMD eq "HIT-SAVE-SHIPPING") {
+if ($VERB eq "HIT-SAVE-SHIPPING") {
 	my $CARRIER = '';
 	my $TOTAL = '';
 	if ($ZOOVY::cgiv->{'SHIPPING'} eq "") {
@@ -167,15 +162,13 @@ if ($CMD eq "HIT-SAVE-SHIPPING") {
 		# this means they want to use CALC 
 		($TOTAL,$CARRIER) = split(',',$ZOOVY::cgiv->{'SHIPPING'},2);
 		}
-#  $CARRIER = "";
-#  $TOTAL = "";
 	$O2->in_set("sum/shp_method",$CARRIER);
 	$O2->in_set("sum/shp_total",$TOTAL);
 
 	$O2->add_history("Updated shipping",undef,0,$LU->login());
-	$LU->log('ORDER.EDIT.SHIP',"Updated shipping for order $ID","SAVE");
+	$LU->log('ORDER.EDIT.SHIP',"Updated shipping for order $OID","SAVE");
 	$O2->order_save();
-  }
+	}
 ############### END OF SHIPPING MODIFICATION POPUP/HANDOFF ######################
 
 sub is_us {
@@ -191,7 +184,7 @@ sub is_us {
 	}
 
 
-if ($CMD eq "HIT-SAVE-DOM") {
+if ($VERB eq "SAVE") {
 	require INVENTORY;
 	$oref{'ship/firstname'} = $ZOOVY::cgiv->{'ship_firstname'};
 	$oref{'ship/lastname'} = $ZOOVY::cgiv->{'ship_lastname'};
@@ -233,16 +226,16 @@ if ($CMD eq "HIT-SAVE-DOM") {
 	my %INVDIFF = ();
 	foreach my $x (0..$ZOOVY::cgiv->{'KEYCOUNT'}) {
 
-		my $STID = uc($ZOOVY::cgiv->{"stid$x"});
-		$STID =~ s/[^A-Z0-9\_\-\:\/\*\#\@\%]+/_/gs;
+		my $STOID = uc($ZOOVY::cgiv->{"stid$x"});
+		$STOID =~ s/[^A-Z0-9\_\-\:\/\*\#\@\%]+/_/gs;
 
-		if ($STID eq '') {
-			$STID = $ZOOVY::cgiv->{"key$x"};
+		if ($STOID eq '') {
+			$STOID = $ZOOVY::cgiv->{"key$x"};
 			}
-		next if ($STID eq '');
+		next if ($STOID eq '');
 	
-#		$STID = uc($STID);
-#		$STID =~ s/[^A-Z0-9a-z_\-\#\:\/\*]+//gs;	# strip invalid (non-SKU) characters
+#		$STOID = uc($STOID);
+#		$STOID =~ s/[^A-Z0-9a-z_\-\#\:\/\*]+//gs;	# strip invalid (non-SKU) characters
 
 		my $QTY = $ZOOVY::cgiv->{"qty$x"};
 		$QTY =~ s/^[^\d]+$//g;
@@ -256,9 +249,9 @@ if ($CMD eq "HIT-SAVE-DOM") {
 
 		print STDERR "QTY: $QTY\n";
 
-		my ($P) = PRODUCT->new($USERNAME,$STID);
+		my ($P) = PRODUCT->new($USERNAME,$STOID);
 
-		my $item = $stuff2->item('stid'=>$STID);
+		my $item = $stuff2->item('stid'=>$STOID);
 		if (defined $item) {
 			## existing item: quantity/price change
 			## so if we reduce qty from 4 to 3 .. then we should end up with a +1
@@ -268,20 +261,20 @@ if ($CMD eq "HIT-SAVE-DOM") {
 			$item->{'weight'} = $WEIGHT;
 			$item->{'taxable'} = &ZOOVY::is_true($TAX);
 			$item->{'prod_name'} = $TEXT;
-			push @MSGS, "SUCCESS|Updated existing item '$STID'";
+			push @MSGS, "SUCCESS|Updated existing item '$STOID'";
 			}
-		elsif (substr($STID,0,1) eq '%') {
-			$stuff2->promo_cram($STID,$QTY,$PRICE,$TEXT);
-			push @MSGS, "SUCCESS|Added promotional item '$STID'";
+		elsif (substr($STOID,0,1) eq '%') {
+			$stuff2->promo_cram($STOID,$QTY,$PRICE,$TEXT);
+			push @MSGS, "SUCCESS|Added promotional item '$STOID'";
 			}
 		elsif (defined $P) {
 			## new item being legacy_crammed into stuff object
 
-			my ($pid,$claim,$invopts,$noinvopts,$virtual) = &PRODUCT::stid_to_pid($STID);
+			my ($pid,$claim,$invopts,$noinvopts,$virtual) = &PRODUCT::stid_to_pid($STOID);
 			# my $optionstr = (($invopts)?":$invopts":'').(($noinvopts)?"/$noinvopts":'');
 			if ($QTY eq '') { $QTY = 1; }
 
-			my $variations = &STUFF2::variation_suggestions_to_selections( $P->suggest_variations('stid'=>$STID) );
+			my $variations = &STUFF2::variation_suggestions_to_selections( $P->suggest_variations('stid'=>$STOID) );
 			my ($item,$lm) = $stuff2->cram($pid,$QTY,$variations,'force_qty'=>$QTY);
 			
 			#	inv_diff=>int(0-$QTY),
@@ -302,8 +295,8 @@ if ($CMD eq "HIT-SAVE-DOM") {
 				}			
 			}
 		else {
-			push @MSGS, "SUCCESS|Added basic (non-inventory) item '$STID'";
-			$stuff2->basic_cram($STID,$QTY,$PRICE,$TEXT);
+			push @MSGS, "SUCCESS|Added basic (non-inventory) item '$STOID'";
+			$stuff2->basic_cram($STOID,$QTY,$PRICE,$TEXT);
 			}
 		}
 
@@ -312,40 +305,35 @@ if ($CMD eq "HIT-SAVE-DOM") {
 
 #	use Data::Dumper; print STDERR Dumper($stuff);
 
-	$LU->log('ORDER.EDIT.SHIP',"Updated order $ID","SAVE");
+	$LU->log('ORDER.EDIT.SHIP',"Updated order $OID","SAVE");
 	$O2->add_history("Edited+saved order via online interface [".($stuff2->count('show'=>'real'))." actual items]",undef,0,$LU->login());
 	$O2->order_save(); 
-	$CMD = "EDIT";
+	$VERB = "EDIT";
 	}
 
 
-if ($CMD eq "" || $CMD eq "EDIT") {
+if ($VERB eq "" || $VERB eq "EDIT") {
 
 	if (&is_us($oref{'ship/countrycode'})) { $oref{'ship/countrycode'} = ''; }
 	if (&is_us($oref{'bill/countrycode'})) { $oref{'bill/countrycode'} = ''; }
 
 	# $GTOOLS::TAG{"<!-- SHIP_NAME -->"} = ($oref{"ship/fullname"})?($oref{"ship/fullname"}):($oref{"ship/firstname"}." ".$oref{"ship/lastname"});
 	$GTOOLS::TAG{'<!-- SHIP_FIRSTNAME -->'} = ($oref{'ship/firstname'})?($oref{"ship/firstname"}.''):'';
-	$GTOOLS::TAG{'<!-- SHIP_MIDDLENAME -->'} = ($oref{'ship/middlename'})?($oref{"ship/middlename"}.''):'';
+	$GTOOLS::TAG{'<!-- SHIP_MOIDDLENAME -->'} = ($oref{'ship/middlename'})?($oref{"ship/middlename"}.''):'';
 	$GTOOLS::TAG{'<!-- SHIP_LASTNAME -->'} = ($oref{'ship/lastname'})?($oref{"ship/lastname"}.''):'';
 	$GTOOLS::TAG{"<!-- SHIP_COMPANY -->"} = ($oref{"ship/company"})?($oref{"ship/company"}.""):"";
 	$GTOOLS::TAG{"<!-- SHIP_ADDRESS1 -->"} = ($oref{"ship/address1"})?($oref{"ship/address1"}.""):"";
 	$GTOOLS::TAG{"<!-- SHIP_ADDRESS2 -->"} = ($oref{"ship/address2"})?($oref{"ship/address2"}.""):"";
 	$GTOOLS::TAG{"<!-- SHIP_CITY -->"} = ($oref{"ship/city"})?($oref{"ship/city"}.""):"";
-
 	$GTOOLS::TAG{"<!-- SHIP_COUNTRY -->"} = ($oref{"ship/countrycode"})?($oref{"ship/countrycode"}):"";
 	$GTOOLS::TAG{"<!-- SHIP_POSTAL -->"} = ($oref{"ship/postal"})?($oref{"ship/postal"}):""; 
 	$GTOOLS::TAG{"<!-- SHIP_REGION -->"} = ($oref{"ship/region"})?($oref{"ship/region"}.""):"";
-
 	$GTOOLS::TAG{"<!-- SHIP_PHONE -->"} = ($oref{"ship/phone"})?($oref{"ship/phone"}.""):"";
 	$GTOOLS::TAG{"<!-- SHIP_EMAIL -->"} = ($oref{"ship/email"});	
 
-	# GTOOLS::TAG{"<!-- SHIP_NAME -->"} = ($oref{"bill/fullname"})?($oref{"bill/fullname"}):($oref{"bill/firstname"}." ".$oref{"bill/lastname"});
-	# if ($oref{'bill/firstname'} eq $oref{'bill/lastname'}) { ($oref{'bill/firstname'},$oref{'bill/lastname'}) = split(' ',$oref{'bill/fullname'},2);	 }
 	$GTOOLS::TAG{'<!-- BILL_FIRSTNAME -->'} = ($oref{'bill/firstname'})?($oref{"bill/firstname"}.''):'';
-	$GTOOLS::TAG{'<!-- BILL_MIDDLENAME -->'} = ($oref{'bill/middlename'})?($oref{"bill/middlename"}.''):'';
+	$GTOOLS::TAG{'<!-- BILL_MOIDDLENAME -->'} = ($oref{'bill/middlename'})?($oref{"bill/middlename"}.''):'';
 	$GTOOLS::TAG{'<!-- BILL_LASTNAME -->'} = ($oref{'bill/lastname'})?($oref{"bill/lastname"}.''):'';
-
 	$GTOOLS::TAG{"<!-- BILL_COMPANY -->"} = ($oref{"bill/company"})?($oref{"bill/company"}.""):"";
 	$GTOOLS::TAG{"<!-- BILL_ADDRESS1 -->"} = ($oref{"bill/address1"})?($oref{"bill/address1"}.""):"";
 	$GTOOLS::TAG{"<!-- BILL_ADDRESS2 -->"} = ($oref{"bill/address2"})?($oref{"bill/address2"}.""):"";
@@ -361,155 +349,154 @@ if ($CMD eq "" || $CMD eq "EDIT") {
 	if ($shipping_tax eq '') { $shipping_tax = 0; }
 	my $SHIPPING = $oref{"sum/shp_total"};
 
-	# my $a = &build_order_contents($USERNAME,$ID,$o);
-	my $a = '';
-	## BUILD ORDER CONTENTS
-
 	my $TAXRATE = $oref{'our/tax_rate'};
 	my $SHIPPRICE = $oref{'sum/shp_total'};
 	my $SHIPMETHOD = $oref{'sum/shp_method'};
 
-	my $a = "";
 	my $subtotal = $oref{'sum/items_total'};
 	my $totaltax = $oref{'sum/tax_total'};
 
 	my $BGCOLOR = '333333';
-	$a .= "\n<table><tr class='zoovytableheader'>";
-	$a .= "<td class='zoovytableheader'>SKU</td>";
-	$a .= "<td class='zoovytableheader'>PRODUCT</td>";
-	$a .= "<td class='zoovytableheader'><center>&nbsp;&nbsp;QUANTITY&nbsp;&nbsp;</center></td>";
-	if ($gref->{'inv_mode'} > 0) {
-		$a .= "<td class='zoovytableheader'><center>&nbsp;&nbsp;IN_STOCK/RESERVE&nbsp;&nbsp;</center></td>";
-		}
-
-	$a .= "<td class='zoovytableheader'><center>&nbsp;&nbsp;PRICE&nbsp;&nbsp;</center></td>";
-	$a .= "<td class='zoovytableheader'><center>&nbsp;TAX&nbsp;</center></td>";
-	$a .= "<td class='zoovytableheader'><center>WEIGHT</center></td>";
-	$a .= "<td class='zoovytableheader'>&nbsp;EXTENDED&nbsp;&nbsp;&nbsp;</td>";
-	$a .= "</tr>\n\n";
-
+	my $c = "";
 	my $counter = 0;
-
-
 	my $footer = '';
-
 
 	my @stids = $O2->stuff2()->stids();
 	my ($invref,$reserveref) = &INVENTORY::fetch_incrementals($USERNAME,\@stids,$gref);
 
 	my $stuff2 = $O2->stuff2();
+	my $r = 0;
+	my $html = '';
 	foreach my $item (@{$O2->stuff2()->items()}) {	
-		my $sku = $item->{'sku'};
+		#my $sku = $item->{'sku'};
+		#my ($xtop,$xfoot) = &add_item($counter++, $item, $gref->{'inv_mode'}, $invref->{$sku}, $reserveref->{$sku});
+		#$footer .= $xfoot;
+		#$c .= $xtop;
+		my $line = '';
+		my $price = $item->{'price'};
+		my $qty = $item->{'qty'};
+		my $weight = $item->{'weight'};
+		my $description = $item->{'prod_name'};
+		if ($description eq '') { $description = $item->{'description'}; }
+		$description = &ZOOVY::incode($description);
 
-		my ($xtop,$xfoot) = add_item($counter++, $item, $gref->{'inv_mode'}, $invref->{$sku}, $reserveref->{$sku});
-		$footer .= $xfoot;
-		$a .= $xtop;
+		my $tax = &ZOOVY::is_true($item->{'taxable'});
+
+		$r = ($r eq 'r0')?'r1':'r0';
+		my $extended = sprintf("\$%.2f",$price * $qty);
+		$weight =~ s/[^0-9\.#\-]//g;
+
+		$line .= qq~<tr class="$r">~;
+
+		## this stores a mapping to let us know what the sku was (not that it can change, but just in case)
+		$line .= "<td>";
+		$line .= qq~<input type='hidden' name='stid$counter' value='$item->{'stid'}'>~;
+		$line .= qq~$item->{'stid'}~;
+		$line .= "</td>";
+
+		$line .= qq~<td><input type='textbox' size='30' name='text$counter' value="$description"></td>~;
+		$line .= qq~<td><center><input type='textbox' size='3' value='$qty' name="qty$counter"></center></td>~;
+
+		my ($invqty) = $invref->{ $item->{'sku'} };		
+		my ($rsvqty) = $reserveref->{ $item->{'sku'} };		
+
+		if ($invqty eq '') { $invqty = '*'; }
+		if ($rsvqty eq '') { $rsvqty = '*'; }
+		$line .= qq~<td><center>$invqty / $rsvqty</center></td>~;
+	
+		$line .= qq~<td nowrap><center><b>\$</b><input type='textbox' size='7' value='$price' name="price$counter"></center></td>~;
+		$line .= qq~<td><center><select name='tax$counter'>~;
+
+		$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'selected':'')." value='1'>Yes</option>";
+		$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'':'selected')." value='0'>No</option>"; 
+
+		$line .= qq~</select></td>~;
+
+		$line .= qq~<td><center><input type='textbox' size='5' value='$weight' name="weight$counter"></center></td>~;
+		$line .= qq~<td><input type='textbox' size='10' value='$extended' name="extended$counter"></td>~;
+
+		$line .= "</tr>";
+
+		## is this is a regular product??
+		if ($item->{'is_basic'} || $item->{'is_promo'} || (substr($item->{'stid'},0,1) eq '%')) {
+			$GTOOLS::TAG{"<!-- PROMOS -->"} .= $line;
+			}
+		else {
+			$GTOOLS::TAG{"<!-- ITEMS -->"} .= $line;
+			}
 		}
 
-	my ($xtop,$xfoot) = add_item($counter++, { stid=>'', prod_name=>'New Item' } ,$gref->{'inv_mode'},'?','?');
-	$a .= $xtop;
-	my ($xtop,$xfoot) = add_item($counter++, { stid=>'', prod_name=>'New Item' }, $gref->{'inv_mode'},'?','?');
-	$a .= $xtop;
-	$a .= "<INPUT TYPE='HIDDEN' name='KEYCOUNT' value='$counter'>\n";
-	$a = $a . $footer;
+#	my ($xtop,$xfoot) = add_item($counter++, { stid=>'', prod_name=>'New Item' } ,$gref->{'inv_mode'},'?','?');
+#	$c .= $xtop;
+#	my ($xtop,$xfoot) = add_item($counter++, { stid=>'', prod_name=>'New Item' }, $gref->{'inv_mode'},'?','?');
+#	$c .= $xtop;
+#	$c .= "<INPUT TYPE='HIDDEN' name='KEYCOUNT' value='$counter'>\n";
+#	$c = $c . $footer;
 
 	$BGCOLOR = '33333';
  	print STDERR "SUBTOTAL: $subtotal\n";
 
 	# Add the Subtotal piece
 	$subtotal = sprintf("%.2f",$subtotal);
-	$a .= "<tr>";
-	$a .= "<td colspan='3' rowspan='4' bgcolor='FFFFFF'><center><table>";
-	
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Handling:</b> ".($oref{'sum/hnd_method'})."</font></td>";
-	$a .= "<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>\$</B>";
-	$a .= "<input style='font-size: 8pt;' type='textbox' name='hnd_total' value='".sprintf("%.2f",$oref{'sum/hnd_total'})."' size='5'>";
-	$a .= "</font></td></tr>\n";
 
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Specialty:</b> ".($oref{'sum/spc_method'})."</font></td>";
-	$a .= "<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>\$</B>";
-	$a .= "<input style='font-size: 8pt;' type='textbox' name='spc_total' value='".sprintf("%.2f",$oref{'sum/spc_total'})."' size='5'>";
-	$a .= "</font></td></tr>\n";
+	$GTOOLS::TAG{'<!-- HND_METHOD -->'} = $oref{'sum/hnd_method'};
+	$GTOOLS::TAG{'<!-- HND_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/hnd_total'});
+	$GTOOLS::TAG{'<!-- INS_METHOD -->'} = $oref{'sum/ins_method'};
+	$GTOOLS::TAG{'<!-- INS_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/ins_total'});
+	$GTOOLS::TAG{'<!-- SPC_METHOD -->'} = $oref{'sum/spc_method'};
+	$GTOOLS::TAG{'<!-- SPC_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/spc_total'});
+	$GTOOLS::TAG{'<!-- SHP_METHOD -->'} = $oref{'sum/shp_method'};
+	$GTOOLS::TAG{'<!-- SHP_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/shp_total'});
 
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Insurance:</b> ".($oref{'sum/ins_method'})."</font></td>";
-	$a .= "<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>\$</B>";
-	$a .= "<input style='font-size: 8pt;' type='textbox' name='ins_total' value='".sprintf("%.2f",$oref{'sum/ins_total'})."' size='5'>";
-	$a .= "</font></td></tr></table><br>\n";
+	$GTOOLS::TAG{'<!-- TAX_RATE -->'} = $oref{'our/tax_rate'};
+	$GTOOLS::TAG{'<!-- TAX_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/tax_total'});
 
-	$a .= "<font face='Arial' size='1'>Hint: To delete an item change the quantity to Zero and press SAVE.</font></center></td>";
 
-	$a .= "<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Subtotal:</b></font></td>";
-	$a .= "<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>\$";
-	$a .= "<input type='textbox' style='font-size: 8pt;' size='7' name='subtotal' value='$subtotal'>";
-	$a .= "</b></font></td></tr>\n";
-	
+	$GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/order_total'});
+		
 	$totaltax = sprintf("%.2f",$totaltax);
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Tax (%";
-	$a .= sprintf("%.2f",$TAXRATE)."):</b></font></td>";
-	$a .= "<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>\$";
-	$a .= "$totaltax</b>";
-	$a .= "</font></td><td>";
-	$a .= "<input class='minibutton' type='button' value='Calc. Tax' onClick='return(popupChangeTax());'>";
-	$a .= "</td></tr>\n";
 	
 	if ($SHIPMETHOD) { $SHIPMETHOD .= ":"; } else { $SHIPMETHOD = "SHIPPING: "; }
 	$SHIPPRICE = sprintf("%.2f",$SHIPPRICE);
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right'><font size='2' face='Arial'><B>$SHIPMETHOD</b></font></td>";
-	$a .= "<td nowrap colspan='1'><font size='2' color='black' face='Arial'>&nbsp;<b>\$$SHIPPRICE</b></font>";
-	$a .= "</td><td>";
-	$a .= "<input class='minibutton' type='button' value='Calc. Shipping' onClick='return(popupChangeShipping());'>";
-	$a .= "</td></tr>\n";
-
-	
 
 	my $GRANDTOTAL = sprintf("%.2f",$oref{'sum/order_total'});	
-	$a .= "<tr>";
-	$a .= "<td colspan='3' align='right'><font color='000000' size='2' face='Arial'><B>GRAND TOTAL:</b></font></td>";
-	$a .= "<td nowrap colspan='1'><font color='black' size='2' face='Arial'>&nbsp;<b>\$";
-	$a .= "<input type='textbox' size='7' style='font-size: 8pt;' name='grandtotal' value='$GRANDTOTAL'></b></font></td></tr>\n";
-	
+	if (length($c)<1) { $c = "No contents found!"; }
 
-	$a .= "</table>\n";
-
-
-
-
-	if (length($a)<1) { $a = "No contents found!"; }
-	$GTOOLS::TAG{"<!-- DISPLAY_CONTENTS -->"} = "$a";
-
-
-	foreach my $msg (@MSGS) {
-		my ($msgtype,$txt) = split(/\|/,$msg);
-		my $class = '';
-		if ($msgtype eq 'SUCCESS') { $class = 'success'; }
-		if ($msgtype eq 'ERROR') { $class = 'error'; }
-		$GTOOLS::TAG{'<!-- MESSAGES -->'} .= qq~<div class="$class">$txt</div>\n~;
-		}
 
 	$template_file = "edit.shtml";	
 	} 
-	# END of CMD eq "EDIT"
 
-&GTOOLS::output(file=>$template_file,header=>1,'head'=>qq~
+
+&GTOOLS::output(jquery=>1,file=>$template_file,header=>1,'headjs'=>qq~
+<style>
+.table { background:#333; }
+.table ul { float:left; margin:0; padding:0; border:1px solid #C9C9C9; }
+.table ul li { list-style:none; padding:5px 10px; }
+.table ul li.title { font-weight:bold; background:#333; color:#fff; }
+.table ul li.even { background:#fff }
+.table ul li.odd { background:#FFFFE6 }
+</style>
+~);
+
+
+
+__DATA__
+
+,'head'=>qq~
 <SCRIPT language="JavaScript">
 <!--//
 	function popupChangeShipping() {
-	  popupWin = window.open('edit.cgi?CMD=CHANGE-SHIPPING-POPUP&ID=$ID','Shipping','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
+	  popupWin = window.open('edit.cgi?VERB=CHANGE-SHIPPING-POPUP&OID=$OID','Shipping','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
 	  popupWin.focus(true);
 	  return false;
 	  }
 	function popupAddProduct() {
-	  popupWin = window.open('edit.cgi?CMD=ADD-PRODUCT-POPUP&ID=$ID','AddProduct','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
+	  popupWin = window.open('edit.cgi?VERB=ADD-PRODUCT-POPUP&OID=$OID','AddProduct','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
 	  popupWin.focus(true);
 	  return false;
 	  }
 	function popupChangeTax() {
-	  popupWin = window.open('edit.cgi?CMD=CHANGE-TAX-POPUP&ID=$ID','ChangeTax','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
+	  popupWin = window.open('edit.cgi?VERB=CHANGE-TAX-POPUP&OID=$OID','ChangeTax','status=0,width=380,height=330,directories=0,toolbar=0,menubar=0,resizable=1,scrollbars=1,location=0')
 	  popupWin.focus(true);
 	  return false;
 	  }
@@ -569,16 +556,15 @@ if ($CMD eq "" || $CMD eq "EDIT") {
 ~
 );
 
-&DBINFO::db_zoovy_close();
 
 exit;
 
 
 ##
 ##
-## parameters: MODE, USERNAME, ID, TAXRATE, SHIPPRICE, SHIPMETHOD
+## parameters: MODE, USERNAME, OID, TAXRATE, SHIPPRICE, SHIPMETHOD
 ##	 MODE is what type of invoice to print currently only "NORM" is supported
-##	 ID is the order ID
+##	 OID is the order OID
 ##	 TAXRATE is the tax rate for the other (if applicable) in non-decimal format (10 = %10 tax rate)
 ##	 SHIPPRICE is the price of shipping
 ##	 SHIPMETHOD is the text of the method we are shipping
@@ -593,69 +579,6 @@ exit;
 ## this adds an item to the edit form
 ##
 sub add_item {
-		my ($counter,$item,$inv_mode,$invqty,$rsvqty) = @_;
-		my $footer = '';
-		my $x = '';
-
-		my $BGCOLOR = '';
-
-		my $price = $item->{'price'};
-		my $qty = $item->{'qty'};
-		my $weight = $item->{'weight'};
-		my $description = $item->{'prod_name'};
-		if ($description eq '') { $description = $item->{'description'}; }
-		$description = &ZOOVY::incode($description);
-
-		my $tax = &ZOOVY::is_true($item->{'taxable'});
-
-		if ($counter % 2) { $BGCOLOR="E1E1E1"; } else { $BGCOLOR='FFFFFF'; }
-		if (substr($item->{'stid'},0,1) eq '%') { $BGCOLOR='D0D0D0'; }
-		my $extended = sprintf("\$%.2f",$price * $qty);
-		$weight =~ s/[^0-9\.#\-]//g;
-
-		$x = qq~<tr><td bgcolor='$BGCOLOR'><font face='Arial' size='2'>~;
-
-		## this stores a mapping to let us know what the sku was (not that it can change, but just in case)
-		$x .= qq~<input type='hidden' name='stid$counter' value='$item->{'stid'}'>~;
-
-		if ($item->{'stid'} eq '') {
-			$x .= qq~<input type='textbox' name='key$counter' value="" size="15">~;
-			}
-		else {
-			$x .= qq~$item->{'stid'}~;
-			}
-
-		$x .= qq~</font></td>
-	<td bgcolor='$BGCOLOR'><font face='Arial' size='2'>
-	<input type='textbox' size='30' name='text$counter' value="$description"></font></td>
-	<td bgcolor='$BGCOLOR'><font face='Arial' size='2'><center><input type='textbox' size='3' value='$qty' name="qty$counter"></center></font></td>~;
-
-	if ($inv_mode>0) {
-		if ($invqty eq '') { $invqty = '*'; }
-		if ($rsvqty eq '') { $rsvqty = '*'; }
-		$x .=qq~<td bgcolor='$BGCOLOR'><center>$invqty / $rsvqty</center></font></td>~;
-		}
-	
-		$x .= qq~
-	<td nowrap bgcolor='$BGCOLOR'><font face='Arial' size='2'><center><b>\$</b><input type='textbox' size='7' value='$price' name="price$counter"></center></font></td>
-	<td bgcolor='$BGCOLOR'><font face='Arial' size='2'><center>
-		<select name='tax$counter'>
-			~;
-
-		$x .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'selected':'')." value='1'>Yes</option>";
-		$x .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'':'selected')." value='0'>No</option>"; 
-
-		$x .= qq~
-		</select></font></center></td>
-	<td bgcolor='$BGCOLOR'><font face='Arial' size='2'><center><input type='textbox' size='5' value='$weight' name="weight$counter"></center></font></td>
-				<td bgcolor='$BGCOLOR'><font face='Arial' size='2'><input type='textbox' size='10' value='$extended' name="extended$counter"></font></td>
-</tr>
-~;
-		## is this is a regular product??
-		if (substr($item->{'stid'},0,1) eq '%') {
-			$footer = $x;
-			$x = '';
-			}
 		return($x,$footer);
 
 	}

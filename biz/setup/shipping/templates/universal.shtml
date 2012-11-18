@@ -72,9 +72,9 @@
 	<center>
 <input type="submit" class="button showLoadingModal" value=" Save ">
 <input type="button" class="button showLoadingModal" value=" Delete "
-	onClick="document.location='/biz/setup/shipping/universal.cgi?VERB=DELETE&ID=<!-- ID -->';">
+	onClick="navigateTo('/biz/setup/shipping/universal.cgi?VERB=DELETE&ID=<!-- ID -->');">
 <input type="button" class="button showLoadingModal" value=" Exit "
-	onClick="document.location='/biz/setup/shipping';">
+	onClick="navigateTo('/biz/setup/shipping');">
 </center>
 	</td>
 </tr>

@@ -1,6 +1,0 @@
-<html>
-<frameset rows="*,50" frameborder=0 framespacing=0 border=0>
-	<frame src="main.cgi?CMD=SEARCH&search_field=<!-- SEARCH_FIELD -->&find_status=<!-- FIND_STATUS -->&find_month=<!-- FIND_MONTH -->&find_text=<!-- FIND_TEXT -->" name="main" frameborder=0 border=0>
-	<frame src="footer.pl?CMD=SEARCH" name="footer" frameborder=0 border=0 noresize scrolling="no">
-</frameset>
-</html>

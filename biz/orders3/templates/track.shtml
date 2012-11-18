@@ -75,7 +75,7 @@ Tracking Information for <!-- ID --><br>
 		<td colspan='10'>
 		<center>
 		<input type="submit" value=" Save " class="button">
-		<input type="button" value=" Exit " class="button" onClick="document.location='view.cgi?ID=<!-- ID -->';">
+		<input type="button" value=" Exit " class="button" onClick="navigateTo('/biz/orders3/view.cgi?ID=<!-- ID -->');">
 		</center>
 <div class="hint">
 HINT: When you use Zoovys Desktop Order Manager to print out USPS Postage, UPS

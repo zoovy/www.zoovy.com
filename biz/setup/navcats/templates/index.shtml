@@ -1,13 +1,5 @@
 <!-- SETUP_TAB -->
 
-<script type="text/javascript" src="/biz/ajax/zoovy-jquery.js"></script>
-<script type="text/javascript" src="/biz/ajax/navcat-20120203.js"></script>
-<script type="text/javascript">
-<!--
-
-
-//-->
-</script>
 
 
 <form action="#" id="thisFrm" name="thisFrm">

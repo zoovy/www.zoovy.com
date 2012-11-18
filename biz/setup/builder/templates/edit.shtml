@@ -1,118 +1,18 @@
 <!-- SETUP_TAB -->
-<!-- MSGS -->
-<script type="text/javascript" src="/biz/zoovy.js"></script> <!-- for medialibrary openWindow -->
-<script type="text/javascript" src="/biz/ajax/zoovy-jquery.js"></script>
-<script type="text/javascript" src="/biz/ajax/navcat-20120203.js"></script>
+
 <script type="text/javascript">
 <!--
 
 var sref = '<!-- SREF -->';
 
-
-//
-function xhandleResponse(txt) {
-
-	var editDiv = jQuery('#editorDiv');
-	var contentDiv = jQuery('#contentDiv');
-	var loadingDiv = jQuery('#loadingDiv');
-	
-	if (txt == '') {
-		// empty response, must have been a set only
-		}
-	else if (txt.indexOf('?') == 0) {
-		// NOTE: multiple ? can be returned.
-		// ?k1=v1 (NOT XML)
-		var txtLines = new Array();
-		txtLines = txt.split('?');		// split the txt into lines (separated by ?)
-		for (var i = 0;i<txtLines.length;i++) {
-			var params = kvTxtToArray('?' + txtLines[i]);
-			// alert('i['+i+']='+txtLines[i]);
-			// alert(i+' '+params['m']);
-			if (txtLines[i] == '') {}	// blank line (probably the first record)
-			else if (params['m'] == 'loadeditor') {
-
-				var id = params['id'];
-				
-				if (jQuery('#'+selectorEscapeExpression('editorDiv-'+id)).length>0) {
-					editDiv = jQuery('#'+selectorEscapeExpression('editorDiv-'+id));
-					}
-
-				editDiv.html(params['html']);
-				editDiv.show();
-				}
-			else if (params['m'] == 'hideeditor') {
-				editDiv.hide();
-				editDiv.html('');
-				}
-			else if (params['m'] == 'loadcontent') {
-				contentDiv.html( params['html'] );
-				}
-			else {
-				// unknown request handler!
-				}
-			// end of each line.
-			}
-		}		
-	else {
-		alert('unknown data format sent to handleResponse: '+txt);
-		}
-
-	// hide the loading message
-	loadingDiv.hide();
-	}
-
-//
-//
-function saveElement(func,id,cmd) {
-	// alert('saving element id:'+id);
-	
-	var frm = jQuery('#'+selectorEscapeExpression('thisFrm-'+id));
-	
-//	var i = frm.elements.length;
-//	var kvpairs = '';
-//	var val = '';
-//	while (i-- > 0) {
-//		// alert('FOUND: '+frm.elements[i].name);
-//		val = frm.elements[i].val();
-//		if ((frm.elements[i].prop("type") == 'checkbox') && (! frm.elements[i].checked)) { val = ''; }
-//		kvpairs = kvpairs + esc(frm.elements[i].name) + '=' + esc(val) + '&';
-//		}
-
-//	alert(frm);
-//	alert(frm.serialize());
-
-	var postBody = 'm=BUILDER/Save&func='+func+'&id='+id+'&_cmd='+cmd+'&'+frm.serialize();
-//	alert(postBody);
-	jQuery.ajax('/biz/ajax/prototype.pl/BUILDER/Save', 
-		{ dataType:"text",type:"POST",data: postBody,async: 1,success: function(data, textStatus, jqXHR){ xhandleResponse(data);} } ) ;		
-		
-	}
-
-// func is the type of element
-// id is the id of the element
-function loadElement(func,id,bodyvars) {
-	var loadingDiv = jQuery('#loadingDiv');
-	var editorDiv = jQuery('#editorDiv');
-	
-	if (bodyvars == undefined) {	bodyvars = ''; 	}
-
-	editorDiv.show();
-	loadingDiv.show();
-	var postBody = 'm=BUILDER/Edit&_SREF='+esc(sref)+'&func='+func+'&id='+id+'&'+bodyvars;
-	jQuery.ajax('/biz/ajax/prototype.pl/BUILDER/Edit', 
-		{ dataType:"text",data: postBody,async: 1,success: function(data, textStatus, jqXHR){ xhandleResponse(data);} } ) ;
-		
-	}
-
-
-
 -->
 </script>
 
 <div align="center">
-<table style="margin-top: 5px;" width='780' <!-- BGCOLOR --> border='0' cellspacing='1' cellpadding='0'>
+<table border=0 style="margin-top: 5px;" width='780' <!-- BGCOLOR --> border='0' cellspacing='1' cellpadding='0'>
 <tr>
 <!-- DIVS -->
+
 <td valign='top'>
 
 	<table width='100%' <!-- BGCOLOR --> border='0' cellpadding='0' cellspacing='0'>
@@ -123,13 +23,7 @@ function loadElement(func,id,bodyvars) {
 	FL: <!-- FL --> | PG: <!-- PG --> | SKU: <!-- PROD --> | FS: <!-- FS -->
 	-->
 
-	<div id="loadingDiv" style="display: none; position: absolute; left: 50%; top: 50%">
-	<table bgcolor='blue'><tr><td><font color='white'>Loading!</td></tr></table>
-	<!-- WAIT_IMG -->
-	</div>
-
 	<div id="editorDiv" style="display: none"></div>
-
 	<div style="border: 1px solid #999999">
 		<table  bgcolor="<!-- BGCOLOR -->" width="100%">
 			<tr><td align="left" valign='top'><div style="text-align: left" id="contentDiv"><!-- CONTENTS --></div></td></tr>
@@ -140,7 +34,8 @@ function loadElement(func,id,bodyvars) {
 	</td>
 	</tr>
 	</table>
-</td></tr></table>
+</td></tr>
+</table>
 </div>
 
 <!-- BUTTONS -->
