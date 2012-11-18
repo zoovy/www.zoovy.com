@@ -17,8 +17,8 @@ my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2
 if ($USERNAME eq '') { exit; }
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'UPS Legacy' };
 
 	

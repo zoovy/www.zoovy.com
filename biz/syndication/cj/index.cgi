@@ -135,7 +135,7 @@ if ($VERB eq '') {
 		$c .= "<tr><td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</td></tr>";		
 		my ($s) = SYNDICATION->new($USERNAME,$ns,'CJ');
 		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br>";
-		$c .= " <a href=\"index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a> | ";
+		$c .= " <a href=\"/biz/syndication/cj/index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a> | ";
 		$c .= " <a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=CJ&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
 		$c .= "<br></td></tr>";
 		}
@@ -145,9 +145,9 @@ if ($VERB eq '') {
 
 
 if ($PROFILE ne '') {
-	push @TABS,	{ name=>'Profile',selected=>($VERB eq '')?1:0, link=>'index.cgi' };
-	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
-	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
+	push @TABS,	{ name=>'Profile',selected=>($VERB eq '')?1:0, link=>'/biz/syndication/cj/index.cgi' };
+	push @TABS, { selected=>($VERB eq 'EDIT')?1:0, 'name'=>'Config', 'link'=>'/biz/syndication/cj/index.cgi?VERB=EDIT&PROFILE='.$PROFILE };
+	push @TABS, { selected=>($VERB eq 'CATEGORIES')?1:0, 'name'=>'Categories', 'link'=>'/biz/syndication/cj/index.cgi?VERB=CATEGORIES&PROFILE='.$PROFILE };
 	push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"?VERB=LOGS&PROFILE=$PROFILE", };
 	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG&PROFILE=$PROFILE", };
    push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=50593&PROFILE=$PROFILE", };

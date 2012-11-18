@@ -16,7 +16,7 @@ Facebook secret: <input type="textbox" name="facebook_secret" value="<!-- FACEBO
 <br>
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 
 </form>
 </td></tr>

@@ -33,6 +33,6 @@ You should only supress this behavior if you have a specific reason.</span><br>
 </td></tr></table>
 
 <br>
-<input type='button' value='  Save  ' onClick='window.document.forms[0].submit();'> <input type='button' onClick='window.document.location="/biz/setup";' value="  Exit  ">
+<input type='button' value='  Save  ' onClick='window.document.forms[0].submit();'> <input type='button' onClick="navigateTo('/biz/setup');" value="  Exit  ">
 </form>
 </body>

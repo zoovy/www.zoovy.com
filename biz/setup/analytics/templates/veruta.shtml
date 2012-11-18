@@ -16,7 +16,7 @@ offering through Zoovy, please go to
 Syndication &gt; Veruta.</a>
 <br>
 <br>
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 
 </form>
 </td></tr>

@@ -57,6 +57,79 @@ my $requestAddressXML = '';	## pull from REQUEST
 my $itemsref = (); my $promosref = (); my $taxtableref = ();
 
 
+%v = (
+          '_prt' => '0',
+          'aws-access-key-id' => 'AKIAIR62HCONZEQMDAPA',
+          '_u' => 'smbsi',
+          'order-calculations-request' => '<?xml version="1.0" encoding="UTF-8"?><OrderCalculationsError xmlns="http://payments.amazon.com/checkout/2008-11-30/"><OrderCalculationsErrorCode>HttpError</OrderCalculationsErrorCode><OrderCalculationsErrorMessage>Either there was a problem connecting to your endpoint or the merchant endpoint returned an invalid response status code.</OrderCalculationsErrorMessage><OrderCalculationsRequest xmlns="http://payments.amazon.com/checkout/2008-11-30/"><CallbackReferenceId>1-dfe8b93d-160e-4513-89de-0534d816463e</CallbackReferenceId><OrderCalculationCallbacks><CalculateTaxRates>true</CalculateTaxRates>
+<CalculatePromotions>false</CalculatePromotions>
+<CalculateShippingRates>true</CalculateShippingRates>
+<OrderCallbackEndpoint>https://webapi.zoovy.com/webapi/amazon/callback.cgi/u=smbsi/prt=0/c=JfDnYc9RoX1z0wx0zpbvlV0mK</OrderCallbackEndpoint>
+<ProcessOrderOnCallbackFailure>false</ProcessOrderOnCallbackFailure>
+</OrderCalculationCallbacks><ClientRequestId>JfDnYc9RoX1z0wx0zpbvlV0mK</ClientRequestId><IntegratorId>ZOOVY</IntegratorId><IntegratorName>ZOOVY</IntegratorName><Cart>
+<Items>
+<Item><SKU>OCCINTERLACEDISCT</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>  OCC Lip Tar Discontinued Packaging - Interlace</Title>
+<Price><Amount>8.00</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>1</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+<Item><SKU>OCCTONEDISCT</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>  OCC Lip Tar Discontinued Packaging - Tone</Title>
+<Price><Amount>8.00</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>1</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+<Item><SKU>OCCCLEARDISCT</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>OCC Lip Tar Discontinued Packaging - Clear - A MUST HAVE!!!</Title>
+<Price><Amount>8.00</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>1</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+<Item><SKU>OCCMELANGEDISCT</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>  OCC Lip Tar Discontinued Packaging - Melange</Title>
+<Price><Amount>8.00</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>1</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+<Item><SKU>OCCLIPTARGRANDMA</SKU>
+<MerchantId>AS99Q4LOPAXSN</MerchantId>
+<Title>  OCC Lip Tar - Grandma</Title>
+<Price><Amount>16.00</Amount><CurrencyCode>USD</CurrencyCode>
+</Price><Quantity>1</Quantity>
+<Weight><Amount>0.12</Amount>
+<Unit>lb</Unit>
+</Weight>
+<FulfillmentNetwork>MERCHANT</FulfillmentNetwork>
+</Item>
+</Items>
+
+</Cart><CallbackOrders><CallbackOrder><Address><AddressId>jmmknxmoko</AddressId></Address><CallbackOrderItems><CallbackOrderItem><SKU>OCCINTERLACEDISCT</SKU></CallbackOrderItem><CallbackOrderItem><SKU>OCCTONEDISCT</SKU></CallbackOrderItem><CallbackOrderItem><SKU>OCCCLEARDISCT</SKU></CallbackOrderItem><CallbackOrderItem><SKU>OCCMELANGEDISCT</SKU></CallbackOrderItem><CallbackOrderItem><SKU>OCCLIPTARGRANDMA</SKU></CallbackOrderItem></CallbackOrderItems></CallbackOrder></CallbackOrders></OrderCalculationsRequest><OrderCalculationsResponse><![CDATA[The OrderCalculationsResponse provided was not returned or was considered invalid. Please consult the documentation for the valid response format.]]></OrderCalculationsResponse></OrderCalculationsError>',
+          'Timestamp' => '2012-10-25T00:22:15.330Z',
+          'Signature' => 'wrhRXg9ltrLnDSuyOIKLBTYkvIY=',
+          '_c' => 'JfDnYc9RoX1z0wx0zpbvlV0mK',
+          'UUID' => 'a901d565-0e07-4276-82f8-3d51d4f4f9e1'
+        );
+
+
+my ($udbh) = &DBINFO::db_user_connect($v{'_u'});
+
 if ($v{'order-calculations-error'}) {
 	## hmm.. maybe generate a ticket?
 	&ZOOVY::confess($v{'_u'},"AMAZON CBA CALLBACK ERROR".Dumper(\%ENV,\%v));
@@ -70,11 +143,32 @@ use Data::Dumper;
 
 ### to create the inbound signature we:
 ###	concatenate UUID and timestamp calculate HMAC_SHA1 using your access key id and then URI encode it.
-print STDERR Dumper($v{'order-calculations-request'});
+## print STDERR Dumper($v{'order-calculations-request'});
+
 my ($x) = XML::Simple::XMLin($v{'order-calculations-request'}, ForceArray=>1);
 
+my ($CART2) = CART2->new_persist($v{'_u'},int($v{'_prt'}),$v{'_c'},'create'=>0);
+if (not defined $CART2) {
+	my ($MID) = int(&ZOOVY::resolve_mid($v{'_u'}));
+	my ($qtCARTID) = $udbh->quote($v{'_c'});
+	my $pstmt = "select CART from AMZPAY_ORDER_LOOKUP where MID=$MID and CARTID=$qtCARTID";
+	print STDERR "$pstmt\n";
+	my ($xml) = $udbh->selectrow_array($pstmt);
+	print "XML:$xml\n";
+	if ($xml ne '') {
+		$CART2 = CART2->new_memory()->from_xml($xml,CART2::v(),"amzcba-callback"); 
+		if (ref($CART2) eq 'CART2') { 
+			$CART2->add_history("CBA Had to recover from XML backu");
+			}
+		}
+	}
 
-my ($CART2) = CART2->new_persist($v{'_u'},int($v{'_p'}),$v{'_c'});
+
+
+print Dumper($CART2);
+die();
+
+
 my $address = $x->{'CallbackOrders'}->[0]->{'CallbackOrder'}->[0]->{'Address'}->[0];
 $CART2->in_set('ship/address1',$address->{'AddressFieldOne'}->[0]);
 $CART2->in_set('ship/postal', $address->{'PostalCode'}->[0]);
@@ -229,6 +323,7 @@ $xml .= "</OrderCalculationsResponse>\n";
 ## 	Signature/aws-accesskey-id - should only be included for signed carts (setting in SellerCentral)
 
 
+
 print "Content-type: text/html; charset=utf-8\n\n";
 
 use URI::Escape;
@@ -280,6 +375,7 @@ sub priceTag {
 	}
 
 
+&DBINFO::db_user_close();
 
 __DATA__
 REQUEST

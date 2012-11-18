@@ -216,10 +216,23 @@ if (($VERB eq 'ZONE-ADD') || ($VERB eq 'ZONE-EDIT')) {
 		}
 	$GTOOLS::TAG{'<!-- ZONE_TITLE -->'} = $zoneref->{'ZONE_TITLE'};
 	$GTOOLS::TAG{'<!-- ZONE_PREFERENCE -->'} = $zoneref->{'ZONE_PREFERENCE'};
-	$GTOOLS::TAG{'<!-- ZONE_TYPES -->'} = &GTOOLS::selectbox(\@zonetype_options,'id'=>'ZONE_TYPE','selected'=>$zoneref->{'ZONE_TYPE'});
+	$GTOOLS::TAG{'<!-- ZONE_TYPES -->'} = "<select name=\"ZONE_TYPE\">";
+	foreach my $row (@zonetype_options) {
+		my ($p,$v) = ();
+		if (ref($row) eq '') {
+			$p = $row; $v = $row;
+			}
+		elsif (ref($row) eq 'ARRAY') {
+			($v,$p) = @{$row};
+			}
+		my $selected = ($v eq $zoneref->{'ZONE_TYPE'})?'selected':'';
+		$GTOOLS::TAG{'<!-- ZONE_TYPES -->'} .= "<option $selected value=\"$v\">$p</option>";
+		}
+	$GTOOLS::TAG{'<!-- ZONE_TYPES -->'} .= "</select>";
+
 	$GTOOLS::TAG{'<!-- BUTTON -->'} = qq~
 		<input type="submit" class="button" value=" Save Warehouse Zone ">
-		<input type="button" onClick="document.location='index.cgi';" class="button" value=" Exit ">
+		<input type="button" onClick="navigateTo('/biz/manage/warehouses/index.cgi');" class="button" value=" Exit ">
 		~;
 
 	if ($VERB eq 'ZONE-ADD') {
@@ -255,9 +268,9 @@ if ($VERB eq '') {
 	foreach my $vref (@{$warehousesref}) {
 		$c .= "<tr>";
 		$c .= "<td>";
-			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Add Zone\" onClick=\"document.location='index.cgi?VERB=ZONE-ADD&CODE=%s'\">",$vref->code());
-			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Edit\" onClick=\"document.location='index.cgi?VERB=EDIT&CODE=%s'\">",$vref->code());
-			$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Delete\" onClick=\"document.location='index.cgi?VERB=DELETE&CODE=%s'\">",$vref->code());
+			$c .= sprintf("<button class=\"minibutton\" onClick=\"navigateTo('/biz/manage/warehouses/index.cgi?VERB=ZONE-ADD&CODE=%s');\">Add Zone</button>",$vref->code());
+			$c .= sprintf("<button class=\"minibutton\" onClick=\"navigateTo('/biz/manage/warehouses/index.cgi?VERB=EDIT&CODE=%s');\">Edit</button>",$vref->code());
+			$c .= sprintf("<button class=\"minibutton\" onClick=\"navigateTo('/biz/manage/warehouses/index.cgi?VERB=DELETE&CODE=%s');\">Delete</button>",$vref->code());
 		$c .= "</td>";
 		$c .= sprintf("<td>%s</td>",$vref->code());
 		$c .= "<td>WAREHOUSE</td>";
@@ -277,8 +290,8 @@ if ($VERB eq '') {
 			foreach my $zoneref (@{$zonesar}) {
 				$c .= "<tr>";
 				$c .= "<td align=\"right\">";
-				$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Edit\" onClick=\"document.location='index.cgi?VERB=ZONE-EDIT&CODE=%s&ZONE_CODE=%s'\">",$vref->code(),$zoneref->{'ZONE_CODE'});
-				$c .= sprintf("<input type=\"button\" class=\"minibutton\" value=\"Delete\" onClick=\"document.location='index.cgi?VERB=ZONE-DELETE&CODE=%s&ZONE_CODE=%s'\">",$vref->code(),$zoneref->{'ZONE_CODE'});
+				$c .= sprintf("<button class=\"minibutton\" onClick=\"navigateTo('/biz/manage/warehouses/index.cgi?VERB=ZONE-EDIT&CODE=%s&ZONE_CODE=%s');\">Edit</button>",$vref->code(),$zoneref->{'ZONE_CODE'});
+				$c .= sprintf("<button class=\"minibutton\" onClick=\"navigateTo('/biz/manage/warehouses/index.cgi?VERB=ZONE-DELETE&CODE=%s&ZONE_CODE=%s');\">Delete</button>",$vref->code(),$zoneref->{'ZONE_CODE'});
 				$c .= "</td>";
 				$c .= "<td>$zoneref->{'WAREHOUSE_CODE'}*$zoneref->{'ZONE_CODE'}</td><td>$zoneref->{'ZONE_TYPE'}</td><td>(Zone) $zoneref->{'ZONE_TITLE'}</td>";
 				$c .= "</tr>";
@@ -301,9 +314,10 @@ $c
 	}
 
 my @TABS = ();
-push @TABS, { name=>'Current Warehouses', link=>"index.cgi", selected=>(($VERB eq '')?1:0) };
-push @TABS, { name=>'New Warehouses', link=>"index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
+push @TABS, { name=>'Current Warehouses', link=>"/biz/manage/warehouses/index.cgi", selected=>(($VERB eq '')?1:0) };
+push @TABS, { name=>'New Warehouses', link=>"/biz/manage/warehouses/index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
 
 &DBINFO::db_user_close();
 &GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);
+
 

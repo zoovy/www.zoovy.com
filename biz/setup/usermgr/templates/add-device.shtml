@@ -1,7 +1,7 @@
 <!-- SETUP_TAB -->
 
 <center>
-<form id="thisFrm" name="thisFrm" method="POST" action="index.cgi">
+<form id="thisFrm" name="thisFrm" method="POST" action="/biz/setup/usermgr/index.cgi">
 <input type="hidden" name="VERB" value="REGISTER-DEVICE">
 <table class="zoovytable">
 	<tr class="zoovytableheader">

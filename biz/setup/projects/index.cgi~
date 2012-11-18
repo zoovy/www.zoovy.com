@@ -71,98 +71,98 @@ if ($VERB eq 'PROJECT-BROWSE') {
 	}
 
 
-if ($VERB eq 'PROJECT-UPLOAD') {
-	my ($ID) = int($ZOOVY::cgiv->{'ID'});
-	my $fh = $q->param('upfile');
-	my $BUFFER = '';
-	my $filename = $fh;
-	my $ERROR = '';
-
-	print STDERR "FILENAME: $filename\n";
-	if ($filename =~ /\.zip$/i) {
-		$VERB = 'PROJECT-UPLOADZIP';
-		}
-
-	if ($ID<=0) {
-		push @MSGS, "PROJECT ID is not defined!";
-		}
-	elsif (not defined $fh) {
-		## crap not defined
-		push @MSGS, "ERROR|Invalid file handle";
-		}
-	elsif (defined $fh) {
-		while (<$fh>) { $BUFFER .= $_; }
-		}
-
-
-	my ($P) = PROJECT->new($USERNAME,ID=>$ID);
-	my ($UUID) = $P->uuid();
-	push @MSGS, "WARN|UUID:$UUID";
-	
-	my $USERPATH = &ZOOVY::resolve_userpath($USERNAME);
-	if (! -d "$USERPATH/PROJECTS") {
-		mkdir("$USERPATH/PROJECTS");
-		chmod(0777, "$USERPATH/PROJECTS");
-		}
-	if (! -d "$USERPATH/PROJECTS/$UUID") {
-		mkdir("$USERPATH/PROJECTS/$UUID");
-		chmod(0777, "$USERPATH/PROJECTS/$UUID");
-		}
-
-	if ($VERB eq 'PROJECT-UPLOAD') {
-		## convert S:\path\to\file.jpg to just file.jpg
-		if (index($filename,'\\')>=0) { $filename = substr($filename,rindex($filename,'\\')+1); }
-		## convert dir/file.jpg to just file.jpg
-		if (index($filename,'/')>=0) { $filename = substr($filename,rindex($filename,'/')+1); }
-		$filename = lc($filename);
-
-		open F, ">$USERPATH/PROJECTS/$UUID/$filename";
-		print F $BUFFER;
-		close F;
-
-		push @MSGS, "SUCCESS|wrote file /$filename";
-		}	
-	elsif ($VERB eq 'PROJECT-UPLOADZIP') {
-		open F, ">/tmp/zipupload.$$.zip";
-		print F $BUFFER;
-		close F;
-
-		my $zip = Archive::Zip->new();
-		die 'read error' if $zip->read( "/tmp/zipupload.$$.zip" ) != $Archive::Zip::AZ_OK;
-
-		my $ROOT = '';
-		my $filenamewithoutzip = $filename;
-		$filenamewithoutzip =~ s/\.zip$//gsi;
-		foreach my $member ($zip->members()) {
-			next if ($ROOT ne '');
-			if ($member->fileName() =~ /^$filenamewithoutzip\//) { $ROOT = $filenamewithoutzip; }
-			}
-		if ($ROOT ne '') {
-			push @MSGS, "WARN|Guessed ROOT directory in Zip: $ROOT"; 
-			}
-
-		my ($r) = $zip->extractTree( $ROOT, "$USERPATH/PROJECTS/$UUID/" );
-
-		my $c = '';
-		foreach my $member ($zip->members()) {
-			# print Dumper($member);
-
-			# my $BUF = $zip->contents( $member ); 
-			# print $member->fileName()." length: ".length($foo)." []\n";
-			my ($filename) = $member->fileName();
-			if ($ROOT ne '') { $filename =~ s/^$ROOT\//\//s; }
-			push @MSGS, "SUCCESS|Decompressed $filename";
-			}
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = $c;
-		}
-	else {
-		push @MSGS, "ERROR|Sorry, your files were not uploaded";
-		}
-
-	$VERB = 'PROJECT-EDIT';
-	}
-
-
+#if ($VERB eq 'PROJECT-UPLOAD') {
+#	my ($ID) = int($ZOOVY::cgiv->{'ID'});
+#	my $fh = $q->param('upfile');
+#	my $BUFFER = '';
+#	my $filename = $fh;
+#	my $ERROR = '';
+#
+#	print STDERR "FILENAME: $filename\n";
+#	if ($filename =~ /\.zip$/i) {
+#		$VERB = 'PROJECT-UPLOADZIP';
+#		}
+#
+#	if ($ID<=0) {
+#		push @MSGS, "PROJECT ID is not defined!";
+#		}
+#	elsif (not defined $fh) {
+#		## crap not defined
+#		push @MSGS, "ERROR|Invalid file handle";
+#		}
+#	elsif (defined $fh) {
+#		while (<$fh>) { $BUFFER .= $_; }
+#		}
+#
+#
+#	my ($P) = PROJECT->new($USERNAME,ID=>$ID);
+#	my ($UUID) = $P->uuid();
+#	push @MSGS, "WARN|UUID:$UUID";
+#	
+#	my $USERPATH = &ZOOVY::resolve_userpath($USERNAME);
+#	if (! -d "$USERPATH/PROJECTS") {
+#		mkdir("$USERPATH/PROJECTS");
+#		chmod(0777, "$USERPATH/PROJECTS");
+#		}
+#	if (! -d "$USERPATH/PROJECTS/$UUID") {
+#		mkdir("$USERPATH/PROJECTS/$UUID");
+#		chmod(0777, "$USERPATH/PROJECTS/$UUID");
+#		}
+#
+#	if ($VERB eq 'PROJECT-UPLOAD') {
+#		## convert S:\path\to\file.jpg to just file.jpg
+#		if (index($filename,'\\')>=0) { $filename = substr($filename,rindex($filename,'\\')+1); }
+#		## convert dir/file.jpg to just file.jpg
+#		if (index($filename,'/')>=0) { $filename = substr($filename,rindex($filename,'/')+1); }
+#		$filename = lc($filename);
+#
+#		open F, ">$USERPATH/PROJECTS/$UUID/$filename";
+#		print F $BUFFER;
+#		close F;
+#
+#		push @MSGS, "SUCCESS|wrote file /$filename";
+#		}	
+#	elsif ($VERB eq 'PROJECT-UPLOADZIP') {
+#		open F, ">/tmp/zipupload.$$.zip";
+#		print F $BUFFER;
+#		close F;
+#
+#		my $zip = Archive::Zip->new();
+#		die 'read error' if $zip->read( "/tmp/zipupload.$$.zip" ) != $Archive::Zip::AZ_OK;
+#
+#		my $ROOT = '';
+#		my $filenamewithoutzip = $filename;
+#		$filenamewithoutzip =~ s/\.zip$//gsi;
+#		foreach my $member ($zip->members()) {
+#			next if ($ROOT ne '');
+#			if ($member->fileName() =~ /^$filenamewithoutzip\//) { $ROOT = $filenamewithoutzip; }
+#			}
+#		if ($ROOT ne '') {
+#			push @MSGS, "WARN|Guessed ROOT directory in Zip: $ROOT"; 
+#			}
+#
+#		my ($r) = $zip->extractTree( $ROOT, "$USERPATH/PROJECTS/$UUID/" );
+#
+#		my $c = '';
+#		foreach my $member ($zip->members()) {
+#			# print Dumper($member);
+#
+#			# my $BUF = $zip->contents( $member ); 
+#			# print $member->fileName()." length: ".length($foo)." []\n";
+#			my ($filename) = $member->fileName();
+#			if ($ROOT ne '') { $filename =~ s/^$ROOT\//\//s; }
+#			push @MSGS, "SUCCESS|Decompressed $filename";
+#			}
+#		$GTOOLS::TAG{'<!-- MESSAGE -->'} = $c;
+#		}
+#	else {
+#		push @MSGS, "ERROR|Sorry, your files were not uploaded";
+#		}
+#
+#	$VERB = 'PROJECT-EDIT';
+#	}
+#
+#
 
 
 if ($VERB eq 'PROJECT-EDIT') {
@@ -294,7 +294,7 @@ if ($VERB eq '') {
 <td>$row->{'TITLE'}</td>
 <td>$row->{'UUID'}</td>
 <td>$row->{'UPDATED_TS'}</td>
-<td>Callback URL: $link/td>
+<td>Callback URL: $link</td>
 </tr>\n";
 			}
 		$GTOOLS::TAG{'<!-- PROJECTS -->'} = $c;

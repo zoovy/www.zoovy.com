@@ -1,9 +1,9 @@
 <!-- UTILITIES_TAB -->
 <center>
 
-<form name="thisFrm" action="index.cgi" method="POST">
-	<input type="hidden" name="VERB" value="SAVE_SUBLIST">
-	<input type="hidden" name="ID" value="<!-- ID -->">
+<form id="thisFrm" name="thisFrm" action="/biz/manage/newsletters/index.cgi" method="POST">
+	<input type="hidden" id="VERB" name="VERB" value="SAVE_SUBLIST">
+	<input type="hidden" id="ID" name="ID" value="<!-- ID -->">
 
 
 <br>
@@ -20,10 +20,11 @@
 
 <b>Customer Email(s):</b><br>
 <input type="textbox" name="EMAIL"> 
-<input class="button" onClick="thisFrm.VERB.value='ADD_SUBLIST_RECIPIENT'; thisFrm.submit();" 
-	type="button" value="Add" >
-<input class="button" onClick="thisFrm.VERB.value='REMOVE_SUBLIST_RECIPIENT'; thisFrm.submit();" 
-	type="button" value="Remove" >
+<button class="button" 
+	onClick="jQuery('#VERB').val('ADD_SUBLIST_RECIPIENT'); jQuery('#thisFrm').submit();">Add</button>
+<button class="button" 
+	onClick="jQuery('#VERB').val('REMOVE_SUBLIST_RECIPIENT'); jQuery('#thisFrm').submit();">Remove</button>
+
 <hr>
 
 Current Subscribers:<br>
@@ -37,3 +38,4 @@ Current Subscribers:<br>
 </table>
 
 </form>
+</center>

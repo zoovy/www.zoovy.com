@@ -49,7 +49,7 @@
 	
 	<center>
 		<input type="submit" value=" Save " class="button showLoadingModal">
-		<input type="button" value=" Exit " class="button" onClick="document.location='/biz/setup';">
+		<input type="button" value=" Exit " class="button" onClick="navigateTo('/biz/setup');">
 	</center>
 
 	<br>	

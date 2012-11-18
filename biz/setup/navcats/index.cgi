@@ -41,8 +41,8 @@ else {
 		jquery=>1,
 		zmvc=>1,
 		file=>$template_file, header=>1, bc=>[
-		{ name=>'Setup', link=>'http://www.zoovy.com/biz/setup', },
-		{ name=>'Manage Navcats', link=>'http://www.zoovy.com/biz/setup/navcats', }
+		{ name=>'Setup', link=>'/biz/setup/index.cgi', },
+		{ name=>'Manage Navcats', link=>'/biz/setup/navcats/index.cgi', }
 		]
 		);
 	}

@@ -27,11 +27,11 @@ $GTOOLS::TAG{'<!-- PROFILE -->'} = &ZWEBSITE::prt_get_profile($USERNAME,$PRT);
 $GTOOLS::TAG{'<!-- GUID -->'} = BATCHJOB::make_guid();
 
 my @BC = ();
-push @BC, { name=>"Manage", link=>"/biz/manage" };
-push @BC, { name=>"Snapshots", link=>"/biz/manage/snapshots" };
+push @BC, { name=>"Manage", link=>"/biz/manage/index.pl" };
+push @BC, { name=>"Snapshots", link=>"/biz/manage/snapshots/index.cgi" };
 
 my @TABS = ();
-push @TABS, { name=>"Create", link=>"index.cgi?VERB=", selected=>($VERB eq '')?1:0,  };
+push @TABS, { name=>"Create", link=>"/biz/manage/snapshots/index.cgi?VERB=", selected=>($VERB eq '')?1:0,  };
 
 my $c = '';
 my ($lf) = LUSER::FILES->new($USERNAME);

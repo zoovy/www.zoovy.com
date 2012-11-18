@@ -72,13 +72,13 @@
 	</tr>
 	<tr>
 		<td valign="top">RULES</td>
-		<td valign="top" align="center">[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=USPS_DOM">Rules</a>]</td>
-		<td valign="top" align="center">[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=USPS_INT">Rules</a>]</td>
+		<td valign="top" align="center">[<a href="/biz/setup/shipping/rulebuilder.cgi?method=USPS_DOM">Rules</a>]</td>
+		<td valign="top" align="center">[<a href="/biz/setup/shipping/rulebuilder.cgi?method=USPS_INT">Rules</a>]</td>
 	</tr>
 	<tr>
 		<td align=center colspan=3>
 <input type=submit class=button name="ACTION-SAVE-USPS" value=" Save ">
-<input type=button class=button onClick="document.location='index.cgi';" value=" Exit ">
+<input type=button class=button onClick="navigateTo('/biz/setup/shipping/index.cgi');" value=" Exit ">
 		</td>
 	</tr>
 </table>

@@ -9,7 +9,7 @@
 
 <font color="red"><!-- MESSAGE --></font>
 
-<form action="upsapi.cgi" method="POST">
+<form action="/biz/setup/upsapi.cgi" method="POST">
 <input type="hidden" name="VERB" value="register">
 <input type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
 

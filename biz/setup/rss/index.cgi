@@ -64,7 +64,7 @@ if ($ID eq '') { $ID = $ZOOVY::cgiv->{'ID'}; }
 
 if ($VERB eq 'SAVE') {
 	
-	$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<div class=\"success\">Changes have been saved</div>";
+	push @MSGS, "SUCCESS|+Changes have been saved";
 
 	my $feed_code = uc($ZOOVY::cgiv->{'feed_code'});
 	$feed_code =~ s/[^A-Z0-9]+//gs; 	# strip non-alpha num
@@ -87,6 +87,8 @@ if ($VERB eq 'SAVE') {
 	$info{'image_w'} = $ZOOVY::cgiv->{'image_w'};
 	$info{'translation'} = $ZOOVY::cgiv->{'translation'};
 
+	my $COUPON = sprintf("%s",$ZOOVY::cgiv->{'coupon'});
+
 	my $pstmt = &DBINFO::insert($udbh,'CAMPAIGNS',{
 		USERNAME=>$USERNAME,
 		MID=>$MID,
@@ -95,7 +97,7 @@ if ($VERB eq 'SAVE') {
 		NAME=>$ZOOVY::cgiv->{'feed_title'},
 		SUBJECT=>$ZOOVY::cgiv->{'feed_subject'},
 		# SCHEDULE=>$ZOOVY::cgiv->{'schedule'},
-		COUPON=>$ZOOVY::cgiv->{'coupon'},
+		COUPON=>$COUPON,
 		PROFILE=>$ZOOVY::cgiv->{'profile'},
 		PRT=>$PRT,
 		DATA=>&ZTOOLKIT::buildparams(\%info),
@@ -160,7 +162,7 @@ if ($VERB eq '') {
 		$c .= "<td>$hashref->{'CPG_CODE'}</td>";
 		$c .= "<td>$hashref->{'TITLE'}</td>";
 		$c .= "<td>";
-		$c .= " <a href=\"index.cgi?VERB=EDIT&ID=$hashref->{'CPG_CODE'}\">[Edit]</a> ";
+		$c .= " <a href=\"/biz/setup/rss/index.cgi?VERB=EDIT&ID=$hashref->{'CPG_CODE'}\">[Edit]</a> ";
 		# $c .= " <a href=\"index.cgi?VERB=NUKE&ID=$hashref->{'CPG_CODE'}\">[Delete]</a> ";
 		$c .= "</td>";
 		$c .= "<td><a target=\"_rss\" href=\"http://static.zoovy.com/rss/$USERNAME/$hashref->{'CPG_CODE'}.xml\">[Link]</a></td>";
@@ -191,7 +193,7 @@ if (($VERB eq 'CREATE') || ($VERB eq 'EDIT')) {
 		}
 	else {
 		$GTOOLS::TAG{'<!-- BUTTON -->'} .= q~<input type="submit" value=" Save " class="button">~;
-		$GTOOLS::TAG{'<!-- BUTTON -->'} .= q~&nbsp; <input type="button" onClick="document.thisFrm.VERB.value='NUKE'; document.thisFrm.submit();" value=" Delete " class="button">~;
+		$GTOOLS::TAG{'<!-- BUTTON -->'} .= qq~&nbsp; <button class="button" onClick="navigateTo('/biz/setup/rss/index.cgi?VERB=NUKE&ID=$ID');">Delete</button>~;
 		}
 
 	my $c = '';	
@@ -270,7 +272,7 @@ my @TABS = (
 
 $GTOOLS::TAG{'<!-- ID -->'} = $ID;
 
-&GTOOLS::output( file=>$template_file, header=>1, tabs=>\@TABS, bc=>\@BC );
+&GTOOLS::output( msgs=>\@MSGS, file=>$template_file, header=>1, tabs=>\@TABS, bc=>\@BC );
 &DBINFO::db_user_close();
 
 

@@ -86,7 +86,7 @@ coupon placed in their cart.</div>
    </tr>
 	<tr>
 		<td class='table_top' align="center">
-		<input type="button" name="BUTTON" value="Exit" class="button" onClick="jQuery('#thisFrm').showLoading(); document.location='index.cgi';">
+		<input type="button" name="BUTTON" value="Exit" class="button" onClick="jQuery('#thisFrm').showLoading(); navigateTo('/biz/manage/newsletter/index.cgi');">
 		&nbsp;&nbsp;
 		<input type="SUBMIT" name="BUTTON" value="Save Progress" class="button" onClick="jQuery('#thisFrm').showLoading();">
 		&nbsp;&nbsp; 

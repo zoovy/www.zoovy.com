@@ -1,17 +1,11 @@
-<html>
-<head>
-	<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
-</head>
-<body>
+<!-- ORDER_TAB -->
+
 <center>
 <table>
 <tr>
 <td align="center">
 
 Tracking Information for <!-- ID --><br>
-<!-- MESSAGE -->
-<br>
-</font>
 
 <form action="track.cgi">
 <input type="hidden" name="CMD" value="SAVE">
@@ -75,7 +69,7 @@ Tracking Information for <!-- ID --><br>
 		<td colspan='10'>
 		<center>
 		<input type="submit" value=" Save " class="button">
-		<input type="button" value=" Exit " class="button" onClick="document.location='view.cgi?ID=<!-- ID -->';">
+		<input type="button" value=" Exit " class="button" onClick="navigateTo('/biz/orders/view.cgi?ID=<!-- ID -->');">
 		</center>
 <div class="hint">
 HINT: When you use Zoovys Desktop Order Manager to print out USPS Postage, UPS
@@ -90,11 +84,5 @@ automatically imported -- never re-enter data again!
 <br>
 <br>
 
-
-
 </form>
 
-</td></tr></table>
-
-</body>
-</html>

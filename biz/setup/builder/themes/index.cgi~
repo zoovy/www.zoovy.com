@@ -3,10 +3,11 @@
 use lib "/httpd/modules";
 use strict;
 
-require ZOOVY;
-require GTOOLS;
 require Data::Dumper;
 require strict;
+require ZOOVY;
+require GTOOLS;
+require SITE;
 require ZWEBSITE;
 require TOXML;
 require TOXML::UTIL;
@@ -114,27 +115,27 @@ height="30"></td>
 	<table width="100%" cellspacing=4 cellpadding=0>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img1" id="img1" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=MYTHEMES&SUBTYPE=$SUBTYPE&NS=$NS">My Themes</td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=MYTHEMES&SUBTYPE=$SUBTYPE&NS=$NS">My Themes</td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img2" id="img2" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=FAVORITES&SUBTYPE=$SUBTYPE&NS=$NS">Community Favorites</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=FAVORITES&SUBTYPE=$SUBTYPE&NS=$NS">Community Favorites</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img3" id="img3" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=RECENT&SUBTYPE=$SUBTYPE&NS=$NS">Recently Added</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=RECENT&SUBTYPE=$SUBTYPE&NS=$NS">Recently Added</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img4" id="img4" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=STAFF&SUBTYPE=$SUBTYPE&NS=$NS">Staff Favorites</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=STAFF&SUBTYPE=$SUBTYPE&NS=$NS">Staff Favorites</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=RANKED&SUBTYPE=$SUBTYPE&NS=$NS">Best Ranked</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=RANKED&SUBTYPE=$SUBTYPE&NS=$NS">Best Ranked</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=SHOWALL&SUBTYPE=$SUBTYPE&NS=$NS">Show All</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=SHOWALL&SUBTYPE=$SUBTYPE&NS=$NS">Show All</a></td>
 	</tr>
 ~;
 
@@ -733,18 +734,14 @@ sub format {
 		
 		$SITE::CONFIG = $tinfo;
 		$SITE::CONFIG->{'%SITEBUTTONS'} = &ZTOOLKIT::parseparams($tinfo->{'SITEBUTTONS'});
-		require TOXML::RENDER;
-		my %SREF = { 
-			'_USERNAME'=>$USERNAME,
-			};
+		my ($SITE) = SITE->new($USERNAME,PRT=>$PRT);
+
 		$out .= "<div>";
 		foreach my $b ('add_to_cart','cancel','back','forward','|','empty_cart','checkout','continue_shopping','update_cart') {
 			if ($b eq '|') { $out .= "<br>"; }
 			next if ($b eq '|');
 			$out .= "<!-- $b -->";
-			$out .= TOXML::RENDER::RENDER_SITEBUTTON({
-				button=>$b,
-				},undef,\%SREF);
+			$out .= TOXML::RENDER::RENDER_SITEBUTTON({button=>$b},undef,$SITE);
 			$out .= " ";
 			}
 		$out .= "</div>";

@@ -53,7 +53,7 @@ with the _setDomainName, _setAllowHash, and _setAllowLinker to the appropriate v
 </div>
 <br>
 <input class="button" type="submit" value=" Save ">
-<input class="button" type="button" onClick="document.location='index.cgi';" value=" Back ">
+<input class="button" type="button" onClick="navigateTo('/biz/setup/analytics/index.cgi');" value=" Back ">
 <Br>
 <input type="hidden" name="zmsjs" value="<!-- ZMSJS -->">
 </form>

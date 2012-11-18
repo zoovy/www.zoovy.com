@@ -295,9 +295,11 @@ if ($VERB eq 'SAVECARD') {
 		## never send email when we don't have a customer account, or we created multiple giftcards.
 		}
 	elsif ($ZOOVY::cgiv->{'sendemail'} eq 'on') {
-		require SITE::EMAILS;
+		require SITE;
 		my ($profile) = &ZOOVY::prt_to_profile($USERNAME,$PRT);
-		my ($se) = SITE::EMAILS->new($USERNAME,NS=>$profile,PRT=>$PRT);
+		my ($SITE) = SITE->new($USERNAME,'PRT'=>$PRT,'PROFILE'=>$profile);
+		require SITE::EMAILS;
+		my ($se) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE);
 		my ($ERR) = $se->sendmail('AGIFT_NEW',CID=>$CID);
 		if ($ERR) {
 			push @MSGS, "ERROR|Could not send email (REASON: $ERR)";

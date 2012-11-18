@@ -8,9 +8,9 @@ use ZOOVY;
 my ($USERNAME,$FLAGS,$MID,$LUSER) = &ZOOVY::authenticate("/biz",6);
 
 my @TABS = ();
-push @TABS, { name=>'View All', link=>'index.cgi?VERB=' };
-push @TABS, { name=>'Create Coupon', link=>'index.cgi?VERB=CREATE' };
-push @TABS, { name=>'Products', link=>'index.cgi?VERB=PRODUCTS' };
+push @TABS, { name=>'View All', link=>'/biz/manage/coupon/index.cgi?VERB=' };
+push @TABS, { name=>'Create Coupon', link=>'/biz/manage/coupon/index.cgi?VERB=CREATE' };
+push @TABS, { name=>'Products', link=>'/biz/manage/coupon/index.cgi?VERB=PRODUCTS' };
 
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $template_file = 'index.shtml';

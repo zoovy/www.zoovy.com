@@ -12,6 +12,8 @@ if (not defined $LU) { exit; }
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
+my @MSGS = ();
+
 my $template_file = '';
 my @BC = (
 	{ link=>'/biz/setup', name=>'Setup' },
@@ -92,7 +94,8 @@ if ($VERB eq 'SAVE') {
 		CPG_CODE=>$feed_code, CPG_TYPE=>'RSS',
 		NAME=>$ZOOVY::cgiv->{'feed_title'},
 		SUBJECT=>$ZOOVY::cgiv->{'feed_subject'},
-		SCHEDULE=>$ZOOVY::cgiv->{'schedule'},
+		# SCHEDULE=>$ZOOVY::cgiv->{'schedule'},
+		COUPON=>$ZOOVY::cgiv->{'coupon'},
 		PROFILE=>$ZOOVY::cgiv->{'profile'},
 		PRT=>$PRT,
 		DATA=>&ZTOOLKIT::buildparams(\%info),
@@ -126,6 +129,7 @@ if ($VERB eq 'EDIT') {
 	$ZOOVY::cgiv->{'max_products'} = $info->{'max_products'};
 	$ZOOVY::cgiv->{'cycle_interval'} = $info->{'cycle_interval'};
 	$ZOOVY::cgiv->{'schedule'} = $dbinfo->{'SCHEDULE'};
+	$ZOOVY::cgiv->{'coupon'} = $dbinfo->{'COUPON'};
 	$ZOOVY::cgiv->{'profile'} = $dbinfo->{'PROFILE'};
 	$ZOOVY::cgiv->{'list'} = $info->{'list'};
 	$ZOOVY::cgiv->{'translation'} = $info->{'translation'};
@@ -227,6 +231,7 @@ if (($VERB eq 'CREATE') || ($VERB eq 'EDIT')) {
 		$c .= "<option $selected value=\"$s\">".(($s eq '')?'-- None --':$s)."</option>\n"; 
 		}
 	$GTOOLS::TAG{'<!-- SCHEDULES -->'} = $c;
+	$GTOOLS::TAG{'<!-- COUPON -->'} = ($ZOOVY::cgiv->{'COUPON'})?&ZOOVY::incode($ZOOVY::cgiv->{'COUPON'}):'';
 
 
 	$c = '';

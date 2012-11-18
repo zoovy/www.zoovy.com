@@ -8,40 +8,40 @@
 	<tr><td class='zoovytableheader'>Plugins</td></tr>	
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=BUYSAFE-AUTO">Buysafe Website Bonding</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=BUYSAFE-AUTO">Buysafe Website Bonding</a><br>
 		</td>
 	</tr>
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=FACEBOOK-APP">Facebook App/Authentication</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=FACEBOOK-APP">Facebook App/Authentication</a><br>
 		</td>
 	</tr>
 <!--
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=GOOGAPI">Google API Access</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=GOOGAPI">Google API Access</a><br>
 		</td>
 	</tr>
 -->
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=UPIC">UPIC Discount Shipping Insurance</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=UPIC">UPIC Discount Shipping Insurance</a><br>
 		</td>
 	</tr>
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=KOUNT">KOUNT Fraud Screen</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=KOUNT">KOUNT Fraud Screen</a><br>
 		</td>
 	</tr>
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=DEBUG">Debugger</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=DEBUG">Debugger</a><br>
 		</td>
 	</tr>
 <!--
 	<tr>
 		<td class="r0">
-		- <a href="index.cgi?VERB=BLINKLOGIC">BlinkLogic Business Intelligence</a><br>
+		- <a href="/biz/setup/analytics/index.cgi?VERB=BLINKLOGIC">BlinkLogic Business Intelligence</a><br>
 		</td>
 	</tr>
 -->
@@ -68,7 +68,7 @@
 </table>
 
 <center>
-<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+<button class="button" onClick="navigateTo('/biz/syndication/index.cgi');">Exit</button>
 </center>
 
 </center>

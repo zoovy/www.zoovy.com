@@ -244,7 +244,13 @@ my $HEADER = $ZOOVY::cgiv->{'HEADER'};
 ## by default, always show tabs.
 if (not defined $HEADER) { $HEADER++; }
 
+my @BC = ();
+push @BC, { name=>"Batch Job", };
+push @BC, { name=>"Job ID: ".$bj->id(), link=>"/biz/batch/view.cgi?VERB=VIEW&JOB=".$bj->id() };
+
+
 &GTOOLS::output(file=>'index.shtml',
+	'bc'=>\@BC,
 	blank=>($HEADER==0)?1:0,
 	jquery=>1,
 	header=>1,

@@ -388,6 +388,7 @@ if ($VERB eq 'SYNDICATION') {
 	}
 
 if ($VERB eq 'BATCH-SEARCH-NOW') {
+	push @BC, { 'name'=>'View Report' };
 	my $JOBID = $ZOOVY::cgiv->{'JOBID'};
 	my ($bj) = BATCHJOB->new($USERNAME,$JOBID);
 	if ((not defined $bj) || (ref($bj) ne 'BATCHJOB') || ($bj->id()==0)) {
@@ -417,7 +418,7 @@ if ($VERB eq 'BATCH-SEARCH-NOW') {
 
 		if ($bj->{'BATCH_EXEC'} eq 'REPORT') {
 			$GTOOLS::TAG{'<!-- VIEW_URL -->'} = qq~
-		<tr><td><input type='button' class='button' onClick="document.location='http://www.zoovy.com/biz/reports/view.cgi?GUID=~.$bj->{'GUID'}.qq~';" value="View Report"></td></tr>
+		<tr><td><button class="button" onClick="navigateTo('/biz/reports/view.cgi?GUID=~.$bj->{'GUID'}.qq~'); return false;">View Report</button></td></tr>
 		~;
 			}
 

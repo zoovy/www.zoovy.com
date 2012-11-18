@@ -20,7 +20,7 @@
 		<tr><td class="zoovytableheader">
 			<table border=0 cellspacing=0 cellpadding=0 width="100%"><tr>
 			<td>Your Domains</td>
-			<td align="right"><input align="right" class="button" type="button" onClick="document.location='index.cgi?ACTION=NEW';" value=" Add New "></td>
+			<td align="right"><input align="right" class="button" type="button" onClick="navigateTo('/biz/setup/domain/index.cgi?ACTION=NEW');" value=" Add New "></td>
 			</tr></table>
 			</td>
 		</tr>
@@ -38,8 +38,8 @@
 	<br>
 
 	<center>
-	<input class="button" type="button" onClick="document.location='/biz/setup';" value=" Exit ">
-	<input class="button" type="button" onClick="document.location='index.cgi';" value=" Refresh ">
+	<input class="button" type="button" onClick="navigateTo('/biz/setup/index.cgi');" value=" Exit ">
+	<input class="button" type="button" onClick="navigateTo('/biz/setup/domain/index.cgi');" value=" Refresh ">
 	
 	</center>
 <br>

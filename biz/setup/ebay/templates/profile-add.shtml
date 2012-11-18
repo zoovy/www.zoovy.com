@@ -32,7 +32,7 @@
 		</tr>
 	</table>
 	<input class="button showLoadingModal" type="submit" value=" Create Profile "> &nbsp;
-	<input class="button showLoadingModal" type="button" value=" Cancel " onClick="document.location='index.cgi?ACTION=PROFILES';"><br>
+	<input class="button showLoadingModal" type="button" value=" Cancel " onClick="navigateTo('/biz/setup/ebay/index.cgi?ACTION=PROFILES');"><br>
 	</form>	
 	</td>
 </tr>

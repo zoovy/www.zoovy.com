@@ -15,7 +15,7 @@
 <table width=500>
 <tr><td>
 <font color='red'><b>WARNING:</b></font><br>
-<form action="index.cgi">
+<form action="/biz/setup/usermgr/index.cgi">
 <input type="hidden" name="ACTION" value="NUKECONFIRM">
 <input type="hidden" name="UID" value="<!-- UID -->">
 <Br>
@@ -31,7 +31,8 @@ Email is permanently lost once the account has been removed.
 <table>
 <tr>
 	<td><input type="submit" value=" Confirm " class="button"></td.
-	<td><input type="button" class="button" value=" Back " onClick="document.location='index.cgi?ACTION=EDIT&UID=<!-- UID -->';"></a></td>
+	<td><input type="button" class="button" value=" Back "
+onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=EDIT&UID=<!-- UID -->');"></a></td>
 </tr>
 </table>
 </center>

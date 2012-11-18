@@ -355,7 +355,7 @@ Remember that these messages may contain HTML, however the HTML will be stripped
 
 			if (($EDITID eq $msgid) && ($lang eq $LANG)) { $r = 'rs'; }	## display as currently selected.
 			$c .= "<tr class=\"$r\">";
-			$c .= "<td valign='top'><a href=\"index.cgi?MODE=$VERB&ACTION=EDIT&LANG=$lang&ID=$msgid\">$msgid</a></td>";
+			$c .= "<td valign='top'><a href=\"/biz/setup/checkout/index.cgi?MODE=$VERB&ACTION=EDIT&LANG=$lang&ID=$msgid\">$msgid</a></td>";
 			$c .= "<td valign='top'>".&ZOOVY::incode($msgref->{'pretty'})."</td>";
 			$c .= "<td valign='top'>".&ZTOOLKIT::pretty_date($msgref->{'created_gmt'},-1)." : $msgref->{'luser'}</td>";
 			$c .= "<td align=center>$lang</td>";
@@ -505,8 +505,8 @@ if ($VERB eq 'CHECKFIELD') {
 
 
 my @TABS = ();
-push @TABS, { selected=>($VERB eq 'GENERAL')?1:0, name=>'Checkout Config', link=>'/biz/setup/checkout', target=>'_top' };
-push @TABS, { selected=>($VERB eq 'CUSTOMERADMIN')?1:0, name=>'Customer Admin Config', link=>'/biz/setup/checkout?MODE=CUSTOMERADMIN', target=>'_top' };
+push @TABS, { selected=>($VERB eq 'GENERAL')?1:0, name=>'Checkout Config', link=>'/biz/setup/checkout/index.cgi', target=>'_top' };
+push @TABS, { selected=>($VERB eq 'CUSTOMERADMIN')?1:0, name=>'Customer Admin Config', link=>'/biz/setup/checkout/index.cgi?MODE=CUSTOMERADMIN', target=>'_top' };
 if ($FLAGS =~ /,WEB,/) {
 	push @TABS, {  selected=>($VERB eq 'CHK-MESSAGES')?1:0, name=>'Checkout Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=CHK-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'SYS-MESSAGES')?1:0, name=>'System Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=SYS-MESSAGES', target=>'_top' };
@@ -514,7 +514,6 @@ if ($FLAGS =~ /,WEB,/) {
 	push @TABS, {  selected=>($VERB eq 'PAGE-MESSAGES')?1:0, name=>'Special Page Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=PAGE-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'CC-MESSAGES')?1:0, name=>'CallCenter Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=CC-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'NEW-MESSAGE')?1:0, name=>'Create Message', link=>'/biz/setup/checkout/index.cgi?MODE=NEW-MESSAGE', target=>'_top' };
-#	push @TABS, {  selected=>($VERB eq 'CHECKFIELD')?1:0, name=>'Checkout Fields', link=>'/biz/setup/checkout/index.cgi?MODE=CHECKFIELD', target=>'_top' };
 	}
 
 &GTOOLS::output(
@@ -526,8 +525,8 @@ if ($FLAGS =~ /,WEB,/) {
    'tabs'=>\@TABS,
 	'msgs'=>\@MSGS,
    'bc'=>[
-      { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      { name=>'Checkout Properties',link=>'http://www.zoovy.com/biz/setup/checkout','target'=>'_top', },
+      { name=>'Setup',link=>'/biz/setup/index.cgi','target'=>'_top', },
+      { name=>'Checkout Properties',link=>'/biz/setup/checkout/index.cgi','target'=>'_top', },
       ],
    );
 

@@ -168,9 +168,9 @@ if ($VERB eq 'COLLECTIONS') {
 		$c .= "<tr class='zoovytableheader'>";
 		$c .= "<td nowrap>";
 		if (scalar(@{$RESULTS})==0) {
-			$c .= qq~<input type='button' class='minibutton' onClick="document.location='index.cgi?VERB=NUKE-COLLECTION&ID=$ref->{'ID'}';" value="Delete">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=NUKE-COLLECTION&ID=$ref->{'ID'}');" value="Delete">~;
 			}
-		$c .= qq~<input type='button' class='minibutton' onClick="document.location='index.cgi?VERB=ADD-GRAPH&collection=$ref->{'ID'}';" value="Add">~;
+		$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=ADD-GRAPH&collection=$ref->{'ID'}');" value="Add">~;
 		$c .= "</td>";		
 		# $c .= "<td>\#$ref->{'ID'}</td>";
 		$c .= "<td width=\"90%\">".&ZOOVY::incode($ref->{'TITLE'})."</td>";
@@ -196,8 +196,8 @@ if ($VERB eq 'COLLECTIONS') {
 			# $c .= "<tr><td colspan=3>".Dumper($ref)."</td></tr>";
 			$c .= "<tr>";
 			$c .= qq~<td width=100>~;
-			$c .= qq~<input type='button' class='minibutton' onClick="document.location='index.cgi?VERB=NUKE-GRAPH&UUID=$ref->{'UUID'}';" value="Delete">~;
-			$c .= qq~<input type='button' class='minibutton' onClick="document.location='index.cgi?VERB=EDIT-GRAPH&UUID=$ref->{'UUID'}';" value="Edit">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=NUKE-GRAPH&UUID=$ref->{'UUID'}');" value="Delete">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=EDIT-GRAPH&UUID=$ref->{'UUID'}');" value="Edit">~;
 			$c .= qq~</td>~;
 			$c .= qq~<td>$ref->{'TITLE'}</a></td>~;
 			$c .= qq~<td>$ref->{'GRAPH'}</a></td>~;
@@ -645,7 +645,7 @@ if ($VERB eq 'SHOW') {
 	my $c = '';
 	foreach my $cref (@COLLECTIONS) {
 		my ($class) = ($cref->{'ID'} eq $collection)?'selected':'';
-		$c .= qq~<div class=\"$class\"><a href=\"index.cgi?collection=$cref->{'ID'}\">$cref->{'TITLE'}</a></div>~;
+		$c .= qq~<div class=\"$class\"><a href=\"javascript:navigateTo('/biz/kpi/index.cgi?collection=$cref->{'ID'}');\">$cref->{'TITLE'}</a></div>~;
 		}
 	$GTOOLS::TAG{'<!-- COLLECTIONS -->'} = $c;
 

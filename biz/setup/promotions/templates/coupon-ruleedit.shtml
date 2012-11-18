@@ -72,8 +72,8 @@ ITEM Matching rules: extended total (qty * price) <br>
 <center>
 <table>
 <tr>
-<td><input border='0' type="image" src="/images/bizbuttons/save.gif"></td>
-<td><a href="index.cgi?VERB=COUPON-EDIT&CODE=<!-- CODE -->"><img border="0" src="/images/bizbuttons/cancel.gif"></a></td>
+<td><input class="button" border='0' type="submit" value=" Save "></td>
+<td><button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-EDIT&CODE=<!-- CODE -->');">Cancel</a></td>
 <!-- DELETE_BUTTON -->
 </tr>
 </table>

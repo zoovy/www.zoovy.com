@@ -26,7 +26,7 @@
 </tr>
 <tr>
 	<td colspan=2>
-		<input class="button" type="button" onClick="document.location='index.cgi?VERB=EDIT&CID=<!-- CID -->';" value=" Back ">
+		<input class="button" type="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=EDIT&CID=<!-- CID -->');" value=" Back ">
 		<input class="button" type="submit" value=" Save ">
 	</td>
 </tr>

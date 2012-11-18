@@ -18,8 +18,17 @@ require SITE;
 #my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/manage",2,'_M&8');
 #my ($LU) = LUSER->new($USERNAME,$LUSER);
 
+&ZOOVY::init();
 require LUSER;
-my ($LU) = LUSER->authenticate(flags=>'_M&8');
+my %options = ();
+foreach my $k (keys %{$ZOOVY::cgiv}) {
+	## need to copy _clientid _authtoken etc. for client login
+	next if (substr($k,0,1) ne '_');
+	$options{$k} = $ZOOVY::cgiv->{$k};
+	}
+use Data::Dumper;
+print STDERR Dumper(\%options);
+my ($LU) = LUSER->authenticate(flags=>'_M&8',%options);
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
@@ -117,7 +126,7 @@ if ($VERB eq 'SEARCH-NOW') {
 
 		foreach my $uref (@{$result}) {
 			push @rows, [ 
-				"&nbsp;<a href=\"index.cgi?VERB=EDIT&CID=$uref->{'CID'}\">[Edit]</a>", 
+				"&nbsp;<a href=\"/biz/manage/customer/index.cgi?VERB=EDIT&CID=$uref->{'CID'}\">[Edit]</a>", 
 				$uref->{'FIRSTNAME'}.' '.$uref->{'LASTNAME'}, 
 				&ZOOVY::incode($uref->{'EMAIL'}), 
 				$uref->{'PHONE'},
@@ -546,7 +555,7 @@ if ($VERB eq 'CREATEADDR') {
 	$GTOOLS::TAG{'<!-- EMAIL -->'} = $ZOOVY::cgiv->{'email'};
 	$GTOOLS::TAG{'<!-- PHONE -->'} = $ZOOVY::cgiv->{'phone'};
 	$GTOOLS::TAG{'<!-- CID -->'} = $CID;
-	$GTOOLS::TAG{'<!-- CANCEL_URL -->'} = "document.location='index.cgi?POPUP=0&VERB=EDIT&CID=$CID';";
+	$GTOOLS::TAG{'<!-- CANCEL_URL -->'} = "navigateTo('/biz/manage/customer/index.cgi?POPUP=0&VERB=EDIT&CID=$CID');";
 	$template_file = 'editaddr.shtml';
 	}
 
@@ -621,7 +630,7 @@ if ($VERB eq 'EDITADDR') {
 			}
 		}
 
-	$GTOOLS::TAG{'<!-- CANCEL_URL -->'} = "document.location='index.cgi?POPUP=0&VERB=EDIT&CID=".$C->cid()."';";
+	$GTOOLS::TAG{'<!-- CANCEL_URL -->'} = "navigateTo('/biz/manage/customer/index.cgi?POPUP=0&VERB=EDIT&CID=".$C->cid()."');";
 
 	$template_file = "editaddr.shtml";
 	}
@@ -758,12 +767,12 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		if ($GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} ne '') { $GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} .= "<hr>\n"; }
 		$GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} .= $addr->as_html();
 		$GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} .= 
-			sprintf("<a href=\"index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Edit]</b></a>\n",$C->cid(),$addr->shortcut(),$addr->type());
+			sprintf("<a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Edit]</b></a>\n",$C->cid(),$addr->shortcut(),$addr->type());
 		$GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} .= 
-			sprintf("<a href=\"index.cgi?POPUP=1&VERB=NUKEADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Remove]</b></a> \n",$C->cid(),$addr->shortcut(),$addr->type());
+			sprintf("<a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=NUKEADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Remove]</b></a> \n",$C->cid(),$addr->shortcut(),$addr->type());
 		}
 	$GTOOLS::TAG{'<!-- BILLING_ADDRESS -->'} .= 
-		sprintf("<br><a href=\"index.cgi?POPUP=1&VERB=CREATEADDR&TYPE=BILL&CID=%d&SHORTCUT=*NEW*\"><b>[Add New]</b></a><br>\n",$C->cid());
+		sprintf("<br><a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=CREATEADDR&TYPE=BILL&CID=%d&SHORTCUT=*NEW*\"><b>[Add New]</b></a><br>\n",$C->cid());
 
 
 	$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} = '';
@@ -771,12 +780,12 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		if ($GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} ne '') { $GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} .= "<hr>\n"; }
 		$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} .= $addr->as_html();
 		$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} .= 
-			sprintf("<a href=\"index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Edit]</b></a>\n",$C->cid(),$addr->shortcut(),$addr->type());
+			sprintf("<a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Edit]</b></a>\n",$C->cid(),$addr->shortcut(),$addr->type());
 		$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} .= 
-			sprintf("<a href=\"index.cgi?POPUP=1&VERB=NUKEADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Remove]</b></a> \n",$C->cid(),$addr->shortcut(),$addr->type());
+			sprintf("<a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=NUKEADDR&CID=%d&SHORTCUT=%s&TYPE=%s\"><b>[Remove]</b></a> \n",$C->cid(),$addr->shortcut(),$addr->type());
 		}
 	$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} .= 
-		sprintf("<br><a href=\"index.cgi?POPUP=1&VERB=CREATEADDR&TYPE=SHIP&CID=%d&SHORTCUT=*NEW*\"><b>[Add New]</b></a><br>\n",$C->cid());
+		sprintf("<br><a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=CREATEADDR&TYPE=SHIP&CID=%d&SHORTCUT=*NEW*\"><b>[Add New]</b></a><br>\n",$C->cid());
 
 #&CUSTOMER::OUTPUT::addr_list($C,'BILL',0);
 #	$GTOOLS::TAG{'<!-- SHIPPING_ADDRESS -->'} = &CUSTOMER::OUTPUT::addr_list($C,'SHIP',0);
@@ -791,15 +800,15 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 				}
 			else {
 				$DEFAULT = '';
-				$DEFAULTBUTTON = qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-DEFAULT&CID=$CID&SECUREID=$payref->{'WI'}';" value="Default">~;
+				$DEFAULTBUTTON = qq~<input type="button" class="minibutton" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=WALLET-DEFAULT&CID=$CID&SECUREID=$payref->{'WI'}');" value="Default">~;
 				}
 
 			$c .= qq~<tr>
 			<td>
 			~;
-			$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-REMOVE&CID=$CID&SECUREID=$payref->{'WI'}';" value="Remove">~;
+			$c .= qq~<input type="button" class="minibutton" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=WALLET-REMOVE&CID=$CID&SECUREID=$payref->{'WI'}');" value="Remove">~;
 			if ($LU->is_admin()) {
-				$c .= qq~<input type="button" class="minibutton" onClick="document.location='index.cgi?VERB=WALLET-VIEW&CID=$CID&SECUREID=$payref->{'WI'}';" value="View">~;
+				$c .= qq~<input type="button" class="minibutton" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=WALLET-VIEW&CID=$CID&SECUREID=$payref->{'WI'}');" value="View">~;
 				}
 			$c .= qq~
 			$DEFAULTBUTTON
@@ -821,7 +830,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 					<td>Store Until</td>
 					</tr>\n$c";
 			}
-		$c .= "<tr><td colspan=3><a href=\"index.cgi?VERB=WALLET-ADD&CID=$CID\">[Add New Payment Method]</a></td></tr>";
+		$c .= "<tr><td colspan=3><a href=\"/biz/manage/customer/index.cgi?VERB=WALLET-ADD&CID=$CID\">[Add New Payment Method]</a></td></tr>";
 		$GTOOLS::TAG{'<!-- PAYMENT_METHODS -->'} = $c;
 		}
 
@@ -890,12 +899,12 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 				<td bgcolor="#ffffff">
 					~.
 		$wsaddr->as_html().
-		sprintf("<a href=\"index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&TYPE=WS\"><b>[Edit]</b></a>\n",$C->cid()).
+		sprintf("<a href=\"/biz/manage/customer/index.cgi?POPUP=1&VERB=EDITADDR&CID=%d&TYPE=WS\"><b>[Edit]</b></a>\n",$C->cid()).
 				qq~
 				</td>
 				<td bgcolor="#ffffff">
-					<img name="logoImg" src="~.(($wsaddr->{'LOGO'})?&GTOOLS::imageurl($USERNAME,$wsaddr->{'LOGO'},70,200,'FFFFFF',0):'/images/blank.gif').qq~" width=200 height=70>
-					<br><a href='#' onClick="openWindow('/biz/setup/media/popup.cgi?mode=customerlogo&CID=$C->{'_CID'}');"><b>[Edit]</b></a></td>
+					<img id="logoImg" name="logoImg" src="~.(($wsaddr->{'LOGO'})?&GTOOLS::imageurl($USERNAME,$wsaddr->{'LOGO'},70,200,'FFFFFF',0):'/images/blank.gif').qq~" width=200 height=70>
+					<br><a href='#' onClick="mediaLibrary($('#logoImg'),'mode=customerlogo&CID=$C->{'_CID'}','Choose Logo');"><b>[Edit]</b></a></td>
 			</tr>	
 			~;
 			}
@@ -1113,9 +1122,9 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 
 
 
-push @TABS, { 'name'=>'Search', link=>'index.cgi?VERB=SEARCH', selected=>($VERB eq 'SEARCH')?1:0 };
-push @TABS, { 'name'=>'Reports', link=>'index.cgi?VERB=REPORTS', selected=>($VERB eq 'REPORTS')?1:0 };
-push @TABS, { 'name'=>'Create', link=>'index.cgi?VERB=CREATE', selected=>($VERB eq 'CREATE')?1:0 };
+push @TABS, { 'name'=>'Search', link=>'/biz/manage/customer/index.cgi?VERB=SEARCH', selected=>($VERB eq 'SEARCH')?1:0 };
+push @TABS, { 'name'=>'Reports', link=>'/biz/manage/customer/index.cgi?VERB=REPORTS', selected=>($VERB eq 'REPORTS')?1:0 };
+push @TABS, { 'name'=>'Create', link=>'/biz/manage/customer/index.cgi?VERB=CREATE', selected=>($VERB eq 'CREATE')?1:0 };
 
 
 &GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS,bc=>\@BC,js=>1);

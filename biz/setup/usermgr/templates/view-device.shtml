@@ -3,7 +3,7 @@
 <center>
 <table width="600"><tr></td>
 
-<form name="thisFrm" id="thisFrm" action="index.cgi">
+<form name="thisFrm" id="thisFrm" action="/biz/setup/usermgr/index.cgi">
 <input type="hidden" name="VERB" value="">
 <input type="hidden" name="hwaddr" value="<!-- HWADDR -->">
 <table class="zoovytable" width="600">

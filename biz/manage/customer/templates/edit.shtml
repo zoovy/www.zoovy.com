@@ -128,11 +128,19 @@ window.open(url,'popupWin','status=yes,resizable=yes,width=638,height=450,menuba
 <td align=center>
 	<input type="submit" class="button" value=" Save "> 
 	&nbsp; 
-	<input type="button" class="button" onClick="openWindow('index.cgi?VERB=EMAIL&CID=<!-- CID -->');" value=" Email ">
+	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=EMAIL&CID=<!-- CID -->');">Email</button>
 	&nbsp; 
-	<input type="button" class="button" onClick="openWindow('index.cgi?VERB=LOGIN&CID=<!-- CID -->');" value=" Login ">
+	<button class="button" onClick="
+	openWindow(
+		'/biz/manage/customer/index.cgi?VERB=LOGIN&CID=<!-- CID -->'+
+		'&_userid=' + app.vars.userid +
+		'&_authtoken=' + app.vars.authtoken +
+		'&_deviceid=' + app.vars.deviceid +
+		'&_domain=' + app.vars.domain
+		);
+	">Login</button>
 	&nbsp; 
-	<input type="button" class="button" onClick="document.location='index.cgi?VERB=DELETE&CID=<!-- CID -->';" value=" Remove ">
+	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=DELETE&CID=<!-- CID -->');">Remove</button>
 </td>
 </tr>
 </table>

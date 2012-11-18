@@ -1,10 +1,7 @@
-<!-- HIDDEN_TABS -->
-
-
-<form id="thisFrm" method="post" name="thisFrm" action="definition.cgi">
-<input type="hidden" id="_VERB" name="_VERB" value="SAVE">
-<input type="hidden" name="_DOCID" value="<!-- DOCID -->">
-<input type="hidden" name="_PRODUCT" value="<!-- PRODUCT -->">
+Hi Andrew2
+<form id="thisFrm" method="post" name="thisFrm" action="#">
+<input type="textbox" name="_DOCID" value="<!-- DOCID -->">
+<input type="textbox" id="pid" name="pid" value="<!-- PRODUCT -->">
 
 
 <table>
@@ -14,7 +11,7 @@
 
 </table>
 
-<input class="button" type="button" onClick="document.thisFrm['_VERB'].value='SAVE'; document.thisFrm.submit();" value=" Save ">
-<input class="button" type="button" onClick="document.thisFrm['_VERB'].value='QUIT'; document.thisFrm.submit();" value=" Quit ">
+<input class="button" type="button" onClick="savePanel(this,'definition','SAVE')" value="Save">
+<input class="button" type="button" onClick="jQuery('#uiDialog').dialog('close');" value="Quit">
 
 </form>

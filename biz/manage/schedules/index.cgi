@@ -7,6 +7,8 @@ require ZOOVY;
 require WHOLESALE;
 require NAVCAT;
 
+my @MSGS = ();
+
 require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_S&8');
 if (not defined $LU) { exit; }
@@ -69,7 +71,7 @@ if ($ACTION eq 'SAVE') {
 	$S{'welcome_txt'} = $ZOOVY::cgiv->{'welcome_txt'};
 
 	&WHOLESALE::save_schedule($USERNAME,\%S);
-	$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<font color='blue'>Saved Schedule $S{'SID'}</font><br>";
+	push @MSGS, "SUCCESS|+Saved Schedule $S{'SID'}";
 	$ACTION = '';
 	}
 
@@ -83,12 +85,11 @@ if ($ACTION eq 'NUKE') {
 	my %ref = CUSTOMER::BATCH::list_customers($USERNAME,$PRT,
 		'SCHEDULE'=>$ZOOVY::cgiv->{'SID'});
 	if ( (my $count = (scalar(keys %ref)))>0) {
-		use Data::Dumper;
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<div class=error>NOTE: schedule $ZOOVY::cgiv->{'SID'} cannot be removed because it has $count customers still using it.</div><br>";
+		push @MSGS, "ERROR|+NOTE: schedule $ZOOVY::cgiv->{'SID'} cannot be removed because it has $count customers still using it.";
 		}
 	else {
 		&WHOLESALE::nuke_schedule($USERNAME,$ZOOVY::cgiv->{'SID'});
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = "<div class=success>NOTE: schedule $ZOOVY::cgiv->{'SID'} has been removed.</div><br>";
+		push @MSGS, "ERROR|+NOTE: schedule $ZOOVY::cgiv->{'SID'} has been removed.";
 		}
 	$ACTION = '';
 	}
@@ -422,7 +423,7 @@ if ($ACTION eq '') {
 my @TABS = ();
 push @TABS, { selected=>($ACTION eq '')?1:0, name=>"Schedules", link=>"/biz/utilities/wholesale/index.cgi?ACTION=" };
 push @TABS, { selected=>($ACTION eq 'LISTS')?1:0, name=>"Export Lists", link=>"/biz/utilities/wholesale/index.cgi?ACTION=LISTS" };
-push @TABS, { selected=>($ACTION eq 'JEDI')?1:0, name=>"JEDI", link=>"/biz/utilities/wholesale/index.cgi?ACTION=JEDI" };
+#push @TABS, { selected=>($ACTION eq 'JEDI')?1:0, name=>"JEDI", link=>"/biz/utilities/wholesale/index.cgi?ACTION=JEDI" };
 push @TABS, { selected=>($ACTION eq 'SIGNUP')?1:0, name=>"Sign-Up Form", link=>"/biz/utilities/wholesale/index.cgi?ACTION=SIGNUP" };
 
 
@@ -432,6 +433,7 @@ push @TABS, { selected=>($ACTION eq 'SIGNUP')?1:0, name=>"Sign-Up Form", link=>"
 	'tabs'=>\@TABS,
 	'help'=>'#50512',
 	'js'=>1,
+	'msgs'=>\@MSGS,
 	'bc'=>[ { 'name'=>'Utilities'}, {'name'=>'Wholesale Pricing Schedules'} ],
 	);
 

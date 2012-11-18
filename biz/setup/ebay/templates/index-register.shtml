@@ -1,4 +1,4 @@
-<!-- NO_TAB -->
+<!-- SETUP_TAB -->
 <center>
 <!-- MY_TODO -->
 <br>
@@ -27,7 +27,7 @@ and follow the steps.
 </tr>
 <tr>
 	<td><b>eBay Username:</b></td>
-	<td><input type="textbox" name="eb"> <font="red">(REQUIRED)</font></td>
+	<td><input id="eb" type="textbox" name="eb"> <font="red">(REQUIRED)</font></td>
 </tr>
 <tr>
 	<td colspan='2'>
@@ -45,7 +45,7 @@ and follow the steps.
 	</td>
 </tr>
 </table>
-<input type="submit" value="Get Started">
+<button class="button" onClick="linkOffSite('http://www.zoovy.com/biz/setup/ebay/redirhack.cgi?SignIn&m=<!-- MERCHANT -->&eb='+$('eb').val());">Get Started</button>
 </form>
 <br>
 <b>Sandbox Notes:</b><br>

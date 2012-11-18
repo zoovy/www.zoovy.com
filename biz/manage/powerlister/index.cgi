@@ -7,8 +7,13 @@ use GTOOLS;
 use GTOOLS::Table;
 use ZOOVY;
 
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_M&4');
-if ($USERNAME eq '') { exit; }
+require LUSER;
+my ($LU) = LUSER->authenticate();
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+if (index($FLAGS,'BASIC')==-1) { print "Location: /biz\n\n"; exit; }
 
 if ($FLAGS !~ /,EBAY,/) {
 	## perhaps we ought to deny them.

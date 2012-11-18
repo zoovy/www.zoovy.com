@@ -101,7 +101,7 @@ if (1) {
 	my $COLORS = $c;
 	my $left = qq~
 
-<form name="thisFrm" action="index.cgi">
+<form name="thisFrm" action="/biz/setup/builder/themes/index.cgi">
 <input type="hidden" name="NS" value="$NS">
 <input type="hidden" name="SUBTYPE" value="$SUBTYPE">
 <table cellspacing="2" cellpadding="0" width="170" border="0"><tr>
@@ -115,27 +115,27 @@ height="30"></td>
 	<table width="100%" cellspacing=4 cellpadding=0>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img1" id="img1" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=MYTHEMES&SUBTYPE=$SUBTYPE&NS=$NS">My Themes</td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=MYTHEMES&SUBTYPE=$SUBTYPE&NS=$NS">My Themes</td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img2" id="img2" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=FAVORITES&SUBTYPE=$SUBTYPE&NS=$NS">Community Favorites</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=FAVORITES&SUBTYPE=$SUBTYPE&NS=$NS">Community Favorites</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img3" id="img3" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=RECENT&SUBTYPE=$SUBTYPE&NS=$NS">Recently Added</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=RECENT&SUBTYPE=$SUBTYPE&NS=$NS">Recently Added</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img4" id="img4" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=STAFF&SUBTYPE=$SUBTYPE&NS=$NS">Staff Favorites</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=STAFF&SUBTYPE=$SUBTYPE&NS=$NS">Staff Favorites</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=RANKED&SUBTYPE=$SUBTYPE&NS=$NS">Best Ranked</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=RANKED&SUBTYPE=$SUBTYPE&NS=$NS">Best Ranked</a></td>
 	</tr>
 	<tr>
 		<td width="10"><img width="10" height="10" name="img5" id="img5" src="/images/blank.gif"></td>
-		<td align="left"><a href="index.cgi?VERB=SHOWALL&SUBTYPE=$SUBTYPE&NS=$NS">Show All</a></td>
+		<td align="left"><a href="/biz/setup/builder/themes/index.cgi?VERB=SHOWALL&SUBTYPE=$SUBTYPE&NS=$NS">Show All</a></td>
 	</tr>
 ~;
 
@@ -147,7 +147,7 @@ $left .= qq~
 ~;
 
 	if ($SUBTYPE eq 'AB') {
-		$left .= qq~<tr><td colspan=2><a href="index.cgi?VERB=SAVE-WRAPPER&NS=$NS&wrapper=&SUBTYPE=AB">DISABLE A/B TEST</a><br><br></td></tr>~;
+		$left .= qq~<tr><td colspan=2><a href="/biz/setup/builder/themes/index.cgi?VERB=SAVE-WRAPPER&NS=$NS&wrapper=&SUBTYPE=AB">DISABLE A/B TEST</a><br><br></td></tr>~;
 		}
 
 	if ($SUBTYPE eq 'E') {
@@ -763,60 +763,38 @@ sub format {
 
 		if ($VERB eq 'MYTHEMES') {
 			$out .= qq~
-			| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=FORGET-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text">Forget</a>
+			| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=FORGET-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text">Forget</a>
 			~;
 			}
 
 		if ($VERB ne 'SELECTED') {
 			## selected is when we are showing a box for a selected theme.
 			if ($SUBTYPE eq 'P') {
-				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-POPUP&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
+				$out .= qq~| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-POPUP&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
 				}
 			elsif ($SUBTYPE eq 'M') {
-				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-MOBILE&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
+				$out .= qq~| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-MOBILE&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
 				}
-#			elsif ($SUBTYPE eq 'AB') {
-#				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-WRAPPERB&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select B</strong></a>~;
-#				}
 			elsif ($SUBTYPE eq 'E') {
-				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-ZEMAIL&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select Email</strong></a>~;
+				$out .= qq~| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-ZEMAIL&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select Email</strong></a>~;
 				}
 			else {
-				$out .= qq~| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
+				$out .= qq~| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=SAVE-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text"><strong>Select</strong></a>~;
 				}
 			}
 
 		if ($VERB eq 'OUTPUT') {
 			## don't offer to remember a them when we are already showing remembered themes.
 			$out .= qq~
-			| <a href="index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=REMEMBER-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text">Remember</a>
+			| <a href="/biz/setup/builder/themes/index.cgi?SUBTYPE=$SUBTYPE&NS=$NS&VERB=REMEMBER-WRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text">Remember</a>
 			~;
 			}
 	
-#		if ($FLAGS =~ /,WEB,/) {
-#			## only show the View XML option to web developers
-#			$out .= qq~| <a href="body.cgi?VERB=VIEWHTML&wrapper=$tinfo->{'DOCID'}" class="light_text">View HTML</a>~;
-#			}
-
-#		if ($tinfo->{'MID'} == $MID) {
-#			## only show the View HTML option to web developers
-#			$out .= qq~| <a href="body.cgi?VERB=DEVELOPER-EDITWRAPPER&wrapper=$tinfo->{'DOCID'}" class="light_text">Edit HTML</a>~;
-#			}
 
 		$out .= qq~
-			<!--
-			| <a href="" class="light_text">Download</a> 
-			| <a href="" class="light_text">Show Similar</a></span>
-			-->
-			</td>
-			<td align="right">
-			<!--
-			<select name="rank" class="formed">
-				<option value="">Rank It!</option>
-				</select>
-			-->
 			</td>
 			</tr></table>
+
 </td>
 </tr>
 </table><br>

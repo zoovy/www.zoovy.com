@@ -15,9 +15,9 @@
 <!-- EXISTING_RULES -->
 </table>
 <br>
-<input type="button" class="button" onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->&ACTION=APPEND';" value=" Add New ">
-<input type="button" class="button" onClick="document.location='<!-- CANCEL_LOCATION -->';" value=" Exit ">
-<input type="button" class="button" onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->';" value=" Refresh ">
+<input type="button" class="button" onClick="navigateTo('/biz/setup/shipping/rulebuilder.cgi?method=<!-- METHOD -->&ACTION=APPEND');" value=" Add New ">
+<input type="button" class="button" onClick="navigateTo('<!-- CANCEL_LOCATION -->');" value=" Exit ">
+<input type="button" class="button" onClick="navigateTo('/biz/setup/shipping/rulebuilder.cgi?method=<!-- METHOD -->');" value=" Refresh ">
 
 	</td>
 </tr>

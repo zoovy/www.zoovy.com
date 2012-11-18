@@ -9,7 +9,7 @@
 
 <!-- REAPPLY_DISCLAIMER -->
 
-<form action="upsapi.cgi" method="POST">
+<form action="/biz/setup/shipping/upsapi.cgi" method="POST">
 <input type="hidden" name="VERB" value="license">
 
 <table width="500"><tr><td>

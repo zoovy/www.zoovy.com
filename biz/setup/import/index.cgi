@@ -55,7 +55,7 @@ print STDERR 'CGI PARAMS: '.Dumper($q)."\n";
 my $VERB = $q->param('ACTION');
 if ($VERB eq '') { $VERB = $q->param('VERB'); }
 if ($VERB eq '') { $VERB = 'HELP'; }
-print STDERR Dumper($ZOOVY::cgiv);
+# print STDERR Dumper($ZOOVY::cgiv);
 my $template_file = '';
 my $c;
 my $filename;
@@ -319,9 +319,9 @@ if ($VERB eq 'SOGS') {
 		$c .= "<tr class=\"$r\">";
 		$c .= "<td>$k</td><td>&nbsp;</td><td>$listref->{$k}</td><td>&nbsp;</td>";
 		$c .= "<td>&nbsp;|&nbsp;</td>";
-		$c .= "<td><a target=\"_blank\" href=\"index.cgi?VERB=SHOW_SOGXML&ID=$k&NAME=$listref->{$k}\">View XML</a></td>";
+		$c .= "<td><a target=\"_blank\" href=\"/biz/setup/import/index.cgi?VERB=SHOW_SOGXML&ID=$k&NAME=$listref->{$k}\">View XML</a></td>";
 		$c .= "<td>&nbsp;|&nbsp;</td>";
-		$c .= "<td><a target=\"_blank\" href=\"index.cgi?VERB=SOG_RESORT&ID=$k&NAME=$listref->{$k}\">Resort by Prompt</a></td>";
+		$c .= "<td><a target=\"_blank\" href=\"/biz/setup/import/index.cgi?VERB=SOG_RESORT&ID=$k&NAME=$listref->{$k}\">Resort by Prompt</a></td>";
 		$c .= "</tr>";
 		}
 	$GTOOLS::TAG{'<!-- SOGS -->'} = $c;
@@ -348,43 +348,42 @@ if ($VERB eq 'FAQS') { $template_file = 'faqs.shtml'; }
 # prevented the dumping.
 
 my @TABS = ();
-push @TABS, { name=>'HELP', link=>'index.cgi?VERB=', selected=>(($VERB eq 'HELP')?1:0) };
+push @TABS, { name=>'HELP', link=>'/biz/setup/import/index.cgi?VERB=', selected=>(($VERB eq 'HELP')?1:0) };
 #if (($RESELLER eq 'MSOL') || ($LUSERNAME eq 'SUPPORT')) {
-#	push @TABS, { name=>'Office Live', link=>'index.cgi?VERB=OFFICELIVE', selected=>(($VERB eq 'OFFICELIVE')?1:0) };
+#	push @TABS, { name=>'Office Live', link=>'/biz/setup/import/index.cgi?VERB=OFFICELIVE', selected=>(($VERB eq 'OFFICELIVE')?1:0) };
 #	}
-push @TABS, { name=>'Products',link=>'index.cgi?VERB=PRODUCTS', selected=>(($VERB eq 'PRODUCTS')?1:0) };
-push @TABS, { name=>'Inventory',link=>'index.cgi?VERB=INVENTORY', selected=>(($VERB eq 'INVENTORY')?1:0) };
-push @TABS, { name=>'SOGS',link=>'index.cgi?VERB=SOGS', selected=>(($VERB eq 'SOGS')?1:0) };
-push @TABS, { name=>'Customers',link=>'index.cgi?VERB=CUSTOMERS', selected=>(($VERB eq 'CUSTOMERS')?1:0) };
-push @TABS, { name=>'Reviews',link=>'index.cgi?VERB=REVIEWS', selected=>(($VERB eq 'REVIEWS')?1:0) };
-push @TABS, { name=>'Categories',link=>'index.cgi?VERB=NAVCATS', selected=>(($VERB eq 'NAVCATS')?1:0) };
-push @TABS, { name=>'URL Rewrites',link=>'index.cgi?VERB=REWRITES', selected=>(($VERB eq 'REWRITES')?1:0) };
-push @TABS, { name=>'Orders',link=>'index.cgi?VERB=ORDERS', selected=>(($VERB eq 'ORDERS')?1:0) };
-push @TABS, { name=>'Tracking',link=>'index.cgi?VERB=TRACKING', selected=>(($VERB eq 'TRACKING')?1:0) };
-push @TABS, { name=>'Rules',link=>'index.cgi?VERB=RULES', selected=>(($VERB eq 'RULES')?1:0) };
-push @TABS, { name=>'Listings',link=>'index.cgi?VERB=LISTINGS', selected=>(($VERB eq 'LISTINGS')?1:0) };
-push @TABS, { name=>'Images',link=>'index.cgi?VERB=IMAGES', selected=>(($VERB eq 'IMAGES')?1:0) };
-#push @TABS, { name=>'FAQS',link=>'index.cgi?VERB=FAQS', selected=>(($VERB eq 'FAQS')?1:0) };
-push @TABS, { name=>'Other',link=>'index.cgi?VERB=OTHER', selected=>(($VERB eq 'OTHER')?1:0) };
+push @TABS, { name=>'Products',link=>'/biz/setup/import/index.cgi?VERB=PRODUCTS', selected=>(($VERB eq 'PRODUCTS')?1:0) };
+push @TABS, { name=>'Inventory',link=>'/biz/setup/import/index.cgi?VERB=INVENTORY', selected=>(($VERB eq 'INVENTORY')?1:0) };
+push @TABS, { name=>'SOGS',link=>'/biz/setup/import/index.cgi?VERB=SOGS', selected=>(($VERB eq 'SOGS')?1:0) };
+push @TABS, { name=>'Customers',link=>'/biz/setup/import/index.cgi?VERB=CUSTOMERS', selected=>(($VERB eq 'CUSTOMERS')?1:0) };
+push @TABS, { name=>'Reviews',link=>'/biz/setup/import/index.cgi?VERB=REVIEWS', selected=>(($VERB eq 'REVIEWS')?1:0) };
+push @TABS, { name=>'Categories',link=>'/biz/setup/import/index.cgi?VERB=NAVCATS', selected=>(($VERB eq 'NAVCATS')?1:0) };
+push @TABS, { name=>'URL Rewrites',link=>'/biz/setup/import/index.cgi?VERB=REWRITES', selected=>(($VERB eq 'REWRITES')?1:0) };
+push @TABS, { name=>'Orders',link=>'/biz/setup/import/index.cgi?VERB=ORDERS', selected=>(($VERB eq 'ORDERS')?1:0) };
+push @TABS, { name=>'Tracking',link=>'/biz/setup/import/index.cgi?VERB=TRACKING', selected=>(($VERB eq 'TRACKING')?1:0) };
+push @TABS, { name=>'Rules',link=>'/biz/setup/import/index.cgi?VERB=RULES', selected=>(($VERB eq 'RULES')?1:0) };
+push @TABS, { name=>'Listings',link=>'/biz/setup/import/index.cgi?VERB=LISTINGS', selected=>(($VERB eq 'LISTINGS')?1:0) };
+push @TABS, { name=>'Images',link=>'/biz/setup/import/index.cgi?VERB=IMAGES', selected=>(($VERB eq 'IMAGES')?1:0) };
+#push @TABS, { name=>'FAQS',link=>'/biz/setup/import/index.cgi?VERB=FAQS', selected=>(($VERB eq 'FAQS')?1:0) };
+push @TABS, { name=>'Other',link=>'/biz/setup/import/index.cgi?VERB=OTHER', selected=>(($VERB eq 'OTHER')?1:0) };
 
 
 if ($PRT>0) {
 	@TABS = ();
-	push @TABS, { name=>'HELP', link=>'index.cgi?VERB=', selected=>(($VERB eq 'HELP')?1:0) };
-	push @TABS, { name=>'Categories',link=>'index.cgi?VERB=NAVCATS', selected=>(($VERB eq 'NAVCATS')?1:0) };	
-	push @TABS, { name=>'Customers',link=>'index.cgi?VERB=CUSTOMERS', selected=>(($VERB eq 'CUSTOMERS')?1:0) };
-	push @TABS, { name=>'Reviews',link=>'index.cgi?VERB=REVIEWS', selected=>(($VERB eq 'REVIEWS')?1:0) };
-	push @TABS, { name=>'URL Rewrites',link=>'index.cgi?VERB=REWRITES', selected=>(($VERB eq 'REWRITES')?1:0) };
-	push @TABS, { name=>'Listings',link=>'index.cgi?VERB=LISTINGS', selected=>(($VERB eq 'LISTINGS')?1:0) };
-	push @TABS, { name=>'Images',link=>'index.cgi?VERB=IMAGES', selected=>(($VERB eq 'IMAGES')?1:0) };
-#	push @TABS, { name=>'FAQS',link=>'index.cgi?VERB=FAQS', selected=>(($VERB eq 'FAQS')?1:0) };
-	push @TABS, { name=>'Rules',link=>'index.cgi?VERB=RULES', selected=>(($VERB eq 'RULES')?1:0) };
+	push @TABS, { name=>'HELP', link=>'/biz/setup/import/index.cgi?VERB=', selected=>(($VERB eq 'HELP')?1:0) };
+	push @TABS, { name=>'Categories',link=>'/biz/setup/import/index.cgi?VERB=NAVCATS', selected=>(($VERB eq 'NAVCATS')?1:0) };	
+	push @TABS, { name=>'Customers',link=>'/biz/setup/import/index.cgi?VERB=CUSTOMERS', selected=>(($VERB eq 'CUSTOMERS')?1:0) };
+	push @TABS, { name=>'Reviews',link=>'/biz/setup/import/index.cgi?VERB=REVIEWS', selected=>(($VERB eq 'REVIEWS')?1:0) };
+	push @TABS, { name=>'URL Rewrites',link=>'/biz/setup/import/index.cgi?VERB=REWRITES', selected=>(($VERB eq 'REWRITES')?1:0) };
+	push @TABS, { name=>'Listings',link=>'/biz/setup/import/index.cgi?VERB=LISTINGS', selected=>(($VERB eq 'LISTINGS')?1:0) };
+	push @TABS, { name=>'Images',link=>'/biz/setup/import/index.cgi?VERB=IMAGES', selected=>(($VERB eq 'IMAGES')?1:0) };
+#	push @TABS, { name=>'FAQS',link=>'/biz/setup/import/index.cgi?VERB=FAQS', selected=>(($VERB eq 'FAQS')?1:0) };
+	push @TABS, { name=>'Rules',link=>'/biz/setup/import/index.cgi?VERB=RULES', selected=>(($VERB eq 'RULES')?1:0) };
 	}
 
-push @TABS, { name=>'JEDI', link=>'index.cgi?VERB=JEDI', selected=>(($VERB eq 'JEDI')?1:0) };
-
-#push @TABS, { name=>'Yahoo',link=>'index.cgi?VERB=YAHOO', selected=>(($VERB eq 'YAHOO')?1:0) };
-#push @TABS, { name=>'Taxes',link=>'index.cgi?VERB=TAXES', selected=>(($VERB eq 'TAXES')?1:0) };
+#push @TABS, { name=>'JEDI', link=>'/biz/setup/import/index.cgi?VERB=JEDI', selected=>(($VERB eq 'JEDI')?1:0) };
+#push @TABS, { name=>'Yahoo',link=>'/biz/setup/import/index.cgi?VERB=YAHOO', selected=>(($VERB eq 'YAHOO')?1:0) };
+#push @TABS, { name=>'Taxes',link=>'/biz/setup/import/index.cgi?VERB=TAXES', selected=>(($VERB eq 'TAXES')?1:0) };
 
 my $c = '';
 foreach my $tab (@TABS) {
@@ -470,82 +469,82 @@ my $ZJSID = $ZOOVY::ZJSID;
    'file'=>$template_file,
    'header'=>'1',
 	'jquery'=>1,
-	'head'=>qq~
-<link href="swf/css/default.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="swf/swfupload.js"></script>
-<script type="text/javascript" src="swf/swfupload.swfobject.js"></script>
-<script type="text/javascript" src="swf/js/fileprogress.js"></script>
-<script type="text/javascript" src="swf/handlers-forms.js"></script>
-<script type="text/javascript">
-		var swfu;
-
-		function uploadStartSaveParams() {
-			// note: i'm using the prototype Form serialize!
-			swfu.addPostParam('thisFrm',jQuery('#thisFrm').serialize());
-			};
-
-		 // Called by the queue complete handler to submit the form
-		function uploadDone() {
-		   try {
-	      document.forms['thisFrm'].submit();
-		   } catch (ex) {
-	      alert("Error submitting form thisFrm");
-   		}
-		};
-
-
-		window.onload = function () {
-			swfu = new SWFUpload({
-				// Backend settings
-				upload_url: "/biz/setup/import/upload.cgi/$VERB",
-				file_post_name: "file",
-				post_params: {"USERNAME" : "$USERNAME", "ZJSID":"$ZJSID" },
-
-				// Flash file settings
-				file_size_limit : "20 MB",
-				file_types : "*.*",			// or you could use something like: "*.doc;*.wpd;*.pdf",
-				file_types_description : "All Files",
-				file_upload_limit : "0",
-				file_queue_limit : "1",
-
-				// Event handler settings
-				swfupload_loaded_handler : swfUploadLoaded,
-				
-				file_dialog_start_handler: fileDialogStart,
-				file_queued_handler : fileQueued,
-				file_queue_error_handler : fileQueueError,
-				file_dialog_complete_handler : fileDialogComplete,
-				
-				upload_start_handler : uploadStartSaveParams,	// I could do some client/JavaScript validation here, but I don't need to.
-				upload_progress_handler : uploadProgress,
-				upload_error_handler : uploadError,
-				upload_success_handler : uploadSuccess,
-				upload_complete_handler : uploadComplete,
-
-				// Button Settings
-				button_image_url : "/biz/setup/import/swf/XPButtonBrowseText_61x22.png",
-				button_placeholder_id : "spanButtonPlaceholder",
-				button_width: 61,
-				button_height: 22,
-				
-				// Flash Settings
-				flash_url : "/biz/setup/import/swf/swfupload.swf",
-
-				custom_settings : {
-					progress_target : "fsUploadProgress",
-					upload_successful : false
-					},
-				
-				// Debug settings
-				debug: false
-			});
-
-
-		};
-
-//-->
-</script>
-~,
+#	'head'=>qq~
+#<link href="swf/css/default.css" rel="stylesheet" type="text/css" />
+#<script type="text/javascript" src="swf/swfupload.js"></script>
+#<script type="text/javascript" src="swf/swfupload.swfobject.js"></script>
+#<script type="text/javascript" src="swf/js/fileprogress.js"></script>
+#<script type="text/javascript" src="swf/handlers-forms.js"></script>
+#<script type="text/javascript">
+#		var swfu;
+#
+#		function uploadStartSaveParams() {
+#			// note: i'm using the prototype Form serialize!
+#			swfu.addPostParam('thisFrm',jQuery('#thisFrm').serialize());
+#			};
+#
+#		 // Called by the queue complete handler to submit the form
+#		function uploadDone() {
+#		   try {
+#	      document.forms['thisFrm'].submit();
+#		   } catch (ex) {
+#	      alert("Error submitting form thisFrm");
+#   		}
+#		};
+#
+#
+#		window.onload = function () {
+#			swfu = new SWFUpload({
+#				// Backend settings
+#				upload_url: "/biz/setup/import/upload.cgi/$VERB",
+#				file_post_name: "file",
+#				post_params: {"USERNAME" : "$USERNAME", "ZJSID":"$ZJSID" },
+#
+#				// Flash file settings
+#				file_size_limit : "20 MB",
+#				file_types : "*.*",			// or you could use something like: "*.doc;*.wpd;*.pdf",
+#				file_types_description : "All Files",
+#				file_upload_limit : "0",
+#				file_queue_limit : "1",
+#
+#				// Event handler settings
+#				swfupload_loaded_handler : swfUploadLoaded,
+#				
+#				file_dialog_start_handler: fileDialogStart,
+#				file_queued_handler : fileQueued,
+#				file_queue_error_handler : fileQueueError,
+#				file_dialog_complete_handler : fileDialogComplete,
+#				
+#				upload_start_handler : uploadStartSaveParams,	// I could do some client/JavaScript validation here, but I don't need to.
+#				upload_progress_handler : uploadProgress,
+#				upload_error_handler : uploadError,
+#				upload_success_handler : uploadSuccess,
+#				upload_complete_handler : uploadComplete,
+#
+#				// Button Settings
+#				button_image_url : "/biz/setup/import/swf/XPButtonBrowseText_61x22.png",
+#				button_placeholder_id : "spanButtonPlaceholder",
+#				button_width: 61,
+#				button_height: 22,
+#				
+#				// Flash Settings
+#				flash_url : "/biz/setup/import/swf/swfupload.swf",
+#
+#				custom_settings : {
+#					progress_target : "fsUploadProgress",
+#					upload_successful : false
+#					},
+#				
+#				// Debug settings
+#				debug: false
+#			});
+#
+#
+#		};
+#
+#//-->
+#</script>
+#~,
    'help'=>'#50344',
    'tabs'=>\@TABS,
    'bc'=>[

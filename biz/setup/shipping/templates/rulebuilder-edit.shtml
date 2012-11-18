@@ -61,8 +61,7 @@
 	<td colspan=2 valign='top'>
 <center>
 	<input type="submit" class="button showLoadingModal" value=" Save ">
-	<input type="button" class="button showLoadingModal" value=" Cancel "
-		onClick="document.location='rulebuilder.cgi?method=<!-- METHOD -->';">
+	<input type="button" class="button showLoadingModal" value=" Cancel " onClick="navigateTo('/biz/setup/shipping/rulebuilder.cgi?method=<!-- METHOD -->');">
 </center>
 </td>
 <!-- DELETE_BUTTON -->

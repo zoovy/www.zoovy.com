@@ -133,10 +133,9 @@
 	</tr>
 	<tr>
 		<td valign="middle" align="center">
-		<img name="logoimg" src="<!-- LOGO_WEBSITE -->" width='100' height='100'>
+		<img id="logoimg" name="logoimg" src="<!-- LOGO_WEBSITE -->" width='100' height='100'>
 		<input type="button" class="button"
-onClick="javascript:openWindow('/biz/setup/media/popup.cgi?mode=logo&profile=<!-- NS -->');" 
-value=" Change ">
+		onClick="mediaLibrary($('#logoimg'),'mode=logo&profile=<!-- NS -->','Choose Logo');" value=" Change ">
 		</td>
 	</tr>
 	</table><!-- END LOGO GRAPHIC TABLE -->
@@ -171,8 +170,9 @@ value=" Change ">
 </table>
 </div>
 
-	<div style="margin-top:5px;"><input type="image" name="ACTION-SAVE" src="/images/bizbuttons/save.gif" border="0" width="81" height="31" value="Save Information">
-<a href="index.cgi"><img src="/images/bizbuttons/exit.gif" width="81" height="31" border="0"></a>
+	<div style="margin-top:5px;">
+	<input class="button" type="submit" value=" Save ">
+	<input class="button" type="button" onClick="navigateTo('/biz/setup/builder/index.cgi');" value=" Exit ">	
 	</div>
 </form>
 </div>

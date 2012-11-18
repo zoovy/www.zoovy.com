@@ -12,11 +12,11 @@
 		<td class="zoovytableheader" colspan=2>Profile Management</td>
 	</tr>
 	<tr>
-		<td><input style="width: 100px;" type="button" class="button showLoadingModal" value="Add New Profile" onClick="document.location='index.cgi?ACTION=PROFILE-ADD';"></td>
+		<td><input style="width: 100px;" type="button" class="button showLoadingModal" value="Add New Profile" onClick="navigateTo('/biz/setup/ebay/index.cgi?ACTION=PROFILE-ADD');"></td>
 		<td><span class="hint">Create additional sets of shipping+company policies for eBay</span></td>
 	</tr>
 	<tr>
-		<td><input style="width: 100px;" type="button" class="button showLoadingModal" value="Remove Profile" onClick="document.location='index.cgi?ACTION=PROFILE-REMOVE';"></td>
+		<td><input style="width: 100px;" type="button" class="button showLoadingModal" value="Remove Profile" onClick="navigateTo('/biz/setup/ebay/index.cgi?ACTION=PROFILE-REMOVE');"></td>
 		<td><span class="hint">Delete old profiles that you are no longer using from the system.</span></td>
 	</tr>
 </table>

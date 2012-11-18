@@ -57,8 +57,8 @@ if ($VERB eq 'EDIT') {
 	}
 
 
-push @TABS, { link=>"index.cgi?VIEW=", name=>" Recent ",selected=>(($ZOOVY::cgiv->{'VIEW'} eq '')?1:0), };
-push @TABS, { link=>"index.cgi?VIEW=UNAPPROVED", name=>" UnApproved ",selected=>(($ZOOVY::cgiv->{'VIEW'} eq 'UNAPPROVED')?1:0), };
+push @TABS, { link=>"/biz/manage/reviews/index.cgi?VIEW=", name=>" Recent ",selected=>(($ZOOVY::cgiv->{'VIEW'} eq '')?1:0), };
+push @TABS, { link=>"/biz/manage/reviews/index.cgi?VIEW=UNAPPROVED", name=>" UnApproved ",selected=>(($ZOOVY::cgiv->{'VIEW'} eq 'UNAPPROVED')?1:0), };
 
 if ($VERB eq '') {
 	$GTOOLS::TAG{'<!-- VIEW -->'} = $ZOOVY::cgiv->{'VIEW'};

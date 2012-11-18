@@ -185,7 +185,7 @@ if ($VERB eq 'SESSION-DEBUG') {
 		$c .= "TIME: ".substr($CARTID,0,4)." : $ts : ".&ZTOOLKIT::pretty_date($ts,4)."<br>"; 
 		}
 	else {
-		$c .= "TIME (too old)<br>";
+		$c .= "TIME $ts (too old)<br>";
 		}
 	$CARTID = substr($CARTID,4);
 	## ip address
@@ -285,6 +285,24 @@ if ($VERB eq 'SHOW-INVENTORY-EVENT-QUEUE') {
 	$template_file = 'output.shtml';
 	$VERB = '';
 	}
+
+
+## Disassociate product from SUPPLIER
+## (this doesn't remove product from Zoovy Store)
+if ($VERB eq 'DISASSOCIATE') {
+	my @prods = ();
+	foreach my $var (keys %{$ZOOVY::cgiv}){
+		next unless ($var =~ /^SKU_/);
+		push @prods, $ZOOVY::cgiv->{$var};
+		}
+
+	if (scalar(@prods) > 0) {
+		SUPPLIER::disassociate_products($USERNAME, $ZOOVY::cgiv->{'CODE'}, \@prods);
+		}
+
+	$VERB = 'PRODUCTS';
+	}
+
 
 
 if ($VERB eq 'DUMP-ORDER') {

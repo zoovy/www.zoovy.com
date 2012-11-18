@@ -4,17 +4,21 @@ use lib "/httpd/modules";
 require ZSHIP;
 require GTOOLS;
 require ZOOVY;
+require LUSER;
 use CGI;
 use strict;
 
-&DBINFO::db_zoovy_connect();
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_O&2');
-if ($USERNAME eq '') { exit; }
+my ($LU) = LUSER->authenticate(flags=>'_O&2');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
 
 my $q = new CGI;
 
 my $ID = $q->param('ID');
 my $CMD = $q->param('CMD');
+my @MSGS = ();
 $GTOOLS::TAG{"<!-- ID -->"} = $ID;
 
 if ($ID eq '') { 
@@ -57,7 +61,7 @@ if ($CMD eq 'SAVE') {
 	if ($changed) {
 		$O2->order_save();
 		}
-	$GTOOLS::TAG{"<!-- MESSAGE -->"} = "<div class='success'>Order Tracking ID's have been added/updated!</div>\n";
+	push @MSGS, "<div class='success'>Order Tracking ID's have been added/updated!</div>\n";
 	}
 
 my $template_file = "track.shtml";
@@ -113,7 +117,5 @@ if ($c eq '') {
 	}
 
 $GTOOLS::TAG{"<!-- CONTENTS -->"} = $c;
+&GTOOLS::output(msgs=>\@MSGS,header=>1,file=>$template_file);
 
-&GTOOLS::output(header=>1,file=>$template_file);
-
-&DBINFO::db_zoovy_close();

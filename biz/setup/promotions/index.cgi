@@ -19,6 +19,9 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
 my @MSGS = ();
+my @BC = ();
+push @BC,  { name=>'Setup',link=>'/biz/setup/index.cgi' };
+push @BC,  { name=>'Promotions &amp; Coupons',link=>'/biz/setup/promotions/index.cgi' };
 
 my %FONTS = (
 	'1'=>'<b><h2>',
@@ -190,6 +193,8 @@ if ($VERB eq "UBER-EDIT") {
 	$GTOOLS::TAG{"<!-- ID -->"} = $THIS;
 	my @rules = &ZSHIP::RULES::fetch_rules($USERNAME,$PRT,$METHOD);
 
+	push @BC, { name=>"Uber Editor", link=>"/biz/setup/promotions/index.cgi?VERB=UBER-EDIT&ID=$THIS" };
+
 	my %hash = ();
 	if ($THIS == -1) {
 		$hash{'NAME'} = "New Rule";
@@ -198,7 +203,10 @@ if ($VERB eq "UBER-EDIT") {
 		}
 	else {
 		%hash = %{$rules[$THIS]};
-		$GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = "<td><a href='index.cgi?method=$METHOD&VERB=UBER-DELETE&THIS=$THIS'><img border='0' src='/images/bizbuttons/delete.gif'></td>";
+		$GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = qq~<td>
+<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?method=$METHOD&VERB=UBER-DELETE&THIS=$THIS');">Delete</button>
+</td>
+~;
 		$GTOOLS::TAG{"<!-- WHAT_ARE_WE_DOING -->"} = "Edit Rule $THIS";
 		}
 
@@ -333,12 +341,12 @@ if ($VERB eq 'UBER') {
 				$c .= "<td valign=top  class='A'>$counter</td>";
 				$c .= "<td valign=top  class='A' nowrap>";
 				# Print the UP arrow
-				if ($counter>0) { $c .= "<a href='index.cgi?VERB=UBER-UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if ($counter>0) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
 				# Print the DOWN arrow
-				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='index.cgi?VERB=UBER-DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
-				$c .= "<a href='index.cgi?VERB=UBER-EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";$c .= "</td>";
+				$c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";$c .= "</td>";
 				$c .= "<td valign=top  class='A'>";
 
 				if (($ruleref->{'IMAGE'} ne '') && ($ruleref->{'IMAGE'} ne '<!-- IMAGE -->')) {
@@ -364,7 +372,7 @@ if ($VERB eq 'UBER') {
 			} else {
 			$c .= "<tr><td valign=top  bgcolor='FFFFFF'>No rules have been defined.</td></tr>";
 			}
-		$GTOOLS::TAG{'<!-- ADDNEW -->'} = '<tr><td valign=top  bgcolor="white" colspan="8"><a href="index.cgi?method='.$METHOD.'&VERB=UBER-EDIT&THIS=-1">Add a new Rule</a></td></tr>';
+		$GTOOLS::TAG{'<!-- ADDNEW -->'} = '<tr><td valign=top  bgcolor="white" colspan="8"><a href="/biz/setup/promotions/index.cgi?method='.$METHOD.'&VERB=UBER-EDIT&THIS=-1">Add a new Rule</a></td></tr>';
 
 		$GTOOLS::TAG{"<!-- EXISTING_RULES -->"} = $c;
 		$GTOOLS::TAG{"<!-- RULE_COUNT -->"} = $counter;
@@ -506,6 +514,10 @@ if (($VERB eq 'COUPON-RULE-EDIT')) {
 	my ($CODE) = $ZOOVY::cgiv->{'CODE'};
 	my ($ID) = int($ZOOVY::cgiv->{'ID'});
 	$GTOOLS::TAG{"<!-- ID -->"} = $ID;
+
+	push @BC, { name=>"Coupons", link=>'/biz/setup/promotions/index.cgi?VERB=COUPON' };
+	push @BC, { name=>"Coupon $CODE", link=>"/biz/setup/promotions/index.cgi?VERB=COUPON-EDIT&CODE=$CODE" };
+	push @BC, { name=>"Rule $ID", link=>"/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-EDIT&CODE=$CODE&ID=$ID" };
 		
 	my %hash = ();
 	$hash{'CODE'} = $ID;
@@ -515,7 +527,10 @@ if (($VERB eq 'COUPON-RULE-EDIT')) {
 	else {
 		my @rules = &ZSHIP::RULES::fetch_rules($USERNAME,$PRT,"COUPON-$CODE");
 		%hash = %{$rules[$ID]};
-		$GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = "<td><a href='index.cgi?CODE=$CODE&VERB=COUPON-RULE-DELETE&ID=$ID'><img border='0' src='/images/bizbuttons/delete.gif'></td>";
+		$GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = qq~
+<td>
+<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?CODE=$CODE&VERB=COUPON-RULE-DELETE&ID=$ID');">Delete</button></td>~;
+
 		}
 
 	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
@@ -596,11 +611,15 @@ if ($VERB eq 'COUPON-DELETE') {
 
 
 if ($VERB eq 'COUPON-EDIT') {
+	my ($CODE) = $ZOOVY::cgiv->{'CODE'};
+	$GTOOLS::TAG{'<!-- CODE -->'} = $CODE;
+
 	require Date::Parse;
 	require POSIX;
 
-	my ($CODE) = $ZOOVY::cgiv->{'CODE'};
-	$GTOOLS::TAG{'<!-- CODE -->'} = $CODE;
+	push @BC, { name=>"Coupons", link=>'/biz/setup/promotions/index.cgi?VERB=COUPON' };
+	push @BC, { name=>"Coupon $CODE", link=>"/biz/setup/promotions/index.cgi?VERB=COUPON-EDIT&CODE=$CODE" };
+
 	my ($cpnref) = &CART::COUPON::load($USERNAME,$PRT,$CODE);
 	$GTOOLS::TAG{'<!-- CB_DISABLED -->'} = ($cpnref->{'disabled'})?'checked':'';
 	$GTOOLS::TAG{'<!-- CB_LIMITEDUSE -->'} = ($cpnref->{'limiteduse'})?'checked':'';
@@ -680,12 +699,12 @@ if ($VERB eq 'COUPON-EDIT') {
 				$c .= "<td valign=top >$counter</td>";
 				$c .= "<td valign=top nowrap>";
 				# Print the UP arrow
-				if ($counter>0) { $c .= "<a href='index.cgi?VERB=COUPON-RULE-UP&CODE=$CODE&ID=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if ($counter>0) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-UP&CODE=$CODE&ID=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
 				# Print the DOWN arrow
-				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='index.cgi?VERB=COUPON-RULE-DOWN&CODE=$CODE&ID=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-DOWN&CODE=$CODE&ID=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
-				$c .= "<a href='index.cgi?VERB=COUPON-RULE-EDIT&CODE=$CODE&ID=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";
+				$c .= "<a href='/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-EDIT&CODE=$CODE&ID=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";
 				$c .= "</td>";
 				$c .= "<td valign=top>$ruleref->{'HINT'}</td>";
 				$MATCH =~ s/,/, /g;
@@ -707,6 +726,8 @@ if ($VERB eq 'COUPON-EDIT') {
 
 
 if ($VERB eq 'COUPON') {
+	push @BC, { name=>"Coupons", link=>'/biz/setup/promotions/index.cgi?VERB=COUPON' };
+
 	my $results = CART::COUPON::list($USERNAME,$PRT);	
 	if ( (my $sizeof = &ZOOVY::sizeof($results)) > 100000) {
 		push @MSGS, "WARNING|You have $sizeof bytes allocated to coupons - which is more than recommended 100,000 bytes of coupons.\n\nTry and reduce the number and/or size of each coupon.";
@@ -732,7 +753,7 @@ if ($VERB eq 'COUPON') {
 			}
 
 		$c .= "<tr class=\"$row\">";
-		$c .= "<td><a href=\"index.cgi?VERB=COUPON-EDIT&CODE=$ref->{'code'}\"><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a></td>";
+		$c .= "<td><button onClick=\"navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-EDIT&CODE=$ref->{'code'}');\"><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></button></td>";
 		$c .= "<td>$ref->{'code'}</td>";
 		$c .= "<td>$ref->{'title'}</td>";
 		my $stackable = ($ref->{'stackable'})?'Yes':'No';
@@ -754,16 +775,15 @@ if ($VERB eq 'COUPON') {
 
 
 
-
-
-
-
 my @TABS = ();
-push @TABS, { name=>'Simple', selected=>($VERB eq 'SIMPLE')?1:0, link=>'index.cgi?VERB=SIMPLE', };
-push @TABS, { name=>'Coupons', selected=>($VERB =~ /COUPON/)?1:0, link=>'index.cgi?VERB=COUPON', };
-push @TABS, { name=>'Uber Promotions', selected=>($VERB =~ /UBER/)?1:0, link=>'index.cgi?VERB=UBER', };
-push @TABS, { name=>'Debugger',selected=>($VERB eq 'DEBUGGER')?1:0, link=>'index.cgi?VERB=DEBUGGER', };
-#push @TABS, { name=>'API',selected=>($VERB eq 'API')?1:0, link=>'index.cgi?VERB=API', };
+push @TABS, { name=>'Simple', selected=>($VERB eq 'SIMPLE')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=SIMPLE', };
+push @TABS, { name=>'Coupons', selected=>($VERB =~ /COUPON/)?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=COUPON', };
+push @TABS, { name=>'Uber Promotions', selected=>($VERB =~ /UBER/)?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=UBER', };
+push @TABS, { name=>'Debugger',selected=>($VERB eq 'DEBUGGER')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=DEBUGGER', };
+#push @TABS, { name=>'API',selected=>($VERB eq 'API')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=API', };
+
+
+print STDERR Dumper(\@BC);
 
 &GTOOLS::output(
    'title'=>'Setup : Promotions : '.$PRT,
@@ -771,13 +791,10 @@ push @TABS, { name=>'Debugger',selected=>($VERB eq 'DEBUGGER')?1:0, link=>'index
    'header'=>'1',
    'help'=>$HELP,
 	'jquery'=>'1',
+	'bc'=>\@BC,
    'tabs'=>\@TABS, 
 	'msgs'=>\@MSGS,
 	'js'=>1,
-   'bc'=>[
-      { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', },
-      { name=>'Promotions &amp; Coupons',link=>'http://www.zoovy.com/biz/setup/promotions','target'=>'_top', },
-      ],
    );
 
 

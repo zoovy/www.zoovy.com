@@ -79,7 +79,7 @@ CommissionJunction.
 		<td>
 		<input class="button" type="submit" value=" Save Settings  ">
 		</td><td>
-		<input onClick="document.location='index.cgi';" class="button" type="button" value=" Exit ">
+		<input onClick="navigateTo('/biz/syndication/index.cgi');" class="button" type="button" value=" Exit ">
 		</td></tr>
 	</tr>
 </table>

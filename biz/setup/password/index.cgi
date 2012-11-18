@@ -9,9 +9,12 @@ require LUSER;
 
 # this will fetch the username from the environment
 
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/reports",2,undef);
-if (not defined $FLAGS) { $FLAGS = ''; }
-if ($USERNAME eq '') { exit; }
+require LUSER;
+my ($LU) = LUSER->authenticate(flags=>'_ADMIN');
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSER,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
 
 my $ACTION = $ZOOVY::cgiv->{'ACTION'};
 

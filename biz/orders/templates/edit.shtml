@@ -1,25 +1,117 @@
-<!-- HIDDEN_TABS -->
+<!-- ORDER_TAB -->
 
-<!-- forms[0] used to reset the form from a popup -->
-<form NAME="resetForm" action="edit.cgi" method="POST"><input type="hidden" name="ID" value="<!-- ID -->"></form>
+<form id="orderFrm" NAME="orderFrm" action="edit.cgi" method="POST">
+<input type="hidden" name="VERB" value="SAVE">
+<input type="hidden" name="OID" value="<!-- OID -->">
+<input type="hidden" name="@UPDATES" value="<!-- UPDATES -->">
 
-<table width="624" align="center">
-<tr><td><!-- MESSAGES --></td></tr>
+<div style="visibility: hidden">
+
+<div id="additem-dialog" title="Add SKU">
+<form id="addItemFrm">
+SKU: <input type="textbox" name="sku"> 
+
+<input type="button" value="Add" onClick="alert('hello, this should save');">
+</form>	
+</div>
+
+<div id="tax-dialog" title="Tax Rate">
+<form id="addItemFrm">
+Tax Rate: <input type="textbox" name="tax-rate"> 
+
+<input type="button" value="Add" onClick="alert('hello, this should save');">
+</form>	
+</div>
+
+
+<div id="shipping-dialog" title="Shipping Rate">
+<form id="addItemFrm">
+
+<input type="button" value="Add" onClick="alert('hello, this should save');">
+</form>	
+</div>
+
+
+
+
+</div>
+
+<table width="800" align="center">
 <tr><td align="center">
 
 
-<form NAME="editForm" action="edit.cgi" method="POST">
-<input type="hidden" name="CMD" value="HIT-SAVE-DOM">
-<input type="hidden" name="ID" value="<!-- ID -->">
 
-<table class="zoovytable">
-<tr><td align="center">
+<table width=100% class="zoovytable"><tr><td>
 
-<!-- DISPLAY_CONTENTS -->
-<input class="button" type="submit" value="  Save Changes  ">
-<input class="button" type="button" value="  Quit Editor  " onClick="window.location='view.cgi?ID=<!-- ID -->&t=<!-- TIME -->';">
-</td></tr>
-</table>	
+<table width=100%>
+<tr>
+	<td class='zoovytableheader'>SKU</td>
+	<td class='zoovytableheader'>PRODUCT</td>
+	<td class='zoovytableheader'><center>&nbsp;&nbsp;QUANTITY&nbsp;&nbsp;</center></td>
+	<td class='zoovytableheader'><center>&nbsp;&nbsp;IN_STOCK/RESERVE&nbsp;&nbsp;</center></td>
+	<td class='zoovytableheader'><center>&nbsp;&nbsp;PRICE&nbsp;&nbsp;</center></td>
+	<td class='zoovytableheader'><center>&nbsp;TAX&nbsp;</center></td>
+	<td class='zoovytableheader'><center>WEIGHT</center></td>
+	<td class='zoovytableheader'>&nbsp;EXTENDED&nbsp;&nbsp;&nbsp;</td>
+</tr>
+
+<!-- ITEMS -->
+<!-- PROMOS -->
+
+<tr><td colspan=5><font face='Arial' size='1'>Hint: To delete an item change the quantity to Zero and press SAVE.</font></center></td></td>
+</table>
+
+
+<table width=100%>
+<tr>
+<td valign="top">
+	<table width=300>
+	<tr>
+		<td colspan='1' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Handling:</b> (<!-- HND_METHOD -->)</font></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$</B><input style='font-size: 8pt;' type='textbox' name='hnd_total' value='<!-- HND_TOTAL -->' size='5'></font></td>
+	</tr>
+	<tr>
+		<td colspan='1' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Specialty:</b> (<!-- SPC_METHOD -->)</font></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$</B><input style='font-size: 8pt;' type='textbox' name='spc_total' value='<!-- SPC_TOTAL -->' size='5'></font></td>
+	</tr>
+	<tr>
+		<td colspan='1' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Insurance:</b> (<!-- INS_METHOD -->)</font></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$</B><input style='font-size: 8pt;' type='textbox' name='ins_total' value='<!-- INS_TOTAL -->' size='5'></font></td><br>
+	</tr>
+	</table>
+</td>
+<td valign="top" align="right">
+	<table width=300>
+	<tr>	
+		<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Subtotal:</b></font></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$<input type='textbox' style='font-size: 8pt;' size='7' name='subtotal' value='<!-- ITEMS_TOTAL -->'></b></font></td>
+	</tr>
+	<tr>
+		<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Tax (<!-- TAX_RATE -->):</b></font></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$<!-- TOTAL_TAX --></b></font></td>
+		<td><input class='minibutton' type='button' value='Calc. Tax' onClick='return(popupChangeTax());'></td>
+	</tr>
+	<tr>
+		<td colspan='3' align='right'><font size='2' face='Arial'><B><!-- SHP_METHOD --></b></font></td>
+		<td nowrap colspan='1'><font size='2' color='black' face='Arial'>&nbsp;<b><!-- SHP_TOTAL --></b></font></td>
+		<td><input class='minibutton' type='button' value='Calc. Shipping' onClick='return(popupChangeShipping());'></td>
+	</tr>
+	<tr>
+		<td colspan='3' align='right'><font color='000000' size='2' face='Arial'><B>GRAND TOTAL:</b></font></td>
+		<td nowrap colspan='1'><font color='black' size='2' face='Arial'>&nbsp;<b>$<input type='textbox' size='7' style='font-size: 8pt;' name='grandtotal' value='<!-- ORDER_TOTAL -->'></b></font></td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+	
+
+
+</td></tr></table>
+
+<input class="button" type="button" onClick="$('#dialog-modal').dialog({height: 140, modal: true});" value="  Add Item ">
+<input class="button" type="submit" value="  Save  ">
+<input class="button" type="button" value="  Back  " onClick="navigateTo('/biz/orders/view.cgi?OID=<!-- OID -->&t=<!-- TS -->');">
 
 <!-- BEGIN EDIT SHIP/BILL INFO -->
 
@@ -135,13 +227,10 @@
 		</td>
 	</tr>
 </table>
-</form>
 	
-<!-- END OF EDIT SHIP/BILL INFO -->
-
-<!-- TAB_FOOTER -->
-
 </td></tr></table>
+
+</form>
 
 </body>
 </html>

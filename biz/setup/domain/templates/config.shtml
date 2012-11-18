@@ -1,27 +1,5 @@
-<!-- SETUP_TAB -->
-<br>
-<center>
-<table width=580><tr><td>
-
-<form name="mainFrm" action="index.cgi">
-<input type="hidden" name="DOMAIN" value="">
-<input type="hidden" name="VERB" value="">
-</form>
-
-<table width=800 border=0 cellspacing=0 width="100%" class="zoovytable">
-	<tr>
-		<td colspan='3' class="zoovytableheader">Currently Configured Domains</td>
-	</tr>
-	<tr>
-		<td colspan='3'>
-
-		<!-- EXISTING_DOMAINS -->
-
-		</td>
-	</tr>	
-</table>
-
-</td></tr></table>
-</center>
-
-<!-- FOOTER -->
+<script type="text/javascript">
+<!--
+navigateTo("#!domainConfigPanel");
+-->
+</script>

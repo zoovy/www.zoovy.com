@@ -27,7 +27,7 @@ function changeAll(cb,name,max) {
 <tr><td nowrap>
 <h2>User Manager</h2><br>
 
-<form name="thisFrm" action="index.cgi" method="POST">
+<form name="thisFrm" action="/biz/setup/usermgr/index.cgi" method="POST">
 <input type="hidden" name="ACTION" value="SAVE">
 <input type="hidden" name="UID" value="<!-- UID -->">
 
@@ -166,7 +166,7 @@ function changeAll(cb,name,max) {
 
 <center>
 <input type="submit" class="button" value=" Save " border="0"></a>
-<input type="button" class="button" value=" Exit " onClick="document.location='/biz/setup/usermgr';">
+<input type="button" class="button" value=" Exit " onClick="navigateTo('/biz/setup/usermgr');">
 <!-- REMOVE_BUTTON -->
 </center>
 

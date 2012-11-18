@@ -104,7 +104,7 @@ Use the form below to request a phone call from the next available Zoovy technic
 <br>
 <!-- POLICIES -->
 <input class="button" type='submit' value=' Save Callback Request '>
-<input class="button" type='button' onClick="document.location='http://www.zoovy.com/biz/support';" value=' Cancel / Exit '>
+<input class="button" type='button' onClick="navigateTo('/biz/support');" value=' Cancel / Exit '>
 <br>
 </form>
 </td></tr></table>

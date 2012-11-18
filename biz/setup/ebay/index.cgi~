@@ -1013,16 +1013,14 @@ if ($ACTION eq 'PROFILE-COMPANYEDIT') {
 	$GTOOLS::TAG{'<!-- TEMPLATE -->'} = $c;
 	$GTOOLS::TAG{'<!-- TEMPLATEATTRIB -->'} = lc('ebay:template');
 
-	my ($SITE) = SITE->new($USERNAME,$PRT,'PROFILE'=>,'FORMAT'=>'WIZARD','DOCID'=>'ebay.profile','LAYOUT'=>$epnsref->{'ebay:template'})
-	my $SREF = {};
-	$SREF->{'_NS'} = $NS;
-	$SREF->{'_SKU'} = '';
-	$SREF->{'_DOCID'} = 'ebay.profile';
-	$SREF->{'_USERNAME'} = $USERNAME;
-	$SREF->{'_PRODUCT'} = '';
-	$SREF->{'_WIZARD'} = $epnsref->{'ebay:template'};
-	$SREF->{'%NSREF'} = $epnsref;
-	$GTOOLS::TAG{'<!-- _SREF -->'} = &ZOOVY::incode(&ZTOOLKIT::buildparams($SREF));
+	my ($SITE) = SITE->new($USERNAME,$PRT,'FORMAT'=>'WIZARD','DOCID'=>'ebay.profile','LAYOUT'=>$epnsref->{'ebay:template'});
+	$SITE->sset('_NS',$NS);
+	$SITE->setSTID('');
+	$SITE->layout( $epnsref->{'ebay:template'} );
+	$SITE->{'%NSREF'} = $epnsref;	
+	#$SREF->{'_WIZARD'} = $epnsref->{'ebay:template'};
+	#$SREF->{'%NSREF'} = $epnsref;
+	$GTOOLS::TAG{'<!-- _SREF -->'} = $SITE->siteserialize();
 
 	if ($epnsref->{'ebay:template'}) {
 		require TOXML;
@@ -1055,7 +1053,7 @@ if ($ACTION eq 'PROFILE-COMPANYEDIT') {
 	
 			# print STDERR Dumper($TYPE);
 			if (defined $TOXML::EDIT::edit_element{$TYPE}) {
-				($STYLE, $COL1, $COL2, $COL3, $HELP) = $TOXML::EDIT::edit_element{$TYPE}->($iniref,$toxml,$SREF);
+				($STYLE, $COL1, $COL2, $COL3, $HELP) = $TOXML::EDIT::edit_element{$TYPE}->($iniref,$toxml,$SITE);
 				}
 		
 			if ($STYLE eq 'LONGTEXT') { $STYLE = 'TEXTBOX'; }

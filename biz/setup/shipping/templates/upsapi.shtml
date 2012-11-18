@@ -15,7 +15,7 @@
 
 <!-- MESSAGE -->
 
-<form action="upsapi.cgi" method="POST" target="_top">
+<form action="/biz/setup/upsapi.cgi" method="POST" target="_top">
 
 <font face="Arial, Helevetica">
 <br>
@@ -26,7 +26,7 @@ it will be the only one displayed!</b>.<br>
 <br>
 
 UPS Shipper Number: <!-- UPS_SHIPPER_NUMBER --><br>
-<a href="upsapi.cgi?VERB=apply&SUPPLIER_ID=<!-- SUPPLIER_ID -->">Re-Apply for UPS OnLine&reg; Tools / Change Shipper Number</a><br>
+<a href="/biz/setup/upsapi.cgi?VERB=apply&SUPPLIER_ID=<!-- SUPPLIER_ID -->">Re-Apply for UPS OnLine&reg; Tools / Change Shipper Number</a><br>
 <br>
 <hr>
 <b>AIRBILL PRINTING (via Windows Order Manager):</b><br>
@@ -141,7 +141,7 @@ Quote Domestic Packaging As:</br>
 <b>UPS International Settings</b><br>
 
 <input type="checkbox" <!-- INT --> name="int" value="on"> Enable UPS International Shipping Support
-[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=upsapi_int">general rules</a>]<br><br>
+[<a href="/biz/setup/shipping/rulebuilder.cgi?method=upsapi_int">general rules</a>]<br><br>
 
 Quote International Packaging As:</br>
 <select name="int_packaging">

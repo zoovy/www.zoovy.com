@@ -58,7 +58,15 @@ foreach $p ($q->cookie()) { $ZOOVY::cookies->{$p} = $q->cookie($p); }
 
 
 
-my ($ERR,$ERRMSG,$LU) = LUSER->authenticate(raw=>1);
+my %options = ();
+$options{'raw'} = 1;
+foreach my $param (keys %{$ZOOVY::cgiv}) {
+	next if (substr($param,0,1) ne '_');
+	$options{$param} = $ZOOVY::cgiv->{$param};
+	}
+
+my ($LU) = LUSER->authenticate(%options);
+my ($ERR,$ERRMSG) = (0);
 
 if ($ERR>0) {}
 elsif (not defined $LU) { ($ERR,$ERRMSG) = (-1,"Received undefined LUSER object"); }
@@ -154,7 +162,7 @@ $dref->{'_FLAGS'} = $FLAGS;
 #	}
 
 
-# print STDERR Dumper($METHOD,$ZOOVY::cgiv)."\n";
+print STDERR Dumper($METHOD,$ZOOVY::cgiv)."\n";
 
 ##
 ##
@@ -663,199 +671,199 @@ if ($METHOD eq 'NAVCAT') {
 ## website builder functions:
 ## parameters: page, id (the element we are targeting)
 ##
-if ($METHOD eq 'BUILDER') {
-	require TOXML::EDIT;
-	require TOXML::SAVE;
-	require TOXML::PREVIEW;
-	require SITE::MSGS;
-	require SITE;
-
-
-	#use Data::Dumper;
-	#print STDERR Dumper($dref);
-
-	$SUB = uc($SUB);
-	my $ID = $dref->{'id'};
-	my $CMD = $dref->{'_cmd'};
-
-	my $SITE = 	SITE->new($USERNAME,'PRT'=>$PRT);
-
-#	my %SREF = ();
-#	$SREF{'_SKU'} = ''; ## ?? 
-#	$SREF{'_NS'} = 'DEFAULT';
-#	$SREF{'_USERNAME'} = $USERNAME;
-#	$SREF{'+prt'} = $PRT;
-	if ($dref->{'_SREF'}) {
-		$SITE = SITE::sitedeserialize($USERNAME,$dref->{'_SREF'});
-#		# my $kvpairs = &ZTOOLKIT::fast_deserialize($dref->{'_SREF'});
-#		# print STDERR "KVPAIRS: ".Dumper($kvpairs);
-#		foreach my $k (keys %{$kvpairs}) { 
-#			$SITE::SREF->{$k} = $k;
+#if ($METHOD eq 'BUILDER') {
+#	require TOXML::EDIT;
+#	require TOXML::SAVE;
+#	require TOXML::PREVIEW;
+#	require SITE::MSGS;
+#	require SITE;
+#
+#
+#	#use Data::Dumper;
+#	#print STDERR Dumper($dref);
+#
+#	$SUB = uc($SUB);
+#	my $ID = $dref->{'id'};
+#	my $CMD = $dref->{'_cmd'};
+#
+#	my $SITE = 	SITE->new($USERNAME,'PRT'=>$PRT);
+#
+##	my %SREF = ();
+##	$SREF{'_SKU'} = ''; ## ?? 
+##	$SREF{'_NS'} = 'DEFAULT';
+##	$SREF{'_USERNAME'} = $USERNAME;
+##	$SREF{'+prt'} = $PRT;
+#	if ($dref->{'_SREF'}) {
+#		$SITE = SITE::sitedeserialize($USERNAME,$dref->{'_SREF'});
+##		# my $kvpairs = &ZTOOLKIT::fast_deserialize($dref->{'_SREF'});
+##		# print STDERR "KVPAIRS: ".Dumper($kvpairs);
+##		foreach my $k (keys %{$kvpairs}) { 
+##			$SITE::SREF->{$k} = $k;
 ##			$SREF{$k} = $kvpairs->{$k}; 
 #			}
-		}
-	else {
-		warn "_SREF (SITE) was not passed to method BUILDER!\n";
-		}
-
-	# print STDERR Dumper(\%SREF);
-	# print STDERR Dumper(\%SREF,$dref);
-
-	my $html = '';
-	my $ERROR = undef;
-	my ($t,$el,$TYPE);
-	my $LOGTYPE = '';
-
-	my $FORMAT = $SITE->format();
-	my $LAYOUT = $SITE->layout();
-
-	if (defined $ERROR) {}				## skip if we encountered an error
-	elsif ($SITE->format() eq 'WRAPPER') {
-		# $LAYOUT = $SITE->layout();
-		$LOGTYPE = "WRAPPER=$LAYOUT";
-		}
-	elsif ($SITE->format() eq 'PRODUCT') {	## if sku is set, then set $SREF->{'
-		# $LAYOUT = PRODUCT->new($USERNAME,$SITE->sku())->fetch('zoovy:fl');
-		# $LAYOUT = &ZOOVY::fetchproduct_attrib($USERNAME,$SITE->sku(),'zoovy:fl');
-		# set flow style to 'P' for proper defaulting?!?! (probably not necessary)
-		$LOGTYPE = sprintf("PRODUCT=%s LAYOUT=$LAYOUT",$SITE->sku());
-		}
-	elsif ($SITE->format() =~ /^(PAGE|NEWSLETTER)$/) { 		## default 
-		#require PAGE;
-		#my ($p) = PAGE->new($USERNAME,$SITE->pageid(),NS=>$SITE->profile(),PRT=>$SITE->prt());
-		#if (not defined $p) { $ERROR = sprintf("Could not load page [%s] for user:%s",$SITE->pg(),$SITE->username()); } 
-		#else { $LAYOUT = $p->docid(); }
-		#undef $p;
-		$LOGTYPE = sprintf("PAGE=%s LAYOUT=$LAYOUT PROFILE=%s",$SITE->pageid(),$SITE->profile());
-		}
-	else {	
-		## yeah it's all good.
-		}
-	
-	if (not defined $ERROR) {
-		($t) = TOXML->new($SITE->format(),$SITE->layout(),USERNAME=>$USERNAME,SUBTYPE=>$SITE->fs());
-		use Data::Dumper;
-		if (not defined $t) { $ERROR = "Could not load TOXML layout FORMAT=[$FORMAT] LAYOUT=[$LAYOUT]".Dumper($SITE); }
-		}
-	if (not defined $ERROR) {
-		($el) = $t->fetchElement($ID,$SITE->div());
-		$LOGTYPE .= " ELEMENT=".$el->{'ID'};
-		if (not defined $el) { $ERROR = "Could not find element ID[$ID] from Toxml file FORMAT[$FORMAT] LAYOUT[$LAYOUT].".Dumper($SITE); }
-		}
-
-	##
-	## SANITY: at this point the following variables are either setup or $ERROR is set.
-	##		p=Current Page, t=Current TOXML document, el=current element in focus, type=>
-	##
-	open F, ">/tmp/foo";
-	print F Dumper($SITE,$SUB);
-
-
-	if ($SUB eq 'SAVE') {	
-		## note if we recive a variable of ACTION=reload then we'll go back and try editing again.
-		## used to reload options based on a choice (e.g. prodlist)
-
- #print STDERR "CGIV DREF\n".Dumper(
-#	&ZTOOLKIT::buildparams({"cgiv"=>$ZOOVY::cgiv->{'toptext'}}),
-#	&ZTOOLKIT::buildparams({"dref"=>$dref->{'toptext'}})
-#	);
-		
-		if (not defined $ERROR) {
-			$TYPE = $el->{'TYPE'};
-			if (($TYPE eq 'PRODLIST') && ($dref->{'func'} eq 'LISTEDITOR')) {	$TYPE = 'LISTEDITOR'; }
-			if ($TYPE eq '') { $ERROR = "Element type was not set (how odd??)[1]"; }
-			elsif (not defined $TOXML::EDIT::edit_element{ $TYPE }) { $ERROR = "Undefined editor for TYPE=[$TYPE]"; }
-			else {
-				# use Data::Dumper; print STDERR Dumper($el,$dref,$SREF); 
-				# print STDERR "SAVING: $TYPE\n";
-
-				# print "MYPARAMS: ".&ZTOOLKIT::buildparams($dref)."\n";
-
-				print F Dumper({$TYPE,$el,$dref,$SITE});
-
-				($TYPE,my $prompt,$html) = $TOXML::SAVE::save_element{$TYPE}->($el,$dref,$SITE); 
-				$LU->log("AJAX.BUILDER.SAVE",$LOGTYPE,"INFO");
-				}
-			}
-
-		if ($ERROR ne '') {
-			warn $ERROR;
-			}
-
-		$out .= "?m=hideeditor";
-		# if (uc($dref->{'ACTION'}) eq 'RELOAD') { $SUB = 'EDIT'; $out =''; }	
-		my ($html) = $t->render('*SITE'=>$SITE);
-		# open F, ">/tmp/foo"; print F Dumper($SREF,$html); close F;
-
-		# $html = "FL: $SREF->{'_FL'} | PG: $SREF->{'_PG'} | SKU: $SREF->{'_SKU'} | FS: $SREF->{'_FS'}<br><hr>".$html;
-		$out .= "?m=loadcontent&html=".&js_encode($html);
-
-		if (uc($CMD) eq 'RELOAD') { $SUB = 'EDIT'; }
-		}
-
-	close F;
-
-	if ($SUB eq 'EDIT') {
-		if (not defined $ERROR) {
-			$TYPE = $el->{'TYPE'};
-			if (($TYPE eq 'PRODLIST') && ($dref->{'func'} eq 'LISTEDITOR')) {	$TYPE = 'LISTEDITOR'; }
-
-			# print STDERR "TYPE IS: $TYPE\n";
-			if ($TYPE eq '') { $ERROR = "Element type was not set (how odd??)[2]"; }
-			elsif (not defined $TOXML::EDIT::edit_element{ $TYPE }) { $ERROR = "Undefined editor for TYPE=[$TYPE]"; }
-			else { 
-				$el->{'_FORM'} = "thisFrm-$ID";
-				(my $STYLE,my $prompt,$html,my $extra) = $TOXML::EDIT::edit_element{$TYPE}->($el,$t,$SITE,$dref); 
-				
-				## normally we'd just call saveElement, but for LISTEDITOR we need to do some other stuff.
-				my $jsaction = qq~saveElement('$TYPE','$ID');~;
-				#if ($TYPE eq 'LISTEDITOR') {
-				#	$jsaction = qq~setorder(document.thisFrm.list1,document.thisFrm.listorder); $jsaction~;
-				#	}
-
-				## NOTE: textarea's return the input in the PROMPT (how dumb!)
-				if ($STYLE eq 'TEXTAREA') {
-					$html = $prompt; $prompt = $el->{'PROMPT'};
-					}
-				elsif ($STYLE eq 'IMAGE') {
-					$html = "<table border=0><tr><td valign='top'>$html</td><td valign='top'>$extra</td></tr></table>";
-					}
-
-
-				my $SREFstr = $SITE->siteserialize();
-
-				if ($STYLE eq 'EDITOR_ACTION') {}
-				else {
-
-				$html = &GTOOLS::std_box($prompt,qq~
-<form id="$el->{'_FORM'}" name="$el->{'_FORM'}" action="javascript:$jsaction">
-<input type="hidden" name="_SREF" value="$SREFstr">
-$html
-<input type="button" value="Save" onClick="$jsaction"> 
-</form>~);
-					}
-
-				}
-			}
-		if (defined $ERROR) {
-			$html = Dumper($SITE)." Editor for page=[$dref->{'page'}] element id=[$dref->{'id'}]<br><font color='red'>Error: $ERROR</font>";
-			}
-		$out .= "?m=loadeditor&id=$ID&html=".&js_encode($html);
-		}	
-	
-	if ($SUB eq 'CONTENT') {
-		# use Data::Dumper; print STDERR Dumper($SREF);
-		my ($html) = $t->render('*SITE'=>$SITE);
-		# $html = "FL: $SREF->{'_FL'} | PG: $SREF->{'_PG'} | SKU: $SREF->{'_SKU'} | FS: $SREF->{'_FS'}<br><hr>".$html;
-		$out = "?m=loadcontent&id=$ID&html=".&js_encode($html);
-		}
-	
-	# print STDERR "OUT: $out\n";
-
-	undef $t; undef $el;
-	}
-
-
+#		}
+#	else {
+#		warn "_SREF (SITE) was not passed to method BUILDER!\n";
+#		}
+#
+#	# print STDERR Dumper(\%SREF);
+#	# print STDERR Dumper(\%SREF,$dref);
+#
+#	my $html = '';
+#	my $ERROR = undef;
+#	my ($t,$el,$TYPE);
+#	my $LOGTYPE = '';
+#
+#	my $FORMAT = $SITE->format();
+#	my $LAYOUT = $SITE->layout();
+#
+#	if (defined $ERROR) {}				## skip if we encountered an error
+#	elsif ($SITE->format() eq 'WRAPPER') {
+#		# $LAYOUT = $SITE->layout();
+#		$LOGTYPE = "WRAPPER=$LAYOUT";
+#		}
+#	elsif ($SITE->format() eq 'PRODUCT') {	## if sku is set, then set $SREF->{'
+#		# $LAYOUT = PRODUCT->new($USERNAME,$SITE->sku())->fetch('zoovy:fl');
+#		# $LAYOUT = &ZOOVY::fetchproduct_attrib($USERNAME,$SITE->sku(),'zoovy:fl');
+#		# set flow style to 'P' for proper defaulting?!?! (probably not necessary)
+#		$LOGTYPE = sprintf("PRODUCT=%s LAYOUT=$LAYOUT",$SITE->sku());
+#		}
+#	elsif ($SITE->format() =~ /^(PAGE|NEWSLETTER)$/) { 		## default 
+#		#require PAGE;
+#		#my ($p) = PAGE->new($USERNAME,$SITE->pageid(),NS=>$SITE->profile(),PRT=>$SITE->prt());
+#		#if (not defined $p) { $ERROR = sprintf("Could not load page [%s] for user:%s",$SITE->pg(),$SITE->username()); } 
+#		#else { $LAYOUT = $p->docid(); }
+#		#undef $p;
+#		$LOGTYPE = sprintf("PAGE=%s LAYOUT=$LAYOUT PROFILE=%s",$SITE->pageid(),$SITE->profile());
+#		}
+#	else {	
+#		## yeah it's all good.
+#		}
+#	
+#	if (not defined $ERROR) {
+#		($t) = TOXML->new($SITE->format(),$SITE->layout(),USERNAME=>$USERNAME,SUBTYPE=>$SITE->fs());
+#		use Data::Dumper;
+#		if (not defined $t) { $ERROR = "Could not load TOXML layout FORMAT=[$FORMAT] LAYOUT=[$LAYOUT]".Dumper($SITE); }
+#		}
+#	if (not defined $ERROR) {
+#		($el) = $t->fetchElement($ID,$SITE->div());
+#		$LOGTYPE .= " ELEMENT=".$el->{'ID'};
+#		if (not defined $el) { $ERROR = "Could not find element ID[$ID] from Toxml file FORMAT[$FORMAT] LAYOUT[$LAYOUT].".Dumper($SITE); }
+#		}
+#
+#	##
+#	## SANITY: at this point the following variables are either setup or $ERROR is set.
+#	##		p=Current Page, t=Current TOXML document, el=current element in focus, type=>
+#	##
+#	open F, ">/tmp/foo";
+#	print F Dumper($SITE,$SUB);
+#
+#
+#	if ($SUB eq 'SAVE') {	
+#		## note if we recive a variable of ACTION=reload then we'll go back and try editing again.
+#		## used to reload options based on a choice (e.g. prodlist)
+#
+# #print STDERR "CGIV DREF\n".Dumper(
+##	&ZTOOLKIT::buildparams({"cgiv"=>$ZOOVY::cgiv->{'toptext'}}),
+##	&ZTOOLKIT::buildparams({"dref"=>$dref->{'toptext'}})
+##	);
+#		
+#		if (not defined $ERROR) {
+#			$TYPE = $el->{'TYPE'};
+#			if (($TYPE eq 'PRODLIST') && ($dref->{'func'} eq 'LISTEDITOR')) {	$TYPE = 'LISTEDITOR'; }
+#			if ($TYPE eq '') { $ERROR = "Element type was not set (how odd??)[1]"; }
+#			elsif (not defined $TOXML::EDIT::edit_element{ $TYPE }) { $ERROR = "Undefined editor for TYPE=[$TYPE]"; }
+#			else {
+#				# use Data::Dumper; print STDERR Dumper($el,$dref,$SREF); 
+#				# print STDERR "SAVING: $TYPE\n";
+#
+#				# print "MYPARAMS: ".&ZTOOLKIT::buildparams($dref)."\n";
+#
+#				print F Dumper({$TYPE,$el,$dref,$SITE});
+#
+#				($TYPE,my $prompt,$html) = $TOXML::SAVE::save_element{$TYPE}->($el,$dref,$SITE); 
+#				$LU->log("AJAX.BUILDER.SAVE",$LOGTYPE,"INFO");
+#				}
+#			}
+#
+#		if ($ERROR ne '') {
+#			warn $ERROR;
+#			}
+#
+#		$out .= "?m=hideeditor";
+#		# if (uc($dref->{'ACTION'}) eq 'RELOAD') { $SUB = 'EDIT'; $out =''; }	
+#		my ($html) = $t->render('*SITE'=>$SITE);
+#		# open F, ">/tmp/foo"; print F Dumper($SREF,$html); close F;
+#
+#		# $html = "FL: $SREF->{'_FL'} | PG: $SREF->{'_PG'} | SKU: $SREF->{'_SKU'} | FS: $SREF->{'_FS'}<br><hr>".$html;
+#		$out .= "?m=loadcontent&html=".&js_encode($html);
+#
+#		if (uc($CMD) eq 'RELOAD') { $SUB = 'EDIT'; }
+#		}
+#
+#	close F;
+#
+#	if ($SUB eq 'EDIT') {
+#		if (not defined $ERROR) {
+#			$TYPE = $el->{'TYPE'};
+#			if (($TYPE eq 'PRODLIST') && ($dref->{'func'} eq 'LISTEDITOR')) {	$TYPE = 'LISTEDITOR'; }
+#
+#			# print STDERR "TYPE IS: $TYPE\n";
+#			if ($TYPE eq '') { $ERROR = "Element type was not set (how odd??)[2]"; }
+#			elsif (not defined $TOXML::EDIT::edit_element{ $TYPE }) { $ERROR = "Undefined editor for TYPE=[$TYPE]"; }
+#			else { 
+#				$el->{'_FORM'} = "thisFrm-$ID";
+#				(my $STYLE,my $prompt,$html,my $extra) = $TOXML::EDIT::edit_element{$TYPE}->($el,$t,$SITE,$dref); 
+#				
+#				## normally we'd just call saveElement, but for LISTEDITOR we need to do some other stuff.
+#				my $jsaction = qq~saveElement('$TYPE','$ID');~;
+#				#if ($TYPE eq 'LISTEDITOR') {
+#				#	$jsaction = qq~setorder(document.thisFrm.list1,document.thisFrm.listorder); $jsaction~;
+#				#	}
+#
+#				## NOTE: textarea's return the input in the PROMPT (how dumb!)
+#				if ($STYLE eq 'TEXTAREA') {
+#					$html = $prompt; $prompt = $el->{'PROMPT'};
+#					}
+#				elsif ($STYLE eq 'IMAGE') {
+#					$html = "<table border=0><tr><td valign='top'>$html</td><td valign='top'>$extra</td></tr></table>";
+#					}
+#
+#
+#				my $SREFstr = $SITE->siteserialize();
+#
+#				if ($STYLE eq 'EDITOR_ACTION') {}
+#				else {
+#
+#				$html = &GTOOLS::std_box($prompt,qq~
+#<form id="$el->{'_FORM'}" name="$el->{'_FORM'}" action="javascript:$jsaction">
+#<input type="hidden" name="_SREF" value="$SREFstr">
+#$html
+#<input type="button" value="Save" onClick="$jsaction"> 
+#</form>~);
+#					}
+#
+#				}
+#			}
+#		if (defined $ERROR) {
+#			$html = Dumper($SITE)." Editor for page=[$dref->{'page'}] element id=[$dref->{'id'}]<br><font color='red'>Error: $ERROR</font>";
+#			}
+#		$out .= "?m=loadeditor&id=$ID&html=".&js_encode($html);
+#		}	
+#	
+#	if ($SUB eq 'CONTENT') {
+#		# use Data::Dumper; print STDERR Dumper($SREF);
+#		my ($html) = $t->render('*SITE'=>$SITE);
+#		# $html = "FL: $SREF->{'_FL'} | PG: $SREF->{'_PG'} | SKU: $SREF->{'_SKU'} | FS: $SREF->{'_FS'}<br><hr>".$html;
+#		$out = "?m=loadcontent&id=$ID&html=".&js_encode($html);
+#		}
+#	
+#	# print STDERR "OUT: $out\n";
+#
+#	undef $t; undef $el;
+#	}
+#
+#
 
 ##
 ## required parameters:

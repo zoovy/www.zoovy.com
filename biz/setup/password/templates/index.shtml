@@ -1,7 +1,7 @@
 <!-- SETUP_TAB -->
 
 <center>
-<form action="index.cgi" method="POST">
+<form action="/biz/setup/password/index.cgi" method="POST">
 <input type="hidden" name="ACTION" value="SAVE_PASSWORD">
 <br>
 <br>

@@ -5,8 +5,8 @@
 <tr><td>
 <font><h2>Handling </h2>
 <Br>
-<form name="thisFrm" action="handling.cgi">
-<input type="hidden" name="ACTION" value="SAVE">
+<form id="thisFrm" name="thisFrm" action="handling.cgi">
+<input id="ACTION" type="hidden" name="ACTION" value="SAVE">
 
 Handling fees for orders will be:<br>
 <input type="radio" name="handling" <!-- HANDLING_0 --> value="0"> Not Used/Disabled.<br>
@@ -98,7 +98,7 @@ lookup table to determine the next highest handling fee.
 	<td colspan='3'>
 	<table>
 	<tr>
-		<td nowrap align='center'><input type='button' onClick="window.document.thisFrm.ACTION.value='WEIGHT_EDIT'; window.document.thisFrm.submit();" style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
+		<td nowrap align='center'><input type='button' onClick="jQuery('#ACTION').val('WEIGHT_EDIT'); jQuery('#thisFrm').submit();" style="width: 75; font-size: 8pt; font-family: helvetica;" value=' Add '></td>
 		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Up to Weight:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="weight_upto" size="8"></td>
 		<td nowrap><font style="font-size: 9pt; font-family: helvetica, arial">Fee:</font><input style="font-size: 8pt; font-family: arial,helvetica" type="textbox" name="weight_fee" size="5"></td>
 	</tr>
@@ -115,13 +115,13 @@ lookup table to determine the next highest handling fee.
 <br>
 <b>Special Handling Rules: </b><br>
 Use shipping rules to handle the "special cases" that come up from time to time.<br>
-<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=HANDLING">Edit/View Advanced Rules</a>
+<a href="/biz/setup/shipping/rulebuilder.cgi?method=HANDLING">Edit/View Advanced Rules</a>
 <br>
 <br>
 <br>
 
 <input class='button100' type='submit' value='  Save  '>
-<input class='button100' type='button' onClick='window.location="index.cgi";' value='  Exit  '>
+<input class='button100' type='button' onClick="navigateTo('/biz/setup/shipping/index.cgi');" value='  Exit  '>
 <br>
 <br>
 <br>

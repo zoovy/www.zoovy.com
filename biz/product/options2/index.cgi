@@ -20,7 +20,8 @@ my @MSGS = ();
 my ($LU) = LUSER->authenticate(
 	auth=>'autotoken',
 	sendto=>"/biz",
-	nocache=>1);
+	nocache=>1
+	);
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 
 
@@ -791,7 +792,7 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 
 
 
-	$GTOOLS::TAG{'<!-- IMAGE_MODIFIER -->'} = '<input type="hidden" name="img" value=""><input name="imgimg" type="image" src="/images/blank.gif" width=1 height=1>';	 	## blank is not saved.
+	$GTOOLS::TAG{'<!-- IMAGE_MODIFIER -->'} = '<input type="hidden" id="img" name="img" value=""> <input id="imgimg" name="imgimg" type="image" src="/images/blank.gif" width=1 height=1>';	 	## blank is not saved.
 	$GTOOLS::TAG{'<!-- HIDE_BIGLIST_START -->'} = '<!--';
 	$GTOOLS::TAG{'<!-- HIDE_BIGLIST_END -->'} = '-->';
 	$GTOOLS::TAG{'<!-- BIGLIST_CONTENTS -->'} = '';
@@ -960,8 +961,11 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 						<img src="/images/image_not_selected.gif" width="75" height="75" name="imgimg">
 					</td>
 					<td bgcolor="CFCFCF">
-						Selected Image: <input onChange="document.thisFrm.imgimg.src=imglib(document.thisFrm.img.value,50,50,'FFFFFF',0,'jpg');" type="textbox" name="img" size="20"><br>
-						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="javascript:openWindow('/biz/setup/media/popup.cgi?mode=pogchooser&SERIAL=$passthis&$t');">
+						Selected Image: 
+						<input 
+							onChange="document.thisFrm.imgimg.src=imglib(document.thisFrm.img.value,50,50,'FFFFFF',0,'jpg');" 
+						type="textbox" name="img" size="20"><br>
+						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#img'),jQuery('#imgimg')','Choose Option Image');">
 					</td>
 					</tr>
 				</table>
@@ -1447,14 +1451,14 @@ if ($VERB eq '') {
 		my $row = ($counter++%2);
 		$out .= "<tr class='r$row'><td>";
 		if ((not defined $pogids{$id}) && ($PRODUCT ne '')) {
-			$out .= "<input value=\"add\" type=\"button\" class=\"minibutton\" onClick=\"document.location='index.cgi?MODE=$::MODE&VERB=ADDSOG&PRODUCT=$PRODUCT&SOG=".&uri_escape($id)."';\">";
+			$out .= "<input value=\"add\" type=\"button\" class=\"minibutton\" onClick=\"navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=ADDSOG&PRODUCT=$PRODUCT&SOG=".&uri_escape($id)."');\">";
 			} 
 		else { 
 			$out .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; 
 			}
 
 		if ($PRODUCT eq '') {
-			$out .= "<input value=\"edit\" type=\"button\" class=\"minibutton\" onClick=\"document.location='index.cgi?MODE=$::MODE&VERB=EDITSOG&PRODUCT=$PRODUCT&SOG=".$id."';\">";
+			$out .= "<input value=\"edit\" type=\"button\" class=\"minibutton\" onClick=\"navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=EDITSOG&PRODUCT=$PRODUCT&SOG=".$id."');\">";
 			}
 
 		# $DEBUG = 1;
@@ -1478,7 +1482,7 @@ if ($VERB eq '') {
 		foreach my $id (keys %{$swogsref}) {
 			if ($count==0) { $count = 1; } else { $count = 0; }
 			$out .= "<tr><td class=\"r$count\">
-				<input value=\"import\" type=\"button\" class=\"minibutton\" onClick=\"document.location='index.cgi?VERB=COPYSWOG&ID=$id';\"> 
+				<input value=\"import\" type=\"button\" class=\"minibutton\" onClick=\"navigateTo('/biz/product/options2/index.cgi?VERB=COPYSWOG&ID=$id');\"> 
 				&nbsp; 
 				</td><td class=\"r$count\">$id: $swogsref->{$id}</td></tr>";
 			}
@@ -1487,16 +1491,16 @@ if ($VERB eq '') {
 		$template_file = 'indexsog.shtml'; 
 		}
 
-	$GTOOLS::TAG{'<!-- EXIT_URL -->'} = '../edit.cgi?PID='.$PRODUCT;
+	$GTOOLS::TAG{'<!-- EXIT_URL -->'} = '/biz/product/edit.cgi?PID='.$PRODUCT;
 	# print STDERR "FLAGS: $FLAGS\n";
 	if ($FLAGS =~ /,TOKENAUTH,/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "index.cgi?PRODUCT=$PRODUCT&VERB=XML_END";
+		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&VERB=XML_END";
 		}
 	elsif ($::MODE =~ /^XML:/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
+		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
 		}
 	elsif ($::MODE =~ /^THASH:/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
+		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
 		}
 	}
 

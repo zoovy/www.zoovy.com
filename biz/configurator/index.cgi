@@ -397,7 +397,7 @@ elsif ($FLAGS =~ /,TRIAL,/) {
 	$GTOOLS::TAG{'<!-- PACKAGE_DESC -->'} = $PACKAGE_description;
 	$GTOOLS::TAG{'<!-- PACKAGE_ID -->'} = $PACKAGE_id;
 	$GTOOLS::TAG{'<!-- PACKAGE_NAME -->'} = $PACKAGE_name;
-	$GTOOLS::TAG{"<!-- PACKAGE_IMAGE -->"} = "<img src=\"images/package_".$PACKAGE_id."_white.jpg\" width=\"116\" height=\"88\" alt=\"\" border=\"0\">";
+	$GTOOLS::TAG{"<!-- PACKAGE_IMAGE -->"} = "<img src=\"/biz/configurator/images/package_".$PACKAGE_id."_white.jpg\" width=\"116\" height=\"88\" alt=\"\" border=\"0\">";
 	if ($PACKAGE_id eq 'SHOPCART') {
 		$GTOOLS::TAG{"<!-- PACKAGE_IMAGE -->"} = '';
 		}
@@ -440,7 +440,7 @@ elsif ($FLAGS =~ /,TRIAL,/) {
 			} 
 
 		if ($PACKAGE_bundles =~ /,$id,/) {
-			$c .= "<td valign=top width='50' align=\"center\"><img src=\"images/green_check.gif\"></td>";
+			$c .= "<td valign=top width='50' align=\"center\"><img src=\"/biz/configurator/images/green_check.gif\"></td>";
 			}
 		else {
 			$c .= "<td valign=top width='50' align=\"center\"><input onClick=\"sumIt();\" ";
@@ -449,7 +449,7 @@ elsif ($FLAGS =~ /,TRIAL,/) {
 			$c .= "<input type=\"hidden\" name=\"price_$id\" value=\"$amount\"></td>";
 			}
 	
-		$c .= "<td width='70' valign=top align=\"center\"><input type=\"image\" onClick=\"document.signupFrm.upsell_$id.checked = !document.signupFrm.upsell_$id.checked; sumIt(); return false;\" src=\"images/bundle_".$id.$color.".gif\" width=\"57\" height=\"58\" alt=\"\" border=\"0\"></td>";
+		$c .= "<td width='70' valign=top align=\"center\"><input type=\"image\" onClick=\"document.signupFrm.upsell_$id.checked = !document.signupFrm.upsell_$id.checked; sumIt(); return false;\" src=\"/biz/configurator/images/bundle_".$id.$color.".gif\" width=\"57\" height=\"58\" alt=\"\" border=\"0\"></td>";
 		$c .= "<td width='200' valign=\"top\"><p style=\"margin: 2px;\"><strong>$name</strong><br>";
 		$c .= "$description";
 		$c .= "<br>\$".sprintf("%.2f",$amount)."/mo.<br>";
@@ -649,8 +649,8 @@ if ($ZOOVY::cgiv->{'VERB'} eq '') {
 			} 
 
 		$c .= "<td width='70' valign='top' align=\"center\"><br><br>";
-		my $imagename = "images/bundle_".$id.$color.".gif";
-		if (! -f $imagename) { $imagename = '/images/blank.gif'; }
+		my $imagename = "/biz/configurator/images/bundle_".$id.$color.".gif";
+		if (! -f "../../$imagename") { $imagename = '/images/blank.gif'; }
 		$c .= "<input type=\"image\" onClick=\"document.signupFrm.upsell_$id.checked = !document.signupFrm.upsell_$id.checked; sumIt(); return false;\" src=\"$imagename\" width=\"57\" height=\"58\" alt=\"\" border=\"0\">";
 		# $c .= "<br><br><a href=\"http://www.zoovy.net/features/bundles.php?bundle=$id\" target=\"features\">detail</a><br>";
 
@@ -690,12 +690,12 @@ if ($ZOOVY::cgiv->{'VERB'} eq '') {
 				$c .= "<b>[0 seats currently available]</b><br>";
 				}
 
-			$c .= "<input type='button' class='button' value='Add' onClick=\"document.location='/biz/configurator?VERB=VIEW&BUNDLE=$id';\"> ";
+			$c .= "<input type='button' class='button' value='Add' onClick=\"navigateTo('/biz/configurator?VERB=VIEW&BUNDLE=$id');\"> ";
 			if (not $BREF->{'ALLOW_REMOVE'}) {
 				$c .= "<i>Please contact billing\@zoovy.com to remove</i>";
 				}
 			elsif ($count > 0) {
-				$c .= "<input type='button' class='button' value='Remove' onClick=\"document.location='/biz/configurator?VERB=REMOVE&BUNDLE=$id';\"> ";
+				$c .= "<input type='button' class='button' value='Remove' onClick=\"navigateTo('/biz/configurator?VERB=REMOVE&BUNDLE=$id');\"> ";
 				}
 			}
 		elsif ($PACKAGE_bundles =~ /,$id,/) {
@@ -714,11 +714,11 @@ if ($ZOOVY::cgiv->{'VERB'} eq '') {
 				}
 			elsif ($count>0) {
 				$c .= "<b>[Currently added to account]</b><br>";
-				$c .= "<input type='button' class='button' value='Remove' onClick=\"document.location='/biz/configurator?VERB=REMOVE&BUNDLE=$id';\"> ";
+				$c .= "<input type='button' class='button' value='Remove' onClick=\"navigateTo('/biz/configurator?VERB=REMOVE&BUNDLE=$id');\"> ";
 				}
 			else {
 				$c .= "<b>[Please add to enable]</b><br>";
-				$c .= "<input type='button' class='button' value='Add' onClick=\"document.location='/biz/configurator?VERB=VIEW&BUNDLE=$id';\"> ";
+				$c .= "<input type='button' class='button' value='Add' onClick=\"navigateTo('/biz/configurator?VERB=VIEW&BUNDLE=$id');\"> ";
 				}
 
 #			$c .= "<td width='50' align=\"center\"><input onClick=\"sumIt();\" ";
@@ -776,7 +776,7 @@ if ($ZOOVY::cgiv->{'VERB'} eq '') {
 
 my @TABS = ();
 if ($FLAGS =~ /,TRIAL,/) {
-   push @TABS, { 'name'=>'Introduction', 'link'=>'http://www.zoovy.com/biz/', 'target'=>'_top' };
+   push @TABS, { 'name'=>'Introduction', 'link'=>'/biz/', 'target'=>'_top' };
 #   push @TABS, { 'name'=>'Pricing', 'link'=>'/biz/configurator', 'target'=>'_top' };
 	}
 
@@ -829,7 +829,7 @@ function sumIt() {
 ~,
    'tabs'=>\@TABS,
    'bc'=>[
-      { name=>'Account Configurator',link=>'http://www.zoovy.com/biz/configurator','target'=>'_top', },
+      { name=>'Account Configurator',link=>'/biz/configurator','target'=>'_top', },
       ],
    );
 	}

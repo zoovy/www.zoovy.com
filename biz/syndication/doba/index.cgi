@@ -211,11 +211,11 @@ HINT: The validation log may also be imported as a CSV file to correct the value
 untie %s;
 
 my @TABS = ();
-push @TABS, { selected=>($VERB eq '')?1:0, 'name'=>'Config', 'link'=>'index.cgi' };
-push @TABS, { selected=>($VERB eq 'LOGS')?1:0, 'name'=>'Logs', 'link'=>'index.cgi?VERB=LOGS' };
-push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>'index.cgi?VERB=FILES' };
-push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG", };
- push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=51368", };
+push @TABS, { selected=>($VERB eq '')?1:0, 'name'=>'Config', 'link'=>'/biz/syndication/doba/index.cgi' };
+push @TABS, { selected=>($VERB eq 'LOGS')?1:0, 'name'=>'Logs', 'link'=>'/biz/syndication/doba/index.cgi?VERB=LOGS' };
+push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>'/biz/syndication/doba/index.cgi?VERB=FILES' };
+push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz/syndication/doba/index.cgi?VERB=DEBUG", };
+push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"/biz/syndication/doba/index.cgi?VERB=WEBDOC&DOC=51368", };
 
 
 &GTOOLS::output('tabs'=>\@TABS,'bc'=>\@BC,file=>$template_file,header=>1);

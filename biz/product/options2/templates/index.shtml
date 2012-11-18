@@ -1,9 +1,3 @@
-<HEAD>
-<!-- HEADER_ONLY -->
-<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
-</HEAD>
-<BODY>
-<!-- MSGS -->
 <center>
 <br>
 <form method="post" action="index.cgi">
@@ -42,7 +36,7 @@
 		<!-- POG_OUTPUT -->
 		</table>
 		<br>
-		<input class="button" type="button" value="Add New" onClick="document.location='index.cgi?MODE=<!-- MODE -->&VERB=CREATEPOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->';">
+		<input class="button" type="button" value="Add New" onClick="navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATEPOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');">
 			<a href="#" onClick="if (Element.visible('!help-pogs')) { new Effect.SlideUp('!help-pogs'); } else { new Effect.SlideDown('!help-pogs'); }">[Info]</a>
 		<div id="!help-pogs" style="display: none">
 		<span> 
@@ -98,7 +92,7 @@
 	</table>
 	</center>
 	<center>
-		<a href="<!-- EXIT_URL -->"><img border="0" src="/images/bizbuttons/exit.gif"></a>
+		<button class="button" onClick="navigateTo('<!-- EXIT_URL -->');">Exit</button>
 	</center>
 	</td>
 	

@@ -40,13 +40,12 @@ if ($FLAGS !~ /,CRM,/) {
 	}
 
 
-my @ERRORS = ();
-
+my @MSGS = ();
 
 my $CTCONFIG = {};
 my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 if (($webdbref->{'crmtickets'} eq '') && ($VERB ne 'CONFIG') && ($VERB ne 'CONFIG-SAVE')) {	
-	push @ERRORS, "WARN:CRM Case Management/Returns is not currently configured/enabled.";
+	push @MSGS, "ERROR|+CRM Case Management/Returns is not currently configured/enabled.";
 	$VERB = 'CONFIG';
 	}
 else {
@@ -343,7 +342,7 @@ if ($VERB eq 'TICKET-VIEW') {
 		my ($ts,$user) = $T->getLock();
 		my $tsdiff = time()-$ts;
 		if ( $tsdiff < 15*60 ) {
-			push @ERRORS, "WARN: Warning user \"$user\" accessed the ticket ".&ZTOOLKIT::pretty_time_since(1,$tsdiff)." ago, they may still be editing.";
+			push @MSGS, "WARNING|+Warning user \"$user\" accessed the ticket ".&ZTOOLKIT::pretty_time_since(1,$tsdiff)." ago, they may still be editing.";
 			}
 		else {
 			$T->setLock($LUSERNAME);
@@ -358,7 +357,7 @@ if ($VERB eq 'TICKET-VIEW') {
 
 		if ($inforef->{'orderid'} ne '') {
 			my $orderid = $inforef->{'orderid'};
-			$GTOOLS::TAG{'<!-- ORDERID -->'} = "<a target=_new href=\"/biz/orders/index.cgi?VERB=QUICKSEARCH&find_text=$orderid&find_status=ANY\">$orderid</a>";
+			$GTOOLS::TAG{'<!-- ORDERID -->'} = "<a href=\"/biz/orders/index.cgi?VERB=QUICKSEARCH&find_text=$orderid&find_status=ANY\">$orderid</a>";
 			}		
 		else {
 			$GTOOLS::TAG{'<!-- ORDERID -->'} = "<i>Not Set</i>";
@@ -367,13 +366,13 @@ if ($VERB eq 'TICKET-VIEW') {
 		$GTOOLS::TAG{'<!-- EMAIL -->'} = $inforef->{'email'};
 		$GTOOLS::TAG{'<!-- PHONE -->'} = $inforef->{'phone'};
 
-		$GTOOLS::TAG{'<!-- TKT_OPEN -->'} = ($inforef->{'TKT_open'}>0)?"<a href=\"index.cgi?VERB=TICKETS-SHOWCID-OPEN&CID=$inforef->{'cid'}\">$inforef->{'TKT_open'}</a>":'0';
-		$GTOOLS::TAG{'<!-- TKT_TOTAL -->'} = ($inforef->{'TKT_total'}>0)?"<a href=\"index.cgi?VERB=TICKETS-SHOWCID-ALL&CID=$inforef->{'cid'}\">$inforef->{'TKT_total'}</a>":'0';
-		$GTOOLS::TAG{'<!-- TKT_WAIT -->'} = ($inforef->{'TKT_wait'}>0)?"<a href=\"index.cgi?VERB=TICKETS-SHOWCID-WAIT&CID=$inforef->{'cid'}\">$inforef->{'TKT_wait'}</a>":'0';
+		$GTOOLS::TAG{'<!-- TKT_OPEN -->'} = ($inforef->{'TKT_open'}>0)?"<a href=\"/biz/crm/index.cgi?VERB=TICKETS-SHOWCID-OPEN&CID=$inforef->{'cid'}\">$inforef->{'TKT_open'}</a>":'0';
+		$GTOOLS::TAG{'<!-- TKT_TOTAL -->'} = ($inforef->{'TKT_total'}>0)?"<a href=\"/biz/crm/index.cgi?VERB=TICKETS-SHOWCID-ALL&CID=$inforef->{'cid'}\">$inforef->{'TKT_total'}</a>":'0';
+		$GTOOLS::TAG{'<!-- TKT_WAIT -->'} = ($inforef->{'TKT_wait'}>0)?"<a href=\"/biz/crm/index.cgi?VERB=TICKETS-SHOWCID-WAIT&CID=$inforef->{'cid'}\">$inforef->{'TKT_wait'}</a>":'0';
 
 		$GTOOLS::TAG{'<!-- FULLNAME -->'} = ($inforef->{'fullname'} ne '')?$inforef->{'fullname'}:'<i>Not Set</i>';
 		if ($inforef->{'cid'}>0) {
-			$GTOOLS::TAG{'<!-- FULLNAME -->'} .= " <a target=\"customer_edit\" href=\"/biz/utilities/customer/index.cgi?ACTION=SEARCH&scope=CID&searchfor=$inforef->{'cid'}\">[EDIT]</a>";
+			$GTOOLS::TAG{'<!-- FULLNAME -->'} .= " <a href=\"/biz/utilities/customer/index.cgi?ACTION=SEARCH&scope=CID&searchfor=$inforef->{'cid'}\">[EDIT]</a>";
 			}
 		$GTOOLS::TAG{'<!-- ORDER_COUNT -->'} = $inforef->{'order_count'};
 		$GTOOLS::TAG{'<!-- CUSTOMER_SINCE -->'} = $inforef->{'customer_since'};
@@ -543,10 +542,10 @@ if (($VERB eq '') || ($VERB =~ /TICKETS\-/)) {
 
 	foreach my $key ('ID','STATUS','CLASS','CREATED') {
 	
-		my $link = "index.cgi?VERB=$VERB&SORT=$key-$SORTDIR";
+		my $link = "/biz/crm/index.cgi?VERB=$VERB&SORT=$key-$SORTDIR";
 		my $updown = '';
 		if ($SORT eq $key) {
-			$link="index.cgi?VERB=$VERB&SORT=$key-".(($SORTDIR)?0:1);
+			$link="/biz/crm/index.cgi?VERB=$VERB&SORT=$key-".(($SORTDIR)?0:1);
 			if ($SORTDIR) { $updown = '<font style="font-weight: normal;">&#8657</font>'; } else { $updown = '<font style="font-weight: normal;">&#8659;</font>'; }
 			}
 
@@ -608,7 +607,7 @@ if (($VERB eq '') || ($VERB =~ /TICKETS\-/)) {
 
 			$tkt->{'SUBJECT'} = &ZOOVY::incode($tkt->{'SUBJECT'});
 			$c .= qq~<tr class=\"$r\">~;
-			$c .= qq~<td><div class='small'><a href=\"index.cgi?VERB=TICKET-VIEW&TKTCODE=$tkt->{'TKTCODE'}\">$tkt->{'TKTCODE'}</a></td>~;
+			$c .= qq~<td><div class='small'><a href=\"/biz/crm/index.cgi?VERB=TICKET-VIEW&TKTCODE=$tkt->{'TKTCODE'}\">$tkt->{'TKTCODE'}</a></td>~;
 
 
 			$c .= qq~<td><div class='small'>$tkt->{'STATUS'}</td>~;
@@ -630,7 +629,7 @@ if (($VERB eq '') || ($VERB =~ /TICKETS\-/)) {
 		if ($c eq '') {
 
 			if ($VERB eq '') {
-				$c = qq~<tr><td colspan=5><img align="left" src='images/smiley.jpg'><font color='blue'><h2>Yippie! There are no more active calls or tickets!</h2><br><br><center><input class="button" type="button" value=" Refresh " onClick="document.location='/biz/crm/index.cgi?ts=~.time().qq~';"></center></td></tr>~;
+				$c = qq~<tr><td colspan=5><img align="left" src='images/smiley.jpg'><font color='blue'><h2>Yippie! There are no more active calls or tickets!</h2><br><br><center><input class="button" type="button" value=" Refresh " onClick="navigateTo('/biz/crm/index.cgi?ts=~.time().qq~');"></center></td></tr>~;
 				}
 			else {
 				$c = qq~<tr><td colspan=5><i>No results found</i></td></tr>~;
@@ -772,34 +771,24 @@ if ($tabs) {
 	##	$pop->quit;
 	#
 	#	## STOP GADGET IMAP STOP!
-	push @TABS, { name=>"Create", link=>"index.cgi?VERB=CREATE", selected=>($VERB eq 'CREATE')?1:0, };
-	push @TABS, { name=>"New", link=>"index.cgi?VERB=TICKETS-NEW", selected=>($VERB eq 'TICKETS-NEW')?1:0, };
-	push @TABS, { name=>"Open", link=>"index.cgi?VERB=TICKETS-OPEN", selected=>($VERB eq 'TICKETS-OPEN')?1:0, };
-	push @TABS, { name=>"Waiting", link=>"index.cgi?VERB=TICKETS-WAITING", selected=>($VERB eq 'TICKETS-WAITING')?1:0, };
+	push @TABS, { name=>"Create", link=>"/biz/crm/index.cgi?VERB=CREATE", selected=>($VERB eq 'CREATE')?1:0, };
+	push @TABS, { name=>"New", link=>"/biz/crm/index.cgi?VERB=TICKETS-NEW", selected=>($VERB eq 'TICKETS-NEW')?1:0, };
+	push @TABS, { name=>"Open", link=>"/biz/crm/index.cgi?VERB=TICKETS-OPEN", selected=>($VERB eq 'TICKETS-OPEN')?1:0, };
+	push @TABS, { name=>"Waiting", link=>"/biz/crm/index.cgi?VERB=TICKETS-WAITING", selected=>($VERB eq 'TICKETS-WAITING')?1:0, };
 #		push @TABS, { name=>"Checkout Assist", link=>"index.cgi?VERB=CHECKOUTASSIST", selected=>($VERB eq 'CHECKOUTASSIST')?1:0, };
 #		push @TABS, { name=>"Today", link=>"index.cgi?VERB=TICKETS-WAITING", selected=>($VERB eq 'TICKETS-WAITING')?1:0, };
 #		push @TABS, { name=>"This Week", link=>"index.cgi?VERB=TICKETS-WAITING", selected=>($VERB eq 'TICKETS-WAITING')?1:0, };
 #		push @TABS, { name=>"This Month", link=>"index.cgi?VERB=TICKETS-WAITING", selected=>($VERB eq 'TICKETS-WAITING')?1:0, };
-	push @TABS, { name=>"Search", link=>"index.cgi?VERB=SEARCH", selected=>($VERB eq 'SEARCH')?1:0, };
-	push @TABS, { name=>"Config", link=>"index.cgi?VERB=CONFIG", selected=>($VERB eq 'CONFIG')?1:0, };
+	push @TABS, { name=>"Search", link=>"/biz/crm/index.cgi?VERB=SEARCH", selected=>($VERB eq 'SEARCH')?1:0, };
+	push @TABS, { name=>"Config", link=>"/biz/crm/index.cgi?VERB=CONFIG", selected=>($VERB eq 'CONFIG')?1:0, };
 	$VERB = '';
 	}
 
 ##
 ## generic message/warn/error handler
 ##
-if ((scalar @ERRORS)>0) {
-	my $txt = '';
-	foreach my $e (@ERRORS) {
-		if ($e =~ /^WARN\:[\s]*(.*?)$/) { $txt .= qq~<div class="warning">WARNING: $1</div>~; }
-		if ($e =~ /^ERR\:[\s]*(.*?)$/) { $txt .= qq~<div class="error">ERROR: $1</div>~; }
-		if ($e =~ /^MSG\:[\s]*(.*?)$/) { $txt .= qq~<div class="captainibs">$1</div>~; }
-		}
-	$GTOOLS::TAG{'<!-- ERRORS -->'} = "<table width=600><tr><td>$txt</td></tr></table>";
-	}
 
-
-&GTOOLS::output(tabs=>\@TABS,bc=>\@BC,file=>$template_file,header=>1);
+&GTOOLS::output(tabs=>\@TABS,msgs=>\@MSGS,bc=>\@BC,file=>$template_file,header=>1);
 
 &DBINFO::db_zoovy_close();
 &DBINFO::db_user_close();

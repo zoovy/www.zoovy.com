@@ -7,9 +7,11 @@ require ZWEBSITE;
 require ZTOOLKIT;
 use strict;
 
+my @MSGS = ();
+
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Insurance' };
 
 require LUSER;
@@ -88,6 +90,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'SAVE') {
 	$webdb->{'ins_weight'} = ($ZOOVY::cgiv->{'weight'})?1:0;
 	$webdb->{'ins_price'} = ($ZOOVY::cgiv->{'price'})?1:0;
 
+	push @MSGS, "SUCCESS|+saved";
 	$LU->log("SETUP.SHIPPING.INSURANCE","Saved Settings","SAVE");	
 	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);	
 	}
@@ -202,5 +205,5 @@ sub fixup {
 	file=>$template_file,
 	'jquery'=>1,
 	header=>1,
-	bc=>\@BC,
+	bc=>\@BC, msgs=>\@MSGS,
 	);

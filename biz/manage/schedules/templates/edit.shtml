@@ -1,5 +1,7 @@
 <!-- REPORT_TAB -->
 
+<form id="scheduleFrm" name="scheduleFrm" method="POST" action="/biz/manage/schedules/index.cgi">
+
 <center>
 <br>
 <table class="zoovytable" width=650>
@@ -7,7 +9,6 @@
 <tr><td class="zoovytableheader">Add/Edit Pricing Schedules</b></td></tr>
 <tr><td>
 <br>
-<form method="POST" action="index.cgi">
 <input type="hidden" name="ACTION" value="SAVE">
 <u>Config:</u><br>
 <table border=0 cellpadding=1 cellspacing=0>
@@ -92,12 +93,11 @@ for example CEUR ("currency euro") or "CCAD" (currency canadian dollars).
 <center>
 <table>
 	<tr>
-		<td><input type="submit" style='width: 75px;' class="button" value="Save"></td>
+		<td><button form="scheduleFrm" style='width: 75px;' onClick="jQuery('scheduleFrm').submit();" class="button">Save</button></td>
 	</tr>
 </table>
 </center>
 		
-</form>
 <font class="hint">
 * Features require level 7 or higher account.
 ** Features require level 8 or higher account.
@@ -105,5 +105,8 @@ for example CEUR ("currency euro") or "CCAD" (currency canadian dollars).
 
 </td></tr></table>
 </center>
+
+</form>
+
 <!-- FOOTER -->
 

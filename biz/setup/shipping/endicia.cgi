@@ -26,8 +26,8 @@ if (defined($q->param('MESSAGE'))) {
 	}
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 push @BC, { name=>'Endicia' };
 
 my $template_file = '';

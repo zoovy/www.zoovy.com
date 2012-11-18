@@ -68,14 +68,6 @@ Perform rule processing. (RECOMMENDED)
 <!-- RULE_WARNING -->
 <br>
 
-<input type="checkbox" <!-- OPTION_USE_NEGRATES -->" name="option_use_negrates"> 
-Use Negotiated Rates - Must be enabled by UPS for your account.
-(Do not enable this unless you are told to by your UPS account executive)<br>
-
-<br>
-<i>Note: If you enable rules a message will be displayed during checkout which states that the rates quote MAY not reflect the rates on UPS.com</i><Br>
-<br>
-
 
 <table border="1" width="95%"><tr><td>
 

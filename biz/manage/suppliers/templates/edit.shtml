@@ -45,8 +45,8 @@
 <table>
 	<tr>
 		<td><input type="submit" value=" Save " class="button"></td>
-		<td><input class="button" value=" Exit " type="button" onClick="document.location='index.cgi';"></td>
-		<td><input class="button" value=" Delete " type="button" onClick="document.location='index.cgi?VERB=REMOVE&CODE=<!-- CODE -->';"></td>
+		<td><input class="button" value=" Exit " type="button" onClick="navigateTo('/biz/manage/suppliers/index.cgi');"></td>
+		<td><input class="button" value=" Delete " type="button" onClick="navigateTo('/biz/manage/suppliers/index.cgi?VERB=REMOVE&CODE=<!-- CODE -->');"></td>
 	</tr>
 </table>
 </center>

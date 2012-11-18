@@ -8,6 +8,7 @@ require WHOLESALE;
 use strict;
 
 require LUSER;
+
 my ($LU) = LUSER->authenticate(flags=>'_S&8');
 if (not defined $LU) { exit; }
 
@@ -17,9 +18,10 @@ if ($MID<=0) { exit; }
 my $q = new CGI;
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'http://www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'http://www.zoovy.com/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
 
+my @MSGS = ();
 
 my $THIS = $q->param('THIS');
 my $ACTION = '';
@@ -55,7 +57,7 @@ else {
 			## rules can run .. iz okay!
 			}
 		else {
-			$GTOOLS::TAG{'<!-- WARNING -->'} = "<font color='red'>Warning: UPS Rule processing is currently disabled. To enable rule processing return the UPS Online Tools Setup area.</font>";
+			push @MSGS, "WARN|+UPS Rule processing is currently disabled. To enable rule processing return the UPS Online Tools Setup area.";
 			}
 		}
 
@@ -146,8 +148,7 @@ if ($ACTION eq "EDIT") {
 			$GTOOLS::TAG{"<!-- SCHEDULES -->"} .= "<option ".(($hash{'SCHEDULE'} eq $s)?'selected':'')." value=\"$s\">$s</option>";
       	}
 		if ($hash{'SCHEDULE'} eq '*') {
-			$GTOOLS::TAG{'<!-- SCHEDULE_WARNING -->'} = qq~<div class="warning">
-NOTE: the "Any" setting requires a schedule be set.<br>
+			push @MSGS, qq~WARN|+NOTE: the 'Any' setting requires a schedule be set.\n\n
 If no schedule is set the rule will be ignored/skipped.<br>
 The Match_All is provided as a convenience shortcut rule for stores that have many pricing schedules, <br>
 but desire to have only one set of rules for all schedules.<br>
@@ -236,76 +237,76 @@ if ($ACTION eq "APPEND") {
 if ($ACTION eq "")
 {
 
-$GTOOLS::TAG{'<!-- CANCEL_LOCATION -->'} = "index.cgi";
+$GTOOLS::TAG{'<!-- CANCEL_LOCATION -->'} = "/biz/setup/shipping/index.cgi";
 
-my $method = ''; my $desc = 'Unknown'; my $script = 'index.cgi';
+my $method = ''; my $desc = 'Unknown'; my $script = '/biz/setup/shipping/index.cgi';
 ## NOTE: METHOD or METHOD.### (where ### is a partition) are both valid.
-if ($METHOD =~ /^SHIP-USPS_DOM(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'Domestic'; $script = 'usps.cgi'; }
-elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Express'; $script = 'dhl.cgi'; }
-elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Nextday'; $script = 'dhl.cgi'; }
-elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Sameday'; $script = 'dhl.cgi'; }
-elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Ground'; $script = 'dhl.cgi'; }
-elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic General'; $script = 'dhl.cgi'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic General'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTEARLY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Early Delivery'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTNOON(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Next Noon'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTDAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Next Day'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_2DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic 2 Day'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_3DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic 3 Day'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_GROUND(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Ground'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_HOME_EVE(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Home Evening'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_HOME(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Home'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International General'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTEARLY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Next Day Early'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTNOON(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Next Noon'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_2DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International 2 Day'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_GROUND(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Ground'; $script = 'index.cgi?VERB=FEDEX-PRT-INIT'; }
-#elsif ($METHOD =~ /^SHIP-FIXED_SINGLE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Single Item'; $script = 'legacyfixed.cgi'; }
-#elsif ($METHOD =~ /^SHIP-FIXED_MULTI(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Multi Item'; $script = 'legacyfixed.cgi'; }
-#elsif ($METHOD =~ /^SHIP-FIXED_COMBO(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Combo Item'; $script = 'legacyfixed.cgi'; }
-#elsif ($METHOD =~ /^SHIP-FIXED_STORE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Store Only'; $script = 'legacyfixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-HANDLING(\.[\d]+)?$/) { $method = 'Handling'; $desc = 'General'; $script = 'handling.cgi'; }
-elsif ($METHOD =~ /^SHIP-INSURANCE(\.[\d]+)?$/) { $method = 'Insurance'; $desc = 'General'; $script = 'insurance.cgi'; }
-elsif ($METHOD =~ /^SHIP-PRICE_DOM(\.[\d]+)?$/) { $method = 'Price Based'; $desc = 'Domestic'; $script = 'price.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_DOM(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'Domestic'; $script = 'simplemulti.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_CAN(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'Canada'; $script = 'fixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_INT(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'International'; $script = 'fixed.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #1'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE2_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #2'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE4_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #3'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #1'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE2_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #2'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-SIMPLE4_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #3'; $script = 'simple.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic General'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_GND(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic Ground'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_3DS(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 3 Day'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_2DA(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 2 Day'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_2DM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 2 Day AM'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DP(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day PM'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DA(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day AM'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day Early AM'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_INT(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_INT_STD(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Canada'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XPR(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Express'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XDM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Worldwide Express Plus'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XPD(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Worldwide Expedited'; $script = 'upsapi.cgi'; }
-elsif ($METHOD =~ /^SHIP-USPS_DOM(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'Domestic'; $script = 'usps.cgi'; }
-elsif ($METHOD =~ /^SHIP-USPS_INT(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'International'; $script = 'usps.cgi'; }
-elsif ($METHOD =~ /^SHIP-WEIGHT_DOM(\.[\d]+)?$/) { $method = 'Weight Based'; $desc = 'Domestic'; $script = 'weight.cgi'; }
-elsif ($METHOD =~ /^SHIP-WEIGHT_INT(\.[\d]+)?$/) { $method = 'Weight Based'; $desc = 'International'; $script = 'weight.cgi'; }
-elsif ($METHOD =~ /^SHIP-OCL_DOM(\.[\d]+)?$/) { $method = 'OC Logistics Freight'; $desc = 'Domestic'; $script = 'oclogistics.cgi'; }
+if ($METHOD =~ /^SHIP-USPS_DOM(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'Domestic'; $script = '/biz/setup/shipping/usps.cgi'; }
+elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Express'; $script = '/biz/setup/shipping/dhl.cgi'; }
+elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Nextday'; $script = '/biz/setup/shipping/dhl.cgi'; }
+elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Sameday'; $script = '/biz/setup/shipping/dhl.cgi'; }
+elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic Ground'; $script = '/biz/setup/shipping/dhl.cgi'; }
+elsif ($METHOD =~ /^SHIP-DHL_DOM_E(\.[\d]+)?$/) { $method = 'DHL'; $desc = 'Domestic General'; $script = '/biz/setup/shipping/dhl.cgi'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic General'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTEARLY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Early Delivery'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTNOON(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Next Noon'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_NEXTDAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Next Day'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_2DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic 2 Day'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_3DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic 3 Day'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_GROUND(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Ground'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_HOME_EVE(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Home Evening'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_DOM_HOME(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'Domestic Home'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International General'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTEARLY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Next Day Early'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_NEXTNOON(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Next Noon'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_2DAY(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International 2 Day'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+elsif ($METHOD =~ /^SHIP-FEDEXAPI_INT_GROUND(\.[\d]+)?$/) { $method = 'FedEx'; $desc = 'International Ground'; $script = '/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_SINGLE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Single Item'; $script = '/biz/setup/shipping/legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_MULTI(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Multi Item'; $script = '/biz/setup/shipping/legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_COMBO(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Combo Item'; $script = '/biz/setup/shipping/legacyfixed.cgi'; }
+#elsif ($METHOD =~ /^SHIP-FIXED_STORE(\.[\d]+)?$/) { $method = 'Legacy Fixed'; $desc = 'Store Only'; $script = '/biz/setup/shipping/legacyfixed.cgi'; }
+elsif ($METHOD =~ /^SHIP-HANDLING(\.[\d]+)?$/) { $method = 'Handling'; $desc = 'General'; $script = '/biz/setup/shipping/handling.cgi'; }
+elsif ($METHOD =~ /^SHIP-INSURANCE(\.[\d]+)?$/) { $method = 'Insurance'; $desc = 'General'; $script = '/biz/setup/shipping/insurance.cgi'; }
+elsif ($METHOD =~ /^SHIP-PRICE_DOM(\.[\d]+)?$/) { $method = 'Price Based'; $desc = 'Domestic'; $script = '/biz/setup/shipping/price.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_DOM(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'Domestic'; $script = '/biz/setup/shipping/simplemulti.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_CAN(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'Canada'; $script = '/biz/setup/shipping/fixed.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLEMULTI_INT(\.[\d]+)?$/) { $method = 'Fixed'; $desc = 'International'; $script = '/biz/setup/shipping/fixed.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #1'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE2_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #2'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE4_DOM(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'Domestic #3'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #1'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE2_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #2'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-SIMPLE4_INT(\.[\d]+)?$/) { $method = 'Simple'; $desc = 'International #3'; $script = '/biz/setup/shipping/simple.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic General'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_GND(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic Ground'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_3DS(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 3 Day'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_2DA(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 2 Day'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_2DM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 2 Day AM'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DP(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day PM'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DA(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day AM'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_DOM_1DM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'Domestic 1 Day Early AM'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_INT(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_INT_STD(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Canada'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XPR(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Express'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XDM(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Worldwide Express Plus'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-UPSAPI_INT_XPD(\.[\d]+)?$/) { $method = 'UPS'; $desc = 'International Worldwide Expedited'; $script = '/biz/setup/shipping/upsapi.cgi'; }
+elsif ($METHOD =~ /^SHIP-USPS_DOM(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'Domestic'; $script = '/biz/setup/shipping/usps.cgi'; }
+elsif ($METHOD =~ /^SHIP-USPS_INT(\.[\d]+)?$/) { $method = 'US Postal Service'; $desc = 'International'; $script = '/biz/setup/shipping/usps.cgi'; }
+elsif ($METHOD =~ /^SHIP-WEIGHT_DOM(\.[\d]+)?$/) { $method = 'Weight Based'; $desc = 'Domestic'; $script = '/biz/setup/shipping/weight.cgi'; }
+elsif ($METHOD =~ /^SHIP-WEIGHT_INT(\.[\d]+)?$/) { $method = 'Weight Based'; $desc = 'International'; $script = '/biz/setup/shipping/weight.cgi'; }
+elsif ($METHOD =~ /^SHIP-OCL_DOM(\.[\d]+)?$/) { $method = 'OC Logistics Freight'; $desc = 'Domestic'; $script = '/biz/setup/shipping/oclogistics.cgi'; }
 else {
 	$method = "Universal ($METHOD) ";
 	$desc = $method;
 	my $umethod = $METHOD;
 	$umethod =~ s/\.[\d]+$//g;	## remove the .1
 	$umethod =~ s/SHIP-//g;
-	$script = 'universal.cgi?VERB=EDIT&ID='.$umethod;
+	$script = '/biz/setup/shipping/universal.cgi?VERB=EDIT&ID='.$umethod;
 	}
 
 $GTOOLS::TAG{"<!-- METHOD_DESC -->"} = $method.' Shipping';  
 $GTOOLS::TAG{"<!-- CANCEL_LOCATION -->"} = $script;
-push @BC, { name=>$method.' Shipping', link=>'/biz/setup/shipping/'.$script, target=>'_top' };
+push @BC, { name=>$method.' Shipping', link=>'/biz/setup/shipping/'.$script, };
 push @BC, { name=>$desc.' Rules', };
 
 
@@ -343,12 +344,12 @@ if (scalar(@rules)>0) {
 	
 		$c .= "<tr><td class='A'>$counter</td><td class='A'>";
 		# Print the UP arrow
-		if ($counter>0) { $c .= "<a href='rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+		if ($counter>0) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 		$c .= '&nbsp;';
 		# Print the DOWN arrow
-		if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+		if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 		$c .= '&nbsp;';
-		$c .= "<a href='rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='images/change.gif'></a>";
+		$c .= "<a href='/biz/setup/shippping/rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='images/change.gif'></a>";
 		$c .= "</td><td class='A'>".$MATCH."</td>";
 		$c .= "<td class='A'>".$rulehash->{'FILTER'}."</td>";
 		$c .= "<td class='A'>".$EXEC."</td>";
@@ -375,6 +376,7 @@ $template_file = "rulebuilder.shtml";
 	help=>"#50339",
 	file=>$template_file,
 	jquery=>1,
+	msgs=>\@MSGS,
 	header=>1,
 	bc=>\@BC);
 

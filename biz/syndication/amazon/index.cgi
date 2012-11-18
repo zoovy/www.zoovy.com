@@ -40,8 +40,8 @@ my $VERB = $q->param('VERB');
 print STDERR "VERB: $VERB\n";
 
 my @BC = ();
-push @BC, { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', };
-push @BC, { name=>'Amazon',link=>'http://www.zoovy.com/biz/syndication/amazon','target'=>'_top', };
+push @BC, { name=>'Syndication',link=>'/biz/syndication','target'=>'_top', };
+push @BC, { name=>'Amazon',link=>'/biz/syndication/amazon','target'=>'_top', };
 
 #if (1) {
 #	$template_file = 'maintenance.shtml';
@@ -60,8 +60,6 @@ if ($VERB eq '') {
 	$VERB = 'CONFIG'; 
 	}
 
-
-my ($webdb) = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 
 if ($VERB eq 'CONFIG-SAVE') {
 	## automatically create UPCs for products that do not have them defined 
@@ -86,41 +84,41 @@ if ($VERB eq 'CONFIG-SAVE') {
 	$s{'ERRCOUNT'} = 0;
 	$so->save();
 
-   $webdb->{'amz_merchantname'} = $ZOOVY::cgiv->{'amz_merchantname'};
-	$webdb->{'amz_merchantname'} =~ s/[\s]+$//g;
-	$webdb->{'amz_merchantname'} =~ s/^[\s]+//g;
-	$s{'.amz_merchantname'} = $webdb->{'amz_merchantname'};
+   my $amz_merchantname = $ZOOVY::cgiv->{'amz_merchantname'};
+	$amz_merchantname =~ s/[\s]+$//g;
+	$amz_merchantname =~ s/^[\s]+//g;
+	$s{'.amz_merchantname'} = $amz_merchantname;
 
-   $webdb->{'amz_userid'} = $ZOOVY::cgiv->{'amz_userid'};
-	$webdb->{'amz_userid'} =~ s/[\s]+$//g;
-	$webdb->{'amz_userid'} =~ s/^[\s]+//g;
-	$s{'.amz_userid'} = $webdb->{'amz_userid'};
+   my $amz_userid = $ZOOVY::cgiv->{'amz_userid'};
+	$amz_userid =~ s/[\s]+$//g;
+	$amz_userid =~ s/^[\s]+//g;
+	$s{'.amz_userid'} = $amz_userid;
 
-   $webdb->{'amz_password'} = $ZOOVY::cgiv->{'amz_password'};
-	$webdb->{'amz_password'} =~ s/[\s]+$//g;
-	$webdb->{'amz_password'} =~ s/^[\s]+//g;
-	$s{'.amz_password'} = $webdb->{'amz_password'};
+   my $amz_password = $ZOOVY::cgiv->{'amz_password'};
+	$amz_password =~ s/[\s]+$//g;
+	$amz_password =~ s/^[\s]+//g;
+	$s{'.amz_password'} = $amz_password;
 
-   $webdb->{'amz_merchanttoken'} = $ZOOVY::cgiv->{'amz_merchanttoken'};
-	$webdb->{'amz_merchanttoken'} =~ s/[\s]+$//g;
-	$webdb->{'amz_merchanttoken'} =~ s/^[\s]+//g;
-	$s{'.amz_merchanttoken'} = $webdb->{'amz_merchanttoken'};
+   my $amz_merchanttoken = $ZOOVY::cgiv->{'amz_merchanttoken'};
+	$amz_merchanttoken =~ s/[\s]+$//g;
+	$amz_merchanttoken =~ s/^[\s]+//g;
+	$s{'.amz_merchanttoken'} = $amz_merchanttoken;
 
-   $webdb->{'amz_merchantid'} = $ZOOVY::cgiv->{'amz_merchantid'};;
-	$webdb->{'amz_merchantid'} =~ s/[^A-Z0-9]+//gs;
-	$webdb->{'amz_merchantid'} =~ s/[\s]+$//g;
-	$webdb->{'amz_merchantid'} =~ s/^[\s]+//g;
-	$s{'.amz_merchantid'} = $webdb->{'amz_merchantid'};
+   my $amz_merchantid = $ZOOVY::cgiv->{'amz_merchantid'};;
+	$amz_merchantid =~ s/[^A-Z0-9]+//gs;
+	$amz_merchantid =~ s/[\s]+$//g;
+	$amz_merchantid =~ s/^[\s]+//g;
+	$s{'.amz_merchantid'} = $amz_merchantid;
 
-	$webdb->{'amz_accesskey'} = $ZOOVY::cgiv->{'amz_accesskey'};
-	$webdb->{'amz_accesskey'} =~ s/[\s]+$//g;
-	$webdb->{'amz_accesskey'} =~ s/^[\s]+//g;
-	$s{'.amz_accesskey'} = $webdb->{'amz_accesskey'};
+	my $amz_accesskey = $ZOOVY::cgiv->{'amz_accesskey'};
+	$amz_accesskey =~ s/[\s]+$//g;
+	$amz_accesskey =~ s/^[\s]+//g;
+	$s{'.amz_accesskey'} = $amz_accesskey;
 
-	$webdb->{'amz_secretkey'} = $ZOOVY::cgiv->{'amz_secretkey'};
-	$webdb->{'amz_secretkey'} =~ s/[\s]+$//g;
-	$webdb->{'amz_secretkey'} =~ s/^[\s]+//g;
-	$s{'.amz_secretkey'} = $webdb->{'amz_secretkey'};
+	my $amz_secretkey = $ZOOVY::cgiv->{'amz_secretkey'};
+	$amz_secretkey =~ s/[\s]+$//g;
+	$amz_secretkey =~ s/^[\s]+//g;
+	$s{'.amz_secretkey'} = $amz_secretkey;
 
 	$s{'.orderpermissions'} = (defined $ZOOVY::cgiv->{'ORDER_PERMS'})?1:0;
 	$s{'.fbapermissions'} = (defined $ZOOVY::cgiv->{'FBA_PERMS'})?1:0;
@@ -166,7 +164,6 @@ if ($VERB eq 'CONFIG-SAVE') {
 
 	push @MSGS, "SUCCESS|Updated settings";
 	$LU->log("SETUP.AMAZON","Tokens updated","SAVE");
-	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);		
 	$VERB = 'CONFIG';
 	}
 
@@ -174,19 +171,20 @@ if ($VERB eq 'CONFIG-SAVE') {
 if ($VERB eq 'CONFIG') {
 	my $hashref = {};
 
-	# my ($userref) = &AMAZON::fetch_merchant($USERNAME,$PRT);
+	my ($so) = SYNDICATION->new($USERNAME,"#$PRT","AMZ");
+	tie my %s, 'SYNDICATION', THIS=>$so;
 
 	$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
 	$GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
 
-	$GTOOLS::TAG{'<!-- AMZ_MERCHANTNAME -->'} = &ZOOVY::incode($webdb->{'amz_merchantname'});
-	$GTOOLS::TAG{'<!-- AMZ_USERID -->'} = &ZOOVY::incode($webdb->{'amz_userid'});
-	$GTOOLS::TAG{'<!-- AMZ_PASSWORD -->'} = &ZOOVY::incode($webdb->{'amz_password'});
-	$GTOOLS::TAG{'<!-- AMZ_MERCHANTTOKEN -->'} = &ZOOVY::incode($webdb->{'amz_merchanttoken'});
-	$GTOOLS::TAG{'<!-- AMZ_MERCHANTID -->'} = &ZOOVY::incode($webdb->{'amz_merchantid'});
-	$GTOOLS::TAG{'<!-- AMZ_ACCESSKEY -->'} = &ZOOVY::incode($webdb->{'amz_accesskey'});
-	$GTOOLS::TAG{'<!-- AMZ_SECRETKEY -->'} = &ZOOVY::incode($webdb->{'amz_secretkey'});
-	my ($so) = SYNDICATION->new($USERNAME,"#$PRT","AMZ");
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTNAME -->'} = &ZOOVY::incode($s{'.amz_merchantname'});
+	$GTOOLS::TAG{'<!-- AMZ_USERID -->'} = &ZOOVY::incode($s{'.amz_userid'});
+	$GTOOLS::TAG{'<!-- AMZ_PASSWORD -->'} = &ZOOVY::incode($s{'.amz_password'});
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTTOKEN -->'} = &ZOOVY::incode($s{'.amz_merchanttoken'});
+	$GTOOLS::TAG{'<!-- AMZ_MERCHANTID -->'} = &ZOOVY::incode($s{'.amz_merchantid'});
+	$GTOOLS::TAG{'<!-- AMZ_ACCESSKEY -->'} = &ZOOVY::incode($s{'.amz_accesskey'});
+	$GTOOLS::TAG{'<!-- AMZ_SECRETKEY -->'} = &ZOOVY::incode($s{'.amz_secretkey'});
+
 	my $feedpermissions = $so->get('.feedpermissions');
 	$GTOOLS::TAG{'<!-- FEED_PERMS_1 -->'} = ($feedpermissions&1)?'checked':'';
 	$GTOOLS::TAG{'<!-- FEED_PERMS_2 -->'} = ($feedpermissions&2)?'checked':'';
@@ -222,9 +220,6 @@ if ($VERB eq 'CONFIG') {
 
 	my ($userref) = AMAZON3::fetch_userprt($USERNAME,$PRT);
 	#print STDERR Dumper($hashref);
-	my ($so) = SYNDICATION->new($USERNAME,"#$PRT","AMZ");
-	tie my %s, 'SYNDICATION', THIS=>$so;
-
 	## if Product Syndication has been turned, ALERT merchant
 	if ($s{'IS_ACTIVE'}==0) {
 		push @MSGS, "WARN|all syndication has been turned off";
@@ -239,8 +234,6 @@ if ($VERB eq 'CONFIG') {
 	$GTOOLS::TAG{'<!-- PRIVATE_LABEL -->'} = ($s{'.private_label'}>0)?'checked':'';
 	$GTOOLS::TAG{'<!-- UPC_CREATION -->'} = ($s{'.upc_creation'}>0)?'checked':'';
 
-	my ($so) = SYNDICATION->new($USERNAME,"#$PRT","AMZ");
-	tie my %s, 'SYNDICATION', THIS=>$so;
 	$GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
 	$GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
 	$GTOOLS::TAG{'<!-- MWSTOKEN_STATUS -->'} = '<font color="red">Not Set</font>';
@@ -736,7 +729,7 @@ if ($VERB eq 'PRODUCTS') {
 				"'Amazon Uploads report' in your subject if you need to report an issue.";
 		}
 
-	my $pstmt = "select STATUS, PID, ASIN, from_unixtime(UPLOADED_GMT) DATE ".
+	$pstmt = "select STATUS, PID, ASIN, from_unixtime(UPLOADED_GMT) DATE ".
 					"from PID_UPCS where mid = ".$udbh->quote($MID).
 					" order by substring(from_unixtime(UPLOADED_GMT), 1, 10) desc, PID";
 	print STDERR $pstmt."\n";

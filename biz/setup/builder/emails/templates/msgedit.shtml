@@ -1,9 +1,13 @@
 <!-- SETUP_TAB -->
 
+<form name="thisFrm" id="thisFrm" method="POST" action="index.cgi">
+
 <br>
 
+
 <center>
-<!-- ERROR -->
+
+<input id="VERB" type="hidden" name="VERB" value="MSGSAVE">
 
 <table width=600 border=0 cellspacing=0 cellpadding=0 class="zoovytable">
 <tr>
@@ -11,8 +15,6 @@
 </tr>
 <tr>
 <td valign="top">
-	<form name="thisFrm" id="thisFrm" method="POST" action="index.cgi">
-	<input type="hidden" name="VERB" value="MSGSAVE">
 	<input type="hidden" name="NS" value="<!-- NS -->">
 	<input type="hidden" name="MSGID" value="<!-- MSGID -->">
 	<input type="hidden" name="MSGTYPE" value="<!-- MSGTYPE -->">
@@ -42,7 +44,7 @@
 		<td valign="top"><b>From Email:</b></td>
 		<td valign="top">
 			<input type="textbox" size="35" name="MSGFROM" value="<!-- MSGFROM -->"> 
-			<input type="button" class="button" value=" Test " onClick="thisFrm.VERB.value='MSGTEST'; thisFrm.submit();">
+			<input type="button" class="button" value=" Test " onClick="jQuery('#VERB').value='MSGTEST'; jQuery('#thisFrm').submit();">
 			<div class="hint">(leave blank to use profile default)</div>
 		</td>
 	</tr>
@@ -71,9 +73,9 @@
 	<center>
 		<input type="submit" class="button" value=" Save ">
 		&nbsp; 
-		<input type="button" class="button" value=" Exit " onClick="thisFrm.VERB.value=''; thisFrm.submit();">
+		<input type="button" class="button" value=" Exit " onClick="navigateTo('/biz/setup/builder/emails/index.cgi?NS=<!-- NS -->');">
 		&nbsp;
-		<input type="button" class="button" value=" Delete " onClick="thisFrm.VERB.value='MSGNUKE'; thisFrm.submit();">
+		<input type="button" class="button" value=" Delete " onClick="jQuery('#VERB').val('MSGNUKE'); jQuery('#thisFrm').submit();">
 		
 	</center>
 	<br>
@@ -116,4 +118,5 @@
 </table>
 </center>
 <br>
+</form>
 <br>

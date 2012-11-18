@@ -29,8 +29,15 @@ my $TYPE = '';
 #	$GTOOLS::TAG{'<!-- HEADER -->'} = $out;
 #	}
 
+&ZOOVY::init();
 require LUSER;
-my ($LU) = LUSER->authenticate(flags=>'_M&2');
+my %options = ();
+foreach my $k (keys %{$ZOOVY::cgiv}) {
+	## need to copy _clientid _authtoken etc. for client login
+	next if (substr($k,0,1) ne '_');
+	$options{$k} = $ZOOVY::cgiv->{$k};
+	}
+my ($LU) = LUSER->authenticate(flags=>'_M&2',%options);
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();

@@ -260,7 +260,7 @@ if ($VERB eq 'SAVE-EDIT') {
 			push @MSGS, "$ref->{'_'}|$ref->{'+'}";
 			}
 		if ($JOBID > 0) {
-			push @MSGS, "LINK|/biz/batch/index.cgi?VERB=LOAD&JOB=$JOBID|View Job #$JOBID";
+			# push @MSGS, "LINK|/biz/batch/index.cgi?VERB=LOAD&JOB=$JOBID|View Job #$JOBID";
 			}
 		}
 
@@ -467,19 +467,27 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 		# {'v'=>'FAX','p'=>'FAX'},
 		{'v'=>'FTP','p'=>'FTP'},
 		{'v'=>'API','p'=>'API'},
+		{'v'=>'AMZSQS','p'=>'Amazon SQS'},
+		# {'v'=>'AMZFWS','P'=>'Amazon Fulfillment'},
 		# {'v'=>'PARTNER','p'=>'PARTNER'},
 		]};
 	
 	my $GET_VERSION = 0;
-	if ($S->fetch_property('ORDER_CONNECTOR') eq 'NONE') {
+	if ($S->order_connector() eq 'NONE') {
 		}
-	#elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'JEDI') {
+	#elsif ($S->order_connector() eq 'JEDI') {
 	#	}
-	elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'FTP') {
-		push @FIELDS, { 'tab'=>'ORDER', type=>'url',	title=>'FTP URL', id=>'.order.ftp_url',  size=>90, maxlength=>128,	hint=>"Format: ftp://user\@pass/path/to/file.txt" };				
+	elsif ($S->order_connector() eq 'AMZSQS') {
+		push @FIELDS, { 'tab'=>'ORDER', type=>'text', title=>'Amazon AWS Access key', id=>'.order.aws_access_key' };
+		push @FIELDS, { 'tab'=>'ORDER', type=>'text', title=>'Amazon AWS Secret key', id=>'.order.aws_secret_key' };
+		push @FIELDS, { 'tab'=>'ORDER', type=>'text', title=>'Amazon SQS Channel', id=>'.order.aws_sqs_channel' };
 		$GET_VERSION++;
 		}
-	elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'EMAIL') {
+	elsif ($S->order_connector() eq 'FTP') {
+		push @FIELDS, { 'tab'=>'ORDER', type=>'url',	title=>'FTP URL', id=>'.order.ftp_url',  size=>90, maxlength=>128,	hint=>"Format: ftp://user\@pass/path/to/file.txt" };	
+		$GET_VERSION++;
+		}
+	elsif ($S->order_connector() eq 'EMAIL') {
 		## EMAIL and FAX are both really EMAIL
 		#my @AVAILABLE_EMAILS = ();
 		#my ($se) = SITE::EMAILS->new($USERNAME,PROFILE=>$S->fetch_property('PROFILE'));
@@ -490,7 +498,7 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 		#if (scalar(@AVAILABLE_EMAILS)==0) {
 		#	push @AVAILABLE_EMAILS, { 'p'=>'No Supply Chain Emails Defined', 'v'=>'' };
 		#	}
-		#if ($S->fetch_property('ORDER_CONNECTOR') eq 'EMAIL') {
+		#if ($S->order_connector() eq 'EMAIL') {
 		push @FIELDS, { 'tab'=>'ORDER', type=>'select',	title=>'Email Format', id=>'.order.email.format',  
 			options=>[
 				{ p=>'HTML', v=>'HTML' },
@@ -505,19 +513,19 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 		push @FIELDS, { 'tab'=>'ORDER', type=>'textarea',	title=>'Message Body', id=>'.order.email.body', cols=>77, rows=>20, 'hint'=>q~~ };		
 
 		# push @FIELDS, { 'tab'=>'ORDER', type=>'select', 'id'=>'.order.msgid', 'options'=>\@AVAILABLE_EMAILS };
-		#elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'FAX') {
+		#elsif ($S->order_connector() eq 'FAX') {
 		#	push @FIELDS, { 'tab'=>'ORDER', type=>'phone',	title=>'Fax Phone', id=>'.order.fax',  size=>90, maxlength=>128,	};		
 		#	push @FIELDS, { 'tab'=>'ORDER', type=>'*hint', 'hint'=>'Example: 1-###-###-####' };
 		#	$GET_VERSION++;
 		#	}
 	
 		}
-	elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'API') {
+	elsif ($S->order_connector() eq 'API') {
 		push @FIELDS, { 'tab'=>'ORDER', type=>'url',	title=>'API URL', id=>'.order.api_url',  size=>90, maxlength=>128,	hint=>"Format: http://user\@pass/path/to/post.cgi" };		
 		$GET_VERSION++;
 		}
 
-	if ($S->fetch_property('ORDER_CONNECTOR') ne 'NONE') {
+	if ($S->order_connector() ne 'NONE') {
 		## confirmation required
 		# push @FIELDS, { id=>'.order.conf' };
 		## include Order Notes (from the original order)
@@ -526,31 +534,43 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 		push @FIELDS, { 'tab'=>'ORDER', 'type'=>'checkbox', title=>'Hide Zero Qty Items', id=>'.order.dont_show_zero_qtys', 'hint'=>'This will override the title in the email message' };
 		}
 
-	#elsif ($S->fetch_property('ORDER_CONNECTOR') eq 'PARTNER') {
+	#elsif ($S->order_connector() eq 'PARTNER') {
 	#	}
 
 	if ($GET_VERSION) {
 		push @FIELDS, { 
 			'tab'=>'ORDER',
-			type=>'select',
+			type=>'selectsubmit',
 			title=>'Order Format',
-			id=>".api.version",
+			id=>".order.format",
 			options=>[
 #				{ p=>"ORDER v3.108 - released: 2007-03-13 supported: 2010-03-13", v=>108 },
 #				{ p=>"ORDER v3.118 - released: 2009-10-01 supported: 2012-10-01", v=>118 },
-				{ p=>"-", v=>0 },
-				{ p=>"ORDER v3.200 - released: 2011-09-01 (compat release) supported: 2013-09-01", v=>200 },
-				{ p=>"ORDER 201240 - released: 2012-10-15 supported: 2015-10-15", v=>201240 },
-#				{ p=>"ORDER v4.211 - released: 2012/09/01 supported: 2015-09-01", v=>211 },
-				{ p=>"ORDER CSV-3D", v=>50 },
-				{ p=>"XCBL v4", v=>4 },
+				{ v=>'', p=>"-", },
+				{ v=>'XML#201240',  p=>"v.201240 XML - valid until: 2015-10-15", },
+				{ v=>'XSLT#201240', p=>"v.201240 XML w/XSLT- valid until: 2015-10-15", },
+				{ v=>'JSON#201240', p=>"v.201240 JSON - valid until: 2015-10-15", },
+				{ v=>'CSV3D#0', p=>"ORDER CSV-3D (brief output - no expiration)" },
+				{ v=>'XCBL#4', p=>"XCBL v4 (brief output - no expiration)" },
+				{ v=>'XML#200', p=>"** END OF LIFE ** XML ORDER v3.200 - valid until: 2013-09-01",},
 #				{ p=>"ORDER v1 (deprecated)", v=>1 }
 				], 
 			};
+
+		if ($S->fetch_property('.order.format') =~ /^XSLT\#/) {
+			push @FIELDS, {
+				'tab'=>'ORDER',
+				'type'=>'textarea',
+				'id'=>'.order.xslt',
+				'title'=>'XSLT Transformation',
+				'rows'=>30, cols=>120,
+				};
+			}
+
 		}
 
 
-	if ($S->fetch_property('ORDER_CONNECTOR') eq 'NONE') {
+	if ($S->order_connector() eq 'NONE') {
 		## nothing to do here..
 		}
 	else {
@@ -570,6 +590,8 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 				],
 			};
 		}
+
+	
 
 
 	# push @FIELDS, { tab=>'ORDER', title=>'Orders - Delivery Configuration', link=>"index.cgi?VERB=ORDERING&CODE=$CODE" };
@@ -645,6 +667,7 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 	## Build FIELDS
 	foreach my $field (@FIELDS) {
 		my $out = '';
+		# print STDERR Dumper($field);
 		my $value = $S->fetch_property($field->{'id'});
 		if ($field->{'type'} eq 'text') {
 			$out .= qq~<tr bgcolor="#ffffff"><td valign=top size=150>$field->{'title'}:</td>~.
@@ -762,12 +785,12 @@ if ($VERB eq 'DISASSOCIATE') {
 if ($VERB eq 'PRODUCTS') {
 
 	my ($sup_to_prodref,$prod_to_supref) = $S->fetch_supplier_products();
-	my @prods = (sort keys %{$prod_to_supref});
+	my @skus = (sort keys %{$prod_to_supref});
 	my $c = '';
 
 	my $PAGE = int($ZOOVY::cgiv->{'PAGE'});	## current page we are on, starts at zero.
 	my $PAGESIZE = 500;
-	my $PAGES = int(scalar(@prods)/$PAGESIZE);
+	my $PAGES = int(scalar(@skus)/$PAGESIZE);
 	$GTOOLS::TAG{'<!-- PAGES -->'} = $PAGES;	
 	$GTOOLS::TAG{'<!-- PAGE -->'} = $PAGE+1;
 	
@@ -1592,14 +1615,14 @@ if ($VERB eq '') {
 	foreach my $code (sort keys %{$supref}) {
 		$r = ($r eq 'r0')?'r1':'r0';
 		$c .= "<tr class=\"$r\">";
-		$c .= qq~<td valign=top nowrap><input type='button' class='minibutton' value='Config' onClick="document.location='index.cgi?VERB=EDIT&CODE=$code'"></td>~;
+		$c .= qq~<td valign=top nowrap><input type='button' class='minibutton' value='Config' onClick="navigateTo('index.cgi?VERB=EDIT&CODE=$code')"></td>~;
 		$c .= qq~<td>$code</td>~;
 		$c .= "<td valign=top nowrap>$supref->{$code}->{'FORMAT'}</td>";
 		$c .= "<td valign=top nowrap>$supref->{$code}->{'NAME'}</td>";
 		$c .= "<td valign=top nowrap>";
-			$c .= qq~<input type='button' class='minibutton' value='Orders' onClick="document.location='index.cgi?VERB=ORDERS&CODE=$code'">~;
-			$c .= qq~<input type='button' class='minibutton' value='Products' onClick="document.location='index.cgi?VERB=PRODUCTS&CODE=$code'">~;
-#			$c .= qq~<input type='button' class='minibutton' value='Inventory' onClick="document.location='index.cgi?VERB=INVENTORY&CODE=$code'">~;
+			$c .= qq~<input type='button' class='minibutton' value='Orders' onClick="navigateTo('index.cgi?VERB=ORDERS&CODE=$code');">~;
+			$c .= qq~<input type='button' class='minibutton' value='Products' onClick="navigateTo('index.cgi?VERB=PRODUCTS&CODE=$code');">~;
+#			$c .= qq~<input type='button' class='minibutton' value='Inventory' onClick="navigateTo('index.cgi?VERB=INVENTORY&CODE=$code');">~;
 		$c .= "</td>";
 #		$c .= "<td valign=top nowrap>$supref->{$code}->{'FORMAT'}</td>";
 		$c .= "</tr>";

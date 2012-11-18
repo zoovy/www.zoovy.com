@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 ##
-## index.cgi
+## /biz/manage/newsletters/index.cgi
 ##
 ## allows user to CREATE/EDIT/DISABLE/DELETE newsletters (sub lists)
 ## and newsletter campaigns
@@ -28,9 +28,6 @@ require LUSER;
 require ZSHIP::RULES;
 
 my @MSGS = ();
-
-my $output_header = 1;
-
 my ($LU) = LUSER->authenticate(flags=>'_S&2');
 if (not defined $LU) { warn "Auth"; exit; }
 
@@ -48,7 +45,6 @@ my @BC = ();
 push @BC, { name=>'Utilities', link=>'/biz/manage', target=>'_top' };
 push @BC, { name=>'Newsletter Management', link=>'/biz/manage/newsletters', target=>'_top' };
 push @BC, { name=>"Partition: $PRT" };
-
 
 ## Delete CAMPAIGN from DB
 ##
@@ -440,7 +436,7 @@ if (($VERB eq 'CAMPAIGN-GENERATE') || ($VERB eq "CAMPAIGN-PREVIEW")) {
 
 	if ($LU->is_zoovy() || ($USERNAME eq 'brian')) {
 		$GTOOLS::TAG{'<!-- SUPPORT_APPROVE -->'} = qq~
-<form action="index.cgi">
+<form action="/biz/manage/newsletters/index.cgi">
 <input type="hidden" name="ID" value="$CREF->{'ID'}">
 <input type="hidden" name="VERB" value="CAMPAIGN-APPROVE">
 <input type="hidden" name="GUID" value="$CREF->{'PREVIEW_GUID'}">
@@ -598,15 +594,15 @@ if ($VERB eq 'SUBSCRIBER-LISTS') {
 		$c .= "<tr class=\"$class\">".
 				"<td>$id</td>".
 				"<td>". 
-				"<a href=\"index.cgi?VERB=EDIT_SUBLIST&ID=$id\">[ Edit ]</a> ".
+				"<a href=\"/biz/manage/newsletters/index.cgi?VERB=EDIT_SUBLIST&ID=$id\">[ Edit ]</a> ".
 				"</td>".
 				"<td>$name</td>\n".
 				"<td>".&ZTOOLKIT::pretty_date($created, -1)."</td>\n".
 				"<td>$mode</td>\n".
 				"<td width=50>".(( defined $CREF->{$id} )?$CREF->{$id}:0)."</td>".
 				"<td>".
-				"<a href=\"index.cgi?VERB=EDIT_SUBLIST_RECIPIENTS&ID=$id\">[ View Subscribers ]</a> ".
-				"<a href=\"index.cgi?VERB=EDIT_SUBLIST_BULK&ID=$id\">[ Bulk Add/Remove ]</a> ".
+				"<a href=\"/biz/manage/newsletters/index.cgi?VERB=EDIT_SUBLIST_RECIPIENTS&ID=$id\">[ View Subscribers ]</a> ".
+				"<a href=\"/biz/manage/newsletters/index.cgi?VERB=EDIT_SUBLIST_BULK&ID=$id\">[ Bulk Add/Remove ]</a> ".
 				"</td>\n".
 				"\n</tr>\n";
 		$count++;
@@ -670,15 +666,14 @@ if (($VERB eq 'ADD_SUBLIST_RECIPIENT') || ($VERB eq 'REMOVE_SUBLIST_RECIPIENT'))
 		}
 
 	foreach my $txt (@RESULTS) {
-		$GTOOLS::TAG{'<!-- RESULTS -->'} .= "<font color='blue'>$txt</font><br>"; 
+		push @MSGS, "SUCCESS|$txt";
 		}
 	$GTOOLS::TAG{'<!-- RESULTS -->'} .= "<br>";
 
-	$VERB = 'EDIT_SUBLIST_BULK';
+	$VERB = 'EDIT_SUBLIST_RECIPIENTS';
 	}
 
-if ($VERB eq 'EDIT_SUBLIST_BULK') {
-	
+if ($VERB eq 'EDIT_SUBLIST_BULK') {	
 	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
 	$template_file = 'edit-sublist-bulk.shtml';	
 	}
@@ -696,7 +691,7 @@ if ($VERB eq 'EDIT_SUBLIST_RECIPIENTS') {
 	foreach my $email (sort keys %ref) {
 		$c .= "<tr>";
 		$c .= "<td>";
-		$c .= "<a href='index.cgi?VERB=REMOVE_SUBLIST_RECIPIENT&ID=$ID&EMAIL=$email'>[Remove]</a></td>";
+		$c .= "<a href='/biz/manage/newsletters/index.cgi?VERB=REMOVE_SUBLIST_RECIPIENT&ID=$ID&EMAIL=$email'>[Remove]</a></td>";
 		$c .= "<td>$email</td>";
 		$c .= "</tr>";
 		}
@@ -868,10 +863,10 @@ if ($VERB eq '') {
 		$r = ($r eq 'r0')?'r1':'r0';
 		$c .= qq~<tr class='$r'>
 		<td>
-		<input class='minibutton' value='Preview' type="button" onClick="document.location='index.cgi?VERB=CAMPAIGN-PREVIEW&ID=$CREF->{'ID'}';">
-		<input class='minibutton' value='Copy' type="button" onClick="document.location='index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}';">
-		<input class='minibutton' value='Edit' type="button" onClick="document.location='index.cgi?VERB=CAMPAIGN-EDIT&ID=$CREF->{'ID'}';">
-		<input class='minibutton' value='Delete' type="button" onClick="document.location='index.cgi?VERB=CAMPAIGN-NUKE&ID=$CREF->{'ID'}';">
+		<input class='minibutton' value='Preview' type="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-PREVIEW&ID=$CREF->{'ID'}');">
+		<input class='minibutton' value='Copy' type="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}');">
+		<input class='minibutton' value='Edit' type="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-EDIT&ID=$CREF->{'ID'}');">
+		<input class='minibutton' value='Delete' type="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-NUKE&ID=$CREF->{'ID'}');">
 		</td>
 		<td valign='top'>$CREF->{'NAME'}</td>
 		<td valign='top'>$CREF->{'CREATE_DATE'}</td>
@@ -894,9 +889,9 @@ if ($VERB eq '') {
 		<td valign='top'>".&ZTOOLKIT::pretty_date($CREF->{'STARTS_GMT'}, 1).
 			(($CREF->{'STARTS_GMT'}<time())?'<br><font color="red">OVERDUE: WILL START SHORTLY</font>':'' ).
 		"</td>
-		<td valign='top'><a target=_new href=\"index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a>
-		<a href=\"index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
-		<a href=\"index.cgi?VERB=CAMPAIGN-STOP&ID=$CREF->{'ID'}\">[ Stop Send ]</a> </td>
+		<td valign='top'><a target=_new href=\"/biz/manage/newsletters/index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a>
+		<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
+		<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-STOP&ID=$CREF->{'ID'}\">[ Stop Send ]</a> </td>
 		</tr>";
 
 #		my $PUBLIC_URL = &CUSTOMER::NEWSLETTER::cref_to_public_url($CREF);
@@ -905,10 +900,10 @@ if ($VERB eq '') {
 #		<td valign='top'>$CREF->{'NAME'}</td>
 #		<td valign='top'>$CREF->{'START_DATE'}</td>
 #		<td valign='top'>
-#			<a target=_new href=\"index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a>
-#			<a href=\"index.cgi?VERB=CAMPAIGN-COP&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
+#			<a target=_new href=\"/biz/manage/newsletters/index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a>
+#			<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-COP&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
 #			<a href=\"$PUBLIC_URL\">[Public URL]</a><br>
-#			<a href=\"index.cgi?VERB=CAMPAIGN-STOP&ID=$CREF->{'ID'}\">[ Stop Send ]</a>
+#			<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-STOP&ID=$CREF->{'ID'}\">[ Stop Send ]</a>
 #		</td>
 #		<td valign='top'>
 #			Total Recipients: $CREF->{'STAT_QUEUED'}<br>
@@ -939,10 +934,10 @@ if ($VERB eq '') {
 			Last Message Sent: $CREF->{'START_DATE'}<br>
 		</td>
 		<td nowrap valign='top'>
-			<a target=_new href=\"index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a><br>
+			<a target=_new href=\"/biz/manage/newsletters/index.cgi?VERB=DISPLAY_HTML&ID=$CREF->{'ID'}\">[ View ]</a><br>
 			<a href=\"$PUBLIC_URL\">[Public URL]</a><br>
-				<a href=\"index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
-		<a href=\"index.cgi?VERB=CAMPAIGN-NUKE&ID=$CREF->{'ID'}\">[ Delete ]</a>
+				<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-COPY&ID=$CREF->{'ID'}\">[ Copy ]</a><br>
+		<a href=\"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-NUKE&ID=$CREF->{'ID'}\">[ Delete ]</a>
 		</td>
 		<td nowrap valign='top'>
 			Emails Sent: $CREF->{'STAT_SENT'}<br>
@@ -969,9 +964,9 @@ if ($VERB eq '') {
 	}
 
 my @TABS = ();
-push @TABS, { name=>"Status", link=>"index.cgi?VERB=", selected=>($VERB eq '')?1:0, };
-push @TABS, { name=>"Subscriber Lists", link=>"index.cgi?VERB=SUBSCRIBER-LISTS", selected=>($VERB eq 'SUBSCRIBER-LISTS')?1:0, };
-push @TABS, { name=>"Create Campaign", link=>"index.cgi?VERB=CAMPAIGN-NEW", selected=>($VERB eq 'CAMPAIGN-NEW')?1:0, };
+push @TABS, { name=>"Status", link=>"/biz/manage/newsletters/index.cgi?VERB=", selected=>($VERB eq '')?1:0, };
+push @TABS, { name=>"Subscriber Lists", link=>"/biz/manage/newsletters/index.cgi?VERB=SUBSCRIBER-LISTS", selected=>($VERB eq 'SUBSCRIBER-LISTS')?1:0, };
+push @TABS, { name=>"Create Campaign", link=>"/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-NEW", selected=>($VERB eq 'CAMPAIGN-NEW')?1:0, };
 
 # push @MSGS, "ERROR|Newsletters are offline until further notice, please check the recent news";
 
@@ -986,10 +981,10 @@ push @TABS, { name=>"Create Campaign", link=>"index.cgi?VERB=CAMPAIGN-NEW", sele
 	tabs=>\@TABS,
 	help=>"#50394",
 	file=>$template_file,	
-	header=>($output_header),
+	header=>1,
 	);
 
-
+&DBINFO::db_user_close();
 
 
 
@@ -999,294 +994,4 @@ __DATA__
 
 
 
-print STDERR "VERB IS: $VERB\n";
 
-## variables for preview, send test email
-my $PG = $ZOOVY::cgiv->{'PG'};
-my $FL = $ZOOVY::cgiv->{'FL'};
-my $NS = $ZOOVY::cgiv->{'NS'};
-my $EMAIL = $ZOOVY::cgiv->{'EMAIL'};
-
-require PAGE;
-$SITE::SREF = {};
-$SITE::PAGE = PAGE->new($USERNAME,$PG,NS=>'',PRT=>$PRT);
-$SITE::SREF->{'_USERNAME'} = $USERNAME;
-if (not defined $FL) {
-	$FL = $SITE::PAGE->get('FL');
-	}
-
-## maximum amount of newsletters allowed per merchant
-my $MAX_NEWSLETTERS = 16;
-
-## determines whether to use header in GTOOLS::output
-my $output_header = 1;
-
-## used in deny & errors
-my ($helplink,$helphtml) = GTOOLS::help_link('Newsletter Management Webdoc', 50394);
-$GTOOLS::TAG{'<! -- WEBDOC -->'} = $helphtml;
-
-
-my $ERRORS = 0; my @WARNINGS = ();
-my ($C_PRT) = &CUSTOMER::remap_customer_prt($USERNAME,$PRT);
-if ($C_PRT != $PRT) {
-	$ERRORS++; 
-	push @WARNINGS, "Partition $PRT uses Customers from Partition $C_PRT, please access from partition $C_PRT";
-	$template_file = 'deny-noprt.shtml';
-	$VERB = 'DENY';
-	}
-
-if ($LUSERNAME eq 'SUPPORT') {
-	## support never gets flags checked.
-	}
-elsif ($FLAGS !~ /,CRM,/) {
-	$template_file = 'deny-needcrm.shtml';
-	$ERRORS++; 
-	push @WARNINGS, "Need the CRM Bundle installed on account"; 
-	$VERB = 'DENY';
-	}
-
-print STDERR "VERB: $VERB ID: $ID\n";
-
-if (($VERB eq 'EDIT-AUTOMATION') || ($VERB eq 'SAVE-AUTOMATION') || ($VERB eq 'ADD-AUTOMATION')) {
-	if ($FLAGS !~ /,SHIP,/) { 
-		$template_file = 'deny-needshipcrm.shtml';
-		push @WARNINGS, "Automation requires the CRM &amp; Advanced Shipping Rules Logic bundle";
-		$VERB = 'DENY';
-		}
-	}
-
-##
-##
-##
-if ($VERB eq 'RULE-ADD') {
-	my %rule = ();
-	$rule{'PROCESS'} = $ZOOVY::cgiv->{'PROCESS'};
- 	$rule{'NAME'} = $ZOOVY::cgiv->{'NAME'};
-  	$rule{'FILTER'} = $ZOOVY::cgiv->{'FILTER'};
-  	$rule{'ACTION'} = $ZOOVY::cgiv->{'ACT'};
-  	$rule{'VALUE'} = $ZOOVY::cgiv->{'VALUE'};
-	&ZSHIP::RULES::append_rule($USERNAME,$PRT,"CAMPAIGN:$ID",\%rule);
-	$VERB = 'EDIT-AUTOMATION';
-	}
-
-
-
-if ($VERB eq 'NUKE-AUTOMATION') {
-	my $ID = int($ZOOVY::cgiv->{'ID'});
-	my $pstmt = "delete from NEWSLETTERS where MID=$MID and PRT=$PRT and ID=".int($ID);
-	$udbh->do($pstmt);
-	$VERB = 'SUBSCRIBER-LISTS';
-	}
-
-if ($VERB eq 'SAVE-AUTOMATION') {
-	## NOTE: ONGOING CAMPAIGNS START AT 1000
-	my $ID = $ZOOVY::cgiv->{'ID'};
-	if ($ID eq 'NEW') { 
-		## we're adding a new campaign so we'll get a new ID and insert it.
-		my $pstmt = "select ID from NEWSLETTERS where MID=$MID order by ID desc limit 0,1";
-		print STDERR $pstmt."\n";
-		($ID) = $udbh->selectrow_array($pstmt);
-		if ($ID<1000) { $ID = 1000; }	# cheap hack to start newsletters at 257
-		$ID++;
-		($pstmt) = &DBINFO::insert($udbh,'NEWSLETTERS',{
-			MID=>$MID, USERNAME=>$USERNAME, PRT=>$PRT, ID=>$ID, CREATED_GMT=>time()
-			},debug=>1+2);
-		$udbh->do($pstmt);
-		}
-	$ID = int($ID);
-	$ZOOVY::cgiv->{'ID'} = $ID;
-
-	my $qtNAME = $udbh->quote($ZOOVY::cgiv->{'NAME'});
-	my $pstmt = "update NEWSLETTERS set NAME=$qtNAME,MODE=10 where MID=$MID and PRT=$PRT and ID=$ID";
-	$udbh->do($pstmt);
-	$VERB = 'EDIT-AUTOMATION';
-	}
-
-
-if ($VERB eq 'ADD-AUTOMATION') {
-	$GTOOLS::TAG{'<!-- ID -->'} = 'NEW';
-	$GTOOLS::TAG{'<!-- MATCH -->'} = "<i>No matching rules</i>";
-	$GTOOLS::TAG{'<!-- RULEBUILDER_PANEL -->'} = '<i>None</i>'; # 
-	$template_file = 'edit-automation.shtml';
-	}
-
-
-#+----------------------+------------------+------+-----+---------+-------+
-#| Field                | Type             | Null | Key | Default | Extra |
-#+----------------------+------------------+------+-----+---------+-------+
-#| MID                  | int(10) unsigned | NO   | PRI | 0       |       |
-#| USERNAME             | varchar(20)      | NO   |     | NULL    |       |
-#| PRT                  | smallint(6)      | NO   | PRI | 0       |       |
-#| ID                   | int(11)          | NO   | PRI | 0       |       |
-#| NAME                 | varchar(30)      | NO   |     | NULL    |       |
-#| EXEC_SUMMARY         | varchar(255)     | NO   |     | NULL    |       |
-#| MODE                 | int(11)          | NO   |     | 0       |       |
-#| LASTCAMPAIGN_GMT     | int(11)          | NO   |     | 0       |       |
-#| RECENTSUBSCRIBER_GMT | int(11)          | NO   |     | 0       |       |
-#| TOTAL_SUBSCRIBERS    | int(11)          | NO   |     | 0       |       |
-#| CREATED_GMT          | int(11)          | NO   |     | 0       |       |
-#+----------------------+------------------+------+-----+---------+-------+
-#11 rows in set (0.00 sec)
-
-if ($VERB eq 'EDIT-AUTOMATION') {
-	
-	my $ID = int($ZOOVY::cgiv->{'ID'});
-	my $pstmt = "select * from NEWSLETTERS where MID=$MID and PRT=$PRT and ID=$ID";
-	my ($info) = $udbh->selectrow_hashref($pstmt);
-	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
-	$GTOOLS::TAG{'<!-- NAME -->'} = &ZOOVY::incode($info->{'NAME'});
-
-	$GTOOLS::TAG{'<!-- RULEBUILDER_PANEL -->'} = &ZSHIP::RULES::buildPanel($USERNAME,$PRT,"NEWSLETTER","CAMPAIGN:$ID");
-
-	$template_file = 'edit-automation.shtml';
-	}
-
-
-if ($VERB eq '') {
-	$template_file = 'index-lists.shtml';
-	##
-	## NOTE: this is only run on the main page, it checks to make sure we can actually use this tool.
-	##			if not it sets VERB to ERROR
-	my (@DOMAINS) = &DOMAIN::TOOLS::newsletter_domains($USERNAME,$PRT);
-	
-	if ($FLAGS =~ /,PKG=STAFF,/) {
-		## staff accounts don't have this limitation
-		}
-	elsif ((scalar @DOMAINS)==0) {
-		$ERRORS++; 
-		push @WARNINGS, q~
-You need to have a zoovy registered domain with email configured to use this feature.<br>
-<div class="hint">
-Other registrars such as godaddy, and network solutions allow clients to make changes to DNS authoritative 
-nameservers without notification to Zoovy.  
-In these cases Zoovy will continue to send email on a clients behalf with headers indicating we are an 
-authorized sender and this email will be tagged as spam. 
-Clients who are not comfortable transferring their domain to Zoovy are encouraged to register a separate
-domain name for newsletters, or they may also contact Zoovy support and request "domain priviledge escalation".
-
-</div>
-~; 
-		}
-
-	### AIEE -- do a quick check to make sure they're footers comply with CAN-SPAM
-	my ($PROFILE) = &ZOOVY::prt_to_profile($USERNAME,$PRT);
-	my $mref = &ZOOVY::fetchmerchantns_ref($USERNAME,$PROFILE);
-	if ($mref->{'zoovy:company_name'} eq '') { $ERRORS++; push @WARNINGS, "ERROR: Company name is blank."; }
-	if (length($mref->{'zoovy:support_phone'}) < 10) { $ERRORS++; push @WARNINGS,"ERROR: Support Phone Number is blank."; }
-	if (length($mref->{'zoovy:address1'}) < 10) { $ERRORS++; push @WARNINGS, "ERROR: Mailing Address is blank. (10 digits minimum)"; }
-	if (length($mref->{'zoovy:city'}) < 2) { $ERRORS++; push @WARNINGS, "ERROR: Mailing City is blank."; }
-	if (length($mref->{'zoovy:state'}) < 2) { $ERRORS++; push @WARNINGS, "ERROR: Mailing State is blank."; }
-	if (length($mref->{'zoovy:zip'}) < 5) { $ERRORS++; push @WARNINGS, "ERROR: Mailing Zip is blank."; }
-	if ($ERRORS) {
-		$template_file = 'error.shtml';
-		my $out = '';
-		foreach (@WARNINGS) { $out .= "<li> <b>$_<br>"; } $out = "<ul>$out</ul>";
-		$GTOOLS::TAG{'<!-- ERRORS -->'} = $out;
-		$VERB = 'ERROR';
-		}
-	else {
-		$VERB = 'CAMPAIGNS';
-		}
-
-	}
-
-
-
-
-
-
-
-
-
-## update DB with user input for CAMPAIGN
-##
-if($VERB eq "SAVE_CAMPAIGN"){
-
-	}	
-
-
-
-
-## Confirmation page for stopping CAMPAIGN
-##
-if($VERB eq "CONFIRM_STOP"){
-	push @BC, { name=>'Confirm Campaign Stop' };
-   $template_file = 'confirm-stop.shtml';
-
-	my $CREF = &CUSTOMER::NEWSLETTER::fetch_campaign($USERNAME,$ID);
-
-	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
-	$GTOOLS::TAG{'<!-- NAME -->'} = $CREF->{'NAME'};
-	$GTOOLS::TAG{'<!-- SUBJECT -->'} = $CREF->{'SUBJECT'};
-	$GTOOLS::TAG{'<!-- CREATE_GMT -->'} = &ZTOOLKIT::pretty_date($CREF->{'CREATED_GMT'}, -1);
-	}
-
-
-
-
-## Confirmation page for deleting CAMPAIGN
-##
-if($VERB eq "CONFIRM_NUKE"){
-	push @BC, { name=>'Confirm Campaign Delete' };
-   $template_file = 'confirm-nuke.shtml';
-
-	my $CREF = &CUSTOMER::NEWSLETTER::fetch_campaign($USERNAME,$ID);
-
-	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
-	$GTOOLS::TAG{'<!-- NAME -->'} = $CREF->{'NAME'};
-	$GTOOLS::TAG{'<!-- SUBJECT -->'} = $CREF->{'SUBJECT'};
-	$GTOOLS::TAG{'<!-- CREATE_GMT -->'} = &ZTOOLKIT::pretty_date($CREF->{'CREATED_GMT'}, -1);
-	}
-
-
-
-
-
-if ($VERB eq '') { $VERB = 'SUBSCRIBER-LISTS'; }
-
-
-
-
-
-
-##
-## TOP Page
-## display all Subscription Lists and Campaigns for this username
-##
-if ($VERB eq 'CAMPAIGNS'){
-	my $c = '';
-	my $count = 0;
-
-
-	
-# desc CAMPAIGN;	
-#+-------------------+---------------------------------------------+------+-----+---------+----------------+
-#| Field             | Type                                        | Null | Key | Default | Extra          |
-#+-------------------+---------------------------------------------+------+-----+---------+----------------+
-#| ID                | int(11)                                     |      | PRI | NULL    | auto_increment |
-#| USERNAME          | varchar(20)                                 |      |     |         |                |
-#| MID               | int(10) unsigned                            |      | MUL | 0       |                |
-#| CREATED_GMT       | int(11)                                     |      |     | 0       |                |
-#| NAME              | varchar(30)                                 |      |     |         |                |
-#| SUBJECT           | varchar(100)                                |      |     |         |                |
-#| SENDER            | varchar(65)                                 |      |     |         |                |
-#| DATA              | mediumtext                                  |      |     |         |                |
-#| STATUS            | enum('PENDING','APPROVED','FINISHED') 		 |      |     | PENDING     |                |
-#| TESTED            | tinyint(4)                                  |      |     | 0       |                |
-#| STARTS_GMT        | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_SENT         | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_OPENED       | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_BOUNCED      | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_CLICKED    | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_PURCHASED    | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_TOTAL_SALES    | int(10) unsigned                            |      |     | 0       |                |
-#| STAT_UNSUBSCRIBED | int(10) unsigned                            |      |     | 0       |                |
-#+-------------------+---------------------------------------------+------+-----+---------+----------------+
-
-
-	$template_file = 'index-campaigns.shtml';
-	}
-
-
-
-&DBINFO::db_user_close();

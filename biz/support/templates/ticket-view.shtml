@@ -70,7 +70,8 @@ function MM_openBrWindow(theURL,winName,features) {
 				</table>
 				<input type='submit' class='button' value='Save'>
 				&nbsp;
-				<input type='button' class='button' value='Cancel'onClick="document.location='/biz/support/index.cgi';">
+				<input type='button' class='button'
+value='Cancel'onClick="navigateTo('/biz/support/index.cgi');">
 			</center>
 			</form>
 			<!-- INSTRUCTIONS -->

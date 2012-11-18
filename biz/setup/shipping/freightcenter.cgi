@@ -42,7 +42,7 @@ if ($VERB eq '') {
 	}
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'//www.zoovy.com/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'//www.zoovy.com/biz/setup/shipping','target'=>'_top', };
-push @BC, { name=>'FreightCenter',link=>'//www.zoovy.com/biz/setup/shipping/freightcenter.cgi','target'=>'_top', };
+push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
+push @BC, { name=>'FreightCenter',link=>'/biz/setup/shipping/freightcenter.cgi','target'=>'_top', };
 &GTOOLS::output(file=>$template_file,header=>1);

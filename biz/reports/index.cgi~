@@ -111,11 +111,11 @@ if ($VERB =~ /SALES-/) {
 		require CART2;
 		if ($ZOOVY::cgiv->{'startinv'} ne '') {
 			my ($O2) = CART2->new_from_oid($USERNAME,$ZOOVY::cgiv->{'startinv'});
-			if (defined $O2) { $begints = $O2->in_get('our/order_date'); } else { $error = "beginnging order not valid"; }
+			if (defined $O2) { $begints = $O2->in_get('our/order_ts'); } else { $error = "beginnging order not valid"; }
 			}
 		if ($ZOOVY::cgiv->{'endinv'} ne '') {
 			my ($O2) = CART2->new_from_oid($USERNAME,$ZOOVY::cgiv->{'endinv'});
-			if (defined $O2) { $endts = $O2->in_get('our/order_date'); } else { $error = "ending order not valid"; }
+			if (defined $O2) { $endts = $O2->in_get('our/order_ts'); } else { $error = "ending order not valid"; }
 			}
 		else {
 			$endts = time();
@@ -417,7 +417,7 @@ if ($VERB eq 'BATCH-SEARCH-NOW') {
 
 		if ($bj->{'BATCH_EXEC'} eq 'REPORT') {
 			$GTOOLS::TAG{'<!-- VIEW_URL -->'} = qq~
-		<tr><td><input type='button' class='button' onClick="document.location='http://www.zoovy.com/biz/reports/view.cgi?GUID=~.$bj->{'GUID'}.qq~';" value="View Report"></td></tr>
+		<tr><td><input type='button' class='button' onClick="navigateTo('http://www.zoovy.com/biz/reports/view.cgi?GUID=~.$bj->{'GUID'}.qq~');" value="View Report"></td></tr>
 		~;
 			}
 

@@ -7,7 +7,7 @@
 <i>UPS OnLine&reg; Tools License and Registration Wizard</i><br>
 </td></tr></table>
 
-<form action="upsapi.cgi" method="POST">
+<form action="/biz/setup/upsapi.cgi" method="POST">
 <input type="hidden" name="VERB" value="config">
 <input type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
 

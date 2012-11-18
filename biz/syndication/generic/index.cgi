@@ -15,7 +15,6 @@ use strict;
 
 
 
-my $dbh = &DBINFO::db_zoovy_connect();	
 require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_P&16');
 if (not defined $LU) { exit; }
@@ -25,6 +24,9 @@ if ($MID<=0) { exit; }
 
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $PROFILE = $ZOOVY::cgiv->{'PROFILE'};
+my $PATH = $ENV{'SCRIPT_NAME'};
+$GTOOLS::TAG{'<!-- PATH -->'} = $PATH;
+
 if ($ENV{'SCRIPT_NAME'} =~ /(buycom|ebay)/) {
 	## make sure we never show profiles for ebay, buycom
 	if ($VERB eq '') { $VERB = 'EDIT'; }
@@ -48,15 +50,15 @@ if ($PROFILE eq '') {
 	}
 elsif (substr($PROFILE,0,1) eq '#') { 	
 	## buy.com, ebay, etc. which are PARTITION specific don't have a select profile option
-	push @TABS, { name=>'Edit Partition',selected=>($VERB eq 'EDIT')?1:0, link=> "?VERB=EDIT&PROFILE=$PROFILE", };
+	push @TABS, { name=>'Edit Partition',selected=>($VERB eq 'EDIT')?1:0, link=> "$PATH/index.cgi?VERB=EDIT&PROFILE=$PROFILE", };
 	}
 else {
 	push @TABS, { name=>'Profiles',selected=>($VERB eq '')?1:0, link=>'index.cgi' };
-	push @TABS, { name=>"Edit: $PROFILE",selected=>($VERB eq 'EDIT')?1:0, link=> "?VERB=EDIT&PROFILE=$PROFILE", };
+	push @TABS, { name=>"Edit: $PROFILE",selected=>($VERB eq 'EDIT')?1:0, link=> "$PATH/index.cgi?VERB=EDIT&PROFILE=$PROFILE", };
 	}
 
 my @BC = (
-      { name=>'Syndication',link=>'http://www.zoovy.com/biz/syndication','target'=>'_top', },
+      { name=>'Syndication',link=>'/biz/syndication/index.cgi','target'=>'_top', },
 		);
 
 my @CONFIG_FIELDS = ();
@@ -68,8 +70,8 @@ my @CSV_PRODUCT_EXPORT = ();
 if ($ENV{'SCRIPT_NAME'} =~ /nextag/) {
 	$WEBDOC = 50594;
 	($DST,$MARKETPLACE) = ('NXT','Nextag.com');
-	push @BC, { name=>'Nextag.com',link=>'http://www.zoovy.com/biz/syndication/nextag','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Nextag.com',link=>"$PATH/index.cgi",'target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1, hint=>'example: upload.nextag.com' };
@@ -78,19 +80,19 @@ if ($ENV{'SCRIPT_NAME'} =~ /nextag/) {
 #elsif ($ENV{'SCRIPT_NAME'} =~ /mysimon/) {
 #	$WEBDOC = 50593;
 #	($DST,$MARKETPLACE,$FEED_TYPE) = ('MYS','MySimon.com','API');
-#	push @BC, { name=>'Nextag.com',link=>'http://www.zoovy.com/biz/syndication/nextag','target'=>'_top', };
+#	push @BC, { name=>'Nextag.com',link=>'/biz/syndication/nextag','target'=>'_top', };
 #	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
 #	}
-elsif (($ENV{'SCRIPT_NAME'} =~ /(buycom|bestbuy)/) && ($FLAGS !~ /,BUY,/)) {
-	print "Location: /biz/configurator?VERB=VIEW&PACKAGE=BUY&YOURFLAGS=$FLAGS\n\n";
-	}
+#elsif (($ENV{'SCRIPT_NAME'} =~ /(buycom|bestbuy)/) && ($FLAGS !~ /,BUY,/)) {
+#	print "Location: /biz/configurator?VERB=VIEW&PACKAGE=BUY&YOURFLAGS=$FLAGS\n\n";
+#	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /buycom/) {
 	require SYNDICATION::BUYCOM;
 	$WEBDOC = 50917;
 	($DST,$MARKETPLACE) = ('BUY','Buy.com');
-	push @BC, { name=>'Buy.com',link=>'http://www.zoovy.com/biz/syndication/buycom','target'=>'_top', };
-	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>'index.cgi?VERB=FILES&PROFILE='.$PROFILE };
-	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>'index.cgi?VERB=DBMAP&PROFILE='.$PROFILE };
+	push @BC, { name=>'Buy.com',link=>'/biz/syndication/buycom/index.cgi','target'=>'_top', };
+	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>"$PATH/index.cgi?VERB=FILES&PROFILE=$PROFILE" };
+	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>"$PATH/index.cgi?VERB=DBMAP&PROFILE=$PROFILE" };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Seller ID', id=>'.sellerid', required=>1 };
@@ -100,9 +102,9 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bestbuy/) {
 	require SYNDICATION::BUYCOM;
 	$WEBDOC = 50917;
 	($DST,$MARKETPLACE) = ('BST','BestBuy Marketplace');
-	push @BC, { name=>'Best Buy Marketplace',link=>'http://www.zoovy.com/biz/syndication/bestbuy','target'=>'_top', };
-	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>'index.cgi?VERB=FILES&PROFILE='.$PROFILE };
-	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>'index.cgi?VERB=DBMAP&PROFILE='.$PROFILE };
+	push @BC, { name=>'Best Buy Marketplace',link=>'/biz/syndication/bestbuy/index.cgi','target'=>'_top', };
+	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>"$PATH/index.cgi?VERB=FILES&PROFILE=$PROFILE" };
+	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>"$PATH/index.cgi?VERB=DBMAP&PROFILE=$PROFILE" };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Seller ID', id=>'.sellerid', required=>1 };
@@ -111,8 +113,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bestbuy/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /pricegrabber/) {
 	$WEBDOC = 50397;
 	($DST,$MARKETPLACE) = ('PGR','PriceGrabber.com');
-	push @BC, { name=>'PriceGrabber.com',link=>'http://www.zoovy.com/biz/syndication/pricegrabber','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'PriceGrabber.com',link=>'/biz/syndication/pricegrabber/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	## NOTE: even though this is type FTP, it uses the .user and .pass fields
 	##			because pricegrabber doesn't separate the fields.
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Username', id=>'.user', required=>1, hint=>'hint: uploaded filename is always username.csv',};
@@ -121,22 +123,22 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /pricegrabber/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /amazonpa/) {
 	$WEBDOC = 51478;
 	($DST,$MARKETPLACE) = ('APA','Amazon Product Ads');
-	push @BC, { name=>'Amazon Product Ads',link=>'http://www.zoovy.com/biz/syndication/amazonpa','target'=>'_top', };
+	push @BC, { name=>'Amazon Product Ads',link=>'/biz/syndication/amazonpa/index.cgi','target'=>'_top', };
 	## NOTE: even though this is type FTP, it uses the .user and .pass fields
 	##			because pricegrabber doesn't separate the fields.
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Username', id=>'.ftp_user', required=>1, hint=>'hint: uploaded filename is always username.csv',};
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
 	}
-elsif (($ENV{'SCRIPT_NAME'} =~ /ebay/) && ($FLAGS !~ /,EBAY,/)) {
-	print "Location: /biz/configurator?VERB=VIEW&PACKAGE=EBAY\n\n";
-	}
+#elsif (($ENV{'SCRIPT_NAME'} =~ /ebay/) && ($FLAGS !~ /,EBAY,/)) {
+#	print "Location: /biz/configurator?VERB=VIEW&PACKAGE=EBAY\n\n";
+#	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /ebay/) {
 	$WEBDOC = 50380;
 	($DST,$MARKETPLACE) = ('EBF','eBay Syndication');
-	push @BC, { name=>'eBay.com',link=>'http://www.zoovy.com/biz/syndication/ebay','target'=>'_top', };
+	push @BC, { name=>'eBay.com',link=>"/biz/syndication/ebay/index.cgi",'target'=>'_top', };
 	# push @FIELDS, { type=>'warning', msg=>qq~Currently under development - check this space on 5/8/2011~, };
-	push @TABS, { name=>"eBay Categories", selected=>($VERB eq 'EBAY-CATEGORIES')?1:0, link=>"?VERB=EBAY-CATEGORIES&PROFILE=$PROFILE", };
+	push @TABS, { name=>"eBay Categories", selected=>($VERB eq 'EBAY-CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=EBAY-CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Submit New Products', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 
 	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Use AutoPilot on New Items', id=>'.autopilot',
@@ -168,29 +170,29 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /ebay/) {
 #		~ };
 #
 	}
-elsif ($ENV{'SCRIPT_NAME'} =~ /amzrp/) {
-	$WEBDOC = 51607;
-	($DST,$MARKETPLACE) = ('ARP','Amazon Repricing');
-	push @BC, { name=>'Amazon Repricing',link=>'http://www.zoovy.com/biz/syndication/amzrp','target'=>'_top', };
-	}
+#elsif ($ENV{'SCRIPT_NAME'} =~ /amzrp/) {
+#	$WEBDOC = 51607;
+#	($DST,$MARKETPLACE) = ('ARP','Amazon Repricing');
+#	push @BC, { name=>'Amazon Repricing',link=>'/biz/syndication/amzrp','target'=>'_top', };
+#	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /wishpot/) {
 	$WEBDOC = 51424;
 	($DST,$MARKETPLACE) = ('WSH','Wishpot');
-	push @BC, { name=>'Wishpot.com',link=>'http://www.zoovy.com/biz/syndication/wishpot','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Wishpot.com',link=>'/biz/syndication/wishpot/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /shareasale/) {
 	$WEBDOC = 51514;
 	($DST,$MARKETPLACE) = ('SAS','ShareASale.com');
-	push @BC, { name=>'ShareASale.com',link=>'http://www.zoovy.com/biz/syndication/shareasale','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'ShareASale.com',link=>'/biz/syndication/shareasale/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'Merchant ID', id=>'.merchantid', required=>1 };
 	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /shoppingcom/) {
 	$WEBDOC = 50538;
 	($DST,$MARKETPLACE) = ('SHO','Shopping.com');
-	push @BC, { name=>'Shopping.com',link=>'http://www.zoovy.com/biz/syndication/shoppingcom','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Shopping.com',link=>'/biz/syndication/shoppingcom/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -198,8 +200,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /shoppingcom/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /thefind/) {
 	$WEBDOC = 51538;
 	($DST,$MARKETPLACE) = ('FND','TheFind.com');
-	push @BC, { name=>'TheFind.com',link=>'http://www.zoovy.com/biz/syndication/thefind','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'TheFind.com',link=>'/biz/syndication/thefind/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -207,8 +209,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /thefind/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /bing/) { 
 	$WEBDOC = 50918;
 	($DST,$MARKETPLACE) = ('BIN','Bing.com');
-	push @BC, { name=>'Bing.com',link=>'http://www.zoovy.com/biz/syndication/bing','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Bing.com',link=>'/biz/syndication/bing/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -216,8 +218,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bing/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /googlebase/) { 
 	$WEBDOC = 50396;
 	($DST,$MARKETPLACE) = ('GOO','Google Shopping');
-	push @BC, { name=>'GoogleBase.com',link=>'http://www.zoovy.com/biz/syndication/googlebase','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'GoogleBase.com',link=>'/biz/syndication/googlebase/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'checkbox', name=>'Google Shopping Account has Unique Identifer Exemption', id=>'.upc_exempt' };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
@@ -233,8 +235,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /googlebase/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /bizrate/) { 
 	$WEBDOC = 50374;
 	($DST,$MARKETPLACE) = ('BZR','Shopzilla');
-	push @BC, { name=>'Shopzilla',link=>'http://www.zoovy.com/biz/syndication/bizrate','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Shopzilla',link=>'/biz/syndication/bizrate/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'Web Login Username', id=>'.user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Web Login Password', id=>'.pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
@@ -244,8 +246,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bizrate/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /pronto/) { 
 	$WEBDOC = 50538;
 	($DST,$MARKETPLACE) = ('PTO','Pronto.com');
-	push @BC, { name=>'Pronto.com',link=>'http://www.zoovy.com/biz/syndication/pronto','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Pronto.com',link=>'/biz/syndication/pronto/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -253,8 +255,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /pronto/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /become/) { 
 	$WEBDOC = 51554;
 	($DST,$MARKETPLACE) = ('BCM','Become.com');
-	push @BC, { name=>'Become.com',link=>'http://www.zoovy.com/biz/syndication/become','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Become.com',link=>'/biz/syndication/become/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -262,8 +264,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /become/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /smarter/) { 
 	$WEBDOC = 51555;
 	($DST,$MARKETPLACE) = ('SMT','Smarter.com');
-	push @BC, { name=>'Smarter.com',link=>'http://www.zoovy.com/biz/syndication/smarter','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>'Smarter.com',link=>'/biz/syndication/smarter/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -271,7 +273,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /smarter/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /dijipop/) { 
 	$WEBDOC = 51556;
 	($DST,$MARKETPLACE) = ('DIJ','Dijipop.com');
-	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/dijipop','target'=>'_top', };
+	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/dijipop/index.cgi','target'=>'_top', };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -279,7 +281,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /dijipop/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /linkshare/) { 
 	$WEBDOC = 51557;
 	($DST,$MARKETPLACE) = ('LNK','Linkshare.com');
-	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/linkshare','target'=>'_top', };
+	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/linkshare/index.cgi','target'=>'_top', };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -290,8 +292,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /linkshare/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /hsn/) { 
 	$WEBDOC = 51570;
 	($DST,$MARKETPLACE) = ('HSN','HSN.com');
-	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/hsn','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/hsn/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -303,7 +305,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /hsn/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /sears/) { 
 	$WEBDOC = 51583;
 	($DST,$MARKETPLACE) = ('SRS','Sears');
-	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/sears','target'=>'_top', };
+	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/sears/index.cgi','target'=>'_top', };
 	push @FIELDS, { type=>'textbox', name=>'API User', id=>'.user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'API Password', id=>'.pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Location ID', id=>'.location_id', required=>1, hint=>"This ID is created when a location is configured in the Sears UI." };
@@ -328,8 +330,8 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /sears/) {
 elsif ($ENV{'SCRIPT_NAME'} =~ /newegg/) { 
 	$WEBDOC = 00000;
 	($DST,$MARKETPLACE) = ('EGG','Newegg');
-	push @BC, { name=>$MARKETPLACE,link=>'http://www.zoovy.com/biz/syndication/newegg','target'=>'_top', };
-	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/newegg/index.cgi','target'=>'_top', };
+	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH/index.cgi?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -354,13 +356,13 @@ else {
 #push @TABS, { name=>"Files", selected=>($VERB eq 'FILEs')?1:0, link=>"?VERB=FILES&PROFILE=$PROFILE", };
 if ($WEBDOC > 0) {
 	$GTOOLS::TAG{'<!-- WEBDOC -->'} = $WEBDOC;
-	push @TABS, { name=>"Webdoc", selected=>($VERB eq 'WEBDOC')?1:0, link=>"?VERB=WEBDOC&DOC=$WEBDOC&PROFILE=$PROFILE", };
+	push @TABS, { name=>"Webdoc", selected=>($VERB eq 'WEBDOC')?1:0, link=>"$PATH/index.cgi?VERB=WEBDOC&DOC=$WEBDOC&PROFILE=$PROFILE", };
 	}
 
 ## some of the syndications can create a generic product csv export.
 if (scalar(@CSV_PRODUCT_EXPORT)>0) {
 	## commenting out until this is ready to go to production.
-	#push @TABS, { name=>"Product Export", selected=>($VERB eq 'PRODUCT-CSV')?1:0, link=>"?VERB=PRODUCT-CSV&PROFILE=$PROFILE", };
+	#push @TABS, { name=>"Product Export", selected=>($VERB eq 'PRODUCT-CSV')?1:0, link=>"$PATH/index.cgi?VERB=PRODUCT-CSV&PROFILE=$PROFILE", };
 	}
 
 
@@ -369,11 +371,11 @@ my ($DOMAIN,$ROOTPATH) = ();
 if (($PROFILE ne '') && (defined $DST)) {
 	($so) = SYNDICATION->new($USERNAME,$PROFILE,$DST);
 	($DOMAIN,$ROOTPATH) = $so->syn_info();
-	push @TABS, { name=>"History", selected=>($VERB eq 'HISTORY')?1:0, link=>"?VERB=HISTORY&PROFILE=$PROFILE", };
+	push @TABS, { name=>"History", selected=>($VERB eq 'HISTORY')?1:0, link=>"$PATH/index.cgi?VERB=HISTORY&PROFILE=$PROFILE", };
 	if (($DST eq 'AMZ') || ($DST eq 'EBF')) {
-		push @TABS, { name=>"Feed Errors", selected=>($VERB eq 'FEED-ERRORS')?1:0, link=>"?VERB=FEED-ERRORS&PROFILE=$PROFILE", };
+		push @TABS, { name=>"Feed Errors", selected=>($VERB eq 'FEED-ERRORS')?1:0, link=>"$PATH/index.cgi?VERB=FEED-ERRORS&PROFILE=$PROFILE", };
 		}
-	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG&PROFILE=$PROFILE", };	
+	push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"$PATH/index.cgi?VERB=DEBUG&PROFILE=$PROFILE", };	
 	}
 $GTOOLS::TAG{'<!-- DOMAIN -->'} = $DOMAIN;
 $GTOOLS::TAG{'<!-- ROOTPATH -->'} = $ROOTPATH;
@@ -391,7 +393,7 @@ if ($VERB eq 'DELETE') {
 ##
 ##
 if ($VERB eq 'DBMAP-NUKE') {
-	my ($udbh) = &DBINFO::db_zoovy_connect($USERNAME);
+	my ($udbh) = &DBINFO::db_user_connect($USERNAME);
 	my $pstmt = "delete from BUYCOM_DBMAPS where MID=$MID /* $USERNAME */ and ID=".int($ZOOVY::cgiv->{'ID'});
 	print STDERR $pstmt."\n";
 	$udbh->do($pstmt);
@@ -525,8 +527,8 @@ if (($VERB eq 'DBMAP') || ($VERB eq 'DBMAP-EDIT')) {
 		$class = ($class eq 'r0')?'r1':'r0';
 		$c .= "<tr class=\"$class\">";
 		$c .= "<td valign=top>";
-			$c .= "<a href=\"index.cgi?VERB=DBMAP-EDIT&ID=$map->{'MAPID'}\">[Edit]</a>";
-			$c .= "<a href=\"index.cgi?VERB=DBMAP-NUKE&ID=$map->{'MAPID'}\">[Nuke]</a>";
+			$c .= "<a href=\"$PATH/index.cgi?VERB=DBMAP-EDIT&ID=$map->{'MAPID'}\">[Edit]</a>";
+			$c .= "<a href=\"$PATH/index.cgi?VERB=DBMAP-NUKE&ID=$map->{'MAPID'}\">[Nuke]</a>";
 		$c .= "</td>";
 		$c .= "<td valign=top>$map->{'MAPID'}</td>";
 		$c .= "<td valign=top>$map->{'STOREID'}</td>";
@@ -641,15 +643,13 @@ if (($VERB eq 'SAVE') || ($VERB eq 'SAVE-AND-PUBLISH')) {
       }
 
 	if ($ERROR ne '') {
-		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>$ERROR</font>";
+		push @MSGS, "ERROR|+$ERROR";
 		}
 	else {
-		if ($s{'IS_ACTIVE'}==0) {
-			$s{'IS_ACTIVE'} = 1;
-			$s{'DIAG_MSG'} = 'Settings have changed since last publish. Please re-publish.';
-			$so->addsummary("NOTE",NOTE=>"Set IS_ACTIVE=1",LUSER=>$LUSERNAME);
+		if ($s{'IS_SUSPENDED'}>0) {
+			$s{'IS_SUSPENDED'} = 0;
+			$so->appendtxlog("SETUP","Set IS_SUSPENDED=0 by $LUSERNAME");
 			}
-
 		$so->save();
 		}
 
@@ -863,10 +863,11 @@ if ($VERB eq '') {
 		my $class = ($cnt++%2)?'r0':'r1';
 		$c .= "<tr>";
 		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
-		$c .= "<a href=\"index.cgi?VERB=EDIT&DST=$DST&PROFILE=$ns\">EDIT</a>";
+		$c .= "<a href=\"$PATH/index.cgi?VERB=EDIT&DST=$DST&PROFILE=$ns\">EDIT</a>";
 		$c .= " | ";
-		# $c .= "<a href=\"/biz/batch/index.cgi?FEEDTYPE=$FEEDTYPE&VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH NOW</a>";
-		$c .= "<a href=\"index.cgi?VERB=PUBLISH&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		$c .= "<a href=\"$PATH/index.cgi?VERB=PUBLISH&DST=$DST&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		$c .= " | ";
+		$c .= "<a href=\"$PATH/index.cgi?VERB=HISTORY&DST=$DST&PROFILE=$ns\">HISTORY</a>";
 		$c .= "</td>";
 		$c .= "</tr>";
 		my ($s) = SYNDICATION->new($USERNAME,$ns,$DST);
@@ -878,7 +879,7 @@ if ($VERB eq '') {
 	## NOTE: if we only have one profile, then lets just head straight to edit
 	if (scalar( keys %{$profref} )==1) {
 		($PROFILE) = keys %{$profref};
-		$VERB = 'REDIRECT';
+		$VERB = 'EDIT';
 		}
 
 	}
@@ -1171,48 +1172,61 @@ if ($VERB eq 'FEED-ERRORS') {
 
 
 if ($VERB eq 'HISTORY') {
-	my $udbh = &DBINFO::db_user_connect($so->username());
 	my ($MID) = $so->mid();
 	my ($USERNAME) = $so->username();
 	my @RESULTS = ();
 
-	my $pstmt = "select CREATED,FEEDTYPE,SKU_TOTAL,SKU_VALIDATED,SKU_TRANSMITTED,NOTE from SYNDICATION_SUMMARY where MID=$MID /* $USERNAME */ ";
-	$pstmt .= " and DSTCODE=".$udbh->quote($so->dstcode())." ";
-	$pstmt .= " and PROFILE=".$udbh->quote($so->profile())." "; 
-	$pstmt .= " order by CREATED desc limit 0,100";
-	print STDERR $pstmt."\n";
-	my $sth = $udbh->prepare($pstmt);
-	$sth->execute();
-	while ( my @row = $sth->fetchrow() ) {
-		if ($row[1] eq '') { $row[1] = 'NOTE'; }
-		push @RESULTS, \@row;
-		}
-	$sth->finish();
-	&DBINFO::db_user_close();
 
-	if (scalar(@RESULTS)==0) {
-		push @RESULTS, [ '', 'NOTE', 0,0,0, 'No logs available.' ];
-		}
+	#my $pstmt = "select CREATED,FEEDTYPE,SKU_TOTAL,SKU_VALIDATED,SKU_TRANSMITTED,NOTE from SYNDICATION_SUMMARY where MID=$MID /* $USERNAME */ ";
+	#$pstmt .= " and DSTCODE=".$udbh->quote($so->dstcode())." ";
+	#$pstmt .= " and PROFILE=".$udbh->quote($so->profile())." "; 
+	#$pstmt .= " order by CREATED desc limit 0,100";
+	#print STDERR $pstmt."\n";
+	#my $sth = $udbh->prepare($pstmt);
+	#$sth->execute();
+	#while ( my @row = $sth->fetchrow() ) {
+	#	if ($row[1] eq '') { $row[1] = 'NOTE'; }
+	#	push @RESULTS, \@row;
+	#	}
+	#$sth->finish();
+	#if (scalar(@RESULTS)==0) {
+	#	push @RESULTS, [ '', 'NOTE', 0,0,0, 'No logs available.' ];
+	#	}
 
+
+	#my $c = '';
+	#foreach my $logset (@RESULTS) {
+	#	$c .= "<tr>";
+	#	$c .= "<td>$logset->[0]</td>";
+	#	$c .= "<td>$logset->[1]</td>";
+	#	if ($logset->[1] eq 'NOTE') {
+	#		$c .= "<td colspan=3>$logset->[5]</td>";
+	#		}
+	#	else {
+	#		$c .= "<td>$logset->[2]</td>";
+	#		$c .= "<td>$logset->[3]</td>";
+	#		$c .= "<td>$logset->[4]</td>";
+	#	$c .= "</tr>";
+	#	}
 
 	my $c = '';
-	foreach my $logset (@RESULTS) {
-		$c .= "<tr>";
-		$c .= "<td>$logset->[0]</td>";
-		$c .= "<td>$logset->[1]</td>";
-		if ($logset->[1] eq 'NOTE') {
-			$c .= "<td colspan=3>$logset->[5]</td>";
-			}
-		else {
-			$c .= "<td>$logset->[2]</td>";
-			$c .= "<td>$logset->[3]</td>";
-			$c .= "<td>$logset->[4]</td>";
-			}
-		$c .= "</tr>";
+	
+	require TXLOG;
+	# my ($tx) = TXLOG->new($so->{'TXLOG'});
+	#foreach my $line (@{$tx->lines()}) {
+	#	}
+	# my $c = "<pre>".Dumper($tx)."</pre>";
+
+	my $r = '';	
+	foreach my $line (reverse split(/\n/,$so->{'TXLOG'})) {
+		$r = ($r eq 'r0')?'r1':'r0';
+		my ($UNI,$TS,$PARAMSREF) = TXLOG::parseline($line);
+		$c .= sprintf("<tr class='$r'><td>%s</td><td>%s</td><td>%s</td></tr>\n",&ZTOOLKIT::pretty_date($TS,2),$UNI,$PARAMSREF->{'+'});
 		}
+
 	$GTOOLS::TAG{'<!-- HISTORY -->'} = $c;
 
-   $template_file = '_/syndication-history.shtml';
+   $template_file = 'syndication-history.shtml';
    }
 
 ## BEGIN DEBUGGER
@@ -1342,10 +1356,7 @@ if ($VERB eq 'CATEGORIES') {
 ##
 ##
 ##
-if ($VERB eq 'REDIRECT') {
-	print "Location: index.cgi?VERB=EDIT&DST=$DST&PROFILE=$PROFILE\n\n";
-	}
-elsif ($VERB eq 'PUBLISH-NOW') {
+if ($VERB eq 'PUBLISH-NOW') {
 	## .FEEDTYPE
 	if ($FEEDTYPE eq '') { $FEEDTYPE = 'FEED-TYPE-PASSED-WAS-BLANK-AND-THAT-WILL-NOT-WORK'; }
 
@@ -1368,5 +1379,4 @@ else {
 		);
 	}
 
-&DBINFO::db_zoovy_close();
 

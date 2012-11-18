@@ -28,7 +28,7 @@
 				$('.ui-dialog-content').dialog('close');
 				}
 			else {
-				document.location='view.cgi?ORDERID=<!-- ORDERS -->';
+				navigateTo('/biz/orders3/view.cgi?ORDERID=<!-- ORDERS -->');
 				}
 			"></td>
 	</tr>

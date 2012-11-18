@@ -33,23 +33,23 @@ if ($FLAGS =~ /,SCONLY,/) {
 	}
 
 
-if ($VERB =~ /^REAUTH\-(PARTITIONS|PROFILES|DOMAINS)$/) {
-	$VERB = $1;
-	## re-authenticate and change partition.
-	require AUTH;
-	my ($TOKEN) = AUTH::get_token_for_zjsid($ZOOVY::cookies->{'zjsid'});
-	my $TO_PRT = $ZOOVY::cgiv->{'PRT'};
-
-	if (not defined $TOKEN) {
-		push @MSGS, "ERROR|Could not lookup initial authentication token for your session";
-		}
-	else {
-		my ($ZJSID) = &AUTH::authorize_session($USERNAME,$LUSERNAME,$TOKEN,$TO_PRT);
-		push @MSGS, "SUCCESS|Successful authentication to partition # $TO_PRT";
-		$ZOOVY::PRT = $TO_PRT;
-		&AUTH::set_zjsid_cookie($ZJSID);
-		}
-	}
+#if ($VERB =~ /^REAUTH\-(PARTITIONS|PROFILES|DOMAINS)$/) {
+#	$VERB = $1;
+#	## re-authenticate and change partition.
+#	require AUTH;
+#	my ($TOKEN) = AUTH::get_token_for_zjsid($ZOOVY::cookies->{'zjsid'});
+#	my $TO_PRT = $ZOOVY::cgiv->{'PRT'};
+#
+#	if (not defined $TOKEN) {
+#		push @MSGS, "ERROR|Could not lookup initial authentication token for your session";
+#		}
+#	else {
+#		my ($ZJSID) = &AUTH::authorize_session($USERNAME,$LUSERNAME,$TOKEN,$TO_PRT);
+#		push @MSGS, "SUCCESS|Successful authentication to partition # $TO_PRT";
+#		$ZOOVY::PRT = $TO_PRT;
+#		&AUTH::set_zjsid_cookie($ZJSID);
+#		}
+#	}
 
 my @DIAGS = ();
 if ($VERB eq 'FIX') {
@@ -152,6 +152,26 @@ if ($VERB eq 'CHECKUP') {
 				}
 
 			## we should probably eventually add some domain checks here.
+			my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+			my $pstmt = "select DOMAIN from DOMAINS where IS_PRT_PRIMARY>0 and PRT=$PRT and MID=$MID";
+			my @DOMAINS = ();
+			my $sth = $udbh->prepare($pstmt);
+			$sth->execute();
+			while ( my ($domain) = $sth->fetchrow() ) { 
+				push @DOMAINS, $domain; 
+				}
+			$sth->finish();
+			if (scalar(@DOMAINS)==0) {
+				push @DIAGS, "ERR||Partition[$i] needs at least one domain designated as primary";
+				}
+			elsif (scalar(@DOMAINS)==1) {
+				push @DIAGS, "INFO||Partition[$i] has one primary domain '$DOMAINS[0]' (good)";
+				}
+			else {
+				push @DIAGS, "ERR||Partition[$i] has more than one primary domain (confusing) - ".join(",",@DOMAINS);
+				}
+
+			&DBINFO::db_user_close();
 
 			$i++;
 			}	
@@ -165,99 +185,109 @@ if ($VERB eq 'CHECKUP') {
 		my %USED_PRIMARY = ();
 		foreach my $domainname (@domains) {
 			my ($d) = DOMAIN->new($USERNAME,$domainname);
+			my $PRT = $d->prt();
+			my $PROFILE = $d->profile();
+			my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$PROFILE);
 
-			#if ($d->{'HOST_TYPE'} eq 'REDIR') {
-			#	push @DIAGS, "INFO||DOMAIN: $domainname is type REDIRECT, nothing to check";
-			#	}
+			my $SKIP = 0;
+			if ($d->{'HOST_TYPE'} eq 'REDIR') {
+				push @DIAGS, "INFO||DOMAIN: $domainname is type REDIRECT, nothing to check";
+				$SKIP++;
+				}
+			if ($d->{'HOST_TYPE'} eq 'MINISITE') {
+				push @DIAGS, "INFO||DOMAIN: $domainname is type MINISITE, nothing to check";
+				$SKIP++;
+				}
+
+			next if ($SKIP);
+			
 			#elsif ($d->{'HOST_TYPE'} eq 'NEWSLETTER') {
 			#	}
 			#elsif ($d->{'HOST_TYPE'} eq 'PRIMARY') {
 			#	## primary domain .. should share same profile as partition.
-			#	push @DIAGS, "INFO||DOMAIN: $domainname is type PRIMARY, profile=$d->{'PROFILE'} prt=$d->{'PRT'}";
-			#	my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$d->{'PROFILE'});				
-			#	my $prt = &ZOOVY::fetchprt($USERNAME,$d->{'PRT'});
+			#	push @DIAGS, "INFO||DOMAIN: $domainname is type PRIMARY, profile=$d->profile() prt=$PRT";
+			#	my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$d->profile());				
+			#	my $prt = &ZOOVY::fetchprt($USERNAME,$PRT);
 
-			#	if ($USED_PROFILES{$d->{'PROFILE'}}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname has same profile[$d->{'PROFILE'}] as domain $USED_PROFILES{$d->{'PROFILE'}} -- these should not be shared.";
-			#		if ($FIX) {
-			#			push @DIAGS, "FAIL||Cannot resolve which domain $domainname or $USED_PROFILES{$d->{'PROFILE'}} should be using profile $d->{'PROFILE'}";
-			#			}
-			#		}
-			#	else {
-			#		$USED_PROFILES{$d->{'PROFILE'}} = $domainname;
-			#		}
+			if ($USED_PROFILES{$PROFILE}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname has same profile[$PROFILE] as domain $USED_PROFILES{$PROFILE} -- these should not be shared.";
+				if ($FIX) {
+					push @DIAGS, "FAIL||Cannot resolve which domain $domainname or $USED_PROFILES{$PROFILE} should be using profile $PROFILE";
+					}
+				}
+			else {
+				$USED_PROFILES{$PROFILE} = $domainname;
+				}
 
-			#	if ($USED_PRIMARY{$d->{'PRT'}}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname is primary for partition $d->{'PRT'}, but domain $USED_PRIMARY{$d->{'PRT'}} claims to be primary for same partition.";
-			#		if ($FIX) {
-			#			push @DIAGS, "FAIL||I'm sorry, but I will not conduct a domain deathmatch between $domainname and $USED_PRIMARY{$d->{'PRT'}} for partition $d->{'PRT'}, please work it out yourself.";
-			#			}
-			#		}
-			#	else {
-			#		$USED_PRIMARY{$d->{'PRT'}} = $domainname;
-			#		}
+			if ($USED_PRIMARY{$PRT}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname is primary for partition $PRT, but domain $USED_PRIMARY{$PRT} claims to be primary for same partition.";
+				if ($FIX) {
+					push @DIAGS, "FAIL||I'm sorry, but I will not conduct a domain deathmatch between $domainname and $USED_PRIMARY{$PRT} for partition $PRT, please work it out yourself.";
+					}
+				}
+			else {
+				$USED_PRIMARY{$PRT} = $domainname;
+				}
 
-			#	if ($nsref->{'prt:id'} != $d->{'PRT'}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname has profile($d->{'PROFILE'}) which says prt:id=$nsref->{'prt:id'}) .. but domain says PRT=$d->{'PRT'}";
-			#		if ($FIX) {
-			#			push @DIAGS, "FAIL||Cannot resolve PRT/prt:id discrepancy automatically! .. I have no idea who to trust here.";
-			#			}					
-			#		}
-			#	if ($d->{'PRT'} != $nsref->{'prt:id'}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname has partition=$d->{'PRT'} but also profile[$d->{'PROFILE'}] which has prt:id=$nsref->{'prt:id'}";				
-			#		if ($FIX) {
-			#			push @DIAGS, "FIX||DOMAIN: $domainname set partition=$nsref->{'prt:id'} .. was partition=$d->{'PRT'}";
-			#			$d->{'PRT'} = $nsref->{'prt:id'};
-			#			$d->save();
-			#			}
-			#		}
+			if ($nsref->{'prt:id'} != $PRT) {
+				push @DIAGS, "ERR||DOMAIN: $domainname has profile($PROFILE) which says prt:id=$nsref->{'prt:id'}) .. but domain says PRT=$PRT";
+				if ($FIX) {
+					push @DIAGS, "FAIL||Cannot resolve PRT/prt:id discrepancy automatically! .. I have no idea who to trust here.";
+					}					
+				}
+			if ($PRT != $nsref->{'prt:id'}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname has partition=$PRT but also profile[$PROFILE] which has prt:id=$nsref->{'prt:id'}";				
+				if ($FIX) {
+					push @DIAGS, "FIX||DOMAIN: $domainname set partition=$nsref->{'prt:id'} .. was partition=$PRT";
+					$PRT = $nsref->{'prt:id'};
+					$d->save();
+					}
+				}
+			if ($PRT != $nsref->{'zoovy:site_partition'}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname has profile($PROFILE) which has specialty site partition(zoovy:site_partition)=$nsref->{'zoovy:site_partition'} (should be *$PRT)";
+				if ($FIX) {
+					push @DIAGS, "FIX||DOMAIN: removed zoovy:site_partition from profile was=$nsref->{'zoovy:site_partition'}";
+					$nsref->{'zoovy:site_partition'} = $PRT;
+					&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$nsref);
+					}
+				}
 
-			#	if ($d->{'PRT'} != $nsref->{'zoovy:site_partition'}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname has profile($d->{'PROFILE'}) which has specialty site partition(zoovy:site_partition)=$nsref->{'zoovy:site_partition'} (should be *$d->{'PRT'})";
-			#		if ($FIX) {
-			#			push @DIAGS, "FIX||DOMAIN: removed zoovy:site_partition from profile was=$nsref->{'zoovy:site_partition'}";
-			#			$nsref->{'zoovy:site_partition'} = $d->{'PRT'};
-			#			&ZOOVY::savemerchantns_ref($USERNAME,$d->{'PROFILE'},$nsref);
-			#			}
-			#		}
 			#	}
 			#elsif ($d->{'HOST_TYPE'} eq 'SPECIALTY') {
 			#	## specialty site. -- 
 			#	##		zoovy:site_rootcat
 			#	##		zoovy:site_partition
-			#	push @DIAGS, "INFO||DOMAIN: $domainname is type SPECIALTY, profile=$d->{'PROFILE'} prt=$d->{'PRT'}";
-			#	my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$d->{'PROFILE'});				
+			#	push @DIAGS, "INFO||DOMAIN: $domainname is type SPECIALTY, profile=$PROFILE prt=$PRT";
+			#	my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$PROFILE);				
 
-			#	if ($USED_PROFILES{$d->{'PROFILE'}}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname has same profile as domain $USED_PROFILES{$d->{'PROFILE'}} -- these should not be shared.";
+			#	if ($USED_PROFILES{$PROFILE}) {
+			#		push @DIAGS, "ERR||DOMAIN: $domainname has same profile as domain $USED_PROFILES{$PROFILE} -- these should not be shared.";
 			#		if ($FIX) {
-			#			push @DIAGS, "FAIL||Cannot resolve which domain $domainname or $USED_PROFILES{$d->{'PROFILE'}} should be using profile $d->{'PROFILE'}";
+			#			push @DIAGS, "FAIL||Cannot resolve which domain $domainname or $USED_PROFILES{$PROFILE} should be using profile $PROFILE";
 			#			}
 			#		}
 			#	else {
-			#		$USED_PROFILES{$d->{'PROFILE'}} = $domainname;
+			#		$USED_PROFILES{$PROFILE} = $domainname;
 			#		}
 	
-			#	## $d->{'PRT'} is assumed to be correct.
-			#	if ($d->{'PRT'} != $nsref->{'zoovy:site_partition'}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname *prt=$d->{'PRT'} found issue w/profile($d->{'PROFILE'}) has zoovy:site_partition=$nsref->{'zoovy:site_partition'} (should be same as domain *$d->{'PRT'})";	
-			#		if ($FIX) {
-			#			push @DIAGS, "FIX||DOMAIN: $domainname setting profile($d->{'PROFILE'} zoovy:site_partition=$d->{'PRT'} (was $nsref->{'zoovy:site_partition'})";
-			#			$nsref->{'zoovy:site_partition'} = $d->{'PRT'};
-			#			&ZOOVY::savemerchantns_ref($USERNAME,$d->{'PROFILE'},$nsref);
-			#			}
-			#		}
-			#	## $d->{'PRT'} is assumed to be correct.
-			#	if ($d->{'PRT'} != $nsref->{'prt:id'}) {
-			#		push @DIAGS, "ERR||DOMAIN: $domainname found issue w/profile($d->{'PROFILE'}) has prt:id=$nsref->{'prt:id'}) but (should be same as domain *$d->{'PRT'})";	
-			#		if ($FIX) {
-			#			push @DIAGS, "FIX||DOMAIN: $domainname profile($d->{'PROFILE'}) setting prt:id=$d->{'PRT'} (was $nsref->{'prt:id'})";
-			#			$nsref->{'prt:id'} = $d->{'PRT'};
-			#			&ZOOVY::savemerchantns_ref($USERNAME,$d->{'PROFILE'},$nsref);
-			#			}
-			#		}
-			#	}
-
+			## $PRT is assumed to be correct.
+			if ($PRT != $nsref->{'zoovy:site_partition'}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname *prt=$PRT found issue w/profile($PROFILE) has zoovy:site_partition=$nsref->{'zoovy:site_partition'} (should be same as domain *$PRT)";	
+				if ($FIX) {
+					push @DIAGS, "FIX||DOMAIN: $domainname setting profile($PROFILE zoovy:site_partition=$PRT (was $nsref->{'zoovy:site_partition'})";
+					$nsref->{'zoovy:site_partition'} = $PRT;
+					&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$nsref);
+					}
+				}
+			## $PRT is assumed to be correct.
+			if ($PRT != $nsref->{'prt:id'}) {
+				push @DIAGS, "ERR||DOMAIN: $domainname found issue w/profile($PROFILE) has prt:id=$nsref->{'prt:id'}) but (should be same as domain *$PRT)";	
+				if ($FIX) {
+					push @DIAGS, "FIX||DOMAIN: $domainname profile($PROFILE) setting prt:id=$PRT (was $nsref->{'prt:id'})";
+					$nsref->{'prt:id'} = $PRT;
+					&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$nsref);
+					}
+				}
 			}
 		}
 
@@ -365,6 +395,21 @@ if ($VERB eq 'CHECKUP') {
 	$template_file = 'checkup.shtml';
 	}
 
+if ($VERB eq 'ADD-RESERVE-DOMAIN') {
+	my ($PRT) = $ZOOVY::cgiv->{'PRT'};
+	require DOMAIN::POOL;
+ 	my ($DOMAINNAME) = &DOMAIN::POOL::reserve($USERNAME,$PRT,undef);
+	if ($DOMAINNAME) {
+		push @MSGS, "SUCCESS|Reserved domain: $DOMAINNAME";
+		$VERB = 'DOMAINS';
+		}
+	else {
+		push @MSGS, "ERROR|Could not find a free domain to reserve";
+		$VERB = 'PARTITIONS';
+		}
+	}
+
+
 if ($VERB eq 'DOMAINS') {
 	$LU->set('sites.focus','DOMAINS'); $LU->save();
 	my @domains = &DOMAIN::TOOLS::domains($USERNAME);
@@ -386,9 +431,12 @@ if ($VERB eq 'DOMAINS') {
 		if ($class eq 'r0') { $class = 'r1'; } else { $class = 'r0'; }
 		# $c .= "<tr><td>".Dumper($nsref)."</td></tr>";
 		$c .= "<tr class=\"$class\">";
-		$c .= "<td valign=top><img width=100 height=50 src=\"".&GTOOLS::imageurl($USERNAME,$nsref->{'zoovy:logo_website'},50,100,'FFFFFF')."\"></td>";
+		$c .= "<td valign=top>
+<img width=100 height=50 src=\"".&GTOOLS::imageurl($USERNAME,$nsref->{'zoovy:logo_website'},50,100,'FFFFFF')."\">
+</td>";
 		$c .= "<td valign=top>$ns</td>";
 		$c .= "<td valign=top>$domainname</td>";
+		$c .= qq~<td valign=top><button class="button" onClick="changeDomain('$domainname',$prt);">Login</button></td>~;
 		$c .= "<td>";
 		my $ALLOW_EDIT = 0;
 		foreach my $host ('WWW','M','APP') {
@@ -432,6 +480,8 @@ if ($VERB eq 'DOMAINS') {
 
 
 
+
+
 if ($VERB eq 'PARTITIONS') {
 	$LU->set('sites.focus','PARTITIONS'); $LU->save();
 	my ($globalref) = &ZWEBSITE::fetch_globalref($USERNAME);
@@ -439,8 +489,19 @@ if ($VERB eq 'PARTITIONS') {
 	my $i = 0;
 	my $c = '';
 	foreach my $prt ( @{$globalref->{'@partitions'}} ) {
-		$c .= qq~<tr><td><input type="button" class="button" value="LOGIN" onClick="document.location='/biz/sites/index.cgi?VERB=REAUTH-PARTITIONS&PRT=$i';"></td>~;
-		$c .= qq~<td>$i</td><td><b>$prt->{'name'}</b>~;
+
+		my $domain = &DOMAIN::TOOLS::domain_for_prt($USERNAME,$i);
+		$c .= qq~<tr>~;
+		if ($domain eq '') {
+			$c .= qq~<td><div class="warning">No domain</div></td>~;
+			$c .= qq~<td>$i</td><td><button style="width: 150px;" class="button" onClick=\"navigateTo('/biz/sites/index.cgi?VERB=ADD-RESERVE-DOMAIN&PRT=$i');\">Add Reserve Domain</a></td>~;
+			}
+		else {
+			$c .= qq~<td><button class="button" onClick="changeDomain('$domain',$i);">Login</button></td>~;
+			$c .= qq~<td>$i</td><td>$domain</td>~;
+			}
+		
+		$c .= qq~<td><b>$prt->{'name'}</b>~;
 		$c .= qq~</td></tr>~;
 		$i++;
 		}
@@ -656,11 +717,11 @@ if ($VERB eq 'PROFILES') {
 
 
 my @TABS = (
-	{ selected=>($VERB eq 'PROFILES')?1:0, name=>"Profiles", link=>"index.cgi?VERB=PROFILES" },
-	{ selected=>($VERB eq 'DOMAINS')?1:0, name=>"Domains", link=>"index.cgi?VERB=DOMAINS" },
-	{ selected=>($VERB eq 'PARTITIONS')?1:0, name=>"Partitions", link=>"index.cgi?VERB=PARTITIONS" },
+	{ selected=>($VERB eq 'PROFILES')?1:0, name=>"Profiles", link=>"/biz/sites/index.cgi?VERB=PROFILES" },
+	{ selected=>($VERB eq 'DOMAINS')?1:0, name=>"Domains", link=>"/biz/sites/index.cgi?VERB=DOMAINS" },
+	{ selected=>($VERB eq 'PARTITIONS')?1:0, name=>"Partitions", link=>"/biz/sites/index.cgi?VERB=PARTITIONS" },
 # 	{ selected=>($VERB eq 'SNAPSHOTS')?1:0, name=>"Snapshots", link=>"index.cgi?VERB=SNAPSHOTS" },
-	{ selected=>($VERB eq 'CHECKUP')?1:0, name=>"Diagnostics", link=>"index.cgi?VERB=CHECKUP" },
+	{ selected=>($VERB eq 'CHECKUP')?1:0, name=>"Diagnostics", link=>"/biz/sites/index.cgi?VERB=CHECKUP" },
 	);
 
 

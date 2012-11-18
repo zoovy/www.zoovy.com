@@ -24,8 +24,10 @@
 	<tr><td><b>Password:</td><td><!-- PASSWORD --></td></tr>
 	<tr><td><b>Transaction Key:</td><td><!-- KEY --></td></tr>
 </table>
-<a href="https://www.zoovy.com/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=AUTHORIZENET-SETUP">Configure Username/Password</a><br><br>
-
+<button class="button" 
+onClick="navigateTo('/biz/setup/payment/index.cgi?TAB=CREDIT&ACTION=AUTHORIZENET-SETUP');">Configure
+Username/Password</button>
+<br>
 
 <table>
 	<tr>

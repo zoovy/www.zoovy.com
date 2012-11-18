@@ -14,7 +14,7 @@
 
 	&nbsp;
 	
-	<input class="button" type="button" onClick="document.location='index.cgi?VERB=CREATE';" value=" Create New ">
+	<input class="button" type="button" onClick="navigateTo('/biz/crm/index.cgi?VERB=CREATE');" value=" Create New ">
 	<br>
 		<i>Hint: enter a ticket code,
 		customer email (user@domain.com), phone number (###-###-####) or qualified order id

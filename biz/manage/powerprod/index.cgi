@@ -49,7 +49,7 @@ if ($VERB eq 'LOOKUP') {
 	my $c = '';
 	foreach my $job (@{$jobs}) {
 		$c .= "<tr>";
-		$c .= "<td><a href=\"index.cgi?VERB=EDITJOB&JOBID=$job->{'ID'}\">$job->{'ID'}</a></td>";
+		$c .= "<td><a href=\"/biz/manage/powerprod/index.cgi?VERB=EDITJOB&JOBID=$job->{'ID'}\">$job->{'ID'}</a></td>";
 		$c .= "<td>$job->{'TITLE'}</td>";
 		$c .= "<td>$job->{'LUSERNAME'}</td>";
 		$c .= "<td>".&ZTOOLKIT::pretty_date($job->{'CREATED_GMT'})."</td>";
@@ -644,8 +644,8 @@ $GTOOLS::TAG{'<!-- DATA -->'} = &ZTOOLKIT::ser($dataref,1,0);
 
 
 my @TABS = ();
-push @TABS, { name=>'Create', link=>'index.cgi', selected=>($VERB eq '')?1:0 };
-push @TABS, { name=>'Lookup/Edit', link=>'index.cgi?VERB=LOOKUP', selected=>($VERB eq 'LOOKUP')?1:0 }; 
+push @TABS, { name=>'Create', link=>'/biz/manage/powerprod/index.cgi', selected=>($VERB eq '')?1:0 };
+push @TABS, { name=>'Lookup/Edit', link=>'/biz/manage/powerprod/index.cgi?VERB=LOOKUP', selected=>($VERB eq 'LOOKUP')?1:0 }; 
 
 if ($template_file ne '') {
 	&GTOOLS::output(
