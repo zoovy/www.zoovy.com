@@ -622,7 +622,7 @@ elsif ($SITE->format() eq 'PRODUCT') {
 elsif ($SITE->format() eq 'NEWSLETTER') {
 	$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
 	<center>
-		<button class="button2" onClick="navigateTo('/biz/setup/builder/index.cgi');">Exit</button>
+		<button class="button2" onClick="navigateTo('/biz/manage/newsletters/index.cgi');">Exit</button>
 	</center>
 	~;
 	push @TABS, { name=>'Page Edit', link=>'/biz/setup/builder/index.cgi?ACTION=EDIT&_SREF='.$SITEstr, color=>(($ACTION eq 'EDIT')?'orange':undef), };
@@ -1178,6 +1178,7 @@ $BUF
 		require SITE;
 
 		($BUF) = $toxml->render('*SITE'=>$SITE,DIV=>$SITE->{'_DIV'});
+		$BUF =~ s/<[Ss][Cc][Rr][Ii][Pp][Tt].*?><\/[Ss][Cc][Rr][Ii][Pp][Tt]>/<!-- script was removed -->/gs;
 		}
 	else {
 		$BUF = qq~
@@ -1204,7 +1205,6 @@ Please select another layout using the Layout tab at the top.
 	$GTOOLS::TAG{'<!-- SREF -->'} = $SITEstr =  $SITE->siteserialize();
 	$template_file = 'edit.shtml';
 	if ($SITE->format() eq 'NEWSLETTER') {
-		$GTOOLS::TAG{'<!-- MSGS -->'} = &GTOOLS::show_msgs(\@MSGS);
 		$template_file = 'edit-newsletter.shtml';
 		}
 	}
@@ -1288,7 +1288,9 @@ if ($ACTION eq '') {
 	my %DOMAINS = ();
 	my %PROFILES = ();
 	my @DEBUG = ();
+	my $ludomain = $LU->domain();
 	foreach my $domain (@domainrefs) {
+
 		my $DNSINFO = &DOMAIN::QUERY::lookup("www.$domain",cache=>0,verify=>1,USERNAME=>$USERNAME);
 		## skip domains that don't have a profile selected
 		my $DISPLAY = 0;
@@ -1297,6 +1299,9 @@ if ($ACTION eq '') {
 			}
 		elsif ($DNSINFO->{'PRT'} != $PRT) {
 			push @DEBUG, "WARN|$domain was not shown because of PRT=$DNSINFO->{'PRT'}";
+			}
+		elsif (($ludomain ne '') && ($ludomain ne $domain)) {
+			push @DEBUG, "WARN|$domain was not shown because you are not logged into that domain";
 			}
 		elsif ($DNSINFO->{'PROFILE'} eq '') {
 			push @DEBUG, "WARN|$domain was not shown because of PROFILE is blank";

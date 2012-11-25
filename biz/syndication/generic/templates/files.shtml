@@ -7,7 +7,7 @@
 </tr>
 <tr>
 	<td>
-<form name="thisFrm" id="thisFrm" action="index.cgi" method="post">
+<form name="thisFrm" id="thisFrm" action="<!-- PATH -->" method="post">
 <input type="hidden" name="VERB" value="PUBLISH-NOW">
 <input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
 

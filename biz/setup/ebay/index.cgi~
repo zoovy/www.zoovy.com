@@ -29,7 +29,7 @@ $TEMPLATE::NS = substr($CODE,0,10);
 
 
 my @BC = ();
-push @BC, { name=>'Setup', link=>'http://www.zoovy.com/biz/setup', target=>'_top' };
+push @BC, { name=>'Setup', link=>'/biz/setup', target=>'_top' };
 push @BC, { name=>'eBay ', link=>'/biz/setup/ebay', target=>'_top' };
 
 
@@ -1233,9 +1233,9 @@ if ($ACTION eq 'PROFILES') {
 			}
 
 		$c .= "<tr class=\"".((($i++%2)==0)?'r0':'r1')."\">";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-COMPANYEDIT&NS=$code\">[Listing Template]</a></td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-POLICYEDIT&CODE=$code\">[eBay Policies]</a></td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-SHIPPING&CODE=$code\">[eBay Shipping]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-COMPANYEDIT&NS=$code\">[Listing Template]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-POLICYEDIT&CODE=$code\">[eBay Policies]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-SHIPPING&CODE=$code\">[eBay Shipping]</a></td>";
 		$c .= "<td nowrap>$code</td>";	
 		$c .= "<td nowrap>$ebayuser</td>";
 		$c .= "<td nowrap>$ebaytemplate</td>";	

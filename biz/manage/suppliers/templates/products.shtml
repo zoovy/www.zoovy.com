@@ -26,7 +26,7 @@
 
 <h3>( Page: <!-- PAGE --> of <!-- PAGES --> <!-- NAVIGATION --> )</h3><br>
 
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="DISASSOCIATE">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table width=100% class="zoovytable" cellspacing="1" cellpadding="2">

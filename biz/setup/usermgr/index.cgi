@@ -19,6 +19,11 @@ if ($MID<=0) { exit; }
 
 my @TABS = ();
 my @MSGS = ();
+my @BC = ();
+
+push @BC, { name=>'Setup', link=>'/biz/setup/index.cgi', target=>'_top' };
+push @BC, { name=>'User Manager', link=>'/biz/setup/usermgr/index.cgi' };
+
 
 &ZOOVY::init();
 &GTOOLS::init();
@@ -439,7 +444,7 @@ if ($VERB eq 'ADD-USER' || $VERB eq 'EDIT-USER') {
 		}
 
 	if ($VERB eq 'EDIT-USER') {
-		$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = qq~<td><input type="button" class="button" value=" Remove " onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=NUKE&LUSER=$UREF->{'LUSER'}&UID=$UREF->{'UID'}');"></td>~;		
+		$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = qq~<td><button form="setupUserFrm" type="submit" onClick="navigateTo('/biz/setup/usermgr/index.cgi?ACTION=NUKE&LUSER=$UREF->{'LUSER'}&UID=$UREF->{'UID'}');">Remove</button></td>~;		
 		}
 	
 	$template_file = 'useredit.shtml';
@@ -532,10 +537,7 @@ push @TABS, { name=>'User/Device Manager', link=>'/biz/setup/usermgr/index.cgi?V
 	help=>'#50292',
 	tabs=>\@TABS,
 	msgs=>\@MSGS,
-	bc=>[
-		{ name=>'Setup', link=>'/biz/setup', target=>'_top' },
-		{ name=>'User Manager' },	
-		],
+	bc=>\@BC,
 	);
 
 &DBINFO::db_zoovy_close();

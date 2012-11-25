@@ -1,18 +1,5 @@
-<HEAD>
-<!-- HEADER_ONLY -->
-<title>Zoovy: Online Product Management - Merchant</title>
-<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
-
 <script language="JavaScript">
 <!--
-
-function openWindow(url) {
-	myWinHandle	= window.open(url, 'popupWindow','resizable=yes,toolbar=yes,status=yes,width=638,height=400,menubar=yes,scrollbars=yes');
-	if (myWinHandle.opener == null) { myWinHandle.opener = self; }
-	myWinHandle.focus(true);
-}
-
-
 
 // BEGIN CODE FOR LIST ORDERING
 
@@ -26,12 +13,12 @@ function validated(valid,string) {
 
 function addItem() {
 
-	var j = document.thisFrm.opts.length;
+	var j = document.pogFrm.opts.length;
 
 
 	var added = 0;
-	if (document.thisFrm.TYPE.value == "cb") {
-		if (document.thisFrm.prompt.value == "Checked" || document.thisFrm.prompt.value == "Not Checked") {
+	if (document.pogFrm.TYPE.value == "cb") {
+		if (document.pogFrm.prompt.value == "Checked" || document.pogFrm.prompt.value == "Not Checked") {
 			}
 		else {
 			alert("Checkboxes can only be either 'Checked' or 'Not Checked' - nothing saved!");
@@ -39,32 +26,32 @@ function addItem() {
 			}
 		}
 
-	document.thisFrm.w.value = validated('0123456789#.-+%',document.thisFrm.w.value);
-	document.thisFrm.p.value = validated('0123456789$.-+%',document.thisFrm.p.value);
-	document.thisFrm.prompt.value = validated('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/0123456789 $.-+%!@#$%^&*()_+-=\'",.?[]',document.thisFrm.prompt.value);
-	document.thisFrm.html.value = escape(document.thisFrm.html.value);
-	document.thisFrm.asm.value = document.thisFrm.asm.value.toUpperCase();
+	document.pogFrm.w.value = validated('0123456789#.-+%',document.pogFrm.w.value);
+	document.pogFrm.p.value = validated('0123456789$.-+%',document.pogFrm.p.value);
+	document.pogFrm.prompt.value = validated('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/0123456789 $.-+%!@#$%^&*()_+-=\'",.?[]',document.pogFrm.prompt.value);
+	document.pogFrm.html.value = escape(document.pogFrm.html.value);
+	document.pogFrm.asm.value = document.pogFrm.asm.value.toUpperCase();
 
-	var value = 'pt='+document.thisFrm.prompt.value;
-	value = value + '|id='+document.thisFrm.id.value;
-	value = value + '|w=' + document.thisFrm.w.value;
-	value = value + '|p='+document.thisFrm.p.value;
-	value = value + '|html='+document.thisFrm.html.value;
-	value = value + '|asm='+document.thisFrm.asm.value;
+	var value = 'pt='+document.pogFrm.prompt.value;
+	value = value + '|id='+document.pogFrm.id.value;
+	value = value + '|w=' + document.pogFrm.w.value;
+	value = value + '|p='+document.pogFrm.p.value;
+	value = value + '|html='+document.pogFrm.html.value;
+	value = value + '|asm='+document.pogFrm.asm.value;
 
-	if (document.thisFrm.TYPE.value == "imgselect" || document.thisFrm.TYPE.value == "imggrid") {
+	if (document.pogFrm.TYPE.value == "imgselect" || document.pogFrm.TYPE.value == "imggrid") {
 		// special handling for images
-		if (document.thisFrm.img.value != '') {
-			value = value + '|img=' + document.thisFrm.img.value;
+		if (document.pogFrm.img.value != '') {
+			value = value + '|img=' + document.pogFrm.img.value;
 			}
-		document.thisFrm.imgimg.src="https://www.zoovy.com/images/blank.gif";
+		document.pogFrm.imgimg.src="https://www.zoovy.com/images/blank.gif";
 		}
 
-	if (document.thisFrm.id.value == '') {
+	if (document.pogFrm.id.value == '') {
 		// id variable is blank - look for something with the same description! (no duplicates!)
 		for (var i=0; i < j; i++) {
-			if (document.thisFrm.prompt.value == document.thisFrm.opts.options[i].text) {
-				document.thisFrm.opts.options[i] = new Option(document.thisFrm.prompt.value,value);
+			if (document.pogFrm.prompt.value == document.pogFrm.opts.options[i].text) {
+				document.pogFrm.opts.options[i] = new Option(document.pogFrm.prompt.value,value);
 				added++;
 				}
 			}
@@ -73,13 +60,13 @@ function addItem() {
 		// id is set - look for something with the same id
 		var idx = '';
 		for (var i=0; i < j; i++) {
-			var stringArray = document.thisFrm.opts.options[i].value.split('|');
+			var stringArray = document.pogFrm.opts.options[i].value.split('|');
 			for (var ii=0; ii < stringArray.length; ii++) {	
 				var kv = stringArray[ii].split('=');
 				if (kv[0] == 'id') { idx=kv[1]; }
 				}
-			if (document.thisFrm.id.value == idx) {
-				document.thisFrm.opts.options[i] = new Option(document.thisFrm.prompt.value,value);
+			if (document.pogFrm.id.value == idx) {
+				document.pogFrm.opts.options[i] = new Option(document.pogFrm.prompt.value,value);
 				added++;
 				}
 			}
@@ -88,54 +75,54 @@ function addItem() {
 
 
 	if (!added) {
-		document.thisFrm.opts.options[j] = new Option(document.thisFrm.prompt.value,value);
+		document.pogFrm.opts.options[j] = new Option(document.pogFrm.prompt.value,value);
 		}
 
-//	alert(document.thisFrm.id.value);
+//	alert(document.pogFrm.id.value);
 
-	document.thisFrm.id.value = '';
-	document.thisFrm.w.value = '';
-	document.thisFrm.p.value = '';
-	document.thisFrm.prompt.value = '';	
-	document.thisFrm.html.value = '';
-	document.thisFrm.asm.value = '';
+	document.pogFrm.id.value = '';
+	document.pogFrm.w.value = '';
+	document.pogFrm.p.value = '';
+	document.pogFrm.prompt.value = '';	
+	document.pogFrm.html.value = '';
+	document.pogFrm.asm.value = '';
 
-	if (document.thisFrm.TYPE.value == "imgselect" || document.thisFrm.TYPE.value == "imggrid") {
+	if (document.pogFrm.TYPE.value == "imgselect" || document.pogFrm.TYPE.value == "imggrid") {
 		// special handling for images
-		document.thisFrm.img.value = '';
-		document.thisFrm.imgimg.src="https://www.zoovy.com/images/blank.gif";
+		document.pogFrm.img.value = '';
+		document.pogFrm.imgimg.src="https://www.zoovy.com/images/blank.gif";
 		}
 	}
 
 function loadItem() {
-	var i = document.thisFrm.opts.selectedIndex;
-	document.thisFrm.prompt.value = document.thisFrm.opts.options[i].text;
-	var stringArray = document.thisFrm.opts.options[i].value.split('|');
-//	alert(document.thisFrm.opts.options[i].value);
+	var i = document.pogFrm.opts.selectedIndex;
+	document.pogFrm.prompt.value = document.pogFrm.opts.options[i].text;
+	var stringArray = document.pogFrm.opts.options[i].value.split('|');
+//	alert(document.pogFrm.opts.options[i].value);
 
-	document.thisFrm.id.value = '';
-	document.thisFrm.w.value = '';
-	document.thisFrm.p.value = '';
-	document.thisFrm.html.value = '';
-	document.thisFrm.asm.value = '';
-	if (document.thisFrm.img) { document.thisFrm.img.value = ''; }
+	document.pogFrm.id.value = '';
+	document.pogFrm.w.value = '';
+	document.pogFrm.p.value = '';
+	document.pogFrm.html.value = '';
+	document.pogFrm.asm.value = '';
+	if (document.pogFrm.img) { document.pogFrm.img.value = ''; }
 
 	for (var i=0; i < stringArray.length; i++) {	
 		var kv = stringArray[i].split('=');
-		if (kv[0] == 'p') { document.thisFrm.p.value=kv[1]; }
-		if (kv[0] == 'w') { document.thisFrm.w.value=kv[1]; }
-		if (kv[0] == 'id') { document.thisFrm.id.value=kv[1]; }
-		if (kv[0] == 'img') { document.thisFrm.img.value=kv[1]; } 
-		if (kv[0] == 'html') { document.thisFrm.html.value=unescape(kv[1]); }
-		if (kv[0] == 'asm') { document.thisFrm.asm.value=kv[1]; }
+		if (kv[0] == 'p') { document.pogFrm.p.value=kv[1]; }
+		if (kv[0] == 'w') { document.pogFrm.w.value=kv[1]; }
+		if (kv[0] == 'id') { document.pogFrm.id.value=kv[1]; }
+		if (kv[0] == 'img') { document.pogFrm.img.value=kv[1]; } 
+		if (kv[0] == 'html') { document.pogFrm.html.value=unescape(kv[1]); }
+		if (kv[0] == 'asm') { document.pogFrm.asm.value=kv[1]; }
 		}
 
-	if (document.thisFrm.TYPE.value == "imgselect" || document.thisFrm.TYPE.value == "imggrid") {
-		if (document.thisFrm.img.value != '') {
-			document.thisFrm.imgimg.src=imglib(document.thisFrm.img.value,50,50,'FFFFFF',0,'jpg');
+	if (document.pogFrm.TYPE.value == "imgselect" || document.pogFrm.TYPE.value == "imggrid") {
+		if (document.pogFrm.img.value != '') {
+			document.pogFrm.imgimg.src=imglib(document.pogFrm.img.value,50,50,'FFFFFF',0,'jpg');
 			}
 		else {
-			document.thisFrm.imgimg.src='http://www.zoovy.com/images/blank.gif';
+			document.pogFrm.imgimg.src='http://www.zoovy.com/images/blank.gif';
 			}
 		}
 	}
@@ -156,9 +143,9 @@ function imglib(imgname,height,width,bgcolor,ssl,ext) {
 	}
 
 function dropItem() {
-	var i = document.thisFrm.opts.selectedIndex;
+	var i = document.pogFrm.opts.selectedIndex;
 	if (i < 0) { alert("Please select an option to remove!"); return; }
-	document.thisFrm.opts.options[i] = null;
+	document.pogFrm.opts.options[i] = null;
 	}
 
 
@@ -186,14 +173,14 @@ function setorder(list,field) {	// copy ordered options to the hidden field
 	var i = 0;
 
 
-	if (document.thisFrm.TYPE.value == 'text') { return true; }
-	if (document.thisFrm.TYPE.value == 'assembly') { return true; }
-	if (document.thisFrm.TYPE.value == 'textarea') { return true; }
-	if (document.thisFrm.TYPE.value == 'readonly') { return true; }
-	if (document.thisFrm.TYPE.value == 'number') { return true; }
-	if (document.thisFrm.TYPE.value == 'biglist') { return true; }
-	if (document.thisFrm.TYPE.value == 'calendar') { return true; }
-	if (document.thisFrm.TYPE.value == 'hidden') { return true; }
+	if (document.pogFrm.TYPE.value == 'text') { return true; }
+	if (document.pogFrm.TYPE.value == 'assembly') { return true; }
+	if (document.pogFrm.TYPE.value == 'textarea') { return true; }
+	if (document.pogFrm.TYPE.value == 'readonly') { return true; }
+	if (document.pogFrm.TYPE.value == 'number') { return true; }
+	if (document.pogFrm.TYPE.value == 'biglist') { return true; }
+	if (document.pogFrm.TYPE.value == 'calendar') { return true; }
+	if (document.pogFrm.TYPE.value == 'hidden') { return true; }
 	
 	if (list.length<=0) { return true; }
 
@@ -209,8 +196,7 @@ function setorder(list,field) {	// copy ordered options to the hidden field
 // END LIST ORDERING CODE
 //-->
 </script>
-</head>
-<body>
+
 <!-- MSGS -->
 
 <center>
@@ -233,7 +219,7 @@ function setorder(list,field) {	// copy ordered options to the hidden field
 	<td colspan="3">
 	
 
-<form method="post" name="thisFrm" action="index.cgi" onSubmit="setorder(document.thisFrm.opts,document.thisFrm.listorder)">
+<form id="pogFrm" method="post" name="pogFrm" action="index.cgi" onSubmit="setorder(document.pogFrm.opts,document.pogFrm.listorder)">
 <input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
 <input type="hidden" name="listorder" value="">
 <input type="hidden" name="VERB" value="">
@@ -367,7 +353,7 @@ of HTML or javascript.
 			<!-- IMAGE_MODIFIER -->
 			RTF/HTML/Wiki Detail Text: <br>
 			<textarea cols="40" rows=3 name="html"></textarea>
-			<input type="button" class="button" value=" Add/Update " onClick="addItem();">
+			<button class="button" onClick="addItem(); return false;">Add/Update</button>
 			<br>
 			<font size='1'>HINT: modifiers must include a +/- to add/subtract from the base price.
 Omitting the +/- will cause the product option to set the base price rather than modify it.</font>
@@ -377,11 +363,11 @@ Omitting the +/- will cause the product option to set the base price rather than
 			<br>
 			<br>
 
-      <input type="button" class="button" value="  Move Up   "
-             onclick="move(document.thisFrm.opts,-1)">
+      <button class="button" 
+             onclick="move(document.pogFrm.opts,-1); return false;">Move Up</button>
       <br>
-      <input type="button" class="button" value="Move Down"
-             onclick="move(document.thisFrm.opts,1)">
+      <button class="button" 
+             onclick="move(document.pogFrm.opts,1); return false;">Move Down</button>
       <br>
 		</td>
 	</tr>
@@ -425,13 +411,12 @@ If "Snacks" is selected the options would be "Chips", "Pretzels", "Doughnuts".
 	<tr>
 		<td colspan='2'>
 <center>
-	<input type="button" class="button" value="  Save Group " onClick="
-	document.thisFrm.VERB.value='SAVEPOG'; 
-	setorder(document.thisFrm.opts,document.thisFrm.listorder); 
-	document.thisFrm.submit();
-	">
-	<input type="button" class="button" value="  Delete Group  " onClick="document.thisFrm.VERB.value='KILLPOG'; document.thisFrm.submit();">	
-	<input type="button" class="button" value="  Exit  " onClick="document.thisFrm.VERB.value=''; document.thisFrm.submit();">
+	<button form="pogFrm" class="button" onClick="
+	document.pogFrm.VERB.value='SAVEPOG'; 
+	setorder(document.pogFrm.opts,document.pogFrm.listorder); 
+	">Save Group</button>
+	<button type="submit" class="button" onClick="document.pogFrm.VERB.value='KILLPOG';">Delete Group</button>
+	<button type="submit" class="button" onClick="document.pogFrm.VERB.value='';">Exit</button>
 </center>
 			
 		</td>
@@ -444,6 +429,5 @@ If "Snacks" is selected the options would be "Chips", "Pretzels", "Doughnuts".
 <!-- BEGIN_FOOTER -->
 </td></tr></table>
 </center>
-</body>
 
 

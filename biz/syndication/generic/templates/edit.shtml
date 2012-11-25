@@ -14,7 +14,7 @@
 <!-- ERROR -->
 <br>
 <br>
-<form name="thisFrm" id="thisFrm" action="<!-- PATH -->/index.cgi" method="post">
+<form name="thisFrm" id="thisFrm" action="<!-- PATH -->" method="post">
 <input type="hidden" id="VERB" name="VERB" value="SAVE">
 <input type="hidden" id="PROFILE" name="PROFILE" value="<!-- PROFILE -->">
 
@@ -26,7 +26,7 @@
 	<tr>
 		<td valign=top><b><!-- MARKETPLACE --> FTP Filename:</b></td>
 		<td valign=top>
-		<a target="_new" href="<!-- VIEW_URL -->"><!-- VIEW_URL --></a>
+		<a href="#" onClick="jQuery('#setupContent').empty(); navigateTo('<!-- VIEW_URL -->'); return false;">View File</a>
 		<div class="hint">NOTE: the URL above requires authentication, it will not work if given to <!-- MARKETPLACE --> (you must use their FTP server)</div>
 		</td>
 	</tr>
@@ -55,16 +55,15 @@ These settings *MUST* match the settings in your <!-- MARKETPLACE --> account.
 </table>
 <br>
 <center>
-<button class="button" 
-	onClick="thisFrm.VERB.value='SAVE-AND-PUBLISH'; thisFrm.submit();">Publish</button>
+<button class="button"  type="submit"
+	onClick="thisFrm.VERB.value='SAVE-AND-PUBLISH';">Publish</button>
 &nbsp;
 
-<button class="button" 
-	onClick="thisFrm.VERB.value='SAVE'; thisFrm.submit();">Save</button>
+<button class="button" type="submit"
+	onClick="thisFrm.VERB.value='SAVE';">Save</button>
 &nbsp;
-<button class="button" 
-	onClick="thisFrm.VERB.value='DELETE'; thisFrm.submit();">Delete</button>
-
+<button class="button" type="submit"
+	onClick="thisFrm.VERB.value='DELETE';">Delete</button>
 </center>
 <br>
 

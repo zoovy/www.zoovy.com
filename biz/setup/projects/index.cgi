@@ -203,20 +203,36 @@ if ($VERB eq 'PROJECT-EDIT') {
 ##
 
 if ($VERB eq 'PROJECT-ADD-SAVE') {
-	my $title = $ZOOVY::cgiv->{'title'};
+	my $TITLE = $ZOOVY::cgiv->{'title'};
+
 
 	my $ERROR = undef;	
 	my $REPO = $ZOOVY::cgiv->{'repo'};
 	if ($REPO ne '') {
-		if ($REPO !~ /^http\:/) { $ERROR = "ERROR|REPO must be http:"; }
-		if ($REPO !~ /^http\:\/\/[a-z0-9A-Z\-\_\:\/\.]+$/) { $ERROR = "ERROR|REPO contains prohibited characters"; }
+		if ($REPO !~ /^http\:/) { $ERROR = "ERROR|+REPO must be http:"; }
+		if ($REPO !~ /^http\:\/\/[a-z0-9A-Z\-\_\:\/\.]+$/) { $ERROR = "ERROR|+REPO contains prohibited characters"; }
+		}
+
+	my $domain = ($ZOOVY::cgiv->{'domain'})?1:0;
+	my $TYPE = $ZOOVY::cgiv->{'type'};
+	if ($TYPE eq '') {
+		$ERROR = "ERROR|+PROJECT TYPE is required";
+		}
+
+	if ($domain) {
+		if ($TYPE eq 'DSS') { $ERROR = "ERROR|+DSS Projects do not require a domain"; }
+		}
+
+	if ($TITLE eq '') {
+		$ERROR = "ERROR|+TITLE is required";
 		}
 
 	my $UUID = Data::GUID->new()->as_string();
 	$UUID = substr($UUID,0,32); ## restrict to 32 characters for db length
+	if ($TYPE eq 'DSS') {	$UUID = "dss"; }
 
 	if (defined $ERROR) {
-		push @MSGS, "ERROR|$ERROR";
+		push @MSGS, "$ERROR";
 		}
 	elsif (scalar(@MSGS)==0) {	
 		if ($REPO ne '') {
@@ -228,7 +244,7 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 				push @MSGS, "SUCCESS|REPO was cloned";
 				}
 			else {
-				$ERROR = "REPO could not be created, please try again";
+				push @MSGS, $ERROR = "ERROR|+REPO could not be created, please try again";
 				}
 			}
 		else {
@@ -236,21 +252,36 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 			}
 		}
 
+
 	if (not defined $ERROR) {
-		if ($title eq '') { $title = "Untitled Project ".&ZTOOLKIT::pretty_date(time()); }
+		if ($TITLE eq '') { $TITLE = "Untitled Project ".&ZTOOLKIT::pretty_date(time()); }
 		my ($pstmt) = &DBINFO::insert($udbh,'PROJECTS',{
 			MID=>&ZOOVY::resolve_mid($USERNAME),
 			USERNAME=>$USERNAME,
-			TITLE=>$title,
+			TITLE=>$TITLE,
 			UUID=>"$UUID",
 			SECRET=>'secret',
 			GITHUB_REPO=>$REPO,
-			TYPE=>'APP',
+			TYPE=>$TYPE,
 			},sql=>1);
 		print STDERR $pstmt."\n";
 		$udbh->do($pstmt);
 		$VERB = '';
+
+		if ($domain) {
+			my %options = ();
+			$options{'WWW_HOST_TYPE'} = $TYPE;
+			$options{'%WWW_CONFIG'} = { 'PROJECT'=>$UUID };
+			$options{'M_HOST_TYPE'} = $TYPE;
+			$options{'%M_CONFIG'} = { 'PROJECT'=>$UUID };
+			$options{'APP_HOST_TYPE'} = $TYPE;
+			$options{'%APP_CONFIG'} = { 'PROJECT'=>$UUID };			
+			require DOMAIN::POOL;
+			my ($DOMAINNAME) = &DOMAIN::POOL::reserve($USERNAME,$PRT,%options);
+			push @MSGS, "SUCCESS|+DOMAIN '$DOMAINNAME' was reserved for project $UUID";
+			}
 		}
+
 
 	if ($ERROR) {
 		$VERB = 'PROJECT-ADD';
@@ -288,8 +319,8 @@ if ($VERB eq '') {
 				}
 
 			$c .= "<tr>
-<td><a href='index.cgi?VERB=PROJECT-EDIT&ID=$row->{'ID'}'>[EDIT]</a></td>
-<td><a href='index.cgi?VERB=PROJECT-DELETE&ID=$row->{'ID'}'>[DELETE]</a></td>
+<td><a href='/biz/setup/projects/index.cgi?VERB=PROJECT-EDIT&ID=$row->{'ID'}'>[EDIT]</a></td>
+<td><a href='/biz/setup/projects/index.cgi?VERB=PROJECT-DELETE&ID=$row->{'ID'}'>[DELETE]</a></td>
 <td>$row->{'ID'}</td>
 <td>$row->{'TITLE'}</td>
 <td>$row->{'UUID'}</td>
@@ -305,9 +336,9 @@ if ($VERB eq '') {
 
 
 my @TABS = ();
-push @TABS, { name=>'Projects', link=>'/biz/setup/projects', selected=>($VERB eq '')?1:0 };
+push @TABS, { name=>'Projects', link=>'/biz/setup/projects/index.cgi', selected=>($VERB eq '')?1:0 };
 #push @TABS, { name=>'Browse Samples', link=>'/biz/setup/projects?VERB=PROJECT-BROWSE', selected=>($VERB eq 'PROJECT-BROWSE')?1:0 };
-push @TABS, { name=>'Add New', link=>'/biz/setup/projects?VERB=PROJECT-ADD', selected=>($VERB eq 'PROJECT-ADD')?1:0 };
+push @TABS, { name=>'Add New', link=>'/biz/setup/projects/index.cgi?VERB=PROJECT-ADD', selected=>($VERB eq 'PROJECT-ADD')?1:0 };
 
 
 

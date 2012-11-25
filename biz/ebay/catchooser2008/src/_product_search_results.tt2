@@ -18,6 +18,11 @@
         <br/>
       </div>
       <form method="POST" action="/biz/ebay/catchooser2008/index.cgi/get_product_selling_pages">
+      <input type="hidden" name="_userid" value="[% userid %]">
+      <input type="hidden" name="_authtoken" value="[% authtoken %]">
+      <input type="hidden" name="_deviceid" value="[% deviceid %]">
+      <input type="hidden" name="_domain" value="[% domain %]">
+
         <input type="hidden" name="product_id" value="[% product.id %]" />
         <input type="hidden" name="attribute_set_id" value="[% attribute_set_id %]" />
         <input type="hidden" name="id" value="[% selected_category.id %]" />
@@ -27,5 +32,5 @@
     <hr>
   [% counter = counter + 1 %]
   [% END -%]
-  <p>Or simply continue with <a class="describe" href="/biz/ebay/catchooser2008/index.cgi/describe_item?id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>
+  <p>Or simply continue with <a class="describe" href="/biz/ebay/catchooser2008/index.cgi/describe_item?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]&id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>
 [% END %]

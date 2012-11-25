@@ -3,7 +3,7 @@
 <center>
 <table width=80%><tr><Td>
 <h1>Configure Inventory</h1>
-<form name="thisFrm" method="POST" action="index.cgi">
+<form name="thisFrm" method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="UPDATE-API-INVENTORY">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table>

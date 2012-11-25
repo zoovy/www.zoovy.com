@@ -2,6 +2,7 @@
 
 no warnings 'once'; # Keep perl -w from bitching about variables that are only used once.
 
+use Data::Dumper;
 use lib "/httpd/modules";
 require DBINFO;
 require GTOOLS;
@@ -14,7 +15,7 @@ require PRODUCT;
 use strict;
 
 my @MSGS = ();
-
+# push @MSGS, "WARNING|+11/19/2012 - we are currently working on this utility. Please use desktop order manager temporarily. Anticipated resolution 9pm.";
 
 require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_O&4');
@@ -27,8 +28,6 @@ if ($MID<=0) { exit; }
 #if ($USERNAME eq '') { exit; }
 # used to fix fucked up js location rewrite
 $GTOOLS::TAG{'<!-- TIME -->'} = time();
-
-my $a = "";   # this is used throughout the program as scratch
 
 my $VERB = defined($ZOOVY::cgiv->{"VERB"}) ? $ZOOVY::cgiv->{"VERB"} : '';
 $VERB = uc($VERB);
@@ -47,14 +46,317 @@ if ($OID eq '') {
 my $webdbref = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 my $gref = &ZWEBSITE::fetch_globalref($USERNAME);
 
-
-
 my ($O2) = CART2->new_from_oid($USERNAME,$OID);
 my $stuff2 = $O2->stuff2();
 my %oref = ();
 tie %oref, 'CART2', 'CART2'=>$O2;
+my $template_file = 'edit.shtml';
 
-my $xml = $O2->as_xml(220);
+my @BC = ();
+push @BC, { name=>"Orders", link=>"/biz/orders/index.cgi" };
+push @BC, { name=>sprintf("[ %s ]",$O2->pool()), link=>sprintf("/biz/orders/index.cgi?VERB=SHOW:%s",$O2->pool()) };
+push @BC, { name=>$O2->oid(), link=>"/biz/orders/edit.cgi?OID=".$O2->oid() };
+
+
+print STDERR "VERB: $VERB\n";
+
+if ($VERB eq 'SET-TAX') {		
+	$oref{'our/tax_rate'} = sprintf("%0.3f",$ZOOVY::cgiv->{'tax-rate'});
+	$oref{'sum/tax_rate_state'} =  $oref{'our/tax_rate'};
+	$oref{'sum/tax_rate_city'} = 0;
+	$oref{'sum/tax_rate_region'} = 0;
+	$oref{'sum/tax_rate_zone'} = 0;
+	my $taxrate = ($ZOOVY::cgiv->{'tax-rate'}/100);
+	$oref{'sum/items_taxdue'} = sprintf("%.2f", int($oref{'sum/items_taxable'}*100) * $taxrate / 100 );
+
+	print STDERR Dumper($ZOOVY::cgiv,\%oref);
+	die();
+
+	$VERB = 'SAVE';
+	}
+
+if ($VERB eq 'SET-SHIPPING') {
+	my $CARRIER = '';
+	my $TOTAL = '';
+	#if ($ZOOVY::cgiv->{'SHIPPING'} eq "") {
+   #   # this means they want to use CUSTOM
+   #   $CARRIER = $ZOOVY::cgiv->{'CUSTOM_SHIP_TYPE'};
+   #   $TOTAL = $ZOOVY::cgiv->{'CUSTOM_SHIP_AMOUNT'};
+	#	} 
+	#else {
+	#	# this means they want to use CALC 
+	#	($TOTAL,$CARRIER) = split(',',$ZOOVY::cgiv->{'SHIPPING'},2);
+	#	}
+	$O2->in_set("sum/shp_method",$ZOOVY::cgiv->{'sum/shp_method'});
+	$O2->in_set("sum/shp_total",$ZOOVY::cgiv->{'sum/shp_total'});
+	$O2->add_history("Updated shipping",undef,0,$LU->login());
+	$LU->log('ORDER.EDIT.SHIP',"Updated shipping for order $OID","SAVE");
+	$VERB = 'SAVE';
+	}
+
+if ($VERB eq 'ADD-SKU') {
+	$VERB = 'SAVE';	
+
+	my $SKU = $ZOOVY::cgiv->{'add-sku'};
+	my $QTY = $ZOOVY::cgiv->{'add-qty'};
+	$QTY =~ s/^[^\d]+$//g;
+	$QTY = int($QTY);
+	my $PRICE = $ZOOVY::cgi->{'add-price'};
+	my $VALID = $ZOOVY::cgiv->{'add-valid'};
+
+	$SKU =~ s/[^A-Z0-9\_\-\:\/\*\#\@\%]+/_/gs;
+
+	if ($SKU eq '') {
+		push @MSGS, "ERROR|+SKU is required";
+		}
+
+	my $P = undef;
+	if (substr($SKU,0,1) eq '%') {
+		$stuff2->promo_cram($SKU,$QTY,$PRICE,"New Promo Item");
+		push @MSGS, "SUCCESS|+Added promotional item '$SKU'";
+		}
+	else {
+		($P) = PRODUCT->new($USERNAME,$SKU);
+		if ((not defined $P) && ($VALID)) {
+			push @MSGS, "ERROR|+PRODUCT could not be located.";
+			$P = undef;
+			}
+		}
+
+	if (scalar(grep(/^ERROR\|/,@MSGS))>0) {
+		## we already have errors.
+		}
+	elsif (defined $P) {
+		## new item being legacy_crammed into stuff object
+
+		my ($pid,$claim,$invopts,$noinvopts,$virtual) = &PRODUCT::stid_to_pid($SKU);
+		# my $optionstr = (($invopts)?":$invopts":'').(($noinvopts)?"/$noinvopts":'');
+		if ($QTY eq '') { $QTY = 1; }
+
+		my $variations = &STUFF2::variation_suggestions_to_selections( $P->suggest_variations('stid'=>$SKU) );
+		my ($item,$lm) = $stuff2->cram($pid,$QTY,$variations,'force_qty'=>$QTY);
+		foreach my $msg (@{$lm->msgs()}) {
+			my ($ref) = LISTING::MSGS::msg_to_disposition($msg);
+			push @MSGS, "$ref->{'_'}|$ref->{'+'}";
+			}
+		if (scalar(@MSGS)==0) {
+			push @MSGS, "ERROR|+no messages returned from cram";
+			}
+		}
+	elsif ($VALID) {
+		push @MSGS, "ERROR|+Cannot add invalid SKU";
+		}
+	else {
+		push @MSGS, "SUCCESS|+Added basic (non-inventory) item '$SKU'";
+		$stuff2->basic_cram($SKU,$QTY,$PRICE,"New Item");
+		}
+
+	print STDERR Dumper(\@MSGS);
+
+	$VERB = 'SAVE';
+	}
+
+if ($VERB eq 'SAVE') {
+	$oref{'ship/firstname'} = $ZOOVY::cgiv->{'ship_firstname'};
+	$oref{'ship/lastname'} = $ZOOVY::cgiv->{'ship_lastname'};
+	$oref{'ship/company'} = $ZOOVY::cgiv->{'ship_company'};
+	$oref{'ship/address1'} = $ZOOVY::cgiv->{'ship_address1'};
+	$oref{'ship/address2'} = $ZOOVY::cgiv->{'ship_address2'};
+	$oref{'ship/city'} = $ZOOVY::cgiv->{'ship_city'};
+	$oref{'ship/region'} = $ZOOVY::cgiv->{'ship/region'};
+	$oref{'ship/postal'} = $ZOOVY::cgiv->{'ship/postal'};
+	$oref{'ship/countrycode'} = $ZOOVY::cgiv->{'ship_country'};
+
+	$oref{'ship/phone'} = $ZOOVY::cgiv->{'ship_phone'};
+	$oref{'ship/email'} = $ZOOVY::cgiv->{'ship_email'};
+	# if ($oref{'bill/firstname'} eq $oref{'bill/lastname'}) { ($oref{'bill/firstname'},$oref{'bill/lastname'}) = split(' ',$ZOOVY::cgiv->{'bill_fullname'},2); }
+	$oref{'bill/firstname'} = $ZOOVY::cgiv->{'bill_firstname'};
+	$oref{'bill/lastname'} = $ZOOVY::cgiv->{'bill_lastname'};
+
+	$oref{'bill/company'} = $ZOOVY::cgiv->{'bill_company'};
+	$oref{'bill/address1'} = $ZOOVY::cgiv->{'bill_address1'};
+	$oref{'bill/address2'} = $ZOOVY::cgiv->{'bill_address2'};
+	$oref{'bill/city'} = $ZOOVY::cgiv->{'bill_city'};
+	$oref{'bill/region'} = $ZOOVY::cgiv->{'bill/region'};
+	$oref{'bill/postal'} = $ZOOVY::cgiv->{'bill/postal'};
+	$oref{'bill/countrycode'} = $ZOOVY::cgiv->{'bill_country'};
+	$oref{'bill/phone'} = $ZOOVY::cgiv->{'bill_phone'};
+	$oref{'bill/email'} = $ZOOVY::cgiv->{'bill_email'};
+
+	$oref{'sum/hnd_total'} = $ZOOVY::cgiv->{'hnd_total'};
+	$oref{'sum/spc_total'} = $ZOOVY::cgiv->{'spc_total'};
+	$oref{'sum/ins_total'} = $ZOOVY::cgiv->{'ins_total'};
+
+	## 
+	## the following block of code  assumes $contentref has been populated with 
+	## the contents of the order (which is saved on disk) - we will attempt to compare that with the
+	## the new contents and adjust inventory appropriately.
+	##
+
+	#my $stuff2 = $O2->stuff2();
+	#my %INVDIFF = ();
+	#foreach my $x (0..$ZOOVY::cgiv->{'KEYCOUNT'}) {
+	#	}
+
+	# use Data::Dumper; print STDERR Dumper($stuff);
+	#&INVENTORY::checkout_cart_stuff2($USERNAME, $stuff2, $O2->oid());
+	
+	my $stuff2 = $O2->stuff2();
+	my $r = 0;
+	my $html = '';
+	my $i = scalar(@{$O2->stuff2()->items()})-1;
+	my %INVENTORY = ();
+	foreach my $i (0..$i) {
+		my $stid = $ZOOVY::cgiv->{"stid.$i"};
+		print STDERR "[$i] STID: $stid\n";
+		my $item = $O2->stuff2()->item('stid'=>$stid);
+		print STDERR Dumper($item);
+		$item->{'price'} = $ZOOVY::cgiv->{"price.$i"};
+		my $qty_was = $item->{'qty'};
+		$item->{'qty'} = $ZOOVY::cgiv->{"qty.$i"};
+		if ($item->{'qty'} != $qty_was) {
+			my $diff = $item->{'qty'} - $qty_was;
+			$item->{'inv_diff'} = 0-$diff;
+			push @MSGS, "SUCCESS|+Changed $stid inventory ".(($diff>0)?"+$diff":"$diff");
+			}
+		else {
+			$item->{'inv_diff'} = 0;
+			}
+
+		$item->{'prod_name'} = $ZOOVY::cgiv->{"text.$i"};
+		$item->{'description'} = $ZOOVY::cgiv->{"text.$i"};
+		$item->{'taxable'} = $ZOOVY::cgiv->{"tax.$i"};		
+		}
+	&INVENTORY::checkout_cart_stuff2($USERNAME, $O2->stuff2(), $O2->oid());
+	$O2->order_save();
+	}
+
+
+## dump all order properties
+foreach my $group (@CART2::VALID_GROUPS) {
+	my $group = $O2->{"%$group"};
+	next if (not defined $group); 
+	foreach my $k (keys %{$group}) {
+		$GTOOLS::TAG{"<!-- $group\_$k -->"} = &ZOOVY::incode($group->{$k});
+		$GTOOLS::TAG{uc("<!-- $k -->")} =  &ZOOVY::incode($group->{$k});
+		}
+	}
+
+
+# $GTOOLS::TAG{"<!-- SHIP_NAME -->"} = ($oref{"ship/fullname"})?($oref{"ship/fullname"}):($oref{"ship/firstname"}." ".$oref{"ship/lastname"});
+$GTOOLS::TAG{'<!-- SHIP_FIRSTNAME -->'} = ($oref{'ship/firstname'})?($oref{"ship/firstname"}.''):'';
+$GTOOLS::TAG{'<!-- SHIP_MOIDDLENAME -->'} = ($oref{'ship/middlename'})?($oref{"ship/middlename"}.''):'';
+$GTOOLS::TAG{'<!-- SHIP_LASTNAME -->'} = ($oref{'ship/lastname'})?($oref{"ship/lastname"}.''):'';
+$GTOOLS::TAG{"<!-- SHIP_COMPANY -->"} = ($oref{"ship/company"})?($oref{"ship/company"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_ADDRESS1 -->"} = ($oref{"ship/address1"})?($oref{"ship/address1"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_ADDRESS2 -->"} = ($oref{"ship/address2"})?($oref{"ship/address2"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_CITY -->"} = ($oref{"ship/city"})?($oref{"ship/city"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_COUNTRY -->"} = ($oref{"ship/countrycode"})?($oref{"ship/countrycode"}):"";
+$GTOOLS::TAG{"<!-- SHIP_POSTAL -->"} = ($oref{"ship/postal"})?($oref{"ship/postal"}):""; 
+$GTOOLS::TAG{"<!-- SHIP_REGION -->"} = ($oref{"ship/region"})?($oref{"ship/region"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_PHONE -->"} = ($oref{"ship/phone"})?($oref{"ship/phone"}.""):"";
+$GTOOLS::TAG{"<!-- SHIP_EMAIL -->"} = ($oref{"ship/email"});	
+
+$GTOOLS::TAG{'<!-- BILL_FIRSTNAME -->'} = ($oref{'bill/firstname'})?($oref{"bill/firstname"}.''):'';
+$GTOOLS::TAG{'<!-- BILL_MOIDDLENAME -->'} = ($oref{'bill/middlename'})?($oref{"bill/middlename"}.''):'';
+$GTOOLS::TAG{'<!-- BILL_LASTNAME -->'} = ($oref{'bill/lastname'})?($oref{"bill/lastname"}.''):'';
+$GTOOLS::TAG{"<!-- BILL_COMPANY -->"} = ($oref{"bill/company"})?($oref{"bill/company"}.""):"";
+$GTOOLS::TAG{"<!-- BILL_ADDRESS1 -->"} = ($oref{"bill/address1"})?($oref{"bill/address1"}.""):"";
+$GTOOLS::TAG{"<!-- BILL_ADDRESS2 -->"} = ($oref{"bill/address2"})?($oref{"bill/address2"}.""):"";
+$GTOOLS::TAG{"<!-- BILL_CITY -->"} = ($oref{"bill/city"})?($oref{"bill/city"}.""):"";
+$GTOOLS::TAG{'<!-- BILL_COUNTRY -->'} = ($oref{"bill/countrycode"})?($oref{"bill/countrycode"}):"";
+$GTOOLS::TAG{"<!-- BILL_REGION -->"} = ($oref{"bill/region"})?($oref{"bill/region"}.""):"";
+$GTOOLS::TAG{'<!-- BILL_POSTAL -->'} = ($oref{"bill/postal"})?($oref{"bill/postal"}):""; 
+$GTOOLS::TAG{"<!-- BILL_PHONE -->"} = ($oref{"bill/phone"})?($oref{"bill/phone"}."	"):"";
+$GTOOLS::TAG{"<!-- BILL_EMAIL -->"} = ($oref{"bill/email"});	
+
+$GTOOLS::TAG{'<!-- TAX_RATE -->'} = $oref{'our/tax_rate'};
+$GTOOLS::TAG{'<!-- TAX_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/tax_total'});
+
+my @stids = $O2->stuff2()->stids();
+my ($invref,$reserveref) = &INVENTORY::fetch_incrementals($USERNAME,\@stids,$gref);
+
+my $stuff2 = $O2->stuff2();
+my $r = 0;
+my $html = '';
+my $i = 0;
+foreach my $item (@{$O2->stuff2()->items()}) {	
+	my $line = '';
+	my $price = $item->{'price'};
+	my $qty = $item->{'qty'};
+	my $weight = $item->{'weight'};
+	my $description = $item->{'prod_name'};
+	if ($description eq '') { $description = $item->{'description'}; }
+	$description = &ZOOVY::incode($description);
+
+	my $tax = &ZOOVY::is_true($item->{'taxable'});
+
+	$r = ($r eq 'r0')?'r1':'r0';
+	my $extended = sprintf("\$%.2f",$price * $qty);
+	$weight =~ s/[^0-9\.#\-]//g;
+
+	$line .= qq~<tr class="$r">~;
+
+	## this stores a mapping to let us know what the sku was (not that it can change, but just in case)
+	$line .= "<td>";
+	$line .= qq~<input type='hidden' name='stid.$i' value='$item->{'stid'}'>~;
+	$line .= qq~$item->{'stid'}~;
+	$line .= "</td>";
+
+	$line .= qq~<td><input type='textbox' size='30' name='text.$i' value="$description"></td>~;
+	$line .= qq~<td><center><input type='textbox' size='3' value='$qty' name="qty.$i"></center></td>~;
+
+	my ($invqty) = $invref->{ $item->{'sku'} };		
+	my ($rsvqty) = $reserveref->{ $item->{'sku'} };		
+
+	if ($invqty eq '') { $invqty = '*'; }
+	if ($rsvqty eq '') { $rsvqty = '*'; }
+	$line .= qq~<td><center>$invqty / $rsvqty</center></td>~;
+	
+	$line .= qq~<td nowrap><center><b>\$</b><input type='textbox' size='7' value='$price' name="price.$i"></center></td>~;
+	$line .= qq~<td><center><select name='tax.$i'>~;
+
+	$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'selected':'')." value='1'>Yes</option>";
+	$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'':'selected')." value='0'>No</option>"; 
+	$line .= qq~</select></td>~;
+
+	$line .= qq~<td><center><input type='textbox' size='5' value='$weight' name="weight.$i"></center></td>~;
+	$line .= qq~<td><input type='textbox' size='10' value='$extended' name="extended.$i"></td>~;
+
+	$line .= "</tr>";
+
+	## is this is a regular product??
+	if ($item->{'is_basic'} || $item->{'is_promo'} || (substr($item->{'stid'},0,1) eq '%')) {
+		$GTOOLS::TAG{"<!-- PROMOS -->"} .= $line;
+		}
+	else {
+		$GTOOLS::TAG{"<!-- ITEMS -->"} .= $line;
+		}
+	$i++;
+	}
+
+
+
+&GTOOLS::output(jquery=>1,'msgs'=>\@MSGS,'bc'=>\@BC,file=>$template_file,header=>1,'headjs'=>qq~
+<style>
+.table { background:#333; }
+.table ul { float:left; margin:0; padding:0; border:1px solid #C9C9C9; }
+.table ul li { list-style:none; padding:5px 10px; }
+.table ul li.title { font-weight:bold; background:#333; color:#fff; }
+.table ul li.even { background:#fff }
+.table ul li.odd { background:#FFFFE6 }
+</style>
+~);
+
+
+
+
+
+
+
+
+
+__DATA__
 
 my $template_file = '';
 
@@ -153,23 +455,6 @@ if ($VERB eq "HIT-SAVE-SHIPPING" && $ZOOVY::cgiv->{'POPUP'})
 
 # we still need to do the actual save too!
 if ($VERB eq "HIT-SAVE-SHIPPING") {
-	my $CARRIER = '';
-	my $TOTAL = '';
-	if ($ZOOVY::cgiv->{'SHIPPING'} eq "") {
-      # this means they want to use CUSTOM
-      $CARRIER = $ZOOVY::cgiv->{'CUSTOM_SHIP_TYPE'};
-      $TOTAL = $ZOOVY::cgiv->{'CUSTOM_SHIP_AMOUNT'};
-		} 
-	else {
-		# this means they want to use CALC 
-		($TOTAL,$CARRIER) = split(',',$ZOOVY::cgiv->{'SHIPPING'},2);
-		}
-	$O2->in_set("sum/shp_method",$CARRIER);
-	$O2->in_set("sum/shp_total",$TOTAL);
-
-	$O2->add_history("Updated shipping",undef,0,$LU->login());
-	$LU->log('ORDER.EDIT.SHIP',"Updated shipping for order $OID","SAVE");
-	$O2->order_save();
 	}
 ############### END OF SHIPPING MODIFICATION POPUP/HANDOFF ######################
 
@@ -188,122 +473,6 @@ sub is_us {
 
 if ($VERB eq "SAVE") {
 	require INVENTORY;
-	$oref{'ship/firstname'} = $ZOOVY::cgiv->{'ship_firstname'};
-	$oref{'ship/lastname'} = $ZOOVY::cgiv->{'ship_lastname'};
-	$oref{'ship/company'} = $ZOOVY::cgiv->{'ship_company'};
-	$oref{'ship/address1'} = $ZOOVY::cgiv->{'ship_address1'};
-	$oref{'ship/address2'} = $ZOOVY::cgiv->{'ship_address2'};
-	$oref{'ship/city'} = $ZOOVY::cgiv->{'ship_city'};
-	$oref{'ship/region'} = $ZOOVY::cgiv->{'ship/region'};
-	$oref{'ship/postal'} = $ZOOVY::cgiv->{'ship/postal'};
-	$oref{'ship/countrycode'} = $ZOOVY::cgiv->{'ship_country'};
-
-	$oref{'ship/phone'} = $ZOOVY::cgiv->{'ship_phone'};
-	$oref{'ship/email'} = $ZOOVY::cgiv->{'ship_email'};
-	# if ($oref{'bill/firstname'} eq $oref{'bill/lastname'}) { ($oref{'bill/firstname'},$oref{'bill/lastname'}) = split(' ',$ZOOVY::cgiv->{'bill_fullname'},2); }
-	$oref{'bill/firstname'} = $ZOOVY::cgiv->{'bill_firstname'};
-	$oref{'bill/lastname'} = $ZOOVY::cgiv->{'bill_lastname'};
-
-	$oref{'bill/company'} = $ZOOVY::cgiv->{'bill_company'};
-	$oref{'bill/address1'} = $ZOOVY::cgiv->{'bill_address1'};
-	$oref{'bill/address2'} = $ZOOVY::cgiv->{'bill_address2'};
-	$oref{'bill/city'} = $ZOOVY::cgiv->{'bill_city'};
-	$oref{'bill/region'} = $ZOOVY::cgiv->{'bill/region'};
-	$oref{'bill/postal'} = $ZOOVY::cgiv->{'bill/postal'};
-	$oref{'bill/countrycode'} = $ZOOVY::cgiv->{'bill_country'};
-	$oref{'bill/phone'} = $ZOOVY::cgiv->{'bill_phone'};
-	$oref{'bill/email'} = $ZOOVY::cgiv->{'bill_email'};
-
-	$oref{'sum/hnd_total'} = $ZOOVY::cgiv->{'hnd_total'};
-	$oref{'sum/spc_total'} = $ZOOVY::cgiv->{'spc_total'};
-	$oref{'sum/ins_total'} = $ZOOVY::cgiv->{'ins_total'};
-
-	## 
-	## the following block of code  assumes $contentref has been populated with 
-	## the contents of the order (which is saved on disk) - we will attempt to compare that with the
-	## the new contents and adjust inventory appropriately.
-	##
-
-	my $stuff2 = $O2->stuff2();
-	my %INVDIFF = ();
-	foreach my $x (0..$ZOOVY::cgiv->{'KEYCOUNT'}) {
-
-		my $STOID = uc($ZOOVY::cgiv->{"stid$x"});
-		$STOID =~ s/[^A-Z0-9\_\-\:\/\*\#\@\%]+/_/gs;
-
-		if ($STOID eq '') {
-			$STOID = $ZOOVY::cgiv->{"key$x"};
-			}
-		next if ($STOID eq '');
-	
-#		$STOID = uc($STOID);
-#		$STOID =~ s/[^A-Z0-9a-z_\-\#\:\/\*]+//gs;	# strip invalid (non-SKU) characters
-
-		my $QTY = $ZOOVY::cgiv->{"qty$x"};
-		$QTY =~ s/^[^\d]+$//g;
-		$QTY = int($QTY);
-
-		my $PRICE = $ZOOVY::cgiv->{"price$x"};
-		my $WEIGHT = $ZOOVY::cgiv->{"weight$x"};
-		my $TAX = $ZOOVY::cgiv->{"tax$x"};
-		my $WEIGHT = $ZOOVY::cgiv->{"weight$x"};
-		my $TEXT = $ZOOVY::cgiv->{"text$x"};
-
-		print STDERR "QTY: $QTY\n";
-
-		my ($P) = PRODUCT->new($USERNAME,$STOID);
-
-		my $item = $stuff2->item('stid'=>$STOID);
-		if (defined $item) {
-			## existing item: quantity/price change
-			## so if we reduce qty from 4 to 3 .. then we should end up with a +1
-			$item->{'inv_diff'} += ($item->{'qty'} - $QTY);
-			$item->{'qty'} = $QTY;
-			$item->{'price'} = $PRICE;
-			$item->{'weight'} = $WEIGHT;
-			$item->{'taxable'} = &ZOOVY::is_true($TAX);
-			$item->{'prod_name'} = $TEXT;
-			push @MSGS, "SUCCESS|Updated existing item '$STOID'";
-			}
-		elsif (substr($STOID,0,1) eq '%') {
-			$stuff2->promo_cram($STOID,$QTY,$PRICE,$TEXT);
-			push @MSGS, "SUCCESS|Added promotional item '$STOID'";
-			}
-		elsif (defined $P) {
-			## new item being legacy_crammed into stuff object
-
-			my ($pid,$claim,$invopts,$noinvopts,$virtual) = &PRODUCT::stid_to_pid($STOID);
-			# my $optionstr = (($invopts)?":$invopts":'').(($noinvopts)?"/$noinvopts":'');
-			if ($QTY eq '') { $QTY = 1; }
-
-			my $variations = &STUFF2::variation_suggestions_to_selections( $P->suggest_variations('stid'=>$STOID) );
-			my ($item,$lm) = $stuff2->cram($pid,$QTY,$variations,'force_qty'=>$QTY);
-			
-			#	inv_diff=>int(0-$QTY),
-			#	product=>$pid,
-			#	optionstr=>$optionstr,
-			#	price=>$PRICE,
-			#	qty=>$QTY,
-			#	# pogs=>$prodref->{'zoovy:pogs'},
-			#	# full_product=>$prodref,
-			#	weight=>$WEIGHT,
-			#	taxable=>$TAX,
-			#	prod_name=> $TEXT,
-			#	force_qty=>1,
-			#	},$oref{{'schedule'});
-			foreach my $msg (@{$lm->msgs()}) {
-				my ($ref) = LISTING::MSGS::msg_to_disposition($msg);
-				push @MSGS, "$ref->{'_'}|$ref->{'+'}";
-				}			
-			}
-		else {
-			push @MSGS, "SUCCESS|Added basic (non-inventory) item '$STOID'";
-			$stuff2->basic_cram($STOID,$QTY,$PRICE,$TEXT);
-			}
-		}
-
-	# use Data::Dumper; print STDERR Dumper($stuff);
-	&INVENTORY::checkout_cart_stuff2($USERNAME, $stuff2, $O2->oid());
 
 #	use Data::Dumper; print STDERR Dumper($stuff);
 
@@ -316,35 +485,6 @@ if ($VERB eq "SAVE") {
 
 if ($VERB eq "" || $VERB eq "EDIT") {
 
-	if (&is_us($oref{'ship/countrycode'})) { $oref{'ship/countrycode'} = ''; }
-	if (&is_us($oref{'bill/countrycode'})) { $oref{'bill/countrycode'} = ''; }
-
-	# $GTOOLS::TAG{"<!-- SHIP_NAME -->"} = ($oref{"ship/fullname"})?($oref{"ship/fullname"}):($oref{"ship/firstname"}." ".$oref{"ship/lastname"});
-	$GTOOLS::TAG{'<!-- SHIP_FIRSTNAME -->'} = ($oref{'ship/firstname'})?($oref{"ship/firstname"}.''):'';
-	$GTOOLS::TAG{'<!-- SHIP_MOIDDLENAME -->'} = ($oref{'ship/middlename'})?($oref{"ship/middlename"}.''):'';
-	$GTOOLS::TAG{'<!-- SHIP_LASTNAME -->'} = ($oref{'ship/lastname'})?($oref{"ship/lastname"}.''):'';
-	$GTOOLS::TAG{"<!-- SHIP_COMPANY -->"} = ($oref{"ship/company"})?($oref{"ship/company"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_ADDRESS1 -->"} = ($oref{"ship/address1"})?($oref{"ship/address1"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_ADDRESS2 -->"} = ($oref{"ship/address2"})?($oref{"ship/address2"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_CITY -->"} = ($oref{"ship/city"})?($oref{"ship/city"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_COUNTRY -->"} = ($oref{"ship/countrycode"})?($oref{"ship/countrycode"}):"";
-	$GTOOLS::TAG{"<!-- SHIP_POSTAL -->"} = ($oref{"ship/postal"})?($oref{"ship/postal"}):""; 
-	$GTOOLS::TAG{"<!-- SHIP_REGION -->"} = ($oref{"ship/region"})?($oref{"ship/region"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_PHONE -->"} = ($oref{"ship/phone"})?($oref{"ship/phone"}.""):"";
-	$GTOOLS::TAG{"<!-- SHIP_EMAIL -->"} = ($oref{"ship/email"});	
-
-	$GTOOLS::TAG{'<!-- BILL_FIRSTNAME -->'} = ($oref{'bill/firstname'})?($oref{"bill/firstname"}.''):'';
-	$GTOOLS::TAG{'<!-- BILL_MOIDDLENAME -->'} = ($oref{'bill/middlename'})?($oref{"bill/middlename"}.''):'';
-	$GTOOLS::TAG{'<!-- BILL_LASTNAME -->'} = ($oref{'bill/lastname'})?($oref{"bill/lastname"}.''):'';
-	$GTOOLS::TAG{"<!-- BILL_COMPANY -->"} = ($oref{"bill/company"})?($oref{"bill/company"}.""):"";
-	$GTOOLS::TAG{"<!-- BILL_ADDRESS1 -->"} = ($oref{"bill/address1"})?($oref{"bill/address1"}.""):"";
-	$GTOOLS::TAG{"<!-- BILL_ADDRESS2 -->"} = ($oref{"bill/address2"})?($oref{"bill/address2"}.""):"";
-	$GTOOLS::TAG{"<!-- BILL_CITY -->"} = ($oref{"bill/city"})?($oref{"bill/city"}.""):"";
-	$GTOOLS::TAG{'<!-- BILL_COUNTRY -->'} = ($oref{"bill/countrycode"})?($oref{"bill/countrycode"}):"";
-	$GTOOLS::TAG{"<!-- BILL_REGION -->"} = ($oref{"bill/region"})?($oref{"bill/region"}.""):"";
-	$GTOOLS::TAG{'<!-- BILL_POSTAL -->'} = ($oref{"bill/postal"})?($oref{"bill/postal"}):""; 
-	$GTOOLS::TAG{"<!-- BILL_PHONE -->"} = ($oref{"bill/phone"})?($oref{"bill/phone"}."	"):"";
-	$GTOOLS::TAG{"<!-- BILL_EMAIL -->"} = ($oref{"bill/email"});	
 
 	my $SHIPMETHOD = $oref{"sum/shp_method"};
 	my $shipping_tax = $oref{"sum/shp_tax"};
@@ -360,73 +500,8 @@ if ($VERB eq "" || $VERB eq "EDIT") {
 
 	my $BGCOLOR = '333333';
 	my $c = "";
-	my $counter = 0;
 	my $footer = '';
 
-	my @stids = $O2->stuff2()->stids();
-	my ($invref,$reserveref) = &INVENTORY::fetch_incrementals($USERNAME,\@stids,$gref);
-
-	my $stuff2 = $O2->stuff2();
-	my $r = 0;
-	my $html = '';
-	foreach my $item (@{$O2->stuff2()->items()}) {	
-		#my $sku = $item->{'sku'};
-		#my ($xtop,$xfoot) = &add_item($counter++, $item, $gref->{'inv_mode'}, $invref->{$sku}, $reserveref->{$sku});
-		#$footer .= $xfoot;
-		#$c .= $xtop;
-		my $line = '';
-		my $price = $item->{'price'};
-		my $qty = $item->{'qty'};
-		my $weight = $item->{'weight'};
-		my $description = $item->{'prod_name'};
-		if ($description eq '') { $description = $item->{'description'}; }
-		$description = &ZOOVY::incode($description);
-
-		my $tax = &ZOOVY::is_true($item->{'taxable'});
-
-		$r = ($r eq 'r0')?'r1':'r0';
-		my $extended = sprintf("\$%.2f",$price * $qty);
-		$weight =~ s/[^0-9\.#\-]//g;
-
-		$line .= qq~<tr class="$r">~;
-
-		## this stores a mapping to let us know what the sku was (not that it can change, but just in case)
-		$line .= "<td>";
-		$line .= qq~<input type='hidden' name='stid$counter' value='$item->{'stid'}'>~;
-		$line .= qq~$item->{'stid'}~;
-		$line .= "</td>";
-
-		$line .= qq~<td><input type='textbox' size='30' name='text$counter' value="$description"></td>~;
-		$line .= qq~<td><center><input type='textbox' size='3' value='$qty' name="qty$counter"></center></td>~;
-
-		my ($invqty) = $invref->{ $item->{'sku'} };		
-		my ($rsvqty) = $reserveref->{ $item->{'sku'} };		
-
-		if ($invqty eq '') { $invqty = '*'; }
-		if ($rsvqty eq '') { $rsvqty = '*'; }
-		$line .= qq~<td><center>$invqty / $rsvqty</center></td>~;
-	
-		$line .= qq~<td nowrap><center><b>\$</b><input type='textbox' size='7' value='$price' name="price$counter"></center></td>~;
-		$line .= qq~<td><center><select name='tax$counter'>~;
-
-		$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'selected':'')." value='1'>Yes</option>";
-		$line .= "<option ".(&ZOOVY::is_true($item->{'taxable'})?'':'selected')." value='0'>No</option>"; 
-
-		$line .= qq~</select></td>~;
-
-		$line .= qq~<td><center><input type='textbox' size='5' value='$weight' name="weight$counter"></center></td>~;
-		$line .= qq~<td><input type='textbox' size='10' value='$extended' name="extended$counter"></td>~;
-
-		$line .= "</tr>";
-
-		## is this is a regular product??
-		if ($item->{'is_basic'} || $item->{'is_promo'} || (substr($item->{'stid'},0,1) eq '%')) {
-			$GTOOLS::TAG{"<!-- PROMOS -->"} .= $line;
-			}
-		else {
-			$GTOOLS::TAG{"<!-- ITEMS -->"} .= $line;
-			}
-		}
 
 #	my ($xtop,$xfoot) = add_item($counter++, { stid=>'', prod_name=>'New Item' } ,$gref->{'inv_mode'},'?','?');
 #	$c .= $xtop;
@@ -450,8 +525,6 @@ if ($VERB eq "" || $VERB eq "EDIT") {
 	$GTOOLS::TAG{'<!-- SHP_METHOD -->'} = $oref{'sum/shp_method'};
 	$GTOOLS::TAG{'<!-- SHP_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/shp_total'});
 
-	$GTOOLS::TAG{'<!-- TAX_RATE -->'} = $oref{'our/tax_rate'};
-	$GTOOLS::TAG{'<!-- TAX_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/tax_total'});
 
 
 	$GTOOLS::TAG{'<!-- ORDER_TOTAL -->'} = sprintf("%0.2f",$oref{'sum/order_total'});

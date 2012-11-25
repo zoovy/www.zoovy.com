@@ -13,7 +13,7 @@
 </table>
 
 <center>
-<a href="/biz/syndication"><img border=0 src="/images/bizbuttons/exit.gif"></a>
+<button class="button" onClick="return navigateTo('/biz/syndication/index.cgi');">Exit</button>
 </center>
 
 </center>

@@ -11,7 +11,7 @@
 
 
 <br>
-New Items to be Ordered for <!-- MODE --> Supplier <!-- CODE -->:
+New Items to be Ordered for Supplier <!-- CODE -->:
 <table width="100%" class="zoovytable" cellspacing="1" cellpadding="2">
 <tr class="zoovytableheader">
 	<td></td>
@@ -27,7 +27,7 @@ New Items to be Ordered for <!-- MODE --> Supplier <!-- CODE -->:
 
 <br><br><br>
 
-Recent Orders Created for <!-- MODE --> Supplier <!-- CODE --> (last 300):
+Recent Orders Created for Supplier <!-- CODE --> (last 300):
 <table width="100%" class="zoovytable" cellspacing="1" cellpadding="2">
 <tr class="zoovytableheader">
 	<td>Action</td>

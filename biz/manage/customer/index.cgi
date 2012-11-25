@@ -1089,7 +1089,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		next if (not defined $O2);
 
 		$out .= "<tr bgcolor='".(($count%2==0)?'EEEEEE':'FFFFFF')."'>";
-		$out .= "<td class='order'><a target='_blank' href='https://www.zoovy.com/biz/orders/view.cgi?ID=".$O2->oid()."'>".$O2->oid()."</a></td>";
+		$out .= qq~<td class='order'><a href="#" onClick="jQuery('#ordersContent').empty(); navigateTo('/biz/orders/view.cgi?ID=~.$O2->oid().qq~');">~.$O2->oid().qq~</a></td>~;
 		$out .= "<td class='order'>".($O2->pool())."</td>";
 		$out .= "<td class='order'>".($O2->in_get('sum/order_total'))."</td>";
 		$out .= "<td class='order'>".($O2->payment_method())."</td>";

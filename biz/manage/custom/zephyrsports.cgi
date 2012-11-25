@@ -194,7 +194,7 @@ if ($VERB eq 'UPDATE' || $VERB eq '') {
    <td><input type="textbox" name="location" value="$location"></td>~;
 
 	
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "zephyrsports.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/custom/zephyrsports.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "DISPLAY";
 	
 
@@ -203,7 +203,7 @@ if ($VERB eq 'UPDATE' || $VERB eq '') {
 	}
 ## DISPLAY
 else {
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "zephyrsports.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/custom/zephyrsports.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "UPDATE";
 	}
 

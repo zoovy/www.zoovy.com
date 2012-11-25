@@ -11,16 +11,18 @@ use PAGE::BATCH;
 use Text::CSV_XS;
 
 my $csv = Text::CSV_XS->new({binary=>1});          # create a new object
+my $q = new CGI;
 
 require LUSER;
-my ($LU) = LUSER->authenticate(flags=>'_S&2');
+my %options = (); foreach my $param ($q->param()) { next if (substr($param,0,1) ne '_'); $options{$param} = $q->param($param); }
+my ($LU) = LUSER->authenticate(flags=>'_S&2',%options);
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
+
 #my $USERNAME = 'carpartsdiscount';
-my $q = new CGI;
 my $ACTION = $q->param('ACTION');
 
 print "Content-type: text/csv\n\n";

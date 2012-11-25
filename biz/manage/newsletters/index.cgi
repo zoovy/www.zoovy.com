@@ -12,6 +12,7 @@
 use strict;
 
 use Data::Dumper;
+use JSON::Syck;
 use lib "/httpd/modules";
 require GTOOLS;
 require ZOOVY;
@@ -177,14 +178,19 @@ if (($VERB eq 'CAMPAIGN-NEW') || ($VERB eq 'CAMPAIGN-EDIT')) {
 	if ($ID>0) {
 		my $PROFILE = '';
 		$CREF = &CUSTOMER::NEWSLETTER::fetch_campaign($USERNAME, $ID); 
+		
+		
 
 	   $GTOOLS::TAG{'<!-- ID -->'} = $ID;
 		$GTOOLS::TAG{'<!-- EDITOR -->'} = qq~
-
-		<iframe width=800 height=600 src="/biz/setup/builder/index.cgi?ACTION=INITEDIT&PG=\@CAMPAIGN:$ID&NS=$CREF->{'PROFILE'}&FORMAT=NEWSLETTER&FS=I&FL=$CREF->{'LAYOUT'}"></iframe>
-		<br>
-		
-		~;
+<button class="button" 
+	onClick="
+jQuery('#setupContent').empty(); 
+navigateTo('/biz/setup/builder/index.cgi?ACTION=INITEDIT&PG=\@CAMPAIGN:$ID&NS=$CREF->{'PROFILE'}&FORMAT=NEWSLETTER&FS=I&FL=$CREF->{'LAYOUT'}');
+return false;
+">
+	Edit</button>
+~;
 		}
 
    push @BC, { name=> 'Campaign' };
@@ -345,7 +351,7 @@ if ($VERB eq 'SEND_TEST_EMAIL') {
 	If you are fully satisfied with its layout and contents, press the APPROVE button. 
 	This will take to your final Step, which will which allow you to set the 'Send Date' for this mailing Campaign.
 	<br><br>
-	<a href=\"http://www.zoovy.com/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-APPROVE&ID=$ID&GUID=$GUID\">APPROVE</a><br><hr><br><br><br>\n\n
+	<a href=\"http://www.zoovy.com/biz/manage/newsletters/approve.cgi?VERB=CAMPAIGN-APPROVE&USERNAME=$USERNAME&ID=$ID&GUID=$GUID\">APPROVE</a><br><hr><br><br><br>\n\n
 	~;
 
 	my ($result,$warnings) = &CUSTOMER::NEWSLETTER::send_newsletter($CREF,$EMAIL,0,0,'Test Customer');
@@ -421,10 +427,12 @@ if (($VERB eq 'CAMPAIGN-GENERATE') || ($VERB eq "CAMPAIGN-PREVIEW")) {
 #	$CREF->{'OUTPUT_HTML'} = &CUSTOMER::NEWSLETTER::rewrite_links($CREF->{'OUTPUT_HTML'},"meta=NEWSLETTER&CPN=0&CPG=0");
 #	$CREF->{'OUTPUT_TXT'} = &SITE::EMAILS::htmlStrip($CREF->{'OUTPUT_HTML'});
 
-	$GTOOLS::JSON{'htmlcontent'} = $CREF->{'OUTPUT_HTML'};
-	if ($GTOOLS::JSON{'htmlcontent'} eq '') { $GTOOLS::JSON{'htmlcontent'} = 'ERROR - NO HTML PREVIEW'; }
-	$GTOOLS::JSON{'txtcontent'} = $CREF->{'OUTPUT_TXT'};
-	if ($GTOOLS::JSON{'txtcontent'} eq '') { $GTOOLS::JSON{'txtcontent'} = 'ERROR - NO TEXT PREVIEW'; }
+	$GTOOLS::TAG{'<!-- HTMLCONTENT -->'} = JSON::Syck::Dump($CREF->{'OUTPUT_HTML'});
+	$GTOOLS::TAG{'<!-- TXTCONTENT -->'} = JSON::Syck::Dump($CREF->{'OUTPUT_TXT'});
+#	$GTOOLS::JSON{'htmlcontent'} = $CREF->{'OUTPUT_HTML'};
+#	if ($GTOOLS::JSON{'htmlcontent'} eq '') { $GTOOLS::JSON{'htmlcontent'} = 'ERROR - NO HTML PREVIEW'; }
+#	$GTOOLS::JSON{'txtcontent'} = $CREF->{'OUTPUT_TXT'};
+#	if ($GTOOLS::JSON{'txtcontent'} eq '') { $GTOOLS::JSON{'txtcontent'} = 'ERROR - NO TEXT PREVIEW'; }
 
 	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
 
@@ -434,16 +442,16 @@ if (($VERB eq 'CAMPAIGN-GENERATE') || ($VERB eq "CAMPAIGN-PREVIEW")) {
 	$GTOOLS::TAG{'<!-- EMAIL -->'} = $EMAIL;
 
 
-	if ($LU->is_zoovy() || ($USERNAME eq 'brian')) {
-		$GTOOLS::TAG{'<!-- SUPPORT_APPROVE -->'} = qq~
-<form action="/biz/manage/newsletters/index.cgi">
-<input type="hidden" name="ID" value="$CREF->{'ID'}">
-<input type="hidden" name="VERB" value="CAMPAIGN-APPROVE">
-<input type="hidden" name="GUID" value="$CREF->{'PREVIEW_GUID'}">
-<input class="button" type="submit" value=" SUPPORT OVERRIDE/APPROVE: $CREF->{'PREVIEW_GUID'} ">
-<form>
-~;
-		}
+	#if ($LU->is_zoovy() || ($USERNAME eq 'brian')) {
+	#	$GTOOLS::TAG{'<!-- SUPPORT_APPROVE -->'} = qq~
+#<form action="/biz/manage/newsletters/index.cgi">
+#	<input type="hidden" name="ID" value="$CREF->{'ID'}">
+#	<input type="hidden" name="VERB" value="CAMPAIGN-APPROVE">
+#	<input type="hidden" name="GUID" value="$CREF->{'PREVIEW_GUID'}">
+#	<input class="button" type="submit" value=" PROCEED AFTER REVIEWING IN EMAIL ">
+#<form>
+#~;
+	#	}
 	}
 
 
@@ -510,9 +518,10 @@ if ($VERB eq "CAMPAIGN-APPROVE") {
 	print STDERR "TS: $ZOOVY::cgiv->{'TS'} TIMESTAMP: $CREF->{'TESTED'} USERNAME: $USERNAME ID: $ID\n";
 
 	## check if newsletter has already been approved
-	if ($CREF->{'PREVIEW_GUID'} ne $ZOOVY::cgiv->{'GUID'}){
-		push @MSGS, "ERROR|Sorry you must click the link on the latest version (please retry)";
-		$VERB = 'CAMPAIGN-PREVIEW';
+	if (0) {
+	#if ($CREF->{'PREVIEW_GUID'} ne $ZOOVY::cgiv->{'GUID'}){
+	#	push @MSGS, "ERROR|Sorry you must click the link on the latest version (please retry)";
+	#	$VERB = 'CAMPAIGN-PREVIEW';
 		}
 	## check if merchant is approving latest test mailing
 	else {
@@ -527,7 +536,7 @@ if ($VERB eq "CAMPAIGN-APPROVE") {
    	$c = "<select name=\"SEND_DATE\">$c</select>";
    	$GTOOLS::TAG{'<!-- SEND_DATE -->'} = $c;		
 
-   	$GTOOLS::TAG{'<!-- APPROVE_BUTTON -->'} = qq~<input type="submit" name="BUTTON" value="Approve" class="button" onClick="thisFrm.submit();">~;
+   	$GTOOLS::TAG{'<!-- APPROVE_BUTTON -->'} = qq~<button name="BUTTON" type="submit" class="button">Finish</button>~;
    	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
    	}
 	}

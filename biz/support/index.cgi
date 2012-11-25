@@ -1894,7 +1894,6 @@ if ($VERB eq 'CALLBACK') {
 	$GTOOLS::TAG{'<!-- PHONE1 -->'} = &ZOOVY::incode($phone1);
 	$GTOOLS::TAG{'<!-- CONTACT -->'} = &ZOOVY::incode($contact);
 	$GTOOLS::TAG{'<!-- NOTES -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'notes'});
-	$GTOOLS::TAG{'<!-- SUPPORT_TAB -->'} = &SUPPORT::do_header();
 	}
 
 

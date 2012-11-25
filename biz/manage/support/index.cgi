@@ -20,6 +20,7 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 if (index($FLAGS,'BASIC')==-1) { print "Location: /biz\n\n"; exit; }
 
+my @MSGS = ();
 my ($VERB) = $ZOOVY::cgiv->{'VERB'};
 
 $GTOOLS::TAG{'<!-- VERB -->'} = $VERB;
@@ -39,6 +40,16 @@ if ($VERB eq 'ADD-FAVORITE') {
 	require TOXML::UTIL;
 	&TOXML::UTIL::remember($USERNAME,$ZOOVY::cgiv->{'FORMAT'},$ZOOVY::cgiv->{'DOCID'},1);
 	$VERB = 'MORE';
+	}
+
+if ($VERB eq 'CREATE-UTILITY-BATCH') {
+	my ($bj) = BATCHJOB->new($USERNAME,0,
+		PRT=>$PRT,
+		EXEC=>'UTILITY',
+		VARS=>&ZTOOLKIT::buildparams($ZOOVY::cgiv,1),
+		'*LU'=>$LU,
+		);
+	push @MSGS, "SUCCESS|JOBTYPE: $ZOOVY::cgiv->{'APP'} JOBID: ".$bj->id();
 	}
 
 
@@ -459,5 +470,5 @@ push @TABS, { name=>"Logs", link=>"/biz/manage/support/index.cgi?VERB=LOGS",  se
 
 $GTOOLS::TAG{'<!-- GUID -->'} = &BATCHJOB::make_guid();
 
-&GTOOLS::output(tabs=>\@TABS,file=>$template_file,header=>1);
+&GTOOLS::output(msgs=>\@MSGS,tabs=>\@TABS,file=>$template_file,header=>1);
 

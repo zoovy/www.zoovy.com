@@ -1,47 +1,60 @@
 <!-- ORDER_TAB -->
 
-<form id="orderFrm" NAME="orderFrm" action="edit.cgi" method="POST">
-<input type="hidden" name="VERB" value="SAVE">
-<input type="hidden" name="OID" value="<!-- OID -->">
-<input type="hidden" name="@UPDATES" value="<!-- UPDATES -->">
+<script type="text/javascript">
+var myModal = undefined;
+</script>
 
-<div style="visibility: hidden">
+<form id="orderEditFrm" NAME="orderEditFrm" action="edit.cgi" method="POST">
+<input type="hidden" id="VERB" name="VERB" value="SAVE">
+<input type="hidden" id="OID" name="OID" value="<!-- OID -->">
+<input type="hidden" id="UPDATES" name="@UPDATES" value="<!-- UPDATES -->">
 
-<div id="additem-dialog" title="Add SKU">
-<form id="addItemFrm">
-SKU: <input type="textbox" name="sku"> 
+<div id="divs-hidden" class='displayNone'>
 
-<input type="button" value="Add" onClick="alert('hello, this should save');">
-</form>	
+<div id="dialogAddItem" title="Add SKU">
+SKU: <input form="orderEditFrm" type="textbox" name="add-sku"> <br>
+QTY: <input form="orderEditFrm" type="textbox" name="add-qty"><br>
+UNIT PRICE: <input form="orderEditFrm" type="textbox" name="add-price"><br>
+<input form="orderEditFrm" checked="checked" type="checkbox" name="add-valid" value="1"> Validate SKU<br>
+<button form="orderEditFrm" class="button" 
+	onClick="
+	jQuery('#VERB').val('ADD-SKU'); 
+	jQuery('#orderEditFrm').submit();
+	myModal.dialog('close');
+	return false;
+	">Save</button>
 </div>
 
-<div id="tax-dialog" title="Tax Rate">
-<form id="addItemFrm">
-Tax Rate: <input type="textbox" name="tax-rate"> 
-
-<input type="button" value="Add" onClick="alert('hello, this should save');">
-</form>	
+<div id="dialogTax" title="Tax Rate">
+Tax Rate: <input form="orderEditFrm" type="textbox" name="tax-rate"> 
+<button form="orderEditFrm" class="button" 
+	onClick="
+	jQuery('#VERB').val('SET-TAX'); 
+	jQuery('#orderEditFrm').submit();
+	myModal.dialog('close');
+	return false;
+	">Save</button>
 </div>
 
-
-<div id="shipping-dialog" title="Shipping Rate">
-<form id="addItemFrm">
-
-<input type="button" value="Add" onClick="alert('hello, this should save');">
-</form>	
+<div id="dialogShipping" title="Shipping">
+Method: <input form="orderEditFrm" type="textbox" name="sum/shp_method" value="<!-- SHP_METHOD -->"><br>
+Amount: <input form="orderEditFrm" type="textbox" name="sum/shp_total" value="<!-- SHP_TOTAL -->"><br>
+<button form="orderEditFrm" class="button" 
+	onClick="
+	jQuery('#VERB').val('SET-SHIPPING'); 
+	jQuery('#orderEditFrm').submit();
+	myModal.dialog('close');
+	return false;
+	">Save</button>
 </div>
-
-
-
 
 </div>
 
 <table width="800" align="center">
 <tr><td align="center">
 
-
-
-<table width=100% class="zoovytable"><tr><td>
+<table width=100% class="zoovytable">
+<tr><td>
 
 <table width=100%>
 <tr>
@@ -58,7 +71,12 @@ Tax Rate: <input type="textbox" name="tax-rate">
 <!-- ITEMS -->
 <!-- PROMOS -->
 
-<tr><td colspan=5><font face='Arial' size='1'>Hint: To delete an item change the quantity to Zero and press SAVE.</font></center></td></td>
+<tr>
+	<td colspan=5>
+	<div class="hint">Hint: To delete an item change the quantity to Zero and press SAVE.</div>
+	</center>
+	</td>
+</tr>
 </table>
 
 
@@ -88,13 +106,17 @@ Tax Rate: <input type="textbox" name="tax-rate">
 	</tr>
 	<tr>
 		<td colspan='3' align='right' bgcolor='FFFFFF'><font color='000000' size='2' face='Arial'><B>Tax (<!-- TAX_RATE -->):</b></font></td>
-		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$<!-- TOTAL_TAX --></b></font></td>
-		<td><input class='minibutton' type='button' value='Calc. Tax' onClick='return(popupChangeTax());'></td>
+		<td colspan='1' nowrap bgcolor='FFFFFF'><font size='2' color='black' face='Arial'>&nbsp;<b>$<!-- TAX_TOTAL --></b></font></td>
+		<td><button form="orderEditFrm" class='minibutton'
+			onClick="myModal = jQuery('#dialogTax').dialog({height: 300, width: 300, modal: true, title:'Tax'}); return false;"
+			>Calc Tax</button></td>
 	</tr>
 	<tr>
 		<td colspan='3' align='right'><font size='2' face='Arial'><B><!-- SHP_METHOD --></b></font></td>
 		<td nowrap colspan='1'><font size='2' color='black' face='Arial'>&nbsp;<b><!-- SHP_TOTAL --></b></font></td>
-		<td><input class='minibutton' type='button' value='Calc. Shipping' onClick='return(popupChangeShipping());'></td>
+		<td><button form="orderEditFrm" class='minibutton'
+			onClick="myModal = jQuery('#dialogShipping').dialog({height: 300, width: 300, modal: true, title:'Shipping'}); return false;"
+			>Edit Shipping</button></td>
 	</tr>
 	<tr>
 		<td colspan='3' align='right'><font color='000000' size='2' face='Arial'><B>GRAND TOTAL:</b></font></td>
@@ -109,9 +131,11 @@ Tax Rate: <input type="textbox" name="tax-rate">
 
 </td></tr></table>
 
-<input class="button" type="button" onClick="$('#dialog-modal').dialog({height: 140, modal: true});" value="  Add Item ">
-<input class="button" type="submit" value="  Save  ">
-<input class="button" type="button" value="  Back  " onClick="navigateTo('/biz/orders/view.cgi?OID=<!-- OID -->&t=<!-- TS -->');">
+<button class='minibutton'
+	onClick="myModal = jQuery('#dialogAddItem').dialog({height: 300, width: 300, modal: true, title:'Add Item'}); return false;"
+	>Add Item</button>
+<input form="orderEditFrm" class="button" type="submit" value="  Save  ">
+<input form="orderEditFrm" class="button" type="button" value="  Back  " onClick="navigateTo('/biz/orders/view.cgi?OID=<!-- OID -->&t=<!-- TS -->');">
 
 <!-- BEGIN EDIT SHIP/BILL INFO -->
 
@@ -224,6 +248,9 @@ Tax Rate: <input type="textbox" name="tax-rate">
 				    <td><input type="text" size="30" name="bill_province" value="<!-- BILL_PROVINCE -->"></td>
 				</tr>
 			</table>
+
+		<input class="button" type="submit" value="  Save  ">
+		<input class="button" type="button" value="  Back  " onClick="navigateTo('/biz/orders/view.cgi?OID=<!-- OID -->&t=<!-- TS -->');">
 		</td>
 	</tr>
 </table>

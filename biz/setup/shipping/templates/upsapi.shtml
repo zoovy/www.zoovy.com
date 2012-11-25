@@ -75,7 +75,7 @@ Perform rule processing. (RECOMMENDED)
 
 <b>UPS Domestic Settings</b><br>
 
-<input type="checkbox" <!-- DOM --> name="dom" value="on"> Enable UPS Domestic Shipping Support [<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM">general rules</a>]<br><br>
+<input type="checkbox" <!-- DOM --> name="dom" value="on"> Enable UPS Domestic Shipping Support [<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM">general rules</a>]<br><br>
 
 Quote Domestic Packaging As:</br>
 <select name="dom_packaging">
@@ -98,37 +98,37 @@ Quote Domestic Packaging As:</br>
 	<tr bgcolor="C7C7C7">
 		<td><input type="checkbox" <!-- DOM_GND --> name="dom_gnd" value="1"></td>
 		<td>UPS Ground</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_GND">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_GND">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- DOM_3DS --> name="dom_3ds" value="1"></td>
 		<td>UPS 3 Day Select&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_3DS">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_3DS">specific rules</a>]</td>
 	</tr>
 	<tr bgcolor="C7C7C7">
 		<td><input type="checkbox" <!-- DOM_2DM --> name="dom_2dm" value="1"></td>
 		<td>UPS 2nd Day Air A.M.&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_2DM">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_2DM">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- DOM_2DA --> name="dom_2da" value="1"></td>
 		<td>UPS 2nd Day Air&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_2DA">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_2DA">specific rules</a>]</td>
 	</tr>
 	<tr bgcolor="C7C7C7">
 		<td><input type="checkbox" <!-- DOM_1DP --> name="dom_1dp" value="1"></td>
 		<td>UPS Next Day Air Saver&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DP">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DP">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- DOM_1DA --> name="dom_1da" value="1"></td>
 		<td>UPS Next Day Air&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DA">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DA">specific rules</a>]</td>
 	</tr>
 	<tr bgcolor="C7C7C7">
 		<td><input type="checkbox" <!-- DOM_1DM --> name="dom_1dm" value="1"></td>
 		<td>UPS Next Day Air&reg; Early A.M.&reg;</td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DM">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_DOM_1DM">specific rules</a>]</td>
 	</tr>
 </table>
 
@@ -166,30 +166,30 @@ Quote International Packaging As:</br>
 		<td><a target=_new
 href="http://www.ups.com/content/us/en/shipping/time/service/standard.html">UPS Standard to
 Canada</a></td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_STD">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_STD">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- INT_XSV --> name="int_xsv" value="1"></td>
 		<td><a target=_new href="http://www.ups.com/content/us/en/shipping/time/service/worldwide_saver.html">UPS Worldwide Saver&reg;</a></td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XSV">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XSV">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- INT_XPR --> name="int_xpr" value="1"></td>
 		<td><a target=_new
 href="http://www.ups.com/content/us/en/shipping/time/service/express.html">UPS Worldwide Express&reg;</a></td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XPR">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XPR">specific rules</a>]</td>
 	</tr>
 	<tr bgcolor="C7C7C7">
 		<td><input type="checkbox" <!-- INT_XDM --> name="int_xdm" value="1"></td>
 		<td><a target=_new
 href="http://www.ups.com/content/us/en/shipping/time/service/express_plus.html">UPS Worldwide Express Plus&reg;</a></td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XDM">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XDM">specific rules</a>]</td>
 	</tr>
 	<tr>
 		<td><input type="checkbox" <!-- INT_XPD --> name="int_xpd" value="1"></td>
 		<td><a target=_new
 href="http://www.ups.com/content/us/en/shipping/time/service/expedited.html">UPS Worldwide Expedited&reg;</a></td>
-		<td>[<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XPD">specific rules</a>]</td>
+		<td>[<a href="/biz/setup/shipping/rulebuilder.cgi?method=UPSAPI_INT_XPD">specific rules</a>]</td>
 	</tr>
 	
 </table>

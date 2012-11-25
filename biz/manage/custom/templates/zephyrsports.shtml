@@ -2,7 +2,7 @@
 
 <center>
 
-<form action="zephyrsports.cgi" name="myform">
+<form id="myform" action="zephyrsports.cgi" name="myform">
 <table width=500>
 <tr>
 	<td colspan=2><center><h2><!-- VERB --> Location</h2></center></td>
@@ -10,7 +10,7 @@
 <tr>
 	<td valign=top>SKU(s):</td>
 	<td valign=top>
-	<textarea cols=35 rows=10 name="items"><!-- ITEMS --></textarea><br>
+	<textarea form="myform" cols=35 rows=10 name="items"><!-- ITEMS --></textarea><br>
 	<div class="hint">Enter one SKU per line</div>
 	</td>
 </tr>
@@ -21,7 +21,7 @@
 <tr>
 	<td>&nbsp;&nbsp;</td>
 	<td colspan=2 halign=center>
-<input type="submit" name="VERB" value="<!-- VERB -->">
+<button form="myform" type="submit" id="VERB" name="VERB" value="<!-- VERB -->">Submit</button>
 	</td>
 </tr>
 </form>

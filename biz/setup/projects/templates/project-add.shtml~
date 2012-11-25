@@ -18,6 +18,8 @@
 <div>
 <label class="stdform" for="title">GitHub Repo</label>
 <input class="stdform" id="repo" name="repo">
+<div class="hint">ex: http://github.com/yourname/project.git</div>
+<div class="hint">**ONLY http:// urls are supported at the moment.**</div>
 </div>
 
 <input class="button" type="submit" value="Save">

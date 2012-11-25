@@ -8,7 +8,7 @@
 <center>
 <table width='90%'>
 <tr><td>
-<a href='.'><font color='blue'><b>Return to Billing History</b></font></a><br>
+<a href='/biz/setup/billing/index.cgi'><font color='blue'><b>Return to Billing History</b></font></a><br>
 
 <pre>
 <!-- INVOICECOPY -->
@@ -16,7 +16,7 @@
 </td></tr>
 </table>
 
-<center><a href='.'><font color='blue'><b>Return</b></font></a><br></center>
+<center><a href='/biz/setup/billing/index.cgi'><font color='blue'><b>Return</b></font></a><br></center>
 <br>
 <br>
 <br>

@@ -18,8 +18,17 @@ require SITE;
 #my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/manage",2,'_M&8');
 #my ($LU) = LUSER->new($USERNAME,$LUSER);
 
+&ZOOVY::init();
 require LUSER;
-my ($LU) = LUSER->authenticate(flags=>'_M&8');
+my %options = ();
+foreach my $k (keys %{$ZOOVY::cgiv}) {
+	## need to copy _clientid _authtoken etc. for client login
+	next if (substr($k,0,1) ne '_');
+	$options{$k} = $ZOOVY::cgiv->{$k};
+	}
+use Data::Dumper;
+print STDERR Dumper(\%options);
+my ($LU) = LUSER->authenticate(flags=>'_M&8',%options);
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();

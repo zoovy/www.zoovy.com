@@ -10,7 +10,7 @@
 <tr>
 	<td>
 	
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="SAVE-ORDERING">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table>

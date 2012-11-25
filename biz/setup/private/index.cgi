@@ -23,6 +23,11 @@ if ($MID<=0) { warn "No auth"; exit; }
 my $c = '';
 my ($lf) = LUSER::FILES->new($USERNAME);
 
+my @MSGS = ();
+my @BC = ();
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi' };
+push @BC, { name=>'Private Files',link=>'/biz/setup/private/index.cgi' };
+
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my @FILES = ();
 foreach my $k (keys %{$ZOOVY::cgiv}) {
@@ -57,7 +62,9 @@ if (($VERB eq 'VIEW') || ($VERB eq 'DOWNLOAD')) {
 
 		require ZTOOLKIT;
 
-		my $out = qq~<b>File Name:</b> <a href="index.cgi/$FILENAME?VERB=DOWNLOAD&FILENAME=$FILENAME">$FILENAME</a><br><b>File Created:</b> ~.&ZTOOLKIT::pretty_date($created,1).qq~<br><b>File Length:</b> $sizex<br><hr>~;
+		my $out = qq~<b>File Name:</b> 
+		<a href="#" onClick="return linkOffSite('https://www.zoovy.com/biz/setup/private/download.cgi/$FILENAME?VERB=DOWNLOAD&'+app.ext.admin.u.uiCompatAuthKVP()+'&FILENAME=$FILENAME');">
+		$FILENAME</a><br><b>File Created:</b> ~.&ZTOOLKIT::pretty_date($created,1).qq~<br><b>File Length:</b> $sizex<br><hr>~;
 
 		if ($sizex>100000) {
 			$out .= "<i>File too big, please click to download</i>";
@@ -185,4 +192,4 @@ if (($VERB eq '') || ($VERB eq 'SEARCH')) {
 	$template_file = 'index.shtml';
 	}
 	
-&GTOOLS::output(file=>$template_file,header=>1);
+&GTOOLS::output(bc=>\@BC,msgs=>\@MSGS,,file=>$template_file,header=>1);

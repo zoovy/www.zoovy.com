@@ -3,14 +3,18 @@
 use lib "/httpd/modules";
 use ZOOVY;
 use GTOOLS;
+use LUSER;
 use CGI;
 use PRODUCT;
 use utf8;
 
 &ZOOVY::init();
-my $q = new CGI;
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/product",2,'_P&2');
-if ($USERNAME eq '') { exit; }
+my ($LU) = LUSER->authenticate();
+if (not defined $LU) { warn "Auth"; exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT,$RESELLER) = $LU->authinfo();
+if ($RESELLER eq '') { $RESELLER = 'ZOOVY'; }
+if ($MID<=0) { exit; }
 
 my $PRODUCT = $ZOOVY::cgiv->{'PRODUCT'};
 

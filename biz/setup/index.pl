@@ -50,7 +50,7 @@ my @TABS = ();
 
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'/biz/setup' };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi' };
 
 if (not defined $ZOOVY::cgiv->{'MODE'}) { $ZOOVY::cgiv->{'MODE'} = ''; }
 
@@ -142,12 +142,13 @@ push @LINKS, {
 my $MARKET_DIV = build_panel('MARKET','Integrated Marketplaces','/biz/setup/images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
 
 ## MPO TAB
-@LINKS = ();
-push @LINKS, { 
-	min=>1, link=>'/biz/setup/repricing/index.cgi', title=>'Amazon Repricing', about=>q~
-Let Zoovy automatically raise/lower pricing on Marketplaces to beat competitors.~, 
-	};
-my $MPO_DIV = build_panel('MPO','Marketplace Optimization','/biz/setup/images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
+#@LINKS = ();
+#push @LINKS, { 
+#	min=>1, link=>'/biz/setup/repricing/index.cgi', title=>'Amazon Repricing', about=>q~
+#Let Zoovy automatically raise/lower pricing on Marketplaces to beat competitors.~, 
+#	};
+#my $MPO_DIV = build_panel('MPO','Marketplace Optimization','/biz/setup/images/icons/account_32x32.gif','navcat_3',1, \@LINKS);
+my $MPO_DIV = '';
 
 
 ## PROPERTIES
@@ -172,7 +173,8 @@ my $PROPERTIES_DIV = build_panel('PROPERTIES','Store Properties','/biz/setup/ima
 
 ## UTILITIES
 @LINKS = ();
-push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'#import?verb=product', title=>'CSV Import Utility', about=>'Import data from a variety of formats.', };
+##push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'#import?verb=product', title=>'CSV Import Utility', about=>'Import data from a variety of formats.', };
+push @LINKS, { todo=>($NEEDREF->{'import'})?1:0, min=>0, link=>'/biz/setup/import/index.cgi?verb=product', title=>'CSV Import Utility', about=>'Import data from a variety of formats.', };
 ## No longer configurable:
 #if ($FLAGS =~ /,EBAY,/) {
 #	push @LINKS, { min=>1, link=>'/biz/setup/reminder', title=>'Payment Reminders', about=>'Configure feedback/payment reminders.', };
@@ -383,7 +385,7 @@ if ($PRT>0) {
 	my @LINKS = ();
 	push @LINKS, { min=>0, link=>'/biz/setup/domain/index.cgi', title=>'Domain Hosting', about=>'Associate Domains to this Partition.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/promotions/index.cgi', title=>'Coupons/Promotions', about=>'Create discounts for special purchases', };
-	push @LINKS, { min=>0, link=>'/biz/setup/tax/idnex.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/tax/index.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/shipping/index.cgi', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/payment/index.cgi', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.', };
@@ -395,7 +397,8 @@ if ($PRT>0) {
 	push @LINKS, { min=>0, link=>'/biz/setup/ebay/index.cgi', title=>'eBay.com', about=>'eBay Setup', };
 	if ($prtinfo->{'p_navcats'}>0) {
 		push @LINKS, { min=>0, link=>'/biz/setup/navcats/index.cgi', title=>'Categories &amp; Lists', about=>'Build your store category tree or add product lists.</di', };
-		push @LINKS, { min=>0, link=>'/biz/setup/import/index.cgi', title=>'CSV Import Utility', about=>'Import Customer or Category data.', };
+		# push @LINKS, { min=>0, link=>'#import?verb=product', title=>'CSV Import Utility', about=>'Import Customer or Category data.', };
+		push @LINKS, { min=>0, link=>'/biz/setup/import/index.cgi?verb=product', title=>'CSV Import Utility', about=>'Import Customer or Category data.', };
 		push @LINKS, { min=>0, link=>'/biz/setup/rss/index.cgi', title=>'RSS Feeds', about=>'Create RSS Feeds to easily share your product lists with affiliate sites.' };
 		push @LINKS, { min=>0, link=>"/biz/setup/media/index.cgi", title=>"Media Library", about=>'Upload and manage your images, sounds, movies, documents and flash.' };
 		}	

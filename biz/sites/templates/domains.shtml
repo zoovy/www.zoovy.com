@@ -1,6 +1,6 @@
 <!-- SITES_TAB -->
 
-
+<form>
 <center>
 <table width=600><tr><td>
 <b>Domains</b><br>
@@ -18,5 +18,6 @@
 </table>
 </td></tr></table>
 </center>
+</form>
 
 <!-- FOOTER -->

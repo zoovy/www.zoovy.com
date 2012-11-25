@@ -1,9 +1,3 @@
-<HEAD>
-<title>Zoovy: Online Product Management - Merchant</title>
-<!-- HEADER_ONLY -->
-<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
-</HEAD>
-<body>
 <!-- MSGS -->
 <center>
 <br>
@@ -25,7 +19,7 @@
 	<td colspan="3">
 	
 	
-<form name="thisFrm" method="post" action="index.cgi" onSubmit="">
+<form id="sogFrm" name="sogFrm" method="post" action="index.cgi" onSubmit="">
 <input type="hidden" name="PRODUCT" value="<!-- PRODUCT -->">
 <input type="hidden" name="listorder" value="">
 <input type="hidden" name="VERB" value="SAVE-<!-- VERB -->">
@@ -223,8 +217,8 @@ Before saving please take a moment to review your choices. All settings on this 
 group is saved.<br>
 <br>
 <center>
-	<input type="button" onClick="thisFrm.submit();" value="  Save  ">
-	<input type="button" onClick="thisFrm.VERB.value=''; thisFrm.submit();" value="  Exit  ">
+	<button type="submit" class="button" onClick="sogFrm.VERB.value='SAVE-<!-- VERB -->';">Save</button>
+	<button type="submit" class="button"  onClick="sogFrm.VERB.value='';">Exit</button>
 </center>
 </form>
 </td></tr></table>
@@ -233,6 +227,5 @@ group is saved.<br>
 
 </td></tr></table>
 </center>
-</body>
 
 

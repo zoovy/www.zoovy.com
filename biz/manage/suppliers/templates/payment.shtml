@@ -6,7 +6,7 @@
 <h1>Payment Setup</h1>
 
 <!-- RESULT -->
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="PAYMENT-SAVE">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 

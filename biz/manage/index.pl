@@ -119,6 +119,9 @@ push @ITEMS, { grp=>'store', link=>"/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&RE
 push @ITEMS, { grp=>'store', link=>"/biz/syndication/sitemap/index.cgi", title=>"Static Google SiteMap", hint=>"Configure nightly generation of a static sitemap file." };
 push @ITEMS, { grp=>'store', link=>'/biz/manage/debugger/index.cgi', title=>"Website Debugger", hint=>"Website Debugger" };
 
+push @ITEMS, { grp=>'store', link=>'/biz/manage/custom/zephyrsports.cgi', title=>"Custom Inventory Lookup", hint=>"" };
+push @ITEMS, { grp=>'store', link=>'/biz/manage/support', title=>"Tech Support Utils", hint=>"" };
+
 foreach my $item (@ITEMS) {
 	my $class = 'available';
 	my $image = "/biz/images/tabs/graphics/b.gif";

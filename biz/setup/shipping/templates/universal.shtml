@@ -70,11 +70,11 @@
 <tr>
 	<td>
 	<center>
-<input type="submit" class="button showLoadingModal" value=" Save ">
-<input type="button" class="button showLoadingModal" value=" Delete "
+<input type="submit" class="button" value=" Save ">
+<input type="button" class="button" value=" Delete "
 	onClick="navigateTo('/biz/setup/shipping/universal.cgi?VERB=DELETE&ID=<!-- ID -->');">
-<input type="button" class="button showLoadingModal" value=" Exit "
-	onClick="navigateTo('/biz/setup/shipping');">
+<input type="button" class="button" value=" Exit "
+	onClick="navigateTo('/biz/setup/shipping/index.cgi');">
 </center>
 	</td>
 </tr>

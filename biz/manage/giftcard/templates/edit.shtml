@@ -1,7 +1,7 @@
 <!-- UTILITIES_TAB -->
 
 <br>
-<form name="thisFrm" method="POST" action="index.cgi">
+<form name="thisFrm" method="POST" action="/biz/manage/giftcard/index.cgi">
 <input type="hidden" name="GCID" value="<!-- GCID -->">
 <input type="hidden" name="VERB" value="SAVECARD">
 
@@ -75,15 +75,6 @@ However gift cards that you include discounted, or free with an order are usuall
 </div>
  
 </form>
-<script language="JavaScript">
-<!-- // create calendar object(s) just after form tag closed
-             // specify form element as the only parameter
-            var cal2 = new
-calendar2(document.forms['thisFrm'].elements['expires']);
-            cal2.year_scroll = true;
-            cal2.time_comp = false;
-//-->
-</script>
 
 <br>
 <div align="center">

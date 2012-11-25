@@ -3,7 +3,7 @@
 <center>
 <table width=80%><tr><Td>
 <h1>Order Delivery</h1>
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="SAVE-GENERIC-ORDERING">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table>

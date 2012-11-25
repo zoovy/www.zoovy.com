@@ -1,37 +1,13 @@
 <!-- ORDER_TAB -->
 
-<head>
-	<title>Payment Information</title>
-   <script type="text/javascript">
-	<!--
-
-	var clicked = 0;
-	function clickedIt() {
-		var d = new Date();
-		if (clicked!=0) {
-			alert("Error: You only need to click SAVE once, pressing save more than once during a payment operation can lead to order corruption.");		
-			if (clicked+30 < d.getTime()) {
-				clicked=0;
-			}
-		} 
-		if (clicked == 0) {
-			clicked = d.getTime();
-			document.payMain.submit();
-		}
-	}
-	//-->
-	</script>
-</head>
-<body bgcolor="#FFFFFF">
-
 <table width=800 align="center"><tr><td>
 
 <h1>Payment Information for <!-- ID --></h1><br>
 <!-- MESSAGES -->
 
-<form action="payment.cgi" name="thisFrm">
+<form id="orderPaymentFrm" action="/biz/orders/payment.cgi" name="orderPaymentFrm">
 <input type="hidden" name="ID" value="<!-- ID -->">
-<input type="hidden" name="VERB" value="">
+<input type="hidden" id="VERB" name="VERB" value="">
 
 <table width=100% class="zoovytable">
 <tr><td class="zoovytableheader">Order Disposition</td></tr>
@@ -105,8 +81,11 @@
 		<b>Enter Amount and Details:</b><br>
 		Amount: $<input size="5" type="textbox" name="AMOUNT" value="<!-- BALANCE_DUE_PLAIN -->"> <i>Default is balance due</i><br>
 		Note: <input type="textbox" name="NOTE" size=60 maxlength=60 value=""><br>
-		<input class="button" type="button" 
-			onClick="thisFrm.VERB.value='ADD-PAYMENT'; thisFrm.submit();" value=" Apply Payment to Order ">
+		<button form="orderPaymentFrm" type="submit" class="button" 
+			onClick="jQuery('#VERB').val('ADD-PAYMENT');"
+			>
+		Apply Payment to Order
+		</button>
 		</div>
 	</td>
 </tr>
@@ -137,13 +116,8 @@ Created by IP Address: <!-- IP_ADDRESS --> on PRT: <!-- PRT --></font>
 </td></tr></table>
 
 <center>
-<form action="view.cgi">
-<input type="hidden" name="ID" value="<!-- ID -->">
-<input type="submit" class="button" value=" Return to Order# <!-- ID --> ">
-</form>
+<button onClick="navigateTo('/biz/orders/view.cgi?ID=<!-- ID -->');" type="submit" class="button">Return to <!-- ID --></button>
 </center>
 <br>
 <br>
 
-</body>
-</html>

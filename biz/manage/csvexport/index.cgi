@@ -410,6 +410,7 @@ if ($VERB eq 'SELECT_NAVCAT') {
 	$template_file = 'select.shtml';
 	}
 
+print STDERR "VERB:$VERB\n";
 if ($VERB eq 'EXPORT_REDIRECT') {
 	require BATCHJOB;
 	$params{'.products'} = $ZOOVY::cgiv->{'PRODUCTS'};
@@ -426,12 +427,20 @@ if ($VERB eq 'EXPORT_REDIRECT') {
 	if ($bj->id()>0) {
 		## lets redirect to the batch viewer
 		$bj->start();
-		print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}\n\n";
-		exit;
+		# print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}\n\n";
+		my $URL = "/biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}";
+		# print "Content-type: text/html\n\n";
+		# print "\n";
+		# print "<a href=\"$URL\">click here if this page does not automatically reload</a>";
+		# print "<script>\nnavigateTo('$URL');\n</script>";
+		$GTOOLS::TAG{'<!-- URL -->'} = $URL;
+		$template_file = '_/redirect.shtml';
+		$VERB = 'EXPORT';
 		}
 	else {
 		$VERB = '';
 		## ??!? wtf happened.
+		push @MSGS, "ERROR|+could not start job";
 		}
 	}
 

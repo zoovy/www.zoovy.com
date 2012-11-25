@@ -6,7 +6,7 @@
 <h1>Corrupt Supplier</h1>
 <i>Well.. they may not be corrupt, but their record in our database is.</i><br>
 <br>
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="SAVE">
 <table>
 	<tr>

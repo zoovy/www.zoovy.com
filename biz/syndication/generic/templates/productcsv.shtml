@@ -3,7 +3,7 @@
 <!-- MESSAGE -->
 <!-- DEBUG -->
 
-<form method="post" action="index.cgi">
+<form method="post" action="<!-- PATH -->">
 <input type="hidden" name="VERB" value="PRODUCTCSV-SAVE">
 
 <br>

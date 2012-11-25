@@ -1,17 +1,78 @@
 <!-- ORDER_TAB -->
 
 <script type="text/javascript">
-var O2 = <!-- JSON -->;
+var myModal = undefined;
 </script>
 
-<form id="viewFrm" name="viewFrm" action="view.cgi">
+<form id="viewFrm" name="viewFrm" method="POST" action="/biz/orders/view.cgi">
 <input id="CMD" type="hidden" name="CMD" value=''>
 <input id="OID" type="hidden" name="OID" value="<!-- OID -->">
 
 <div id="divs-hidden" class='displayNone'>
 
-<!-- #dialog-tracking -->
-<div id="dialog-tracking">
+<!-- #dialogNotes -->
+<div id="dialogNotes">
+<center>
+<table><tr><td>
+
+<h1>Order <!-- ID --></h1>
+
+<h2>Public Notes:</h2>
+<textarea form="viewFrm" rows="5" style="font-size: 10pt; font-face: helvetica, arial" cols="60" name="want/order_notes"><!-- ORDER_NOTES --></textarea>
+<div class="hint">
+<li> Public notes are customer facing and will be printed on the order or packing slip.
+</div>
+<br>
+<h2>Private Notes:</h2>
+<textarea form="viewFrm" rows="5" style="font-size: 10pt; font-face: helvetica, arial" cols="60" name="flow/private_notes"><!-- PRIVATE_NOTES --></textarea>
+<div class="hint">
+<li> Private notes are internal and will not be shown to the client.
+</div>
+<br>
+<br>
+<button id="notesButton" form="viewFrm" type="submit" class="button" 
+	onClick="
+	jQuery('#CMD').val('VERB-NOTES-SET'); 
+	myModal.dialog('close');
+	jQuery('#viewFrm').submit();
+	return false;
+	">Save</button>
+
+</td></tr></table>
+</div>
+
+
+<!-- #dialogEmail -->
+<div id="dialogEmail">
+<center>
+<table class="zoovytable">
+<tr class="zoovytableheader"><td>Email <!-- OID --></td></tr>
+<tr><td>
+<table>
+<tr><td>To:</td><td><!-- BILL_EMAIL --></td></tr>
+<tr><td>Subject:</td><td><input form="viewFrm" size="50" type="textbox" id="emailSubject" name="emailSubject"></td></tr>
+</table>
+<hr>
+<textarea cols=70 rows=10 form="viewFrm" id="emailBody" name="emailBody">
+</textarea>
+<button id="emailSendButton" form="viewFrm" type="submit" class="button" 
+	onClick="
+	jQuery('#CMD').val('VERB-EMAIL-SEND'); 
+	myModal.dialog('close');
+	jQuery('#viewFrm').submit();
+	return false;
+	">Send</button>
+<button id="emailCancelButton" form="viewFrm" type="submit" class="button" 
+	onClick="myModal.dialog('close');return false;">Cancel</button>
+</td>
+</tr>
+</table>
+</div>
+
+
+
+<!-- #dialogTracking -->
+<div id="dialogTracking">
 <center>
 <table>
 <tr>
@@ -26,7 +87,7 @@ Tracking Information for <!-- OID --><br>
 		<td>DETAIL</td>
 		<td>&nbsp;</td>
 	</tr>
-	<!-- CONTENTS -->
+	<!-- TRACKING -->
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
@@ -43,7 +104,7 @@ Tracking Information for <!-- OID --><br>
 		<table width=100% border=0>
 			<tr>
 				<td>
-				<select name="method">
+				<select form="viewFrm" name="method">
 					<option value="UPS">UPS</option>
 					<option value="USPS">USPS</option>
 					<option value="FEDX">FEDEX</option>
@@ -52,28 +113,34 @@ Tracking Information for <!-- OID --><br>
 				</select>
 				</td>
 				<td>&nbsp;</td>
-				<td>Tracking #: <input type="text" name="value"></td>
+				<td>Tracking #: <input form="viewFrm" type="text" name="value"></td>
 			</tr>
 			<tr>
-				<td>Cost: <input type="text" size="5" name="cost"></td>
+				<td>Cost: <input form="viewFrm" type="text" size="5" name="cost"></td>
 				<td>&nbsp</td>
-				<td>Actual Weight: <input size="5" type="text" name="actualwt"></td>
+				<td>Actual Weight: <input form="viewFrm" size="5" type="text" name="actualwt"></td>
 			</tr>
 			<tr>
 				<td colspan='3'>
 				Notes: (max 255 characters)<br>
-				<textarea cols=80 rows=3 name="notes"></textarea>
+				<textarea form="viewFrm" cols=80 rows=3 name="notes"></textarea>
 				</td>
 			</tr>
 		</table>
 		</td>
-		<td>&nbsp;
-		</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td colspan='10'>
 		<center>
-		<button type="submit" form="viewFrm" class="button" onClick="jQuery('#CMD').val('VERB-ADD-TRACKING');">Add Tracking</button>
+		<button id="trackButton" form="viewFrm" class="button" 
+			onClick="
+			jQuery('#CMD').val('VERB-TRACKING-ADD'); 
+			myModal.dialog('close');
+			jQuery('#viewFrm').submit()
+			return false;
+			">Add Tracking</button>
+
 		</center>
 <div class="hint">
 HINT: When you use Zoovys Desktop Order Manager to print out USPS Postage, UPS
@@ -149,15 +216,14 @@ automatically imported -- never re-enter data again!
 		<table width=100%>
 		<tr>		
 
-		<td><input type='button' class="button" onClick="$('#dialog-tracking').dialog({height: 500, width: 500, modal: true, title:'Tracking'});" value=" Better Tracking ">
-		<td><input type='button' class="button" onClick="navigateTo('/biz/orders/track.cgi?ID=<!-- OID -->&ts=<!-- TS -->',{'dialog':true});" value=" Tracking Info "></td>
-		<td><input type='button' class="button" onClick="navigateTo('payment.cgi?ID=<!-- OID -->&ts=<!-- TS -->');" value=" Payment Status "></td>
-		<td><input type='button' class="button" onClick="return(prWindow('view.cgi?CMD=INVOICE&ID=<!-- OID -->&ts=<!-- TS -->'));" value=" Print Invoice "></td>
-		<td><input type='button' class="button" onClick="return(prWindow('view.cgi?CMD=PACKSLIP&ID=<!-- OID -->&ts=<!-- TS -->'));" value=" Packing Slip "></td>
-		<td><input type='button' class="button" onClick='return(openWindow("notes.cgi?ID=<!-- OID -->&ts=<!-- TS -->"));' value=" Notes "></td>
-		<td><input type='button' class="button" onClick="navigateTo('/biz/orders/edit.cgi?CMD=EDIT&OID=<!-- OID -->&ts=<!-- TS -->');" value="  Edit Contents "></td>
-		<td><input type='button' class="button" onClick="navigateTo('/biz/orders/index.cgi?VERB=EMAIL&NS=$NS&order-<!-- OID -->=on');" value="  Send Email "></td>
-		<td><input type='button' class="button" onClick="navigateTo('/biz/crm/index.cgi?VERB=CREATE&orderid=<!-- OID -->&email=$email&phone=$phone');" value="  Ticket "></td>
+		<td><button class="button" onClick="myModal = jQuery('#dialogTracking').dialog({height: 500, width: 500, modal: true, title:'Tracking'}); return false;">Tracking</button>
+		<td><button class="button" onClick="navigateTo('/biz/orders/payment.cgi?ID=<!-- OID -->&ts=<!-- TS -->'); return false;">Payment Status</button></td>
+		<td><button class="button" data-profile="<!-- NS -->" data-prt="<!-- PRT -->" data-oid="<!-- OID -->" data-type="INVOICE" onClick="navigateTo('#!orderPrint',{ data:$(this).data() }); return false;">Print Invoice</button></td>
+		<td><button class="button" data-profile="<!-- NS -->" data-prt="<!-- PRT -->" data-oid="<!-- OID -->" data-type="PACKSLIP" onClick="navigateTo('#!orderPrint',{ data:$(this).data() }); return false;">Print Packing Slip</button></td>
+		<td><button class="button" onClick="myModal = jQuery('#dialogNotes').dialog({height: 500, width: 500, modal: true, title:'Order Notes'}); return false;">Notes</button>
+		<td><button class="button" onClick="navigateTo('/biz/orders/edit.cgi?CMD=EDIT&OID=<!-- OID -->&ts=<!-- TS -->'); return false;">Edit Contents</button></td>
+		<td><button class="button" onClick="myModal = jQuery('#dialogEmail').dialog({height: 500, width: 500, modal: true, title:'Email'}); return false;">Email</button>
+		<td><button class="button" onClick="navigateTo('/biz/crm/index.cgi?VERB=CREATE&orderid=<!-- OID -->&email=$email&phone=$phone'); return false;">Ticket</button></td>
 		</tr>
 		</table>
 		</td>
@@ -178,9 +244,11 @@ automatically imported -- never re-enter data again!
 
 </form>
 
+<!--
 <button class="button" onClick="
 	// alert(O2['flow']['pool']);
 	navigateTo('/biz/orders/index.cgi?VERB=SHOW:'+O2['flow']['pool']);">Exit</button>
+-->
 
 </td></tr></table>
 

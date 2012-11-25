@@ -25,6 +25,7 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { warn "No auth"; exit; }
 
 
+my @MSGS = ();
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $template_file = 'index.shtml';
 
@@ -126,17 +127,19 @@ if ($VERB eq 'STARTBATCH') {
 		## existing job
 		$bj->update('BATCH_VARS'=>&ZTOOLKIT::buildparams(\%vars,1),'CREATED_GMT'=>time(),'TITLE'=>$title,'STATUS'=>'NEW','STATUS_MSG'=>'Job restarted');
 		$LU->log("POWERTOOL.RESTART","Job $JOBID was restarted actions=[$action_digest] products=[$products_digest]","SAVE");
+		push @MSGS, "SUCCESS|+Job ID: $JOBID restarted";
 		}
 	else {
 		## this is a new job
-		$JOBID = $bj->id();
+		$dataref->{'JOBID'} = $JOBID = $bj->id();
 		$LU->log("POWERTOOL.CREATED","Job $JOBID was created actions=[$action_digest] products=[$products_digest]","SAVE");
+		push @MSGS, "SUCCESS|+Job ID: $JOBID created";
 		}
 	
-
-	$template_file = '';
-	print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".$bj->id()."\n\n";
-	exit;
+	$GTOOLS::TAG{'<!-- JOBID -->'} = $JOBID;
+	$template_file = 'success.shtml';
+	#print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".$bj->id()."\n\n";
+	#exit;
 	}
 
 if ($VERB =~ /^ACTION-DEL\:([\d]+)$/) {

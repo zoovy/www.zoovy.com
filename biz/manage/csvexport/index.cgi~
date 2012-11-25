@@ -426,7 +426,10 @@ if ($VERB eq 'EXPORT_REDIRECT') {
 	if ($bj->id()>0) {
 		## lets redirect to the batch viewer
 		$bj->start();
-		print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}\n\n";
+		# print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}\n\n";
+		my $URL = "/biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}";
+		print "Content-type: text/html\n\n";
+		print "<script>navigateTo('$URL');</script>";
 		exit;
 		}
 	else {
@@ -439,7 +442,7 @@ if ($VERB eq 'SEARCH') {
 	my ($keywords) = $ZOOVY::cgiv->{'ELASTIC-KEYWORDS'};
 	if ($keywords ne '') {
 		my @TRACE = ();
-		my @PIDS = @{&SEARCH::search_elastic($USERNAME,$keywords,\@TRACE)};
+		my @PIDS = @{&SEARCH::search_elastic($USERNAME,$keywords,\@TRACE,'_size'=>1000,'allow_ranges'=>1)};
 		$PRODUCTS = ",".join(',',@PIDS);
 		foreach my $msg (@TRACE) {
 			push @MSGS, "INFO|+$msg";

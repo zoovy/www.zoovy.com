@@ -3,6 +3,7 @@
 use lib "/httpd/modules";
 require GTOOLS;
 require LUSER;
+use Data::Dumper;
 use strict;
 require GTOOLS;
 require ZOOVY;
@@ -52,8 +53,6 @@ my $a = "";   # this is used throughout the program as scratch
 my $OID = $ZOOVY::cgiv->{'OID'};
 $GTOOLS::TAG{"<!-- OID -->"} = $OID;
 
-my $CMD = '';
-
 if ($VERB ne 'EDIT') {
 	}
 elsif ($OID eq '') {
@@ -72,29 +71,16 @@ elsif ($VERB eq 'EDIT') {
 	}
 
 my @BC = ();
-push @BC, 	{ name=>'Orders',link=>'/biz/orders' };
+push @BC, 	{ name=>'Orders',link=>'/biz/orders/index.cgi' };
 
-my $CMD = uc($ZOOVY::cgiv->{'CMD'});
-my $AREA = uc($ZOOVY::cgiv->{'AREA'});
 my $SORTBY = lc($ZOOVY::cgiv->{'SORTBY'});
-$GTOOLS::TAG{'<!-- SORTBY -->'} = $SORTBY;
-$GTOOLS::TAG{'<!-- AREA -->'} = $AREA;
 
-#print STDERR "CMD IS: $CMD\n";
-
-if ($CMD eq '') { $CMD = 'RECENT'; }
-
-#if ($CMD eq "DELETE")
-#	{
-#	&ORDER::nuke_order($USERNAME,$ID);
-#	$AREA = 'CANCELLED';
-#	}
-
-#if ($CMD eq 'PRINT') {
-#	&GTOOLS::print_form('','print.shtml',1);
-#	}
+my $AREA = uc($ZOOVY::cgiv->{'AREA'}); 
+if ($AREA eq '') { $AREA = 'RECENT'; }
+if ($VERB eq '') { $VERB eq "SHOW:$AREA"; }
 
 my $ORDERIDS = '';
+my $SHOW_POOL = 0;
 
 if ($VERB eq 'PAID') {
 	require ZPAY;
@@ -142,13 +128,146 @@ if ($VERB eq 'PAID') {
 			}  
 		}
 	if ($AREA eq '') { $AREA = 'RECENT'; }
-	$CMD = uc($AREA);
+	$AREA = uc($AREA);
+	$VERB = "SHOW:$AREA";
 	}
 
 
 
+my $r = undef;
+if ($VERB eq 'EXEC-SEARCH') {
+	my $find_text = $ZOOVY::cgiv->{'find_text'};
+	my $search_field = $ZOOVY::cgiv->{'search_field'};
+	my %resultset = ();
+	my %searchset = ();
 
-if ($VERB eq 'MOVE') {
+	$find_text =~ s/^[\s\t]+//gs; 	# strip leading spaces
+	$find_text =~ s/[\s\t]+$//gs; 	# strip trailing spaces
+
+	my @ORDERS = ();
+
+	# check if they just searched for an order, if so then just do a quick lookup
+	if ($find_text =~ /\d{4}-\d{2}-\d+$/) {
+		## orderid shortcut
+		$find_text =~ s/[^\d\-]//g;		# strip out whitespace, etc.
+		# my ($o, $error) = ORDER->new($USERNAME, $find_text);
+		my ($O2) = CART2->new_from_oid($USERNAME, $find_text);
+		if (defined $O2) {
+			push @ORDERS, $find_text;
+			}
+		}
+	elsif (&ZTOOLKIT::validate_email($find_text)) {
+		## email shortcut
+		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'BILL_EMAIL'=>$find_text,'WEB_SCOPE'=>1);
+		}
+	elsif ($ZOOVY::cgiv->{'search_field'} eq 'AMAZON') {
+		require AMAZON3;
+
+		require ORDER::BATCH;
+		my ($result) = ORDER::BATCH::report($USERNAME,EREFID=>$find_text);
+		foreach my $set (@{$result}) {
+			push @ORDERS, $set->{'ORDERID'};
+			}
+
+	## added $USERNAME to the values passed to 'AMAZON3::resolve_orderid' to enable the
+	## opening of the user database for the new amazon cluster specific tables. at 2010-08-30
+		if (scalar(@ORDERS)==0) {
+		 	my ($MID,$ORDERID) = &AMAZON3::resolve_orderid($USERNAME, $find_text);
+		#	my ($MID,$ORDERID) = &AMAZON3::resolve_orderid($find_text);
+			if (defined $ORDERID) {
+				push @ORDERS, $ORDERID;
+				}
+			}
+
+		}
+	elsif ($ZOOVY::cgiv->{'search_field'} eq 'GOOGLECHECKOUT') {
+		require ZPAY::GOOGLE;
+		my ($ORDERID) = &ZPAY::GOOGLE::resolve_orderid($USERNAME,$find_text);
+		push @ORDERS, $ORDERID;
+		}
+
+#	if (scalar(@ORDERS)==1) {
+#		## yay, we found 1 order - lets redirect
+#		$template_file = 'redirect-order.shtml';
+#		$GTOOLS::TAG{'<!-- ORDERID -->'} = $ORDERS[0];
+#		}
+
+	if (defined $r) {
+		## search has been performed, result-set is populated.
+		}
+	elsif (scalar(@ORDERS)>0) {
+		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'@OIDS'=>\@ORDERS);	
+		$SHOW_POOL++;
+		}
+	elsif (scalar(@ORDERS)==0) {
+
+		my %params = ();
+	
+		$params{'WEB_SCOPE'} = 365;
+
+		if ($ZOOVY::cgiv->{'search_field'} eq 'BILL_FULLNAME') {
+			$params{'BILL_FULLNAME'} = $find_text;
+			}
+		if ($ZOOVY::cgiv->{'search_field'} eq 'BILL_PHONE') {
+			$params{'BILL_PHONE'} = $find_text;
+			$params{'BILL_PHONE'} =~ s/[^\d]+//gs;	 #strip non-numeric
+			}
+		elsif ($ZOOVY::cgiv->{'search_field'} eq 'EBAY') {
+			$params{'EBAY'} = $find_text;
+			}
+		elsif ($ZOOVY::cgiv->{'search_field'} eq 'EREFID') {
+			$params{'EREFID'} = $find_text;
+			}
+		elsif ($ZOOVY::cgiv->{'search_field'} eq 'DATA') {
+			$params{'DATA'} = $find_text;
+			}
+
+		$params{'LIMIT'} = 100;
+		if ($ZOOVY::cgiv->{'find_status'} eq 'ANY') {
+			$params{'POOL'} = '';
+			$SHOW_POOL++;
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'RECENT') {
+			$params{'POOL'} = 'RECENT';		
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'PENDING') {
+			$params{'POOL'} = 'PENDING';		
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'APPROVED') {
+			$params{'POOL'} = 'APPROVED';		
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'COMPLETED') {
+			$params{'POOL'} = 'COMPLETED';		
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'CANCELED') {
+			$params{'POOL'} = 'CANCELED';		
+			}
+		elsif ($ZOOVY::cgiv->{'find_status'} eq 'BACKORDER') {
+			$params{'POOL'} = 'BACKORDER';		
+			}
+		else {
+			$SHOW_POOL++;
+			}
+
+		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,%params);
+		}
+	else {
+		die("never reached!");
+		}
+
+   $GTOOLS::TAG{'<!-- AREA -->'} = "Searching for \"$find_text\" in ".$ZOOVY::cgiv->{'find_status'};
+	$VERB = 'SHOW:SEARCH';
+	}
+
+
+if ($VERB eq 'SEARCH') {
+	$template_file = 'search.shtml';
+	}
+
+
+
+if ($VERB =~ /^MOVE:(.*?)$/) {
+	$AREA = $1;
 	my @orders = ();
 	if ($ZOOVY::cgiv->{'ORDERS'} ne '') {
 		@orders = split(/,/,$ZOOVY::cgiv->{'ORDERS'});
@@ -161,191 +280,107 @@ if ($VERB eq 'MOVE') {
 			delete $ZOOVY::cgiv->{$key};
 			}  
 		}
+	print STDERR Dumper(\@orders);
 	
-	if ($CMD eq 'ARCHIVE') {
+	if ($VERB eq 'MOVE:ARCHIVE') {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'ARCHIVE',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=COMPLETED&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'completed';
-		$template_file = "move.shtml";
 		}
-	elsif ($CMD eq 'RECENT')
-	   {
+	elsif ($VERB eq 'MOVE:RECENT') {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'RECENT',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=RECENT&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'recent';
-		$template_file = "move.shtml";
 	   }
-	elsif ($CMD eq 'REVIEW')
-	   {
+	elsif ($VERB eq 'MOVE:REVIEW') {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'REVIEW',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=REVIEW&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'review';
-		$template_file = "move.shtml";
 	   }
-	elsif ($CMD eq 'HOLD')
-	   {
+	elsif ($VERB eq 'MOVE:HOLD')  {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'HOLD',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=HOLD&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'hold';
-		$template_file = "move.shtml";
 	   }
-	elsif ($CMD eq 'PENDING')
-	   {
+	elsif ($VERB eq 'MOVE:PENDING') {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'PENDING',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=PENDING&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'pending';
-		$template_file = "move.shtml";
 	   }
-	elsif ($CMD eq 'APPROVED')
-	   {
+	elsif ($VERB eq 'MOVE:APPROVED') {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'APPROVED',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=APPROVED&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'approved';
-		$template_file = "move.shtml";
 	   }
-	elsif (($CMD eq 'PROCESS') || ($CMD eq 'PROCESSING')) 
-	   {
+	elsif (($VERB eq 'MOVE:PROCESS') || ($VERB eq 'MOVE:PROCESSING')) {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'PROCESS',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=PROCESS&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'process';
-		$template_file = "move.shtml";
 	   }
-	elsif ($CMD eq 'COMPLETED')
-		{
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=COMPLETED&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
+	elsif ($VERB eq 'MOVE:COMPLETED')	{
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'COMPLETED',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'completed';
-		$template_file = 'move.shtml';
 	   }
-	elsif (($CMD eq 'CANCELLED') || ($CMD eq 'DELETED')) {
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'Cancelled';
+	elsif (($VERB eq 'MOVE:CANCELLED') || ($VERB eq 'MOVE:DELETED')) {
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'CANCELLED',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=CANCELLED&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'cancelled';
-		$template_file = "move.shtml";
 	   } 
-	elsif ($CMD eq 'BACKORDER')
-		{
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'Backordered';
+	elsif ($VERB eq 'MOVE:BACKORDER')	{
 		if (scalar(@orders)>0) { &ORDER::BATCH::change_pool($USERNAME,'BACKORDER',\@orders,$LUSERNAME); }
-		$GTOOLS::TAG{'<!-- SCRIPT -->'} = "main.cgi?CMD=BACKORDER&ORDERIDS=$ORDERIDS&SORTBY=$SORTBY";
-		$GTOOLS::TAG{'<!-- AREA -->'} = 'backordered';
-		$template_file = "move.shtml";
 	   } 
-	
-	elsif ($CMD eq 'EMAIL') {
-	
-		my $NS = $ZOOVY::cgiv->{'NS'};
-		if ($NS eq '') { $NS = 'DEFAULT'; }
-	
-		require SITE::EMAILS;
-		require SITE;
-		my ($SITE) = SITE->new($USERNAME,'PRT'=>$PRT,'NS'=>$NS);
-		## currently only using DEFAULT profile
-		my ($se) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE);
-		my ($types) = $se->available('ORDER');
-	
-		my $out = '';
-		foreach my $type (@{$types}) {
-			$se->getref($type->{'MSGID'});
-			my $hashref = $se->getref($type->{'MSGID'});
-			
-			$out .= "<tr><td><input type=\"radio\" name=\"message\" value=\"$type->{'MSGID'}\"></td>".
-	      			"<td><b>$hashref->{'MSGTITLE'}</b></td>".
-	      			"<td>$hashref->{'MSGSUBJECT'}</td></tr>";
-			}
-	
-		$GTOOLS::TAG{'<!-- OUTPUT -->'} = $out; 
-	
-		if ($ORDERIDS eq '') { $template_file = "email-none.shtml"; } 
-		else { $template_file = "email.shtml"; }
-		}
-	elsif (($CMD eq 'EXPORT') && ($FLAGS !~ /,API,/)) {
-		$template_file = "export-deny.shtml";
-		}
-	elsif ($CMD eq 'EXPORT')
-		{
-		my ($billing_info,$strip_prices,$strip_payment,$format,$recovery) = ();
-		my $foo = &ZWEBSITE::fetch_website_attrib($USERNAME,'order_dispatch_defaults');
-		if (!defined($foo) || $foo eq '') {
-			($billing_info,$strip_prices,$strip_payment,$format,$recovery) = split(',','2,1,1,ZOOVY,1');
-			} else {
-			($billing_info,$strip_prices,$strip_payment,$format,$recovery) = split(',',$foo);
-			} 
-	
-		$GTOOLS::TAG{'<!-- BILLING_INFO_0 -->'} = '';
-		$GTOOLS::TAG{'<!-- BILLING_INFO_1 -->'} = '';
-		$GTOOLS::TAG{'<!-- BILLING_INFO_2 -->'} = '';
-		$GTOOLS::TAG{'<!-- BILLING_INFO_'.$billing_info.' -->'} = 'checked';
-		if ($strip_prices) { $GTOOLS::TAG{'<!-- STRIP_PRICES_CHECKED -->'} = 'checked'; } else { $GTOOLS::TAG{'<!-- STRIP_PRICES_CHECKED -->'} = ''; }
-		if ($strip_payment) { $GTOOLS::TAG{'<!-- STRIP_PAYMENT_CHECKED -->'} = 'checked'; } else { $GTOOLS::TAG{'<!-- STRIP_PAYMENT_CHECKED -->'} = ''; }
-	
-		$GTOOLS::TAG{'<!-- ORDER_FORMAT_ZOOVY -->'} = '';
-		$GTOOLS::TAG{'<!-- ORDER_FORMAT_XML -->'} = '';
-		$GTOOLS::TAG{'<!-- ORDER_FORMAT_OBI -->'} = '';
-		$GTOOLS::TAG{'<!-- ORDER_FORMAT_'.$format.' -->'} = 'selected';
-	
-		$GTOOLS::TAG{'<!-- EXPORT_URL -->'} = &ZWEBSITE::fetch_website_attrib($USERNAME,'order_dispatch_url');
-		
-		$foo = &ZWEBSITE::fetch_website_attrib($USERNAME,'order_dispatch_mode');
-		$GTOOLS::TAG{'<!-- ORDER_DISPATCH_ENABLE_0 -->'} = '';	
-		$GTOOLS::TAG{'<!-- ORDER_DISPATCH_ENABLE_1 -->'} = '';	
-		$GTOOLS::TAG{'<!-- ORDER_DISPATCH_ENABLE_9 -->'} = '';	
-		$GTOOLS::TAG{'<!-- ORDER_DISPATCH_ENABLE_'.$foo.' -->'} = 'selected';
-	
-		if ($recovery) { $GTOOLS::TAG{'<!-- RECOVERY_CHECKED -->'} = 'checked'; } else { $GTOOLS::TAG{'<!-- RECOVERY_CHECKED -->'} = ''; }
-	
-		if ($ORDERIDS eq '')
-			{
-			$template_file = "export-none.shtml";
-			} else {
-			$template_file = "export.shtml";
-			}
-		}
 	
 	$GTOOLS::TAG{'<!-- ORDER_IDS -->'} = $ORDERIDS;
-	#print STDERR "Order ids: $ORDERIDS\n";
+	$VERB = "SHOW:$AREA";
+	}
+elsif ($VERB eq 'EMAIL') {
+	my $NS = $ZOOVY::cgiv->{'NS'};
+	if ($NS eq '') { $NS = 'DEFAULT'; }
+	
+	require SITE::EMAILS;
+	require SITE;
+	my ($SITE) = SITE->new($USERNAME,'PRT'=>$PRT,'NS'=>$NS);
+	## currently only using DEFAULT profile
+	my ($se) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE);
+	my ($types) = $se->available('ORDER');
+
+	my $out = '';
+	foreach my $type (@{$types}) {
+		$se->getref($type->{'MSGID'});
+		my $hashref = $se->getref($type->{'MSGID'});
+		
+		$out .= "<tr><td><input type=\"radio\" name=\"message\" value=\"$type->{'MSGID'}\"></td>".
+      			"<td><b>$hashref->{'MSGTITLE'}</b></td>".
+      			"<td>$hashref->{'MSGSUBJECT'}</td></tr>";
+		}
+
+	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $out; 
+	
+	if ($ORDERIDS eq '') { $template_file = "email-none.shtml"; } 
+	else { $template_file = "email.shtml"; }
 	}
 
 
 ##
 ##
-##
-##
-##
-if ($VERB =~ /^SHOW\:/) {
+print STDERR "VERB BEFORE SHOW=$VERB\n";
+if ($VERB =~ /^SHOW\:(.*?)/) {
+	$AREA = $1;
 	my $SHOW_POOL = '';
 	my $r = undef;
 
 	if ($VERB eq 'SHOW:RECENT') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Recent';	
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'RECENT','LIMIT'=>$MAX);
-		push @BC, { name=>'Recent', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Recent', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		}
 	elsif ($VERB eq 'SHOW:PENDING') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Pending';
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'PENDING','LIMIT'=>$MAX);
-		push @BC, { name=>'Pending', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Pending', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 	   }
 	elsif ($VERB eq 'SHOW:REVIEW') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Review';
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'REVIEW','LIMIT'=>$MAX);
-		push @BC, { name=>'Review', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Review', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 	   }
 	elsif ($VERB eq 'SHOW:HOLD') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Hold';	
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'HOLD','LIMIT'=>$MAX);
-		push @BC, { name=>'Hold', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Hold', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		}
 	elsif ($VERB eq 'SHOW:APPROVED') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Approved';
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'APPROVED','LIMIT'=>$MAX);
-		push @BC, { name=>'Approved', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Approved', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		}
 	elsif ($VERB eq 'SHOW:PROCESS') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Process';
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'PROCESS','LIMIT'=>$MAX);
-		push @BC, { name=>'Process', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Process', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 	   }
 	elsif ($VERB eq 'SHOW:COMPLETED') {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Completed';
@@ -357,13 +392,13 @@ if ($VERB =~ /^SHOW\:/) {
 			($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'COMPLETED','SINCE'=>$startts,'LIMIT'=>$MAX);
 			}
 		push @MSGS, 'WARN|+Note: orders will only appear in this list for 180 days after being last modified/synced - please search by order # to bring up orders beyond that time.';
-		push @BC, { name=>'Completed', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Completed', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		}
-	elsif ($VERB eq 'SHOW:CANCELLED') {
+	elsif (($VERB eq 'SHOW:CANCELLED') || ($VERB eq 'SHOW:DELETED')) {
 		$GTOOLS::TAG{'<!-- AREA -->'} = 'Cancelled';
 		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'POOL'=>'DELETED','SINCE'=>$startts,'LIMIT'=>$MAX);
 		push @MSGS, 'WARN|+orders will only appear in this list for 180 days after being last modified/synced - please search by order # to bring up orders beyond that time.';
-		push @BC, { name=>'Cancelled', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Cancelled', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		} 
 	elsif ($VERB eq 'SHOW:BACKORDER') {
 	   $GTOOLS::TAG{'<!-- AREA -->'} = 'Backordered';
@@ -372,7 +407,7 @@ if ($VERB =~ /^SHOW\:/) {
 		if ($count==$MAX) {
 			push @MSGS, qq~WARN|+Maximum order count of $MAX reached. Please use search to find specific orders.~;
 			}
-		push @BC, { name=>'Backorder', link=>"/biz/orders?VERB=$VERB" };
+		push @BC, { name=>'Backorder', link=>"/biz/orders/index.cgi?VERB=$VERB" };
 		}
 	elsif ($VERB eq 'SHOW:SEARCH') {
 		$SHOW_POOL = '';
@@ -519,13 +554,17 @@ if ($VERB =~ /^SHOW\:/) {
 		next if ($ref->{'pool'} eq 'PREORDER');
 
 		$FOOTER .= qq~<td nowrap>
-		<input type="radio" name="CMD" for="MOVE:$ref->{'pool'}" value="MOVE:$ref->{'pool'}">
+		<input type="radio" name="VERB" for="MOVE:$ref->{'pool'}" value="MOVE:$ref->{'pool'}">
 		<label id="MOVE:$ref->{'pool'}">$ref->{'prompt'}</label></td><td>&nbsp;</td>~;
 		}
 	$FOOTER .= qq~
 		<td rowspan="2" valign="middle">&nbsp;
-		<input onClick="" style="width: 40px; height: 20px; font-size: 8pt; font-face: arial;" class="button" type="button" value="  Go   "></td>
+		<button class="button" type="submit"
+			style="width: 40px; height: 20px; font-size: 8pt; font-face: arial;" 
+			class="button">  Go  </button>
+		</td>
 	</tr>
+<!--
 	<tr>
 		<td><input type="radio" for="PAID" name="VERB" value="PAID">
 		<label id="PAID">Flag as Paid</label></td>
@@ -534,6 +573,7 @@ if ($VERB =~ /^SHOW\:/) {
 		<label id="EMAIL">Send Email</label></td>
 		<td>&nbsp;</td>
 	</tr>
+-->
 	~;
 	$GTOOLS::TAG{'<!-- FOOTER -->'} = $FOOTER;
 
@@ -662,7 +702,8 @@ if ($VERB =~ /^SHOW\:/) {
 		
 			$c .= "<tr class=\"$class\">\n";
 			$c .= "<td><input type=\"checkbox\" $checked name=\"order-$id\"></td>"; 
-			$c .= "<td><a href=\"/biz/orders/view.cgi?ID=$id\">$id</a></td>";
+			# $c .= "<td><a href=\"/biz/orders/view.cgi?ID=$id\">$id</a></td>";
+			$c .= "<td><a href=\"#\" onClick=\"navigateTo('/biz/orders/view.cgi?OID=$id'); return false;\">$id</a></td>";
 			if ($SHOW_POOL) { $c .= "<td>$ref->{'POOL'}</td>"; }
 			if (not defined $ref->{'ORDER_BILL_NAME'}) { $ref->{'ORDER_BILL_NAME'} = ''; }
 			$c .= "<td>".$ref->{'ORDER_BILL_NAME'}."&nbsp;</td>";
@@ -748,21 +789,21 @@ my $HEADJS = qq~
 		var tState = false;
 		function toggleAll() {
 			tState = !tState;
-			for (i=0,n=window.document.myForm.elements.length;i<n;i++) {
-				if (window.document.myForm.elements[i].name.indexOf("order-") !=-1) {
-					window.document.myForm.elements[i].checked = tState;	
+			for (i=0,n=window.document.orderForm.elements.length;i<n;i++) {
+				if (window.document.orderForm.elements[i].name.indexOf("order-") !=-1) {
+					window.document.orderForm.elements[i].checked = tState;	
 				}
 			}
 		}
 		function submitIt(action) {
-			window.document.myForm.CMD.value=action;
-			window.document.myForm.submit();
+			window.document.orderForm.CMD.value=action;
+			window.document.orderForm.submit();
 		}
 
 		function sortBy(verb,column) {
-			myForm.VERB.value=verb;
-			myForm.SORTBY.value = column;
-			myForm.submit();
+			orderForm.VERB.value=verb;
+			orderForm.SORTBY.value = column;
+			orderForm.submit();
 		}
 
 	function doCMD() {
@@ -796,18 +837,20 @@ my $HEADJS = qq~
 	</style>
 ~;
 
+$GTOOLS::TAG{'<!-- SORTBY -->'} = $SORTBY;
+$GTOOLS::TAG{'<!-- AREA -->'} = $AREA;
 
 my @TABS = ();
-push @TABS, { button=>1, name=>'[Create]',link=>'index.cgi?VERB=CREATE', selected=>($VERB eq 'CREATE')?1:0 };
-push @TABS, { name=>'Recent',link=>'index.cgi?VERB=SHOW:RECENT', selected=>($VERB eq 'SHOW:RECENT')?1:0 };
-push @TABS, { name=>'Review',link=>'index.cgi?VERB=SHOW:REVIEW', selected=>($VERB eq 'SHOW:REVIEW')?1:0 };
-push @TABS, { name=>'Hold',link=>'index.cgi?VERB=SHOW:HOLD', selected=>($VERB eq 'SHOW:HOLD')?1:0 };
-push @TABS, { name=>'Pending',link=>'index.cgi?VERB=SHOW:PENDING', selected=>($VERB eq 'SHOW:PENDING')?1:0 };
-push @TABS, { name=>'Approved',link=>'index.cgi?VERB=SHOW:APPROVED', selected=>($VERB eq 'SHOW:APPROVED')?1:0 };
-push @TABS, { name=>'Processing',link=>'index.cgi?VERB=SHOW:PROCESS', selected=>($VERB eq 'SHOW:PROCESS')?1:0 };
-push @TABS, { name=>'Completed',link=>'index.cgi?VERB=SHOW:COMPLETED', selected=>($VERB eq 'SHOW:COMPLETED')?1:0 };
-push @TABS, { name=>'Cancelled',link=>'index.cgi?VERB=SHOW:CANCELLED', selected=>($VERB eq 'SHOW:CANCELLED')?1:0 };
-push @TABS, { name=>'Search',link=>'index.cgi?VERB=SEARCH', selected=>($VERB eq 'SEARCH')?1:0, };
+push @TABS, { button=>1, name=>'[Create]',link=>'#!orderCreate', selected=>($VERB eq 'CREATE')?1:0 };
+push @TABS, { name=>'Recent',link=>'/biz/orders/index.cgi?VERB=SHOW:RECENT', selected=>($AREA eq 'RECENT')?1:0 };
+push @TABS, { name=>'Review',link=>'/biz/orders/index.cgi?VERB=SHOW:REVIEW', selected=>($AREA eq 'REVIEW')?1:0 };
+push @TABS, { name=>'Hold',link=>'/biz/orders/index.cgi?VERB=SHOW:HOLD', selected=>($AREA eq 'HOLD')?1:0 };
+push @TABS, { name=>'Pending',link=>'/biz/orders/index.cgi?VERB=SHOW:PENDING', selected=>($AREA eq 'PENDING')?1:0 };
+push @TABS, { name=>'Approved',link=>'/biz/orders/index.cgi?VERB=SHOW:APPROVED', selected=>($AREA eq 'APPROVED')?1:0 };
+push @TABS, { name=>'Processing',link=>'/biz/orders/index.cgi?VERB=SHOW:PROCESS', selected=>($AREA eq 'PROCESS')?1:0 };
+push @TABS, { name=>'Completed',link=>'/biz/orders/index.cgi?VERB=SHOW:COMPLETED', selected=>($AREA eq 'COMPLETED')?1:0 };
+push @TABS, { name=>'Cancelled',link=>'/biz/orders/index.cgi?VERB=SHOW:CANCELLED', selected=>($AREA eq 'CANCELLED')?1:0 };
+push @TABS, { name=>'Search',link=>'/biz/orders/index.cgi?VERB=SEARCH', selected=>($VERB eq 'SEARCH')?1:0, };
 
 
 &GTOOLS::output('jquery'=>1,'msgs'=>\@MSGS,'bc'=>\@BC,'tabs'=>\@TABS,'headjs'=>$HEADJS,file=>$template_file,header=>1);

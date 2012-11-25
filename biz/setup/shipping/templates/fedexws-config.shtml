@@ -52,32 +52,32 @@ Rate Display:<br>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- DOM_NEXTEARLY --> name="dom_nextearly" value="1"></td>
 		<td>FedEx First Overnight&reg; (8:30am next day)</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextearly">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextearly">[specific rules]</a></td>
 	</tr>
 	<tr >
 		<td><input type="checkbox" <!-- DOM_NEXTNOON --> name="dom_nextnoon" value="1"></td>
 		<td>FedEx Priority Overnight&reg; (10:30am next day)</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextnoon">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextnoon">[specific rules]</a></td>
 	</tr>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- DOM_NEXTDAY --> name="dom_nextday" value="1"></td>
 		<td>FedEx Standard Overnight&reg; (3pm next day)</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextday">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_nextday">[specific rules]</a></td>
 	</tr>
 	<tr >
 		<td><input type="checkbox" <!-- DOM_2DAY --> name="dom_2day" value="1"></td>
 		<td>FedEx 2Day&reg;</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_2day">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_2day">[specific rules]</a></td>
 	</tr>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- DOM_3DAY --> name="dom_3day" value="1"></td>
 		<td>FedEx Express Saver&reg; (3 Days)</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_3day">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_3day">[specific rules]</a></td>
 	</tr>
 	<tr >
 		<td><input type="checkbox" <!-- DOM_GROUND --> name="dom_ground" value="1"></td>
 		<td>FedEx&reg; Ground</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_ground">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_ground">[specific rules]</a></td>
 	</tr>
 	<tr class="r1">
 		<td colspan=3>
@@ -89,12 +89,12 @@ Ground and FedEx Home Delivery to ensure a shipping rate is displayed.</div>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- DOM_HOME --> name="dom_home" value="1"></td>
 		<td>FedEx&reg; Home Delivery</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_home">[specific rules]</a></td>		
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_home">[specific rules]</a></td>		
 	</tr>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- DOM_HOME_EVE --> name="dom_home_eve" value="1"></td>
 		<td>FedEx&reg; Home Delivery (w/Evening Delivery Surcharge)</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_home_eve">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom_home_eve">[specific rules]</a></td>
 	</tr>
 </table>
 
@@ -108,7 +108,7 @@ Ground and FedEx Home Delivery to ensure a shipping rate is displayed.</div>
 <tr><td>
 
 <input type="checkbox" <!-- INT --> name="int" value="on"> Enable FedEx&reg; International Shipping Support
-<a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int">[general rules]</a><br><br>
+<a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int">[general rules]</a><br><br>
 
 <i>The more of these shipping methods you allow, the slower the checkout page will be.</i><br>
 <br>
@@ -116,22 +116,22 @@ Ground and FedEx Home Delivery to ensure a shipping rate is displayed.</div>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- INT_NEXTEARLY --> name="int_nextearly" value="1"></td>
 		<td>FedEx International First&reg;</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_nextearly">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_nextearly">[specific rules]</a></td>
 	</tr>
 	<tr >
 		<td><input type="checkbox" <!-- INT_NEXTNOON --> name="int_nextnoon" value="1"></td>
 		<td>FedEx International Priority&reg;</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_nextnoon">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_nextnoon">[specific rules]</a></td>
 	</tr>
 	<tr class="r1">
 		<td><input type="checkbox" <!-- INT_2DAY --> name="int_2day" value="1"></td>
 		<td>FedEx International Economy&reg;*</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_2day">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_2day">[specific rules]</a></td>
 	</tr>
 	<tr >
 		<td><input type="checkbox" <!-- INT_GROUND --> name="int_ground" value="1"></td>
 		<td>FedEx International Ground&reg;</td>
-		<td><a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_ground">[specific rules]</a></td>
+		<td><a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_int_ground">[specific rules]</a></td>
 	</tr>
 </table>
 <div class="hint">* This shipping method does not support certain packaging, and will assume the FedEx&reg; Pak price if Envelopes, 10kg or 25kg boxes are selected.</div>

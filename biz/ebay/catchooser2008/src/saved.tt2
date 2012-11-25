@@ -7,7 +7,7 @@
 <script type="text/javascript">
 <!--
 
-window.opener.document.forms['[%- FRM -%]'].elements['[%- V -%]'].value='[%- CATID -%]'; 
+window.opener.document.getElementById('[%- V -%]').value='[%- CATID -%]'; 
 // window.close();
 var catName = window.opener.document.getElementById("[%- V -%]_name");
 if(catName) {
@@ -24,6 +24,11 @@ if(catName) {
 <input type="hidden" name="set-product:ebay:attributeset" value=""/>
 <input type="hidden" name="set-product:ebay:category" value=""/>
 <input type="hidden" name="set-product:ebay:financeoffer" value=""/>
+      <input type="hidden" name="_userid" value="[% userid %]">
+      <input type="hidden" name="_authtoken" value="[% authtoken %]">
+      <input type="hidden" name="_deviceid" value="[% deviceid %]">
+      <input type="hidden" name="_domain" value="[% domain %]">
+
 </SESSION_TERMINATED>
 //-->
 

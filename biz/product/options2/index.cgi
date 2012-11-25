@@ -156,7 +156,7 @@ if ($VERB eq 'ADDSOG') {
 
 		if (($pog{'inv'}>0) && ($INVCOUNT>=3)) { 
 			$ERROR++;
-			$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<font color='red'>ERROR: You may have a maximum of 3 inventoriable option groups per product.</font>"; 
+			$GTOOLS::TAG{'<!-- OUTPUT -->'} = "<div class='error'>ERROR: You may have a maximum of 3 inventoriable option groups per product.</div>"; 
 			}
 		
 		if (not $ERROR) {
@@ -192,7 +192,7 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 
 	if (length($ZOOVY::cgiv->{'PROMPT'})<4) {
 		$ERROR++;
-		$GTOOLS::TAG{'<!-- PROMPT_ERROR -->'} = "<font color='red'>ERROR: Prompt is a required field and cannot be left blank.</font><br>";
+		$GTOOLS::TAG{'<!-- PROMPT_ERROR -->'} = "<div class='error'>ERROR: Prompt is a required field and cannot be left blank.</div><br>";
 		}
 	
 	my %og = ();
@@ -215,7 +215,7 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 	if (defined $ZOOVY::cgiv->{'EBAY'}) { $og{'ebay'} = $ZOOVY::cgiv->{'EBAY'}; }
 
 	if ($TYPE eq 'text') {
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with text fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with text fields.</div><br>"; }
 #		print STDERR "$output\n";
 		}
 	elsif ($TYPE eq 'cb') {		
@@ -223,7 +223,7 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 		}
 	## HIDDEN
 	elsif ($TYPE eq 'hidden') {
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with text fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with text fields.</div><br>"; }
 		}
 	## FINDER
 	elsif ($TYPE eq 'attribs') {
@@ -237,10 +237,10 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 	elsif ($TYPE eq 'textarea') {
 		$og{'cols'} = 80;
 		$og{'rows'} = 3;
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with textarea fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with textarea fields.</div><br>"; }
 		}
 	elsif ($TYPE eq 'number') {
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with number fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with number fields.</div><br>"; }
 		}
 	elsif ($TYPE eq 'biglist') {
 		}
@@ -259,16 +259,16 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 		}
 	elsif ($TYPE eq 'calendar') {
 		$og{'flags'} = 255;
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with calendar fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with calendar fields.</div><br>"; }
 		}
 	elsif ($TYPE eq 'readonly') {
 		$og{'default'} = 'Type your Text/Instructions Here!';
-		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<font color='red'>ERROR: Inventory cannot be used with readonly fields.</font><br>"; }
+		if ($og{'inv'}>0) { $ERROR++; $GTOOLS::TAG{'<!-- INV_ERROR -->'} = "<div class='error'>ERROR: Inventory cannot be used with readonly fields.</div><br>"; }
 		}
 	else { 
 		$og{'type'} = "ERROR.$TYPE";
 		$ERROR++;
-		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>ERROR: Unknown type: $TYPE</font><br>";
+		$GTOOLS::TAG{'<!-- ERROR -->'} = "<div class='error'>ERROR: Unknown type: $TYPE</div><br>";
 		}
 
 
@@ -278,7 +278,7 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 		#foreach my $k (keys %{$listref}) {
 		#	if ($listref->{$k} eq $SOGNAME) {
 		#		$ERROR++;
-		#		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A SOG named $SOGNAME already exists [ID=$k].</font><br>";
+		#		$GTOOLS::TAG{'<!-- ERROR -->'} = "<div class='error'>A SOG named $SOGNAME already exists [ID=$k].</div><br>";
 		#		}
 		#	}
 		if ($ERROR) {
@@ -308,13 +308,13 @@ if ($VERB eq 'SAVE-CREATEPOG' || $VERB eq 'SAVE-CREATESOG') {
 			if ($pog->{'iname'} eq $ZOOVY::cgiv->{'INAME'}) {
 				## INAME is a unique identifier (this probably ought to a guid, currently it's a timestamp)(
 				$ERROR++;
-				$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A POG iname=[$ZOOVY::cgiv->{'INAME'}] already exists [ID=$pog->{'id'}] - cannot create another one! (hint: you probably just pressed refresh on the browser)</font><br>";
+				$GTOOLS::TAG{'<!-- ERROR -->'} = "<div class='error'>A POG iname=[$ZOOVY::cgiv->{'INAME'}] already exists [ID=$pog->{'id'}] - cannot create another one! (hint: you probably just pressed refresh on the browser)</div><br>";
 				}
 			}
 
 		if (($og{'inv'}>0) && ($INVCOUNT>=3)) {
 			$ERROR++;
-			$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>A single product may not have more than 3 inventoriable option groups associated with it.</font><br>";
+			$GTOOLS::TAG{'<!-- ERROR -->'} = "<div class='error'>A single product may not have more than 3 inventoriable option groups associated with it.</div><br>";
 			}
 
 		if ($ERROR) {
@@ -952,7 +952,7 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 			$GTOOLS::TAG{'<!-- HIDE_SELECT_START -->'} = '';
 			$GTOOLS::TAG{'<!-- HIDE_SELECT_END -->'} = '';
 			my $t = time();
-			my %serialref = ('ATTRIB'=>'img','SRC'=>'','PROMPT'=>'Select List Image','DIV'=>'thisFrm',AUTH=>$::AUTH);
+			my %serialref = ('ATTRIB'=>'img','SRC'=>'','PROMPT'=>'Select List Image','DIV'=>'pogFrm',AUTH=>$::AUTH);
 			my $passthis = &ZTOOLKIT::fast_serialize(\%serialref,1);
 			$GTOOLS::TAG{'<!-- IMAGE_MODIFIER -->'} = qq~
 				<table bgcolor="CFCFCF">
@@ -963,7 +963,7 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 					<td bgcolor="CFCFCF">
 						Selected Image: 
 						<input 
-							onChange="document.thisFrm.imgimg.src=imglib(document.thisFrm.img.value,50,50,'FFFFFF',0,'jpg');" 
+							onChange="document.pogFrm.imgimg.src=imglib(document.pogFrm.img.value,50,50,'FFFFFF',0,'jpg');" 
 						type="textbox" name="img" size="20"><br>
 						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#img'),jQuery('#imgimg')','Choose Option Image');">
 					</td>
@@ -1010,7 +1010,7 @@ eBay Variation Specifics Name: <input type="textbox" name="EBAY" value="%s">
 			## this hash is created by app1:/httpd/servers/amazon/build_variation_thms.pl 
 			my @options = &AMAZON3::get_amz_options();
 			$GTOOLS::TAG{'<!-- AMAZON_OPTIONS -->'} = qq~Amazon Variation Keyword [ ~.
-				qq~<a target=_new href="http://webdoc.zoovy.com/index.cgi?VERB=DOC&DOCID=50391">?</a> ]: ~.
+				qq~<a target=_new onClick="return linkOffSite('http://webdoc.zoovy.com/index.cgi?VERB=DOC&DOCID=50391');">?</a> ]: ~.
 				qq~\n<select name="AMZ" >\n<option value=''>None</option>\n~;
 			
 			foreach my $option (sort @options) {
@@ -1364,24 +1364,24 @@ if ($VERB eq '') {
 				}
 
 			if ($count++>0) {
-				$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=PROMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_up-13x13.gif\" height=13 width=13 border=0></a>";
+				$c .= "	<a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=PROMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."');\"><img src=\"/biz/images/arrows/blue_up-13x13.gif\" height=13 width=13 border=0></a>";
 				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
 
 			if ($count<$last) {
-				$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=DEMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_down-13x13.gif\" border=0></a>";
+				$c .= "	<a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=DEMOTE&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."'');\"><img src=\"/biz/images/arrows/blue_down-13x13.gif\" border=0></a>";
 				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
 
 			if ($pog->{'_editable'}) {
 				if ($pog->{'sog'}) {
-					$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
+					$c .= "	<a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."');\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
 					}
 				else {
-					$c .= "	<a href=\"index.cgi?MODE=$::MODE&VERB=EDITPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
+					$c .= "	<a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=EDITPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."');\"><img src=\"/biz/images/arrows/blue_edit-13x13.gif\" border=0></a>";
 					}
 				} else { $c .= "<img src=\"/images/blank.gif\" width=13 height=13 border=0>"; }
 		
 			if ($pog->{'sog'}) {
-				$c .= "  <a href=\"index.cgi?MODE=$::MODE&VERB=KILLPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."\"><img src=\"/biz/images/arrows/blue_right-13x13.gif\" border=0></a>";
+				$c .= "  <a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=KILLPOG&PRODUCT=$PRODUCT&POG=".&uri_escape($pog->{'id'})."');\"><img src=\"/biz/images/arrows/blue_right-13x13.gif\" border=0></a>";
 				}
 
 			$c .= "</td>";
@@ -1397,7 +1397,7 @@ if ($VERB eq '') {
 					if (defined $sogref->{'@options'}) {
 						$c .= qq~
 						<td valign=top>~.(scalar(@{$sogref->{'@options'}})).qq~<br>
-						<a href="index.cgi?MODE=$::MODE&VERB=EDITSOG&SOG=$sogref->{'id'}">(Edit SOG)</a>
+						<a href="#" onClick="return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=EDITSOG&SOG=$sogref->{'id'}');">(Edit SOG)</a>
 						</td>~; 
 						}
 					else {	
@@ -1422,12 +1422,12 @@ if ($VERB eq '') {
 					$c .= "<td valign='top'>n/a</td>";
 					}
 				elsif ((not defined $pog->{'@options'}) || (scalar(@{$pog->{'@options'}}) == 0)) {
-					$c .= "<td valign='top'><font color='red'>0 options - CORRUPT!</font></td>";
+					$c .= "<td valign='top'><div class='error'>0 options - CORRUPT!</div></td>";
 					}
 				else {
 					$c .= "<td valign='top'>".scalar(@{$pog->{'@options'}})." options ";
 					if ( (scalar(@{$pog->{'@options'}})>1) && (($pog->{'type'} eq 'select') || ($pog->{'type'} eq 'attrib') || ($pog->{'type'} eq 'radio')) ) {
-						$c .= "  <a href=\"index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".uri_escape($pog->{'id'})."\">[View]</a>";
+						$c .= "  <a href=\"#\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=GRIDEDIT&PRODUCT=$PRODUCT&POG=".uri_escape($pog->{'id'})."');\">[View]</a>";
 						}
 					$c .= "</td>";
 					}
@@ -1458,7 +1458,7 @@ if ($VERB eq '') {
 			}
 
 		if ($PRODUCT eq '') {
-			$out .= "<input value=\"edit\" type=\"button\" class=\"minibutton\" onClick=\"navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=EDITSOG&PRODUCT=$PRODUCT&SOG=".$id."');\">";
+			$out .= "<button type=\"button\" class=\"minibutton\" onClick=\"return navigateTo('/biz/product/options2/index.cgi?MODE=$::MODE&VERB=EDITSOG&PRODUCT=$PRODUCT&SOG=".$id."');\">Edit SOG $id</button>";
 			}
 
 		# $DEBUG = 1;

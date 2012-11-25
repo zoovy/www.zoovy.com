@@ -25,9 +25,11 @@ my ($bj) = undef;
 my %jsresult = ();
 
 my $JOBID = int($ZOOVY::cgiv->{'JOB'});
+if ($JOBID == 0) { $JOBID = $ZOOVY::cgiv->{'JOBID'}; }
 my $ERROR = undef;
 
 
+if ($VERB eq '') { $VERB = 'LOAD'; }
 if ($VERB eq 'VIEW') {
 	## VIEW accepts GUID instead JOB= ... doesn't actually work.
 	}
@@ -171,7 +173,8 @@ if (defined $ERROR) {
 		$GTOOLS::TAG{'<!-- REPORT_BODY -->'} .= qq~
 		<hr>
 		A job was created, however your account will not be debited any job credits because of this error.<br>
-<input class="button" onClick="document.batchFrm.JOB.value='$JOBID'; document.batchFrm.VERB.value='CLEANUP'; document.batchFrm.submit();" type="button" value="Clean Up/Remove">
+<button form="batchFrm" class="button" 
+	onClick="document.batchFrm.JOB.value='$JOBID'; document.batchFrm.VERB.value='CLEANUP';" type="submit">Clean Up/Remove</button>
 		~;
 		}
 	$GTOOLS::TAG{'<!-- JOB -->'} = $JOBID;
@@ -246,7 +249,9 @@ if (not defined $HEADER) { $HEADER++; }
 
 my @BC = ();
 push @BC, { name=>"Batch Job", };
-push @BC, { name=>"Job ID: ".$bj->id(), link=>"/biz/batch/view.cgi?VERB=VIEW&JOB=".$bj->id() };
+if (defined $bj) {
+	push @BC, { name=>"Job ID: ".$bj->id(), link=>"/biz/batch/index.cgi?VERB=VIEW&JOB=".$bj->id() };
+	}
 
 
 &GTOOLS::output(file=>'index.shtml',

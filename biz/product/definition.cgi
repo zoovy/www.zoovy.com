@@ -64,10 +64,10 @@ else {
 		}
 	}
 
-print STDERR Dumper($ref);
-
+# print STDERR Dumper($ref,$ZOOVY::cgiv);
 #print "Content-type: text/plain\n\n";
 #print Dumper($ref);
+
 
 if ($VERB eq 'SAVE') {
 	my ($changes) = &PRODUCT::FLEXEDIT::prodsave($P,$ref,$ZOOVY::cgiv);
@@ -76,11 +76,11 @@ if ($VERB eq 'SAVE') {
 		}
 	}
 
-if ($VERB eq 'QUIT') {
-	print "Location: /biz/product/edit.cgi?PID=$PRODUCT\n\n"; exit;
-	}
+#if ($VERB eq 'QUIT') {
+#	print "Location: /biz/product/edit.cgi?PID=$PRODUCT\n\n"; exit;
+#	}
 
-$GTOOLS::TAG{'<!-- OUTPUT -->'} = &PRODUCT::FLEXEDIT::output_html($P,$ref);
+$GTOOLS::TAG{'<!-- OUTPUT -->'} = &PRODUCT::FLEXEDIT::output_html($P,$ref,form=>"definitionFrm");
 $GTOOLS::TAG{'<!-- DOCID -->'} = $DOCID;
 
 

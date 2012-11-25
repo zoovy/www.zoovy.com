@@ -42,14 +42,6 @@ div.slog { font-size: 7pt; font-family: sans-serif,helvetica; text-align: left;}
 
 
 	</td>
-	<td valign=top width=320>
-<div>
-<iframe SRC="<!-- FIRST_URL -->" id="iFrameAd" NAME="iFrameAd" WIDTH=320
-HEIGHT=240
-ALIGN="MIDDLE" FRAMEBORDER=0 MARGINWIDTH=0 MARGINHEIGHT=0
-SCROLLING=no></iframe><br>
-</div>
-	</td>
 </tr>
 <!-- BOTTOM ROW -->
 <tr>
@@ -91,7 +83,7 @@ function showJobStatus(pe,json) {
 		$('#status_detail').append("<br>Notes: "+json.notes);
 		}
 	if (json.view_url) {
-		$('#status_detail').append("<input type=button class=button value='View Result' onClick=\"navigateTo('"+json.view_url+"');\">");
+		$('#status_detail').append("<button class=button onClick=\"jQuery('#reportsContent').empty(); navigateTo('"+json.view_url+"'); return false;\">View Result</button>");
 		}
 
 	if ((json.status == '') && (!json.err)) {
@@ -243,7 +235,6 @@ function getJobStatus(pe) {
 var bannerCounter = 0;
 var URLS = new Array(<!-- JS_ARRAY -->);
 function cycleBanner(pe) {
-	window.frames['iFrameAd'].location.href = URLS[bannerCounter];
 	bannerCounter = bannerCounter + 1;
    if (bannerCounter>=URLS.length) { bannerCounter = 0; }
 
@@ -263,7 +254,6 @@ jQuery.executeEach = function (seconds, fn) {
 };
 
 jQuery.executeEach(5000,getJobStatus);
-jQuery.executeEach(8500,cycleBanner);
 
 
 //var periodicalUpdater = function() {

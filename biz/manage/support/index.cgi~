@@ -358,7 +358,7 @@ if ($VERB eq '') {
 	my $c = '';
 	foreach my $k (sort keys %ACCESS_LOGS) {
 		my ($pretty,$filename) = @{$ACCESS_LOGS{$k}};
-		$c .= "<li><a href=\"index.cgi?VERB=ACCESSLOG&FILE=$filename\">$pretty</a>";
+		$c .= "<li><a href=\"/biz/manage/support/index.cgi?VERB=ACCESSLOG&FILE=$filename\">$pretty</a>";
 		}
 	$GTOOLS::TAG{'<!-- ACCESS_LOGS -->'} = $c;
 
@@ -451,11 +451,11 @@ if ($VERB eq 'MORE') {
 	}
 
 my @TABS = ();
-push @TABS, { name=>"Less", link=>"index.cgi?VERB=", selected=>($VERB eq '')?1:0 };
-push @TABS, { name=>"More", link=>"index.cgi?VERB=MORE", selected=>($VERB eq 'MORE')?1:0 };
-push @TABS, { name=>"Flexedit", link=>"index.cgi?VERB=FLEXEDIT", selected=>($VERB eq 'FLEXEDIT')?1:0 };
+push @TABS, { name=>"Less", link=>"/biz/manage/support/index.cgi?VERB=", selected=>($VERB eq '')?1:0 };
+push @TABS, { name=>"More", link=>"/biz/manage/support/index.cgi?VERB=MORE", selected=>($VERB eq 'MORE')?1:0 };
+push @TABS, { name=>"Flexedit", link=>"/biz/manage/support/index.cgi?VERB=FLEXEDIT", selected=>($VERB eq 'FLEXEDIT')?1:0 };
 
-push @TABS, { name=>"Logs", link=>"index.cgi?VERB=LOGS",  selected=>($VERB eq 'LOGS')?1:0 };
+push @TABS, { name=>"Logs", link=>"/biz/manage/support/index.cgi?VERB=LOGS",  selected=>($VERB eq 'LOGS')?1:0 };
 
 $GTOOLS::TAG{'<!-- GUID -->'} = &BATCHJOB::make_guid();
 

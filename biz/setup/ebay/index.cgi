@@ -29,8 +29,8 @@ $TEMPLATE::NS = substr($CODE,0,10);
 
 
 my @BC = ();
-push @BC, { name=>'Setup', link=>'/biz/setup', target=>'_top' };
-push @BC, { name=>'eBay ', link=>'/biz/setup/ebay', target=>'_top' };
+push @BC, { name=>'Setup', link=>'/biz/setup/index.cgi', target=>'_top' };
+push @BC, { name=>'eBay ', link=>'/biz/setup/ebay/index.cgi', target=>'_top' };
 
 
 $GTOOLS::TAG{'<!-- MESSAGE -->'} = qq~
@@ -1233,9 +1233,9 @@ if ($ACTION eq 'PROFILES') {
 			}
 
 		$c .= "<tr class=\"".((($i++%2)==0)?'r0':'r1')."\">";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-COMPANYEDIT&NS=$code\">[Listing Template]</a></td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-POLICYEDIT&CODE=$code\">[eBay Policies]</a></td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=PROFILE-SHIPPING&CODE=$code\">[eBay Shipping]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-COMPANYEDIT&NS=$code\">[Listing Template]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-POLICYEDIT&CODE=$code\">[eBay Policies]</a></td>";
+		$c .= "<td><a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-SHIPPING&CODE=$code\">[eBay Shipping]</a></td>";
 		$c .= "<td nowrap>$code</td>";	
 		$c .= "<td nowrap>$ebayuser</td>";
 		$c .= "<td nowrap>$ebaytemplate</td>";	
@@ -1449,7 +1449,7 @@ WARNING: this account shares partition with eBay account $PRT{$act->{'PRT'}} (ea
 		$c .= "<td valign='top'>";
 		$c .= "<a href=\"index.cgi?ACTION=DEACTIVATE&ID=$act->{'ID'}\">[Deactivate]</a><br>";
 		# $c .= "<a href=\"index.cgi?ACTION=FEEDBACK&DBID=$act->{'ID'}\">[Feedback]</a><br>";
-		if ($act->{'HAS_STORE'}) { $c .= "<a href=\"index.cgi?ACTION=LOAD-STORE-CATEGORIES&ID=$act->{'ID'}\">[Refresh Store Categories]</a><br>"; }
+		if ($act->{'HAS_STORE'}) { $c .= "<a href=\"/biz/setup/ebay/index.cgi?ACTION=LOAD-STORE-CATEGORIES&ID=$act->{'ID'}\">[Refresh Store Categories]</a><br>"; }
 		$c .= "<a href=\"redirhack.cgi?SignIn&m=$USERNAME&eb=$act->{'EBAY_USERNAME'}&sandbox=".($act->{'IS_SANDBOX'}?'on':'')."\"> [Refresh Authorization Token]</a><br>"; 
 		$c .= "<br>";
 		$c .= "</td>";

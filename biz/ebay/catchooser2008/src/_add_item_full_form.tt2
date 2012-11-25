@@ -1,5 +1,10 @@
 <p>Please, describe your item to list in this category:</p>
 <form id="add-item-form" method="POST" onSubmit="return validate(this)" action="/biz/ebay/catchooser2008/index.cgi/add_item">
+      <input type="hidden" name="_userid" value="[% userid %]">
+      <input type="hidden" name="_authtoken" value="[% authtoken %]">
+      <input type="hidden" name="_deviceid" value="[% deviceid %]">
+      <input type="hidden" name="_domain" value="[% domain %]">
+
   <label>Title <span class="required">*</span></label><input type="text" name="title" maxlength="400" value="[% product_title %]" style="width:350px" />
   <label>Subtitle ($0.50)</label><input type="text" name="subtitle" maxlength="400" value="" style="width:350px" />
   <div id="category-specifics">[% specifics_html %]

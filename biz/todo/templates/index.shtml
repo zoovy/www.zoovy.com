@@ -47,6 +47,7 @@ $("#interactions").trigger("interact", [ "test", "testvalue" ] );
 	<tr>
 		<td colspan="2">
 <div id="addnew" style="display: none">
+
 <form action="index.cgi">
 <input type="hidden" name="ACTION" value="CREATE">
 <input type="hidden" name="TAB" value="<!-- TAB -->">

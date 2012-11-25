@@ -58,8 +58,8 @@ print STDERR "SUPPLIER: VERB[$VERB] CODE[$CODE]\n";
 
 ## breadcrumbs
 my @BC = ();
-push @BC, { 'name'=>'Utilities', 'link'=>'/biz/utilities', 'target'=>'_top'};
-push @BC, { 'name'=>'Supply Chain', link=>'/biz/utilities/suppliers', 'target'=>'_top'};
+push @BC, { 'name'=>'Utilities', 'link'=>'/biz/utilities/index.cgi', 'target'=>'_top'};
+push @BC, { 'name'=>'Supply Chain', link=>'/biz/utilities/suppliers/index.cgi', 'target'=>'_top'};
 
 ## TABS
 my @TABS = ();
@@ -201,13 +201,13 @@ else {
 $GTOOLS::TAG{'<!-- CODE -->'} = $CODE;
 if (defined $S) { push @BC, { name=>"$CODE", link=>"/biz/manage/suppliers/index.cgi?VERB=EDIT&CODE=$CODE", target=>'_top' }; }
 if ($CODE ne '') {
-	push @TABS, { 'name'=>"$CODE Setup", link=>"?VERB=EDIT&CODE=$CODE" };
-	push @TABS, { 'name'=>"$CODE Products", link=>"?VERB=PRODUCTS&CODE=$CODE" };
+	push @TABS, { 'name'=>"$CODE Setup", link=>"/biz/manage/suppliers/index.cgi?VERB=EDIT&CODE=$CODE" };
+	push @TABS, { 'name'=>"$CODE Products", link=>"/biz/manage/suppliers/index.cgi?VERB=PRODUCTS&CODE=$CODE" };
 	# push @TABS, { 'name'=>"$CODE Inventory", link=>"?VERB=INVENTORY&CODE=$CODE" };
-	push @TABS, { 'name'=>"$CODE Orders", link=>"?VERB=ORDERS&CODE=$CODE" };
+	push @TABS, { 'name'=>"$CODE Orders", link=>"/biz/manage/suppliers/index.cgi?VERB=ORDERS&CODE=$CODE" };
 	}
 else {
-	push @TABS, { 'name'=>"Non-Confirmed Orders", link=>"?VERB=NON_CONF_ORDERS" };	
+	push @TABS, { 'name'=>"Non-Confirmed Orders", link=>"/biz/manage/suppliers/index.cgi?VERB=NON_CONF_ORDERS" };	
 	}
 
 ##
@@ -307,7 +307,7 @@ if ($VERB eq 'EDIT') {
 	elsif ($S->fetch_property('PARTNER') eq 'ATLAST') {
 		push @FIELDS, { type=>'text', title=>"AtLast Username", id=>".partner.username" };
 		push @FIELDS, { type=>'text', title=>"AtLast Password", id=>".partner.password" };
-		push @FIELDS, { title=>'API Inventory - Update Configuration', link=>"index.cgi?VERB=API-INVENTORY&CODE=$CODE" };
+		push @FIELDS, { title=>'API Inventory - Update Configuration', link=>"/biz/manage/suppliers/index.cgi?VERB=API-INVENTORY&CODE=$CODE" };
 		}
 	elsif ($S->fetch_property('PARTNER') eq 'SHIPWIRE') {
 		push @FIELDS, { type=>'*hint', hint=>qq~<br>Signup for your <a target=_new href="http://partner.shipwire.com/o.php?id=1900">ShipWire account</a>~ };
@@ -326,7 +326,7 @@ if ($VERB eq 'EDIT') {
 		push @FIELDS, { type=>'info', title=>"DOBA Status Notes", id=>".partner.status_notes"};
 		## changed so only SUPPORT can run reimport
 		if ($LU->is_zoovy() eq 'SUPPORT') {
-			push @FIELDS,  { title=>'Products - (Re)Import Watchlists - please run this import sparingly.', link=>"index.cgi?VERB=PRODUCTIMPORT&CODE=$CODE" };
+			push @FIELDS,  { title=>'Products - (Re)Import Watchlists - please run this import sparingly.', link=>"/biz/manage/suppliers/index.cgiindex.cgi?VERB=PRODUCTIMPORT&CODE=$CODE" };
 			}
 		else {
 			push @FIELDS,  { title=>'Products - (Re)Import Watchlists - please submit a ticket to have your reimport run.', link=>"/biz/support/index.cgi?VERB=TICKET-CREATE" };
@@ -340,13 +340,13 @@ if ($VERB eq 'EDIT') {
 	push @FIELDS, { tab=>'PRODUCT', type=>'selectsubmit', id=>'PRODUCT_CONNECTOR', title=>'Product Connector', options=>\@AVAILABLE_PRODUCT_CONNECTORS };
 	if ($S->fetch_property('PRODUCT_CONNECTOR') eq 'NONE') {
 		# push @FIELDS, { tab=>'PRODUCT', type=>'*hint', 'hint'=>qq~Manually create and/or upload product lists.~ };
-		push @FIELDS, { tab=>'PRODUCT', title=>'Products - Add Individual', link=>"index.cgi?VERB=PRODUCT-ADD&CODE=$CODE" };
+		push @FIELDS, { tab=>'PRODUCT', title=>'Products - Add Individual', link=>"/biz/manage/suppliers/index.cgi?VERB=PRODUCT-ADD&CODE=$CODE" };
 		# push @FIELDS, { tab=>'PRODUCT', title=>'Products - Import Batch', link=>"index.cgi?VERB=PRODUCT-IMPORT&CODE=$CODE" };
 		#push @FIELDS, {title=>'Products - Associate Existing', link=>"index.cgi?VERB=IMPORT&CODE=$CODE" };		
 		}
 	if ($S->fetch_property('PRODUCT_CONNECTOR') eq 'CSV') {
 		}
-	push @FIELDS, { tab=>'PRODUCT', title=>'Products - Report', link=>"index.cgi?VERB=PRODUCTS&CODE=$CODE" };		
+	push @FIELDS, { tab=>'PRODUCT', title=>'Products - Report', link=>"/biz/manage/suppliers/index.cgi?VERB=PRODUCTS&CODE=$CODE" };		
 
 	##
 	##
@@ -365,7 +365,7 @@ if ($VERB eq 'EDIT') {
 		push @FIELDS, { type=>'note', tab=>'SHIPPING', title=>'Shipping', note=>'None uses your store configuration' };
 		}
 	elsif ($S->fetch_property('SHIP_CONNECTOR') eq 'GENERIC') {
-		push @FIELDS, { type=>'link', tab=>'SHIPPING', title=>'Shipping - Configuration', link=>"index.cgi?VERB=GENERIC-SHIPPING&CODE=$CODE" };
+		push @FIELDS, { type=>'link', tab=>'SHIPPING', title=>'Shipping - Configuration', link=>"/biz/manage/suppliers/index.cgi?VERB=GENERIC-SHIPPING&CODE=$CODE" };
 		}
 	#elsif ($S->fetch_property('SHIP_CONNECTOR') eq 'API') {
 	#	push @FIELDS, { tab=>'SHIPPING',	type=>'text', title=>'ShipQuote URL',	id=>'.api.shipurl',  size=>90, maxlength=>128,	};
@@ -595,7 +595,7 @@ this option. Orders will NOT be transmitted to the supplier until they are close
 
 
 	# push @FIELDS, { tab=>'ORDER', title=>'Orders - Delivery Configuration', link=>"index.cgi?VERB=ORDERING&CODE=$CODE" };
-	push @FIELDS, { tab=>'ORDER', title=>'Orders - Report', link=>"index.cgi?VERB=ORDERS&CODE=$CODE" };
+	push @FIELDS, { tab=>'ORDER', title=>'Orders - Report', link=>"/biz/manage/suppliers/index.cgi?VERB=ORDERS&CODE=$CODE" };
 
 #		push @FIELDS, {
 #			tab=>'ORDER',
@@ -831,7 +831,7 @@ if ($VERB eq 'PRODUCTS') {
 			$c .= qq~<td>$count</td>~;
 			
 			## SKU
-			$c .= qq~<td valign=top nowrap><a target="_new" href="http://www.zoovy.com/biz/product/index.cgi?VERB=QUICKSEARCH&VALUE=$pid">$pid</a></td>~;
+			$c .= qq~<td valign=top nowrap><a href="navigateTo('#:products?product=$pid');">$pid</a></td>~;
 
 			$c .= "<td>$prod_to_supref->{$pid}</td>"; 				
 			my $inv_enable = $P->fetch('zoovy:inv_enable');

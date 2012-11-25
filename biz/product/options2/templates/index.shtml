@@ -1,6 +1,6 @@
 <center>
 <br>
-<form method="post" action="index.cgi">
+<form id="thisFrm" name="thisFrm" method="post" action="index.cgi">
 <table border=0 cellspacing=0 class="zoovytable" width='550'>
 <tr>
 	<td class="zoovytableheader">
@@ -36,7 +36,7 @@
 		<!-- POG_OUTPUT -->
 		</table>
 		<br>
-		<input class="button" type="button" value="Add New" onClick="navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATEPOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');">
+		<button class="button" onClick="return navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATEPOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');">Add New</button>
 			<a href="#" onClick="if (Element.visible('!help-pogs')) { new Effect.SlideUp('!help-pogs'); } else { new Effect.SlideDown('!help-pogs'); }">[Info]</a>
 		<div id="!help-pogs" style="display: none">
 		<span> 
@@ -102,4 +102,3 @@
 <br>
 </form>
 </center>
-</body>

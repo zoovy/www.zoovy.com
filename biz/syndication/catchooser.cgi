@@ -8,11 +8,12 @@
 use strict;
 use lib "/httpd/modules";
 require SYNDICATION::CATEGORIES;
-require ZOOVY;
 require GTOOLS;
+require ZOOVY;
 use Data::Dumper;
 
-my ($USERNAME) = &ZOOVY::authenticate();
+&ZOOVY::init();
+
 my $template_file = 'catchooser.shtml';
 
 my $MKT = $ZOOVY::cgiv->{'MKT'};
@@ -20,10 +21,8 @@ $GTOOLS::TAG{'<!-- MKT -->'} = $MKT;
 
 my $FRM = $ZOOVY::cgiv->{'FRM'};
 if ($FRM eq '') { $FRM = 'catFrm'; }
-$GTOOLS::TAG{'<!-- FRM -->'} = $FRM;
 
 my $NC = $ZOOVY::cgiv->{'NAVCAT'};
-$GTOOLS::TAG{'<!-- NAVCAT -->'} = $NC;
 my $VAL = int($ZOOVY::cgiv->{'VAL'});
 
 my ($CDS) = &SYNDICATION::CATEGORIES::CDSLoad($MKT);
@@ -47,6 +46,48 @@ foreach my $name (sort keys %cats) {
 	my ($selected) = ($VAL == $val)?'selected':'';
 	$c .= "<option $selected value=\"$val\">$name</option>\n";
 	}
-$GTOOLS::TAG{'<!-- CATEGORY -->'} = $c;
 
-&GTOOLS::output(file=>$template_file,header=>1);
+print "Content-type: text/html\n\n";
+print qq~
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="STYLESHEET" type="text/css" href="/biz/standard.css"/>
+</head>
+<body>
+
+<script>
+<!--
+
+function save(myselect) {
+	window.opener.document.forms['$FRM']['$NC'].value = myselect.value;
+	var span = window.opener.document.getElementById('txt!$NC');
+	window.opener.focus();
+	span.innerHTML = myselect.options[myselect.selectedIndex].text;
+	window.close();
+	}
+
+
+//-->
+</script>
+
+Category: $NC<br>
+<br>
+
+<b>Please select a category:</b><br>
+
+<br>
+
+<form name="myFrm" id="myFrm">
+<input type="hidden" name="NAVCAT" value="$NC">
+<select onChange="save(this);" style="font-size: 8pt; font-face: sans-serif, arial;" name="category">
+<option value="0">-- Not Selected --</option>
+$c
+</select>
+</form>
+</body>
+~;
+
+
+
+#$GTOOLS::TAG{'<!-- CATEGORY -->'} = $c;
+#&GTOOLS::output(file=>$template_file,header=>1);

@@ -246,7 +246,7 @@ if ($ACTION eq 'JEDI') {
 		$c .= "<td>$info->{'PUBLISHED'}</td>";
 		$c .= "<td>";
 			$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=UTILITY&APP=JEDI_PACKAGE&GUID=JEDI-$USERNAME-$ID-$V&.type=JEDI&.package=$ID\">[Publish]</a>";
-			$c .= "<a href=\"index.cgi?VERB=JEDI-BUMP&ID=$ID\">[Bump Version]</a>";
+			$c .= "<a href=\"/biz/manage/schedules/index.cgi?VERB=JEDI-BUMP&ID=$ID\">[Bump Version]</a>";
 		$c .= "</td>";
 		$c .= "</tr>";
 		}
@@ -398,8 +398,8 @@ if ($ACTION eq '') {
 		if ($S->{'TITLE'} eq '') { $S->{'TITLE'} = "Untitled Schedule"; }
 		$c .= "<tr class=\"$r\">";
 		$c .= "<td><a href=\"/biz/manage/customer/index.cgi?VERB=SEARCH-NOW&scope=WS&searchfor=$sid\">Customers</a></td><td>|</td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=EDIT&SID=$sid\">Edit</a></td><td>|</td>";
-		$c .= "<td><a href=\"index.cgi?ACTION=NUKE&SID=$sid\">Delete</a></td>";
+		$c .= "<td><a href=\"/biz/manage/schedules/index.cgi?ACTION=EDIT&SID=$sid\">Edit</a></td><td>|</td>";
+		$c .= "<td><a href=\"/biz/manage/schedules/index.cgi?ACTION=NUKE&SID=$sid\">Delete</a></td>";
 		$c .= "<td>$sid</td>";
 		$c .= "<td>$S->{'TITLE'}</td>";
 		$c .= "</tr>";

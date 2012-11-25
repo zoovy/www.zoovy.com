@@ -9,7 +9,7 @@ function openWindow(url) {
 </SCRIPT>
 <!-- SETUP_TAB -->
 
-<form name="thisFrm" action="index.cgi" method="post">
+<form name="thisFrm" action="<!-- PATH -->" method="post">
 <input type="hidden" name="VERB" value="SAVE-EBAY-CATEGORIES">
 <input type="hidden" name="PROFILE" value="<!-- PROFILE -->">
 

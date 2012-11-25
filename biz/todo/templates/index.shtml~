@@ -1,8 +1,7 @@
 <!-- NO_TAB -->
 
 
-<ol id="interactions">
-</ol>
+<ol id="interactions"></ol>
 
 <script type="text/javascript">
 
@@ -27,9 +26,7 @@ $("#interactions").bind("interact",
 $("#interactions").trigger("interact", [ "test", "testvalue" ] );
 
 </script>
-<input class="button" type="button" onClick='
-$("#interactions").trigger("interact",["key","value"]);
-'>
+<input class="button" type="button" onClick='$("#interactions").trigger("interact",["key","value"]);'>
 
 <ul id="taskRightClick" class="contextMenu">
 	<!-- CONTEXTMENUOPTIONS -->

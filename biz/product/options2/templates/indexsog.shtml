@@ -1,9 +1,3 @@
-<HEAD>
-<title>Zoovy: Online Product Management - Merchant</title>
-<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/standard.css">
-<!-- HEADER_ONLY -->
-</HEAD>
-<body>
 <!-- MSGS -->
 
 <center>
@@ -24,7 +18,7 @@
 <tr>
 	<td colspan="3">
 	
-<form method="post" action="index.cgi">
+<form id="thisFrm" name="thisFrm" method="post" action="index.cgi">
 <!-- MESSAGE -->
 		
 		<br>
@@ -36,7 +30,7 @@
 			<!-- SOGS_OUTPUT -->
 			<tr>
 				<td colspan="2">
-				<input type="button" class="button" value=" Create New " onClick="navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');"><br>
+				<button class="button" onClick="navigateTo('/biz/product/options2/index.cgi?MODE=<!-- MODE -->&VERB=CREATESOG&PRODUCT=<!-- PRODUCT -->&TS=<!-- TS -->');">Create New</button><br>
 				</td>
 			</tr>
 			</tbody>
@@ -72,4 +66,3 @@
 <!-- BEGIN_FOOTER -->
 </td></tr></table>
 </center>
-</body>

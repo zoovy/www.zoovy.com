@@ -1,7 +1,8 @@
-Hi Andrew2
-<form id="thisFrm" method="post" name="thisFrm" action="#">
-<input type="textbox" name="_DOCID" value="<!-- DOCID -->">
-<input type="textbox" id="pid" name="pid" value="<!-- PRODUCT -->">
+<form id="definitionFrm" method="post" name="definitionFrm" action="#">
+<input form="definitionFrm" type="hidden" id="_DOCID" name="_DOCID" value="<!-- DOCID -->">
+<input form="definitionFrm" type="hidden" id="pid" name="pid" value="<!-- PRODUCT -->">
+<input form="definitionFrm" type="hidden" id="_PRODUCT" name="_PRODUCT" value="<!-- PRODUCT -->">
+<input form="definitionFrm" type="hidden" id="_VERB" name="_VERB" value="SAVE">
 
 
 <table>
@@ -11,7 +12,9 @@ Hi Andrew2
 
 </table>
 
-<input class="button" type="button" onClick="savePanel(this,'definition','SAVE')" value="Save">
-<input class="button" type="button" onClick="jQuery('#uiDialog').dialog('close');" value="Quit">
+<button form="definitionFrm" class="button" type="submit" onClick="
+	// savePanel(this,'definition','SAVE')
+	">Save</button>
+<button form="definitionFrm" class="button" type="button" onClick="jQuery('#uiDialog').dialog('close');">Quit</button>
 
 </form>

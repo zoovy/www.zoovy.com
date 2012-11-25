@@ -7,7 +7,7 @@
 
 <h1>Add Product</h1>
 <br>
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/setup/supplychain/index.cgi">
 <!-- NOTE: 
 	this is actually used for both GENERIC and API 
 -->

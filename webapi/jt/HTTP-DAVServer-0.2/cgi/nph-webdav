@@ -1,7 +1,0 @@
-#!/usr/bin/perl
-
-use HTTP::DAVServer;
-
-HTTP::DAVServer->handle;
-
-

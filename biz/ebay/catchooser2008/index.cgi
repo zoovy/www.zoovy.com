@@ -28,7 +28,8 @@ require PRODUCT;
 #chdir "..";
 
 my $SREF = {}; ## global session variables.
-my ($eb2, $edbh, $cgi, $action, $dispatch, $stash, $rendered, $MID, $USERNAME, $LUSERNAME, $FLAGS, $PRT, $SESSION);
+my ($eb2, $edbh, $cgi, $action, $dispatch, $stash, $rendered, $MID, $USERNAME, $LUSERNAME, $FLAGS, $PRT, $SESSION, 
+	$_userid, $_deviceid, $_domain, $_authtoken);
 my $XALAN = '/usr/local/xalan/bin/Xalan';
 
 init();
@@ -37,7 +38,22 @@ end();
 
 sub init {
 	$cgi = new CGI;
-	($MID, $USERNAME, $LUSERNAME, $FLAGS, $PRT) = LUSER->authenticate(sendto=>"/biz",scalar=>1);
+
+
+	&ZOOVY::init();
+	my %options = (); foreach my $param (keys %{$ZOOVY::cgiv}) { next if (substr($param,0,1) ne '_'); $options{$param} = $ZOOVY::cgiv->{$param}; }
+	$stash->{'userid'} =	$_userid = $options{'_userid'};
+	$stash->{'deviceid'} = $_deviceid = $options{'_deviceid'};
+	$stash->{'domain'} = $_domain = $options{'_domain'};
+	$stash->{'authtoken'} = $_authtoken = $options{'_authtoken'};
+
+	# ($MID, $USERNAME, $LUSERNAME, $FLAGS, $PRT) = LUSER->authenticate(%options);
+	my ($LU) = LUSER->authenticate(%options);
+	if (not defined $LU) { warn "Auth"; exit; }
+
+	($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+	if ($MID<=0) { exit; }
+
 	($eb2) = EBAY2->new($USERNAME,'ANYTOKENWILLDO'=>1);
 
 	if (not defined $eb2) {
@@ -69,7 +85,9 @@ sub init {
 	$stash->{'PID'} = $SREF->{'PID'};
 	$stash->{'V'} = $SREF->{'V'};
 	$stash->{'FRM'} = $SREF->{'FRM'};
-
+	foreach my $k (keys %options) {
+		$stash->{$k} = $options{$k};
+		}
 	
 	if ($SREF->{'PID'} eq '') {
 		die("Product ID not set");

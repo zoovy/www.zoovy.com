@@ -9,6 +9,7 @@
 </tr>
 <tr>
 	<td>
+<!--
 	<i>With great power, comes great responsibility... -Uncle Ben</i><br>
 <div class="hint">
 So .. if you're seeing this page, then you were told about it by a member of Zoovy
@@ -18,7 +19,7 @@ These utilities *should not* be used as part of a normal day to day operation of
 and indicate one or more bugs and/or nasty things that happens as a result of user error.
 Please use carefully, and remember to make backups.<br>
 </div>
-
+-->
 <div class="caution">
 Please make sure all users are logged out of your account, and all sync
 processes are disabled while using utilities in this area. They are *very*
@@ -41,21 +42,19 @@ resource intensive and can cause outages if concurrent use is attempted.
 <tr>
 	<td>
 <br>
-<form id="thisFrm" name="thisFrm" action="/biz/batch/index.cgi">
-<input type="hidden" name="VERB" value="NEW">
-<input type="hidden" name="EXEC" value="UTILITY">
-<input type="hidden" name="APP" value="">
-<input type="hidden" name="GUID" value="<!-- GUID -->">
-<input type="hidden" name=".function" value="">
+
+<form method="POST" id="batchFrm" name="batchFrm" action="/biz/manage/support/index.cgi">
+
+<input type="hidden" id="VERB" name="VERB" value="CREATE-UTILITY-BATCH">
+<input type="hidden" id="APP" name="APP" value="">
 
 <table>
 <tr class="zoovysub1header">
 	<td colspan=2>Products/Inventory</td>
 </tr>
 <tr>
-	<td valign=top><input type="button" class="button"
-		onClick="document.thisFrm.APP.value='PRODUCT_CLEANUP'; document.thisFrm.submit();" 
-		value="Product Cleanup"></td>
+	<td valign=top><button type="submit" class="button"
+		onClick="jQuery('#APP').val('PRODUCT_CLEANUP');">Product Cleanup</button></td>
 	<td valign=top>
 		Resets/Rebuilds Product Index, clears out deleted items, and source pid from
 zoovy:related_products, and zoovy:accessory_products.
@@ -63,42 +62,32 @@ Removes unicode characters.
 	</td>
 </tr>
 <tr>
-	<td valign=top><input type="button" class="button"
-		onClick="document.thisFrm.APP.value='INVENTORY_CLEANUP'; document.thisFrm.submit();" 
-		value="Inventory Cleanup"></td>
+	<td valign=top><button type="submit" class="button"
+		onClick="jQuery('#APP').val('INVENTORY_CLEANUP');">Inventory Cleanup</button></td>
 	<td valign=top>
 		Removes orphan inventory records which are not associated with a sku,
 creates records w/0 qty for pids which don't have inv. records.
 	</td>
 </tr>
 <tr>
-	<td valign=top><input type="button" class="button"
-		onClick="document.thisFrm.APP.value='INVENTORY_UPDATE_RESERVES'; document.thisFrm.submit();" 
-		value="Inventory Update Reserves"></td>
+	<td valign=top><button type="submit" class="button"
+		onClick="jQuery('#APP').val('INVENTORY_UPDATE_RESERVES');">Inventory Update Reserves</button></td>
 	<td valign=top>
 		Removes orphaned inventory reservations / verifies reserves.
 	</td>
 </tr>
 <tr>
 	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='IMAGE_REINDEX'; 
-			document.thisFrm['.function'].value = 'initial-upload';
-			document.thisFrm.submit();" 
-		value="Image Reindex"></td>
+	<button type="submit" class="button"
+		onClick="jQuery('#APP').val('IMAGE_REINDEX');">Image Reindex</button></td>
 	<td valign=top>
 		Image Reindex
 	</td>
 </tr>
 <tr>
 	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='ELASTIC_REBUILD'; 
-			document.thisFrm['.function'].value = 'initial-upload';
-			document.thisFrm.submit();" 
-		value="Elastic Rebuild"></td>
+	<button class="button"
+		onClick="jQuery('#APP').val('ELASTIC_REBUILD');">Elastic Rebuild</td>
 	<td valign=top>
 		Elastic Search Rebuild (note: will be offline/unavailable during rebuild)
 	</td>
@@ -106,68 +95,19 @@ creates records w/0 qty for pids which don't have inv. records.
 <tr class="zoovysub1header">
 	<td colspan=2>eBay</td>
 </tr>
-<!--
 <tr>
-	<td valign=top><input type="button" class="button"
+	<td valign=top><button type="submit" class="button"
 		onClick="
-			document.thisFrm.APP.value='EBAY_UPDATE'; 
-			document.thisFrm['.function'].value = 'enable-ebay-checkout';
-			document.thisFrm.submit();" 
-		value="Enable eBay Checkout"></td>
-	<td valign=top>
-		This does three things: 
-		1. switches token setting, 
-		2. attempts to revise all listings on the account, 
-		3. sets global "EBAY-CHECKOUT" flag
-	</td>
-</tr>
--->
-<tr>
-	<td valign=top><input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='EBAY_UPDATE'; 
-			document.thisFrm['.function'].value = 'end-all';
-			document.thisFrm.submit();" 
-		value="Close All Listings"></td>
+			jQuery('#APP').val('EBAY_UPDATE');
+			jQuery('#f').val('end-all');">Close All Listings</button></td>
 	<td valign=top>
 		Ends all active listings on eBay.
 	</td>
 </tr>
 <tr>
 	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='CLAIM_CLEANUP'; 
-			document.thisFrm['.function'].value = '';
-			document.thisFrm.submit();" 
-		value="Incomplete Cleanup"></td>
-	<td valign=top>
-		Removes all claims in account older than 90 days.
-	</td>
-</tr>
-
-<!--
-<tr>
-	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='BLINKLOGIC'; 
-			document.thisFrm['.function'].value = 'initial-upload';
-			document.thisFrm.submit();" 
-		value="BlinkLogic Setup"></td>
-	<td valign=top>
-		BlinkLogic Initial Order Upload
-	</td>
-</tr>
--->
-<tr>
-	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='PRODUCT_SALESRANK'; 
-			document.thisFrm['.function'].value = '';
-			document.thisFrm.submit();" 
-		value="Update SalesRanks"></td>
+	<button type="submit" class="button"
+			onClick="jQuery('#APP').val('PRODUCT_SALESRANK');	jQuery('#f').val('');">Update SalesRanks</button></td>
 	<td valign=top>
 		Goes through all products which have customer reviews and updates zoovy:prod_salesrank
 		<div class="warning">NOTE: sometimes design uses prod_salesrank to
@@ -178,12 +118,9 @@ prior to execution.</div>
 </tr>
 <tr>
 	<td valign=top>
-	<input type="button" class="button"
-		onClick="
-			document.thisFrm.APP.value='KPIBI_RESET'; 
-			document.thisFrm['.function'].value = '';
-			document.thisFrm.submit();" 
-		value="Reset KPIBI"></td>
+	<button type="submit" class="button"
+		onClick="jQuery('#APP').val('KPIBI_RESET');	jQuery('#f').val('');">Reset KPIBI</button>
+	</td>
 	<td valign=top>
 	Rebuilds all KPIBI data for the last year
 	</td>
@@ -196,24 +133,9 @@ prior to execution.</div>
 <tr>
 	<td colspan=2>
 	<div class="hint">reset the changed to 0 (will cause orders to resync)</div>
-	<form action="index.cgi">
-	<input type="hidden" name="VERB" value="RESET-ORDER-CHANGED">
-	From YYYYMMDDHHMMSS:<input type="textbox" name="FROMYYYYMMDDHHMMSS" value=""><br>
-	Till YYYYMMDDHHMMSS:<input type="textbox" name="TILLYYYYMMDDHHMMSS" value=""><br>
-	<input class="zoovybutton" type="submit" value=" Reset ">
-	</form>
-	</td>
-</tr>
-<tr class="zoovysub1header">
-	<td>Tech Support Only</td>
-</tr>
-<tr>
-	<td valign=top><input type="button" class="button" style="background-color: red; color: white;"
-		onClick="document.thisFrm.APP.value='BIG_RED_BUTTON'; document.thisFrm.submit();" 
-		value="** SUPPORT ONLY **"></td>
-	<td valign=top>
-		Do not push this button unless explicitly instructed to by technical support, 
-		doing so could render your store in a non-functioning state.
+	From YYYYMMDDHHMMSS:<input type="textbox" id="FROM" name="FROMYYYYMMDDHHMMSS" value=""><br>
+	Till YYYYMMDDHHMMSS:<input type="textbox" id="TILL" name="TILLYYYYMMDDHHMMSS" value=""><br>
+	<button type="submit" onClick="navigateTo('/biz/manage/support/index.cgi?VERB=RESET-ORDER-CHANGED&FROM='+jQuery('#FROM').val()+'&TILL='.jQuery('#TO').val());">Reset</button>
 	</td>
 </tr>
 </table>
@@ -222,22 +144,17 @@ prior to execution.</div>
 
 <b>Other Utilities:</b><br>
 <ul>
-<li> <a href="index.cgi?VERB=FUSESYNC">Fusemail Sync</a><br>
-<li> <a href="index.cgi?VERB=INITIALIZE">Re-Initialize KPI System</a><br>
-<li> 
-	<a href="index.cgi?VERB=SHOW-USER-EVENT-QUEUE">Show User Event Queue</a>:
+<li> <a href="/biz/manage/support/index.cgi?VERB=FUSESYNC">Fusemail Sync</a><br>
+<li> <a href="/biz/manage/support/index.cgi?VERB=INITIALIZE">Re-Initialize KPI System</a><br>
+<li> <a href="/biz/manage/support/index.cgi?VERB=SHOW-USER-EVENT-QUEUE">Show User Event Queue</a>:
 unprocessed user events - including inventory, crm, product, order events - create, paid, ship, cancel
 <br>
-<li> <a href="index.cgi?VERB=SHOW-INVENTORY-EVENT-QUEUE">Show Inventory Updates Queue</a><br>
-<li> <a href="./paypal">Paypal Event Queue</a><br>
+<li> <a href="/biz/manage/support/index.cgi?VERB=SHOW-INVENTORY-EVENT-QUEUE">Show Inventory Updates Queue</a><br>
 </ul>
 <br>
 <b>Dumps:</b><br>
-<form action="index.cgi">
-<input type="hidden" NAME="VERB" value="DUMP-ORDER">
-OrderID: <input type="TEXTBOX" name="ORDERID" value="">
-<input type="submit" value="Dump Order">
-</form>
+OrderID: <input type="TEXTBOX" id="ORDERID" name="ORDERID" value="">
+<button type="submit" onClick="navigateTo('/biz/manage/support/index.cgi?VERB=DUMP-ORDER&ORDERID='+jQuery('#ORDERID').val()); return false;">Dump Order</button>
 <br>
 <br>
 <b>Access Logs</b><br>
@@ -248,10 +165,8 @@ OrderID: <input type="TEXTBOX" name="ORDERID" value="">
 <tr><td>
 <hr>
 <b>Cart Session Debugger:</b><br>
-<form action="index.cgi">
-<input type="hidden" name="VERB" value="SESSION-DEBUG">
-Session Id: <input type="textbox" name="session">
-<input type="submit" class="button" value="Debug">
+Session Id: <input id="session" type="textbox" name="session">
+<button class="button" onClick="navigateTo('/biz/manage/support/index.cgi?VERB=SESSION-DEBUG&session='+jQuery('#session').val()); return false;">Debug</button>
 </form>
 </td></tr>
 

@@ -349,7 +349,8 @@ if (scalar(@rules)>0) {
 		# Print the DOWN arrow
 		if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 		$c .= '&nbsp;';
-		$c .= "<a href='/biz/setup/shippping/rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='images/change.gif'></a>";
+		$c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'>
+				<img border='0' alt='Change' src='images/change.gif'></a>";
 		$c .= "</td><td class='A'>".$MATCH."</td>";
 		$c .= "<td class='A'>".$rulehash->{'FILTER'}."</td>";
 		$c .= "<td class='A'>".$EXEC."</td>";

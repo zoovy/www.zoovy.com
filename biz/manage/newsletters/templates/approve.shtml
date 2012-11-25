@@ -60,8 +60,7 @@ approximately 250 emails every 10 minutes per Zoovy account.
 					<td align="center">
 					<!-- APPROVE_BUTTON -->
 					&nbsp;&nbsp;
-					<input class="button" type="button" name="BUTTON" value="Exit" onClick="top.location='index.cgi?VERB=CAMPAIGNS';">
-					<br>
+					<input class="button" type="button" name="BUTTON" value="Exit" onClick="return navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGNS');">					<br>
 					</td>
 				</tr>
 			</table>

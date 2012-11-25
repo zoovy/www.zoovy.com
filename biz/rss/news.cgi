@@ -41,7 +41,6 @@ if (defined $q->param('show')) {
 	my $ts = &ZTOOLKIT::mysql_to_unixtime($hashref->{'CREATED'});
 	if ($ts>$latestts) { $latestts = $ts; }
 
-	$GTOOLS::TAG{'<!-- SUPPORT_TAB -->'} = &SUPPORT::do_header();
 	$GTOOLS::TAG{'<!-- SUBJECT -->'} = $hashref->{'TITLE'};
 	$GTOOLS::TAG{'<!-- MESSAGE -->'} = $hashref->{'MESSAGE'};
 	$GTOOLS::TAG{'<!-- ID -->'} = $hashref->{'ID'};
@@ -100,15 +99,15 @@ else {
 #		}
 #
 	$rss->channel(
-	   title        => "Zoovy System News",
-		link         => "http://support.zoovy.com",
-		description  => "A guide to the recent happenings on Zoovy.com",
+	   title        => "$ZOOVY::COMPANY System News",
+		link         => "http://$ZOOVY::DOMAIN",
+		description  => "A guide to the recent happenings on $ZOOVY::COMPANY",
 		dc => {
 			date       => strftime("%Y-%m-%dT07:00+00:00",localtime($latestts)),
-			subject    => "Zoovy System Info",
-			creator    => 'support@zoovy.com',
-			publisher  => 'support@zoovy.com',
-			rights     => 'Copyright 2003, Zoovy Inc.',
+			subject    => "$ZOOVY::COMPANY System Info",
+			creator    => $ZOOVY::CONTACT,
+			publisher  => $ZOOVY::CONTACT,
+			rights     => $ZOOVY::COPYRIGHT,
 			language   => 'en-us',
 			},
 		syn => {

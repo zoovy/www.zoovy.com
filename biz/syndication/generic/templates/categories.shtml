@@ -30,16 +30,9 @@ function ajaxUpdate(MKT, me) {
 var popWin;
 
 function selectCategory(MKT,NAVCAT,VAL) {
-	// alert('/biz/syndication/catchooser.cgi?MKT='+MKT+'&VAL='+VAL+'&NAVCAT='+NAVCAT);
-	popWin = openWindow('/biz/syndication/catchooser.cgi?MKT='+MKT+'&VAL='+VAL+'&NAVCAT='+NAVCAT);
+	popWin = openPopupWindow('/biz/syndication/catchooser.cgi?MKT='+MKT+'&VAL='+VAL+'&NAVCAT='+NAVCAT);
 	}
 
-function openWindow(url) {
-	myWinHandle	= window.open(url, 'popupWindow','resizable=yes,toolbar=yes,status=yes,width=638,height=400,menubar=yes,scrollbars=yes');
-   if (myWinHandle.opener == null) { myWinHandle.opener = self; }
-   myWinHandle.focus(true);
-	return(myWinHandle);
-	}
 
 
 function closeWindow(nc,catid) {
@@ -67,7 +60,7 @@ function loadCategories(me) {
 <tr><td class="zoovytableheader"> <!-- MARKETPLACE --> Categories</td></tr>
 <tr><td>
 
-<form name="catFrm" method="post" action="index.cgi">
+<form name="catFrm" method="post" action="<!-- PATH -->">
 
 <input type="hidden" name="MKT" value="<!-- DST -->">
 <input type="hidden" name="PROFILE" value="<!-- PROFILE -->">

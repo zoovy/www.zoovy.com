@@ -1,5 +1,10 @@
 
 <form name="add-item-form" id="add-item-form" method="POST" action="/biz/ebay/catchooser2008/index.cgi/add_item">
+      <input type="hidden" name="_userid" value="[% userid %]">
+      <input type="hidden" name="_authtoken" value="[% authtoken %]">
+      <input type="hidden" name="_deviceid" value="[% deviceid %]">
+      <input type="hidden" name="_domain" value="[% domain %]">
+
   [% IF is_media_cat ## display ISBN field %]
   <div id="external-ebay-id">
     To improve your listing, you can provide UPC/ISBN/EAN number

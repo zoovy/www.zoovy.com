@@ -59,6 +59,8 @@ if ($VERB =~ /SALES-/) {
 	my $REPORT = $ZOOVY::cgiv->{'REPORT'};
 	my $title = 'Unnamed Report';
 
+	# REPORT:SALE_SUMMARY VERB:SALES-BYMONTH
+	# print STDERR "REPORT:$REPORT VERB:$VERB\n";
 
 	if ($VERB eq 'SALES-BYMONTH') {
 		my $month = $ZOOVY::cgiv->{'month'};
@@ -130,16 +132,30 @@ if ($VERB =~ /SALES-/) {
 
 	if (($endts == 0) || ($begints ==0) || ($error ne '')) {
 		if ($error eq '') { $error = 'Error in date range, please try again!'; }
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = '<br><font color="red">'.$error.'</font><br>';
+		push @MSGS, "ERROR|+$error";
 		$REPORT = "";
 		$VERB = 'INDEX-SALES';
 		}
 	else {
 		my $include_deleted = (defined $ZOOVY::cgiv->{'include_deleted'})?1:0;
 		# my $URL = "/biz/reports/output.cgi?ACTION=NEW&REPORT=SALES&verb=period&start_gmt=$begints&end_gmt=$endts&include_deleted=$include_deleted\n\n";
-		my $URL = "/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=$ZOOVY::cgiv->{'REPORT'}&GUID=$GUID&.start_gmt=$begints&.end_gmt=$endts&.include_deleted=$include_deleted\n\n";
-		print STDERR "REDIRECT TO: $URL\n";
-		print "Location: $URL\n\n";
+		my %vars = ();
+		$vars{'.start_gmt'} = $begints;
+		$vars{'.end_gmt'} = $endts;
+		$vars{'.include_deleted'} = $include_deleted;
+		$vars{'REPORT'} = $ZOOVY::cgiv->{'REPORT'},
+
+		my ($bj) = BATCHJOB->new($USERNAME,0,
+			PRT=>$PRT,
+			EXEC=>'REPORT',
+			'REPORT'=>$ZOOVY::cgiv->{'REPORT'},
+			'%VARS'=>\%vars,
+			'*LU'=>$LU,
+			);
+		my $JOBID = $bj->id();
+		push @MSGS, "SUCCESS|+Create Job: $JOBID\n";
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = qq~<button class="button" type="button" onClick="navigateTo('/biz/batch/index.cgi?JOBID=$JOBID'); return false;">View Report</button>~;
+		$VERB = 'INDEX-SALES';
 		}
 	}
 

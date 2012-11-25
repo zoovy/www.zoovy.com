@@ -26,11 +26,9 @@ products, images, and categories easier and faster than ever.
 <b>Release: <!-- VERSION --> - <!-- DATE -->
 (<a target="_webdoc" href="http://webdoc.zoovy.com/doc/51349">Release Notes</a>)<br>
 
-<form method="GET" action="/biz/downloads/record.cgi">
-<input type="hidden" name="CODE" value="<!-- ZID_FILE -->">
-<input type="hidden" name="MAJOR" value="<!-- VERSION_MAJOR -->">
-<input type="hidden" name="MINOR" value="<!-- VERSION_MINOR -->">
-<input type="submit" class="button" value=" Download Now ">
+<form target="_blank" method="GET" action="#">
+<button type="submit" class="button2" onClick="
+	openPopupWindow('/biz/downloads/record.cgi?USERNAME=<!-- USERNAME -->&CODE=<!-- ZID_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->'); return false;" type="submit">Download Now</button>
 </form>
 
 </td></tr>
@@ -45,8 +43,7 @@ Zoovy supports network database installations for customers who need concurrent 
 Please download and install the following application on your network database server:
 <ul>
 	<li> <b>Zoovy Network Sync Manager</b><br>
-	<a
-href="http://www.zoovy.com/biz/downloads/record.cgi?CODE=<!-- ZNSM_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->">
+	<a href="/biz/downloads/record.cgi?CODE=<!-- ZNSM_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->">
 [[Download v<!-- VERSION -->]]</a>
 <div class="hint">
 A windows service that automatically synchronizes your local databases with Zoovy
@@ -105,7 +102,7 @@ Installation documentation can be found: <a target="_webdoc" href="http://webdoc
 Warning: Network Database installations are difficult multi-step processes with lots of room for mistakes.
 We encourage companies who do not employ a fulltime database administrator 
 (which is different than a "Tech Guy") to consult with our 
-<a href="http://www.zoovy.com/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">
+<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">
 Geek Services</a> to deploy your database.
 In order to speed up the installation appointment, please view our
 <a target="_webdoc" href="http://webdoc.zoovy.com/doc/51357">Webdoc
@@ -116,7 +113,7 @@ In order to speed up the installation appointment, please view our
 <div class="hint">
 Only one database may be active per account. If you have multiple sites
 or remote users you will need to use a VPN solution to connect them.<br>
-<a href="http://www.zoovy.com/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">Zoovy Geek Services</a> 
+<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">Zoovy Geek Services</a> 
 can assist you with multi-site VPN deployments.
 </div>
 </a>
@@ -142,12 +139,6 @@ In addition various peripherals such as many models of HP Printers are known to 
 and will cause the Order Manager software to become unstable.
 
 </div>
-
-<li> <b>Early Access Releases</b>
-<div class="hint">
-For the latest versions of all Zoovy applications please visit the 
-<a href="http://www.zoovy.com/biz/support/beta">Early Access Download Area</a>
-</a>
 
 </ul> 
 </td></tr>

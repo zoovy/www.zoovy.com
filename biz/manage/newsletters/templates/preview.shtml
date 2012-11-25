@@ -29,6 +29,10 @@
 
 //note: htmlcontent txtcontent are populated via GTOOLS::JSON
 
+var htmlcontent = <!-- HTMLCONTENT -->;
+var txtcontent = <!-- TXTCONTENT -->;
+
+
 iFrame = $('#iFrameHTML');
 var iFrameDoc = iFrame[0].contentDocument || iFrame[0].contentWindow.document;
 iFrameDoc.write(htmlcontent);
@@ -43,21 +47,28 @@ iFrameDoc.close();
 
 			<br><br>
 			<b>Test Recipient Email:</b>
-			<form action="index.cgi">
-			<input type="hidden" name="VERB" value="SEND_TEST_EMAIL">
+			<form action="/biz/manage/newsletters/index.cgi">
+			<input type="hidden" id="VERB" name="VERB" value="">
 			<input type="hidden" name="ID" value="<!-- ID -->">
+			<input type="hidden" name="GUID" value="<!-- GUID -->">
 			<input class=formed type="textbox" size=50 name="EMAIL" value="<!-- EMAIL -->">
-			<input type="submit" class="button" value="  Send a Test Newsletter w/Approval Link ">
-			</form>
+			<br>
+			<div class="warning">We strongly encourage the "SEND TEST" and reviewing the result before sending.</div><br>
+			<button class="button" type="submit" onClick="jQuery('#VERB').val('SEND_TEST_EMAIL');">STEP 1. SEND TEST</button><br>
 			<br>
 			<!-- SUPPORT_APPROVE -->
+			<div class="warning">Once you have reviewed the newsletter in your client, use the button below to proceed:</div><br>
+			<button class="button" type="submit" onClick="jQuery('#VERB').val('CAMPAIGN-APPROVE');">STEP 2. PROCEED - READY TO SEND</button>
+			<br>
+			<br>
+			<form>
 			</td>
 		</tr>
 		<tr>
 			<td class='table_top' align="center">
-			<input type="submit" name="BUTTON" value="Back" class="showLoadingModal button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-EDIT&ID=<!-- ID -->');">
+			<button type="submit" class="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGN-EDIT&ID=<!-- ID -->');">Back</button>
 			&nbsp;&nbsp;
-			<input type="submit" name="BUTTON" value="Exit" class="showLoadingModal button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGNS');">
+			<button type="submit" class="button" onClick="navigateTo('/biz/manage/newsletters/index.cgi?VERB=CAMPAIGNS');">Exit</button>
 			</td>
 		</tr>
 	</table>

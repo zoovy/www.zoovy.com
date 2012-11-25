@@ -1,8 +1,8 @@
 <!-- SETUP_TAB -->
 
 
-<form name="thisFrm" action="/biz/setup/shipping/index.cgi" method="POST">
-<input type="hidden" name="ACTION" value="SAVE">
+<form id="shipFrm" name="shipFrm" action="/biz/setup/shipping/index.cgi" method="get">
+<input form="shipFrm" type="hidden" id="VERB" name="VERB" value="">
 <center>
 <span class="alert"><b><!-- MESSAGE --></b></span>
 <br>
@@ -64,7 +64,7 @@
 		<tr>
 			<td colspan='2'>	
 			<center>
-			<input type="submit" value=" Save " class="button showLoadingModal">
+			<button form="shipFrm" type="submit" onClick="" class="button">Save</button>
 			</center>
 			</td>
 		</tr>
@@ -73,7 +73,6 @@
 	</td>
 </tr>
 </table>
-</form>
 <br>
 
 <center>
@@ -81,7 +80,7 @@
 <tr class='zoovytableheader'>
 	<td align="left" class="zoovytableheader">Flexible Shipping Methods:</td>
 	<td align="right">
-	<select id="_HANDLER" name="_HANDLER">
+	<select form="shipFrm" id="_HANDLER" name="_HANDLER">
 	<option value="FIXED">Fixed Price</option>
 	<option value="WEIGHT">Weight Based</option>
 	<option value="PRICE">Price Based</option>
@@ -98,9 +97,10 @@
 	<option value="USPS-INT">USPS International Shipping</option>
 	-->
 	</select>
-	<input type="hidden" name="VERB" value="ADD">
 	<input type="hidden" name="ID" value="">
-	<input type="submit" class="button showLoadingModal" value=" Add New ">
+	<button class="button" type="submit" form="shipFrm" onClick="
+		navigateTo('/biz/setup/shipping/universal.cgi?VERB=ADD&_HANDLER='+jQuery('#_HANDLER').val()); return(false);
+		">Add New !!</button>
 	</td>
 </tr>
 <tr>
@@ -127,7 +127,7 @@
 </tr>
 <tr>
 	<td valign="middle" align="center" >
-		<a href='index.cgi?VERB=FEDEX-PRT-INIT'>
+		<a href='/biz/setup/shipping/index.cgi?VERB=FEDEX-PRT-INIT'>
 		<img src='/biz/setup/shipping/images/fedex.gif' border='0'><br>
 		</a>
 	</td>
@@ -158,7 +158,6 @@
 </table>
 <br>
 
-<form>
 <table class="zoovytable" cellspacing='0' cellpadding='1' border='0' width='800'>
 <tr class='zoovytableheader'>
 	<td class="zoovytableheader" colspan='4'>Advanced Handling &amp; Insurance</td></tr>
@@ -189,5 +188,5 @@
 <br>
 </center>
 
-
+</form>
 </body>

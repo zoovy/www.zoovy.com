@@ -570,7 +570,7 @@ if (scalar(@ERRORTASKS)>0) {
 ~;
 		if (not defined $errtask->{'ID'}) { $errtask->{'ID'} = 0; }
 		if ($errtask->{'ID'}>0) {
-			$c .= qq~<span class="hint"><a href="index.cgi?VERB=DISMISS&ID=$errtask->{'ID'}">[CLEAR]</a> </span>~;
+			$c .= qq~<span class="hint"><a href="/biz/index.cgi?VERB=DISMISS&ID=$errtask->{'ID'}">[CLEAR]</a> </span>~;
 			}
 		$c .= qq~
 $link

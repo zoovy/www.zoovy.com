@@ -1,6 +1,20 @@
 <!-- ORDER_TAB -->
 
-<form name="myForm" action="index.cgi" method="POST">
+
+<script type="text/javascript">
+var tState = false;
+function toggleAll() {
+	tState = !tState;
+	var checkboxes = jQuery('#orderForm').find(':checkbox');
+	if (tState) {
+		checkboxes.attr('checked', 'checked');
+    } else {
+		checkboxes.removeAttr('checked');
+		}
+   }
+</script>
+
+<form id="orderForm" name="orderForm" action="/biz/orders/index.cgi" method="POST">
 <input type="hidden" name="SORTBY" value="ID">
 <input type="hidden" name="STATUS" value="">
 

@@ -16,10 +16,29 @@
 </div>
 
 <div>
+<label class="stdform" for="type">Project Type</label>
+<select class="stdform" id="type" name="type">
+	<option value="APP">Shopping App (index.html)</option>
+	<option value="VSTORE">Legacy vStore Project</option>
+	<option value="ADMIN">Hosted Admin App</option>
+	<option value="CHECKOUT">Checkout Intercept</option>
+	<option value="DSS">Decision Support System</option>
+</select>
+</div>
+
+<div>
 <label class="stdform" for="title">GitHub Repo</label>
 <input class="stdform" id="repo" name="repo">
 <div class="hint">ex: http://github.com/yourname/project.git</div>
 <div class="hint">**ONLY http:// urls are supported at the moment.**</div>
+</div>
+
+<div>
+<input type="checkbox" name="domain"> Reserve a test domain for this project.</input>
+</div>
+
+<div class="caution">
+At this time only GITHUB hosted projects with public http urls are supported.
 </div>
 
 <input class="button" type="submit" value="Save">

@@ -6,7 +6,15 @@ use GTOOLS;
 use ZOOVY;
 use PRODUCT::REVIEWS;
 
-my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = &ZOOVY::authenticate("/biz/utilities",2,'_S&2');
+require LUSER;
+my ($LU) = LUSER->authenticate();
+if (not defined $LU) { exit; }
+
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+if ($MID<=0) { exit; }
+if (index($FLAGS,'BASIC')==-1) { print "Location: /biz\n\n"; exit; }
+
+
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $RID = int($ZOOVY::cgiv->{'RID'});
 my @TABS = ();

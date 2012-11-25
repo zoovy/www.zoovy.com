@@ -17,7 +17,7 @@ $ENV{'REQUEST_METHOD'} =~ tr/a-z/A-Z/;
 print "X-XSS-Protection: 0\n";
 print "Access-Control-Allow-Origin: *\n";
 print "Access-Control-Allow-Methods: POST, GET, OPTIONS\n";
-print STDERR Dumper(\%ENV);
+#print STDERR Dumper(\%ENV);
 ## HTTP_ACCESS_CONTROL_REQUEST_HEADERS content-type,x-auth,x-authtoken,x-cliendid,x-deviceid
 ##print "Access-Control-Headers: Content-Type, content-type, x-authtoken, authtoken\n";
 print "Access-Control-Max-Age: 0\n";
@@ -71,7 +71,17 @@ if ($buffer eq '') {
 elsif ($ENV{'CONTENT_TYPE'} =~ /^(text|application)\/json/) {
 	## text/json
 	## application/json
-	eval { $VARS = JSON::XS::decode_json($buffer); };
+
+#open F, ">/tmp/foo";
+#print F $buffer;
+#close F; 
+
+	# eval { $VARS = JSON::XS::decode_json($buffer); };
+	eval { $VARS = JSON::XS->new->utf8->decode($buffer); };
+	if (($@) && ($@ =~ /Wide character/)) {
+		$buffer = &ZTOOLKIT::stripUnicode($buffer);
+		eval { $VARS = JSON::XS->new->utf8->decode($buffer); };
+		}
 	if ($@) {
 		&JSONAPI::set_error($R = {}, 'iseerr', 1, "decode json $@"); 
 		}

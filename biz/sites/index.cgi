@@ -398,7 +398,7 @@ if ($VERB eq 'CHECKUP') {
 if ($VERB eq 'ADD-RESERVE-DOMAIN') {
 	my ($PRT) = $ZOOVY::cgiv->{'PRT'};
 	require DOMAIN::POOL;
- 	my ($DOMAINNAME) = &DOMAIN::POOL::reserve($USERNAME,$PRT,undef);
+ 	my ($DOMAINNAME) = &DOMAIN::POOL::reserve($USERNAME,$PRT);
 	if ($DOMAINNAME) {
 		push @MSGS, "SUCCESS|Reserved domain: $DOMAINNAME";
 		$VERB = 'DOMAINS';
@@ -421,7 +421,7 @@ if ($VERB eq 'DOMAINS') {
 	foreach my $dname (sort @domains) {
 		my ($d) = DOMAIN->new($USERNAME,$dname);
 		my $ns = $d->profile();
-		my $prt = $d->prt();
+		my $prt = int($d->prt());
 		my $domainname = $d->domainname();
 
 		## don't show redirect domains in the list.
@@ -436,7 +436,7 @@ if ($VERB eq 'DOMAINS') {
 </td>";
 		$c .= "<td valign=top>$ns</td>";
 		$c .= "<td valign=top>$domainname</td>";
-		$c .= qq~<td valign=top><button class="button" onClick="changeDomain('$domainname',$prt);">Login</button></td>~;
+		$c .= qq~<td valign=top><button class="minibutton" onClick="changeDomain('$domainname',$prt); return false;">Use Domain</button></td>~;
 		$c .= "<td>";
 		my $ALLOW_EDIT = 0;
 		foreach my $host ('WWW','M','APP') {
@@ -457,7 +457,7 @@ if ($VERB eq 'DOMAINS') {
 				}
 			}
 		if ($ALLOW_EDIT) {
-			$c .= "<a href=\"/biz/setup/builder?PROFILE=$ns\">Edit $ns</a><br>";
+			$c .= "<a href=\"/biz/setup/builder/index.cgi?PROFILE=$ns\">Edit $ns</a><br>";
 			}
 		$c .= "</td>";
 
@@ -469,7 +469,7 @@ if ($VERB eq 'DOMAINS') {
 #			$c .= " | <a target=\"_blank\" href=\"http://www.$domainname?sbverb=login&code=$d->{'SANDBOX_PASSWORD'}\">sandbox</a>";
 #			}
 #		$c .= "</td>";
-		$c .= "<td valign=top align=center><a href=\"/biz/sites/index.cgi?VERB=REAUTH-DOMAINS&PRT=$prt\">$prt</a></td>";
+		$c .= "<td valign=top align=center>$prt</td>";
 		$c .= "</tr>";
 
 		$i++;
@@ -497,7 +497,7 @@ if ($VERB eq 'PARTITIONS') {
 			$c .= qq~<td>$i</td><td><button style="width: 150px;" class="button" onClick=\"navigateTo('/biz/sites/index.cgi?VERB=ADD-RESERVE-DOMAIN&PRT=$i');\">Add Reserve Domain</a></td>~;
 			}
 		else {
-			$c .= qq~<td><button class="button" onClick="changeDomain('$domain',$i);">Login</button></td>~;
+			$c .= qq~<td><button class="button" onClick="changeDomain('$domain',$i); return false;">Use Partition</button></td>~;
 			$c .= qq~<td>$i</td><td>$domain</td>~;
 			}
 		
@@ -517,6 +517,7 @@ if ($VERB eq 'PROFILES') {
 	$LU->set('sites.focus','PROFILES'); $LU->save();
 	my @domains = &DOMAIN::TOOLS::domains($USERNAME);
 	my %PROFILES = ();
+	my %DOMAIN_TO_PROFILE = ();
 	foreach my $dname (@domains) {
 		my ($d) = DOMAIN->new($USERNAME,$dname);
 		my $ns = $d->{'PROFILE'};
@@ -524,10 +525,7 @@ if ($VERB eq 'PROFILES') {
 		## skip domains that don't have a profile selected
 		next if ($ns eq '');
 		if (not defined $PROFILES{$ns}) { $PROFILES{$ns} = []; }
-		push @{$PROFILES{$ns}}, $d->domainname();
-		}
-	if (not defined $PROFILES{'DEFAULT'}) {
-		push @{$PROFILES{'DEFAULT'}}, $USERNAME.".zoovy.com"; 
+		push @{$PROFILES{$ns}}, [ $d->domainname(), $d->prt() ];
 		}
 
 	my $c = '';
@@ -545,10 +543,8 @@ if ($VERB eq 'PROFILES') {
 		if ($class eq 'r0') { $class = 'r1'; } else { $class = 'r0'; }
 		# $c .= "<tr><td>".Dumper($nsref)."</td></tr>";
 		$c .= "<tr class=\"$class\">";
-		$c .= "<td><img width=100 height=50 src=\"$imgurl\"></td>";
-		$c .= "<td>$ns</td>";
-		$c .= "<td>$PROFILES{$ns}->[0]</td>";
-		$c .= "<td align=center></td>";
+		$c .= "<td valign=top><img width=100 height=50 src=\"$imgurl\"></td>";
+		$c .= "<td valign=top>$ns</td>";
 #		$c .= "<a target=\"_blank\" href=\"http://$PROFILES{$ns}->[0]?_sandbox=1\">STAGING</a> |";
 #		$c .= "<a target=\"_blank\" href=\"http://$PROFILES{$ns}->[0]?multivarsite=A&_sandbox=0\">Site-A</a>";
 #		$c .= " | ";
@@ -560,7 +556,13 @@ if ($VERB eq 'PROFILES') {
 #		else {
 #			$c .= "<td>-</td>";
 #			}
-		$c .= "<td align=center><a href=\"/biz/sites/index.cgi?VERB=REAUTH-PROFILES&PRT=$nsref->{'prt:id'}\">$nsref->{'prt:id'}</a></td>";
+		$c .= "<td valign=top>";
+		foreach my $set (@{$PROFILES{$ns}}) {
+			my ($domainname,$prt) = @{$set};
+			$c .= qq~<div><button class="minibutton" onClick="changeDomain('$domainname',$prt); return false;">Use Domain: $domainname ($prt)</button></div>~;
+			}
+		$c .= "</td>";
+		# $c .= "<td align=center><a href=\"/biz/sites/index.cgi?VERB=REAUTH-PROFILES&PRT=$nsref->{'prt:id'}\">$nsref->{'prt:id'}</a></td>";
 		$c .= "</tr>";
 
 		$i++;

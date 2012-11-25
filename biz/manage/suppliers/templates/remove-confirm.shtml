@@ -5,7 +5,7 @@
 
 <b>Corrupt Schedule</b><br>
 <br>
-<form method="GET" action="index.cgi">
+<form method="GET" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="REMOVE-CONFIRM">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table>

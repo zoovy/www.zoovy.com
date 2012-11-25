@@ -5,7 +5,7 @@
 
 <h2>Inventory for Supplier <!-- CODE -->:</h2>
 
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="">
 <input type="hidden" name="CODE" value="<!-- CODE -->">
 <table width=100% class="zoovytable" cellspacing="1" cellpadding="2">

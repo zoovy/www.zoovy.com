@@ -46,12 +46,13 @@ push @MSGS, "LEGACY|June 2012 Deprecation Notice: the TOXML format is being suns
 
 
 Technical support for this format will cease for this feature in June 2013, and we expect to turn off toxml site hosting in 2015. 
-Originally developed for compatibility with HTML 3.0 - the toxml format itself will be over 15 years old (thats 6 years old than CSS is), 
+Originally developed for compatibility with HTML 3.0 - the toxml format itself will be over 15 years old (<i>thats 6 years older than CSS is</i>), 
 and it's past-due for a fresh clean start. 
 We are building sites based on the AnyCommerce jQuery Application Framework, which is a pure CSS3+HTML+Javascript approach for building dynamic websites and mobile applications.
 The source code is hosted on github and can quickly be forked, customized, and then an application project can be  in Setup / Projects which automatically updates from the github repository after a commit 
 (making updates VERY fast and painless) in addition to giving painless version tracking, and awesome rollback capabilities normally associated
-with github.  Zoovy backends are 100% compatible with the AnyCommerce App framework. 
+with github.  To put it bluntly - it's an absolute joy to work with.
+Zoovy backends are 100% compatible with the AnyCommerce App framework. 
 It takes a typical developer about 10 hours to learn the AnyCommerce App Framework.
 ";
 
@@ -547,7 +548,7 @@ if ($ACTION eq '') {
 							<font color=red size="-3"><i>(remove)</i></font></a></td>
 						<td>$TITLE</td> 
 						<td align="right" nowrap>
-							<button onClick="navigateTo('/biz/setup/toxml/index.cgi?DOCID=$DOCID&FORMAT=$inforef->{'FORMAT'}&TYPE=xml'); return false;">Edit XML</button>
+							<button onClick="navigateTo('/biz/setup/toxml/index.cgi?ACTION=EDITXML&DOCID=$DOCID&FORMAT=$inforef->{'FORMAT'}&TYPE=xml'); return false;">Edit XML</button>
 							~;
 ## Removed this per JT since its broked and unnecessary - 5/19/10
 #			if ($FORMAT eq 'WRAPPER') {

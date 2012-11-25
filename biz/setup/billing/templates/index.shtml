@@ -4,8 +4,8 @@
 <table align='center' width='800'><tr><td>
 
 <form name="thisFrm" action="index.cgi" method="GET">
-<input type="hidden" name="ACTION" value="">
-<input type="hidden" name="USER" value="<!-- USERNAME -->">
+<input type="hidden" id="VERB" name="VERB" value="">
+<input type="hidden" id="USER" name="USER" value="<!-- USERNAME -->">
 <!-- MSG -->
 <Br>
 <table border=0 class="zoovytable" width="100%">
@@ -23,7 +23,7 @@
 	<tr>
 		<td valign="top" align="left">Payment Method:</td>
 		<td valign="top" align="left"><!-- PAYMENT_METHOD -->
-		(<a target="_blank" href="https://www.zoovy.com/biz/setup/history/change.cgi">Change Payment Method</a>)
+		(<a href="/biz/setup/history/index.cgi?VERB=PAYMENTS">Add Payment Method</a>)
 		</td>
 	</tr>
 	<tr>
@@ -157,7 +157,7 @@ Please select the maximum number of days you will process cancellations.
 -->
 
 
-<tr><td colspan="2"><input type="button" onClick="document.thisFrm.ACTION.value='SAVECOMPANY'; document.thisFrm.submit();" class="button" value=" Save Billing Info "></td></tr>
+<tr><td colspan="2"><button class="button" type="submit" onClick="jQuery('#VERB').val('SAVECOMPANY');">Save Billing Info</button></td></tr>
 </table>
 
 </td></tr>

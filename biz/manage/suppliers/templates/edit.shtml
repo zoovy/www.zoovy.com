@@ -1,7 +1,7 @@
 <!-- REPORT_TAB -->
 
 <center>
-<form name="thisFrm" id="thisFrm" method="POST" action="index.cgi">
+<form name="thisFrm" id="thisFrm" method="POST" action="/biz/manage/supplychain/index.cgi">
 <table id="mainTable" width=80%><tr><Td>
 
 <input type="hidden" name="VERB" value="SAVE-EDIT">

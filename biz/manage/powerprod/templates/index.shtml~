@@ -2,9 +2,9 @@
 <center>
 <table width="1000"><tr><td>
 
-<form action="index.cgi" method="post" name="thisFrm">
-<input type="hidden" name="VERB" value="SAVE">
-<input type="hidden" name="DATA" value="<!-- DATA -->">
+<form action="/biz/manage/powertool/index.cgi" method="post" name="powerToolFrm">
+<input type="hidden" id="VERB" name="VERB" value="SAVE">
+<input type="hidden" id="DATA" name="DATA" value="<!-- DATA -->">
 <h1>Product Power Tool</h1>
 <!-- MESSAGE -->
 <div class="warning">
@@ -25,14 +25,14 @@ REMINDER: The Product Power Tool lets you to make a lot of changes all at once
 	<tr>
 		<td colspan="2">
 		<!-- PRODUCT_ERRORS -->
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='SELECTALL'; thisFrm.submit();" type="button" value=" Select ALL Products"><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='LIST'; thisFrm.submit();" type="button" value=" Select Products from List "><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='RANGE'; thisFrm.submit();" type="button" value=" Select Products from Range "><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='NAVCAT'; thisFrm.submit();"  type="button" value=" Select Products from Website"><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='PROFILE'; thisFrm.submit();"  type="button" value=" Select Products by PROFILE "><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='SUPPLIER'; thisFrm.submit();"  type="button" value=" Select by SUPPLIER "><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='MCAT'; thisFrm.submit();"  type="button" value=" Select by Management Category "><br>
-		<input class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="thisFrm.VERB.value='CUSTOM'; thisFrm.submit();"  type="button" value=" Upload a Custom Product List "><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='SELECTALL'; " type="submit">Select ALL Products</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='LIST'; " type="submit" >Select Products from List</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='RANGE'; " type="submit" >Select Products from Range</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='NAVCAT'; "  type="submit" >Select Products from Website"><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='PROFILE'; "  type="submit" >Select Products by PROFILE</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='SUPPLIER'; "  type="submit" >Select by SUPPLIER</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='MCAT'; "  type="submit" >Select by Management Category</button><br>
+		<button class="button" style='width: 150px; font-size: 7pt; font-family: sans-serif,arial;' onClick="powerToolFrm.VERB.value='CUSTOM'; "  type="submit" >Upload a Custom Product List</button><br>
 		</td>
 	</tr>
 	<tr>
@@ -149,8 +149,8 @@ REMINDER: The Product Power Tool lets you to make a lot of changes all at once
 	<tr><td colspan=2><input type="radio" name="verb" value="stripwiki"> Strip WIKI</td></tr>
 	<tr><td colspan=2><input type="radio" name="verb" value="stripcrlf"> Strip CR/LF</td></tr>
 	<tr><td colspan=2><input type="radio" name="verb" value="fmakeupc"> Generate *FAKE* UPC</td></tr>
-	<tr><td colspan=2><input type="radio" name="verb" value="amazon{+this.create_please}"> [amz:ts] Amazon - ReQueue</td></tr>
-	<tr><td colspan=2><input type="radio" name="verb" value="amazon{+this.delete_please}"> [amz:ts] Amazon - Delete</td></tr>
+	<tr><td colspan=2><input type="radio" name="verb" value="amazon:requeue"> [amz:ts] Amazon - ReQueue</td></tr>
+	<tr><td colspan=2><input type="radio" name="verb" value="amazon:delete"> [amz:ts] Amazon - Delete</td></tr>
 <!--
 	<tr><td colspan="2"><input type="radio" name="verb" value="makekeywords"> Keyword generation algorithm<br>
 <div class="hint">For safety this will only update blank fields.</div></td></tr>
@@ -161,7 +161,7 @@ REMINDER: The Product Power Tool lets you to make a lot of changes all at once
 	-->
 	<tr>
 		<td colspan="2">
-		<input type="button" class="button" onClick="thisFrm.VERB.value='ACTION-ADD'; thisFrm.submit();" value="Add Action">
+		<button type="submit" class="button" onClick="powerToolFrm.VERB.value='ACTION-ADD'; ">Add Action</button>
 		<div class="hint">
 		HINT: You can add more than one action.
 		</div>
@@ -210,16 +210,8 @@ REMINDER: The Product Power Tool lets you to make a lot of changes all at once
 	RUN NOW:<br> 
 	-->
 	
-	<input type="button" class="button2" onClick="document.thisFrm.VERB.value='STARTBATCH'; document.thisFrm.submit();" value="Lets Do This!"><br>
+	<button type="submit" class="button2" onClick="document.powerToolFrm.VERB.value='STARTBATCH';">Lets Do This!</button><br>
 	<br>
-	<!--
-	CREATE A SCHEDULED JOB:<br>
-	<i>Calendar</i><br>
-	<input type="button" class="button2" onClick="document.thisFrm.VERB.value='STARTBATCH'; document.thisFrm.submit();" value="Lets Do This!"><br>
-	<br>
-	CREATE A ONE TIME BUTTON:<br>
-	<input type="button" class="button2" onClick="document.thisFrm.VERB.value='STARTBATCH'; document.thisFrm.submit();" value="Lets Do This!">
-	-->
 	</td></tr>
 	<tr>
 		<td class="zoovysub1header">Optional: Job Title</td>

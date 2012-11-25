@@ -5,7 +5,7 @@
 <br>
 
 <!-- RESULT -->
-<form method="POST" action="index.cgi">
+<form method="POST" action="/biz/manage/supplychain/index.cgi">
 <input type="hidden" name="VERB" value="NEW-SAVE">
 <table class="zoovytable" cellspacing="0" cellpadding="1" width="100%">
 <tr><td class="zoovytableheader">Add Supplier</td></tr>

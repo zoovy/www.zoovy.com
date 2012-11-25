@@ -2,9 +2,9 @@
 <center>
 
 <br>
-<form id="thisFrm" name="thisFrm" action="index.cgi" method="POST">
-        <input type="hidden" name="VERB" value="CAMPAIGN-SAVE">
-        <input type="hidden" name="ID" value="<!-- ID -->">
+<form id="thisFrm" name="thisFrm" action="/biz/manage/newsletters/index.cgi" method="POST">
+        <input type="hidden" id="VERB" name="VERB" value="CAMPAIGN-SAVE">
+        <input type="hidden" id="ID" name="ID" value="<!-- ID -->">
 
 <!-- SIZING TABLE  -->
 
@@ -47,7 +47,7 @@
 				<select name="COUPON">
 					<!-- COUPONS -->
 				</select>
-			[ <a target="coupon" href="/biz/setup/promotions">Add New</a> ]
+			[ <a target="coupon" href="/biz/setup/promotions/index.cgi">Add New</a> ]
  			<br><div class="hint">Requires XSell bundle. Links in the
 newsletter will automatically have tracking codes appended. 
 Customers clicking those links can be automatically have a limited use 
@@ -65,7 +65,7 @@ coupon placed in their cart.</div>
 		<tr>
 			<td>Template/Layout:</td>
 			<td>
-			<select onChange="jQuery('#thisFrm').showLoading(); thisFrm.submit();" id="LAYOUTS" name="LAYOUT">
+			<select onChange="jQuery('#thisFrm').submit();" id="LAYOUTS" name="LAYOUT">
 				<!-- LAYOUTS -->
 			</select>
 			</td>
@@ -79,6 +79,7 @@ coupon placed in their cart.</div>
 	<tr>
 	<td>
 	<!-- EDITOR -->
+	<div class="hint">it will be necessary to navigate back here after editing the campaign.</div>
 	</td>
 	</tr>
    <tr>
@@ -86,11 +87,11 @@ coupon placed in their cart.</div>
    </tr>
 	<tr>
 		<td class='table_top' align="center">
-		<input type="button" name="BUTTON" value="Exit" class="button" onClick="jQuery('#thisFrm').showLoading(); navigateTo('/biz/manage/newsletter/index.cgi');">
+		<button class="button" onClick="return navigateTo('/biz/manage/newsletter/index.cgi');">Exit</button>
 		&nbsp;&nbsp;
-		<input type="SUBMIT" name="BUTTON" value="Save Progress" class="button" onClick="jQuery('#thisFrm').showLoading();">
+		<button class="button" type="submit">Save</button>
 		&nbsp;&nbsp; 
-		<input type="button" name="BUTTON" value="Next: Approve/Send" class="button" onClick="jQuery('#thisFrm').showLoading(); thisFrm.VERB.value='CAMPAIGN-GENERATE'; thisFrm.submit();">
+		<button class="button" type="submit" onClick="jQuery('#VERB').val('CAMPAIGN-GENERATE');">Next</button>
 	</td>
 	</tr>
 	</table>

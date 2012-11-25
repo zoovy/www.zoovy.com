@@ -617,14 +617,14 @@ if ($VERB eq '') {
 			elsif ($action eq 'retry') {
 				$c .= qq~
 				<div class="zoovysub2header">RETRY $id</div>
-				<input onClick="thisFrm.VERB.value='RETRY:$id'; thisFrm.submit();" class="minibutton" type="button" value="Retry Request" >
+				<button type="submit" onClick="orderPaymentFrm.VERB.value='RETRY:$id';  " class="minibutton">Retry Request</button>
 				~;						
 				}
 			elsif ($action eq 'capture') {
 				$c .= qq~
 				<div class="zoovysub2header">CAPTURE $id</div>
 				Amount: \$<input size=5 type="textbox" name="$id.capture.amt" value="$amt"> 
-				<input onClick="thisFrm.VERB.value='CAPTURE:$id'; thisFrm.submit();" class="minibutton" type="button" value="Capture" >
+				<button type="submit" onClick="orderPaymentFrm.VERB.value='CAPTURE:$id';  " class="minibutton">Capture</button>
 				~;		
 				}
 			elsif ($action eq 'refund') {
@@ -632,16 +632,16 @@ if ($VERB eq '') {
 				<div class="zoovysub2header">REFUND $id</div>
 				Amount: \$<input size=5 type="textbox" name="$id.refund.amt" value="$amt"> 
 				Reason: <input size=20 type="textbox" name="$id.refund.reason">
-				<input onClick="thisFrm.VERB.value='REFUND:$id'; thisFrm.submit();" class="minibutton" type="button" value="Refund" >
+				<button type="submit"  onClick="orderPaymentFrm.VERB.value='REFUND:$id'; " class="minibutton">Refund</button>
 				~;
 				}
 			elsif ($action eq 'set-paid') {
 				$c .= qq~
 				<div class="zoovysub2header">SET PAID $id</div>
 				<div class="hint">It is your responsibility to ensure payment was actually received.</div>
-				Amount Received: \$<input size=5 type="textbox" name="$id.set-paid.amt" value="$amt"> 
+				Amount Received: \$<input type="textbox" size=5 type="textbox" name="$id.set-paid.amt" value="$amt"> 
 				Note: <input size=20 type="textbox" name="$id.set-paid.note">
-				<input onClick="thisFrm.VERB.value='SET-PAID:$id'; thisFrm.submit();" class="minibutton" type="button" value="Set Paid" >
+				<button type="submit" onClick="orderPaymentFrm.VERB.value='SET-PAID:$id'; " class="minibutton">Set Paid</button>
 				~;
 				}
 			elsif ($action eq 'allow-payment') {
@@ -650,14 +650,14 @@ if ($VERB eq '') {
 				<div class="hint">This will flag a review transaction as 'reviewed', if you choose not to accept this payment
 				you will likely need to perform a refund of some sort.</div>
 				Note: <input size=20 type="textbox" name="$id.allow-payment.note">
-				<input onClick="thisFrm.VERB.value='ALLOW-PAYMENT:$id'; thisFrm.submit();" class="minibutton" type="button" value="Allow Payment" >
+				<input onClick="orderPaymentFrm.VERB.value='ALLOW-PAYMENT:$id';" class="minibutton">Allow Payment</button>
 				~;
 				}
 			elsif ($action eq 'void') {
 				$c .= qq~
 				<div class="zoovysub2header">VOID $id</div>
-				Reason: <input size=20 type="textbox" name="$id.void.reason">
-				<input onClick="thisFrm.VERB.value='VOID:$id'; thisFrm.submit();" class="minibutton" type="button" value="Void" >
+				Reason: <input type="submit" size=20 type="textbox" name="$id.void.reason">
+				<button onClick="orderPaymentFrm.VERB.value='VOID:$id';" class="minibutton">Void</button>
 				<div class="hint">
 				REMINDER: this will void a payment, void must be done before your settlement time (contact your merchant bank).
 If you are planning to cancel an order you will probably need to change the workflow status as well.
@@ -673,7 +673,7 @@ Zoovy does not have a way to automatically issue refunds on the marketplace.
 </div>
 Amount: <input type="textbox" size="5" name="$id.marketplace-refund.amt" value=""><br>
 Note: <input type="textbox" size="20" name="$id.marketplace-refund.note" value=""><br>
-<input onClick="thisFrm.VERB.value='MARKETPLACE-REFUND:$id'; thisFrm.submit();" class="minibutton" type="button" value="Refund"><br>
+<button onClick="orderPaymentFrm.VERB.value='MARKETPLACE-REFUND:$id';" class="minibutton">Refund</button><br>
 <div class="hint">
 Hint1: Refund is for partial credits, use void to refund an entire payment.
 Hint2: Since this amount is a refund you do not need to use a negative (-) sign. <br>
@@ -688,8 +688,8 @@ Hint2: Since this amount is a refund you do not need to use a negative (-) sign.
 You will need to cancel the order on the marketplace then update the records here.
 Zoovy does not have a way to automatically update/process cancellations on the marketplace.
 </div>
-Void Reason: <input type="textbox" size="20" name="$id.marketplace-void.reason" value=""><br>
-<input onClick="thisFrm.VERB.value='MARKETPLACE-VOID:$id'; thisFrm.submit();" class="minibutton" type="button" value="Void"><br>
+Void Reason: <input type="submit" type="textbox" size="20" name="$id.marketplace-void.reason" value=""><br>
+<button onClick="orderPaymentFrm.VERB.value='MARKETPLACE-VOID:$id';" class="minibutton">Void</button><br>
 
 ~;
 				}
@@ -698,7 +698,7 @@ Void Reason: <input type="textbox" size="20" name="$id.marketplace-void.reason" 
 				<div class="zoovysub2header">OVERRIDE $id</div>
 				New Payment Status: <input type="textbox" size="3" name="$id.override.ps" value="$pref->{'ps'}"><br>
 				Note: <input type"textbox" name="$id.override.note" value="~.&ZOOVY::incode($pref->{'note'}).qq~"><br>
-				<input onClick="thisFrm.VERB.value='OVERRIDE:$id'; thisFrm.submit();" class="minibutton" type="button" value="Set" >
+				<button onClick="orderPaymentFrm.VERB.value='OVERRIDE:$id';" class="minibutton">Set</button>
 				<div class="hint">This is an advanced interface intended for experts only. 
 				Do not use without the guidance of technical support.
 				<div>
@@ -969,11 +969,15 @@ $GTOOLS::TAG{'<!-- FEES -->'} = $c;
 if ($ERROR ne '') {
 	push @MSGS, "ERROR|$ERROR";
 	}
-if (scalar(@MSGS)>0) {
-	$GTOOLS::TAG{'<!-- MESSAGES -->'} = &GTOOLS::show_msgs(\@MSGS);
-	}
 
-&GTOOLS::output(title=>"",file=>'payment.shtml',header=>1,jquery=>1);
+my @BC = ();
+push @BC, { 'link'=>'/biz/orders/index.cgi', name=>'Orders' };
+push @BC, { 'link'=>'/biz/orders/index.cgi?VERB=SHOW:'.$O2->pool(), name=>sprintf("[%s]",uc($O2->pool())) };
+push @BC, { 'link'=>'/biz/orders/view.cgi?ID='.$O2->oid(), name=>sprintf("Order %s",$O2->oid()) };
+push @BC, { 'link'=>'/biz/orders/payment.cgi?ID='.$O2->oid(),name=>"Payment(s)" };
+
+
+&GTOOLS::output(title=>"",bc=>\@BC,msgs=>\@MSGS,file=>'payment.shtml',header=>1,jquery=>1);
 
 &DBINFO::db_zoovy_close();
 

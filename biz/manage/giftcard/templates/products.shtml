@@ -4,7 +4,7 @@
 <br>
 
 <div align='center'>
-<form action="index.cgi">
+<form action="/biz/manage/giftcard/index.cgi">
 <input type="hidden" name="VERB" value="SAVEPROD">
 <table width='450' class="zoovytable" cellspacing='0' cellpadding='4'>
 	<tr class="zoovytableheader">

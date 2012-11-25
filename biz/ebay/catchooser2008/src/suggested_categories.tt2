@@ -9,13 +9,13 @@
   [% END %]
   <ul>
   [% FOREACH category = categories -%]
-    <li class="spacing1"><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %]</a> - [% category.percentage %]% items match</li>
+    <li class="spacing1"><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]&id=[% category.id %]">[% category.name %]</a> - [% category.percentage %]% items match</li>
   [% END -%]
 
   [% IF direct_categories %]
   <li><br>Also you can try to use:</li>  
   [% FOREACH category = direct_categories -%]
-    <li class="spacing1"><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?id=[% category.id %]">[% category.name %]</a></li>
+    <li class="spacing1"><a id="category-[% category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]&id=[% category.id %]">[% category.name %]</a></li>
   [% END -%]
   [% END %]
 
