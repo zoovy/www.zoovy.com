@@ -1,0 +1,219 @@
+<manifest alg="2" build="645" opt="false">
+  <folder name="css">
+    <file name="site_global.css" crc="4070217030"/>
+    <file name="master_a-master.css" crc="4222540322" ref="employment:news---events1:partners:press-releases:in-the-news:we-re-different:contact:index:features:wholesalesupply-chain:marketplace-optimization:news---events:marketing-development:marketplaces:live-training---support:order-management:testing:clients:ebay:design:building-apps:amazon:development:multiple-stores:comparison-shopping:company:services:management:about-zoovy"/>
+    <file name="employment.css" crc="4199718829" ref="employment"/>
+    <file name="news---events1.css" crc="4199718829" ref="news---events1"/>
+    <file name="partners.css" crc="156518278" ref="partners"/>
+    <file name="press-releases.css" crc="4199718829" ref="press-releases"/>
+    <file name="in-the-news.css" crc="4199718829" ref="in-the-news"/>
+    <file name="we-re-different.css" crc="4286058550" ref="we-re-different"/>
+    <file name="contact.css" crc="4011201839" ref="contact"/>
+    <file name="index.css" crc="186563761" ref="index"/>
+    <file name="features.css" crc="4271607894" ref="features"/>
+    <file name="wholesalesupply-chain.css" crc="201701818" ref="wholesalesupply-chain"/>
+    <file name="marketplace-optimization.css" crc="4199718829" ref="marketplace-optimization"/>
+    <file name="news---events.css" crc="4199718829" ref="news---events"/>
+    <file name="marketing-development.css" crc="4199718829" ref="marketing-development"/>
+    <file name="marketplaces.css" crc="4004593420" ref="marketplaces"/>
+    <file name="live-training---support.css" crc="4199718829" ref="live-training---support"/>
+    <file name="order-management.css" crc="7473690" ref="order-management"/>
+    <file name="testing.css" crc="4063177299" ref="testing"/>
+    <file name="iefonts_testing.css" crc="319577411" ref="testing"/>
+    <file name="clients.css" crc="4199718829" ref="clients"/>
+    <file name="ebay.css" crc="120412561" ref="ebay"/>
+    <file name="design.css" crc="222794598" ref="design"/>
+    <file name="iefonts_design.css" crc="4224660908" ref="design"/>
+    <file name="building-apps.css" crc="257813304" ref="building-apps"/>
+    <file name="iefonts_building-apps.css" crc="184391922" ref="building-apps"/>
+    <file name="amazon.css" crc="4117931074" ref="amazon"/>
+    <file name="development.css" crc="4259635743" ref="development"/>
+    <file name="iefonts_development.css" crc="235430035" ref="development"/>
+    <file name="multiple-stores.css" crc="211776850" ref="multiple-stores"/>
+    <file name="comparison-shopping.css" crc="3931689865" ref="comparison-shopping"/>
+    <file name="company.css" crc="192767993" ref="company"/>
+    <file name="services.css" crc="4255540983" ref="services"/>
+    <file name="iefonts_services.css" crc="4016025119" ref="services"/>
+    <file name="management.css" crc="4029094383" ref="management"/>
+    <file name="about-zoovy.css" crc="377154141" ref="about-zoovy"/>
+  </folder>
+  <folder name="assets">
+    <folder name="services_animation">
+      <folder name="edge_includes">
+        <file name="edge.1.0.0.min.js" crc="47829327" mt="1355185866000"/>
+        <file name="jquery-1.7.1.min.js" crc="111770969" mt="1355185866000"/>
+        <file name="jquery.easing.1.3.js" crc="24609341" mt="1355185866000"/>
+        <file name="json2_min.js" crc="4081928964" mt="1355185866000"/>
+      </folder>
+      <folder name="images">
+        <file name="Background_Services2.png" crc="3932762689" mt="1355185866000"/>
+        <file name="Basket2.png" crc="3787011196" mt="1355185866000"/>
+        <file name="Blue_Glow2.png" crc="499251693" mt="1355185866000"/>
+        <file name="Box2.png" crc="4025634743" mt="1355185866000"/>
+        <file name="Chat_Circle2.png" crc="505023777" mt="1355185866000"/>
+        <file name="Credit_Cards2.png" crc="299671175" mt="1355185866000"/>
+        <file name="Dudes2.png" crc="4002761863" mt="1355185866000"/>
+        <file name="Flat_globe2.png" crc="112637251" mt="1355185866000"/>
+        <file name="Money_Sack2.png" crc="261852779" mt="1355185866000"/>
+        <file name="Orange_Pin2.png" crc="17033744" mt="1355185866000"/>
+        <file name="Poster.png" crc="4011248138" mt="1355185866000"/>
+        <file name="Ray_12.png" crc="442873584" mt="1355185866000"/>
+        <file name="Ray_22.png" crc="144183638" mt="1355185866000"/>
+        <file name="Ray_32.png" crc="3906892028" mt="1355185866000"/>
+        <file name="Ray_42.png" crc="189092617" mt="1355185866000"/>
+        <file name="Ray_52.png" crc="391492775" mt="1355185866000"/>
+        <file name="Ray_62.png" crc="147145152" mt="1355185866000"/>
+        <file name="Ray_72.png" crc="3789205877" mt="1355185866000"/>
+        <file name="Ribbon_Globe2.png" crc="3888072372" mt="1355185866000"/>
+        <file name="Star_12.png" crc="357359690" mt="1355185866000"/>
+        <file name="Star_22.png" crc="83290235" mt="1355185866000"/>
+        <file name="Star_52.png" crc="3815737271" mt="1355185866000"/>
+        <file name="Star_62.png" crc="420225753" mt="1355185866000"/>
+        <file name="Star_72.png" crc="14267767" mt="1355185866000"/>
+        <file name="Stars_32.png" crc="277173557" mt="1355185866000"/>
+        <file name="Stars_42.png" crc="4271148139" mt="1355185866000"/>
+        <file name="Thumbs_up2.png" crc="212829281" mt="1355185866000"/>
+      </folder>
+      <file name="Services_animation_edge.js" crc="443251920" mt="1355185866000"/>
+      <file name="Services_animation_edgeActions.js" crc="3937406459" mt="1355185866000"/>
+      <file name="Services_animation_edgePreload.js" crc="4256060806" mt="1355185866000"/>
+      <file name="Services_animation.html" crc="67119830" mt="1355185866000"/>
+    </folder>
+    <folder name="were_different">
+      <folder name="edge_includes">
+        <file name="edge.1.0.0.min.js" crc="47829327" mt="1354926113000"/>
+        <file name="jquery-1.7.1.min.js" crc="111770969" mt="1354926113000"/>
+        <file name="jquery.easing.1.3.js" crc="24609341" mt="1354926113000"/>
+        <file name="json2_min.js" crc="4081928964" mt="1354926113000"/>
+      </folder>
+      <folder name="images">
+        <file name="different_back.png" crc="4118319286" mt="1354926113000"/>
+        <file name="rec1.png" crc="395405207" mt="1354926113000"/>
+        <file name="rec10.png" crc="198323067" mt="1354926113000"/>
+        <file name="rec11.png" crc="234688550" mt="1354926113000"/>
+        <file name="rec12.png" crc="3853285766" mt="1354926113000"/>
+        <file name="rec2.png" crc="4105575295" mt="1354926113000"/>
+        <file name="rec3.png" crc="3876904683" mt="1354926113000"/>
+        <file name="rec4.png" crc="506572787" mt="1354926113000"/>
+        <file name="rec5.png" crc="149017232" mt="1354926113000"/>
+        <file name="rec6.png" crc="4216396421" mt="1354926113000"/>
+        <file name="rec7.png" crc="4160102783" mt="1354926113000"/>
+        <file name="rec8.png" crc="4039814432" mt="1354926113000"/>
+        <file name="rec9.png" crc="197670165" mt="1354926113000"/>
+      </folder>
+      <file name="Were_Different_edge.js" crc="4285106106" mt="1354926113000"/>
+      <file name="Were_Different_edgeActions.js" crc="3934335362" mt="1354926113000"/>
+      <file name="Were_Different_edgePreload.js" crc="4218178794" mt="1354926113000"/>
+      <file name="Were_Different.html" crc="3861855311" mt="1354926113000"/>
+    </folder>
+  </folder>
+  <folder name="scripts">
+    <folder name="1.1">
+      <file name="jquery-1.7.min.js" crc="4285342938" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="museutils.js" crc="3944585760" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="pie.js" crc="3786417276" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="pie.htc" crc="354638364" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="jquery.musemenu.js" crc="133813972" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="webpro.js" crc="4054559832" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+      <file name="musewpslideshow.js" crc="215328106" ref="index"/>
+      <file name="jquery.museoverlay.js" crc="4135412889" ref="index"/>
+      <file name="touchswipe.js" crc="261777990" ref="index"/>
+    </folder>
+  </folder>
+  <folder name="images">
+    <file name="zoovy_logo.png" crc="4233770012" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="u450-17.png" crc="482532420" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="u450-17-r.png" crc="4060542954" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="u450-17-m.png" crc="35756839" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="u450-17-fs.png" crc="78921175" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="twitter_512x512.png" crc="4066109618" ref="news---events:about-zoovy:clients:partners:services:we-re-different:marketplace-optimization:marketing-development:live-training---support:testing:design:development:company:management:employment:news---events1:press-releases:in-the-news:contact:index:features:wholesalesupply-chain:multiple-stores:marketplaces:order-management:ebay:amazon:comparison-shopping:building-apps"/>
+    <file name="googleplus-512-red27x27.png" crc="87288723" ref="news---events"/>
+    <file name="carlsbad_building-209x257.jpg" crc="35397970" ref="about-zoovy:company"/>
+    <file name="amazon_payments.png" crc="231872912" ref="partners"/>
+    <file name="google_analytics.png" crc="3991262147" ref="partners"/>
+    <file name="shipwire.png" crc="473430945" ref="partners"/>
+    <file name="authorizenet.png" crc="27068190" ref="partners"/>
+    <file name="google_checkout.png" crc="465930661" ref="partners"/>
+    <file name="shopzilla2rgb.png" crc="63567000" ref="partners"/>
+    <file name="bing.png" crc="197835307" ref="partners"/>
+    <file name="ispeakvideo.png" crc="4080037054" ref="partners"/>
+    <file name="symantec_verisign.png" crc="71246976" ref="partners"/>
+    <file name="buysafe.png" crc="278815257" ref="partners"/>
+    <file name="paypal.png" crc="3903590193" ref="partners"/>
+    <file name="ups.gif" crc="4247812067" ref="partners"/>
+    <file name="endicia_and_dymo.png" crc="3980364790" ref="partners"/>
+    <file name="powerreviews.png" crc="4037608803" ref="partners"/>
+    <file name="atlastfulfillment.jpg" crc="3861475084" ref="partners"/>
+    <file name="fedex.png" crc="242512926" ref="partners"/>
+    <file name="quickbooks.png" crc="3805456436" ref="partners"/>
+    <file name="usps.gif" crc="264097348" ref="partners"/>
+    <file name="service_path.png" crc="3985080720" ref="services:building-apps"/>
+    <file name="orange_right_arrow.png" crc="3875451918" ref="services"/>
+    <file name="data_fair_circle.png" crc="343628726" ref="services"/>
+    <file name="sup_circle.png" crc="4106715611" ref="services"/>
+    <file name="mpo_circle.png" crc="3787379600" ref="services"/>
+    <file name="different.jpg" crc="4285069490" ref="we-re-different"/>
+    <file name="blue_right_arrow.png" crc="3806133725" ref="we-re-different:design:development:building-apps"/>
+    <file name="service_path_tes.png" crc="325840301" ref="testing"/>
+    <file name="service_path_des.png" crc="529823236" ref="design"/>
+    <file name="service_path_dev.png" crc="3911179168" ref="development"/>
+    <file name="brianh_onwhite-125x125.jpg" crc="3993285684" ref="management"/>
+    <file name="tsaftig_onwhite-125x125.jpg" crc="4132962152" ref="management"/>
+    <file name="shutterstock_105669161.png" crc="3977664600" ref="index"/>
+    <file name="blank.gif" crc="4208392903" ref="index"/>
+    <file name="shutterstock_85986349.png" crc="352953041" ref="index"/>
+    <file name="loading.gif" crc="3815509949" ref="index"/>
+    <file name="web_headline.png" crc="4223133322" ref="index"/>
+    <file name="datafair_icon_white_100px.png" crc="3837809200" ref="index"/>
+    <file name="app-based_icon_white_100px.png" crc="3894621825" ref="index"/>
+    <file name="mpo_icon_white_100px.png" crc="3990481141" ref="index"/>
+    <file name="amazon.png" crc="4275604491" ref="index"/>
+    <file name="symantec_verisign2.png" crc="251641347" ref="index"/>
+    <file name="fedex2.png" crc="4287547895" ref="index"/>
+    <file name="ebay.png" crc="258315118" ref="index"/>
+    <file name="buysafe2.png" crc="398342606" ref="index"/>
+    <file name="google_analytics2.png" crc="4057466333" ref="index"/>
+    <file name="shopzilla2.png" crc="118245674" ref="index"/>
+    <file name="authorizenet2.png" crc="464708649" ref="index"/>
+    <file name="powerreviews2.png" crc="480225656" ref="index"/>
+    <file name="bing2.png" crc="236252128" ref="index"/>
+    <file name="quickbooks2.png" crc="3859243208" ref="index"/>
+    <file name="shipwire2.png" crc="3902574054" ref="index"/>
+    <file name="amazon_payments2.png" crc="3991665748" ref="index"/>
+    <file name="paypal2.png" crc="3956837137" ref="index"/>
+    <file name="googlecheckout_.png" crc="290949604" ref="index"/>
+    <file name="endicia_and_dymo2.png" crc="438511369" ref="index"/>
+    <file name="ispeakvideo2.png" crc="3909188455" ref="index"/>
+    <file name="ups_ready.png" crc="147709749" ref="index"/>
+    <file name="webstores_diagram-581x265.gif" crc="375096080" ref="multiple-stores"/>
+  </folder>
+  <file name="news---events.html" crc="3837185868" mt="1355522568985"/>
+  <file name="about-zoovy.html" crc="3963407370" mt="1355522568986"/>
+  <file name="clients.html" crc="3938167181" mt="1355522568988"/>
+  <file name="partners.html" crc="4136179111" mt="1355522568989"/>
+  <file name="services.html" crc="370661672" mt="1355523100077"/>
+  <file name="we-re-different.html" crc="259581680" mt="1355528364924"/>
+  <file name="marketplace-optimization.html" crc="4245027124" mt="1355522568993"/>
+  <file name="marketing-development.html" crc="4238696162" mt="1355522568995"/>
+  <file name="live-training---support.html" crc="61126251" mt="1355522568996"/>
+  <file name="testing.html" crc="304338921" mt="1355528469257"/>
+  <file name="design.html" crc="444272437" mt="1355526856862"/>
+  <file name="development.html" crc="4243269522" mt="1355528380526"/>
+  <file name="company.html" crc="14188103" mt="1355522569002"/>
+  <file name="management.html" crc="4081028419" mt="1355522569004"/>
+  <file name="employment.html" crc="443527516" mt="1355522569005"/>
+  <file name="news---events1.html" crc="4089003327" mt="1355522569006"/>
+  <file name="press-releases.html" crc="321999429" mt="1355522569007"/>
+  <file name="in-the-news.html" crc="380248959" mt="1355522569009"/>
+  <file name="contact.html" crc="4164889095" mt="1355522569011"/>
+  <file name="index.html" crc="4148278691" mt="1355522569012"/>
+  <file name="features.html" crc="380161044" mt="1355522569013"/>
+  <file name="wholesalesupply-chain.html" crc="372053609" mt="1355522569014"/>
+  <file name="multiple-stores.html" crc="4185668397" mt="1355522569016"/>
+  <file name="marketplaces.html" crc="381382113" mt="1355522569035"/>
+  <file name="order-management.html" crc="4169964507" mt="1355522569037"/>
+  <file name="ebay.html" crc="133697196" mt="1355522569038"/>
+  <file name="amazon.html" crc="374067348" mt="1355522569040"/>
+  <file name="comparison-shopping.html" crc="3865105564" mt="1355522569042"/>
+  <file name="building-apps.html" crc="145767453" mt="1355522602704"/>
+</manifest>
