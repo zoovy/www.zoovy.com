@@ -286,6 +286,7 @@ else {
 	print "Content-Length: ".length($utf8_encoded_json_text)."\n";
 	print "\n";
 	print $utf8_encoded_json_text;
+
 #	}
 #print STDERR "UFT8 RESPONSE: $utf8_encoded_json_text\n";
 

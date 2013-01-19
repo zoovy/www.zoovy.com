@@ -211,6 +211,14 @@ if ($VERB eq 'LOG-DELETE') {
 	}
 
 
+if ($VERB eq 'LOG-REPORT') {
+	push @MSGS, "";
+	## /biz/batch/index.cgi?VERB=NEW&GUID=$GUID&EXEC=REPORT&REPORT=SEARCHLOG_SUMMARY&.file=$file
+	$VERB = 'LOGS';
+	}
+
+
+
 
 if ($VERB eq 'LOGS') {
 	##
@@ -231,7 +239,7 @@ if ($VERB eq 'LOGS') {
 			$c .= "<td nowrap>";
 			$c .= "<a target=\"_blank\" href=\"http://static.zoovy.com/merchant/$USERNAME/$file\">[View]</a> ";
 			$c .= " <a href=\"/biz/setup/search/index.cgi?ACTION=LOG-DELETE&FILE=$file\">[Delete]</a>";
-			$c .= " <a href=\"/biz/batch/index.cgi?VERB=NEW&GUID=$GUID&EXEC=REPORT&REPORT=SEARCHLOG_SUMMARY&.file=$file\">[Report]</a>";
+			$c .= " <a href=\"/biz/setup/search/index.cgi?ACTION=LOG-REPORT&FILE=$file\">[Report]</a>";			
 			$c .= " </td></tr>\n";
 			}
 		}
@@ -676,7 +684,7 @@ push @TABS, { name=>"Tuning", selected=>($VERB eq 'GLOBAL')?1:0, link=>"/biz/set
 push @TABS, { name=>"Elastic Raw", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz/setup/search/index.cgi?ACTION=RAWE"  };
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
    'title'=>'Setup : Advanced Site Search',
    'file'=>$template_file,
    'header'=>'1',

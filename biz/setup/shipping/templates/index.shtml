@@ -4,8 +4,6 @@
 <form id="shipFrm" name="shipFrm" action="/biz/setup/shipping/index.cgi" method="get">
 <input form="shipFrm" type="hidden" id="VERB" name="VERB" value="">
 <center>
-<span class="alert"><b><!-- MESSAGE --></b></span>
-<br>
 
 <table width=600>
 <tr><td>
@@ -64,7 +62,7 @@
 		<tr>
 			<td colspan='2'>	
 			<center>
-			<button form="shipFrm" type="submit" onClick="" class="button">Save</button>
+			<button form="shipFrm" type="submit" onClick="jQuery('#VERB').val('SAVE');" class="button">Save</button>
 			</center>
 			</td>
 		</tr>
@@ -81,6 +79,7 @@
 	<td align="left" class="zoovytableheader">Flexible Shipping Methods:</td>
 	<td align="right">
 	<select form="shipFrm" id="_HANDLER" name="_HANDLER">
+	<option value="FREE">Free Shipping</option>
 	<option value="FIXED">Fixed Price</option>
 	<option value="WEIGHT">Weight Based</option>
 	<option value="PRICE">Price Based</option>

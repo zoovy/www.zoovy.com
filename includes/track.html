@@ -1,9 +1,18 @@
 <%perl>
 
 
+use Data::Dumper;
+print STDERR Dumper(\%ENV);
+
 
 ## make sure the user is always on www.zoovy.com not zoovy.com
-if ( 
+if ( $ENV{'HTTP_USER_AGENT'} =~ /TeSTin/ ) {
+	## no secure redirects
+	}
+#elsif ( $ENV{'REMOTE_ADDR'} =~ /^192\.168\./ ) {
+#	## no secure redirects
+#	}
+elsif ( 
 	($ENV{'HTTP_HOST'} eq 'zoovy.com') || 
 	($ENV{'HTTP_HOST'} eq 'zoovy.net') || 
 	($ENV{'HTTP_HOST'} eq 'www.zoovy.net') || 
@@ -71,7 +80,7 @@ if ($hostname eq 'newdev.zoovy.com') {
 elsif ($ENV{'HTTP_USER_AGENT'} =~ /Mozilla/) {
 	## we're only going to use this trick for mozilla/ie.
 	# print qq~<base href="http://wwwzoovycom.lg1x6z.simplecdn.net/">\n~;
-	#$::BASE = "//www-zoovy.simplecdn.net/";
+	# $::BASE = "//www-zoovy.simplecdn.net/";
 	$::BASE = "//www.zoovy.com";
 	}
 print qq~<link rel="canonical" href="https://www.zoovy.com$ENV{'SCRIPT_NAME'}" />\n~;

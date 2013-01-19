@@ -1,7 +1,7 @@
 <!-- SUPPORT_TAB -->
 <!-- SUPPORT_SIDEBAR_BEGIN -->
 
-<form action="/biz/support/index.cgi" name="frmticket" method="post">
+<form id="frmticket" action="/biz/support/index.cgi" name="frmticket" method="post">
 <center>
 <br>
 <table class="zoovytable" cellpadding='1' cellspacing='0' border='0' width='650'>
@@ -26,12 +26,12 @@ Notes:
 <!-- WARNINGS --><br>
 <div class="hint">
 <b>TIPS TO ENSURE A FAST AND ACCURATE RESPONSE:</b><br>
-1. Include relevant information such as example order #'s, channel #'s, external items.<br>
-2. Include only one issue per ticket (unless issues are related).<br>
-3. Include any steps that can be performed to replicate the problem.<br>
+1. Include relevant information such as example order #'s, product id's.<br>
+2. Include only one issue per ticket (unless you believe issues are related).<br>
+3. Include any necessary steps that can be performed to replicate the problem.<br>
 4. Never open a new ticket on an old issue - instead reopen the original ticket.<br>
 The more information you provide about the problem and circumstances 
-the more likely we will be able to answer your question without needing additional details.<br>
+the more likely we will be able expeditiously to answer the question without needing additional details.<br>
 </div>
 <br>
 <!-- ATTACHMENTS -->
@@ -68,6 +68,7 @@ the more likely we will be able to answer your question without needing addition
 <input type='hidden' name="notes" value="<!-- NOTES -->">
 <input type='hidden' name="topic" value="<!-- TOPIC -->">
 <input type='hidden' name='subject' value="<!-- SUBJECT -->">
+<input type='hidden' name='uuid' value="<!-- UUID -->">
 <div class="hint">
 All requests are subject to support charges if billable services, or
 configuration advice (implementation) is requested. Some accounts may
@@ -82,8 +83,8 @@ for criteria on billable services.
 <center>
 <table>
 <tr>
-	<Td><input type="submit" class="button" value='  Create  '></td>
-	<td><input type="button" class="button" value="  Edit " onClick="frmticket.VERB.value='TICKET-CREATE'; frmticket.submit();"></td>
+	<td><button onClick="jQuery('#VERB').value('TICKET-CREATE'); jQuery('frmticket').submit();" class="button">  Edit  </button></td>
+	<Td><button onClick="jQuery('#VERB').value('TICKET-SAVE'); jQuery('frmticket').submit();" class="button">  Create  </button></td>
 </tr>
 </table>
 </center>

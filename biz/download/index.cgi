@@ -24,16 +24,16 @@ if ($LU->get('todo.setup.download')) {
 ##
 $GTOOLS::TAG{'<!-- USERNAME -->'} = $USERNAME;
 $GTOOLS::TAG{'<!-- VERSION_MAJOR -->'} = 	q~11~;
-$GTOOLS::TAG{'<!-- VERSION_MINOR -->'} = 	q~054~;
-$GTOOLS::TAG{'<!-- RELEASE_DATE -->'} = 	q~06/13/12~;
-$GTOOLS::TAG{'<!-- ZID_FILE -->'} =			q~ZIDsetup-v11054.msi~;
-$GTOOLS::TAG{'<!-- ZNSM_FILE -->'} =		q~ZNSMsetup-v11054.msi~;
+$GTOOLS::TAG{'<!-- VERSION_MINOR -->'} = 	q~204~;
+$GTOOLS::TAG{'<!-- RELEASE_DATE -->'} = 	q~12/12/12~;
+$GTOOLS::TAG{'<!-- ZID_FILE -->'} =			q~ZIDsetup-v11204.msi~;
+$GTOOLS::TAG{'<!-- ZNSM_FILE -->'} =		q~ZNSMsetup-v11204.msi~;
 
 
 $GTOOLS::TAG{'<!-- VERSION -->'} = $GTOOLS::TAG{'<!-- VERSION_MAJOR -->'}.'.'.$GTOOLS::TAG{'<!-- VERSION_MINOR -->'};
 
 my $template_file = 'index.shtml';
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>"Desktop Software Download Area",
 	file=>$template_file,
 	todo=>1,

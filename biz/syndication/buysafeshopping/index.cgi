@@ -252,7 +252,7 @@ if ($VERB eq 'CATEGORIES') {
 	$template_file = 'categories.shtml';
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'buySAFE bonded shopping Product Syndication',
    'file'=>$template_file,
 	'head'=>qq~<script language="JavaScript1.2" type="text/javascript" src="/biz/syndication/fastlookup.js"></script>~,

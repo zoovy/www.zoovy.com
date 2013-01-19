@@ -173,9 +173,8 @@ else {
 	  if (thisFrm.elements[i].name.substring(0,5) == 'task-') {
 			 thisFrm.elements[i].checked = this.checked;
 			 }
-		 }
-	#"></th>
-	#			<th valign=top class="zoovytableheader"><b><a href="index.cgi?ACTION=SORT&SORT=CREATED_GMT">Created</a></b></th>
+		 }"></th>
+				<th valign=top class="zoovytableheader"><b><a href="index.cgi?ACTION=SORT&SORT=CREATED_GMT">Created</a></b></th>
 				<th valign=top class="zoovytableheader"><b><a href="index.cgi?ACTION=SORT&SORT=TASK">Task</a></b></th>
 				<th valign=top class="zoovytableheader"><b><a href="index.cgi?ACTION=SORT&SORT=DUE_GMT">Due Date</a></b></th>
 				<th valign=top class="zoovytableheader"><b><a href="index.cgi?ACTION=SORT&SORT=PRIORITY">Priority</a></b></th>

@@ -6,7 +6,7 @@ require LUSER;
 require GTOOLS;
 require ZOOVY;
 require ZWEBSITE;	
-require ORDER;
+require CART2;
 require ZACCOUNT;
 require DOMAIN;
 require DOMAIN::TOOLS;
@@ -29,7 +29,7 @@ if ($VERB eq '') { $VERB = 'GENERAL'; }
 ##
 if ($VERB eq 'GENERAL-SAVE') {
 	if ($ZOOVY::cgiv->{'order_num'}+0 != $ZOOVY::cgiv->{'hidden_order_num'}+0) {
-		&ORDER::reset_order_id($USERNAME,$ZOOVY::cgiv->{'order_num'}+0);
+		&CART2::reset_order_id($USERNAME,$ZOOVY::cgiv->{'order_num'}+0);
 		}	
 	push @MSGS, "SUCCESS|Successfully Saved Changes";
 
@@ -43,7 +43,7 @@ if ($VERB eq 'GENERAL-SAVE') {
 	}
 
 if ($VERB eq 'GENERAL') {
-	my $order_num = &ORDER::next_id($USERNAME,1);
+	my $order_num = &CART2::next_id($USERNAME,1);
 	(undef,undef,$order_num) = split(/-/,$order_num,3);
 	$order_num -= 1;
 
@@ -453,7 +453,7 @@ push @TABS, { name=>'Inventory', selected=>($VERB eq 'INVENTORY')?1:0, link=>'/b
 push @TABS, { name=>'WMS', selected=>($VERB eq 'WMS')?1:0, link=>'/biz/setup/global/index.cgi?VERB=WMS', target=>'_top' };
 push @TABS, { name=>'Partitions', selected=>($VERB eq 'PARTITIONS')?1:0, link=>'/biz/setup/global/index.cgi?VERB=PARTITIONS', target=>'_top' };
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Global Account Settings',
    'file'=>$template_file,
    'header'=>'1',

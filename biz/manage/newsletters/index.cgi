@@ -982,7 +982,7 @@ push @TABS, { name=>"Create Campaign", link=>"/biz/manage/newsletters/index.cgi?
 
 ## all VERBS use this output except the "Step 2: Choose a Page Layout",
 ## which is using frames
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 	jquery=>1,
 	title=>"Utilities: Newsletter Management",
 	bc=>\@BC,	

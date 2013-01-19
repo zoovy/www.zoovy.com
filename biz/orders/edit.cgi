@@ -86,7 +86,7 @@ if ($VERB eq 'SET-SHIPPING') {
 	#	}
 	$O2->in_set("sum/shp_method",$ZOOVY::cgiv->{'sum/shp_method'});
 	$O2->in_set("sum/shp_total",$ZOOVY::cgiv->{'sum/shp_total'});
-	$O2->add_history("Updated shipping",undef,0,$LU->login());
+	$O2->add_history("Updated shipping",etype=>0,'luser'=>$LU->login());
 	$LU->log('ORDER.EDIT.SHIP',"Updated shipping for order $OID","SAVE");
 	$VERB = 'SAVE';
 	}
@@ -209,6 +209,7 @@ if ($VERB eq 'SAVE') {
 		my $item = $O2->stuff2()->item('stid'=>$stid);
 		print STDERR Dumper($item);
 		$item->{'price'} = $ZOOVY::cgiv->{"price.$i"};
+		$item->{'weight'} = $ZOOVY::cgiv->{"weight.$i"};
 		my $qty_was = $item->{'qty'};
 		$item->{'qty'} = $ZOOVY::cgiv->{"qty.$i"};
 		if ($item->{'qty'} != $qty_was) {
@@ -334,7 +335,7 @@ foreach my $item (@{$O2->stuff2()->items()}) {
 
 
 
-&GTOOLS::output(jquery=>1,'msgs'=>\@MSGS,'bc'=>\@BC,file=>$template_file,header=>1,'headjs'=>qq~
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,jquery=>1,'msgs'=>\@MSGS,'bc'=>\@BC,file=>$template_file,header=>1,'headjs'=>qq~
 <style>
 .table { background:#333; }
 .table ul { float:left; margin:0; padding:0; border:1px solid #C9C9C9; }
@@ -399,7 +400,7 @@ if ($VERB eq "HIT-SAVE-TAX") {
 	$oref{"our/tax_rate"} = $ZOOVY::cgiv->{'LOCAL_RATE'} + $ZOOVY::cgiv->{'STATE_RATE'};
 	$oref{'is/shp_taxable'} = (defined($ZOOVY::cgiv->{'TAX_SHIPPING'}))?1:0;
 
-	$O2->add_history("Updated tax",undef,0,$LU->login());
+	$O2->add_history("Updated tax",'luser'=>,$LU->login());
 	$LU->log('ORDER.EDIT.TAX',"Updated tax for order $OID","SAVE");
 	$O2->order_save();
 	}
@@ -474,7 +475,7 @@ if ($VERB eq "SAVE") {
 #	use Data::Dumper; print STDERR Dumper($stuff);
 
 	$LU->log('ORDER.EDIT.SHIP',"Updated order $OID","SAVE");
-	$O2->add_history("Edited+saved order via online interface [".($stuff2->count('show'=>'real'))." actual items]",undef,0,$LU->login());
+	$O2->add_history("Edited+saved order via online interface [".($stuff2->count('show'=>'real'))." actual items]",luser=>$LU->login());
 	$O2->order_save(); 
 	$VERB = "EDIT";
 	}

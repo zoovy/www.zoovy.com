@@ -101,14 +101,14 @@ if (defined $results) {
 		<tr>
 			<td class=\"zoovysub1header\">
 			<input type="button" class="button" onClick="
-				window.document.thisFrm.VERB.value='NUKETOPIC';
-				window.document.thisFrm.DATA.value='$topic->{'ID'}'; 
-				window.document.thisFrm.submit();
+				jQuery('#VERB').attr('value','NUKETOPIC');
+				jQuery('#DATA').attr('value','$topic->{'ID'}');
+				jQuery('#utilityFaqFrm').submit();
 				" value=" DEL ">
 			<input type="button" class="button" onClick="
-				window.document.thisFrm.VERB.value='EDITTOPIC';
-				window.document.thisFrm.DATA.value='$topic->{'ID'}'; 
-				window.document.thisFrm.submit();
+				jQuery('#VERB').attr('value','EDITTOPIC');
+				jQuery('#DATA').attr('value','$topic->{'ID'}');
+				jQuery('#utilityFaqFrm').submit();
 				" value=" EDIT ">
 			[$topic->{'ID'}] $topic->{'TITLE'}
 			
@@ -127,14 +127,14 @@ if (defined $results) {
 				<tr>
 					<td colspan=2 class="$class">
 					<input type="button" class="button" onClick="
-						window.document.thisFrm.VERB.value='NUKEQANDA';
-						window.document.thisFrm.DATA.value='$faq->{'ID'}';
-						window.document.thisFrm.submit();
+						jQuery('#VERB').attr('value','NUKEQANDA');
+						jQuery('#DATA').attr('value','$faq->{'ID'}');
+						jQuery('#utilityFaqFrm').submit();
 						" value=" DEL ">
 					<input type="button" class="button" onClick="
-						window.document.thisFrm.VERB.value='EDITQANDA';
-						window.document.thisFrm.DATA.value='$faq->{'ID'}';
-						window.document.thisFrm.submit();
+						jQuery('#VERB').attr('value','EDITQANDA');
+						jQuery('#DATA').attr('value','$faq->{'ID'}');
+						jQuery('#utilityFaqFrm').submit();
 						" value=" EDIT "> 
 					Q: $faq->{'QUESTION'}<br>
 					A: $faq->{'ANSWER'}<br>
@@ -149,7 +149,7 @@ if (defined $results) {
 	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	file=>$template_file,
 	help=>"#50728",
 	header=>1);

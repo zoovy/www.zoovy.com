@@ -8,8 +8,10 @@
 </tr>
 <tr>
 	<td>
-		<a href="#" onClick="navigateTo('/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=CUSTOMER&.mode=ALL&GUID=<!-- GUID -->&PRT=<!-- PRT -->');">List all Customers</a><br>
-		<a href="#" onClick="navigateTo('/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=CUSTOMER&.mode=NEWSLETTER&GUID=<!-- GUID -->&PRT=<!-- PRT -->');">Newsletter Subscribers</a>
+		<li>	<a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'CUSTOMER','mode':'ALL'}}); return false;">List All Customers</a>
+		<li> <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'CUSTOMER','mode':'NEWSLETTER'}}); return false;">Newsletter Subscribers</a>
 	</td>
 </tr>
 </table>

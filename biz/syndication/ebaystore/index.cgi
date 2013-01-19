@@ -404,7 +404,7 @@ if ($VERB eq 'REPORTS') {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'eBay Stores Syndication',
    'file'=>$template_file,
    'header'=>'1',

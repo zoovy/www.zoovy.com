@@ -26,8 +26,12 @@ For More Information:
 	<td><div class="hint">Provided by Zoovy to PowerReviews</div></td>
 </tr>
 <tr>
-	<td>Create Data Feed:</td>
-	<td><a href="/biz/batch/index.cgi?VERB=NEW&EXEC=SYNDICATION&GUID=<!-- GUID -->&DST=PRV&PROFILE=<!-- PROFILE -->&.key=<!-- KEY -->">Create Now</a></td>
+	<td colspan=2>
+		<button type="button" class="minibutton" onClick=" 
+		app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'SYNDICATION','%vars':{'DST':'PRV','PROFILE':'<!-- PROFILE -->','key':'<!-- KEY -->'}}); 
+		return false;
+		">Create Data File</button>
+
 	<td><div class="hint">Created by Zoovy for PowerReviews</div></td>
 </tr>	
 <tr>

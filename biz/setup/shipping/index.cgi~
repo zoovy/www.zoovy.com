@@ -265,6 +265,55 @@ if ($VERB eq 'FEDEX-CONFIG') {
 
 
 
+#if ($VERB eq "SIMPLE-SAVE") {
+#	push @MSGS, "SUCESS|Changes saved";
+#
+##	if (uc($ZOOVY::cgiv->{'promotion_discount'}) eq "ON") { $webdb->{"promotion_discount"} = 1; } else { $webdb->{"promotion_discount"} = 0; }
+#   if (uc($ZOOVY::cgiv->{'promotion_freeshipping'}) eq "ON") { $webdb->{"promotion_freeshipping"} = 1; } else { $webdb->{"promotion_freeshipping"} = 0; }
+##	if (uc($ZOOVY::cgiv->{'promotion_external'}) eq "ON") { $webdb->{"promotion_external"} = 1; } else { $webdb->{"promotion_external"} = 0; }
+#
+#   $webdb->{"promotion_freeshipping_amount"} = $ZOOVY::cgiv->{'promotion_freeshipping_amount'}; 
+#	$webdb->{"promotion_freeshipping_amount"} =~ s/[^0-9\.]+//igs;
+##	$webdb->{"promotion_discount_amount"} = $ZOOVY::cgiv->{'promotion_discount_amount'};
+##	$webdb->{"promotion_discount_amount"} =~ s/[^0-9\.\%]+//igs;
+##	$webdb->{"promotion_discount_after"} = $ZOOVY::cgiv->{'promotion_discount_after'};
+##	$webdb->{"promotion_discount_after"} =~ s/[^0-9\.]+//igs;
+#	$LU->log("SETUP.PROMO","Update Simple Promotions","SAVE");
+#   &ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);
+#	$VERB = 'SIMPLE';
+#   }
+
+#if ($VERB eq 'SIMPLE') {
+#	if ($webdb->{"promotion_freeshipping"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"}  = ""; }
+#
+#	if ($webdb->{"promotion_discount"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"}  = ""; }
+#
+#	if ($webdb->{"promotion_external"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"}  = ""; }
+#
+#
+#	if ( ($webdb->{'promotion_freeshipping'} || $webdb->{'promotion_discount'}) 
+#			&& $webdb->{'promotion_advanced'}) {
+#		push @MSGS, "ERROR|You cannot have both simple promotions and advanced (uber) promotions enabled at the same time.";
+#		}
+#
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_FREESHIPPING_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_freeshipping_amount"}."\" ";
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_discount_amount"}."\" ";
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AFTER -->"} = " VALUE=\"".$webdb->{"promotion_discount_after"}."\" ";
+#	$template_file = 'index-simple.shtml';
+#	}
+
+
+
+
 
 if ($VERB eq 'SAVE') {			
 	my $errors = 0;
@@ -451,15 +500,15 @@ if ($VERB eq '') {
 		push @MSGS, "WARN|ship_origin_zip is not set - many types of zone based shipping will not work";
 		}
 
-	if ($webdbref->{'promotion_freeshipping_amount'}>0) {
-		$GTOOLS::TAG{'<!-- FREE_SHIPPING_PROMO_WARN -->'} = 
-			sprintf(qq~
-<div class="warning">
-NOTE: Simple Promotion will give FREE SHIPPING on orders over %.2f
-<a href="/biz/setup/promotions/index.cgi?VERB=SIMPLE">[Configure]</a>
-</div>
-~,$webdbref->{'promotion_freeshipping_amount'});
-		}
+#	if ($webdbref->{'promotion_freeshipping_amount'}>0) {
+#		$GTOOLS::TAG{'<!-- FREE_SHIPPING_PROMO_WARN -->'} = 
+#			sprintf(qq~
+#<div class="warning">
+#NOTE: Simple Promotion will give FREE SHIPPING on orders over %.2f
+#<a href="/biz/setup/promotions/index.cgi?VERB=SIMPLE">[Configure]</a>
+#</div>
+#~,$webdbref->{'promotion_freeshipping_amount'});
+#		}
 
 
 	if ($webdbref->{'global_enable'}) {
@@ -520,11 +569,7 @@ NOTE: Simple Promotion will give FREE SHIPPING on orders over %.2f
 			$c .= qq~
 <tr class="$r">
 	<td valign=top>
-<input type="button" class="button" value="Edit" onClick="
-document.uniFrm.VERB.value='EDIT';
-document.uniFrm.ID.value='$m->{'id'}';
-document.uniFrm.submit();
-"></td>
+<button class="button" onClick="navigateTo('/biz/setup/shipping/universal.cgi?VERB=EDIT&ID=$m->{'id'}');">Edit</button></td>
 	<td valign=top>~.$m->{'handler'}.qq~</td>
 	<td valign=top>~.$m->{'region'}.qq~</td>
 	<td valign=top>~.&ZOOVY::incode($m->{'name'}).qq~</td>
@@ -605,7 +650,7 @@ push @TABS, { name=>'Countries', selected=>($VERB eq 'COUNTRIES')?1:0, link=>'/b
 push @TABS, { name=>'Block-List', selected=>($VERB eq 'BANNED')?1:0, link=>'/biz/setup/shipping/index.cgi?ACTION=BANNED' };
 push @TABS, { name=>'Debugger', link=>'debug.cgi' };
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	help=>'#50620',
 	title=>'Setup: Shipping',
 	header=>1, 

@@ -28,13 +28,15 @@
 	<input type="hidden" name="GUID" value="<!-- GUID -->">
 	<input type="hidden" name="EXEC" value="UTILITY">
 	<input type="hidden" name="APP" value="PUBLISH">
-	Snapshot Type: <select name=".publishtype">
+	Snapshot Type: <select id="publishtype" name=".publishtype">
 		<option value="">--</option>
 		<option value="prt"> Published Site (this partition)</option>
 		<option value="site"> Full Site Backup/Restore Point</option>
 	</select>
 	<br>
-	<input type="submit" value=" Create File" class="button">
+	<button class="button" onClick="
+		app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'UTILITY','%vars':{'APP':'PUBLISH','publishtype':jQuery('#publishtype').val()}}); return false;" 
+		type="submit">Create File</button>
 	<div class="hint">
 	Snapshots are copies of a partition whereas full site restores/backups include data from all partitions.
 	Snapshots are replicated to each webserver in a cluster, and copied on the local disk.

@@ -1,33 +1,27 @@
 #!/usr/bin/perl
 
+use URI::Escape qw (uri_escape);
+use Data::Dumper;
+use Digest::MD5;
+use strict;
 use lib "/httpd/modules";
 require ZOOVY;
-use Data::Dumper;
 require GTOOLS;
 require ZTOOLKIT;
 require POGS;
 require AMAZON3;
-use URI::Escape qw (uri_escape);
-use strict;
 require ZWEBSITE;
-use Digest::MD5;
-use LUSER;
+require LUSER;
 require PRODUCT;
 
 my @MSGS = ();
 
 
-my ($LU) = LUSER->authenticate(
-	auth=>'autotoken',
-	sendto=>"/biz",
-	nocache=>1
-	);
+my ($LU) = LUSER->authenticate('flags'=>'_P&2');
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 
-
-
-use Data::Dumper;
-# print STDERR Dumper($ZOOVY::cgiv);
+#use Data::Dumper;
+#print STDERR Dumper($ZOOVY::cgiv,$LU,$USERNAME,$LUSERNAME);
 
 
 my $PRODUCT = $ZOOVY::cgiv->{'PRODUCT'};
@@ -70,6 +64,7 @@ $GTOOLS::TAG{'<!-- MODE -->'} = '';
 
 ## This is a normal session, just process the login.
 if ((not defined $USERNAME) || ($USERNAME eq '')) {
+	warn "USERNAME NOT SET\n";
 	print "Content-type: text/plain\n\n";
 	print "USERNAME not set.\n";
 	exit; 
@@ -965,7 +960,7 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 						<input 
 							onChange="document.pogFrm.imgimg.src=imglib(document.pogFrm.img.value,50,50,'FFFFFF',0,'jpg');" 
 						type="textbox" name="img" size="20"><br>
-						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#img'),jQuery('#imgimg')','Choose Option Image');">
+						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#img'),jQuery('#imgimg'),'Choose Option Image');">
 					</td>
 					</tr>
 				</table>
@@ -1515,6 +1510,6 @@ if (scalar(@MSGS)) {
 	$GTOOLS::TAG{'<!-- MSGS -->'} = &GTOOLS::show_msgs(\@MSGS);
 	}
 
-&GTOOLS::output(title=>'',js=>2+4,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,title=>'',js=>2+4,file=>$template_file,header=>1);
 
 

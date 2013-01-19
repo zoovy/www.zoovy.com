@@ -4,7 +4,7 @@ my %lookup = (
 	#'eric' => '6199948649@vtext.com',
 	#'ericmail' => 'ez@zoovy.com',
 	# 'kateo'=>'6198615331@vtext.com',
-	'brian'=>'7604199953@vtext.com',
+	'brianh'=>'7604199953@vtext.com',
 	'brian'=>'gru3hunt3r@gmail.com',
 	'lizm'=>'9144004305@vtext.com',
 	'nickd'=>'7609947938@vtext.com',
@@ -27,6 +27,7 @@ use Text::Wrap;
 $Text::Wrap::columns = 80;
 
 
+use Data::GUID;
 use lib "/httpd/modules";
 use ZOOVY;
 use SUPPORT;
@@ -64,8 +65,6 @@ $GTOOLS::TAG{'<!-- LUSERNAME -->'} = $LUSERNAME;
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $TICKETID = $ZOOVY::cgiv->{'ID'};
 my $zdbh = &DBINFO::db_zoovy_connect();
-
-
 
 
 #if ($FLAGS =~ /,TRIAL,/) {
@@ -1070,7 +1069,7 @@ if (($VERB eq 'TASK-APPROVE') || ($VERB eq 'TASK-FEEDBACK') || ($VERB eq 'TICKET
 
 	($pstmt) = &DBINFO::insert($zdbh,'TICKET_FOLLOWUPS',{
 		ID=>0, MID=>$MID, PARENT=>$TICKETID,
-		CREATED_GMT=>$^T, CREATEDBY=>$USERNAME,
+		CREATED_GMT=>$^T, CREATEDBY=>"$USERNAME*$LUSER",
 		COMMENT=>$ZOOVY::cgiv->{'notes'},
 		PUBLIC=>2
 		},debug=>2);
@@ -1124,6 +1123,9 @@ if ($VERB eq 'TICKET-VIEW') {
 	$sth->execute();
 	my $ticketref = $sth->fetchrow_hashref();
 	$sth->finish;
+
+	$GTOOLS::TAG{'<!-- TICKET -->'} = $ticketref->{'ID'};
+	$GTOOLS::TAG{'<!-- UUID -->'} = $ticketref->{'UUID'};
 
 	if (length($ticketref->{'NOTES'})<8192) {
 		$GTOOLS::TAG{'<!-- SUMMARY -->'} = &ZOOVY::incode(Text::Wrap::wrap("","",$ticketref->{'NOTES'}));
@@ -1476,9 +1478,9 @@ We are disappointed when clients don't submit a high priority ticket because of 
 we'd consider an emergency. Below is a short list of the most *common* reasons we receive high priority tickets, they outline what we consider billable/non-billable to help clients 
 understand what is an acceptable use of this service:
 <ul>
-<li> If you got an Internal Server Error on a critical service - Acceptable Use, Free. Please let us know right now. 
-<li> When the home page or category is not loading (or corrupt), or cart is not letting items be added, or all customers in US cannot checkout - Acceptable Use, free (assuming it's not a blatant configuration issue)
-<li> An employee ran a batch job which just cratered your store with no backup - Acceptable Use, it will be billable, but getting back online is probably more important. 
+<li> If you received an Internal Server Error on a critical service - Acceptable Use, Free. Please let us know right now. 
+<li> When the home page, category, or search is not loading (or corrupt), or cart is not letting items be added, or all customers in US cannot checkout - Acceptable Use, free (assuming it's not a blatant configuration issue)
+<li> An employee ran a batch job which just destroyed the store (with no backup) - Acceptable Use, it will be billable, but getting back online is probably more important. 
 <li> You need to get new amazing XYZ service working because it will increase sales by 1000% - Unacceptable. it will be a $500 minimum fee, warning, possible sanctions.
 <li> You have a radio/tv/media campaign going live in 1 hour and a coupon isn't working - Acceptable.  Billable, $500 minimum fee, warning, possible future sanctions for repeated abuse. (A lack of planning on your part is NOT an emergency on ours)
 <li> You're angry about another (already known) ticket/issue and you want to let us know what a crappy job you think we're doing - Unacceptable. $500 minimum fee, warning or 1 year ban from high priority tickets, or potential account termination.
@@ -1508,6 +1510,7 @@ understand what is an acceptable use of this service:
 			}
 		}
 	
+	$GTOOLS::TAG{'<!-- UUID -->'} = $ZOOVY::cgiv->{'UUID'};
 	$GTOOLS::TAG{'<!-- FAQS -->'} = $c;
 	}
 
@@ -1516,6 +1519,24 @@ understand what is an acceptable use of this service:
 
 
 
+if ($VERB eq 'TICKET-CLOSE') {
+	$TICKETID = $ZOOVY::cgiv->{'ID'};
+	my $qtID = $zdbh->quote($TICKETID);
+	my $pstmt = "update TICKETS set DIRTY=0,CLOSED_GMT=0,DISPOSITION=CLOSED where ID=$qtID and MID=$MID";
+	print STDERR $pstmt."\n";
+	$zdbh->do($pstmt);
+
+	my $NOTES = "CLOSED BY CUSTOMER\n\n".$ZOOVY::cgiv->{'notes'};
+
+	my ($pstmt) = &DBINFO::insert($zdbh,'TICKET_FOLLOWUPS',{
+		ID=>0, MID=>$MID, PARENT=>$TICKETID,
+		CREATED_GMT=>$^T, CREATEDBY=>"$USERNAME*$LUSER",
+		COMMENT=>$NOTES,
+		PUBLIC=>2
+		},debug=>2);
+	print STDERR $pstmt."\n";
+	$zdbh->do($pstmt);
+	}
 
 
 if ($VERB eq 'TICKET-UPDATE') {
@@ -1534,6 +1555,7 @@ if ($VERB eq 'TICKET-UPDATE') {
 	my $pstmt = "update TICKETS set ".$OTHERSQL."DIRTY=1,NOTES=$qtNOTES,DISPOSITION=$qtDISPOSITION where ID=$qtID and MID=$MID";
 	print STDERR $pstmt."\n";
 	$zdbh->do($pstmt);
+
 	
 	print "Location: /biz/support/index.cgi?msg=Updated+Ticket+".$TICKETID."\n\n";
 	}
@@ -1559,7 +1581,8 @@ if ($VERB eq 'TICKET-WARN') {
 if ($VERB eq 'TICKET-CREATE') {
 	$GTOOLS::TAG{'<!-- SUBJECT -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'subject'});
 	$GTOOLS::TAG{'<!-- NOTES -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'notes'});
-
+	if (not defined $ZOOVY::cgiv->{'UUID'}) { $ZOOVY::cgiv->{'UUID'} = Data::GUID->new()->as_string(); }
+	$GTOOLS::TAG{'<!-- UUID -->'} = $ZOOVY::cgiv->{'UUID'};
 	$GTOOLS::TAG{'<!-- TOPIC_WEB_MANAGER -->'} = (($ZOOVY::cgiv->{'topic'} eq 'web_manager')?'checked':'');
 	$GTOOLS::TAG{'<!-- TOPIC_DESKTOP -->'} = (($ZOOVY::cgiv->{'topic'} eq 'desktop')?'checked':'');
 	$GTOOLS::TAG{'<!-- TOPIC_ORDER_MANAGER -->'} = (($ZOOVY::cgiv->{'topic'} eq 'order_manager')?'checked':'');
@@ -1609,8 +1632,13 @@ if ($VERB eq 'TICKET-SAVE') {
 		}
 
 	$notes =~ s/<br>/\n/ig;	 #this is necessary since we converted [\n]'s to output earlier (around line 966)
+	my $UUID = $ZOOVY::cgiv->{'UUID'};
+	if (not defined $UUID) {
+		$UUID = Data::GUID->new()->as_string();
+		}
 	
 	my ($TICKET) = &SUPPORT::createticket($USERNAME,
+			UUID=>$UUID,
 			LUSER=>$LUSERNAME,
 			ORIGIN=>'WEB', DISPOSITION=>$disp,
 			BODY=>$notes,
@@ -1624,7 +1652,8 @@ if ($VERB eq 'TICKET-SAVE') {
 	my $pstmt = '';
 	if ($TICKET>0) {
 		## associate any attached files
-		$pstmt = "update TICKET_ATTACHED_FILES set TICKET=".$TICKET." where TICKET=0 and MID=$MID /* $USERNAME */";
+		my $qtUUID = $zdbh->quote($UUID);
+		$pstmt = "update TICKET_ATTACHED_FILES set TICKET=".$TICKET." where TICKET=0 and UUID=$qtUUID and MID=$MID /* $USERNAME */";
 		print STDERR $pstmt."\n";
 		$zdbh->do($pstmt);
 		}		
@@ -1697,27 +1726,28 @@ sub build_ticket_attachments {
 
 		my $c = '<table></table>';
 		$c = '';
-		my $pstmt = "select CREATED,UPLOAD_FILENAME,STORED_NAME from TICKET_ATTACHED_FILES where TICKET=".$zdbh->quote($TICKET)." and MID=$MID /* $USERNAME */ and PUBLIC>0 and TASK=$TASK";
+		my $pstmt = "select ID,CREATED,UPLOAD_FILENAME,length(DATABLOB),md5(DATABLOB) from TICKET_ATTACHED_FILES where TICKET=".$zdbh->quote($TICKET)." and MID=$MID /* $USERNAME */ and PUBLIC>0 and TASK=$TASK";
 
 		print STDERR $pstmt."\n";
 		my $sth = $zdbh->prepare($pstmt);
 		$sth->execute();
 		my $counter=0; my $class;
 		my $path = &ZOOVY::resolve_userpath($USERNAME);
-		while ( my ($created,$uploaded,$local) = $sth->fetchrow()) {
+		while ( my ($fileid,$created,$uploaded,$size,$digest) = $sth->fetchrow()) {
 			if ($counter++ % 2==0) { $class='on'; } else { $class = 'off'; }
 
-			my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($path."/".$local);
-			next if ($size == 0);
-			$size = sprintf("%.1f",$size/1024);
+			#my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($path."/".$local);
+			#next if ($size == 0);
+			#$size = sprintf("%.1f",$size/1024);
 
-			if ($local =~ /^IMAGES\/(.*?)$/) {
-				$local = "http://static.zoovy.com/merchant/$USERNAME/$1";
-				}
+			#if ($local =~ /^IMAGES\/(.*?)$/) {
+			#	$local = "http://static.zoovy.com/merchant/$USERNAME/$1";
+			#	}
 
+			my $link = "/biz/support/view.cgi/$uploaded?user=$USERNAME&ticket=$TICKET&fileid=$fileid&digest=$digest";
 			$c .= qq~
 			<tr>
-				<td class='$class'> <a target="_blank" href="$local">$uploaded</a></td>
+				<td class='$class'> <a target="_blank" href="#" onClick="linkOffSite('$link'); return false;">$uploaded</a></td>
 				<td class='$class'>$created</td>
 				<td class='$class'>$size</td>
 			</tr>
@@ -1894,7 +1924,6 @@ if ($VERB eq 'CALLBACK') {
 	$GTOOLS::TAG{'<!-- PHONE1 -->'} = &ZOOVY::incode($phone1);
 	$GTOOLS::TAG{'<!-- CONTACT -->'} = &ZOOVY::incode($contact);
 	$GTOOLS::TAG{'<!-- NOTES -->'} = &ZOOVY::incode($ZOOVY::cgiv->{'notes'});
-	$GTOOLS::TAG{'<!-- SUPPORT_TAB -->'} = &SUPPORT::do_header();
 	}
 
 
@@ -2125,7 +2154,7 @@ Operator will answer 24 x 7 x 365<br>
 
 
 <div class="box">
-<div class="box_header"> Projects &amp; Incidents</div>
+<div class="box_header"> Legacy Projects &amp; Incidents</div>
 <div class="box_body small">
 $PROJECTS
 </div></div>
@@ -2133,18 +2162,10 @@ $PROJECTS
 
 <div class="box">
 <div class="box_header"> Schedule Appointment</div>
-<div class="box_body small">
-$APPOINTMENTS
-	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=IMP">Implementation Assist.</a><br>
-	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=DESIGN">Graphic Design Meet.</a><br>
-	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=GEEK">Geek Services</a><br>
-	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=MKT">Marketing Assistance</a><br>
-<!--
-	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=BPP">BPP Review</a><br>
--->
-<br>	
 <a href="/biz/support/index.cgi?VERB=BILLING">Support Credits &amp; Balances</a>
 </div></div>
+$APPOINTMENTS
+	<a href="/biz/support/index.cgi?VERB=CALENDAR&CLASS=IMP">Implementation Assist.</a><br>
 
 <div class="box">
 <div class="box_header"> Live Assistance</div>
@@ -2174,6 +2195,6 @@ $GTOOLS::TAG{'<!-- SUPPORT_SIDEBAR_END -->'} = qq~
 if ($VERB eq '') { $VERB = 'MAIN'; }
 if ($TICKETID eq '') { $TICKETID = 0; }
 
-&GTOOLS::output(header=>1,title=>"Support Area: $USERNAME($LUSERNAME) .. $VERB/$TICKETID",file=>$template_file,bc=>\@BC,tabs=>\@TABS,msgs=>\@MSGS);
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,header=>1,title=>"Support Area: $USERNAME($LUSERNAME) .. $VERB/$TICKETID",file=>$template_file,bc=>\@BC,tabs=>\@TABS,msgs=>\@MSGS);
 &DBINFO::db_zoovy_close();
 

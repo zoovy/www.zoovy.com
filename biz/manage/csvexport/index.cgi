@@ -31,6 +31,8 @@ if (not defined $LU) { exit; }
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
+use Data::Dumper; print STDERR Dumper($ZOOVY::cgiv);
+
 
 if ($ZOOVY::cgiv->{'GUID'} eq '') {
 	$ZOOVY::cgiv->{'GUID'} = BATCHJOB::make_guid();
@@ -48,7 +50,7 @@ my $FIELDSREF = [
 	{ type=>'checkbox', key=>'.addtocart' },
 	{ type=>'checkbox', key=>'.stripcrlf' },
 	{ type=>'checkbox', key=>'.convertutfx' },
-	{ type=>'checkbox', key=>'.expandpogs' },
+	{ type=>'text', key=>'.variations' },
 	{ type=>'text', key=>'.pogs' },
 	{ type=>'text', key=>'.fields' },
 	];
@@ -65,6 +67,13 @@ else {
 $params{'GUID'} = $ZOOVY::cgiv->{'GUID'};
 $params{'REPORT'} = 'PRODUCT_EXPORT';
 $GTOOLS::TAG{'<!-- GUID -->'} = $params{'GUID'};
+$GTOOLS::TAG{'<!-- VARIATIONS_0 -->'} = ($params{'.variations'}==0)?'selected':'';
+$GTOOLS::TAG{'<!-- VARIATIONS_1 -->'} = ($params{'.variations'}==1)?'selected':'';
+$GTOOLS::TAG{'<!-- VARIATIONS_2 -->'} = ($params{'.variations'}==2)?'selected':'';
+$GTOOLS::TAG{'<!-- POGS_JSON -->'} = ($params{'.pogs'} eq 'JSON')?'selected':'';
+$GTOOLS::TAG{'<!-- POGS_XML -->'} = ($params{'.pogs'} eq 'XML')?'selected':'';
+
+
 
 if ($VERB eq 'REMEMBER_SETTINGS') {
 	push @MSGS, "SUCCESS|Saved user preferences";
@@ -414,6 +423,9 @@ print STDERR "VERB:$VERB\n";
 if ($VERB eq 'EXPORT_REDIRECT') {
 	require BATCHJOB;
 	$params{'.products'} = $ZOOVY::cgiv->{'PRODUCTS'};
+	$params{'.pogs'} = $ZOOVY::cgiv->{'.pogs'};
+	$params{'.variations'} = $ZOOVY::cgiv->{'.variations'};
+
 	my ($bj) = BATCHJOB->new($USERNAME,
 		&BATCHJOB::resolve_guid($USERNAME,$params{'GUID'}),
 		PRT=>$PRT,
@@ -428,13 +440,15 @@ if ($VERB eq 'EXPORT_REDIRECT') {
 		## lets redirect to the batch viewer
 		$bj->start();
 		# print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}\n\n";
-		my $URL = "/biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}";
+		# my $URL = "/biz/batch/index.cgi?VERB=LOAD&JOB=".($bj->id())."&GUID=$params{'GUID'}";
+		# $GTOOLS::TAG{'<!-- BATCHID -->'} = $bj->id();
 		# print "Content-type: text/html\n\n";
 		# print "\n";
 		# print "<a href=\"$URL\">click here if this page does not automatically reload</a>";
 		# print "<script>\nnavigateTo('$URL');\n</script>";
-		$GTOOLS::TAG{'<!-- URL -->'} = $URL;
-		$template_file = '_/redirect.shtml';
+		#$GTOOLS::TAG{'<!-- URL -->'} = $URL;
+		#$template_file = '_/redirect.shtml';
+		push @MSGS, sprintf("SUCCESS|BATCH:%d|+Batch Job Created",$bj->id());
 		$VERB = 'EXPORT';
 		}
 	else {
@@ -479,7 +493,7 @@ if ($VERB eq 'DENY') {
 	}
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Product Export',
    'file'=>$template_file,
    'header'=>'1',

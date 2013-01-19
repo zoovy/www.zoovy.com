@@ -277,10 +277,10 @@ elsif ($ZOOVY::cgiv->{'VERB'} eq 'VIEW') {
 	#+-------------+---------------------+------+-----+---------------------+-------+
 	$template_file = 'view.shtml'; 
 
-	my $pstmt = "select NAME,SHORT_DESC,DESCRIPTION,WEBDOC,ACTIVE,AMOUNT,AMOUNT_ADD,MULTI,WEBDOC from BS_BUNDLES where ID=".$dbh->quote($BUNDLE);
+	my $pstmt = "select NAME,SHORT_DESC,DESCRIPTION,WEBDOC,ACTIVE,AMOUNT,AMOUNT_ADD,MULTI from BS_BUNDLES where ID=".$dbh->quote($BUNDLE);
 	my $sth = $dbh->prepare($pstmt);
 	$sth->execute();
-	my ($NAME,$SHORT,$DESCRIPTION,$WEBDOC,$ACTIVE,$AMOUNT,$AMOUNT_ADD,$MULTI,$WEBDOC) = $sth->fetchrow();
+	my ($NAME,$SHORT,$DESCRIPTION,$WEBDOC,$ACTIVE,$AMOUNT,$AMOUNT_ADD,$MULTI) = $sth->fetchrow();
 	$sth->finish();
 	if (not defined $ACTIVE) { $ACTIVE = 0; }
 	if ($MULTI) {
@@ -781,7 +781,7 @@ if ($FLAGS =~ /,TRIAL,/) {
 	}
 
 if ($template_file ne '') {
-	&GTOOLS::output(
+	&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Account Configurator',
    'file'=>$template_file,
    'header'=>'1',

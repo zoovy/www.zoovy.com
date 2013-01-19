@@ -16,7 +16,7 @@
 
 <!-- MESSAGE -->
 
-<form name="thisFrm" action="index.cgi" method="post">
+<form name="thisFrm" action="/biz/syndication/amazon/index.cgi" method="post">
 <input type="hidden" name="VERB" value="CONFIG-SAVE">
 
 <table class="zoovytable" cellspacing='0' cellpadding='4' width='100%'>

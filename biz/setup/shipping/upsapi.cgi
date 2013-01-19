@@ -17,6 +17,7 @@ if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
+my @MSGS = ();
 
 $GTOOLS::TAG{'<!-- UPS_BRAND_MESSAGE -->'} = qq~
 UPS, THE UPS SHIELD TRADEMARK, THE UPS READY MARK, THE UPS ONLINE TOOLS MARK AND THE COLOR BROWN ARE TRADEMARKS OF UNITED PARCEL SERVICE OF AMERICA, INC. ALL RIGHTS RESERVED.
@@ -132,6 +133,8 @@ if ($VERB =~ m/^license/) {
 		}
 	}
 
+print STDERR "VERB:$VERB\n";
+
 ##
 if ($VERB eq 'register') {
 	$VERB = 'register';
@@ -162,6 +165,8 @@ if ($VERB eq 'register') {
 		};
 	my $params = {%{$paramdefaults}}; ## Copy defaults into the params hashref
 	my $sender = (defined $ZOOVY::cgiv->{'sender'}) ? $ZOOVY::cgiv->{'sender'} : '' ;
+
+	$proceed++;	## i have no idea. bh
 	if ($proceed && ($sender ne 'license')) {
 		## Get all the CGI params and load up the hash we pass to the resistration function
 		foreach my $key (keys %{$params}) {
@@ -170,7 +175,7 @@ if ($VERB eq 'register') {
 			}
 		if ($params->{'contact'} eq '') {
 			## This is the one thing that does not get trapped by the UPS API
-			$GTOOLS::TAG{"<!-- MESSAGE -->"} = 'You must select whether or not you want a UPS representative to contact you at the bottom of the page.';
+			push @MSGS, "WARN|You must select whether or not you want a UPS representative to contact you at the bottom of the page.";
 			}
 		else {
 			## Normalize the data a bit...
@@ -181,7 +186,7 @@ if ($VERB eq 'register') {
 			($error,$license,$user,$pass) = &ZSHIP::UPSAPI::get_ups_registration($USERNAME,$params);
 			$shipper_number = $params->{'shipper_number'};
 			if ($error ne '') {
-				$GTOOLS::TAG{"<!-- MESSAGE -->"} = $error;
+				push @MSGS, "ERROR|$error";
 				}
 			elsif (($SUPPLIER_ID) && ($SUPPLIER_ID ne '')) {
 				# &ZWEBSITE::save_website_attrib($USERNAME,'upsapi_SUPPLIER_ID',$SUPPLIER_ID);
@@ -199,7 +204,6 @@ if ($VERB eq 'register') {
 				$template_file = 'upsapi-success.shtml';
 				}
 			else {
-
 				$webdb->{'upsapi_userid'} = $user;
 				$webdb->{'upsapi_password'} = $pass;
 				$webdb->{'upsapi_license'} = $license;
@@ -308,10 +312,11 @@ $GTOOLS::TAG{'<!-- UPS_DISCLAIMER -->'} = qq~<p align="center"><small><i>$ZSHIP:
 $GTOOLS::TAG{'<!-- UPS_SHIPPER_NUMBER -->'} = $shipper_number;
 $GTOOLS::TAG{'<!-- UPS_LICENSE -->'}        = $license;
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>'Shipping: UPS Shipping',
 	help=>'#50300',file=>$template_file,
 	header=>1,
+	msgs=>\@MSGS,
 	js=>2,	## needed for ups license.
 	bc=>\@BC
 	);

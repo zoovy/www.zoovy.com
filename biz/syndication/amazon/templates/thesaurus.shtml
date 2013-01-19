@@ -1,7 +1,3 @@
-<head>
-<link REL="STYLESHEET" TYPE="text/css" HREF="/biz/syndication/standard.css">
-<title>Amazon @Merchant Syndication</title>
-</head>
 <body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="FFFFFF">
 <center>
 <!-- SETUP_TAB -->
@@ -34,9 +30,9 @@ Apparel Classification Guide</a></li>
 
 </ul>
 
-<form action="index.cgi" method="POST">
-<input type="hidden" name="VERB" value="THESAURUS-SAVE">
-<input type="hidden" name="ID" value="<!-- ID -->">
+<form id="syndicationAmazonFrm" name="syndicationAmazonFrm" action="/biz/syndication/amazon/index.cgi" method="POST">
+<input form="syndicationAmazonFrm" type="hidden" id="VERB" name="VERB" value="THESAURUS-SAVE">
+<input form="syndicationAmazonFrm" type="hidden" id="ID" name="ID" value="<!-- ID -->">
 
 <center><font color=red><!-- MSG --></font></center><br>
 
@@ -54,29 +50,29 @@ your Amazon Sales Rep as this may change on a category by category basis.</td>
 	</tr>
 	<tr>
 		<td>Profile Name:</td>
-		<td><input name="name" value="<!-- NAME -->" size="20" type="textbox"></td>
+		<td><input form="syndicationAmazonFrm" name="name" value="<!-- NAME -->" size="20" type="textbox"></td>
 	</tr>
 	<tr>
 		<td>Item Type:</td>
-		<td nowrap><input name="itemtype" value="<!-- ITEMTYPE -->" size="20" type="textbox"> [1 max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="itemtype" value="<!-- ITEMTYPE -->" size="20" type="textbox"> [1 max]</td>
 	</tr>
 	<tr>
 		<td>Used For:</td>
-		<td nowrap><input name="usedfor" value="<!-- USEDFOR -->" size="40" type="textbox">[5 max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="usedfor" value="<!-- USEDFOR -->" size="40" type="textbox">[5 max]</td>
 	</tr>
 	<tr>
 		<td>OtherItemAttributes:</td>
-		<td nowrap><input name="otherattribs" value="<!-- OTHERATTRIBS -->" size="60" type="textbox"> [5 max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="otherattribs" value="<!-- OTHERATTRIBS -->" size="60" type="textbox"> [5 max]</td>
 	</tr>
 
 
 	<tr>
 		<td>Subject Content:</td>
-		<td nowrap><input name="subjectcontent" value="<!-- SUBJECTCONTENT -->" size="60" type="textbox">[5 max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="subjectcontent" value="<!-- SUBJECTCONTENT -->" size="60" type="textbox">[5 max]</td>
 	</tr>
 	<tr>
 		<td>TargetAudience:</td>
-		<td nowrap><input name="targetaudience" value="<!-- TARGETAUDIENCE -->" size="60" type="textbox">[3 max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="targetaudience" value="<!-- TARGETAUDIENCE -->" size="60" type="textbox">[3 max]</td>
 	</tr>
 	<tr>
 		<td>Is Gift Wrap Available:</td>
@@ -92,12 +88,12 @@ your Amazon Sales Rep as this may change on a category by category basis.</td>
 	</tr>
 	<tr>
 		<td>AdditionalAttributes:</td>
-		<td nowrap><input name="additionalattribs" value="<!-- ADDITIONALATTRIBS -->" size="60" type="textbox"> [no max]</td>
+		<td nowrap><input form="syndicationAmazonFrm" name="additionalattribs" value="<!-- ADDITIONALATTRIBS -->" size="60" type="textbox"> [no max]</td>
 	</tr>
 	
 	<tr>
 		<td valign=top>Search Terms:</td>
-		<td nowrap><textarea name="search_terms" cols="60" rows="5"><!-- SEARCH_TERMS --></textarea> [250 chars max]</td>
+		<td nowrap><textarea form="syndicationAmazonFrm" name="search_terms" cols="60" rows="5"><!-- SEARCH_TERMS --></textarea> [250 chars max]</td>
 	</tr>
 
 	<tr>
@@ -110,7 +106,8 @@ your Amazon Sales Rep as this may change on a category by category basis.</td>
 	<tr>
 		<td colspan='2'>
 		<div class='zbutton_group'>
- <input  type=image src="/images/bizbuttons/save.gif">		
+		<button class="button" form="syndicationAmazonFrm" type="button" 
+			onClick="jQuery('#syndicationAmazonFrm').submit(); return false;">Save</button>
  		</div>
 		</td>
 	</tr>

@@ -157,7 +157,12 @@ MOST IMPORTANTLY: If a customer does NOT have schedule pricing, the "Any" settin
 			}
 		}
 
-  $GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = "<td><a href='rulebuilder.cgi?method=$METHOD&ACTION=DELETE&THIS=$THIS'><img border='0' src='/images/bizbuttons/delete.gif'></td>";
+  $GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = qq~
+		<td>
+		<button class=button 
+			onClick="return navigateTo('/biz/setup/shipping/rulebuilder.cgi?method=$METHOD&ACTION=DELETE&THIS=$THIS');">
+			DELETE</button>
+		</td>~;
   $GTOOLS::TAG{"<!-- WHAT_ARE_WE_DOING -->"} = "Edit Rule $THIS";
   $template_file = "rulebuilder-edit.shtml";
   }
@@ -344,13 +349,13 @@ if (scalar(@rules)>0) {
 	
 		$c .= "<tr><td class='A'>$counter</td><td class='A'>";
 		# Print the UP arrow
-		if ($counter>0) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+		if ($counter>0) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='/biz/setup/shipping/images/up.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 		$c .= '&nbsp;';
 		# Print the DOWN arrow
-		if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
+		if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='/biz/setup/shipping/images/down.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='16' width='16'>"; }
 		$c .= '&nbsp;';
 		$c .= "<a href='/biz/setup/shipping/rulebuilder.cgi?ACTION=EDIT&method=$METHOD&THIS=$counter'>
-				<img border='0' alt='Change' src='images/change.gif'></a>";
+				<img border='0' alt='Change' src='/biz/setup/shipping/images/change.gif'></a>";
 		$c .= "</td><td class='A'>".$MATCH."</td>";
 		$c .= "<td class='A'>".$rulehash->{'FILTER'}."</td>";
 		$c .= "<td class='A'>".$EXEC."</td>";
@@ -372,7 +377,7 @@ $template_file = "rulebuilder.shtml";
 } # end of FLAG != RBASE
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>"Shipping: Rule Builder",
 	help=>"#50339",
 	file=>$template_file,

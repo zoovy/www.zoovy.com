@@ -853,6 +853,6 @@ push @TABS, { name=>'Cancelled',link=>'/biz/orders/index.cgi?VERB=SHOW:CANCELLED
 push @TABS, { name=>'Search',link=>'/biz/orders/index.cgi?VERB=SEARCH', selected=>($VERB eq 'SEARCH')?1:0, };
 
 
-&GTOOLS::output('jquery'=>1,'msgs'=>\@MSGS,'bc'=>\@BC,'tabs'=>\@TABS,'headjs'=>$HEADJS,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,'jquery'=>1,'msgs'=>\@MSGS,'bc'=>\@BC,'tabs'=>\@TABS,'headjs'=>$HEADJS,file=>$template_file,header=>1);
 
 

@@ -168,9 +168,9 @@ if ($VERB eq 'COLLECTIONS') {
 		$c .= "<tr class='zoovytableheader'>";
 		$c .= "<td nowrap>";
 		if (scalar(@{$RESULTS})==0) {
-			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=NUKE-COLLECTION&ID=$ref->{'ID'}');" value="Delete">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('/biz/kpi/index.cgi?VERB=NUKE-COLLECTION&ID=$ref->{'ID'}'); " value="Delete">~;
 			}
-		$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=ADD-GRAPH&collection=$ref->{'ID'}');" value="Add">~;
+		$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('/biz/kpi/index.cgi?VERB=ADD-GRAPH&collection=$ref->{'ID'}'); " value="Add">~;
 		$c .= "</td>";		
 		# $c .= "<td>\#$ref->{'ID'}</td>";
 		$c .= "<td width=\"90%\">".&ZOOVY::incode($ref->{'TITLE'})."</td>";
@@ -196,8 +196,8 @@ if ($VERB eq 'COLLECTIONS') {
 			# $c .= "<tr><td colspan=3>".Dumper($ref)."</td></tr>";
 			$c .= "<tr>";
 			$c .= qq~<td width=100>~;
-			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=NUKE-GRAPH&UUID=$ref->{'UUID'}');" value="Delete">~;
-			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('index.cgi?VERB=EDIT-GRAPH&UUID=$ref->{'UUID'}');" value="Edit">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('/biz/kpi/index.cgi?VERB=NUKE-GRAPH&UUID=$ref->{'UUID'}'); " value="Delete">~;
+			$c .= qq~<input type='button' class='minibutton' onClick="navigateTo('/biz/kpi/index.cgi?VERB=EDIT-GRAPH&UUID=$ref->{'UUID'}'); " value="Edit">~;
 			$c .= qq~</td>~;
 			$c .= qq~<td>$ref->{'TITLE'}</a></td>~;
 			$c .= qq~<td>$ref->{'GRAPH'}</a></td>~;
@@ -386,6 +386,8 @@ jQuery(document).ready(function() {
 	$GTOOLS::TAG{'<!-- COLLECTIONS -->'} = $c;
 
 	$c = '';
+	if (scalar(@KPIBI::GRAPHS)) {};	# stops perl -wc
+
 	foreach my $g (@KPIBI::GRAPHS) {
 		my $selected = '';
 		my ($selected) = '';
@@ -419,7 +421,7 @@ jQuery(document).ready(function() {
 		<tr>
 			<td>Data Columns</td>
 			<td>
-				<select onChange="jQuery('#thisFrm').showLoading(); thisFrm.VERB.value='GRAPHS'; thisFrm.submit();" name="columns">
+				<select onChange="thisFrm.VERB.value='GRAPHS'; jQuery('#thisFrm').submit();" name="columns">
 				<option value="0">0 - Dynamic Datasets</option>
 				~;
 		$columns = int($ZOOVY::cgiv->{'columns'});
@@ -435,6 +437,7 @@ jQuery(document).ready(function() {
 			<td>
 			<select name="period">
 			~;
+			if (scalar(@KPIBI::PERIODS)) {};	# stops perl -wc
 			foreach my $p (@KPIBI::PERIODS) {
 				# $p = [ 'period', 'pretty ];
 				my ($selected) = ($p->[0] eq $ZOOVY::cgiv->{"period"})?'selected':'';
@@ -449,6 +452,7 @@ jQuery(document).ready(function() {
 			<td>
 			<select name="grpby">
 			~;
+			if (scalar(@KPIBI::GRPBY)) {};	# stops perl -wc
 			foreach my $s (@KPIBI::GRPBY) {
 				my ($selected) = ($s->[0] eq $ZOOVY::cgiv->{'grpby'})?'selected':'';
 				$c .= "<option $selected value=\"$s->[0]\">$s->[1]</option>";
@@ -581,6 +585,7 @@ where the alignment of data is not important, and in fact having an incompatible
 			<td>
 				<select name="ddataset">
 				~;
+			if (scalar(@KPIBI::DYNDATASETS)) {};	# stops perl -wc
 			foreach my $dd (@KPIBI::DYNDATASETS) {
 				my ($selected) = ($dd->[0] eq $ZOOVY::cgiv->{'ddataset'})?'selected':'';
 				$c .= "<option $selected value=\"$dd->[0]\">$dd->[1]</option>\n";
@@ -620,9 +625,9 @@ where the alignment of data is not important, and in fact having an incompatible
 
 	if ($UUID ne '') {
 		$GTOOLS::TAG{'<!-- BUTTONS -->'} = qq~
-<input type="button" class="button" value=" Copy " onClick="thisFrm.VERB.value='COPY-GRAPH'; thisFrm.submit();">
+<input type="button" class="button" value=" Copy " onClick="thisFrm.VERB.value='COPY-GRAPH'; jQuery('#thisFrm').submit();">
 <!--
-<input type="button" class="button" value=" Preview " onClick="thisFrm.VERB.value='PREVIEW-GRAPH'; thisFrm.submit();">
+<input type="button" class="button" value=" Preview " onClick="thisFrm.VERB.value='PREVIEW-GRAPH'; jQuery('#thisFrm').submit();">
 -->
 ~;
 		}
@@ -645,7 +650,7 @@ if ($VERB eq 'SHOW') {
 	my $c = '';
 	foreach my $cref (@COLLECTIONS) {
 		my ($class) = ($cref->{'ID'} eq $collection)?'selected':'';
-		$c .= qq~<div class=\"$class\"><a href=\"javascript:navigateTo('/biz/kpi/index.cgi?collection=$cref->{'ID'}');\">$cref->{'TITLE'}</a></div>~;
+		$c .= qq~<div class=\"$class\"><a href="#" onClick="navigateTo('/biz/kpi/index.cgi?collection=$cref->{'ID'}'); \">$cref->{'TITLE'}</a></div>~;
 		}
 	$GTOOLS::TAG{'<!-- COLLECTIONS -->'} = $c;
 
@@ -768,7 +773,7 @@ push @TABS, { name=>'KPI/Dashboards',link=>'?VERB=SHOW',selected=>($VERB eq 'SHO
 push @TABS, { name=>'Collections',link=>'?VERB=COLLECTIONS',selected=>($VERB eq 'COLLECTIONS')?1:0 };
 # push @TABS, { name=>'Re-Initialize',link=>'?VERB=INITIALIZE',selected=>($VERB eq 'INITIALIZE')?1:0 };
 
-&GTOOLS::output(file=>$template_file,tabs=>\@TABS,header=>1,jquery=>1,
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,file=>$template_file,tabs=>\@TABS,header=>1,jquery=>1,
 	msgs=>\@MSGS,
 	webdoc=>51600,
 	headjs=>'<script src="/biz/kpi/highcharts-2.1.9/js/highcharts.js" type="text/javascript"></script>',

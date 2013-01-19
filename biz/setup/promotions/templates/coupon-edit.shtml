@@ -90,14 +90,14 @@ If this is enabled the coupon MAY NOT be added directly to the cart from "Coupon
 		<table width=100%>
 		<!-- EXISTING_RULES -->
 		</table>
-		<button class="button2" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-ADD&CODE=<!-- CODE -->');">Add New</button>
+		<button class="button2" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-RULE-ADD&CODE=<!-- CODE -->'); return false;">Add New</button>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" align='center' colspan='2'>
-			<button class="button" onClick="this.submit();">Save</button>
-			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON');">Edit</button>
-			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-DELETE&CODE=<!-- CODE -->');">Delete</button>
+			<button class="button" onClick="this.submit(); return false;">Save</button>
+			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON'); return false;">Edit</button>
+			<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=COUPON-DELETE&CODE=<!-- CODE -->'); return false;">Delete</button>
 		</td>
 	</tr>
 </table>

@@ -45,6 +45,7 @@ my $host = &ZOOVY::servername();
 my $VERB = defined($ZOOVY::cgiv->{'VERB'}) ? $ZOOVY::cgiv->{'VERB'} : '';
 my $template_file = ''; 
 
+my @MSGS = ();
 
 my ($cluster) = &ZOOVY::resolve_cluster($USERNAME);
 my $NOUN = ($LU->is_anycom())?'anyCommerce':'Zoovy';
@@ -68,113 +69,16 @@ if ($VERB eq 'DISABLE-TODO-TASK') {
    $VERB = 'TODO';
 	}
 
-
-
-if ($VERB eq '') { 
-	$VERB = 'NEWS'; 
-	my $ts = $LU->get('todo.setup');
-	if (not defined $ts) { $ts = 0; }
-	if ($ts>0) { $VERB = 'TODO'; }
-	elsif ($FLAGS =~ /,NEWBIE,/) { $VERB = 'WELCOME'; }
-#		## MY TODO BOX
-	}
-
 my $HEAD = '';
-
-if (($FLAGS eq '') || ($FLAGS =~ /TRIAL/) || ($FLAGS !~ /BASIC/)) {
-	require ZACCOUNT;
-	$FLAGS = &ZACCOUNT::BUILD_FLAG_CACHE($USERNAME);
-	}
-
-
-#if ($USERNAME eq 'brian') {
-#	print "Location: trial.cgi\n\n"; exit;
-#	}
 
 my @BC = ();
 my @TABS = ();
 
-if (($FLAGS =~ /,TRIAL,/) || ($USERNAME eq 'brian')) {
-	push @TABS, { selected=>($VERB eq 'WELCOME')?1:0, link=>"index.cgi?VERB=WELCOME", name=>"Welcome" };
-	}
-push @TABS, { selected=>($VERB eq 'NEWS')?1:0, link=>"index.cgi?VERB=NEWS", name=>"Recent News" };
-#push @TABS, { selected=>($VERB eq 'TODO')?1:0, link=>"index.cgi?VERB=TODO", name=>"Tutorials" };
-#push @TABS, { selected=>($VERB eq 'LIBRARY')?1:0, link=>"index.cgi?VERB=LIBRARY", name=>"Video Library" };
-
 push @BC, { name=>'Home', };
-push @BC, { name=>'Recent News', };
 
+$VERB = '';
 
-if ($VERB eq 'WELCOME') {
-	$template_file = 'index-welcome.shtml';
-#	$HEAD = q~
-#<!--
-#<script type="text/javascript" src="//e1h11.simplecdn.net/videosink.zoovy//msol-splash/swfobject.js"></script>
-#<script type="text/javascript" src="//e1h11.simplecdn.net/videosink.zoovy//msol-splash/msol-splash.js"></script>
-#-->
-#~;
-	}
-
-##
-##
-##
-#if ($VERB eq 'LIBRARY') {
-#	$template_file = 'index-library.shtml';
-#
-#	my @rows = ();
-#	my $zdbh = &DBINFO::db_zoovy_connect();
-#	my $pstmt = "select * from WEBDOC_VIDEOS where APPROVED_GMT>0 order by ID";
-#	my $sth = $zdbh->prepare($pstmt);
-#	$sth->execute();
-#	my %VIDEOS = ();
-#	while ( my $vidref = $sth->fetchrow_hashref() ) {
-#		# http://upload.wikimedia.org/wikipedia/commons/3/32/Video_icon_2.png
-#		my $html = '';
-#		$html .= "<tr><td>";
-#		$html .= qq~<b><a target="_video" href="http://e1h11.simplecdn.net/videosink.zoovy/$vidref->{'FILENAME'}/index.html">~;
-#		$html .= qq~$vidref->{'TITLE'}</a><b><br>~;
-#		my $created = &ZTOOLKIT::pretty_date(&ZTOOLKIT::mysql_to_unixtime($vidref->{'CREATED'}),-1);
-#		$html .= qq~<div class='hint'>Created: $created</div>~;
-#		$html .= "</td></tr>";
-#
-#		if ($vidref->{'LEVEL'} eq 'BEGINNER') {
-#			$GTOOLS::TAG{'<!-- BEGINNER -->'} .= $html;
-#			}
-#		elsif ($vidref->{'LEVEL'} eq 'INTERMEDIATE') {
-#			$GTOOLS::TAG{'<!-- INTERMEDIATE -->'} .= $html;
-#			}
-#		else {
-#			$GTOOLS::TAG{'<!-- ADVANCED -->'} .= $html;
-#			}
-#		
-#		push @rows, [ 
-#				# qq~&nbsp;<a target="_video" href="http://videosink-s3.simplecdn.net/$video/index.html">[View]</a>~, 
-#				];
-#		}
-#	$sth->finish();
-#	&DBINFO::db_zoovy_close();
-#
-#	require GTOOLS::Table;
-#	$GTOOLS::TAG{'<!-- LIBRARY -->'} = &GTOOLS::Table::buildTable([
-#		{ 'width'=>50, title=>' ' },
-#		{ 'width'=>100, title=>'Level' },
-#		{ 'width'=>500, title=>'Description' },
-#		{ 'width'=>100, title=>'Created' },
-#		], \@rows,
-#		height=>150
-#		);
-#	
-#	}
-#
-##
-## No more TODO panels
-##
-if ($VERB eq 'TODO') { $VERB = 'NEWS'; }
-
-##
-##
-##
-if ($VERB eq 'NEWS') {
+if ($VERB eq '') {
 
 	my $c = '';
 	foreach my $task (@{$todo->list()}) {
@@ -190,10 +94,10 @@ if ($VERB eq 'NEWS') {
 			}
 		else {
 			$c .= "<tr><td>";
-			if ($task->{'LINK'} ne '') { $c .= "<a target=\"_top\" href=\"$task->{'LINK'}\">"; }
+			#if ($task->{'LINK'} ne '') { $c .= "<a target=\"_top\" href=\"$task->{'LINK'}\">"; }
 			$c .= "<div>$task->{'TITLE'}</div>";
-			if ($task->{'LINK'} eq '') { $c .= "<div class='hint'>$task->{'DETAIL'}</div>"; }
-			if ($task->{'LINK'} ne '') { $c .= "</a>"; }
+			$c .= "<div class='hint'>$task->{'DETAIL'}</div>";
+			# if ($task->{'LINK'} ne '') { $c .= "</a>"; }
 			$c .= "</td></tr>";
 			}
 		}
@@ -202,130 +106,13 @@ if ($VERB eq 'NEWS') {
 	}
 
 
-##
-##
-##
-if ($VERB eq 'TODO') {
-	$template_file = 'index-todo.shtml';
-	my $c = '';	
-
-
-	my @PANELS = ();
-
-	my @TASKS = @{$todo->list(sort=>'PRIORITY',class=>'SETUP',sorttype=>'numerically')};
-	foreach my $task (@TASKS) {
-		use Storable;
-		if ($task->{'PANEL'} ne '') {
-			## check out the panels files in /httpd/static/todo/xxxx.bin
-			my $panel = undef;
-			eval { $panel = retrieve "/httpd/static/todo/$task->{'PANEL'}.bin"; };
-			if (not defined $panel) {
-				$panel = { id=>$task->{'PANEL'}, txt=>"error: $task->{'PANEL'}", detail=>"Could not load panel $task->{'PANEL'}" };
-				}
-			$panel->{'%TASK'} = $task;
-			push @PANELS, $panel;
-			}
-		}
-
-
-	if (scalar(@PANELS)==0) {
-		push @PANELS, { id=>'nothing', txt=>'.......', disable_remove=>1, title=>'Nothing Available', detail=>'You have no tutorial oriented tasks that need to be completed.', };
-		}
-
-	if (scalar(@PANELS)>0) {
-		my $focus = $ZOOVY::cgiv->{'focus'};
-		if ($focus ne '') {
-			## handle focuson .. (sometimes the panel id doesn't match the focus 
-			my $found = 0;
-			foreach my $task (@PANELS) {
-				next if ($found);
-				if ($focus eq $task->{'id'}) { $found++; }
-				elsif ($focus eq $task->{'focuson'}) { $focus = $task->{'id'}; $found++; }
-				}
-			if (not $found) { $focus = ''; }
-			}
-		elsif ($ZOOVY::cgiv->{'focusfrom'} ne '') {
-			## handle "coming from" situations
-			my $i = 0;
-			foreach my $task (@PANELS) {
-				## if we are receiving 'focusfrom' a specific id, then go to the next id.
-				if ($task->{'id'} eq $ZOOVY::cgiv->{'focusfrom'}) { $focus = $PANELS[$i+1]->{'id'}; }
-				$i++;
-				}
-			}
-		if ($focus eq '') { $focus = $PANELS[0]->{'id'}; }  ## default to welcome!
-		my $i = 1;
-		my $c = '';
-		$GTOOLS::TAG{'<!-- NEXT_BUTTON -->'} = '';
-		my $allow_remove = ($LU->get('todo.setup')==0)?1:0;
-		# $allow_remove = 1;
-		foreach my $task (@PANELS) {
-			if ($focus ne $task->{'id'}) {
-				## Non-Focused
-				$c .= qq~<a href="/biz/index.pl?VERB=TODO&focus=$task->{'id'}" id="tab_button">$i.  $task->{'txt'}</a>~;
-				}
-			else {
-				## Active/Focused Tab
-				$c .= qq~<div class="active_tab">$i. $task->{'txt'}</div>~;
-				$GTOOLS::TAG{'<!-- TODO_TITLE -->'} = $task->{'title'};
-				$GTOOLS::TAG{'<!-- TODO_DETAIL -->'} = $task->{'detail'};
-				$GTOOLS::TAG{'<!-- NEXT_BUTTON -->'} = '';
-				if (($ZOOVY::cgiv->{'splash'}) && ($task->{'splash'} ne '') && ($ENV{'REMOTE_ADDR'} =~ /^192\.168\./)) {
-					## on newdev just shoot the splash.
-					# $GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = "http://videosink-s3.simplecdn.net/$task->{'splash'}";
-					$GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = "http://e1h11.simplecdn.net/videosink.zoovy/$task->{'splash'}";
-					}
-				elsif ($task->{'iframesrc'} ne '') {
-					## this will load and override video
-					$GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = $task->{'iframesrc'};
-					}
-				elsif ($task->{'video'} ne '') {
-					# $GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = "http://videosink-s3.simplecdn.net/$task->{'video'}/index.html";
-					$GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = "http://e1h11.simplecdn.net/videosink.zoovy/$task->{'video'}/index.html";
-					}
-				else {
-					$GTOOLS::TAG{'<!-- VIDEO_LINK -->'} = "/biz/todo/no_video.html";
-					}
-				$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = '';
-				if ($task->{'disable_remove'}) {
-					## flag that turns off the remove feature.
-					}
-				elsif ($allow_remove) {
-					$GTOOLS::TAG{'<!-- REMOVE_BUTTON -->'} = qq~<a href="/biz/index.cgi?VERB=DISABLE-TODO-TASK&group=$task->{'id'}" id="remove_button"></a>~;
-					}		
-
-				my $nexttask = undef;
-				if ($i != scalar(@PANELS)) { 
-					$nexttask = $PANELS[$i]; 
-					}
-
-				if ($task->{'doit'} ne '') {
-					## do it button
-					$GTOOLS::TAG{'<!-- DOIT_BUTTON -->'} = qq~<a href="$task->{'doit'}" id="do_it_now_button"></a>~;
-					if (defined $nexttask) {
-						$GTOOLS::TAG{'<!-- NEXT_BUTTON -->'} = qq~<a href="/biz/index.pl?VERB=TODO&focus=$nexttask->{'id'}" id="skip_button">~;
-						}
-					}
-				else {
-					if (defined $nexttask) {
-						$GTOOLS::TAG{'<!-- NEXT_BUTTON -->'} = qq~<a href="/biz/index.pl?VERB=TODO&focus=$nexttask->{'id'}" id="next_button">~;				
-						}
-					}
-				}
-			
-			$i++;
-			}
-		$GTOOLS::TAG{'<!-- PANELS -->'} = $c;
-		}
-	}
-
-
-if (($VERB eq 'NEWS') || ($VERB eq 'WELCOME')) {
+if (($VERB eq 'NEWS') || ($VERB eq 'WELCOME') || ($VERB eq '')) {
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 	$year+=2000; $mon+=1;
 
 
 	my %TOPICS = (
+		'zoovylive'=>'https://static.zoovy.com/img/proshop/W64-H64-Bffffff/newsicons/zoovylive.gif',
       'enhance'=>'https://static.zoovy.com/img/proshop/W64-H64-Bffffff/newsicons/enhancements.gif',
       'feature'=>'https://static.zoovy.com/img/proshop/W64-H64-Bffffff/newsicons/new_feature.gif',
       'general'=>'https://static.zoovy.com/img/proshop/W64-H64-Bffffff/newsicons/general.gif',
@@ -410,16 +197,31 @@ if (($VERB eq 'NEWS') || ($VERB eq 'WELCOME')) {
 			$hashref->{'SUBTITLE'} = qq~<a target="link" href="$hashref->{'SUBTITLE'}">$hashref->{'SUBTITLE'}</a>~;
 			}
 
+		my $ID = $hashref->{'ID'};
+		my $videohtml = '';
+		if ($hashref->{'VIDEOID'} ne '') {
+			$videohtml .= qq~
+<a onClick="jQuery('#video$ID').toggle()" href="#">Watch Video</a>
+<div class="displayNone" id="video$ID">
+<iframe width="560" height="315" src="http://www.youtube.com/embed/$hashref->{'VIDEOID'}" frameborder="0" allowfullscreen></iframe>
+</div>
+~;
+	
+			}
+
+
 		$c .= qq~
 		<tr>
 		<td bgcolor='FFFFFF' valign='top'>
 			<img src="$URL" width=64 height=64><br>
-			<font face='verdana, helvetica, arial' size='1'>$created</font>	
+			<div class="hint">$created</div>	
 		</td>
 		<td bgcolor='FFFFFF' valign='top'>
 		<h2 class="recentnews">$hashref->{'TITLE'}</h2>
 		<h3 class="recentnews">$hashref->{'SUBTITLE'}</h3>
-		<p class="recentnews">$hashref->{'MESSAGE'}</p>
+		<p class="recentnews">$hashref->{'MESSAGE'}
+		$videohtml
+		</p>
 		</td>
 		</tr>
 		~;
@@ -428,19 +230,11 @@ if (($VERB eq 'NEWS') || ($VERB eq 'WELCOME')) {
 	$GTOOLS::TAG{"<!-- RECENT_NEWS -->"} = $c;
 	$c = '';
 
-	open F, ">>/tmp/login.log";
-	print F "$mon/$mday/$year - $hour:$min:$sec ".$ENV{"REMOTE_ADDR"}." -> ".$USERNAME."\n";
-	close F;
+#	open F, ">>/tmp/login.log";
+#	print F "$mon/$mday/$year - $hour:$min:$sec ".$ENV{"REMOTE_ADDR"}." -> ".$USERNAME."\n";
+#	close F;
+	$template_file = 'index-main.shtml';
 
-	}
-
-
-my @MSGS = ();
-
-##
-##
-##
-if ($VERB eq 'NEWS') {
 	##
 	## Main User Login
 	##
@@ -494,8 +288,6 @@ if ($VERB eq 'NEWS') {
 You should go to Setup / User Manager and create unique logins for each person who has access to this account.~,
 			};
 		}
-
-
 	$GTOOLS::TAG{'<!-- RSS_SECUREKEY -->'} = &ZTOOLKIT::SECUREKEY::gen_key($USERNAME,'RS');
 	$GTOOLS::TAG{'<!-- TESTCODE -->'} = &ZTOOLKIT::SECUREKEY::gen_key($USERNAME,'XX');
 	$GTOOLS::TAG{'<!-- SPONSOR_CODE -->'} = &ZTOOLKIT::SECUREKEY::gen_key($USERNAME,'ZR');
@@ -559,9 +351,9 @@ if (scalar(@ERRORTASKS)>0) {
 	my $c = '';
 	foreach my $errtask (@ERRORTASKS) {
 		my $prettydate = &ZTOOLKIT::pretty_date($errtask->{'CREATED_GMT'},1);
-		my $link = $errtask->{'LINK'};
-		if (not defined $link) { $link = ''; }
-		if ($link ne '') { $link = "<span class='hint'><a href='$link'>[LINK]</a></span>"; }
+		#my $link = $errtask->{'LINK'};
+		#if (not defined $link) { $link = ''; }
+		# if ($link ne '') { $link = "<span class='hint'><a href='$link'>[LINK]</a></span>"; }
 		$c .= qq~
 <tr><td align=center colspan='3'>
 <table border=0 cellpadding=3 width=95% class="table_stroke"><tr><td>
@@ -573,7 +365,6 @@ if (scalar(@ERRORTASKS)>0) {
 			$c .= qq~<span class="hint"><a href="/biz/index.cgi?VERB=DISMISS&ID=$errtask->{'ID'}">[CLEAR]</a> </span>~;
 			}
 		$c .= qq~
-$link
 </td></tr></table>
 </td></tr>~;
 		}
@@ -609,7 +400,7 @@ pageTracker._trackPageview();
 ~;
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	header=>1,
 	bc=>\@BC,
 	'msgs'=>\@MSGS,

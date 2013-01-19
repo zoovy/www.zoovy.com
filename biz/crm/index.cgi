@@ -788,7 +788,7 @@ if ($tabs) {
 ## generic message/warn/error handler
 ##
 
-&GTOOLS::output(tabs=>\@TABS,msgs=>\@MSGS,bc=>\@BC,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,tabs=>\@TABS,msgs=>\@MSGS,bc=>\@BC,file=>$template_file,header=>1);
 
 &DBINFO::db_zoovy_close();
 &DBINFO::db_user_close();

@@ -231,7 +231,7 @@ if ($VERB eq '') {
 
 			
 			$c .= "<tr>";
-			$c .= "<td><a href=\"index.cgi?VERB=DEL&LINE=$count\">[remove]</a> &nbsp;-&nbsp; </td>";
+			$c .= "<td><a href=\"/biz/setup/tax/index.cgi?VERB=DEL&LINE=$count\">[remove]</a> &nbsp;-&nbsp; </td>";
 			my ($method,$data) = ();
 			my $match = $data[1]; 
 			if ($data[0] eq 'state') { 
@@ -448,7 +448,7 @@ if ($LU->get('todo.setup')) {
 ##
 ##
 ##
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
    'title'=>'Setup : Tax Rules',
    'file'=>$template_file,
    'header'=>'1',

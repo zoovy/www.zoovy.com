@@ -1,6 +1,6 @@
 <!-- SETUP_TAB -->
 </center>
-<form id="thisFrm" name="thisFrm" action="universal.cgi" method="POST">
+<form id="thisFrm" name="thisFrm" action="/biz/setup/shipping/universal.cgi" method="POST">
 <input type="hidden" name="VERB" value="SAVE">
 <input type="hidden" name="HANDLER" value="<!-- HANDLER -->">
 <input type="hidden" name="ID" value="<!-- ID -->">
@@ -36,21 +36,21 @@
 		</td>
 	</tr>
 	<tr>
-		<td align="right">Description:</td>
-		<td><input type="textbox" size="25" maxlength="25" value="<!-- METHOD_NAME -->" name="METHOD_NAME"></td>
-		<td>&nbsp;</td>
-		<td align="right">Carrier Code:</td>
-		<td>
+		<td valign="top"  align="right">Description:</td>
+		<td valign="top" ><input type="textbox" size="25" maxlength="25" value="<!-- METHOD_NAME -->" name="METHOD_NAME"></td>
+		<td valign="top" >&nbsp;</td>
+		<td valign="top"  align="right">Carrier Code:</td>
+		<td valign="top" >
 		<input size="4" type="textbox" value="<!-- METHOD_CARRIER -->" name="METHOD_CARRIER">
 		<!-- WARN_CARRIER_CODE -->
 		</td>
 	</tr>
 	<tr class="zoovysub1header">
-		<td colspan=5>Shipping Rules</td>
+		<td valign="top"  colspan=5>Shipping Rules</td>
 	</tr>
 	<tr>
-		<td colspan=5><input type="checkbox" <!-- CHK_METHOD_RULES --> name="METHOD_RULES">
-		Use Shipping Rules: <a href="rulebuilder.cgi?method=<!-- ID -->">[EDIT]</a><br>
+		<td valign="top"  colspan=5><input type="checkbox" <!-- CHK_METHOD_RULES --> name="METHOD_RULES">
+		Use Shipping Rules: <a href="/biz/setup/shipping/rulebuilder.cgi?method=<!-- ID -->">[EDIT]</a><br>
 		<div class="hint">Shipping rules can disable the shipping method or modify the price</div>.
 		<table>
 		<!-- RULES -->
@@ -63,12 +63,12 @@
 	</td>
 </tr>
 <tr>
-	<td>
+	<td valign="top" >
 	<!-- LOWER_CONTENT -->
 	</td>
 </tr>
 <tr>
-	<td>
+	<td valign="top">
 	<center>
 <input type="submit" class="button" value=" Save ">
 <input type="button" class="button" value=" Delete "

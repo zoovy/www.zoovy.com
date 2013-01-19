@@ -8,7 +8,7 @@
 <!-- SETUP_TAB -->
 </center>
 
-<form method="post" action="index.cgi">
+<form method="post" action="/biz/syndication/amazon/index.cgi">
 <input type="hidden" name="VERB" value="THESAURUS-DELETE">
 <input type="hidden" name="ID" value="<!-- ID -->">
 <table width="500"><tr><td>

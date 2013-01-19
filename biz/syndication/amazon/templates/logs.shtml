@@ -13,9 +13,9 @@
 </table>
 
 
-<a href="/biz/batch/index.cgi?VERB=NEW&EXEC=UTILITY&APP=AMAZON_UPDATE&GUID=<!-- GUID -->&.function=clear-errors">
-[Clear all errors]
-</a>
+<button class="minibutton" type="button" 
+	onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'UTILITY',
+		'%vars':{'APP':'AMAZON_UPDATE','function':'clear-errors'}}); return false;">Clear Errors</button>
 
 </td></tr>
 </table>

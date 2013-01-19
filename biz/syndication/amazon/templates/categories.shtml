@@ -14,7 +14,7 @@
 
 <h1>Amazon Categories:</h1>
 
-<form action="index.cgi" method="POST">
+<form action="/biz/syndication/amazon/index.cgi" method="POST">
 <input type="hidden" name="VERB" value="CATEGORIES-SAVE">
 
 <table class='zoovytable' cellspacing='0' cellpadding='4'>

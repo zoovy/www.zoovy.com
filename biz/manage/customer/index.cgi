@@ -499,22 +499,13 @@ if ($VERB eq 'SAVEADDR') {
 	$addr->{$TYPE.'_address1'} = $ZOOVY::cgiv->{'address1'};
 	$addr->{$TYPE.'_address2'} = $ZOOVY::cgiv->{'address2'};
 	$addr->{$TYPE.'_city'} = $ZOOVY::cgiv->{'city'};
-	$addr->{$TYPE.'_state'} = $ZOOVY::cgiv->{'state'};
-	
-	if ($ZOOVY::cgiv->{'country'} ne '' && 
-		 $ZOOVY::cgiv->{'country'} !~ m/US/i && 
-		 $ZOOVY::cgiv->{'country'} !~ m/United States/i){
-		$addr->{$TYPE.'_int_zip'} = $ZOOVY::cgiv->{'zip'};
-		$addr->{$TYPE.'_zip'} = '';
+	$addr->{$TYPE.'_region'} = $ZOOVY::cgiv->{'region'};
+	$addr->{$TYPE.'_postal'} = $ZOOVY::cgiv->{'postal'};
+	$addr->{$TYPE.'_countrycode'} = $ZOOVY::cgiv->{'countrycode'};
+
+	if ($TYPE eq 'BILL') {
+		$addr->{$TYPE.'_email'} = $ZOOVY::cgiv->{'email'};
 		}
-	else { 
-		$addr->{$TYPE.'_int_zip'} = '';
-		$addr->{$TYPE.'_zip'} = $ZOOVY::cgiv->{'zip'}; 
-		}
-	
-	$addr->{$TYPE.'_country'} = $ZOOVY::cgiv->{'country'};
-	$addr->{$TYPE.'_email'} = $ZOOVY::cgiv->{'email'};
-	$addr->{$TYPE.'_province'} = $ZOOVY::cgiv->{'province'};
 	
 	if (uc($TYPE) eq 'WS') { 
 		$addr->{'BILLING_CONTACT'} = $ZOOVY::cgiv->{'BILLING_CONTACT'};
@@ -548,10 +539,9 @@ if ($VERB eq 'CREATEADDR') {
 	$GTOOLS::TAG{'<!-- ADDRESS1 -->'} = $ZOOVY::cgiv->{'address1'};
 	$GTOOLS::TAG{'<!-- ADDRESS2 -->'} = $ZOOVY::cgiv->{'address2'};
 	$GTOOLS::TAG{'<!-- CITY -->'} = $ZOOVY::cgiv->{'city'};
-	$GTOOLS::TAG{'<!-- STATE -->'} = $ZOOVY::cgiv->{'state'};
-	$GTOOLS::TAG{'<!-- PROVINCE -->'} = $ZOOVY::cgiv->{'province'};
-	$GTOOLS::TAG{'<!-- ZIP -->'} = $ZOOVY::cgiv->{'zip'};
-	$GTOOLS::TAG{'<!-- COUNTRY -->'} = $ZOOVY::cgiv->{'country'};
+	$GTOOLS::TAG{'<!-- REGION -->'} = $ZOOVY::cgiv->{'region'};
+	$GTOOLS::TAG{'<!-- POSTAL -->'} = $ZOOVY::cgiv->{'postal'};
+	$GTOOLS::TAG{'<!-- COUNTRYCODE -->'} = $ZOOVY::cgiv->{'countrycode'};
 	$GTOOLS::TAG{'<!-- EMAIL -->'} = $ZOOVY::cgiv->{'email'};
 	$GTOOLS::TAG{'<!-- PHONE -->'} = $ZOOVY::cgiv->{'phone'};
 	$GTOOLS::TAG{'<!-- CID -->'} = $CID;
@@ -600,17 +590,9 @@ if ($VERB eq 'EDITADDR') {
 		$GTOOLS::TAG{'<!-- ADDRESS1 -->'} = $addr->{$TYPE.'_address1'};
 		$GTOOLS::TAG{'<!-- ADDRESS2 -->'} = $addr->{$TYPE.'_address2'};
 		$GTOOLS::TAG{'<!-- CITY -->'} = $addr->{$TYPE.'_city'};
-		$GTOOLS::TAG{'<!-- STATE -->'} = $addr->{$TYPE.'_state'};
-		$GTOOLS::TAG{'<!-- PROVINCE -->'} = $addr->{$TYPE.'_province'};
-
-		if ($addr->{$TYPE.'_country'} ne '' && 
-			 $addr->{$TYPE.'_country'} ne 'USA' && 
-			 $addr->{$TYPE.'_country'} ne 'US' &&
-			 $addr->{$TYPE.'_country'} ne 'United States of America'){
-			$GTOOLS::TAG{'<!-- ZIP -->'} = $addr->{$TYPE.'_int_zip'};
-			}
-		else { $GTOOLS::TAG{'<!-- ZIP -->'} = $addr->{$TYPE.'_zip'}; }
-		$GTOOLS::TAG{'<!-- COUNTRY -->'} = $addr->{$TYPE.'_country'};
+		$GTOOLS::TAG{'<!-- REGION -->'} = $addr->{$TYPE.'_region'};
+		$GTOOLS::TAG{'<!-- POSTAL -->'} = $addr->{$TYPE.'_postal'};
+		$GTOOLS::TAG{'<!-- COUNTRYCODE -->'} = $addr->{$TYPE.'_countrycode'};
 		$GTOOLS::TAG{'<!-- EMAIL -->'} = $addr->{$TYPE.'_email'};
 		$GTOOLS::TAG{'<!-- PHONE -->'} = $addr->{$TYPE.'_phone'};
 		if ($TYPE eq 'ship' || $TYPE eq 'ws') {
@@ -1027,7 +1009,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 			foreach my $noteref (sort @{$C->fetch_notes()}) {
 				my $remove = '';
 				if (1) {
-					$remove = "<td><a href=\"?VERB=NUKENOTE&NID=$noteref->{'ID'}&CID=$CID&EMAIL=$EMAIL\">[Remove]</a></td>";
+					$remove = "<td><a href=\"/biz/manage/customer/index.cgi?VERB=NUKENOTE&NID=$noteref->{'ID'}&CID=$CID&EMAIL=$EMAIL\">[Remove]</a></td>";
 					}
 
 				my $pretty_date = ZTOOLKIT::pretty_date($noteref->{'CREATED_GMT'});
@@ -1127,5 +1109,5 @@ push @TABS, { 'name'=>'Reports', link=>'/biz/manage/customer/index.cgi?VERB=REPO
 push @TABS, { 'name'=>'Create', link=>'/biz/manage/customer/index.cgi?VERB=CREATE', selected=>($VERB eq 'CREATE')?1:0 };
 
 
-&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS,bc=>\@BC,js=>1);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS,bc=>\@BC,js=>1);
 &DBINFO::db_user_close();

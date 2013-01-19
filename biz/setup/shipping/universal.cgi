@@ -563,7 +563,7 @@ this can be a great way to give customers the convience of purchasing online wit
 	foreach my $k (sort { $a <=> $b; } keys %{$hashref}) {
 		my ($price) = $hashref->{$k};
 		my ($startzip,$endzip) = split(/-/,$k);
-		$c .= "<tr><td><a href='universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td>$startzip</td><td>$endzip</td><td>\$$price</td></tr>";
+		$c .= "<tr><td><a href='/biz/setup/shipping/universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td>$startzip</td><td>$endzip</td><td>\$$price</td></tr>";
 		}
 	if (length($c)>0) {
 		$c = "<tr class='zoovysub2header'><td>ACTION</td><td>START ZIP</td><td>END ZIP</td><td>SHIP PRICE</td></tr>".$c;
@@ -577,10 +577,7 @@ this can be a great way to give customers the convience of purchasing online wit
 	<td>Start Zip: <input size=5 maxlength=5 type=textbox name=startzip></td>
 	<td>End Zip: <input size=5 maxlength=5 type=textbox name=endzip></td>
 	<td>Ship Price $<input size=5 type=textbox name=price></td>
-	<td><input type="button" onClick="
-document.thisFrm.VERB.value='UPDATE:ADD';
-document.thisFrm.submit();
-" class="button showLoadingModal" value=" Add "></td>
+	<td><button type="submit" onClick=" document.thisFrm.VERB.value='UPDATE:ADD'; " class="button">Add</button></td>
 </tr>
 ~;
 
@@ -625,7 +622,7 @@ this can be a great way to give customers the convience of purchasing online wit
 	foreach my $zippattern (sort keys %{$hashref}) {
 		my ($price,$instructions) = split(/\|/,$hashref->{$zippattern},2);
 		my $outputzip = sprintf("%s %s",substr($zippattern,0,3),substr($zippattern,3));
-		$c .= "<tr><td valign=top><a href='universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$zippattern'>[DELETE]</a></td><td valign=top>$outputzip</td><td valign=top>\$$price</td><td valign=top>$instructions</td></tr>";
+		$c .= "<tr><td valign=top><a href='/biz/setup/shipping/universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$zippattern'>[DELETE]</a></td><td valign=top>$outputzip</td><td valign=top>\$$price</td><td valign=top>$instructions</td></tr>";
 		}
 
 	if (length($c)>0) {
@@ -639,10 +636,7 @@ this can be a great way to give customers the convience of purchasing online wit
 	<td valign=top>&nbsp;</td>
 	<td valign=top>Zip Code Pattern: <input size=6 maxlength=6 type=textbox name=zippattern></td>
 	<td valign=top>Ship Price $<input size=5 type=textbox name=price></td>
-	<td valign=top><input type="button" onClick="
-document.thisFrm.VERB.value='UPDATE:ADD';
-document.thisFrm.submit();
-" class="button" value=" Add "></td>
+	<td valign=top><button type="submit" onClick="document.thisFrm.VERB.value='UPDATE:ADD';" class="button">Add</button></td>
 </tr>
 <tr>
 	<td colspan=5 valign=top>Pickup Instructions:<br>
@@ -668,6 +662,43 @@ document.thisFrm.submit();
 </tr>
 ~;
  	}
+
+
+
+
+
+
+##
+##
+##
+if (($VERB eq 'SAVE') && ($HANDLER eq 'FREE')) {
+
+	push @BC, { name=>'Simple Shipping' };
+	my $itemprice = sprintf("%.2f",$ZOOVY::cgiv->{'total'});
+	$ref{'total'} = $itemprice;
+
+	&ZWEBSITE::ship_add_method($USERNAME,$PRT,\%ref);
+	$VERB = 'EDIT';
+	}
+
+if (($VERB eq 'EDIT') && ($HANDLER eq 'FREE')) {
+	$GTOOLS::TAG{'<!-- TITLE -->'} = "Free Shipping";
+	$GTOOLS::TAG{'<!-- ABOUT -->'} = qq~
+Free Shipping can be easily configured to offer free shipping when the order or package total reaches a set amount.
+<br>
+~;
+	$GTOOLS::TAG{'<!-- UPPER_CONTENT -->'} = q~
+<tr class="zoovysub1header">
+	<td colspan=5>Order Total</td>
+</tr>
+<tr>
+	<td>Amount:</td>
+	<td>$<input type="textbox" size=6 maxlength="6" name="total" value="~.$ref{'total'}.q~"></td>
+	<td colspan=3><i>The mininum order/package total that qualifies for free shipping (ex: use zero dollars for free shipping on every order/package)</i></td>
+</tr>
+~;
+	}
+
 
 
 
@@ -783,7 +814,7 @@ cart weighs more than the greatest amount, and no other shipping methods are ava
 	my $hashref = &ZTOOLKIT::parseparams($ref{'data'});
 	foreach my $k (sort { $a <=> $b; } keys %{$hashref}) {
 		my ($price) = $hashref->{$k};
-		$c .= "<tr><td><a href='universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td>$k <font size='1'>ounces</font></td><td>\$$price</td></tr>";
+		$c .= "<tr><td><a href='/biz/setup/shipping/universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td>$k <font size='1'>ounces</font></td><td>\$$price</td></tr>";
 		}
 	if (length($c)>0) {
 		$c = "<tr class='zoovysub2header'><td>ACTION</td><td>WEIGHT</td><td>SHIP PRICE</td></tr>".$c;
@@ -796,10 +827,7 @@ cart weighs more than the greatest amount, and no other shipping methods are ava
 	<td>&nbsp;</td>
 	<td>Max Weight: <input size=6 type=textbox name=weight></td>
 	<td>Ship Price $<input size=5 type=textbox name=price></td>
-	<td><input type="button" onClick="
-document.thisFrm.VERB.value='UPDATE:ADD';
-document.thisFrm.submit();
-" class="button showLoadingModal" value=" Add "></td>
+	<td><button type="submit" onClick="document.thisFrm.VERB.value='UPDATE:ADD';" class="button">Add</button></td>
 </tr>
 ~;
 
@@ -896,7 +924,7 @@ If the cart costs more than the greatest amount, and no other shipping methods a
 		if (substr($price,0,1) eq '%') { $op = '%'; $price = substr($price,1); }
 		elsif (substr($price,0,1) eq '=') { $op = 'formula:'; $price = substr($price,1); }
 		else { $op = '$'; }
-		$c .= "<tr><td><a href='universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td><font size='1'>up to </font>\$$k</td><td><font size='1'>shipping is:</font> $op$price</td></tr>";
+		$c .= "<tr><td><a href='/biz/setup/shipping/universal.cgi?VERB=UPDATE:DELETE&ID=$ID&KEY=$k'>[DELETE]</a></td><td><font size='1'>up to </font>\$$k</td><td><font size='1'>shipping is:</font> $op$price</td></tr>";
 		}
 	if (length($c)>0) {
 		$c = "<tr class='zoovysub2header'><td>ACTION</td><td>SUBTOTAL</td><td>SHIP PRICE</td></tr>".$c;
@@ -909,10 +937,7 @@ If the cart costs more than the greatest amount, and no other shipping methods a
 	<td>&nbsp;</td>
 	<td>Subtotal: <input size=6 type=textbox name=subtotal></td>
 	<td>Ship Price $<input size=5 type=textbox name=price></td>
-	<td><input type="button" onClick="
-document.thisFrm.VERB.value='UPDATE:ADD';
-document.thisFrm.submit();
-" class="button showLoadingModal" value=" Add "></td>
+	<td><button type="submit" onClick="document.thisFrm.VERB.value='UPDATE:ADD';" class="button">Add</button></td>
 </tr>
 <tr>
 	<td>&nbsp;</td>
@@ -949,4 +974,4 @@ document.thisFrm.submit();
 
 $GTOOLS::TAG{'<!-- ID -->'} = $ID;
 $GTOOLS::TAG{'<!-- MESSAGES -->'} = '<tr><td>'.&GTOOLS::show_msgs(\@MSGS).'</td></tr>';
-&GTOOLS::output(file=>$template_file,'jquery'=>'1',help=>$HELP,bc=>\@BC, header=>1);
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,file=>$template_file,'jquery'=>'1',help=>$HELP,bc=>\@BC, header=>1);

@@ -79,6 +79,17 @@ if ($ENV{'SCRIPT_NAME'} =~ /nextag/) {
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1, hint=>'example: upload.nextag.com' };
 #	push @FIELDS, { type=>'textbox', name=>'FTP Folder', id=>'.ftp_path', hint=>'example: /private/yourname' };
 	}
+elsif ($ENV{'SCRIPT_NAME'} =~ /sitemap/) {
+	$WEBDOC = 50396;
+	($DST,$MARKETPLACE) = ('GSM','Google Sitemap');
+	push @BC, { name=>'SiteMap',link=>"$PATH",'target'=>'_top', };
+	push @FIELDS, { type=>'checkbox', name=>'Enable', id=>'.enable', required=>1 };
+# .stragegy??
+#	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+#	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
+#	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1, hint=>'example: upload.nextag.com' };
+#	push @FIELDS, { type=>'textbox', name=>'FTP Folder', id=>'.ftp_path', hint=>'example: /private/yourname' };
+	}
 #elsif ($ENV{'SCRIPT_NAME'} =~ /mysimon/) {
 #	$WEBDOC = 50593;
 #	($DST,$MARKETPLACE,$FEED_TYPE) = ('MYS','MySimon.com','API');
@@ -337,6 +348,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /newegg/) {
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
+#	push @FIELDS, { type=>'checkbox', name=>'Enable Newegg Syndication', id=>'IS_ACTIVE', hint=>"Checkbox must be selected or syndication will not be attempted." };
    }
 ## TODO:
 ## thefind
@@ -902,6 +914,48 @@ if ($PROFILE ne '') {
 	}
 
 
+##
+##
+##
+if ($VERB eq 'PUBLISH-NOW') {
+	## .FEEDTYPE
+	if ($FEEDTYPE eq '') { $FEEDTYPE = 'FEED-TYPE-PASSED-WAS-BLANK-AND-THAT-WILL-NOT-WORK'; }
+
+	require URI::Escape;
+	#$PROFILE = URI::Escape::uri_escape($PROFILE);
+	#$FEEDTYPE = URI::Escape::uri_escape($FEEDTYPE);
+
+	require BATCHJOB;
+	my $GUID = &BATCHJOB::make_guid();
+	my %VARS = (
+		'VERB'=>'ADD',
+		'DST'=>$DST,
+		'PROFILE'=>$PROFILE,
+		'FEEDTYPE'=>$FEEDTYPE,		
+		);
+	my ($bj) = BATCHJOB->new($USERNAME,0,
+		PRT=>$PRT,
+		GUID=>$ZOOVY::cgiv->{'GUID'},
+		EXEC=>'SYNDICATION',
+		VARS=>&ZTOOLKIT::buildparams(\%VARS,1),
+		'*LU'=>$LU,
+		);
+	if (not defined $bj) {
+		push @MSGS, "ERROR|+Could not add job"; 
+		}
+	else {
+		$bj->start();
+		push @MSGS, "SUCCESS|BATCH:".$bj->id()."|+Job ".$bj->id()." has been started.";
+		}
+	$GTOOLS::TAG{'<!-- JOBID -->'} = $bj->id();
+	$VERB = 'EDIT';
+	}
+
+
+
+
+
+
 if (not defined $so) {
 	}
 elsif ($VERB eq 'EDIT') {
@@ -1364,49 +1418,8 @@ if ($VERB eq 'CATEGORIES') {
 
 
 
-##
-##
-##
-if ($VERB eq 'PUBLISH-NOW') {
-	## .FEEDTYPE
-	if ($FEEDTYPE eq '') { $FEEDTYPE = 'FEED-TYPE-PASSED-WAS-BLANK-AND-THAT-WILL-NOT-WORK'; }
 
-	require URI::Escape;
-	#$PROFILE = URI::Escape::uri_escape($PROFILE);
-	#$FEEDTYPE = URI::Escape::uri_escape($FEEDTYPE);
-
-	require BATCHJOB;
-	my $GUID = &BATCHJOB::make_guid();
-	my %VARS = (
-		'VERB'=>'ADD',
-		'DST'=>$DST,
-		'PROFILE'=>$PROFILE,
-		'FEEDTYPE'=>$FEEDTYPE,		
-		);
-	my ($bj) = BATCHJOB->new($USERNAME,0,
-		PRT=>$PRT,
-		GUID=>$ZOOVY::cgiv->{'GUID'},
-		EXEC=>'SYNDICATION',
-		VARS=>&ZTOOLKIT::buildparams(\%VARS,1),
-		'*LU'=>$LU,
-		);
-	if (not defined $bj) {
-		push @MSGS, "ERROR|+Could not add job"; 
-		}
-	else {
-		$bj->start();
-		push @MSGS, "SUCCESS|+Job ".$bj->id()." has been started.";
-		}
-	$GTOOLS::TAG{'<!-- JOBID -->'} = $bj->id();
-	$template_file = 'batchjob.shtml';
-
-	# print "Location: /biz/batch/index.cgi?&VERB=ADD&EXEC=SYNDICATION&DST=$DST&PROFILE=$PROFILE&GUID=".time()."&FEEDTYPE=$FEEDTYPE\n\n";
-	}
-
-
-
-
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>"$MARKETPLACE Syndication",
 	'file'=>$template_file,
 	'header'=>'1',

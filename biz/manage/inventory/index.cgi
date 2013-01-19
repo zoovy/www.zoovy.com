@@ -175,7 +175,7 @@ push @TABS, { name=>"Welcome", link=>"/biz/manage/inventory/index.cgi?VERB=", se
 push @TABS, { name=>"Cycle Count", link=>"/biz/manage/inventory/index.cgi?VERB=CYCLECOUNT", selected=>($VERB eq 'SUBSCRIBER-LISTS')?1:0, };
 push @TABS, { name=>"Update", link=>"/biz/manage/inventory/index.cgi?VERB=Update", selected=>($VERB eq 'CAMPAIGNS')?1:0, };
 
-&GTOOLS::output(file=>'index.shtml',
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,file=>'index.shtml',
 	tabs=>\@TABS,
 	header=>1,
 	msgs=>\@MSGS);

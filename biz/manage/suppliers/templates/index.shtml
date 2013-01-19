@@ -4,7 +4,7 @@
 <tr><td align='left'>
 <!-- MESSAGE -->
 <h1>Suppliers</h1><br>
-<a href="index.cgi?VERB=NEW">Add new Supplier</a><br>
+<a href="/biz/manage/supplychain/index.cgi?VERB=NEW">Add new Supplier</a><br>
 <br>
 <table width='100%' class='zoovytable' border=0 cellspacing="0" cellpadding="0">
 	<tr class="zoovytableheader">
@@ -17,7 +17,7 @@
 <!-- SUPPLIERS -->
 </table>
 <br>
-<a href="index.cgi?VERB=NEW">Add new Supplier</a><br>
+<a href="/biz/manage/supplychain/index.cgi?VERB=NEW">Add new Supplier</a><br>
 <br>
 
 </td></tr></table>

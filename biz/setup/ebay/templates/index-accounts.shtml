@@ -18,7 +18,7 @@
 </table>
 
 <br>
-<li> <a href="index.cgi?ACTION=REGISTER">Setup or Refresh eBay Authorization Token</a><br>
+<li> <a href="/biz/setup/ebay/index.cgi?ACTION=REGISTER">Setup or Refresh eBay Authorization Token</a><br>
 
 <i>Creating an eBay Authorization token is required to allow Zoovy to create and manage your eBay listings, 
 anytime you change your eBay password you will need to refresh your eBay Authorization Token.</i><br>

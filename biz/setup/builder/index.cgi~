@@ -12,7 +12,7 @@ require TOXML;
 require TOXML::RENDER;
 require TOXML::CHOOSER;
 require LUSER;
-require AJAX::PANELS;
+#require AJAX::PANELS;
 require IMGLIB::Lite;
 require DOMAIN::TOOLS;
 require PRODUCT;
@@ -32,7 +32,7 @@ require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_S&2');
 if (not defined $LU) { exit; }
 
-my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT,$DOMAIN) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
 my @TABS = ();
@@ -331,6 +331,7 @@ elsif ($ACTION eq 'INITEDIT') {
 		$SITE->setSTID($ZOOVY::cgiv->{'SKU'});
 		$SITE->sset('_FORMAT','PRODUCT');
 		}
+
 	$SITE->sset('_FS',$ZOOVY::cgiv->{'FS'});
 
 	if ($ZOOVY::cgiv->{'FL'}) {
@@ -424,6 +425,7 @@ if ($ACTION eq 'DIVSELECT') {
 ##
 if ($ACTION eq "CHOOSERSAVE") {
 
+	## NOTE: this should never be reached without $SITE being set.	
 	if ($ZOOVY::cgiv->{'FL'}) {
 		$SITE->layout($ZOOVY::cgiv->{'FL'});
 		}
@@ -453,6 +455,9 @@ if ($ACTION eq "CHOOSERSAVE") {
 		$P->set('FL',$SITE->layout());
 		&ZOOVY::savemerchantns_attrib($USERNAME,$SITE->profile(),'zoovy:default_flow'.$SITE->fs(),$SITE->layout());
 		$LU->log('SETUP.BUILDER.PAGE',"Saved new layout ".$SITE->layout()." for page ".$SITE->fs()." profile ".$SITE->layout(),"SAVE");
+		}
+	elsif ($SITE->format() eq 'WIZARD') {
+		die("This line should never be reached");
 		}
 	else {
 		die("unsupported toxml->format '".$SITE->format()."' -- never reached!");
@@ -1027,7 +1032,8 @@ if ($ACTION eq 'CHOOSER') {
 		}	
 
 	print STDERR "SUBTYPE: ".$SITE->fs()."\n";
-	$GTOOLS::TAG{'<!-- FLOW_CHOOSER -->'} = &TOXML::CHOOSER::buildChooser($SITE->username(),$SITE->format(),SREF=>$SITE->siteserialize(),SUBTYPE=>$SITE->fs(),selected=>$SITE->layout(),'*LU'=>$LU);
+	my $PROFILE = $ZOOVY::cgiv->{'NS'};
+	$GTOOLS::TAG{'<!-- FLOW_CHOOSER -->'} = &TOXML::CHOOSER::buildChooser($SITE->username(),$SITE->format(),SREF=>$SITE->siteserialize(),'NS'=>$PROFILE,SUBTYPE=>$SITE->fs(),selected=>$SITE->layout(),'*LU'=>$LU);
 	}
 
 
@@ -1178,6 +1184,7 @@ $BUF
 		require SITE;
 
 		($BUF) = $toxml->render('*SITE'=>$SITE,DIV=>$SITE->{'_DIV'});
+		$BUF =~ s/<[Ss][Cc][Rr][Ii][Pp][Tt].*?><\/[Ss][Cc][Rr][Ii][Pp][Tt]>/<!-- script was removed -->/gs;
 		}
 	else {
 		$BUF = qq~
@@ -1272,10 +1279,10 @@ if ($ACTION eq '') {
 	require DOMAIN;
 	require DOMAIN::QUERY;
 	require DOMAIN::PANELS;
-	require AJAX::PANELS;
+#	require AJAX::PANELS;
 
 	my ($prtinfo) = &ZOOVY::fetchprt($USERNAME,$PRT);
-	my @domainrefs = &DOMAIN::QUERY::domains($USERNAME,PRT=>$PRT,DETAIL=>0);
+	# my @domainrefs = &DOMAIN::QUERY::domains($USERNAME,PRT=>$PRT,DETAIL=>0);
 	# print STDERR Dumper(\@domains,$PRT);
 
 	my $SHOW_PROFILE = '';
@@ -1287,46 +1294,51 @@ if ($ACTION eq '') {
 	my %DOMAINS = ();
 	my %PROFILES = ();
 	my @DEBUG = ();
-	my $ludomain = $LU->domain();
-	foreach my $domain (@domainrefs) {
-
-		my $DNSINFO = &DOMAIN::QUERY::lookup("www.$domain",cache=>0,verify=>1,USERNAME=>$USERNAME);
-		## skip domains that don't have a profile selected
-		my $DISPLAY = 0;
-		if (not defined $DNSINFO) {
-			push @DEBUG, "WARN|$domain was not shown because it was not properly linked with this account in DNS";
-			}
-		elsif ($DNSINFO->{'PRT'} != $PRT) {
-			push @DEBUG, "WARN|$domain was not shown because of PRT=$DNSINFO->{'PRT'}";
-			}
-		elsif (($ludomain ne '') && ($ludomain ne $domain)) {
-			push @DEBUG, "WARN|$domain was not shown because you are not logged into that domain";
-			}
-		elsif ($DNSINFO->{'PROFILE'} eq '') {
-			push @DEBUG, "WARN|$domain was not shown because of PROFILE is blank";
-			}
-		elsif ($DNSINFO->{'WWW_HOST_TYPE'} eq 'VSTORE') { 
-			$DISPLAY |= 1; 
-			}
-		elsif ($DNSINFO->{'APP_HOST_TYPE'} eq 'VSTORE') { 
-			$DISPLAY |= 2; 
-			}
-		elsif ($DNSINFO->{'M_HOST_TYPE'} eq 'VSTORE') { 
-			$DISPLAY |= 4; 
-			}
-		elsif ($DNSINFO->{'PROFILE'} eq $SHOW_PROFILE) { 
-			$DISPLAY |= 256; 
-			} 		
-		else {
-			push @DEBUG, "WARN|$domain was not shown because WWW=$DNSINFO->{'WWW_HOST_TYPE'} APP=$DNSINFO->{'APP_HOST_TYPE'} M=$DNSINFO->{'M_HOST_TYPE'}";
-			}
-
-		if ($DISPLAY) {
-			$DOMAINS{$domain} = $DNSINFO;
-			push @{$PROFILES{$DNSINFO->{'PROFILE'}}}, $domain;
-			}
+	my $domain = $LU->domain();
+	if ($domain eq '') {
+		push @MSGS, "ERROR|domain is unknown";
 		}
-	@MSGS = @DEBUG;
+	#foreach my $domain (@domainrefs) {
+
+	$GTOOLS::TAG{'<!-- DOMAIN -->'} = uc($domain);
+	# push @MSGS, "INFO|+DOMAIN IS '$domain'";
+	## NOTE: any.domain.com is the host, and it's key because www.us.halebobstore.com is on a different prt than www.halebobstore.com
+	my $DNSINFO = &DOMAIN::QUERY::lookup("any.$domain",verify=>1,USERNAME=>$USERNAME);
+	## skip domains that don't have a profile selected
+	my $DISPLAY = 0;
+	if (not defined $DNSINFO) {
+		push @DEBUG, "WARN|$domain was not shown because it was not properly linked with this account in DNS";
+		}
+	elsif ($DNSINFO->{'PRT'} != $PRT) {
+		push @DEBUG, "WARN|$domain was not shown because configuration is corrupt. DNSINFO PRT=$DNSINFO->{'PRT'} (should be PRT=1)";
+		}
+	elsif (($domain ne '') && ($domain ne $domain)) {
+		push @DEBUG, "WARN|$domain was not shown because you are not logged into that domain";
+		}
+	elsif ($DNSINFO->{'PROFILE'} eq '') {
+		push @DEBUG, "WARN|$domain was not shown because of PROFILE is blank";
+		}
+	elsif ($DNSINFO->{'WWW_HOST_TYPE'} eq 'VSTORE') { 
+		$DISPLAY |= 1; 
+		}
+	elsif ($DNSINFO->{'APP_HOST_TYPE'} eq 'VSTORE') { 
+		$DISPLAY |= 2; 
+		}
+	elsif ($DNSINFO->{'M_HOST_TYPE'} eq 'VSTORE') { 
+		$DISPLAY |= 4; 
+		}
+	elsif ($DNSINFO->{'PROFILE'} eq $SHOW_PROFILE) { 
+		$DISPLAY |= 256; 
+		} 		
+	else {
+		push @DEBUG, "WARN|$domain was not shown because WWW=$DNSINFO->{'WWW_HOST_TYPE'} APP=$DNSINFO->{'APP_HOST_TYPE'} M=$DNSINFO->{'M_HOST_TYPE'}";
+		}
+
+	if ($DISPLAY) {
+		$DOMAINS{$domain} = $DNSINFO;
+		push @{$PROFILES{$DNSINFO->{'PROFILE'}}}, $domain;
+		}
+	@MSGS = (@MSGS,@DEBUG);
 
 	my $class = 'r1';
 	foreach my $ns (sort keys %PROFILES) {
@@ -1337,7 +1349,7 @@ if ($ACTION eq '') {
 
 		my $panel = 'BUILDER:'.$ns;
 
-		my ($content,$state) = ('',1);
+		#my ($content,$state) = ('',1);
 		#if (($SHOW_PROFILE ne '') && ($SHOW_PROFILE eq $ns)) {
 		#	($state)++;
 		#	}
@@ -1345,21 +1357,23 @@ if ($ACTION eq '') {
 		#	($state) = $LU->get('builder.'.$panel,0); 
 		#	}
 		
-		$content = '';
-		if ($state) {
-			my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$ns);
-			$content = &DOMAIN::PANELS::panel_builder($LU,'','LOAD',$nsref,{})
-			}
-		$out .= &AJAX::PANELS::render_panel($panel,$ns,$state,$content);
+		#$content = '';
+		#if ($state) {
+		my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$ns);
+		$GTOOLS::TAG{'<!-- SITE -->'} = &DOMAIN::PANELS::panel_builder($LU,'','LOAD',$nsref,{})
+		
+		
+		# $out .= $content;
+		# $out .= &AJAX::PANELS::render_panel($panel,$ns,$state,$content);
 		}
 
 
 	if (($prtinfo->{'p_navcats'}>0) || ($PRT==0)) {
 		## only show navcat's on partition 0, or when the partition has it's own navigation.
-		my ($content,$state) = ('',1);
-		if (defined $LU) { ($state) = $LU->get('builder.navcat',0); }
-		$content = ($state)?&DOMAIN::PANELS::panel_navcat($LU,'','LOAD',undef,{}):'';
-		$out .= &AJAX::PANELS::render_panel('NAVCAT','Website Navigation Categories',$state,$content);
+
+		$GTOOLS::TAG{'<!-- NAVCATS -->'} = &DOMAIN::PANELS::panel_navcat($LU,'','LOAD',undef,{});
+		# $out .= $content;
+		# $out .= &AJAX::PANELS::render_panel('NAVCAT','Website Navigation Categories',$state,$content);
 		}
 	
 	$GTOOLS::TAG{'<!-- PROFILES -->'} = $out;	
@@ -1382,7 +1396,7 @@ if ((defined $SITE) && ($SITE->pid() ne '')) {
 &GTOOLS::output(file=>$template_file,header=>1,
 	'js'=>($ACTION eq 'COMPANYEDIT')?1:0,
 	help=>"#50361",
-	'head'=>($ACTION eq '')?&AJAX::PANELS::header('BUILDEREDIT','','/biz/setup/builder/index.cgi'):'',
+#	'head'=>($ACTION eq '')?&AJAX::PANELS::header('BUILDEREDIT','','/biz/setup/builder/index.cgi'):'',
 	tabs=>\@TABS,
 	msgs=>\@MSGS,
 	'jquery'=>'1',

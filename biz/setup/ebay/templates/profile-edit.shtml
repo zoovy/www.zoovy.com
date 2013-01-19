@@ -1,5 +1,5 @@
 <!-- SETUP_TAB -->
-<script type="text/javascript" src="http://www.zoovy.com/biz/zoovy.js"></script>
+
 <script type="text/javascript">
 
 function initJS() {
@@ -20,7 +20,7 @@ function checkForm() {
 <tr>
 	<td bgcolor="#ffffff" valign="top">
 	<b>Edit Profile:</b> 
-	<form method="POST" name="thisFrm" action="index.cgi">
+	<form id="ebayWizardFrm" method="POST" name="ebayWizardFrm" action="index.cgi">
 		<input type="hidden" name="ACTION" value="PROFILE-COMPANYSAVE">
 		<input type="hidden" name="MKT" value="<!-- MKT -->">
 		<input type="hidden" name="NS" value="<!-- NS -->">
@@ -34,7 +34,8 @@ function checkForm() {
    <tr>
  	   <td><!-- MKT --> Template:</td>
       <td>
-  		<!-- TEMPLATE --> <input type="button" value=" Change " onClick="thisFrm.ACTION.value='PROFILE-CHOOSE_WIZARD'; thisFrm.submit();">
+  		<!-- TEMPLATE --> 
+		<input type="button" value=" Change " onClick="ebayWizardFrm.ACTION.value='PROFILE-CHOOSE_WIZARD'; jQuery('#ebayWizardFrm').submit();">
   		<input type="hidden" name="<!-- TEMPLATEATTRIB -->" value="<!-- TEMPLATE -->">
       </td>
    </tr>
@@ -45,7 +46,7 @@ function checkForm() {
 	</table>
 	
 	
-	<input type="button" onClick="thisFrm.ACTION.value='PROFILE-PREVIEWSAVE'; thisFrm.submit();" value=" Save / Preview ">
+	<input type="button" onClick="ebayWizardFrm.ACTION.value='PROFILE-PREVIEWSAVE'; jQuery('#ebayWizardFrm').submit();" value=" Save / Preview ">
 	<input type="submit" value=" Save / Exit ">
 	<br>
 	</form>	
@@ -66,12 +67,12 @@ This is the content inside the Iframe
 
 function doPreview(btn) {
 
-	var thisFrm = document.thisFrm;
+	var ebayWizardFrm = document.ebayWizardFrm;
 	var str = '';
-	var i = thisFrm.elements.length;
+	var i = ebayWizardFrm.elements.length;
 	while (--i>=0) {
-		if (thisFrm.elements[i].name != '') {
-			str = str + escape(thisFrm.elements[i].name) + '=' + escape(thisFrm.elements[i].value) + '&';
+		if (ebayWizardFrm.elements[i].name != '') {
+			str = str + escape(ebayWizardFrm.elements[i].name) + '=' + escape(ebayWizardFrm.elements[i].value) + '&';
 			}
 		}
 

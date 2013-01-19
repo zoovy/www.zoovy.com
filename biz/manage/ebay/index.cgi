@@ -11,9 +11,12 @@ use EBAY2;
 use Text::CSV_XS;
 
 
-
-
-my ($LU) = LUSER->authenticate(flags=>'_M&16');
+my %options = ();
+foreach my $param (keys %{$ZOOVY::cgiv}) {
+   next if (substr($param,0,1) ne '_');
+   $options{ $param } = $ZOOVY::cgiv->{$param};
+   }
+my ($LU) = LUSER->authenticate(flags=>'_M&16',%options);
 if (not defined $LU) { warn "Auth"; exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
@@ -326,6 +329,6 @@ if ($VERB eq 'EXPORT') {
 
 if ($VERB ne 'EXPORT') {
 	$GTOOLS::TAG{'<!-- FILENAME -->'} = "ebay-".time();
-	&GTOOLS::output(file=>'index.shtml',header=>1);
+	&GTOOLS::output('*LU'=>$LU,file=>'index.shtml',header=>1);
 	}
 

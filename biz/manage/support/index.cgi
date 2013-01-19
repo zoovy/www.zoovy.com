@@ -7,8 +7,8 @@ use lib "/httpd/modules";
 use GTOOLS;
 use BATCHJOB;
 use ZTOOLKIT;
-
 use ZOOVY;
+
 
 my $template_file = 'index.shtml';
 
@@ -21,7 +21,10 @@ if ($MID<=0) { exit; }
 if (index($FLAGS,'BASIC')==-1) { print "Location: /biz\n\n"; exit; }
 
 my @MSGS = ();
+use Data::Dumper;
+print STDERR Dumper($ZOOVY::cgiv);
 my ($VERB) = $ZOOVY::cgiv->{'VERB'};
+print STDERR "VERB:'$VERB' xx\n";
 
 $GTOOLS::TAG{'<!-- VERB -->'} = $VERB;
 if ($VERB eq 'FUSESYNC') {
@@ -41,6 +44,7 @@ if ($VERB eq 'ADD-FAVORITE') {
 	&TOXML::UTIL::remember($USERNAME,$ZOOVY::cgiv->{'FORMAT'},$ZOOVY::cgiv->{'DOCID'},1);
 	$VERB = 'MORE';
 	}
+
 
 if ($VERB eq 'CREATE-UTILITY-BATCH') {
 	my ($bj) = BATCHJOB->new($USERNAME,0,
@@ -397,6 +401,7 @@ if ($VERB eq 'FLEXEDIT-SAVE') {
 	my $fref = $coder->decode($ZOOVY::cgiv->{'FLEXEDIT'});
 
 	my ($gref) = &ZWEBSITE::fetch_globalref($USERNAME);
+	
 	#forach my $id (@{$fref}) {
 	#	if ($fref->{$id}->{'COPY'}) {
 	##		foreach my $attrib (keys %{$fref->{$id}}) {
@@ -414,7 +419,6 @@ if ($VERB eq 'FLEXEDIT-SAVE') {
 
 	$gref->{'@flexedit'} = $fref;
 
-	print STDERR Dumper($gref);
 	&ZWEBSITE::save_globalref($USERNAME,$gref);
 	
 	## nuke flexedit in webdb.
@@ -470,5 +474,5 @@ push @TABS, { name=>"Logs", link=>"/biz/manage/support/index.cgi?VERB=LOGS",  se
 
 $GTOOLS::TAG{'<!-- GUID -->'} = &BATCHJOB::make_guid();
 
-&GTOOLS::output(msgs=>\@MSGS,tabs=>\@TABS,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,msgs=>\@MSGS,tabs=>\@TABS,file=>$template_file,header=>1);
 

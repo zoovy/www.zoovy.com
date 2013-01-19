@@ -37,10 +37,10 @@
 </tr>
 
 </table>
-<form id="thisFrm" name="thisFrm" action="index.cgi">
-	<input type="hidden" name="VERB" value="">
-	<input type="hidden" name="JOBID" value="<!-- ID -->">
-	<input type="button" class="button" onClick="thisFrm.VERB.value='BATCH-CLEANUP'; thisFrm.submit();" value="Cleanup">
+<form id="batchjobDetailFrm" name="batchjobDetailFrm" action="index.cgi">
+	<input type="hidden" id="VERB" name="VERB" value="BATCH-CLEANUP">
+	<input type="hidden" id="JOBID" name="JOBID" value="<!-- ID -->">
+	<button class="button" onClick="jQuery('#batchjobDetailFrm').submit(); return false;">Cleanup</button>
 </form>
 <br>
 <br>

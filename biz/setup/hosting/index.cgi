@@ -142,7 +142,7 @@ foreach my $docid (@THEMES) {
 $GTOOLS::TAG{'<!-- ALL_THEMES -->'} = $c;
 $GTOOLS::TAG{'<!-- ALL_COUNT -->'} = scalar(@THEMES);
 
-&GTOOLS::output(file=>'index.shtml',header=>1,todo=>1);
+&GTOOLS::output('*LU'=>$LU,file=>'index.shtml',header=>1,todo=>1);
 
 
 ##

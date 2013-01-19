@@ -35,22 +35,22 @@ my $THIS = $ZOOVY::cgiv->{'THIS'};
 my $webdb = &ZWEBSITE::fetch_website_dbref($USERNAME,$PRT);
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 if ($VERB eq '') { 
-
- 	if ($webdb->{"promotion_advanced"} && $FLAGS =~ /,XSELL,/ ) {
-		$VERB = 'UBER'; 
-		}
-	else {	
-		$VERB = 'SIMPLE'; 
-		}
+# 	if ($webdb->{"promotion_advanced"} && $FLAGS =~ /,XSELL,/ ) {
+#		$VERB = 'AUTO'; 
+#		}
+#	else {	
+#		$VERB = 'SIMPLE'; 
+#		}
+	$VERB = 'AUTO';
 	}
 
 my $template_file = '';
 
 ## SIMPLE open to everyone
-## COUPONS, UBER only open to XSELL
-if ($FLAGS !~ /,XSELL,/ && $VERB ne 'SIMPLE') { 
-	$template_file = 'deny.shtml'; $VERB='DENY'; 
-	}
+## COUPONS, AUTO only open to XSELL
+#if ($FLAGS !~ /,XSELL,/ && $VERB ne 'SIMPLE') { 
+#	$template_file = 'deny.shtml'; $VERB='DENY'; 
+#	}
 
 my $METHOD = 'PROMO';
 if ($ZOOVY::cgiv->{'METHOD'} ne '') { $METHOD = $ZOOVY::cgiv->{'METHOD'}; }
@@ -157,43 +157,43 @@ if ($VERB eq 'DEBUGGER') {
 	}
 
 
-if ($VERB eq 'UBER-SAVE') {	
+if ($VERB eq 'AUTO-SAVE') {	
 	print STDERR "Running SAVEADV\n";
 	$webdb->{'promotion_advanced'} = 0;
 	if (defined($ZOOVY::cgiv->{'promotion_advanced'})) { $webdb->{"promotion_advanced"} = 1; }
 	$LU->log("SETUP.PROMO","Configured Advanced Promotions","SAVE");
    &ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);
-	$VERB = 'UBER';
+	$VERB = 'AUTO';
 	}
 
-if ($VERB eq "UBER-DELETE") {
+if ($VERB eq "AUTO-DELETE") {
 	$LU->log("SETUP.PROMO","Deleted Promotion for $METHOD","SAVE");
    &ZSHIP::RULES::delete_rule($USERNAME,$PRT, $METHOD,$THIS);
-   $VERB = 'UBER';
+   $VERB = 'AUTO';
 	}
 
-if ($VERB eq "UBER-UP") {
+if ($VERB eq "AUTO-UP") {
  	&ZSHIP::RULES::swap_rule($USERNAME,$PRT, $METHOD,$THIS,$THIS-1);
- 	$VERB = 'UBER';
+ 	$VERB = 'AUTO';
 	}
 
-if ($VERB eq "UBER-DOWN") {
+if ($VERB eq "AUTO-DOWN") {
   	my $this = $ZOOVY::cgiv->{'THIS'};
  	my $next = $ZOOVY::cgiv->{'NEXT'};
 	&ZSHIP::RULES::swap_rule($USERNAME,$PRT,$METHOD,$THIS,$THIS+1);
- 	$VERB = 'UBER';
+ 	$VERB = 'AUTO';
  	 }
 
 
 ##
 ## this code is run to prepare edit_rule.shtml for editing an existing rule.
 ##
-if ($VERB eq "UBER-EDIT") {
+if ($VERB eq "AUTO-EDIT") {
 	$HELP = '#50337';
 	$GTOOLS::TAG{"<!-- ID -->"} = $THIS;
 	my @rules = &ZSHIP::RULES::fetch_rules($USERNAME,$PRT,$METHOD);
 
-	push @BC, { name=>"Uber Editor", link=>"/biz/setup/promotions/index.cgi?VERB=UBER-EDIT&ID=$THIS" };
+	push @BC, { name=>"Uber Editor", link=>"/biz/setup/promotions/index.cgi?VERB=AUTO-EDIT&ID=$THIS" };
 
 	my %hash = ();
 	if ($THIS == -1) {
@@ -204,7 +204,7 @@ if ($VERB eq "UBER-EDIT") {
 	else {
 		%hash = %{$rules[$THIS]};
 		$GTOOLS::TAG{"<!-- DELETE_BUTTON -->"} = qq~<td>
-<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?method=$METHOD&VERB=UBER-DELETE&THIS=$THIS');">Delete</button>
+<button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?method=$METHOD&VERB=AUTO-DELETE&THIS=$THIS');">Delete</button>
 </td>
 ~;
 		$GTOOLS::TAG{"<!-- WHAT_ARE_WE_DOING -->"} = "Edit Rule $THIS";
@@ -255,7 +255,7 @@ if ($VERB eq "UBER-EDIT") {
 ##
 ## 
 ##
-if ($VERB eq "UBER-EDITSAVE") {
+if ($VERB eq "AUTO-EDITSAVE") {
 	my %hash = ();
 
 	my $ID = int($ZOOVY::cgiv->{'id'});
@@ -286,12 +286,12 @@ if ($VERB eq "UBER-EDITSAVE") {
 	else {
 		&ZSHIP::RULES::update_rule($USERNAME,$PRT, $METHOD,$ID,\%hash);  
 		}
-	$VERB = "UBER";	
+	$VERB = "AUTO";	
 	}
 
 
 
-if ($VERB eq 'UBER') {
+if ($VERB eq 'AUTO') {
 	if ($METHOD eq 'PROMO') { $GTOOLS::TAG{'<!-- METHOD_DESC -->'} = 'Promotion Rules'; }
 
 
@@ -341,12 +341,12 @@ if ($VERB eq 'UBER') {
 				$c .= "<td valign=top  class='A'>$counter</td>";
 				$c .= "<td valign=top  class='A' nowrap>";
 				# Print the UP arrow
-				if ($counter>0) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if ($counter>0) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=AUTO-UP&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Up' src='/biz/images/arrows/v_up-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
 				# Print the DOWN arrow
-				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
+				if (($counter<$maxcount-1) && ($maxcount>1)) { $c .= "<a href='/biz/setup/promotions/index.cgi?VERB=AUTO-DOWN&method=$METHOD&THIS=$counter'><img border='0' alt='Move Rule Down' src='/biz/images/arrows/v_down-20x26.gif'></a>"; } else { $c .= "<img src='/images/blank.gif' height='26' width='20'>"; }
 				$c .= '&nbsp;';
-				$c .= "<a href='/biz/setup/promotions/index.cgi?VERB=UBER-EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";$c .= "</td>";
+				$c .= "<a href='/biz/setup/promotions/index.cgi?VERB=AUTO-EDIT&method=$METHOD&THIS=$counter'><img border='0' alt='Change' src='/biz/images/arrows/v_edit-20x26.gif'></a>";$c .= "</td>";
 				$c .= "<td valign=top  class='A'>";
 
 				if (($ruleref->{'IMAGE'} ne '') && ($ruleref->{'IMAGE'} ne '<!-- IMAGE -->')) {
@@ -372,7 +372,7 @@ if ($VERB eq 'UBER') {
 			} else {
 			$c .= "<tr><td valign=top  bgcolor='FFFFFF'>No rules have been defined.</td></tr>";
 			}
-		$GTOOLS::TAG{'<!-- ADDNEW -->'} = '<tr><td valign=top  bgcolor="white" colspan="8"><a href="/biz/setup/promotions/index.cgi?method='.$METHOD.'&VERB=UBER-EDIT&THIS=-1">Add a new Rule</a></td></tr>';
+		$GTOOLS::TAG{'<!-- ADDNEW -->'} = '<tr><td valign=top  bgcolor="white" colspan="8"><a href="/biz/setup/promotions/index.cgi?method='.$METHOD.'&VERB=AUTO-EDIT&THIS=-1">Add a new Rule</a></td></tr>';
 
 		$GTOOLS::TAG{"<!-- EXISTING_RULES -->"} = $c;
 		$GTOOLS::TAG{"<!-- RULE_COUNT -->"} = $counter;
@@ -394,7 +394,7 @@ if ($VERB eq 'UBER') {
 	if ($METHOD =~ /PROMO\-(.*?)$/) {
 	    my $SID = $1;
 	    $template_file = 'main-schedule.shtml'; 
-	    $GTOOLS::TAG{'<!-- CANCEL -->'} = "<a href=\"/biz/manage/schedules/index.cgi?VERB=UBER-EDIT&SID=$SID\"><img border=\"0\" src=\"/images/bizbuttons/cancel.gif\"></a>&nbsp;&nbsp;&nbsp;"; 
+	    $GTOOLS::TAG{'<!-- CANCEL -->'} = "<a href=\"/biz/manage/schedules/index.cgi?VERB=AUTO-EDIT&SID=$SID\"><img border=\"0\" src=\"/images/bizbuttons/cancel.gif\"></a>&nbsp;&nbsp;&nbsp;"; 
 	    }
 
 	$template_file = 'index-uber.shtml';
@@ -402,62 +402,51 @@ if ($VERB eq 'UBER') {
 
 
 
+#if ($VERB eq "SIMPLE-SAVE") {
+#	push @MSGS, "SUCESS|Changes saved";
+#
+##	if (uc($ZOOVY::cgiv->{'promotion_discount'}) eq "ON") { $webdb->{"promotion_discount"} = 1; } else { $webdb->{"promotion_discount"} = 0; }
+#   if (uc($ZOOVY::cgiv->{'promotion_freeshipping'}) eq "ON") { $webdb->{"promotion_freeshipping"} = 1; } else { $webdb->{"promotion_freeshipping"} = 0; }
+##	if (uc($ZOOVY::cgiv->{'promotion_external'}) eq "ON") { $webdb->{"promotion_external"} = 1; } else { $webdb->{"promotion_external"} = 0; }
+#
+#   $webdb->{"promotion_freeshipping_amount"} = $ZOOVY::cgiv->{'promotion_freeshipping_amount'}; 
+#	$webdb->{"promotion_freeshipping_amount"} =~ s/[^0-9\.]+//igs;
+##	$webdb->{"promotion_discount_amount"} = $ZOOVY::cgiv->{'promotion_discount_amount'};
+##	$webdb->{"promotion_discount_amount"} =~ s/[^0-9\.\%]+//igs;
+##	$webdb->{"promotion_discount_after"} = $ZOOVY::cgiv->{'promotion_discount_after'};
+##	$webdb->{"promotion_discount_after"} =~ s/[^0-9\.]+//igs;
+#	$LU->log("SETUP.PROMO","Update Simple Promotions","SAVE");
+#   &ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);
+#	$VERB = 'SIMPLE';
+#   }
 
-
-
-
-
-
-
-
-
-if ($VERB eq "SIMPLE-SAVE") {
-	push @MSGS, "SUCESS|Changes saved";
-
-	if (uc($ZOOVY::cgiv->{'promotion_discount'}) eq "ON") { $webdb->{"promotion_discount"} = 1; } else { $webdb->{"promotion_discount"} = 0; }
-   if (uc($ZOOVY::cgiv->{'promotion_freeshipping'}) eq "ON") { $webdb->{"promotion_freeshipping"} = 1; } else { $webdb->{"promotion_freeshipping"} = 0; }
-	if (uc($ZOOVY::cgiv->{'promotion_external'}) eq "ON") { $webdb->{"promotion_external"} = 1; } else { $webdb->{"promotion_external"} = 0; }
-
-   $webdb->{"promotion_freeshipping_amount"} = $ZOOVY::cgiv->{'promotion_freeshipping_amount'}; 
-	$webdb->{"promotion_freeshipping_amount"} =~ s/[^0-9\.]+//igs;
-   $webdb->{"promotion_discount_amount"} = $ZOOVY::cgiv->{'promotion_discount_amount'};
-	$webdb->{"promotion_discount_amount"} =~ s/[^0-9\.\%]+//igs;
-   $webdb->{"promotion_discount_after"} = $ZOOVY::cgiv->{'promotion_discount_after'};
-	$webdb->{"promotion_discount_after"} =~ s/[^0-9\.]+//igs;
-	$LU->log("SETUP.PROMO","Update Simple Promotions","SAVE");
-   &ZWEBSITE::save_website_dbref($USERNAME,$webdb,$PRT);
-	$VERB = 'SIMPLE';
-   }
-
-if ($VERB eq 'SIMPLE') {
-	if ($webdb->{"promotion_freeshipping"}>0)
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"} = " CHECKED "; }
-	else 
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"}  = ""; }
-
-	if ($webdb->{"promotion_discount"}>0)
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"} = " CHECKED "; }
-	else 
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"}  = ""; }
-
-	if ($webdb->{"promotion_external"}>0)
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"} = " CHECKED "; }
-	else 
-		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"}  = ""; }
-
-
-	if ( ($webdb->{'promotion_freeshipping'} || $webdb->{'promotion_discount'}) 
-			&& $webdb->{'promotion_advanced'}) {
-		push @MSGS, "ERROR|You cannot have both simple promotions and advanced (uber) promotions enabled at the same time.";
-		}
-
-	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_FREESHIPPING_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_freeshipping_amount"}."\" ";
-	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_discount_amount"}."\" ";
-	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AFTER -->"} = " VALUE=\"".$webdb->{"promotion_discount_after"}."\" ";
-	$template_file = 'index-simple.shtml';
-	}
-
-
+#if ($VERB eq 'SIMPLE') {
+#	if ($webdb->{"promotion_freeshipping"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_FREESHIPPING -->"}  = ""; }
+#
+#	if ($webdb->{"promotion_discount"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_DISCOUNT -->"}  = ""; }
+#
+#	if ($webdb->{"promotion_external"}>0)
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"} = " CHECKED "; }
+#	else 
+#		{ $GTOOLS::TAG{"<!-- CHECKED_PROMOTION_EXTERNAL -->"}  = ""; }
+#
+#
+#	if ( ($webdb->{'promotion_freeshipping'} || $webdb->{'promotion_discount'}) 
+#			&& $webdb->{'promotion_advanced'}) {
+#		push @MSGS, "ERROR|You cannot have both simple promotions and advanced (uber) promotions enabled at the same time.";
+#		}
+#
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_FREESHIPPING_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_freeshipping_amount"}."\" ";
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AMOUNT -->"} = " VALUE=\"".$webdb->{"promotion_discount_amount"}."\" ";
+#	$GTOOLS::TAG{"<!-- VALUE_PROMOTION_DISCOUNT_AFTER -->"} = " VALUE=\"".$webdb->{"promotion_discount_after"}."\" ";
+#	$template_file = 'index-simple.shtml';
+#	}
 
 
 if ($VERB eq 'COUPON-RULE-DELETE') {
@@ -776,16 +765,16 @@ if ($VERB eq 'COUPON') {
 
 
 my @TABS = ();
-push @TABS, { name=>'Simple', selected=>($VERB eq 'SIMPLE')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=SIMPLE', };
+# push @TABS, { name=>'Simple', selected=>($VERB eq 'SIMPLE')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=SIMPLE', };
 push @TABS, { name=>'Coupons', selected=>($VERB =~ /COUPON/)?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=COUPON', };
-push @TABS, { name=>'Uber Promotions', selected=>($VERB =~ /UBER/)?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=UBER', };
+push @TABS, { name=>'Auto Promotions', selected=>($VERB =~ /AUTO/)?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=AUTO', };
 push @TABS, { name=>'Debugger',selected=>($VERB eq 'DEBUGGER')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=DEBUGGER', };
 #push @TABS, { name=>'API',selected=>($VERB eq 'API')?1:0, link=>'/biz/setup/promotions/index.cgi?VERB=API', };
 
 
 print STDERR Dumper(\@BC);
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Promotions : '.$PRT,
    'file'=>$template_file,
    'header'=>'1',

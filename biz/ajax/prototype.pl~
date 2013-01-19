@@ -64,7 +64,9 @@ foreach my $param (keys %{$ZOOVY::cgiv}) {
 	next if (substr($param,0,1) ne '_');
 	$options{$param} = $ZOOVY::cgiv->{$param};
 	}
-my ($ERR,$ERRMSG,$LU) = LUSER->authenticate(%options);
+
+my ($LU) = LUSER->authenticate(%options);
+my ($ERR,$ERRMSG) = (0);
 
 if ($ERR>0) {}
 elsif (not defined $LU) { ($ERR,$ERRMSG) = (-1,"Received undefined LUSER object"); }

@@ -33,6 +33,8 @@ if ($FLAGS =~ /,SCONLY,/) {
 	}
 
 
+my ($udbh) = &DBINFO::db_user_connect($USERNAME);
+
 #if ($VERB =~ /^REAUTH\-(PARTITIONS|PROFILES|DOMAINS)$/) {
 #	$VERB = $1;
 #	## re-authenticate and change partition.
@@ -728,5 +730,7 @@ my @TABS = (
 
 
 
-&GTOOLS::output( msgs=>\@MSGS, bc=>\@BC, tabs=>\@TABS, file=>$template_file,header=>1 );
+&GTOOLS::output('*LU'=>$LU, msgs=>\@MSGS, bc=>\@BC, tabs=>\@TABS, file=>$template_file,header=>1 );
 &DBINFO::db_zoovy_close();
+
+&DBINFO::db_user_close();

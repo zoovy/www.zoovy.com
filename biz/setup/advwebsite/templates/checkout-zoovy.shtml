@@ -21,7 +21,7 @@ technology is not compatible with 100% of the wrappers and themes, so it
 cannot be used by all clients.   Our intention is to release additional
 functionality throughout the 2012 year that will enhance both the checkout
 and shopping experience and then terminate support for the existing checkout
-on January 1st, 2013 - giving clients a full year to transition. 
+on January 1st, 2013 - giving clients a full year to transition.  Update: This deadline has been extended till March 2013.
 	</div>
 	<br>
 	<div>
@@ -29,61 +29,75 @@ on January 1st, 2013 - giving clients a full year to transition.
 	<table align="center" class="zoovytable">
 	<tr class="zoovysub1header">
 		<th></th>
-		<th>Customer Acct.</th>
-		<th>Checkout</th>
+		<th>Description</th>
+		<th>Release</th>
 		<th>Compatibility</th>
 		<th>Try</th>
 	</tr>
-	
-	
+		
 	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP5 --> value='op5'></td>
-		<td>Nice|Standard</td>
-		<td>One Page Release: 2012.04.26</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120426&sender=CHECKOUT-TEST&_testharness=1">Check</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120426&sender=CHECKOUT-TEST">Try It</a></td>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_ACTIVE --> value='active'></td>
+		<td>One Page Checkout w/Active Customer Accounts</td>
+		<td>Newest (Auto-Upgrades)</td>
 	</tr>
 	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP4 --> value='op4'></td>
-		<td>Passive</td>
-		<td>One Page Release: 2012.04.16</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120416&sender=CHECKOUT-TEST&_testharness=1">Check</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120416&sender=CHECKOUT-TEST">Try It</a></td>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_PASSIVE --> value='passive'></td>
+		<td>One Page Checkout w/Passive Customer Accounts</td>
+		<td>Newest (Auto-Upgrades)</td>
 	</tr>
 	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_LEGACY --> value=''></td>
-		<td>ANY/ALL</d>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_REQUIRED --> value='required'></td>
+		<td>One Page Checkout Requires Customer Accounts</td>
+		<td>Newest (Auto-Upgrades)</td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130111A --> value='checkout-20130111a'></td>
+		<td>One Page Checkout w/Active Customer Accounts</td>
+		<td>Release: 2013.01.11a</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111a&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111a&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130111P --> value='checkout-20130111p'></td>
+		<td>One Page Checkout w/Passive Customer Accounts</td>
+		<td>Release: 2013.01.11p</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111p&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111p&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130111R --> value='checkout-20130111r'></td>
+		<td>One Page Checkout Private - Customer Account Required</td>
+		<td>Release: 2013.01.11r</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111r&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130111r&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP7 --> value='op7'></td>
+		<td>One Page Checkout w/Active Customer Accounts</td>
+		<td>Release: 2012.11.29</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20121129&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20121129&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP6 --> value='op6'></td>
+		<td>One Page Checkout w/Passive Customer Accounts</td>
+		<td>Release: 2012.11.30</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20121130&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20121130&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_LEGACY --> value='legacy'></td>
 		<td>Legacy Multi-Step Checkout</td>	
+		<td>N/A</td>
 		<td></td>
 		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout&sender=CHECKOUT-TEST">Try It</a></td>
-	</tr>
-	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP3 --> value='op3'></td>
-		<td>DEPRECATED</td>
-		<td>Nice|Standard One Page Release: 2012.02.27</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120227&sender=CHECKOUT-TEST&_testharness=1">Check</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120227&sender=CHECKOUT-TEST">Try It</a></td>
-	</tr>
-	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP2 --> value='op2'></td>
-		<td>DEPRECATED</td>
-		<td>Passive One Page Release: 2012.02.26</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120226&sender=CHECKOUT-TEST&_testharness=1">Check</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20120226&sender=CHECKOUT-TEST">Try It</a></td>
-	</tr>
-	<tr>
-		<td><input type='radio' name='checkout' <!-- CHECKOUT_OP1 --> value='op1'></td>
-		<td>DEPRECATED</td>
-		<td>Nice|Standard One-Page Release: 2011.10.31</td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20111031&sender=CHECKOUT-TEST&_testharness=1">Check</a></td>
-		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20111031&sender=CHECKOUT-TEST">Try It</a></td>
 	</tr>
 	</table>
 	
 	
 	<b>One Page Checkout notes:</b>
 	<ul>
-	<li> You must Select the one page checkout which is compatible with your customer account behavior.
+	<li> You should select the one page checkout which is compatible with your customer account behavior.
 	<li> The setup checkout application, requires Javascript. 
 	<li> Not compatible with all wrappers (specifically incompatible with prototype javascript framework) including bluelicious, shoptastic, evolution.
 	<li> Requires Asynchronous Google Analytics code to be installed/configured properly.
@@ -104,7 +118,7 @@ on January 1st, 2013 - giving clients a full year to transition.
 <tr>
 	<td colspan=2 valign="top">
 	<br>
-	<u>Display Shipping Total in Cart:</u><br>
+	<u>Display Shipping Total in Legacy Cart:</u><br>
 	<input type='radio' name='cart_quoteshipping' value="0" <!-- CART_QUOTESHIPPING_0 -->> Do not quote shipping on shopping cart page<br>
 	<input type='radio' name='cart_quoteshipping' value="1" <!-- CART_QUOTESHIPPING_1 -->> Quote without ZIP code - You only use shipping that doesn't change based on destination (Simple, weight-based or price-based shipping, for example)<br>
 	<input type='radio' name='cart_quoteshipping' value="3" <!-- CART_QUOTESHIPPING_3 -->> Quote without ZIP code, lowest only - Same as above, but quotes only the lowest priced shipping in the cart<br>
@@ -120,7 +134,7 @@ on January 1st, 2013 - giving clients a full year to transition.
 <tr>
 	<td colspan=2 valign="top" class="body" align='left'>
 <br>
-<u>Customer Account/CRM Behavior:</u><br>
+<u>Legacy Checkout Customer Account/CRM Behavior:</u><br>
 <table>
 	<tr>
 		<td colspan=2>
@@ -138,27 +152,6 @@ edit the "Order Created" message.
 </div>
 <br>
 </td>
-</tr>
-<tr>
-	<td colspan=2 valign="top" class="body" align='left'>
-<br><u>Privacy Settings:</u><br>
-	<input type='radio' name='customer_privacy' value='NONE' <!-- CP_NONE --> > Store full information including billing, shipping, and payment.<br>
-	<input type='radio' name='customer_privacy' value='SAFE' <!-- CP_SAFE --> > Store full information including billing and shipping. (RECOMMENDED)<br>
-	<input type='radio' name='customer_privacy' value='OTHER' <!-- CP_OTHER --> > Store no information, but username, password, and email address.<br>
-	<br>
-	</td>
-</tr>
-<tr>
-	<td align="right" class="body" valign="top">
-	<input type='checkbox' name='chkout_save_payment_disabled' <!-- CHKOUT_SAVE_PAYMENT_DISABLED_CHECKED -->></td>
-	<td valign="top" class="body" align='left'>
-	Do not store or retrieve payment-related information (i.e. credit card numbers) for returning users.<br>
-	<div class="hint">
-	RECOMMENDED: Zoovy will only store addresses and other contact information.
-	Only applicable if customer accounts are being created via the "Customer Account Behavior" setting above.
-	Keep in mind that customers will still be required to supply CVV/CID's for their cards.
-	</div><br>
-	</td>
 </tr>
 <tr>
 	<td align='right' class='body' valign='top'><input type='checkbox' <!-- CHKOUT_ROI_DISPLAY --> name='chkout_roi_display'></td>

@@ -19,7 +19,7 @@
 </table>
 
 <br>
-<form id="jediFrm" name="jediFrm" action="index.cgi">
+<form id="jediFrm" name="jediFrm" action="/biz/manage/schedules/index.cgi">
 <input  type="hidden" name="VERB" value="JEDI-ADDPACKAGE">
 <table width=600 class="zoovytable">
 <tr>

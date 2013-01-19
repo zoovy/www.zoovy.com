@@ -1,6 +1,6 @@
 <!-- UTILITIES_TAB -->
 
-<form id="thisFrm" name="thisFrm" action="index.cgi">
+<form id="utilityFaqFrm" name="utilityFaqFrm" action="index.cgi">
 <input type="hidden" name="VERB" value='SAVEQANDA'>
 <input type="hidden" name="FAQID" value="<!-- FAQID -->">
 <input type="hidden" name="">
@@ -20,8 +20,8 @@
 		<tr><td valign=top>Keywords:</td><td valign=top><input type="textbox" value="<!-- KEYWORDS -->" name="keywords"></td></tr>
 		</table>
 			<input onClick="
-			window.document.thisFrm.VERB.value='SAVEQANDA';
-			window.document.thisFrm.submit();
+			jQuery('#VERB').attr('value','SAVEQANDA');
+			jQuery('#utilityFaqFrm').submit();
 			" type="button" value="Add FAQ" class="button">
 		
 			</td>

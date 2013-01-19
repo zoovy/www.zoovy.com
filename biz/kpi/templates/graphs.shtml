@@ -1,12 +1,10 @@
 <!-- UTILITIES_TAB -->
 
- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    
 
 <script>
 function preview() {
 	$('#preview').empty();
-	$('#preview').append('<img src="images/loading.gif">');
+//	$('#preview').append('<img src="images/loading.gif">');
 	var s = $('#thisFrm').serialize();
 	$('#preview').load('report.pl?'+s);
 	}
@@ -28,7 +26,7 @@ div.float p {
 
 <center>
 
-<form method="post" id="thisFrm" name="thisFrm" action="index.cgi">
+<form method="get" id="thisFrm" name="thisFrm" action="/biz/kpi/index.cgi">
 <input type="hidden" name="VERB" value="SAVE-GRAPH">
 <input type="hidden" name="UUID" value="<!-- UUID -->">
 
@@ -71,7 +69,7 @@ div.float p {
 	<tr>
 		<td>Graph Type:</td>
 		<td>
-	<select onChange="jQuery('#thisFrm').showLoading(); thisFrm.VERB.value='GRAPHS'; thisFrm.submit();" name="graph">
+	<select onChange="thisFrm.VERB.value='GRAPHS'; jQuery('#thisFrm').submit();" name="graph">
 		<option value=""></option>
 		<!-- GRAPHS -->
 	</select>

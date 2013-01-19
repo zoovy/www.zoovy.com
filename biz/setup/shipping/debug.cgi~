@@ -181,7 +181,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'DEBUG') {
 			elsif (($type eq 'API-REQUEST') || ($type eq 'API-RESPONSE')) {
 				## API-REQUEST
 				## API-RESPONSE
-				$style = "font-size: 8pt; font-weight: normal; color: #Ef3077;";
+				$style = "font-size: 8px; border: thin dashed; font-weight: normal; color: #666699;";
 				$d->{'+'} = &ZOOVY::incode( $d->{'+'} );
 				}
 			else {
@@ -267,7 +267,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq '') {
 	$GTOOLS::TAG{'<!-- CARTS -->'} = $c;
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 	'header'=>1,
 	'title'=>'Shipping: Debugger',
 	'help'=>'#50810',

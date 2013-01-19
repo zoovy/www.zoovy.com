@@ -9,7 +9,7 @@
 <font face='sans-serif, arial' size='2'>
 
 <b>Minimum Access Required: WHOLESALE BUNDLE</b><br>
-<a href="/biz/configurator?VERB=VIEW&BUNDLE=WS">Add this Functionality</a><br>
+<a href="/biz/configurator/index.cgi?VERB=VIEW&BUNDLE=WS">Add this Functionality</a><br>
 <br>
 <br>
 Wholesale Pricing Schedules provides you with the ability to create 

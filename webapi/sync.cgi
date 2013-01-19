@@ -49,7 +49,6 @@ my %ERRORS = (
 use lib "/httpd/modules";
 require ZOOVY;
 require WEBAPI;
-require ORDER;
 use Digest::MD5;
 use Compress::Bzip2;
 use Compress::Zlib;

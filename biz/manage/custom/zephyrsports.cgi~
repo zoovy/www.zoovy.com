@@ -138,24 +138,19 @@ if ($VERB eq 'DISPLAY' || $VERB eq 'UPDATE') {
 			push @skus, $SKU;
  
 			## has inv option or assembly, add children
-			# if ($SKU !~ /:/ && $prodref->{'zoovy:pogs'} =~ /inv\=\"[13]\"/) { 
 			if ($SKU =~ /:/) { 
 				push @MSGS, "INFO|Found PID with inventorable options";
-				#my (@pogs) = &POGS::text_to_struct($USERNAME,$prodref->{'zoovy:pogs'},1);
-				#my ($pogs2) = $P->&ZOOVY::fetch_pogs($USERNAME,$prodref);
-            #my $SKUSref = &POGS::build_sku_list($SKU,$pogs2,1+2);
 				foreach my $set (@{$P->list_skus('verify'=>1)}) {
 					push @skus, $set->[0];
 					}
-				# @skus = keys %{$SKUSref}
 				}
 			
 			## go thru all the SKUs
 			foreach my $SKU (@skus) {
 				($qty,$res,$oldlocation) = &INVENTORY::fetch_incremental($USERNAME,$SKU);
 
-				## UPDATE
 				if ($VERB eq 'UPDATE') {
+					## UPDATE
 					if ($oldlocation ne $location) {
 						&INVENTORY::set_location($USERNAME,$SKU,$location);
 						}
@@ -163,8 +158,8 @@ if ($VERB eq 'DISPLAY' || $VERB eq 'UPDATE') {
 					my @AR = ($RESULT,&ZTOOLKIT::pretty_date(time(),1),$LUSERNAME,$item,$SKU,$location,$oldlocation,$qty,$res);
 					print F join("\t",@AR)."\n";
 					}
-				## DISPLAY
 				elsif ($VERB eq 'DISPLAY') {
+					## DISPLAY
 					$output .= "<tr><td>$SKU</td><td>$oldlocation</td><td></td><td>$qty</td></tr>";
 					}
 				}
@@ -177,7 +172,6 @@ if ($VERB eq 'DISPLAY' || $VERB eq 'UPDATE') {
 		}
 
 	close F;
-
 	}
 
 
@@ -185,16 +179,12 @@ if ($VERB eq 'DISPLAY' || $VERB eq 'UPDATE') {
 
 $GTOOLS::TAG{'<!-- ITEMS -->'} = $ZOOVY::cgiv->{'items'};
 #$GTOOLS::TAG{'<!-- ITEMS -->'} = join("\n",@skus);
+$GTOOLS::TAG{'<!-- LOCATION -->'} = $ZOOVY::cgiv->{'location'};
 
 
 ## only add location field to UPDATE or verb = ''
 if ($VERB eq 'UPDATE' || $VERB eq '') {
-	$GTOOLS::TAG{'<!-- LOCATION_FIELD -->'} =    qq~
-	<td>LOCATION: </td>
-   <td><input type="textbox" name="location" value="$location"></td>~;
-
-	
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "zephyrsports.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/custom/zephyrsports.cgi?VERB=DISPLAY&items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "DISPLAY";
 	
 
@@ -203,7 +193,7 @@ if ($VERB eq 'UPDATE' || $VERB eq '') {
 	}
 ## DISPLAY
 else {
-	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "zephyrsports.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
+	$GTOOLS::TAG{'<!-- COUNTER_VERB_URL -->'} = "/biz/manage/custom/zephyrsports.cgi?items=".URI::Escape::uri_escape($ZOOVY::cgiv->{'items'});
 	$GTOOLS::TAG{'<!-- COUNTER_VERB -->'} = "UPDATE";
 	}
 
@@ -219,4 +209,4 @@ $GTOOLS::TAG{'<!-- OUTPUT -->'} = $output;
 
 
 
-&GTOOLS::output(file=>'zephyrsports.shtml',header=>1,msgs=>\@MSGS);
+&GTOOLS::output('*LU'=>$LU,file=>'zephyrsports.shtml',header=>1,msgs=>\@MSGS);

@@ -9,9 +9,9 @@
 
 <font color="red"><!-- MESSAGE --></font>
 
-<form action="/biz/setup/upsapi.cgi" method="POST">
-<input type="hidden" name="VERB" value="register">
-<input type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
+<form id="upsregFrm" action="/biz/setup/upsapi.cgi" method="POST">
+<input id="VERB" type="hidden" name="VERB" value="register">
+<input id="SUPPLIER_ID" type="hidden" name="SUPPLIER_ID" value="<!-- SUPPLIER_ID -->">
 
 <table width="500">
 	<tr>
@@ -100,8 +100,8 @@
 </table>
 
 <br>
-<input type="image" src="/images/bizbuttons/proceed.gif" width="81" height="31" name="proceed" >
-<input type="image" src="/images/bizbuttons/cancel.gif" width="81" height="31" name="cancel">
+<button class="button" onClick="jQuery('#upsregFrm').submit(); return false;">Proceed</button>
+<button class="button" onClick="return navigateTo('/biz/setup/shipping/index.cgi');">Cancel</button>
 
 </form>
 

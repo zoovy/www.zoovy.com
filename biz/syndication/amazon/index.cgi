@@ -241,7 +241,7 @@ if ($VERB eq 'CONFIG') {
       $GTOOLS::TAG{'<!-- MWSTOKEN_STATUS -->'} = "Token: ($userref->{'AMAZON_MWSTOKEN'})";
       }
 
-	my $out = qq~<select name="pricing_schedule"><option value="">None</option>~;
+	my $out = qq~<select  name="pricing_schedule"><option value="">None</option>~;
 	require WHOLESALE;
 	foreach my $sid (@{&WHOLESALE::list_schedules($USERNAME)}) {
 		my ($S) = &WHOLESALE::load_schedule($USERNAME,$sid);
@@ -359,7 +359,7 @@ if ($VERB eq 'UNCONFIRMED') {
 				   qq~<td width=30>$ctr</td>~.
 					qq~<td width="200">$created</td>~.
 				   qq~<td width="200">$AMAZON_ORDERID</td>~.
-				   qq~<td width="200"><a href="https://www.zoovy.com/biz/orders/index.cgi?VERB=QUICKSEARCH&find_text=$OUR_ORDERID&find_status=ANY&x=13&y=5">$OUR_ORDERID~;
+				   qq~<td width="200"><a href="/biz/orders/index.cgi?VERB=QUICKSEARCH&find_text=$OUR_ORDERID&find_status=ANY&x=13&y=5">$OUR_ORDERID~;
 		if ($cancelled) { $out .= "**"; }
 		$out .= "</a></td></tr>";
 		}		
@@ -443,6 +443,7 @@ if ($VERB eq 'THESAURUS-SAVE') {
 	$ZOOVY::cgiv->{'search_terms'} = substr($ZOOVY::cgiv->{'search_terms'},0,250);
 
 	my ($pstmt) = &DBINFO::insert($udbh,'AMAZON_THESAURUS',{
+		ID=>int($ZOOVY::cgiv->{'ID'}),
 		MID=>$MID, USERNAME=>$USERNAME,
 		PROFILE=>$name,
 		ITEMTYPE=>$ZOOVY::cgiv->{'itemtype'},
@@ -459,6 +460,7 @@ if ($VERB eq 'THESAURUS-SAVE') {
 		update=>(($ZOOVY::cgiv->{'ID'}==0)?0:2),
 		key=>['MID','ID']
 		);
+	print STDERR "$pstmt\n";
 	$udbh->do($pstmt);
 
 	#if (int($ZOOVY::cgiv->{'ID'})>0) {
@@ -497,8 +499,7 @@ if ($VERB eq 'THESAURUS-SAVE') {
 	#	$sth->finish();
 	#	}
 
-	$GTOOLS::TAG{'<!-- MSG -->'} = "Successfully Saved changes<br><br>";
-		
+	push @MSGS, "SUCCESS|Changes saved";
 	}
 
 if ($VERB eq 'THESAURUS-EDIT') {
@@ -520,7 +521,7 @@ if ($VERB eq 'THESAURUS') {
 	$sth->execute();
 	my $c = '';
 	while ( my ($id,$profile,$itemtype,$usedfor) = $sth->fetchrow()) {
-		$c .= "<tr><td><a href=\"index.cgi?VERB=THESAURUS-CONFIRM-DELETE&ID=$id&THESAURUS=$profile\">[Del]</a> <a href=\"index.cgi?VERB=THESAURUS-EDIT&ID=$id\">[Edit]</a></td><td>$profile</td><td>$itemtype: $usedfor</td></tr>\n";
+		$c .= "<tr><td><a href=\"/biz/syndication/amazon/index.cgi?VERB=THESAURUS-CONFIRM-DELETE&ID=$id&THESAURUS=$profile\">[Del]</a> <a href=\"/biz/syndication/amazon/index.cgi?VERB=THESAURUS-EDIT&ID=$id\">[Edit]</a></td><td>$profile</td><td>$itemtype: $usedfor</td></tr>\n";
 		}
 	if ($c eq '') { $c .= "<i>No profiles defined - you will NOT be able to transmit products to Amazon</i>"; }
 	else { $c = "<tr><td></td><td><b>Profile</b></td><td><b>Item Type: Used For</b></td></tr>".$c; }
@@ -540,7 +541,7 @@ if ($VERB eq 'THESAURUS') {
 	$GTOOLS::TAG{'<!-- USEDFOR -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'USEDFOR'}:'';
 	$GTOOLS::TAG{'<!-- SUBJECTCONTENT -->'} = (defined $thesaurusinfo)?$thesaurusinfo->{'SUBJECTCONTENT'}:'';
 	
-	$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} = qq~<select name="isgiftwrapavailable">~;
+	$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} = qq~<select form="syndicationAmazonFrm" name="isgiftwrapavailable">~;
 	if ($thesaurusinfo->{'ISGIFTWRAPAVAILABLE'} == 1) {
 		$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} .= qq~<option value=0>No</option>~.
 																		qq~<option selected value=1>Yes</option>~;
@@ -551,7 +552,7 @@ if ($VERB eq 'THESAURUS') {
 		}
 	$GTOOLS::TAG{'<!-- ISGIFTWRAPAVAILABLE -->'} .= "</select>";
 	
-	$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} = qq~<select name="isgiftmessageavailable">~;
+	$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} = qq~<select form="syndicationAmazonFrm" name="isgiftmessageavailable">~;
 	if ($thesaurusinfo->{'ISGIFTMESSAGEAVAILABLE'} == 1) {
 		$GTOOLS::TAG{'<!-- ISGIFTMESSAGEAVAILABLE -->'} .= qq~<option value=0>No</option>~.
 																		qq~<option selected value=1>Yes</option>~;
@@ -881,25 +882,25 @@ $c
 	push @BC, { 'name'=>'Logs' };
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Amazon @Merchant Syndication',
    'file'=>$template_file,
    'header'=>'1',
    'help'=>$help,
 	'msgs'=>\@MSGS,
    'tabs'=>[
-		{ name=>'Config', selected=>($VERB eq 'CONFIG')?1:0, link=>'index.cgi?VERB=CONFIG' },
+		{ name=>'Config', selected=>($VERB eq 'CONFIG')?1:0, link=>'/biz/syndication/amazon/index.cgi?VERB=CONFIG' },
 #		{ name=>'Browse Profiles', link=>'index.cgi?VERB=BROWSEPROFILES' },
-		{ name=>'Thesaurus', selected=>($VERB eq 'THESAURUS')?1:0,  link=>'index.cgi?VERB=THESAURUS' },
-		{ name=>'Categories', selected=>($VERB eq 'CATEGORIES')?1:0,  link=>'index.cgi?VERB=CATEGORIES' },
-		{ name=>'Logs', selected=>($VERB eq 'LOGS')?1:0,  link=>'index.cgi?VERB=LOGS', },
+		{ name=>'Thesaurus', selected=>($VERB eq 'THESAURUS')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=THESAURUS' },
+		{ name=>'Categories', selected=>($VERB eq 'CATEGORIES')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=CATEGORIES' },
+		{ name=>'Logs', selected=>($VERB eq 'LOGS')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=LOGS', },
 #		{ name=>'Uploads', link=>'index.cgi?VERB=PRODUCTS', },
 #		{ name=>'Uploads',selected=>($VERB eq 'UPLOADS')?1:0,  link=>'/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=AMAZON_UPLOADS&GUID='.time(), },
 #		{ name=>'Orders', link=>'index.cgi?VERB=ORDERS', },
-		{ name=>'Settlements', selected=>($VERB eq 'SETTLEMENTS')?1:0,  link=>'index.cgi?VERB=REPORTS', },
-		{ name=>'Unconfirmed Orders',  selected=>($VERB eq 'UNCONFIRMED')?1:0,  link=>'index.cgi?VERB=UNCONFIRMED', },
-		{ name=>'Shipping Map',  selected=>($VERB eq 'SHIPPING')?1:0,  link=>'index.cgi?VERB=SHIPPING', },
-		{ name=>'Seller Central', link=>'index.cgi?VERB=SELLERCENTRAL', },
+		{ name=>'Settlements', selected=>($VERB eq 'SETTLEMENTS')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=REPORTS', },
+		{ name=>'Unconfirmed Orders',  selected=>($VERB eq 'UNCONFIRMED')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=UNCONFIRMED', },
+		{ name=>'Shipping Map',  selected=>($VERB eq 'SHIPPING')?1:0,  link=>'/biz/syndication/amazon/index.cgi?VERB=SHIPPING', },
+		{ name=>'Seller Central', link=>'/biz/syndication/amazon/index.cgi?VERB=SELLERCENTRAL', },
       ],
    'bc'=>\@BC,
    );

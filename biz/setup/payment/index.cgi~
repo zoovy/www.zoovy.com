@@ -1154,8 +1154,8 @@ push @TABS, { name=>'Paypal EC',selected=>($TAB eq 'PAYPALEC')?1:0, link=>'/biz/
 push @TABS, { name=>'Amazon',selected=>($TAB eq 'AMZPAY')?1:0, link=>'/biz/setup/payment/index.cgi?TAB=AMZPAY','target'=>'_top', };
 
 if ($FLAGS =~ /,EBAY,/) {
-	push @TABS, { name=>'Paypal Legacy',selected=>($TAB eq 'PAYPALIPN')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=PAYPALIPN','target'=>'_top', };
-	push @TABS, { name=>'Special',selected=>($TAB eq 'SPECIAL')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=SPECIAL','target'=>'_top', };
+#	push @TABS, { name=>'Paypal Legacy',selected=>($TAB eq 'PAYPALIPN')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=PAYPALIPN','target'=>'_top', };
+#	push @TABS, { name=>'Special',selected=>($TAB eq 'SPECIAL')?1:0,link=>'/biz/setup/payment/index.cgi?TAB=SPECIAL','target'=>'_top', };
 	}
 
 

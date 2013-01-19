@@ -210,7 +210,7 @@ REMINDER: The Product Power Tool lets you to make a lot of changes all at once
 	RUN NOW:<br> 
 	-->
 	
-	<button type="submit" class="button2" onClick="document.powerToolFrm.VERB.value='STARTBATCH';">Lets Do This!</button><br>
+	<button type="submit" class="button2" onClick="jQuery('#VERB').val('STARTBATCH');">Lets Do This!</button><br>
 	<br>
 	</td></tr>
 	<tr>

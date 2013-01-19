@@ -245,8 +245,8 @@ if ($ACTION eq 'JEDI') {
 		$c .= "<td>$info->{'title'}</td>";
 		$c .= "<td>$info->{'PUBLISHED'}</td>";
 		$c .= "<td>";
-			$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=UTILITY&APP=JEDI_PACKAGE&GUID=JEDI-$USERNAME-$ID-$V&.type=JEDI&.package=$ID\">[Publish]</a>";
-			$c .= "<a href=\"/biz/manage/schedules/index.cgi?VERB=JEDI-BUMP&ID=$ID\">[Bump Version]</a>";
+		#	$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=UTILITY&APP=JEDI_PACKAGE&GUID=JEDI-$USERNAME-$ID-$V&.type=JEDI&.package=$ID\">[Publish]</a>";
+		#	$c .= "<a href=\"/biz/manage/schedules/index.cgi?VERB=JEDI-BUMP&ID=$ID\">[Bump Version]</a>";
 		$c .= "</td>";
 		$c .= "</tr>";
 		}
@@ -427,7 +427,7 @@ push @TABS, { selected=>($ACTION eq 'LISTS')?1:0, name=>"Export Lists", link=>"/
 push @TABS, { selected=>($ACTION eq 'SIGNUP')?1:0, name=>"Sign-Up Form", link=>"/biz/utilities/wholesale/index.cgi?ACTION=SIGNUP" };
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'file'=>$template_file,
 	'header'=>1,
 	'tabs'=>\@TABS,

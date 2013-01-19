@@ -272,7 +272,7 @@ my @TABS = (
 
 $GTOOLS::TAG{'<!-- ID -->'} = $ID;
 
-&GTOOLS::output( msgs=>\@MSGS, file=>$template_file, header=>1, tabs=>\@TABS, bc=>\@BC );
+&GTOOLS::output('*LU'=>$LU, msgs=>\@MSGS, file=>$template_file, header=>1, tabs=>\@TABS, bc=>\@BC );
 &DBINFO::db_user_close();
 
 

@@ -103,7 +103,7 @@ foreach my $i (1..4) {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'file'=>$template_file,
 	'header'=>1,
 	'bc'=>[ { 'name'=>'Utilities'}, {'name'=>'Pricing Schedules'} ],

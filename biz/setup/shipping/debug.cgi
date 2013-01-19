@@ -67,7 +67,6 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'DEBUG') {
 
 	if ($SRC eq 'ORDER') {
 		## LOAD FROM ORDER
-		require ORDER;
 		my $orderid = $ZOOVY::cgiv->{'ORDER'};
 		print STDERR "DEBUGGER USING ORDER: $ZOOVY::cgiv->{'ORDER'}\n";
 		$SITE::CART2 = CART2->new_from_oid($USERNAME,$orderid);
@@ -267,7 +266,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq '') {
 	$GTOOLS::TAG{'<!-- CARTS -->'} = $c;
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 	'header'=>1,
 	'title'=>'Shipping: Debugger',
 	'help'=>'#50810',

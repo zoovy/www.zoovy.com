@@ -176,7 +176,7 @@ $GTOOLS::TAG{"<!-- UPS_INT_WEIGHT -->"} = "";
 	}
 
 
-&GTOOLS::output(help=>'#50818',title=>'Shipping: UPS Shipping (LEGACY)',header=>1,file=>$template_file);
+&GTOOLS::output('*LU'=>$LU,help=>'#50818',title=>'Shipping: UPS Shipping (LEGACY)',header=>1,file=>$template_file);
 
 
 exit;

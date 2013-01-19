@@ -150,7 +150,7 @@ if ($VERB eq 'LIST-SERIES') {
 		$c .= "<tr class=\"$r\">";
 		my $series_pretty = $sref->{'SRC_SERIES'};
 		if ($series_pretty eq '') { $series_pretty = "<i>Series Not Set</i>"; }
-		$c .= "<td><a href=\"index.cgi?VERB=SHOW-SERIES&SERIES=$sref->{'SRC_SERIES'}\">$series_pretty</a></td>";
+		$c .= "<td><a href=\"/biz/manage/giftcard/index.cgi?VERB=SHOW-SERIES&SERIES=$sref->{'SRC_SERIES'}\">$series_pretty</a></td>";
 		$c .= "<td>$sref->{'COUNT'}</td>";
 		$c .= sprintf("<td>\$%0.2f</td>",$sref->{'BALANCE'});
 		$c .= "<td>$sref->{'TXNCNT'}</td>";
@@ -509,7 +509,7 @@ if (($VERB eq '') || ($VERB eq 'SHOW-SERIES')) {
 
 		push @rows, [ 
 			1,
-			"<center><a href=\"index.cgi?VERB=EDIT&GCID=$info->{'ID'}\"><img width=15 height=20 border=0 src=\"/biz/images/arrows/v_edit-15x20.gif\"></a></center>",
+			"<center><a href=\"/biz/manage/giftcard/index.cgi?VERB=EDIT&GCID=$info->{'ID'}\"><img width=15 height=20 border=0 src=\"/biz/images/arrows/v_edit-15x20.gif\"></a></center>",
 			&GIFTCARD::obfuscateCode($info->{'CODE'}),
 			&ZTOOLKIT::pretty_date($info->{'CREATED_GMT'},2),
 			&ZTOOLKIT::pretty_date($info->{'EXPIRES_GMT'},2),
@@ -558,10 +558,10 @@ if (($VERB eq '') || ($VERB eq 'SHOW-SERIES')) {
 	}
 
 my @TABS = ();
-push @TABS, { name=>'Recent', selected=>($VERB eq '')?1:0, link=>'index.cgi?VERB=' };
-push @TABS, { name=>'Create Card', selected=>($VERB eq 'CREATE')?1:0, link=>'index.cgi?VERB=CREATE' };
-push @TABS, { name=>'Card Series', selected=>($VERB eq 'LIST-SERIES')?1:0, link=>'index.cgi?VERB=LIST-SERIES' };
-push @TABS, { name=>'Products', link=>'index.cgi?VERB=PRODUCTS' };
+push @TABS, { name=>'Recent', selected=>($VERB eq '')?1:0, link=>'/biz/manage/giftcard/index.cgi?VERB=' };
+push @TABS, { name=>'Create Card', selected=>($VERB eq 'CREATE')?1:0, link=>'/biz/manage/giftcard/index.cgi?VERB=CREATE' };
+push @TABS, { name=>'Card Series', selected=>($VERB eq 'LIST-SERIES')?1:0, link=>'/biz/manage/giftcard/index.cgi?VERB=LIST-SERIES' };
+push @TABS, { name=>'Products', link=>'/biz/manage/giftcard/index.cgi?VERB=PRODUCTS' };
 
 
 &GTOOLS::output(file=>$template_file,bc=>[

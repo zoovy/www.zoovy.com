@@ -29,8 +29,8 @@ $TEMPLATE::NS = substr($CODE,0,10);
 
 
 my @BC = ();
-push @BC, { name=>'Setup', link=>'/biz/setup', target=>'_top' };
-push @BC, { name=>'eBay ', link=>'/biz/setup/ebay', target=>'_top' };
+push @BC, { name=>'Setup', link=>'/biz/setup/index.cgi', target=>'_top' };
+push @BC, { name=>'eBay ', link=>'/biz/setup/ebay/index.cgi', target=>'_top' };
 
 
 $GTOOLS::TAG{'<!-- MESSAGE -->'} = qq~
@@ -392,140 +392,6 @@ if ($ACTION eq 'FEEDBACK') {
 
 print STDERR "ACTION: $ACTION\n";
 
-if ($ACTION eq 'SETTOKEN') {
-
-	## we need to set this so we can check it later in the TODO list.
-	use lib "/httpd/modules";
-	use ZWEBSITE;
-	# print STDERR "Saving website attrib $USERNAME/ebay\n";
-	&ZWEBSITE::save_website_attrib($USERNAME,'ebay',time());
-
-	my $REC_ID = 0;
-	my $eb = $q->param('eb');
-	if ($eb eq '') { 
-		
-		$REC_ID = -1 ; 
-		}
-	my $tkn = $q->param('ebaytkn');
-	my $tknexp = $q->param('tknexp');
-	my $PROFILE = $q->param('p');
-	$PROFILE = &ZWEBSITE::checkout_profile($USERNAME,$PRT);	
-	
-	my $pstmt = "select ID,EBAY_EIAS from EBAY_TOKENS where MID=$MID /* ".$edbh->quote($USERNAME)." */ and EBAY_USERNAME=".$edbh->quote($eb);
-	my $sth = $edbh->prepare($pstmt);
-	$sth->execute();
-	while ( my ($ID,$EIAS) = $sth->fetchrow() ) {
-		my $pstmt = "delete from EBAY_TOKENS where MID=$MID /* $USERNAME */ and ID=$ID limit 1";
-		$edbh->do($pstmt);
-
-		## clear out any store categories.	
-		$pstmt = "delete from EBAYSTORE_CATEGORIES where MID=$MID /* $USERNAME */ and EIAS=".$edbh->quote($EIAS);
-		$edbh->do($pstmt);
-		}
-	$sth->finish();
-
-	## clear out any tokens on this partition.
-	$pstmt = "delete from EBAY_TOKENS where MID=$MID /* $USERNAME */ and PRT=$PRT";
-	$edbh->do($pstmt);
-
-	my $sb = $q->param('sb');
-	if (not defined $sb) { $sb = 0; } else { $sb = int($sb); }
-
-	my $is_epu = 0;
-	my ($flags) = &ZOOVY::RETURN_CUSTOMER_FLAGS($USERNAME);
-	if ($flags =~ /,EPU,/) { $is_epu++; }
-
-	## now insert the new TOKEN
-	if ($REC_ID==0) {
-		$pstmt = &DBINFO::insert($edbh,'EBAY_TOKENS',{
-			MID=>$MID,
-			PRT=>$PRT,
-			USERNAME=>$USERNAME,
-			EBAY_USERNAME=>$eb,
-			IS_SANDBOX=>$sb,
-			IS_EPU=>$is_epu,
-			EBAY_TOKEN=>$tkn,
-			EBAY_TOKEN_EXP=>$tknexp,
-			GALLERY_POLL_INTERVAL=>300,
-			GALLERY_NEXT_POLL_GMT=>$^T,
-			},debug=>1+2);
-		print STDERR $pstmt."\n";
-		$edbh->do($pstmt);
-
-		$pstmt = "select last_insert_id()";
-		my $sth = $edbh->prepare($pstmt); 
-		$sth->execute(); 
-		($REC_ID) = $sth->fetchrow(); 
-		$sth->finish();
-
-		$LU->log("SETUP.EBAY","Token Updated! ebayUser=$eb profile=$PROFILE","SAVE");
-		$ACTION = 'SETTOKEN_SUCCESS';
-		}
-
-
-	my %hash = ();
-	my ($hasStore,$USERID) = (0,'');
-	if ($REC_ID>0) {
-		## now we verify the eBay Username
-		$hash{'#Site'} = 0;
-		$hash{'DetailLevel'} = 'ReturnAll';
-
-#	if ($ENV{'HOSTNAME'} eq 'newdev.zoovy.com') {}
-#	else {
-			my ($eb2) = EBAY2->new($USERNAME,PRT=>$PRT);
-			my ($r) = $eb2->api('GetUser',\%hash,preservekeys=>['User'],xml=>3);
-			# print STDERR Dumper($r);
-
-			my $info = &ZTOOLKIT::XMLUTIL::SXMLflatten($r->{"."});
-			# my $info = &XMLTOOLS::XMLcollapse($r->{'User'});
-			$hasStore = ($info->{'.User.SellerInfo.StoreOwner'} eq 'true')?1:0;
-
-			$USERID = $info->{'.User.UserID'};
-			# print STDERR "USERID: $USERID\n";
-
-			if (($REC_ID>0) && ($USERID ne '')) {
-				my $qtEIAS = $edbh->quote($info->{'.User.EIASToken'});
-				my $qtSUBSCRIPTION = $edbh->quote($info->{'.User.UserSubscription'}?$info->{'.User.UserSubscription'}:'');
-				my $qtFEEDBACK = int($info->{'.User.FeedbackScore'});
-				$pstmt = "update EBAY_TOKENS set EBAY_FEEDBACKSCORE=$qtFEEDBACK,EBAY_EIAS=$qtEIAS,EBAY_SUBSCRIPTION=$qtSUBSCRIPTION,HAS_STORE=$hasStore,EBAY_USERNAME=".$edbh->quote($USERID)." where ID=$REC_ID and MID=$MID";
-				$edbh->do($pstmt);
-	
-				## remove any duplicate tokens that might be left over.
-				$pstmt = "delete from EBAY_TOKENS where EBAY_EIAS=$qtEIAS and ID!=$REC_ID";
-				$edbh->do($pstmt);
-				}
-#		}
-
-		## store the ebay username in all the important fields
-		
-		my ($epnsref) = &EBAY2::PROFILE::fetch($USERNAME,$PRT,$CODE);
-		$epnsref->{'ebay:username'} = $USERID;
-		$epnsref->{'ebaystores:username'} = $USERID;
-		$epnsref->{'ebaymotor:username'} = $USERID;
-		&EBAY2::PROFILE::store($USERNAME,$PRT,$CODE,$epnsref);
-		}
-
-	## validate sandbox users!
-	if (($REC_ID>0) && ($sb)) {
-		%hash = ();
-		$hash{'FeedbackScore'} = 1000;
-		my ($eb2) = EBAY2->new($USERNAME,PRT=>$PRT);
-		my ($r) = $eb2->api('ValidateTestUserRegistration',\%hash);
-		}
-	
-	if ($REC_ID==-1) {
-		$ACTION = 'REGISTER';
-		$GTOOLS::TAG{'<!-- ERROR -->'} = "<font color='red'>Failure - you did not specify an eBay Username.</font>";
-		}
-	elsif ($hasStore) { 
-		$ACTION = 'LOAD-STORE-CATEGORIES'; 
-		}	
-	else {
-		$ACTION = 'PROFILES';
-		}
-	}
-
-
 
 ##
 ## Check to see if we have a valid eBay Token
@@ -711,7 +577,7 @@ if ($ACTION eq 'PROFILE-SHIPPING') {
 			elsif ($svc->{'cost'}>0) { $pricetxt = sprintf("\$%.2f 1st item, \$%.2f 2nd item",$svc->{'cost'},$svc->{'addcost'}); }
 			else { $pricetxt = 'Using eBays estimated Carrier Rates'; }
 			if ($svc->{'farcost'}>0) { $pricetxt .= sprintf('; $%.2f AK+HI',$svc->{'farcost'}); }
-			my $delete = "<a href=\"index.cgi?ACTION=PROFILE-SHIPPING-DOM-DELETE&CODE=$CODE&ID=$i\">DELETE</a>";
+			my $delete = "<a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-SHIPPING-DOM-DELETE&CODE=$CODE&ID=$i\">DELETE</a>";
 			$c .= "<tr><td>$delete</td><td width=\"20\">$i</td><td>$svc->{'service'}</td><td>$pricetxt</td></tr>\n";
 			$i++;
 			}
@@ -740,7 +606,7 @@ if ($ACTION eq 'PROFILE-SHIPPING') {
 			if ($svc->{'shipto'} ne '') { $pricetxt .= ", ships to: ".$svc->{'shipto'}; }
 
 
-			my $delete = "<a href=\"index.cgi?ACTION=PROFILE-SHIPPING-INT-DELETE&CODE=$CODE&ID=$i\">DELETE</a>";
+			my $delete = "<a href=\"/biz/setup/ebay/index.cgi?ACTION=PROFILE-SHIPPING-INT-DELETE&CODE=$CODE&ID=$i\">DELETE</a>";
 			$c .= "<tr><td valign=top>$delete</td><td valign=top width=\"20\">$i</td><td valign=top>$svc->{'service'}</td><td valign=top>$pricetxt</td></tr>\n";
 			if ($svc->{'service'} eq 'USPSFirstClassMailInternational') {
 				$c .= "<tr><td></td><td colspan=5><div class='hint'>REMINDER: items &gt; 4lbs. not allowed for service $svc->{'service'}.</div></div>";
@@ -830,9 +696,6 @@ if ($ACTION eq 'PROFILE-SHIPPING') {
 	#	&ZOOVY::incode(&shippingXML($USERNAME,$NSREF)).
 	#	"</pre></font></td></tr></table>";
 	}
-
-
-
 
 
 
@@ -948,6 +811,8 @@ if ($ACTION eq 'PROFILE-REMOVE') {
 	$template_file = 'profile-remove.shtml';
 	}
 
+print STDERR "ACTION:$ACTION\n";
+
 
 ##
 ## SAVE_PREVIEW is the "Save / Preview" button (should save + reload + cause refresh)
@@ -996,7 +861,7 @@ if ($ACTION eq 'PROFILE-CHOOSE_WIZARD') {
 
 	require TOXML::CHOOSER;
 	my $epnsref = &EBAY2::PROFILE::fetch($USERNAME,$PRT,$NS);	
-	$GTOOLS::TAG{'<!-- WIZARD_CHOOSER -->'} = TOXML::CHOOSER::buildChooser($USERNAME,'WIZARD',selected=>$epnsref->{'ebay:template'});
+	$GTOOLS::TAG{'<!-- WIZARD_CHOOSER -->'} = TOXML::CHOOSER::buildChooser($USERNAME,'WIZARD',NS=>$NS,selected=>$epnsref->{'ebay:template'});
 
 	$template_file = 'profile-choosewizard.shtml';
 	}
@@ -1198,7 +1063,12 @@ if ($ACTION eq 'CHOOSER-PREVIEW') {
 
 
 
-
+#if ($ACTION eq 'PROFILE-REFRESH') {
+#	my $PROFILE = '';
+#	push @MSGS, "SUCCESS|BATCH:$BATCHID|+Created refresh batch job for profile $PROFILE";
+#	$c .= "<td nowrap><a href=\"/biz/batch/index.cgi?VERB=NEW&EXEC=UTILITY&APP=EBAY_UPDATE&GUID=$guid&.function=refresh&.profile=$code\">[Refresh Listings]</a></td>";
+#	$ACTION = 'PROFILES';
+#	}
 
 
 
@@ -1243,8 +1113,14 @@ if ($ACTION eq 'PROFILES') {
 #			$c .= '<td nowrap><font color="red"><b>NOT CONFIGURED</b></font></td><td></td>'; 
 #			}
 #		else { 
-			my $guid = time().'-'.$i;
-			$c .= "<td nowrap><a href=\"/biz/batch/index.cgi?VERB=NEW&EXEC=UTILITY&APP=EBAY_UPDATE&GUID=$guid&.function=refresh&.profile=$code\">[Refresh Listings]</a></td>";
+		#my $guid = time().'-'.$i;
+		# $c .= "<td nowrap><a href=\"/biz/batch/index.cgi?VERB=NEW&EXEC=UTILITY&APP=EBAY_UPDATE&GUID=$guid&.function=refresh&.profile=$code\">[Refresh Listings]</a></td>";
+		$c .= qq~<td nowrap>
+				<button class="minibutton" type="button" 
+				onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'UTILITY',
+					'%vars':{'APP':'EBAY_UPDATE','function':'refresh','profile':'$code'}}); return false;">Refresh Listings</button>
+				</td>
+				~;
 #			}
 		$c .= "</tr>";
 		}
@@ -1447,10 +1323,10 @@ WARNING: this account shares partition with eBay account $PRT{$act->{'PRT'}} (ea
 		
 
 		$c .= "<td valign='top'>";
-		$c .= "<a href=\"index.cgi?ACTION=DEACTIVATE&ID=$act->{'ID'}\">[Deactivate]</a><br>";
+		$c .= "<a href=\"/biz/setup/ebay/index.cgi?ACTION=DEACTIVATE&ID=$act->{'ID'}\">[Deactivate]</a><br>";
 		# $c .= "<a href=\"index.cgi?ACTION=FEEDBACK&DBID=$act->{'ID'}\">[Feedback]</a><br>";
-		if ($act->{'HAS_STORE'}) { $c .= "<a href=\"index.cgi?ACTION=LOAD-STORE-CATEGORIES&ID=$act->{'ID'}\">[Refresh Store Categories]</a><br>"; }
-		$c .= "<a href=\"redirhack.cgi?SignIn&m=$USERNAME&eb=$act->{'EBAY_USERNAME'}&sandbox=".($act->{'IS_SANDBOX'}?'on':'')."\"> [Refresh Authorization Token]</a><br>"; 
+		if ($act->{'HAS_STORE'}) { $c .= "<a href=\"/biz/setup/ebay/index.cgi?ACTION=LOAD-STORE-CATEGORIES&ID=$act->{'ID'}\">[Refresh Store Categories]</a><br>"; }
+		$c .= "<a target=\"_blank\" href=\"/biz/setup/ebay/redirhack.cgi?SignIn&m=$USERNAME&eb=$act->{'EBAY_USERNAME'}&sandbox=".($act->{'IS_SANDBOX'}?'on':'')."\"> [Refresh Authorization Token]</a><br>"; 
 		$c .= "<br>";
 		$c .= "</td>";
 		$c .= "<td valign=top nowrap>";
@@ -1561,7 +1437,7 @@ push @TABS, { name=>'Feedback', link=>'/biz/setup/ebay/index.cgi?ACTION=FEEDBACK
 push @TABS, { name=>'Global Shortcuts &amp; Notes', link=>'/biz/setup/ebay/index.cgi?ACTION=SHORTCUTS',  selected=>($ACTION eq 'SHORTCUTS')?1:0  };
 
 my $foo = '';
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>'eBay Account Manager',
 	'file'=>$template_file,	
 	'bc'=>\@BC,

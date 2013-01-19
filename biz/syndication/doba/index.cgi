@@ -14,6 +14,7 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 $GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
 
+my @MSGS = ();
 my $template_file = 'index.shtml';
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 
@@ -134,14 +135,15 @@ if ($VERB eq 'SAVE-AND-SUBMIT') {
 
 	if (ref($bj) eq 'BATCHJOB')  {
 		my $JOBID = $bj->id(); 
-		print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=$JOBID\n\n";
-		exit;
+		push @MSGS, "SUCCESS|BATCH:$JOBID|+Created batch job $JOBID";
+		# print "Location: /biz/batch/index.cgi?VERB=LOAD&JOB=$JOBID\n\n";
 		}
 	elsif ((ref($bj) eq 'HASH') && (defined $bj->{'err'})) {
-		$GTOOLS::TAG{'<!-- JOB_ERROR -->'} = qq~<div class="error">$bj->{'err'}</div>~;
+		push @MSGS, "ERROR|+$bj->{'err'}";
+		# $GTOOLS::TAG{'<!-- JOB_ERROR -->'} = qq~<div class="error">$bj->{'err'}</div>~;
 		}
 	else {
-		$GTOOLS::TAG{'<!-- JOB_ERROR -->'} = qq~<div class="error">UNKNOWN RESPONSE FORMAT FROM BATCHJOB</div>~;
+		push @MSGS, "ERROR|+UNKNOWN RESPONSE FORMAT FROM BATCHJOB";
 		}
 	$VERB = '';
 	}
@@ -218,5 +220,5 @@ push @TABS, { name=>"Diagnostics", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz
 push @TABS, { name=>'Webdoc',selected=>($VERB eq 'WEBDOC')?1:0, link=>"/biz/syndication/doba/index.cgi?VERB=WEBDOC&DOC=51368", };
 
 
-&GTOOLS::output('tabs'=>\@TABS,'bc'=>\@BC,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,'msgs'=>\@MSGS,'tabs'=>\@TABS,'bc'=>\@BC,file=>$template_file,header=>1);
 

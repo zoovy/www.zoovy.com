@@ -62,12 +62,13 @@
 	<td valign="top" align="left">
 		<span  class="big_link">Listings Reports</a></span><br>
 		<p style="margin-bottom: 5px;">Take a look at how many marketplaces each of your products is currently in.</p>
-<!--
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=CHANNEL_SCHEDULER&GUID=<!-- GUID -->">Channel Scheduler</a><br>
--->
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=EBAY_POWER&detail=NONE&GUID=<!-- GUID -->">eBay Powerlister</a><br>
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=EBAY_LISTING&type=ACTIVE-ALL&detail=NONE&GUID=<!-- GUID -->">eBay Active Listing w/Detail</a><br>
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=PRODUCT_DISPOSITION&GUID=<!-- GUID -->"> Marketplace Disposition Report</a><br>
+		- <a href="#" onClick="
+			app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'EBAY_POWER'}}); return false;">eBay Powerlister</a>
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'EBAY_LISTING', 'type':'ACTIVE-ALL', 'detail':'NONE'}}); return false;">eBay Active Listing w/Detail</a><br>
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'PRODUCT_DISPOSITION'}}); return false;">Marketplace Disposition Report</a>
 	</td>	
 	<td>
 	</td>
@@ -80,13 +81,60 @@
 	<td valign="top" align="left">
 		<span class="big_link">Inventory Reports</span><br>
 		<p style="margin-bottom: 5px;">See how much inventory you have in stock, reserved and available to your customers.</p>
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=INVENTORY_SIMPLE&GUID=<!-- GUID -->">Inventory Simple</a><br>
-		- <a href="/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=INVENTORY_DETAIL&GUID=<!-- GUID -->">Inventory Detail</a><br>
 
-		<div style='margin-top:5px;'>
-		- <b><a href="/biz/reports/index.cgi?VERB=INDEX-INVENTORY">More Options
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'INVENTORY_SIMPLE'}}); return false;">Inventory Simple</a><br>
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'INVENTORY_DETAIL'}}); return false;">Inventory Detail</a><br>
+		<div id="moreInventory" class="moreInventory displayNone">
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+				'%vars':{'REPORT':'INVENTORY_MISSING'}}); return false;">Products w/o Inventory Configured</a><br>
+		- <a href="#" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'UTILITY',
+				'%vars':{'APP':'INVENTORY_UPDATE_RESERVES'}}); return false;">Utility: Update Reserves</a><br>
+		</div>
+
+		<div class="moreInventory" style='margin-top:5px;'>
+		- <b><a href="#" onClick="jQuery('.moreInventory').toggle();">More Options</a>
 		<img src='/biz/images/double_arrows-8x5.gif' border=0 style='margin-left:5px; margin-bottom:2px;' height='5' width='8'></a></b><br>
 		</div>
+
+
+		<div class="displayNone">
+		<table width='600' cellspacing=0 class="zoovytable" cellpadding=2>
+		<tr>
+			<td align="left" class="zoovytableheader">Available Inventory Tools &amp; Reports:</td>
+		</tr>
+		<tr>
+			<td align="left">
+
+			
+
+<form id="reportFrm" action="/biz/reports/index.cgi">
+	<td>
+<input type="hidden" name="EXEC" value="UTILITY">
+<input type="hidden" name="APP" value="INVENTORY_UPDATE_RESERVES">
+<input type="hidden" name="GUID" value="<!-- GUID -->">
+<button class="button" type="button" onClick="jQuery('#VERB').val('UTILITY-INVENTORY_UPDATE_RESERVES'); jQuery('#reportFrm').submit(); return false;">>Update Reserves</button>
+</form>
+
+<!--
+<a href="index.cgi?ACTION=DISPLAY&PRICE=0">Show Inventory</a><br>
+<a href="index.cgi?ACTION=DISPLAY&PRICE=1">Show Inventory with Price (slower)</a><br>
+<a href="index.cgi?ACTION=MISSING">Show products which do not have Inventory enabled</a><br>
+<a href="index.cgi?ACTION=UPDATERESERVE">Update Reserve Inventory totals</a><br>
+<a target="_blank" href="index.cgi">Export to CSV</a><br>
+
+<br>
+<br>
+<b>EXPERIMENTAL:</b><br>
+<a href="/biz/reports/output.cgi?ACTION=NEW&REPORT=INVENTORY">Inventory Detail Report<br>
+-->
+	</td>
+</tr>
+</table>
+
+		</div>
+
 <!--
 		- <a href="/biz/reports/inventory">Legacy Inventory Reports</a><br>
 -->
@@ -112,13 +160,6 @@
 	</td>	
 	<td valign="top"><img src="/biz/images/blank.gif" width="100" height="100"></td>
 	<td valign="top" align="left">
-	<!--
-	<form action="batch.cgi">
-	<b>Custom Reports</b>
-	Report ID: <input type="textbox" size=10 name="report">
-	<input type="submit" class="button" value="Build Report">
-	</form>
-	-->
 	</td>
 	</tr>
 </table>

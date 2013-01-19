@@ -64,7 +64,7 @@ if ($webdb{'auto_feedback'})
 
 
 #$GTOOLS::TAG{'<!-- MESSAGE -->'} = &ZOOVY::incode($webdb{'auto_ext_freq'});
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Automation Settings',
    'file'=>$template_file,
    'header'=>'1',

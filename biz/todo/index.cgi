@@ -242,7 +242,7 @@ push @TABS, { name=>'Warnings', selected=>($TAB eq 'WARN')?1:0, link=>'/biz/todo
 push @TABS, { name=>'Errors', selected=>($TAB eq 'ERROR')?1:0, link=>'/biz/todo/index.cgi?TAB=ERROR', target=>'_top' };
 push @TABS, { name=>'Config', selected=>($TAB eq 'CONFIG')?1:0, link=>'/biz/todo/index.cgi?TAB=CONFIG', target=>'_top' };
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>$USERNAME."'s To Do List",
 	'file'=>$template_file,
 	'help'=>'#50809',

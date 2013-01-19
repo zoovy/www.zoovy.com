@@ -7,7 +7,7 @@ require DOMAIN::TOOLS;
 require GTOOLS;
 require LUSER;
 #require JQUERY::PANELS;
-require AJAX::PANELS;
+#require AJAX::PANELS;
 require DOMAIN::QUERY;
 require DOMAIN::REGISTER;
 require DOMAIN::POOL;
@@ -22,10 +22,10 @@ if (not defined $LU) { warn "Auth"; exit; }
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { warn "No auth"; exit; }
 
-my @BC = [
+my @BC = (
       { name=>'Setup', link=>'/biz/setup/index.cgi' },
       { name=>'Domain Hosting', link=>'/biz/setup/domain/index.cgi' },
-      ];
+      );
 my $help = "#50334";
 
 
@@ -691,7 +691,7 @@ if ($VERB eq 'LINK') {
 
 if ($VERB eq 'CONFIG') {
 	push @BC, { name=>'Domain Config' };
-	require AJAX::PANELS;
+#	require AJAX::PANELS;
 	require DOMAIN::PANELS;
 
 #	my $buf     = '';                         # temporarily garbage variable.
@@ -739,16 +739,16 @@ if ($LU->is_admin()) {
 	push @TABS, { name=>'Profiles &amp; Partitions', link=>'/biz/setup/domain/index.cgi?VERB=PROFILES', selected=>($VERB eq 'PROFILES')?1:0 };
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Domain Hosting',
    'file'=>$template_file,
-	'head'=>&AJAX::PANELS::header('DOMAINEDIT','','/biz/setup/domain/index.cgi'),
+	# 'head'=>&AJAX::PANELS::header('DOMAINEDIT','','/biz/setup/domain/index.cgi'),
    'header'=>'1',
    'help'=>$help,
 	'jquery'=>1,
    'tabs'=>\@TABS,
 	'msgs'=>\@MSGS,
-   'bc'=>@BC,
+   'bc'=>\@BC,
    );
 
 &DBINFO::db_zoovy_close();

@@ -67,4 +67,4 @@ if ($VERB eq 'ACCOUNT') {
 	$template_file = 'account.shtml';
 	}
 
-&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,msgs=>\@MSGS,bc=>\@BC);

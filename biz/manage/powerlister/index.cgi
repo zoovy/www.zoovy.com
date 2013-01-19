@@ -112,7 +112,7 @@ else {
 	$GTOOLS::TAG{'<!-- POWER_TABLE -->'} = &GTOOLS::Table::buildTable(\@header,\@rows,height=>500, rowid=>0, );
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'header'=>1, 
 	'jquery'=>1,
 	'help'=>"#50544", 

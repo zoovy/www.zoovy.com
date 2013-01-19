@@ -518,9 +518,10 @@ if ($VERB eq "CAMPAIGN-APPROVE") {
 	print STDERR "TS: $ZOOVY::cgiv->{'TS'} TIMESTAMP: $CREF->{'TESTED'} USERNAME: $USERNAME ID: $ID\n";
 
 	## check if newsletter has already been approved
-	if ($CREF->{'PREVIEW_GUID'} ne $ZOOVY::cgiv->{'GUID'}){
-		push @MSGS, "ERROR|Sorry you must click the link on the latest version (please retry)";
-		$VERB = 'CAMPAIGN-PREVIEW';
+	if (0) {
+	#if ($CREF->{'PREVIEW_GUID'} ne $ZOOVY::cgiv->{'GUID'}){
+	#	push @MSGS, "ERROR|Sorry you must click the link on the latest version (please retry)";
+	#	$VERB = 'CAMPAIGN-PREVIEW';
 		}
 	## check if merchant is approving latest test mailing
 	else {
@@ -535,7 +536,7 @@ if ($VERB eq "CAMPAIGN-APPROVE") {
    	$c = "<select name=\"SEND_DATE\">$c</select>";
    	$GTOOLS::TAG{'<!-- SEND_DATE -->'} = $c;		
 
-   	$GTOOLS::TAG{'<!-- APPROVE_BUTTON -->'} = qq~<input type="submit" name="BUTTON" value="Approve" class="button" onClick="thisFrm.submit();">~;
+   	$GTOOLS::TAG{'<!-- APPROVE_BUTTON -->'} = qq~<button name="BUTTON" type="submit" class="button">Finish</button>~;
    	$GTOOLS::TAG{'<!-- ID -->'} = $ID;
    	}
 	}

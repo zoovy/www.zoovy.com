@@ -8,7 +8,6 @@ use HTTP::Cookies;
 use strict;
 use Data::Dumper;
 use lib '/httpd/modules';
-require ORDER;
 require ZPAY;
 require ZWEBSITE;
 require ZTOOLKIT;

@@ -34,7 +34,7 @@
 		<td valign='top'><input size="100" type="textbox" name="BLOG_URL" value="<!-- BLOG_URL -->"></td>
 	</tr>
 	<tr>
-		<td colspan=2 valign='top'><input class="button" value="  Save  " onClick="window.document.thisFrm.submit();"> 
+		<td colspan=2 valign='top'><button class="button" type="submit">Save</button>
 	</tr>
 </table>
 </center>

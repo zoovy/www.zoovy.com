@@ -25,7 +25,7 @@ my $template_file = '';
 
 my @MSGS = ();
 my @BC = ();
-push @BC, { name=>'Syndication',link=>'/biz/syndication','target'=>'_top', };
+push @BC, { name=>'Syndication',link=>'/biz/syndication/index.cgi','target'=>'_top', };
 
 
 
@@ -51,7 +51,7 @@ if ($VERB eq 'DOMAINS-SAVE') {
 	}
 
 if ($VERB eq 'DOMAINS') {
-	push @BC, { name=>'Domain Management',link=>'/biz/syndication?VERB=DOMAINS','target'=>'_top', };
+	push @BC, { name=>'Domain Management',link=>'/biz/syndication/index.cgi?VERB=DOMAINS','target'=>'_top', };
 	if (scalar(@domains)==0) { @domains = &DOMAIN::QUERY::domains($USERNAME,'PRT'=>$PRT); }
 	my $c = '';
 	my $r = '';
@@ -67,7 +67,7 @@ if ($VERB eq 'DOMAINS') {
 
 
 if ($VERB eq 'MARKETPLACES') {
-	push @BC, { name=>'Marketplaces',link=>'/biz/syndication?VERB=MARKETPLACES','target'=>'_top', };
+	push @BC, { name=>'Marketplaces',link=>'/biz/syndication/index.cgi?VERB=MARKETPLACES','target'=>'_top', };
 	my %DSTCODES = ();
 	my ($udbh) = &DBINFO::db_user_connect($USERNAME);
 	my $PROFILE = &ZWEBSITE::prt_get_profile($USERNAME,$PRT);
@@ -147,7 +147,7 @@ push @TABS, { name=>'Domains', link=>'/biz/syndication/index.cgi?VERB=DOMAINS', 
 push @TABS, { name=>'Marketplaces', link=>'/biz/syndication/index.cgi?VERB=MARKETPLACES', selected=>($VERB eq 'MARKETPLACES')?1:0 };
 
 ## run this by default.
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>'Syndication',
 	'file'=>$template_file,
 	'header'=>'1',

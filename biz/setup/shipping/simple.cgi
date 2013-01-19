@@ -141,6 +141,6 @@ if ($ACTION eq "SAVE")
   $GTOOLS::TAG{"<!-- INT_SIMPLE4_FIRST_VALUE -->"} = ($webdb{"simple4_int_first"})?$webdb{"simple4_int_first"}:0;
   $GTOOLS::TAG{"<!-- INT_SIMPLE4_NEXT_VALUE -->"} = ($webdb{"simple4_int_next"})?$webdb{"simple4_int_next"}:0;
 	
-&GTOOLS::output(title=>"PRT: $PRT".' Shipping: Simple Shipping',help=>'#50814',file=>$template_file,header=>1,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,title=>"PRT: $PRT".' Shipping: Simple Shipping',help=>'#50814',file=>$template_file,header=>1,bc=>\@BC);
 
 

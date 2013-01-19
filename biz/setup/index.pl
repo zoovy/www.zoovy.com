@@ -427,7 +427,7 @@ $PROPERTIES_DIV
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup',
 	'html'=>$html,
    'header'=>'1',

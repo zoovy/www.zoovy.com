@@ -124,7 +124,7 @@ $GTOOLS::TAG{'<!-- PAYPAL -->'} = $c;
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Paypal IPN Report',
    'file'=>$template_file,
    'header'=>'1',

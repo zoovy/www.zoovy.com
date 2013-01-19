@@ -8,7 +8,6 @@ use CGI;
 my $dbh = &DBINFO::db_zoovy_connect();
 $q = new CGI;
 
-print STDERR "USERNAME: $USERNAME FLAGS: $FLAGS\n";
 $USERNAME = $q->param('USERNAME');
 $CODE = $q->param('CODE');
 $MAJOR = $q->param('MAJOR');
@@ -17,8 +16,8 @@ $MINOR = $q->param('MINOR');
 $USERNAME = $dbh->quote($USERNAME);
 
 $qtCODE = $dbh->quote($CODE);
-$qtMAJOR = $dbh->quote($MAJOR);
-$qtMINOR = $dbh->quote($MINOR);
+#$qtMAJOR = $dbh->quote($MAJOR);
+#$qtMINOR = $dbh->quote($MINOR);
 
 
 $URL = $q->param('URL');

@@ -143,7 +143,7 @@ if ($VERB =~ /SALES-/) {
 		$vars{'.start_gmt'} = $begints;
 		$vars{'.end_gmt'} = $endts;
 		$vars{'.include_deleted'} = $include_deleted;
-		$vars{'REPORT'} = 'SALES';
+		$vars{'REPORT'} = $ZOOVY::cgiv->{'REPORT'},
 
 		my ($bj) = BATCHJOB->new($USERNAME,0,
 			PRT=>$PRT,
@@ -154,7 +154,8 @@ if ($VERB =~ /SALES-/) {
 			);
 		my $JOBID = $bj->id();
 		push @MSGS, "SUCCESS|+Create Job: $JOBID\n";
-		$GTOOLS::TAG{'<!-- MESSAGE -->'} = qq~<button class="button" type="button" onClick="navigateTo('/biz/batch/index.cgi?JOBID=$JOBID'); return false;">View Report</button>~;
+		$GTOOLS::TAG{'<!-- MESSAGE -->'} = qq~<button class="button" type="button" onClick="
+			app.ext.admin_batchJob.a.showBatchJobStatus('$JOBID'); return false;">View Report</button>~;
 		$VERB = 'INDEX-SALES';
 		}
 	}
@@ -244,7 +245,8 @@ if ($VERB eq 'INDEX-BATCH') {
 		($class) = ($class eq 'r0')?'r1':'r0';
 		$c .= "<tr class=$class>";
 		if (($STATUS eq 'NEW') || ($STATUS eq 'RUNNING')) {
-			$c .= "<td valign=top><a href=\"/biz/batch/index.cgi?VERB=LOAD&JOB=$ID\">$ID</a></td>";
+			# $c .= "<td valign=top><a href=\"/biz/batch/index.cgi?VERB=LOAD&JOB=$ID\">$ID</a></td>";
+			$c .= qq~<td valign=top><button class=\"minibutton\" onClick=\"app.ext.admin_batchJob.a.showBatchJobStatus('$ID'); return false;\">$ID</button></td>~;
 			}
 		else {
 			$c .= "<td valign=top><a href=\"/biz/reports/index.cgi?VERB=BATCH-SEARCH-NOW&JOBID=$ID\">$ID</a></td>";
@@ -520,7 +522,7 @@ push @TABS, { name=>'Inventory', link=>'/biz/reports/index.cgi?VERB=INDEX-INVENT
 push @TABS, { name=>'Batch Jobs', link=>'/biz/reports/index.cgi?VERB=INDEX-BATCH', selected=>($VERB eq 'INDEX-BATCH')?1:0 };
 push @TABS, { name=>'Job Status', link=>'/biz/reports/index.cgi?VERB=BATCH-SEARCH', selected=>($VERB eq 'INDEX-SEARCH')?1:0 };
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 	title=>'Reports',
 	file=>$template_file,
 	header=>1,

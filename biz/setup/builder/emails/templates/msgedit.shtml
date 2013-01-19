@@ -7,7 +7,7 @@
 
 <center>
 
-<input id="VERB" type="hidden" name="VERB" value="MSGSAVE">
+<input form="thisFrm" id="VERB" type="hidden" name="VERB" value="MSGSAVE">
 
 <table width=600 border=0 cellspacing=0 cellpadding=0 class="zoovytable">
 <tr>
@@ -15,9 +15,9 @@
 </tr>
 <tr>
 <td valign="top">
-	<input type="hidden" name="NS" value="<!-- NS -->">
-	<input type="hidden" name="MSGID" value="<!-- MSGID -->">
-	<input type="hidden" name="MSGTYPE" value="<!-- MSGTYPE -->">
+	<input form="thisFrm" type="hidden" name="NS" value="<!-- NS -->">
+	<input form="thisFrm" type="hidden" name="MSGID" value="<!-- MSGID -->">
+	<input form="thisFrm" type="hidden" name="MSGTYPE" value="<!-- MSGTYPE -->">
 				
 	<table width="100%" cellspacing=5>
 	<tr>
@@ -44,7 +44,7 @@
 		<td valign="top"><b>From Email:</b></td>
 		<td valign="top">
 			<input type="textbox" size="35" name="MSGFROM" value="<!-- MSGFROM -->"> 
-			<input type="button" class="button" value=" Test " onClick="jQuery('#VERB').value='MSGTEST'; jQuery('#thisFrm').submit();">
+			<input type="button" class="button" value=" Test " onClick=" jQuery('#VERB').val('MSGTEST'); jQuery('#thisFrm').submit(); ">
 			<div class="hint">(leave blank to use profile default)</div>
 		</td>
 	</tr>

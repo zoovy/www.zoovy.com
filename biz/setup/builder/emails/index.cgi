@@ -28,6 +28,10 @@ my @TABS = ();
 my @MSGS = ();
 
 my $template_file = '';
+
+require DOMAIN::TOOLS;
+($NS) = DOMAIN::TOOLS::profileprt_for_domain($USERNAME,$LU->domain());
+
 my ($SITE) = SITE->new($USERNAME,'PROFILE'=>$NS,'PRT'=>$PRT);
 my ($SE) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE,RAW=>1);
 
@@ -184,5 +188,5 @@ push @BC, { name=>"Setup", link=>'/biz/setup' };
 push @BC, { name=>"Builder", link=>'/biz/setup/builder' };
 push @BC, { name=>"Emails", link=>'/biz/setup/builder/emails' };
 
-&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS, bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS, bc=>\@BC);
 

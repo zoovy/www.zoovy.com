@@ -14,7 +14,7 @@
 		<table>
 		<!-- SCHEDULES -->
 		</table>
-		[<a href="index.cgi?ACTION=ADD">Add Wholesale Schedule</a>]<br>
+		[<a href="/biz/manage/schedules/index.cgi?ACTION=ADD">Add Wholesale Schedule</a>]<br>
 		</td></tr>
 		</table>
 		</td>

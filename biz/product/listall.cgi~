@@ -7,6 +7,7 @@ require SEARCH;
 require ZOOVY;
 
 my ($USERNAME,$FLAGS,$MID,$LUSER,$RESELLER) = ZOOVY::authenticate("/biz/setup",2,'_P&2');
+my ($udbh) = &DBINFO::db_user_connect($USERNAME);
 if ($USERNAME eq '') { exit; }
 
 my $template_file = 'search.shtml';
@@ -38,7 +39,8 @@ if ($ACTION eq "LISTALL") {
 my $PROD_IS_FILTER = 0;
 if ($ACTION eq 'FILTER') {
 	my $checked = 0;
-	
+
+	if (@ZOOVY::PROD_IS) {};	# stop 'used once' warning	
 	foreach my $isa (@ZOOVY::PROD_IS) {
 		my $attr = $isa->{'attr'};
 		$GTOOLS::TAG{"<!-- CHK-$attr -->"} = '';
@@ -58,6 +60,7 @@ if ($ACTION eq 'FILTER') {
 my $MKT_FILTER = 0;
 if ($ACTION eq 'MKT') {
 	my $checked = 0;
+	if (@ZOOVY::INTEGRATIONS) {}; 	# stop 'used once' warning
 	foreach my $intref (@ZOOVY::INTEGRATIONS) {
 		my ($attr,$bitval,$default,$name) = ($intref->{'attr'},$intref->{'mask'},$intref->{'true'},$intref->{'title'});
 		$GTOOLS::TAG{"<!-- CHK-$attr -->"} = '';
@@ -167,8 +170,7 @@ if ($ACTION eq 'SEARCH') {
 	elsif ($searchType eq 'EBAY') {
 		require EBAY2;
 		my ($udbh) = &DBINFO::db_user_connect($USERNAME);
-		my $TB = EBAY2::monitor_tb($USERNAME);
-		my $pstmt = "select PRODUCT from $TB where MID=$MID /* $USERNAME */ and EBAY_ID=".$udbh->quote($VALUE);
+		my $pstmt = "select PRODUCT from EBAY_LISTINGS where MID=$MID /* $USERNAME */ and EBAY_ID=".$udbh->quote($VALUE);
 		my ($PRODUCT) = $udbh->selectrow_array($pstmt);
 		if (defined $PRODUCT) {
 			push @results, $PRODUCT;
@@ -278,4 +280,5 @@ if (1) {
 	header=>1
 	);
 
+&DBINFO::db_user_close();
 

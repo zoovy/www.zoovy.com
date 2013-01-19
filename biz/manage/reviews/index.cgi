@@ -14,6 +14,7 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 if (index($FLAGS,'BASIC')==-1) { print "Location: /biz\n\n"; exit; }
 
+my @MSGS = ();
 
 my $VERB = $ZOOVY::cgiv->{'VERB'};
 my $RID = int($ZOOVY::cgiv->{'RID'});
@@ -47,6 +48,7 @@ if ($VERB eq 'EDITSAVE') {
 		}
 
 	&PRODUCT::REVIEWS::update_review($USERNAME,$RID,%options);	
+	push @MSGS, "SUCCESS|+Updated review $RID";
 	
 	$VERB = '';
 	}
@@ -97,20 +99,20 @@ if ($VERB eq '') {
 		$c .= qq~
 <tr>
 	<td valign='top' rowspan="2" class="$class">
-		<input style="width: 55px;" onClick="
-			window.document.thisFrm.VERB.value='EDIT';
-			window.document.thisFrm.RID.value='$review->{'ID'}'; 
-			window.document.thisFrm.submit();" class="button" type="button" value="Edit" class="Edit"><br>
+		<button  form="manageReviewsFrm"  style="width: 55px;" onClick="
+			jQuery('#VERB').val('EDIT');
+			jQuery('#RID').val('$review->{'ID'}'); 
+			jQuery('#manageReviewsFrm').submit();" class="button" type="button" class="Edit">Edit</button<<br>
 			~.
-	(($review->{'APPROVED_GMT'}==0)?qq~<input style="width: 55px;"  onClick="
-         window.document.thisFrm.VERB.value='APPROVE';
-         window.document.thisFrm.RID.value='$review->{'ID'}';
-         window.document.thisFrm.submit();" class="button" type="button" value="Approve" class="Approve"><br>~:'').
+	(($review->{'APPROVED_GMT'}==0)?qq~<button style="width: 55px;"  form="manageReviewsFrm"  onClick="
+			jQuery('#VERB').val('APPROVE');
+         jQuery('#RID').val('$review->{'ID'}');
+			jQuery('#manageReviewsFrm').submit();" class="button" type="button" class="Approve">Approve</button><br>~:'').
 	qq~
-		<input style="width: 55px;"  onClick="
-         window.document.thisFrm.VERB.value='DELETE';
-         window.document.thisFrm.RID.value='$review->{'ID'}';
-         window.document.thisFrm.submit();" class="button" type="button" value="Delete" class="Delete"><br>
+		<button style="width: 55px;"  form="manageReviewsFrm"  onClick="
+			jQuery('#VERB').val('DELETE');
+         jQuery('#RID').val('$review->{'ID'}');
+			jQuery('#manageReviewsFrm').submit();" class="button" type="button" class="Delete">Delete</button><br>
 	</td>
 	<td nowrap class="$class">Product: $review->{'PID'}</td>
 	<td nowrap class="$class">Rating: $review->{'RATING'} of 10</td>
@@ -135,8 +137,9 @@ if ($VERB eq '') {
 
 
 
-&GTOOLS::output( 
+&GTOOLS::output('*LU'=>$LU, 
 		file=>$template_file, 
+		'msgs'=>\@MSGS,
 		tabs=>\@TABS, 
 		header=>1, 
 		help=>"#50741",

@@ -19,7 +19,7 @@ my ($t) = TOXML->new($FORMAT,$DOCID,USERNAME=>$USERNAME);
 my $html = TOXML::CHOOSER::showDetails($USERNAME,$t);		
 if (not defined $html) { $html = "<i>Could not load $FORMAT:$DOCID user=$USERNAME</i><br>"; }
 
-&GTOOLS::output(html=>$html,header=>1);
+&GTOOLS::output('*LU'=>$LU,html=>$html,header=>1);
 
 
 

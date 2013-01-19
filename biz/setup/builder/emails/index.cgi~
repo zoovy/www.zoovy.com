@@ -20,6 +20,7 @@ if ($MID<=0) { warn "No auth"; exit; }
 
 my ($VERB) = $ZOOVY::cgiv->{'VERB'};
 if ($VERB eq '') { $VERB = 'EDIT'; }
+print STDERR "VERB: $VERB\n";
 
 my ($NS) = $ZOOVY::cgiv->{'NS'};
 $GTOOLS::TAG{'<!-- NS -->'} = $NS;
@@ -33,7 +34,8 @@ my ($SE) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE,RAW=>1);
 if ($VERB eq 'MSGNUKE') {
 	my $MSGID = $ZOOVY::cgiv->{'MSGID'};
 	$SE->save($MSGID,"NUKE"=>1);
-	$VERB = 'EDIT';
+	push @MSGS, "SUCCESS|+Deleted message $MSGID";
+	$VERB = '';
 	}
 
 ##
@@ -182,5 +184,5 @@ push @BC, { name=>"Setup", link=>'/biz/setup' };
 push @BC, { name=>"Builder", link=>'/biz/setup/builder' };
 push @BC, { name=>"Emails", link=>'/biz/setup/builder/emails' };
 
-&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS, bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS, bc=>\@BC);
 

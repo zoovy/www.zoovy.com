@@ -1,8 +1,8 @@
 <!-- UTILITIES_TAB -->
 
 <center>
-
-<form id="myform" action="zephyrsports.cgi" name="myform">
+<form method="GET" id="myform" action="/biz/manage/custom/zephyrsports.cgi" name="myform">
+<input type="hidden" id="VERB" name="VERB" value="">
 <table width=500>
 <tr>
 	<td colspan=2><center><h2><!-- VERB --> Location</h2></center></td>
@@ -15,13 +15,16 @@
 	</td>
 </tr>
 <tr>
-	<!-- LOCATION_FIELD -->
+	<td>LOCATION: </td>
+   <td><input form="myform" type="textbox" name="location" value="<!-- LOCATION -->"></td>
 </tr>
 
 <tr>
 	<td>&nbsp;&nbsp;</td>
 	<td colspan=2 halign=center>
-<button form="myform" type="submit" id="VERB" name="VERB" value="<!-- VERB -->">Submit</button>
+	<button align="right" form="myform" type="button" id="btn2" name="btn2" onClick="jQuery('#VERB').val('DISPLAY'); jQuery('#myform').submit(); return false;">Display</button>
+	&nbsp;&nbsp;&nbsp;
+	<button align="left" form="myform" type="button" id="btn1" name="btn1" onClick="jQuery('#VERB').val('UPDATE'); jQuery('#myform').submit(); return false;">Update</button>
 	</td>
 </tr>
 </form>
@@ -39,6 +42,3 @@
 <!-- OUTPUT -->
 </table>
 <br><br><br><br><br><br>
-<center>
-Switch to <a href="<!-- COUNTER_VERB_URL -->"><!-- COUNTER_VERB --></a> Location
-</center>

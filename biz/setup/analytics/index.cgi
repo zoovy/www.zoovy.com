@@ -1895,7 +1895,7 @@ $GTOOLS::TAG{'<!-- DISCLAIMER -->'} .= '<br>';
 
 ##
 ##
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>"Analytics and Plugins",
 	file=>$template_file,
 	js=>2+4,

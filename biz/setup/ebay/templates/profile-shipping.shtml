@@ -1,7 +1,7 @@
 <!-- NO_TAB -->
 
 <center>
-<form method="POST" name="thisFrm" action="index.cgi">
+<form method="POST" id="setupEBayProfileShippingFrm" name="setupEBayProfileShippingFrm" action="index.cgi">
 <h2>Shipping Configuration [<!-- CODE -->]</h2>
 <input type='hidden' name='ACTION' value='PROFILE-SHIPPING-SAVE'>
 <input type='hidden' name='CODE' value='<!-- CODE -->'>
@@ -189,7 +189,7 @@
 				</td>
 			</tr>
 		</table>
-		<input class="button" type="button" value=" Save " onClick="document.thisFrm.ACTION.value='PROFILE-SHIPPING-DOM-SAVE'; document.thisFrm.submit();">	
+		<input class="button" type="button" value=" Save " onClick="document.setupEBayProfileShippingFrm.ACTION.value='PROFILE-SHIPPING-DOM-SAVE'; jQuery('#setupEBayProfileShippingFrm').submit();">	
 	</td></tr>
 	</table>
 		</div>
@@ -277,7 +277,7 @@
 				</td>
 			</tr>
 		</table>
-		<input class="button" type="button" value=" Save " onClick="document.thisFrm.ACTION.value='PROFILE-SHIPPING-INT-SAVE'; document.thisFrm.submit();">	
+		<input class="button" type="button" value=" Save " onClick="document.setupEBayProfileShippingFrm.ACTION.value='PROFILE-SHIPPING-INT-SAVE'; jQuery('#setupEBayProfileShippingFrm').submit();">	
 	</td></tr>
 	</table>
 		</div>

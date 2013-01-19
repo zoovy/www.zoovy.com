@@ -146,4 +146,4 @@ push @TABS, { name=>'New Program', link=>"/biz/manage/affiliates/index.cgi?VERB=
 push @TABS, { name=>'Enroll Affiliates', link=>"/biz/manage/affiliates/index.cgi?VERB=ENROLL", selected=>(($VERB eq 'ENROLL')?1:0) };
 
 &DBINFO::db_user_close();
-&GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS);
+&GTOOLS::output('*LU'=>$LU,header=>1,file=>$template_file,tabs=>\@TABS);

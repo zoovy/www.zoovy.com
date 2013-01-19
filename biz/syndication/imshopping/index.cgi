@@ -149,7 +149,7 @@ if ($VERB eq '') {
 		$c .= "<td class=\"$class\"><b>$ns =&gt; $profref->{$ns}</b><br>";
 		$c .= "<a href=\"/biz/syndication/imshopping/index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a>";
 		$c .= " | ";
-		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=IMS&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+#		$c .= "<a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=IMS&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
 		$c .= "</td>";
 		$c .= "</tr>";
 		my ($s) = SYNDICATION->new($USERNAME,$ns,'IMS');
@@ -161,7 +161,7 @@ if ($VERB eq '') {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Imshopping Syndication',
    'file'=>$template_file,
    'header'=>'1',

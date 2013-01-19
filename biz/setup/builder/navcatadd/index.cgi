@@ -166,5 +166,5 @@ if ($ACTION eq '') {
 	$template_file = "index.shtml";
 	}
 
-&GTOOLS::output(title=>'',file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,title=>'',file=>$template_file,header=>1);
 

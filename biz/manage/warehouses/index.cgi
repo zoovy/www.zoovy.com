@@ -318,6 +318,6 @@ push @TABS, { name=>'Current Warehouses', link=>"/biz/manage/warehouses/index.cg
 push @TABS, { name=>'New Warehouses', link=>"/biz/manage/warehouses/index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
 
 &DBINFO::db_user_close();
-&GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);
+&GTOOLS::output('*LU'=>$LU,header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);
 
 

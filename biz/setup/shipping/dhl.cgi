@@ -108,7 +108,7 @@ if ($ACTION eq '') {
 	$GTOOLS::TAG{'<!-- SERVICE_G -->'} = ($webdb->{'dhl_services'}&8)?'checked':'';
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	header=>1,
 	title=>'Shipping: DHL Shipping',
 	file=>$template_file,

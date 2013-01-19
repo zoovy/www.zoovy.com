@@ -4,7 +4,6 @@ use strict;
 use lib "/httpd/modules";
 require GTOOLS;
 require ZOOVY;
-require AJAX::PANELS;
 require PRODUCT::PANELS;
 require LUSER;
 require ZWEBSITE;
@@ -23,7 +22,7 @@ if ($MID<=0) { exit; }
 
 my $template_file = 'welcome.shtml';
 
-&GTOOLS::output(file=>$template_file,html=>$html,header=>1,todo=>1,jquery=>1,zmvc=>1);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,html=>$html,header=>1,todo=>1,jquery=>1,zmvc=>1);
 undef $LU;
 
 exit;

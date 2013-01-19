@@ -57,7 +57,7 @@ function checkForm() {
 <center><br>
 <table width="100%" bgcolor="330099">
 <tr><td><font face="arial" color="white" size="2"><b>&nbsp; Profile Preview:</b></font><br>
-<iframe src="/biz/product/channel2/hitrefresh.html" FRAMEBORDER="1" name="iframe" height="250" width="100%">
+<iframe src="/biz/setup/ebay/hitrefresh.html" FRAMEBORDER="1" name="iframe" height="250" width="100%">
 This is the content inside the Iframe
 </iframe>
 

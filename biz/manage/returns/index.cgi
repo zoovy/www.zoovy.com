@@ -23,5 +23,5 @@ if ($VERB eq 'CREATE') {
 	$template_file = 'create.shtml';
 	}
 
-&GTOOLS::output(file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1);
 

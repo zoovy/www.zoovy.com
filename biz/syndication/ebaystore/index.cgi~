@@ -14,20 +14,20 @@
 
 use lib "/httpd/modules"; 
 use CGI;
-use GTOOLS;
-use ZOOVY;
-use ZWEBSITE;	
-use ZTOOLKIT;
-use DBINFO;
-use NAVCAT;
+require GTOOLS;
+require ZOOVY;
+require ZWEBSITE;	
+require ZTOOLKIT;
+require DBINFO;
+require NAVCAT;
 use strict;
 use LWP::Simple;
 use Storable;
-use EBAY2;
-use SYNDICATION;
-use DOMAIN::TOOLS;
-use TOXML;
-use LUSER;
+require EBAY2;
+require SYNDICATION;
+require DOMAIN::TOOLS;
+require TOXML;
+require LUSER;
 
 my @INVORDER = ('DISABLE','QTY1','SAFE','INSANE');
 my %INV = (
@@ -388,9 +388,9 @@ if ($VERB eq 'REPORTS') {
 #		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br><br></td>";
 #		$c .= qq~
 #<td class="$class">
-#		<input type="button" onClick="document.location='index.cgi?VERB=EDIT&PROFILE=$ns';" class="button" value=" Edit ">
-#		<input type="button" onClick="document.location='index.cgi?VERB=UPDATENOW&PROFILE=$ns';" class="button" value="Update Now">
-#		<input type="button" onClick="document.location='index.cgi?VERB=CHECKSTATUS&PROFILE=$ns';" class="button" value="Check Status">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=EDIT&PROFILE=$ns');" class="button" value=" Edit ">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=UPDATENOW&PROFILE=$ns');" class="button" value="Update Now">
+#		<input type="button" onClick="navigateTo('index.cgi?VERB=CHECKSTATUS&PROFILE=$ns');" class="button" value="Check Status">
 #</td>
 #		~;
 #		$c .= "</tr>";

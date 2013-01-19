@@ -46,7 +46,7 @@ if ($c eq '') { $c .= "<tr><td colspan=3><i>No files</i></td></tr>"; }
 $GTOOLS::TAG{'<!-- FILES -->'} = $c;
 my $template_file = 'index.shtml';
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	file=>$template_file,
 	bc=>\@BC,
 	tabs=>\@TABS,

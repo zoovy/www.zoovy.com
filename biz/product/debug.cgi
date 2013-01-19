@@ -70,7 +70,7 @@ my $qtPID = $udbh->quote($PID);
 my $detailref = &INVENTORY::list_other(undef,$USERNAME,$PID,0);
 foreach my $iref (@{$detailref}) {
 	$c .= "<tr><td>$iref->{'APPKEY'}</td><td>$iref->{'LISTINGID'}</td><td>$iref->{'SKU'}</td><td>$iref->{'QTY'}</td><td>".&ZTOOLKIT::pretty_date($iref->{'EXPIRES_GMT'})."</td>";
-	$c .= "<td><a href=\"debug.cgi?product=$PID&ACTION=OVERRIDE_RESERVE&SKU=$iref->{'SKU'}&APPKEY=$iref->{'APPKEY'}&LISTINGID=$iref->{'LISTINGID'}\">[Manual Override]</a></td>";
+	$c .= "<td><a href=\"/biz/product/debug.cgi?product=$PID&ACTION=OVERRIDE_RESERVE&SKU=$iref->{'SKU'}&APPKEY=$iref->{'APPKEY'}&LISTINGID=$iref->{'LISTINGID'}\">[Manual Override]</a></td>";
 	$c .= "</tr>";
 	}
 if ($c eq '') { $c .= "<tr><td><i>None</i></td></tr>"; } else {
@@ -329,7 +329,7 @@ $sth->finish();
 if (1) {
 	my $c = '';
 	## select a PID or any matching SKU of a PID 
-	my $pstmt = "select DOCID,MSGID,FEED,SKU,CREATED_TS,DEBUG,ACK_GMT from AMAZON_DOCUMENT_CONTENTS where MID=$MID and SKU REGEXP concat('^',$qtPID,'(\\:[A-Z0-9\\#]{4,4}){0,3}\$');";
+	my $pstmt = "select DOCID,MSGID,FEED,SKU,CREATED_TS,DEBUG,ACK_GMT from AMAZON_DOCUMENT_CONTENTS where MID=$MID and SKU REGEXP concat('^',$qtPID,'(\\:[A-Z0-9\\#]{4,4}){0,3}\$') order by DOCID desc limit 150;";
 	# $c .= $pstmt;
 	my $sth = $udbh->prepare($pstmt);
 	$sth->execute();
@@ -693,7 +693,7 @@ if (1) {
 	}
 
 
-&GTOOLS::output('file'=>'debug.shtml',header=>1,popup=>1,head=>qq~
+&GTOOLS::output('*LU'=>$LU,'file'=>'debug.shtml',header=>1,popup=>1,head=>qq~
 <script name="javascript">
 <!--
 

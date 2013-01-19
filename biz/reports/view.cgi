@@ -140,7 +140,7 @@ if ($VERB eq 'PRINT') {
 #	my ($html) = &GTOOLS::REPORT::showHTML($R,{},undef);
 #	$GTOOLS::TAG{'<!-- HTMLTABLE -->'} = $html;
 #	print "Content-type: application/excel\n\n";
-#	&GTOOLS::output(
+#	&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,
 #		'header'=>0,
 #		'file'=>'output-excel.shtml',
 #		);

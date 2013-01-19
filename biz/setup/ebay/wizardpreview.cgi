@@ -10,8 +10,11 @@ require EBAY2::PROFILE;
 require TOXML::EDIT;
 require SITE;
 
+&ZOOVY::init();
+my %options = (); foreach my $param (keys %{$ZOOVY::cgiv}) { next if (substr($param,0,1) ne '_'); $options{$param} = $ZOOVY::cgiv->{$param}; }
+
 require LUSER;
-my ($LU) = LUSER->authenticate(flags=>'_P&2');
+my ($LU) = LUSER->authenticate(flags=>'_P&2',%options);
 if (not defined $LU) { exit; }
 
 my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
@@ -31,9 +34,9 @@ else {
 
 # our $SREF = ($ZOOVY::cgiv->{'_SREF'})?&ZTOOLKIT::fast_deserialize($ZOOVY::cgiv->{'_SREF'}):{};
 use Data::Dumper;
-open F, ">/tmp/foo";
-print F Dumper($ZOOVY::cgiv);
-close F;
+#open F, ">/tmp/foo";
+#print F Dumper($ZOOVY::cgiv);
+#close F;
 
 #our $SESSIONREF = ($ZOOVY::cgiv->{'_SREF'})?&ZTOOLKIT::parseparams($ZOOVY::cgiv->{'_SREF'},0):{};
 
@@ -45,9 +48,7 @@ foreach my $var (keys %{$ZOOVY::cgiv}) {
 	$SESSIONREF{$var} = $ZOOVY::cgiv->{$var};
 	}
 
-
-
-print STDERR Dumper($ZOOVY::cgiv);
+# print STDERR Dumper($ZOOVY::cgiv);
 
 
 my $SITE = undef;

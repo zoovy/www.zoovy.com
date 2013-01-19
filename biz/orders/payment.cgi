@@ -111,7 +111,7 @@ if ($VERB =~ /^(CAPTURE|RETRY|ALLOW-PAYMENT|SET-PAID|REFUND|VOID|OVERRIDE|MARKET
 			## update the payment status
 			$payrec->{'ps'} = $ps;
 			$payrec->{'note'} = $ZOOVY::cgiv->{"$TXNUUID.override.note"};
-			$O2->add_history("Override payment status to $ps (was: '$ps') for txn:$TXNUUID",undef,2+8,$LUSERNAME);
+			$O2->add_history("Override payment status to $ps (was: '$ps') for txn:$TXNUUID",etype=>2+8,luser=>$LUSERNAME);
 			}
 		# $O2->order_save();
 		}
@@ -139,7 +139,7 @@ if ($VERB =~ /^(CAPTURE|RETRY|ALLOW-PAYMENT|SET-PAID|REFUND|VOID|OVERRIDE|MARKET
 			$payrec->{'ps'} = '0'.substr($payrec->{'ps'},-2);
 			}
 		$payrec->{'note'} = $ZOOVY::cgiv->{"$TXNUUID.set-paid.note"};
-		$O2->add_history("Set $payrec->{'uuid'} as allowed",undef,2+8);
+		$O2->add_history("Set $payrec->{'uuid'} as allowed",etype=>2+8);
 		#$O2->sync_action('payment',"$VERB/$TXNUUID");
 		#$O2->order_save();
 		}
@@ -656,7 +656,7 @@ if ($VERB eq '') {
 			elsif ($action eq 'void') {
 				$c .= qq~
 				<div class="zoovysub2header">VOID $id</div>
-				Reason: <input type="submit" size=20 type="textbox" name="$id.void.reason">
+				Reason: <input type="textbox" size=20 type="textbox" name="$id.void.reason">
 				<button onClick="orderPaymentFrm.VERB.value='VOID:$id';" class="minibutton">Void</button>
 				<div class="hint">
 				REMINDER: this will void a payment, void must be done before your settlement time (contact your merchant bank).
@@ -977,7 +977,7 @@ push @BC, { 'link'=>'/biz/orders/view.cgi?ID='.$O2->oid(), name=>sprintf("Order 
 push @BC, { 'link'=>'/biz/orders/payment.cgi?ID='.$O2->oid(),name=>"Payment(s)" };
 
 
-&GTOOLS::output(title=>"",bc=>\@BC,msgs=>\@MSGS,file=>'payment.shtml',header=>1,jquery=>1);
+&GTOOLS::output('*LU'=>$LU,title=>"",bc=>\@BC,msgs=>\@MSGS,file=>'payment.shtml',header=>1,jquery=>1);
 
 &DBINFO::db_zoovy_close();
 

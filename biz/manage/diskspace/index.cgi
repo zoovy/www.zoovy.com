@@ -134,7 +134,7 @@ if ($ZOOVY::cgiv->{'ACTION'} eq 'COMPUTESPACE') {
 	$LU->log('UTIL.DISKSPACE.LOG',"Computed diskspace - total $total","STAT");
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,
    'title'=>'Diskspace',
 	'header'=>1,
    'file'=>$template_file,

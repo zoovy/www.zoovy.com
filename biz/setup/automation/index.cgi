@@ -117,7 +117,7 @@ if ($VERB eq '') {
 	}
 &DBINFO::db_zoovy_close();
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	file=>$template_file,
 	header=>1,
 	bc=>\@BC,

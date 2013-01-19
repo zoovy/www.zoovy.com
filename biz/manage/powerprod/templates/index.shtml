@@ -2,7 +2,7 @@
 <center>
 <table width="1000"><tr><td>
 
-<form action="/biz/manage/powertool/index.cgi" method="post" name="powerToolFrm">
+<form id="powerToolFrm"  action="/biz/manage/powertool/index.cgi" method="post" name="powerToolFrm">
 <input type="hidden" id="VERB" name="VERB" value="SAVE">
 <input type="hidden" id="DATA" name="DATA" value="<!-- DATA -->">
 <h1>Product Power Tool</h1>

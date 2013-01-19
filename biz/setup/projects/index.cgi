@@ -24,8 +24,8 @@ my $VERB = $ZOOVY::cgiv->{'VERB'};
 
 my ($udbh) = &DBINFO::db_user_connect($USERNAME);
 my @BC = ();
-push @BC, { name=>'Setup', link=>'/biz/setup', };
-push @BC, { name=>'Projects', link=>'/biz/setup/projects', };
+push @BC, { name=>'Setup', link=>'/biz/setup/index.cgi', };
+push @BC, { name=>'Projects', link=>'/biz/setup/projects/index.cgi', };
 
 my ($q) = CGI->new();
 
@@ -231,6 +231,12 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 	$UUID = substr($UUID,0,32); ## restrict to 32 characters for db length
 	if ($TYPE eq 'DSS') {	$UUID = "dss"; }
 
+	my $BRANCH = uc(sprintf("%s",$ZOOVY::cgiv->{'branch'}));
+	if (($ERROR eq '') && ($BRANCH ne '')) {
+		if ($BRANCH =~ /^[^A-Z0-9]/) { $ERROR = "ERROR|+invalid characters in start of branch name"; }
+		if ($BRANCH =~ /[^A-Z0-9\-\_]/) { $ERROR = "ERROR|+invalid characters in branch name '$BRANCH' (allowed A-Z 0-9 - _)"; }
+		}
+
 	if (defined $ERROR) {
 		push @MSGS, "$ERROR";
 		}
@@ -238,7 +244,11 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 		if ($REPO ne '') {
 			my $path = sprintf("%s/PROJECTS/%s",&ZOOVY::resolve_userpath($USERNAME),$UUID);
 			## /usr/local/bin/git clone http://github.com/brianhorakh/linktest.git /remote/snap/users/b/brian/PROJECTS/e8b9f059-a695-11e1-9cc4-1560a415
-			system("/usr/local/bin/git clone $REPO $path > /dev/null");
+			my $BRANCH_PARAM = '';
+			if ($BRANCH) { $BRANCH_PARAM = " -b $BRANCH "; }
+			my $CMD = "/usr/local/bin/git clone $BRANCH_PARAM $REPO $path  > /dev/null";
+			print STDERR "$CMD\n";
+			system("$CMD");
 			## chmod 777 -R /remote/crackle/users/e/erich/PROJECTS/7C62B56A-101C-11E2-9284-F4273A9C/.git/FETCH_HEAD
 			if (-d $path) {
 				push @MSGS, "SUCCESS|REPO was cloned";
@@ -252,9 +262,11 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 			}
 		}
 
+	if ($TITLE eq '') { 
+		$TITLE = "Untitled Project ".&ZTOOLKIT::pretty_date(time()); 
+		}
 
 	if (not defined $ERROR) {
-		if ($TITLE eq '') { $TITLE = "Untitled Project ".&ZTOOLKIT::pretty_date(time()); }
 		my ($pstmt) = &DBINFO::insert($udbh,'PROJECTS',{
 			MID=>&ZOOVY::resolve_mid($USERNAME),
 			USERNAME=>$USERNAME,
@@ -262,6 +274,7 @@ if ($VERB eq 'PROJECT-ADD-SAVE') {
 			UUID=>"$UUID",
 			SECRET=>'secret',
 			GITHUB_REPO=>$REPO,
+			GITHUB_BRANCH=>$BRANCH,
 			TYPE=>$TYPE,
 			},sql=>1);
 		print STDERR $pstmt."\n";
@@ -292,13 +305,33 @@ if ($VERB eq 'PROJECT-ADD') {
 	$template_file = 'project-add.shtml';
 	}
 
+
+
 if ($VERB eq '') {
+
+	my %PROJECTS = ();
+	my $pstmt = "select DOMAIN,WWW_HOST_TYPE,WWW_CONFIG,M_HOST_TYPE,M_CONFIG,APP_HOST_TYPE,APP_CONFIG from DOMAINS where MID=$MID";
+	my $sth = $udbh->prepare($pstmt);
+	$sth->execute();
+	while ( my ( $DOMAIN,$WWW,$WWW_CONFIG,$M,$M_CONFIG,$APP,$APP_CONFIG ) = $sth->fetchrow() ) {
+		my $wwwcfg = &ZTOOLKIT::parseparams($WWW_CONFIG);
+		my $mcfg = &ZTOOLKIT::parseparams($M_CONFIG);
+		my $appcfg = &ZTOOLKIT::parseparams($APP_CONFIG);
+		if ($wwwcfg->{'PROJECT'}) { push @{$PROJECTS{$wwwcfg->{'PROJECT'}}}, "www.$DOMAIN"; }
+		if ($mcfg->{'PROJECT'}) { push @{$PROJECTS{$mcfg->{'PROJECT'}}}, "m.$DOMAIN"; }
+		if ($appcfg->{'PROJECT'}) { push @{$PROJECTS{$appcfg->{'PROJECT'}}}, "app.$DOMAIN"; }
+		}
+	$sth->finish();
+
 	my $pstmt = "select * from PROJECTS where MID=$MID /* $USERNAME */ order by ID";
 	my ($sth) = $udbh->prepare($pstmt);
 	my @ROWS = ();
 	$sth->execute();
 	while ( my $hashref = $sth->fetchrow_hashref() ) {
 		push @ROWS, $hashref;
+		if (not defined $PROJECTS{ $hashref->{'UUID'} }) { 
+			# $PROJECTS{$hashref->{'UUID'}} = [];
+			}
 		}
 	$sth->finish();
 
@@ -308,7 +341,6 @@ if ($VERB eq '') {
 	else {
 		my $c = '';
 		foreach my $row (@ROWS) {
-
 			my $link = '';
 			if ($row->{'GITHUB_REPO'}) {
 				my ($key) = Digest::MD5::md5_hex($row->{'SECRET'}.$row->{'UUID'});
@@ -318,18 +350,45 @@ if ($VERB eq '') {
 				$link = '<i>No Repo Linked</i>';
 				}
 
+			my $branch = $row->{'GITHUB_BRANCH'};
+			if ($branch eq '') { $branch = 'master'; }
+
+			my $BUTTONS = '';
+			$BUTTONS .= "<a href='/biz/setup/projects/index.cgi?VERB=PROJECT-EDIT&ID=$row->{'ID'}'>[EDIT]</a><br>";
+			$BUTTONS .= "<a href='/biz/setup/projects/index.cgi?VERB=PROJECT-DELETE&ID=$row->{'ID'}'>[DELETE]</a><br>";
+			
+			my $domains = '';
+			if (not defined $PROJECTS{ $row->{'UUID'} }) {
+				## 
+				}
+			elsif (scalar(@{$PROJECTS{ $row->{'UUID'} }} )>0) {
+				foreach my $domain (@{$PROJECTS{$row->{'UUID'}}}) {
+					$domains .= "<li>$domain</li>";
+					}
+				}
+			else {
+				$domains .= "<i>None</i>";
+				}
+
+			my $ID = $row->{'ID'};
 			$c .= "<tr>
-<td><a href='/biz/setup/projects/index.cgi?VERB=PROJECT-EDIT&ID=$row->{'ID'}'>[EDIT]</a></td>
-<td><a href='/biz/setup/projects/index.cgi?VERB=PROJECT-DELETE&ID=$row->{'ID'}'>[DELETE]</a></td>
-<td>$row->{'ID'}</td>
-<td>$row->{'TITLE'}</td>
-<td>$row->{'UUID'}</td>
-<td>$row->{'UPDATED_TS'}</td>
-<td>Callback URL: $link</td>
+<td valign=top>$BUTTONS</td>
+<td valign=top>$row->{'TYPE'} : $row->{'TITLE'}</td>
+<td valign=top>$row->{'UUID'}</td>
+<td valign=top>$row->{'UPDATED_TS'}</td>
+<td valign=top>
+	<div>Branch: $branch</div>
+	<div>Domains: $domains</div>
+	<div>Callback URL: <a href=\"#\" onClick=\"jQuery('#callback$ID').removeClass('displayNone'); jQuery(this).hide();\">Show</a>
+<div id=\"callback$ID\" class=\"displayNone\">$link</div></div>
+	</td>
 </tr>\n";
 			}
+
+		# $c .= Dumper(\%PROJECTS);
 		$GTOOLS::TAG{'<!-- PROJECTS -->'} = $c;
 		}
+
 
 	$template_file = 'index.shtml';
 	}
@@ -343,7 +402,7 @@ push @TABS, { name=>'Add New', link=>'/biz/setup/projects/index.cgi?VERB=PROJECT
 
 
 
-&GTOOLS::output(file=>$template_file,header=>1,
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,
 	tabs=>\@TABS,
 	msgs=>\@MSGS,
 	'jquery'=>'1',

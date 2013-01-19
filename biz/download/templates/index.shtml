@@ -43,7 +43,10 @@ Zoovy supports network database installations for customers who need concurrent 
 Please download and install the following application on your network database server:
 <ul>
 	<li> <b>Zoovy Network Sync Manager</b><br>
-	<a href="/biz/downloads/record.cgi?CODE=<!-- ZNSM_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->">
+<button type="submit" class="button2" onClick="
+	openPopupWindow('/biz/downloads/record.cgi?USERNAME=<!-- USERNAME -->&CODE=<!-- ZNSM_FILE -->&MAJOR=<!-- VERSION_MAJOR -->&MINOR=<!-- VERSION_MINOR -->'); return false;" type="submit">Download Sync Manager</button>
+</form>
+
 [[Download v<!-- VERSION -->]]</a>
 <div class="hint">
 A windows service that automatically synchronizes your local databases with Zoovy

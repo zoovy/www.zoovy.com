@@ -1,3 +1,54 @@
 
 *** Modified files in JOE when it aborted on Sun Oct  7 15:32:39 2012
 *** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Mon Dec  3 15:52:30 2012
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Mon Dec  3 15:52:30 2012
+*** JOE was aborted by signal 1
+
+*** File '(Unnamed)'
+r
+supportFrm
+supportUtilityFrm
+<button form="supportUtilityFrm"
+
+*** File '(Unnamed)'
+1
+1
+1
+
+*** File '(Unnamed)'
+index.cgi
+templates/index.shtml
+index.cgi
+index.cgi
+templates/index.shtml
+templates/index.shtml
+index.cgi
+index.cgi
+index.cgi
+templates/index.shtml
+templates/index.shtml
+templates/index.shtml
+templates/index.shtml
+templates/index.shtml
+templates/index.shtml
+templates/index.shtml
+
+*** File '(Unnamed)'
+CLENA
+CLEAN
+PRODUCT_CLE
+BATCH
+form
+form
+form
+form
+<button
+batchFrm
+batchFrm
+supportFrm
+<button
+alert

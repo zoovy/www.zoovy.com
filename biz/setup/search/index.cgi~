@@ -211,6 +211,14 @@ if ($VERB eq 'LOG-DELETE') {
 	}
 
 
+if ($VERB eq 'LOG-REPORT') {
+	push @MSGS, "";
+	## /biz/batch/index.cgi?VERB=NEW&GUID=$GUID&EXEC=REPORT&REPORT=SEARCHLOG_SUMMARY&.file=$file
+	$VERB = 'LOGS';
+	}
+
+
+
 
 if ($VERB eq 'LOGS') {
 	##
@@ -230,8 +238,8 @@ if ($VERB eq 'LOGS') {
 			$c .= "<tr><td>$CATALOG</td><td>$file</td><td>".&ZTOOLKIT::pretty_date($mtime,1)."</td>";
 			$c .= "<td nowrap>";
 			$c .= "<a target=\"_blank\" href=\"http://static.zoovy.com/merchant/$USERNAME/$file\">[View]</a> ";
-			$c .= " <a href=\"index.cgi?ACTION=LOG-DELETE&FILE=$file\">[Delete]</a>";
-			$c .= " <a href=\"/biz/batch/index.cgi?VERB=NEW&GUID=$GUID&EXEC=REPORT&REPORT=SEARCHLOG_SUMMARY&.file=$file\">[Report]</a>";
+			$c .= " <a href=\"/biz/setup/search/index.cgi?ACTION=LOG-DELETE&FILE=$file\">[Delete]</a>";
+			$c .= " <a href=\"/biz/setup/search/index.cgi?ACTION=LOG-REPORT&FILE=$file\">[Report]</a>";			
 			$c .= " </td></tr>\n";
 			}
 		}
@@ -591,7 +599,7 @@ if ($VERB eq '') {
 			}
 		$c .= "<td valign=top class='$row' nowrap>";
 
-		$c .= '[<a href="index.cgi?ACTION=DELETE&CATALOG='.$hashref->{'CATALOG'}.'">DELETE</a>]<br>';
+		$c .= '[<a href="/biz/setup/search/index.cgi?ACTION=DELETE&CATALOG='.$hashref->{'CATALOG'}.'">DELETE</a>]<br>';
 
 
 #		$lasttime = &ZTOOLKIT::mysql_to_unixtime($hashref->{'LASTINDEX'});
@@ -669,11 +677,11 @@ if ($VERB eq 'DENY') {
 
 
 my @TABS = ();
-push @TABS, { name=>"Catalogs", selected=>($VERB eq '')?1:0, link=>"index.cgi?ACTION="  };
-push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"index.cgi?ACTION=LOGS"  };
-push @TABS, { name=>"Catalog Debug", selected=>($VERB eq 'DEBUG')?1:0, link=>"index.cgi?ACTION=DEBUG"  };
-push @TABS, { name=>"Tuning", selected=>($VERB eq 'GLOBAL')?1:0, link=>"index.cgi?ACTION=GLOBAL" };
-push @TABS, { name=>"Elastic Raw", selected=>($VERB eq 'DEBUG')?1:0, link=>"index.cgi?ACTION=RAWE"  };
+push @TABS, { name=>"Catalogs", selected=>($VERB eq '')?1:0, link=>"/biz/setup/search/index.cgi?ACTION="  };
+push @TABS, { name=>"Logs", selected=>($VERB eq 'LOGS')?1:0, link=>"/biz/setup/search/index.cgi?ACTION=LOGS"  };
+push @TABS, { name=>"Catalog Debug", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz/setup/search/index.cgi?ACTION=DEBUG"  };
+push @TABS, { name=>"Tuning", selected=>($VERB eq 'GLOBAL')?1:0, link=>"/biz/setup/search/index.cgi?ACTION=GLOBAL" };
+push @TABS, { name=>"Elastic Raw", selected=>($VERB eq 'DEBUG')?1:0, link=>"/biz/setup/search/index.cgi?ACTION=RAWE"  };
 
 
 &GTOOLS::output(

@@ -192,4 +192,4 @@ if (($VERB eq '') || ($VERB eq 'SEARCH')) {
 	$template_file = 'index.shtml';
 	}
 	
-&GTOOLS::output(bc=>\@BC,msgs=>\@MSGS,,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,bc=>\@BC,msgs=>\@MSGS,,file=>$template_file,header=>1);

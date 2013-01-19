@@ -55,7 +55,7 @@ if ($ACTION eq 'SAVE') {
 $GTOOLS::TAG{'<!-- ENDICIA_AVS_CHECKED -->'}   = $webdbref->{'endicia_avs'} ? 'CHECKED' : '' ;
 $GTOOLS::TAG{'<!-- ENDICIA_SERIAL -->'}   = $webdbref->{'endicia_serial'};
 
-&GTOOLS::output(title=>'', file=>$template_file,header=>1,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,title=>'', file=>$template_file,header=>1,bc=>\@BC);
 
 exit;
 

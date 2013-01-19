@@ -8,7 +8,6 @@ use GTOOLS;
 require SITE;
 require ZOOVY;
 require DBINFO;
-require ORDER;
 require CUSTOMER;
 require INVENTORY;
 require ZTOOLKIT;
@@ -252,6 +251,14 @@ $GTOOLS::TAG{"<!-- TRACKING -->"} = $c;
 ##
 ## NOTES
 ##
+
+if ($CMD eq 'VERB-ADD-CUSTOMER-NOTE') {
+   $CMD = '';
+   if ($ZOOVY::cgiv->{'NOTE'} ne '') {
+      $CUSTOMER->save_note($LUSERNAME,$ZOOVY::cgiv->{'NOTE'});
+		push @MSGS, "SUCCESS|+added note to customer record";
+      }
+	}
 
 if ($CMD eq 'VERB-NOTES-SET') {
 	$O2->in_set('want/order_notes',$ZOOVY::cgiv->{'want/order_notes'});
@@ -560,7 +567,7 @@ $GTOOLS::TAG{'<!-- PRIVATE_NOTES -->'} = &ZOOVY::incode($O2->in_get('flow/privat
 				$NOTES
 			</table>
 			<table cellpadding='0' cellspacing='0'><tr><td nowrap>
-				Add Note: <input maxlength="80" type="textbox" size="80" name="NOTE"> <input onClick="document.thisFrm.CMD.value='SAVENOTE'; document.thisFrm.submit();" class="button" type="button" value=" Add ">	
+				Add Note: <input maxlength="80" type="textbox" size="80" name="NOTE"> <button onClick="jQuery('#CMD').val('VERB-ADD-CUSTOMER-NOTE'); " class="button" type="submit">Add</button>
 			</td></tr></table>
 			</td>
 		</tr>
@@ -596,7 +603,7 @@ my $HEADJS = '';
 #~;
 
 
-&GTOOLS::output('bc'=>\@BC, msgs=>\@MSGS, headjs=>$HEADJS, file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,'bc'=>\@BC, msgs=>\@MSGS, headjs=>$HEADJS, file=>$template_file,header=>1);
 
 
 

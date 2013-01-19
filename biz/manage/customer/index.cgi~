@@ -548,10 +548,9 @@ if ($VERB eq 'CREATEADDR') {
 	$GTOOLS::TAG{'<!-- ADDRESS1 -->'} = $ZOOVY::cgiv->{'address1'};
 	$GTOOLS::TAG{'<!-- ADDRESS2 -->'} = $ZOOVY::cgiv->{'address2'};
 	$GTOOLS::TAG{'<!-- CITY -->'} = $ZOOVY::cgiv->{'city'};
-	$GTOOLS::TAG{'<!-- STATE -->'} = $ZOOVY::cgiv->{'state'};
-	$GTOOLS::TAG{'<!-- PROVINCE -->'} = $ZOOVY::cgiv->{'province'};
-	$GTOOLS::TAG{'<!-- ZIP -->'} = $ZOOVY::cgiv->{'zip'};
-	$GTOOLS::TAG{'<!-- COUNTRY -->'} = $ZOOVY::cgiv->{'country'};
+	$GTOOLS::TAG{'<!-- REGION -->'} = $ZOOVY::cgiv->{'region'};
+	$GTOOLS::TAG{'<!-- POSTAL -->'} = $ZOOVY::cgiv->{'postal'};
+	$GTOOLS::TAG{'<!-- COUNTRYCODE -->'} = $ZOOVY::cgiv->{'countrycode'};
 	$GTOOLS::TAG{'<!-- EMAIL -->'} = $ZOOVY::cgiv->{'email'};
 	$GTOOLS::TAG{'<!-- PHONE -->'} = $ZOOVY::cgiv->{'phone'};
 	$GTOOLS::TAG{'<!-- CID -->'} = $CID;
@@ -600,17 +599,9 @@ if ($VERB eq 'EDITADDR') {
 		$GTOOLS::TAG{'<!-- ADDRESS1 -->'} = $addr->{$TYPE.'_address1'};
 		$GTOOLS::TAG{'<!-- ADDRESS2 -->'} = $addr->{$TYPE.'_address2'};
 		$GTOOLS::TAG{'<!-- CITY -->'} = $addr->{$TYPE.'_city'};
-		$GTOOLS::TAG{'<!-- STATE -->'} = $addr->{$TYPE.'_state'};
-		$GTOOLS::TAG{'<!-- PROVINCE -->'} = $addr->{$TYPE.'_province'};
-
-		if ($addr->{$TYPE.'_country'} ne '' && 
-			 $addr->{$TYPE.'_country'} ne 'USA' && 
-			 $addr->{$TYPE.'_country'} ne 'US' &&
-			 $addr->{$TYPE.'_country'} ne 'United States of America'){
-			$GTOOLS::TAG{'<!-- ZIP -->'} = $addr->{$TYPE.'_int_zip'};
-			}
-		else { $GTOOLS::TAG{'<!-- ZIP -->'} = $addr->{$TYPE.'_zip'}; }
-		$GTOOLS::TAG{'<!-- COUNTRY -->'} = $addr->{$TYPE.'_country'};
+		$GTOOLS::TAG{'<!-- REGION -->'} = $addr->{$TYPE.'_region'};
+		$GTOOLS::TAG{'<!-- POSTAL -->'} = $addr->{$TYPE.'_postal'};
+		$GTOOLS::TAG{'<!-- COUNTRYCODE -->'} = $addr->{$TYPE.'_countrycode'};
 		$GTOOLS::TAG{'<!-- EMAIL -->'} = $addr->{$TYPE.'_email'};
 		$GTOOLS::TAG{'<!-- PHONE -->'} = $addr->{$TYPE.'_phone'};
 		if ($TYPE eq 'ship' || $TYPE eq 'ws') {
@@ -1027,7 +1018,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 			foreach my $noteref (sort @{$C->fetch_notes()}) {
 				my $remove = '';
 				if (1) {
-					$remove = "<td><a href=\"?VERB=NUKENOTE&NID=$noteref->{'ID'}&CID=$CID&EMAIL=$EMAIL\">[Remove]</a></td>";
+					$remove = "<td><a href=\"/biz/manage/customer/index.cgi?VERB=NUKENOTE&NID=$noteref->{'ID'}&CID=$CID&EMAIL=$EMAIL\">[Remove]</a></td>";
 					}
 
 				my $pretty_date = ZTOOLKIT::pretty_date($noteref->{'CREATED_GMT'});
@@ -1089,7 +1080,7 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		next if (not defined $O2);
 
 		$out .= "<tr bgcolor='".(($count%2==0)?'EEEEEE':'FFFFFF')."'>";
-		$out .= "<td class='order'><a target='_blank' href='https://www.zoovy.com/biz/orders/view.cgi?ID=".$O2->oid()."'>".$O2->oid()."</a></td>";
+		$out .= qq~<td class='order'><a href="#" onClick="jQuery('#ordersContent').empty(); navigateTo('/biz/orders/view.cgi?ID=~.$O2->oid().qq~');">~.$O2->oid().qq~</a></td>~;
 		$out .= "<td class='order'>".($O2->pool())."</td>";
 		$out .= "<td class='order'>".($O2->in_get('sum/order_total'))."</td>";
 		$out .= "<td class='order'>".($O2->payment_method())."</td>";
@@ -1127,5 +1118,5 @@ push @TABS, { 'name'=>'Reports', link=>'/biz/manage/customer/index.cgi?VERB=REPO
 push @TABS, { 'name'=>'Create', link=>'/biz/manage/customer/index.cgi?VERB=CREATE', selected=>($VERB eq 'CREATE')?1:0 };
 
 
-&GTOOLS::output(file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS,bc=>\@BC,js=>1);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1,msgs=>\@MSGS,tabs=>\@TABS,bc=>\@BC,js=>1);
 &DBINFO::db_user_close();

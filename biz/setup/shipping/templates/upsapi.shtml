@@ -15,7 +15,7 @@
 
 <!-- MESSAGE -->
 
-<form action="/biz/setup/upsapi.cgi" method="POST" target="_top">
+<form action="/biz/setup/shipping/upsapi.cgi" method="POST" target="_top">
 
 <font face="Arial, Helevetica">
 <br>
@@ -26,7 +26,7 @@ it will be the only one displayed!</b>.<br>
 <br>
 
 UPS Shipper Number: <!-- UPS_SHIPPER_NUMBER --><br>
-<a href="/biz/setup/upsapi.cgi?VERB=apply&SUPPLIER_ID=<!-- SUPPLIER_ID -->">Re-Apply for UPS OnLine&reg; Tools / Change Shipper Number</a><br>
+<a href="/biz/setup/shipping/upsapi.cgi?VERB=apply&SUPPLIER_ID=<!-- SUPPLIER_ID -->">Re-Apply for UPS OnLine&reg; Tools / Change Shipper Number</a><br>
 <br>
 <hr>
 <b>AIRBILL PRINTING (via Windows Order Manager):</b><br>

@@ -7,39 +7,45 @@
 
 <form action="index.cgi">
 <div class="stdform">
-<legend class="stdform">Add Project</legend>
 <input type="hidden" name="VERB" value="PROJECT-ADD-SAVE">
 
 <div>
 <label class="stdform" for="title">Project Title</label>
-<input class="stdform" id="title" name="title">
+<input type="text" size="25" class="stdform" id="title" name="title">
+<div class="hint">ex: domain.com master</div>
 </div>
 
 <div>
 <label class="stdform" for="type">Project Type</label>
 <select class="stdform" id="type" name="type">
 	<option value="APP">Shopping App (index.html)</option>
-	<option value="VSTORE">Legacy vStore Project</option>
-	<option value="ADMIN">Hosted Admin App</option>
-	<option value="CHECKOUT">Checkout Intercept</option>
-	<option value="DSS">Decision Support System</option>
+	<option value="VSTORE">Legacy vStore Project (beta)</option>
+	<option value="ADMIN">Hosted Admin App (beta)</option>
+	<option value="CHECKOUT">Checkout Intercept (beta)</option>
+	<option value="DSS">Decision Support System (beta)</option>
 </select>
 </div>
 
 <div>
-<label class="stdform" for="title">GitHub Repo</label>
-<input class="stdform" id="repo" name="repo">
+<label class="stdform" for="repo">GitHub Repo</label>
+<input type="text" size="128" maxlength="128" class="stdform" id="repo" name="repo">
 <div class="hint">ex: http://github.com/yourname/project.git</div>
 <div class="hint">**ONLY http:// urls are supported at the moment.**</div>
+</div>
+
+<div>
+<label class="stdform" for="branch">GitHub Branch</label>
+<input type="text" size="10" maxlength="10" class="stdform" id="branch" name="branch">
+<div class="hint">leave blank to track master branch</div>
+</div>
+<div class="warning">
+At this time only GITHUB hosted projects with public http urls are supported.
 </div>
 
 <div>
 <input type="checkbox" name="domain"> Reserve a test domain for this project.</input>
 </div>
 
-<div class="caution">
-At this time only GITHUB hosted projects with public http urls are supported.
-</div>
 
 <input class="button" type="submit" value="Save">
 </div>

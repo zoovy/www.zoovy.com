@@ -592,7 +592,7 @@ if ($ACTION eq '') {
 	}
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
    'title'=>'Setup : TOXML Manager',
    'file'=>$template_file,
    'header'=>1,

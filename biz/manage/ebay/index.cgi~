@@ -154,10 +154,10 @@ if ($VERB eq 'EXPORT') {
 		#  enum('NEW','ACTIVE','PAUSED','ERROR','DONE')
 		my $pstmt = "select ID,STATUS,PRODUCT,TITLE,
 		QUANTITY_RESERVED,QUANTITY_SOLD,LISTINGS_ALLOWED,LISTINGS_LAUNCHED,CONCURRENT_LISTINGS,START_HOUR,END_HOUR,LAUNCH_DOW,LAUNCH_DELAY,FILL_BIN_ASAP,
-		date_format(CREATED,'%Y-%m-%d %H:%i') as CREATED, 
-		date_format(EXPIRES,'%Y-%m-%d %H:%i') as EXPIRES, 
-		date_format(from_unixtime(LAST_LAUNCH_GMT),'%Y-%m-%d %H:%i') as LAST_LAUNCH, 
-		date_format(from_unixtime(LAST_SALE_GMT),'%Y-%m-%d %H:%i') as LAST_SALE
+		date_format(CREATED_TS,'%Y-%m-%d %H:%i') as CREATED, 
+		date_format(EXPIRES_TS,'%Y-%m-%d %H:%i') as EXPIRES, 
+		date_format(LAST_LAUNCH_TS,'%Y-%m-%d %H:%i') as LAST_LAUNCH, 
+		date_format(LAST_SALE_TS,'%Y-%m-%d %H:%i') as LAST_SALE
 		from EBAY_POWER_QUEUE where MID=$MID ";
 		if ($TYPE eq 'power-active') {
 			$pstmt .= " and STATUS in ('NEW','ACTIVE')";
@@ -326,6 +326,6 @@ if ($VERB eq 'EXPORT') {
 
 if ($VERB ne 'EXPORT') {
 	$GTOOLS::TAG{'<!-- FILENAME -->'} = "ebay-".time();
-	&GTOOLS::output(file=>'index.shtml',header=>1);
+	&GTOOLS::output('*LU'=>$LU,file=>'index.shtml',header=>1);
 	}
 

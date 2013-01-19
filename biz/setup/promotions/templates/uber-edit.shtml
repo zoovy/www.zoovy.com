@@ -5,7 +5,7 @@
 <tr><td class="zoovytableheader"><!-- WHAT_ARE_WE_DOING --></td></tr>
 <tr><td>
 <form action="index.cgi" METHOD="POST" name="promo_form">
-<input type="hidden" name='VERB' value="UBER-EDITSAVE">
+<input type="hidden" name='VERB' value="AUTO-EDITSAVE">
 <input type="hidden" name='method' value="<!-- METHOD -->">
 <input type="hidden" name='id' value="<!-- ID -->">
 
@@ -75,9 +75,9 @@ ITEM Matching rules: extended total (qty * price) <br>
 <tr>
 	<td valign='top'><b>Image:</b></td>
 	<td>
-	<a href="#" onClick="mediaLibrary($('#IMAGE'), $('#THUMBURL'),'mode=promo&promo=<!-- ID -->','Choose Promo Thumbnail');">
+	<a href="#" onClick="mediaLibrary($('#THUMBURL'), $('#IMAGE'),'Choose Promo Thumbnail');">
 	<img id="THUMBURL" name="THUMBURL" height=50 width=50 border=0 src="<!-- THUMBURL -->"><br>[ Edit ]</a> 
-	<input type="hidden" name="IMAGE" value="<!-- IMAGE -->"> (for use with image carts)</td>
+	<input type="hidden" id="IMAGE" name="IMAGE" value="<!-- IMAGE -->"></td>
 </tr>
 </table>
 
@@ -86,7 +86,7 @@ ITEM Matching rules: extended total (qty * price) <br>
 <table>
 <tr>
 <td><input type="submit" class="button" value=" Save "></td> 
-<td><button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=UBER');">Cancel</button></td>
+<td><button class="button" onClick="navigateTo('/biz/setup/promotions/index.cgi?VERB=AUTO');">Cancel</button></td>
 <!-- DELETE_BUTTON -->
 </tr>
 </table>

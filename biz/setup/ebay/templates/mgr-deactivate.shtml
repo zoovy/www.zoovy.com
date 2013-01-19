@@ -18,8 +18,6 @@ Please confirm your decision below, or press Exit to abort this procedure.<br>
 <input type="hidden" name="ID" value="<!-- ID -->">
 <input type="image" src="http://www.zoovy.com/images/bizbuttons/proceed.gif">
 </form>
-</td><td valign='top'>
-<a href="index.cgi"><img src="http://www.zoovy.com/images/bizbuttons/exit.gif" border="0"></a>
 </td></tr>
 </table>
 </center>

@@ -49,7 +49,7 @@ $GTOOLS::TAG{'<!-- PRODUCT -->'} = $PRODUCT;
 $GTOOLS::TAG{'<!-- HTMLCONTENT -->'} = $P->fetch('zoovy:prod_desc');
 # &ZOOVY::fetchproduct_attrib($USERNAME,$PRODUCT,'zoovy:prod_desc');
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>'',
 	header=>1,
 	file=>'index.shtml',

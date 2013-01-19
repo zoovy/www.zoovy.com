@@ -182,4 +182,4 @@ push @TABS, { name=>'Current Vendors', link=>"/biz/manage/vendors/index.cgi", se
 push @TABS, { name=>'New Vendor', link=>"/biz/manage/vendors/index.cgi?VERB=NEW", selected=>(($VERB eq 'NEW')?1:0) };
 
 &DBINFO::db_user_close();
-&GTOOLS::output(header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);
+&GTOOLS::output('*LU'=>$LU,header=>1,file=>$template_file,tabs=>\@TABS,msgs=>\@MSGS);

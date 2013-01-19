@@ -10,7 +10,7 @@
 
 <br>
 <table width="500"><tr><td>
-<form action="index.cgi" method="POST">
+<form action="/biz/syndication/amazon/index.cgi" method="POST">
 <input type="hidden" name="VERB" value="SAVE-CATEGORIES">
 <b>Reports:</b><br>
 

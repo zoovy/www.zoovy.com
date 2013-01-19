@@ -73,16 +73,20 @@ if ($VERB eq 'SAVE') {
 
 	if (not $lm->can_proceed()) {
 		$VERB = 'TRYAGAIN';
-		print STDERR Dumper($lm);
+		# print STDERR 'TRY AGAIN: '.Dumper($stuff2,$lm);
 		}
 	}
 
 
 if ($VERB eq 'SAVE') {
-	my $xml = $stuff2->as_xml($COMPAT);
+
+
+	my ($xml,$errors) = $stuff2->as_xml($COMPAT);
+#	print STDERR "XML: $xml\n";
+#	print STDERR "STUFF2: ".Dumper($stuff2)."\n";
 
 	print "Content-type: text/html\n\n";
-		print qq~
+	print qq~
 <html>
 <font color="blue">Success!</font><br>
 <b>This window should close automatically in a moment.</b><br>

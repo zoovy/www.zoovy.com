@@ -1186,7 +1186,7 @@ if ($LU->get('todo.setup')) {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 	'title'=>'Payment Processing Configuration',
 	'file'=>$template_file,
 	'header'=>'1',

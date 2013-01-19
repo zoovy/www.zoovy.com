@@ -35,7 +35,7 @@ else {
 	# ($html,$js) = GTOOLS::Table::buildProductTable('brian',['TS67','TS30','TTS24'],height=>200,dragdrop=>1);
 	# $js = "<script><!--\n$js\n//--></script>";
 	# $GTOOLS::TAG{'<!-- PRODUCT_FINDER -->'} = $html . $js;
-	&GTOOLS::output(
+	&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,
 		title=>'Setup: Manage Navcats',
 		help=>'#50555',
 		jquery=>1,

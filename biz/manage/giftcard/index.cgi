@@ -564,7 +564,7 @@ push @TABS, { name=>'Card Series', selected=>($VERB eq 'LIST-SERIES')?1:0, link=
 push @TABS, { name=>'Products', link=>'/biz/manage/giftcard/index.cgi?VERB=PRODUCTS' };
 
 
-&GTOOLS::output(file=>$template_file,bc=>[
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,file=>$template_file,bc=>[
 	{ name=>'Utilities' },
 	{ name=>'Gift Cards' }
 	],

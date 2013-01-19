@@ -124,7 +124,7 @@ sub build_weight_tb {
 	return($out);
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	help=>'#50381',
 	file=>$template_file,
 	header=>1,

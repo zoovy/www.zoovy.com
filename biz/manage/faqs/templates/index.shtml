@@ -1,48 +1,49 @@
 <!-- UTILITIES_TAB -->
 
-<form id="thisFrm" name="thisFrm" action="index.cgi">
-<input type="hidden" name="VERB" id="VERB">
-<input type="hidden" name="DATA" id="DATA">
+<form id="utilityFaqFrm" name="utilityFaqFrm" action="/biz/manage/faqs/index.cgi">
+<input form="utilityFaqFrm" type="hidden" name="VERB" id="VERB" value="">
+<input form="utilityFaqFrm" type="hidden" name="DATA" id="DATA" value="">
 
 <center>
 <br />
 <table cellspacing='0' cellpadding='2' width="600" class='zoovytable'>
 	<tr><td class="zoovytableheader">Add Content: </td></tr>
 	<tr><td>
-		Topic: <input type="textbox" name="topic"> 
-			<input onClick="
-			window.document.thisFrm.VERB.value='ADDTOPIC';
-			window.document.thisFrm.submit();
-			" type="button" value="Add Topic" class="button">
+		Topic: <input form="utilityFaqFrm" type="textbox" name="topic"> 
+			<button onClick="
+			jQuery('#VERB').attr('value','ADDTOPIC');
+			jQuery('#utilityFaqFrm').submit(); 
+			return(false);
+			" type="button" class="button">Add Topic</button>
 			
 			
 		<hr class='ruler'>
 		<table>
 		<tr>
 			<td valign=top>Topic:</td>
-			<td valign=top><select name="topicid"><!-- TOPICS --></select></td>
+			<td valign=top><select form="utilityFaqFrm" name="topicid"><!-- TOPICS --></select></td>
 		</tr>
 		<tr>
 			<td valign=top>Question:</td>
-			<td valign=top><input type="textbox" name="question" style='width:400px;' maxlength='80'></td>
+			<td valign=top><input form="utilityFaqFrm" type="textbox" name="question" style='width:400px;' maxlength='80'></td>
 		</tr>
 		<tr>
 			<td valign=top>Answer:</td>
-			<td valign=top><textarea name="answer" style='width:400px;'></textarea></td>
+			<td valign=top><textarea form="utilityFaqFrm" name="answer" style='width:400px;'></textarea></td>
 		</tr>
 		<tr>
 			<td valign=top>Keywords:</td>
-			<td valign=top><input type="textbox" name="keywords" style='width:400px;' maxlength='128'></td>
+			<td valign=top><input form="utilityFaqFrm" type="textbox" name="keywords" style='width:400px;' maxlength='128'></td>
 		</tr>
 		<tr>
 			<td valign=top>Priority:</td>
-			<td valign=top><input size=2 maxlength='2' type="textbox" name="priority" value="<!-- PRIORITY -->"><br>
+			<td valign=top><input form="utilityFaqFrm" size=2 maxlength='2' type="textbox" name="priority" value="<!-- PRIORITY -->"><br>
 		<div class="hint">Priority determines sort order, and can contain a number between 0-99 where 0 is the highest priority</div></td></tr>
 		</table>
-			<input onClick="
-			window.document.thisFrm.VERB.value='ADDQANDA';
-			window.document.thisFrm.submit();
-			" type="button" value="Add FAQ" class="button">
+			<button form="utilityFaqFrm" onClick="
+			jQuery('#VERB').attr('value','ADDQANDA');
+			jQuery('#utilityFaqFrm').submit(); return false;
+			" type="button" class="button">Add FAQ</button>
 		
 			</td>
 	</tr>

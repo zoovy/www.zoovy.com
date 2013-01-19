@@ -10,53 +10,6 @@
 <table class="zoovytable" cellspacing=0 width="800" cellpadding="0">
 
 <tr class="zoovytableheader">
-	<td colspan='2' align='left' class='title' valign='top'>&nbsp; <b>Customer Account Behaviors</b></td>
-</tr>
-<tr>
-	<td colspan=2 valign="top" class="body" align='left'>
-<br>
-<u>Customer Account/CRM Behavior:</u><br>
-<table>
-	<tr>
-		<td colspan=2>
-<input type='radio' name='customer_management' <!-- CM_STANDARD --> value='STANDARD'><b>Standard:</b> Require customers to use/create accounts, require existing customers to login. [RECOMMENDED FOR CRM]<br>
-<input type='radio' name='customer_management' <!-- CM_NICE --> value='NICE'><b>Nice:</b> Prompt customers to use/create accounts, but always let them purchase, even without logging into their account.<br>
-<input type='radio' name='customer_management' <!-- CM_STRICT --> value='STRICT'><b>Strict:</b> Prompt customers to use/create accounts, and require a customer to login if they have an account.<br>
-<input type='radio' name='customer_management' <!-- CM_PASSIVE --> value='PASSIVE'><b>Passive:</b> Never ask customers to create an account,  automatically correlate multiple sales by the same customer.<br>
-<input type='radio' name='customer_management' <!-- CM_DISABLED --> value='DISABLED'><b>Disabled:</b> Turn off all customer management and tracking.<br>
-<input type='radio' name='customer_management' <!-- CM_MEMBER --> value='MEMBER'><b>Members Only:</b> Allow anybody to browse site, but do NOT allow new customers to create an account, or make a purchase (customers must have an account on record to purchase).<br>
-<input type='radio' name='customer_management' <!-- CM_PRIVATE --> value='PRIVATE'><b>Private:</b> REQUIRE customer to login before they can access site, do NOT allow new customers to create an account, or make a purchase.<br>
-<div class="hint">
-HINT: If you configure customer accounts to either optional or disabled, you should immediately edit your "order created message"
-so it does not invite the customer to login and view order status. To edit the default order created message go to Setup | Email Messages, and 
-edit the "Order Created" message.
-</div>
-<br>
-</td>
-</tr>
-<tr>
-	<td colspan=2 valign="top" class="body" align='left'>
-<br><u>Privacy Settings:</u><br>
-	<input type='radio' name='customer_privacy' value='NONE' <!-- CP_NONE --> > Store full information including billing, shipping, and payment.<br>
-	<input type='radio' name='customer_privacy' value='SAFE' <!-- CP_SAFE --> > Store full information including billing and shipping. (RECOMMENDED)<br>
-	<input type='radio' name='customer_privacy' value='OTHER' <!-- CP_OTHER --> > Store no information, but username, password, and email address.<br>
-	<br>
-	</td>
-</tr>
-<tr>
-	<td align="right" class="body" valign="top">
-	<input type='checkbox' name='chkout_save_payment_disabled' <!-- CHKOUT_SAVE_PAYMENT_DISABLED_CHECKED -->></td>
-	<td valign="top" class="body" align='left'>
-	Do not store or retrieve payment-related information (i.e. credit card numbers) for returning users.<br>
-	<div class="hint">
-	RECOMMENDED: only store addresses and other contact information.
-	Only applicable if customer accounts are being created via the "Customer Account Behavior" setting above.
-	Keep in mind that customers will still be required to supply CVV/CID's for their cards.
-	</div><br>
-	</td>
-</tr>
-
-<tr class="zoovytableheader">
 	<td colspan='2' bgcolor='CCCCCC' align='left' class='title' valign='top'>&nbsp; <b>Checkout Behaviors</b></td>
 </tr>
 

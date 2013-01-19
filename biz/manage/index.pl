@@ -114,8 +114,9 @@ push @ITEMS, { available=>($FLAGS=~/,CSV,/)?1:0, grp=>'store', link=>"/biz/manag
 
 push @ITEMS, { grp=>'store', link=>"/biz/manage/archive/index.cgi", title=>"Archive Orders", hint=>"Hide completed orders." };
 push @ITEMS, { grp=>'store', link=>"/biz/manage/diskspace/index.cgi", title=>"Disk Space Manager", hint=>"Manage the amount of disk space in use by your account." };
-push @ITEMS, { grp=>'store', link=>"/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=IMAGE_ASSOC&GUID=".time(), title=>"Image Associations", hint=>"View a list of images, and the products they are associated with" };
-#push @ITEMS, { grp=>'store', link=>"/biz/manage/paypal/index.cgi", title=>"Paypal IPN Processor", hint=>"Check the status of Paypal transactions." };
+push @ITEMS, { grp=>'store', link=>'/biz/manage/image/imgassoc/index.cgi', title=>"Image Associations", hint=>"View a list of images, and the products they are associated with" };
+# push @ITEMS, { grp=>'store', link=>"/biz/batch/index.cgi?VERB=NEW&EXEC=REPORT&REPORT=IMAGE_ASSOC&GUID=".time(), title=>"Image Associations", hint=>"View a list of images, and the products they are associated with" };
+# push @ITEMS, { grp=>'store', link=>"/biz/manage/paypal/index.cgi", title=>"Paypal IPN Processor", hint=>"Check the status of Paypal transactions." };
 push @ITEMS, { grp=>'store', link=>"/biz/syndication/sitemap/index.cgi", title=>"Static Google SiteMap", hint=>"Configure nightly generation of a static sitemap file." };
 push @ITEMS, { grp=>'store', link=>'/biz/manage/debugger/index.cgi', title=>"Website Debugger", hint=>"Website Debugger" };
 
@@ -154,7 +155,7 @@ if ($GTOOLS::TAG{'<!-- MKT_HTML -->'} eq '') {
 	}
 
 # &GTOOLS::print_form("Website Management Area/index.cgi",$template_file,1,'topic/manage.php');
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>'Website Utilities',
 	'file'=>$template_file,
 	'header'=>'1',

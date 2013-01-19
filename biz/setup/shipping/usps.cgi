@@ -129,7 +129,7 @@ else {
 	$GTOOLS::TAG{'<!-- USPS_HIDE_INT_END -->'}   = '';
 	}
 
-&GTOOLS::output(title=>'USPS Configuration', help=>'#50815',file=>$template_file,header=>1,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,title=>'USPS Configuration', help=>'#50815',file=>$template_file,header=>1,bc=>\@BC);
 
 exit;
 

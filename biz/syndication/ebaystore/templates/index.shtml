@@ -32,7 +32,8 @@ For more information on how this feature works please visit:
 	</tr>
 	<tr>
 		<td colspan="2">
-		<a href="/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=ESS&PROFILE=<!-- PROFILE -->&GUID=<!-- GUID -->">PUBLISH NOW</a><br>
+		<button type="button" class="minibutton" onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'SYNDICATION',
+	'%vars':{'DST':'ESS','PROFILE':'<!-- PROFILE -->'}}); return false;">PUBLISH NOW</button>
 		<div class="hint">
 		Publish now will queue any required listings for launch, launches will normally happen within the hour.
 		</div>

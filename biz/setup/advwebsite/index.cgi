@@ -7,7 +7,7 @@ use Storable;
 require GTOOLS;
 require ZOOVY;
 require ZWEBSITE;	
-require ORDER;
+require CART2;
 require LUSER;
 require DOMAIN::TOOLS;
 
@@ -387,7 +387,7 @@ if (uc($ACTION) eq "GENERAL-SAVE") {
 		$webdbref->{'chkout_phone'} = $ZOOVY::cgiv->{'chkout_phone'};
 
 		if ($ZOOVY::cgiv->{'order_num'}+0 != $ZOOVY::cgiv->{'hidden_order_num'}+0) {
-			&ORDER::reset_order_id($USERNAME,$ZOOVY::cgiv->{'order_num'}+0);
+			&CART2::reset_order_id($USERNAME,$ZOOVY::cgiv->{'order_num'}+0);
 			}
 		if ($ZOOVY::cgiv->{'chkout_order_notes'}) { $webdbref->{"chkout_order_notes"} = 1; } 
 		else { $webdbref->{"chkout_order_notes"} = 0; }
@@ -420,7 +420,7 @@ if (uc($ACTION) eq "GENERAL-SAVE") {
 		"<div>Some settings on this page require the <a href='/biz/configurator?VERB=VIEW&BUNDLE=WEB'>WEB</a><br> feature bundle to change, because they require functionality which is not currently available to your account.</div>";
 		}
 
-
+	push @MSGS, "SUCCESS|Updated Settings";
 	$LU->log("SETUP.CHECKOUT","Updated Checkout Settings","SAVE");
 	&ZWEBSITE::save_website_dbref($USERNAME,$webdbref,$PRT);
 	$VERB = 'GENERAL';
@@ -431,15 +431,19 @@ if (uc($ACTION) eq "GENERAL-SAVE") {
 if ($VERB eq 'GENERAL') {
 
 	my $chkout = $webdbref->{'checkout'};
-	$GTOOLS::TAG{'<!-- CHECKOUT_LEGACY -->'} = ($webdbref->{'checkout'} eq '')?'checked':'';
-	$GTOOLS::TAG{'<!-- CHECKOUT_OP1 -->'} = ($webdbref->{'checkout'} eq 'op1')?'checked':'';
-	$GTOOLS::TAG{'<!-- CHECKOUT_OP2 -->'} = ($webdbref->{'checkout'} eq 'op2')?'checked':'';
-	$GTOOLS::TAG{'<!-- CHECKOUT_OP3 -->'} = ($webdbref->{'checkout'} eq 'op3')?'checked':'';
-	$GTOOLS::TAG{'<!-- CHECKOUT_OP4 -->'} = ($webdbref->{'checkout'} eq 'op4')?'checked':'';
-	$GTOOLS::TAG{'<!-- CHECKOUT_OP5 -->'} = ($webdbref->{'checkout'} eq 'op5')?'checked':'';
+	if ($chkout eq '') { $webdbref->{'checkout'} = 'legacy'; }
+
+	$GTOOLS::TAG{'<!-- CHECKOUT_LEGACY -->'} = ($webdbref->{'checkout'} eq 'legacy')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_ACTIVE -->'} = ($webdbref->{'checkout'} eq 'active')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_PASSIVE -->'} = ($webdbref->{'checkout'} eq 'passive')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_REQUIRED -->'} = ($webdbref->{'checkout'} eq 'required')?'checked':'';
 	$GTOOLS::TAG{'<!-- CHECKOUT_OP6 -->'} = ($webdbref->{'checkout'} eq 'op6')?'checked':'';
 	$GTOOLS::TAG{'<!-- CHECKOUT_OP7 -->'} = ($webdbref->{'checkout'} eq 'op7')?'checked':'';
 	$GTOOLS::TAG{'<!-- CHECKOUT_OP8 -->'} = ($webdbref->{'checkout'} eq 'op8')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_OP9 -->'} = ($webdbref->{'checkout'} eq 'op9')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130111A -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111a')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130111P -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111p')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130111R -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111r')?'checked':'';
 
 	my $chkout_phone = $webdbref->{'chkout_phone'};
 	if (!defined($chkout_phone)) { $chkout_phone = 'REQUIRED'; }
@@ -447,9 +451,6 @@ if ($VERB eq 'GENERAL') {
 	$GTOOLS::TAG{'<!-- CHKOUT_PHONE_OPTIONAL -->'} = '';
 	$GTOOLS::TAG{'<!-- CHKOUT_PHONE_UNREQUESTED -->'} = '';
 	$GTOOLS::TAG{'<!-- CHKOUT_PHONE_'.$chkout_phone.' -->'} = ' checked ';
-
-	$GTOOLS::TAG{'<!-- CHKOUT_PAYRADIO -->'} = ($webdbref->{"chkout_payradio"})?'checked':'';
-	$GTOOLS::TAG{'<!-- CHKOUT_SHIPRADIO -->'} = ($webdbref->{"chkout_shipradio"})?'checked':'';
 	
 	$GTOOLS::TAG{'<!-- CM_STANDARD -->'} = '';
 	$GTOOLS::TAG{'<!-- CM_NICE -->'} = '';
@@ -462,14 +463,6 @@ if ($VERB eq 'GENERAL') {
 	if (!defined($customer_management)) { $customer_management = 'STANDARD'; }
 	if ($customer_management eq 'DEFAULT') { $customer_management = 'STANDARD'; }
 	$GTOOLS::TAG{'<!-- CM_'.$customer_management.' -->'} = ' CHECKED ';
-
-	$GTOOLS::TAG{'<!-- CP_NONE -->'} = '';
-	$GTOOLS::TAG{'<!-- CP_SAFE -->'} = '';
-	$GTOOLS::TAG{'<!-- CP_OTHER -->'} = '';
-	my $customer_privacy = $webdbref->{"customer_privacy"};
-	if (!defined($customer_privacy)) { $customer_privacy = 'NONE'; }
-	$GTOOLS::TAG{'<!-- CP_'.$customer_privacy.' -->'} = ' CHECKED ';
-
 
 	$GTOOLS::TAG{'<!-- CHKOUT_ORDER_NOTES_CHECKED -->'} = ($webdbref->{"chkout_order_notes"})?'checked':'';
 	$GTOOLS::TAG{'<!-- CHKOUT_SAVE_PAYMENT_DISABLED_CHECKED -->'} = ($webdbref->{'chkout_save_payment_disabled'})?'checked':'';
@@ -484,7 +477,6 @@ if ($VERB eq 'GENERAL') {
 	$GTOOLS::TAG{"<!-- CHKOUT_BILLSHIPSAME_CHECKED -->"} = ($webdbref->{"chkout_billshipsame"}) ? 'checked':'';
 
 	$GTOOLS::TAG{'<!-- CHKOUT_ROI_DISPLAY -->'} = ($webdbref->{'chkout_roi_display'})?'checked':'';
-
 
 	if ($LU->is_anycom()) { # different checkout preferences 
 		$template_file = 'checkout-anycom.shtml';
@@ -512,11 +504,11 @@ if ($FLAGS =~ /,WEB,/) {
 	push @TABS, {  selected=>($VERB eq 'SYS-MESSAGES')?1:0, name=>'System Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=SYS-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'PAY-MESSAGES')?1:0, name=>'Payment Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=PAY-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'PAGE-MESSAGES')?1:0, name=>'Special Page Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=PAGE-MESSAGES', target=>'_top' };
-	push @TABS, {  selected=>($VERB eq 'CC-MESSAGES')?1:0, name=>'CallCenter Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=CC-MESSAGES', target=>'_top' };
+	# push @TABS, {  selected=>($VERB eq 'CC-MESSAGES')?1:0, name=>'CallCenter Msgs', link=>'/biz/setup/checkout/index.cgi?MODE=CC-MESSAGES', target=>'_top' };
 	push @TABS, {  selected=>($VERB eq 'NEW-MESSAGE')?1:0, name=>'Create Message', link=>'/biz/setup/checkout/index.cgi?MODE=NEW-MESSAGE', target=>'_top' };
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Checkout Properties',
    'file'=>$template_file,
    'header'=>'1',

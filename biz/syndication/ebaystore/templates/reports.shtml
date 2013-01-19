@@ -16,37 +16,27 @@ function openWindow(url) {
 <!-- SETUP_TAB -->
 </center>
 
-<form action="/biz/batch/index.cgi">
-	<input type="hidden" name="VERB" value="NEW">
-	<input type="hidden" name=".profile" value="<!-- PROFILE -->">
-	<input type="hidden" name="REPORT" value="EBAY_LISTING">
-	<input type="hidden" name="EXEC" value="REPORT">
-	<input type="hidden" name="GUID" value="<!-- GUID -->">
-
 <br>
 <table align='center' width='600' class='zoovytable' cellspacing='0' cellpadding='4'>
 <tr>
-	<td class='zoovytableheader'>
-Listing Status
-	</td>
+	<td class='zoovytableheader'>Listing Status</td>
 </tr>
 <tr>
 	<td>
-
-<input type="radio" name=".type" selected value="SYNDICATION-LIVE"> Live Syndication Listings<br>
-<input type="radio" name=".type" value="SYNDICATION-ENDED"> Ended Syndication Listings
+	<input type="radio" name=".type" selected value="SYNDICATION-LIVE"> Live Syndication Listings<br>
+	<input type="radio" name=".type" value="SYNDICATION-ENDED"> Ended Syndication Listings
 	</td>
 </tr>
 <tr>
 	<td>
 	<div class='zbutton_group'>
-	<input type='submit' value='Run Report' class='button2'>
+	<button onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'REPORT',
+            '%vars':{'REPORT':'EBAY_LISTINGS','profile':'<!-- PROFILE -->'}}); return false;"
+		 type='submit' class='button2'>Run Report</button>
 	</div>
 	</td>
 </tr>
 </table>
-
-</form>
 
 </center>
 </body>

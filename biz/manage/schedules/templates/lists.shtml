@@ -2,7 +2,7 @@
 
 <center>
 <br>
-<form action="index.cgi" method="POST">
+<form action="/biz/manage/schedules/index.cgi" method="POST">
 <input type="hidden" name="ACTION" value="SAVELISTS">
 <table class="zoovytable" cellpadding="2" cellspacing="0" border='0' width='400'>
 	<tr>

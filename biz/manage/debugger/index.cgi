@@ -48,4 +48,4 @@ my @TABS = ();
 push @TABS, { name=>'config', link=>'/biz/utilities/debugger' };
 push @TABS, { name=>'ajax-log', link=>'/biz/utilities/debugger?VERB=AJAX_LOG' };
 
-&GTOOLS::output(tabs=>\@TABS,file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,tabs=>\@TABS,file=>$template_file,header=>1);

@@ -67,17 +67,21 @@ CSV file for a trading partner. Use multiple lines
 </tr>
 <tr>
 	<td>
-<select name=".pogs">
+<select form="myForm" name=".pogs">
 	<option value="">ignore</option>
-	<option value="JSON">JSON</option>
-	<option value="XML">XML</option>
+	<option <!-- POGS_JSON --> value="JSON">JSON</option>
+	<option <!-- POGS_XML --> value="XML">XML</option>
 </select> (POG) Product Option Group Formatting<br>
 <div class="hint">
 Product Option Groups are the actual input fields (textboxes, checkboxes,
 drop-down lists), along with any associated options and price/weight modifiers if applicable.
 </div>
 
-<input form="myForm" type="checkbox" <!-- CHK_EXPANDPOGS --> name=".expandpogs"> Expand product option groups<br>
+Variation Detail: <select form="myForm" name=".variations">
+	<option <!-- VARIATIONS_0 --> value="0">base products only (recommended)</option>
+	<option <!-- VARIATIONS_1 --> value="1">base products+variations</option>
+	<option <!-- VARIATIONS_2 --> value="2">variation level only</option>
+</select>
 
 	</td>
 </tr>

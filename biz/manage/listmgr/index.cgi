@@ -68,4 +68,4 @@ else {
 
 &DBINFO::db_user_close();
 
-&GTOOLS::output(file=>$template_file,header=>1);
+&GTOOLS::output('*LU'=>$LU,file=>$template_file,header=>1);

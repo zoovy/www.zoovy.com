@@ -4,7 +4,7 @@
 <br>
 <table class="zoovytable" width="600"><tr><td>
 
-<form action="index.cgi" method="POST">
+<form action="/biz/syndication/amazon/index.cgi" method="POST">
 <input type="hidden" name="VERB" value="SHIPPING-SAVE">
 <div class="zoovytableheader"><!-- TITLE -->:</div>
 

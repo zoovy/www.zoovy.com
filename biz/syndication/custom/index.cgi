@@ -114,7 +114,7 @@ if ($PROFILE ne '') {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Custom Syndication',
    'file'=>$template_file,
 	'head'=>qq~<script language="JavaScript1.2" type="text/javascript" src="/biz/syndication/fastlookup.js"></script>~,

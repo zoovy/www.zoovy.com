@@ -67,7 +67,7 @@ if ($ACTION eq 'SAVE_PASSWORD') {
   
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup : Change Password',
    'file'=>$template_file,
    'header'=>'1',

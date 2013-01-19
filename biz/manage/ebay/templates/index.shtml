@@ -1,8 +1,8 @@
 <!-- UTILITIES_TAB -->
 
 <center>
-<form target="_blank" action="index.cgi/<!-- FILENAME -->.csv">
-<input type="hidden" name="VERB" value="EXPORT">
+<form id="ebaymanageFrm" action="/biz/manage/ebay/index.cgi/<!-- FILENAME -->.csv">
+<input form="ebaymanageFrm"  type="hidden" name="VERB" value="EXPORT">
 
 <!-- MSG -->
 
@@ -17,39 +17,39 @@
 	<td valign=top>
 
 <h2>Listings</h2>
-<input type="radio" name="type" value="listing-active"> Active Listings<br>
-<input type="radio" name="type" value="listing-active-fixed"> Active Listings (Fixed Price)<br>
-<input type="radio" name="type" value="listing-active-store"> Active Listings (Store)<br>
-<input type="radio" name="type" value="listing-active-auction"> Active Listings (Auction)<br>
-<input type="radio" name="type" value="listing-all"> All Listings (including ended)<br>
-<input type="radio" name="type" value="listing-allattempts"> All Listings and Attempts<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-active"> Active Listings<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-active-fixed"> Active Listings (Fixed Price)<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-active-store"> Active Listings (Store)<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-active-auction"> Active Listings (Auction)<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-all"> All Listings (including ended)<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="listing-allattempts"> All Listings and Attempts<br>
 
 	</td>
 	<td valign=top>
 
 <h2>Powerlisters</h2>
-<input type="radio" name="type" value="power-all"> All PowerListers<br>
-<input type="radio" name="type" value="power-active"> - New/Active PowerListers<br>
-<input type="radio" name="type" value="power-paused"> - Paused PowerListers<br>
-<input type="radio" name="type" value="power-error"> - Errored PowerListers<br>
-<input type="radio" name="type" value="power-done"> - Done PowerListers<br>
-<input type="radio" name="type" value="power-missing"> Products without Powerlisters<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-all"> All PowerListers<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-active"> - New/Active PowerListers<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-paused"> - Paused PowerListers<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-error"> - Errored PowerListers<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-done"> - Done PowerListers<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="power-missing"> Products without Powerlisters<br>
 
 	</td>
 	<td valign=top>
 
 <h2>Event Queue</h2>
-<input type="radio" name="type" value="event-all"> All Events<br>
-<input type="radio" name="type" value="event-pending"> - Pending/Running<br>
-<input type="radio" name="type" value="event-error"> - Result: ERROR<br>
-<input type="radio" name="type" value="event-warning"> - Result: SUCCESS w/WARNING<br>
-<input type="radio" name="type" value="event-success"> - Result: SUCCESS<br>
-<input type="radio" name="type" value="event-target-powr.auction"> eBay Powerlister<br>
-<input type="radio" name="type" value="event-target-ebay.fixed"> eBay Fixed Price<br>
-<input type="radio" name="type" value="event-target-ebay.auction"> eBay Auctions<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-all"> All Events<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-pending"> - Pending/Running<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-error"> - Result: ERROR<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-warning"> - Result: SUCCESS w/WARNING<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-success"> - Result: SUCCESS<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-target-powr.auction"> eBay Powerlister<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-target-ebay.fixed"> eBay Fixed Price<br>
+<input form="ebaymanageFrm"  type="radio" name="type" value="event-target-ebay.auction"> eBay Auctions<br>
 <br>
 <h3>Optional Filters:</h3>
-<div>BatchID/Job#: <input type="textbox" name="batchid" size="10" value="<!-- BATCHID -->"></div>
+<div>BatchID/Job#: <input form="ebaymanageFrm"  type="textbox" name="batchid" size="10" value="<!-- BATCHID -->"></div>
 	</td>
 </tr>
 <tr>
@@ -70,7 +70,15 @@
 </tr>
 <tr>
 	<td colspan=3>
-<input type="submit" class="button" value=" Export ">
+	<button form="ebaymanageFrm" type="button" 
+		class="button"
+		
+		onClick="
+			var url = '/biz/utilities/ebay/index.cgi?'+app.ext.admin.u.uiCompatAuthKVP()+'&'+jQuery('#ebaymanageFrm').serialize();
+			window.open(url); 
+			return false;
+			"
+		>Export</button>
 	</td>
 </tr>
 

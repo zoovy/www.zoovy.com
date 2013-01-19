@@ -102,4 +102,4 @@ if ($ACTION eq '') {
 	$template_file = 'fixed.shtml';
 	}
 
-&GTOOLS::output(title=>'Shipping: Fixed Shipping',help=>'#50293',file=>$template_file,header=>1,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,title=>'Shipping: Fixed Shipping',help=>'#50293',file=>$template_file,header=>1,bc=>\@BC);

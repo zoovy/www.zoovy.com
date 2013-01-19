@@ -137,4 +137,4 @@ print "Cache-Control: no-cache\n"; # HTTP 1.1 non-caching specification
 print "Expires: 0\n"; # HTTP 1.0 way of saying "expire now"
 
 print "\n";
-&GTOOLS::output(help=>'#50811',title=>'',file=>'global.shtml',header=>0,bc=>\@BC);
+&GTOOLS::output('*LU'=>$LU,help=>'#50811',title=>'',file=>'global.shtml',header=>0,bc=>\@BC);

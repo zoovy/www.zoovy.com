@@ -9,10 +9,11 @@ use lib "/httpd/modules";
 use EBAY2;
 &EBAY2::load_production();
 
-if ($q->param('eb') eq '') {
-	print "Location: /biz/setup/ebay/index.cgi?ACTION=HANDOFF\n\n";
-	}
-else {
+#if ($q->param('eb') eq '') {
+#	print "Location: /biz/setup/ebay/index.cgi?ACTION=HANDOFF\n\n";
+#	}
+#else {
+if (1) {
 	my $URL = 'https://signin.ebay.com/saw-cgi/eBayISAPI.dll?SignIn';
 	my $sandbox = $q->param('sandbox');
 	if ($sandbox eq 'on') { 

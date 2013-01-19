@@ -83,7 +83,7 @@ foreach my $CLUSTER (@CLUSTERS) {
 		}
 	$sth->finish();
 
-	my $pstmt = "select DOMAIN from DOMAIN_POOLS where MID=0";
+	my $pstmt = "select DOMAIN from DOMAINS_POOL where MID=0";
 	$sth = $udbh->prepare($pstmt);
 	$sth->execute();
 	while ( my ($DOMAIN) = $sth->fetchrow() ) {

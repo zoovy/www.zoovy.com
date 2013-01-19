@@ -10,16 +10,14 @@
 
 <br>
 
-<form action="/biz/batch/index.cgi">
-<input type="hidden" name="VERB" value="NEW">
-<input type="hidden" name="EXEC" value="REPORT">
-<input type="hidden" name="GUID" value="<!-- GUID -->">
+<form id="reportFrm" action="/biz/reports/index.cgi">
+<input type="hidden" id="VERB" name="VERB" value="">
 <b>Detail Level:</b><br>
 <input type="radio" name="REPORT" value="INVENTORY_SIMPLE"> Inventory Only (sku + quantity only)<br>
 <input type="radio" name="REPORT" value="INVENTORY_DETAIL"> Inventory Detail (product names, prices, etc.)<br>
 <input type="radio" name="REPORT" value="INVENTORY_MISSING"> Products w/o Inventory Configured<br>
 <br>
-<input class="button" type="submit" value=" Run Report ">
+<button class="button" type="button" onClick="jQuery('#VERB').val('REPORT'); jQuery('#reportFrm').submit(); return false;">Run Report</button>
 </form>
 <br>
 
@@ -30,12 +28,10 @@
 </tr>
 <tr>
 	<td>
-<form action="/biz/batch/index.cgi">
-<input type="hidden" name="VERB" value="NEW">
 <input type="hidden" name="EXEC" value="UTILITY">
 <input type="hidden" name="APP" value="INVENTORY_UPDATE_RESERVES">
 <input type="hidden" name="GUID" value="<!-- GUID -->">
-<input class="button" type="submit" value="Update Reserves">
+<button class="button" type="button" onClick="jQuery('#VERB').val('UTILITY-INVENTORY_UPDATE_RESERVES'); jQuery('#reportFrm').submit(); return false;">>Update Reserves</button>
 </form>
 
 <!--

@@ -305,20 +305,21 @@ if ($VERB eq 'GOOGAPI') {
 	}
 
 
-if ($VERB eq 'RM-SAVE') {
-	$NSREF->{'razormo:chkoutjs'} = $ZOOVY::cgiv->{'checkout_code'};
-	&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$NSREF);
-	$VERB = 'RM';
-	}
-
-if ($VERB eq 'RM') {
-	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'razormo:chkoutjs'});
-	if ($NSREF->{'razormo:chkoutjs'} =~ /http:/) {
-		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
-		}
-	$template_file = 'rm.shtml';
-	push @BC, { name=>'RazorMouth' };	
-	}
+#if ($VERB eq 'RM-SAVE') {
+#	$NSREF->{'razormo:chkoutjs'} = $ZOOVY::cgiv->{'checkout_code'};
+#	&ZOOVY::savemerchantns_ref($USERNAME,$PROFILE,$NSREF);
+#	$VERB = 'RM';
+#	}
+#
+#if ($VERB eq 'RM') {
+#	push @BC, { name=>'RazorMouth' };	
+#	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'razormo:chkoutjs'});
+#	if ($NSREF->{'razormo:chkoutjs'} =~ /http:/) {
+#		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
+#		}
+#	$template_file = 'rm.shtml';
+#	push @BC, { name=>'RazorMouth' };	
+#	}
 
 
 ##
@@ -687,6 +688,8 @@ if ($VERB eq 'GOOGLEWMT') {
 	$template_file = 'googlewmt.shtml';
 	$help = "#50596";
 
+	push @BC, { name=>'Google Webmaster' };	
+
 	$GTOOLS::TAG{'<!-- TS -->'} = time();
 	$GTOOLS::TAG{'<!-- NS -->'} = $PROFILE;
 	my $out = '';
@@ -782,6 +785,8 @@ if ($VERB eq 'SAVE-YAHOOWMT') {
 if ($VERB eq 'YAHOOWMT') {
 	$template_file = 'yahoowmt.shtml';
 	$help = "#50596";
+
+	push @BC, { name=>'Yahoo Webmaster' };	
 
 	$GTOOLS::TAG{'<!-- TS -->'} = time();
 	$GTOOLS::TAG{'<!-- NS -->'} = $PROFILE;
@@ -1107,6 +1112,7 @@ if ($VERB eq 'WISHPOT') {
 
 
 if ($VERB eq 'VERUTA') {
+	push @BC, { name=>'Veruta' };	
 	$template_file = 'veruta.shtml';
 	}
 
@@ -1125,6 +1131,7 @@ if ($VERB eq 'FETCHBACK-SAVE') {
 	}
 
 if ($VERB eq 'FETCHBACK') {
+	push @BC, { name=>'Fetchback' };	
 	$GTOOLS::TAG{'<!-- LOGINJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:loginjs'});
 	$GTOOLS::TAG{'<!-- CHKOUTJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:chkoutjs'});
 	$GTOOLS::TAG{'<!-- CARTJS -->'} = &ZOOVY::incode($NSREF->{'fetchback:cartjs'});
@@ -1380,6 +1387,7 @@ if ($VERB eq 'PRICEGRABBER') {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
 		}
 	$template_file = 'pricegrabber.shtml';
+	push @BC, { name=>'PriceGrabber' };	
 	}
 
 ##
@@ -1394,6 +1402,8 @@ if ($VERB eq 'CJ-SAVE') {
 	}
 
 if ($VERB eq 'CJ') {
+
+	push @BC, { name=>'Commission Junction' };	
 	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'cj:chkoutjs'});
 	if ($NSREF->{'cj:chkoutjs'} =~ /http:/) {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
@@ -1415,6 +1425,8 @@ if ($VERB eq 'OMNISTAR-SAVE') {
 	}
 
 if ($VERB eq 'OMNISTAR') {
+
+	push @BC, { name=>'Omnistar' };	
 	$GTOOLS::TAG{'<!-- CHECKOUT_CODE -->'} = &ZOOVY::incode($NSREF->{'omnistar:chkoutjs'});
 	if ($NSREF->{'omnistar:chkoutjs'} =~ /http:/) {
 		push @WARNINGS, $::WARN_INSECURE_CHKOUT_REFERENCE;
@@ -1788,7 +1800,7 @@ if ($VERB eq '') {
 		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=SAS&PROFILE=$ns\">Share-A-Sale</a><br>";
 		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=OMNISTAR&PROFILE=$ns\">Omnistar</a><br>";
 		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=CJ&PROFILE=$ns\">Commission Junction</a><br>";
-		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=RM&PROFILE=$ns\">RazorMouth</a><br>";
+		# $c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=RM&PROFILE=$ns\">RazorMouth</a><br>";
 		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=KOWABUNGA&PROFILE=$ns\">MyAffiliateProgram/MyAP/KowaBunga!</a><br>";
 		$c .= "- <a href=\"/biz/setup/analytics/index.cgi?VERB=LINKSHARE&PROFILE=$ns\">Linkshare.com</a><br>";
 

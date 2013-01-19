@@ -117,5 +117,5 @@ if ($c eq '') {
 	}
 
 $GTOOLS::TAG{"<!-- CONTENTS -->"} = $c;
-&GTOOLS::output(msgs=>\@MSGS,header=>1,file=>$template_file);
+&GTOOLS::output('*LU'=>$LU,msgs=>\@MSGS,header=>1,file=>$template_file);
 

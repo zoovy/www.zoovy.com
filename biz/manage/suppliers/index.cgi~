@@ -831,7 +831,7 @@ if ($VERB eq 'PRODUCTS') {
 			$c .= qq~<td>$count</td>~;
 			
 			## SKU
-			$c .= qq~<td valign=top nowrap><a target="_new" href="http://www.zoovy.com/biz/product/index.cgi?VERB=QUICKSEARCH&VALUE=$pid">$pid</a></td>~;
+			$c .= qq~<td valign=top nowrap><a href="#" onClick="navigateTo('#!products',{'pid':'$pid'});">$pid</a></td>~;
 
 			$c .= "<td>$prod_to_supref->{$pid}</td>"; 				
 			my $inv_enable = $P->fetch('zoovy:inv_enable');
@@ -1637,7 +1637,7 @@ if ($VERB eq '') {
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,'*LU'=>$LU,
 	'file'=>$template_file,
 	'title'=>$title,
 	'header'=>1,

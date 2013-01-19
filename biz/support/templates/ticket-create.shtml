@@ -1,13 +1,10 @@
 <!-- SUPPORT_TAB -->
 <!-- SUPPORT_SIDEBAR_BEGIN -->
 
-<script language="JavaScript">
-function MM_openBrWindow(theURL,winName,features) {
- window.open(theURL,winName,features);
-}
-</script>
-<form action="index.cgi" method="post">
+<form action="/biz/support/index.cgi" method="post">
 <input type="hidden" name='VERB' value='TICKET-REVIEW'>
+<input type="hidden" name="ID" value="<!-- ID -->">
+<input type="hidden" name="UUID" value="<!-- UUID -->">
 <center>
 <br>
 <table class="zoovytable" cellpadding='1' cellspacing='0' border='0' width='650'>
@@ -30,13 +27,12 @@ function MM_openBrWindow(theURL,winName,features) {
 <table>
 <tr>
 	<td valign="top">
-	<input type='radio' <!-- TOPIC_WEB_MANAGER --> name='topic' value='web_manager' checked> Zoovy.com Online Interface<br>
+	<input type='radio' <!-- TOPIC_WEB_MANAGER --> name='topic' value='web_manager' checked> Zoovy.com App<br>
 	<input type='radio' <!-- TOPIC_DESKTOP --> name='topic' value='desktop'> Desktop Client<br>
 	<input type='radio' <!-- TOPIC_USERS_WEBSITE --> name='topic' value='users_website'> Website Appearance<br>
 	<input type='radio' <!-- TOPIC_BILLING --> name='topic' value='billing'> Billing Question<br>
 	</td>
 	<td valign="top">
-	<input type='radio' <!-- TOPIC_EMAIL --> name='topic' value='email'> Zoovy Mail Hosting<br>
 	<input type='radio' <!-- TOPIC_DOMAINNAME --> name='topic' value='domainname'> Domain Name Issue<br>
 	<input type='radio' <!-- TOPIC_OTHER --> name='topic' value='other'> Other<br>
 	</td>
@@ -55,8 +51,13 @@ function MM_openBrWindow(theURL,winName,features) {
 		</table>
 		<br>
 
-		<a href="javascript:MM_openBrWindow('attach.cgi?TICKET=0', 'Attachments','scrollbars=yes,resizable=yes,width=400,height=400,status=0')" style="text-decoration: none; color: black">
-		<b>File Attachments:</b><img src="images/attachment16.gif" align="absmiddle" alt="Add Attachment" border="0" width="16" height="16" hspace='4'></a><br>
+
+		<a href="#" onClick="
+			app.ext.admin_support.a.addSupportFileUploadToID('TICKET_ATTACHED_FILES','<!-- ID -->','<!-- UUID -->');
+			jQuery(this).hide(); return false;
+			">
+		<b>File Attachments:</b><img src="/biz/supportimages/attachment16.gif" align="absmiddle" alt="Add Attachment" border="0" width="16" height="16" hspace='4'></a><br>
+		<div data-uuid="<!-- UUID -->" data-ticketid="<!-- TICKETID -->" id="TICKET_ATTACHED_FILES"></div>
 		<br>
 
 		<div class="hint">

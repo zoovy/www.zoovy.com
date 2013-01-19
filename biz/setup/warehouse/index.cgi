@@ -11,4 +11,4 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
 
-&GTOOLS::output(file=>'index.shtml',header=>1);
+&GTOOLS::output('*LU'=>$LU,file=>'index.shtml',header=>1);

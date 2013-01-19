@@ -1,9 +1,9 @@
 <!-- UTILITIES_TAB -->
 
-<form name="thisFrm" id="thisFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
-<input type='hidden' name='VIEW' value='<!-- VIEW -->'>
-<input type='hidden' name='VERB' value=''>
-<input type='hidden' name='RID' value=''>
+<form name="manageReviewsFrm" id="manageReviewsFrm" action='index.cgi' method='post' enctype='multipart/form-data'>
+<input form="manageReviewsFrm" type='hidden' id="VIEW" name='VIEW' value='<!-- VIEW -->'>
+<input form="manageReviewsFrm" type='hidden' id="VERB" name='VERB' value=''>
+<input form="manageReviewsFrm" type='hidden' id="RID" name='RID' value=''>
 
 <center>
 <table cellspacing=0 width=500 class="zoovytable">

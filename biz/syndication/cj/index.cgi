@@ -136,7 +136,7 @@ if ($VERB eq '') {
 		my ($s) = SYNDICATION->new($USERNAME,$ns,'CJ');
 		$c .= "<tr><td class=\"$class\">Status: ".$s->statustxt()."<br>";
 		$c .= " <a href=\"/biz/syndication/cj/index.cgi?VERB=EDIT&PROFILE=$ns\">EDIT</a> | ";
-		$c .= " <a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=CJ&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
+		# $c .= " <a href=\"/biz/batch/index.cgi?VERB=ADD&EXEC=SYNDICATION&DST=CJ&PROFILE=$ns&GUID=$ts\">PUBLISH</a>";
 		$c .= "<br></td></tr>";
 		}
 	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
@@ -259,7 +259,7 @@ if ($VERB eq 'CATEGORIES') {
 	$template_file = 'categories.shtml';
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'CommissionJunction Product Syndication',
    'file'=>$template_file,
 	'head'=>qq~<script language="JavaScript1.2" type="text/javascript" src="/biz/syndication/fastlookup.js"></script>~,

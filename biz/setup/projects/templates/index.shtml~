@@ -8,10 +8,11 @@
 <table>
 <tr class="zoovysub1header">
 	<td></td>
-	<td></td>
 	<td>ID</td>
 	<td>TITLE</td>
-	<td>SECRET</td>
+	<td>APP-ID</td>
+	<td>LAST-UPDATE</td>
+	<td>NOTES</td>
 </tr>
 <!-- PROJECTS -->
 </table>

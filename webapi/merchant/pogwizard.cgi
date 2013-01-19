@@ -9,7 +9,6 @@ use STUFF2;
 use POGS;
 use strict;
 use Data::Dumper;
-use STUFF;
 
 #
 # http://www.zoovy.com/webapi/merchant/pogwizard.cgi?USERNAME=jefatech&PRODUCT=GD58			(legacy)

@@ -557,7 +557,7 @@ if ($VERB eq '') {
 				}
 
 			$basictable.= "<tr>";
-			$basictable.= "<td valign=top><a onClick=\"document.thisFrm.VERB.value='ACTION-DEL:$i'; document.thisFrm.submit();\" href=\"#\">[x]</a></td>";
+			$basictable.= "<td valign=top><a onClick=\"powerToolFrm.VERB.value='ACTION-DEL:$i'; jQuery('#powerToolFrm').submit();  return false;\" href=\"#\">[x]</a></td>";
 
 			my $verbtxt = $aref->{'verb'};
 			if ($aref->{'verb'} eq 'copy') { $verbtxt = "copy-attrib-to-value"; }
@@ -604,7 +604,7 @@ $basictable
 <b>Advanced Editor</b> 
 <a class="hint" href="#" onClick="\$('advanced').hide(); \$('basic').show(); \$('action-editor').value='basic';">[turn off]</a><br>
 <textarea cols=70 rows=20 name="actions-expert">$js</textarea>
-<input type="button" class="button2" onClick="document.thisFrm.VERB.value='ADVANCED-EDITOR-SAVE'; document.thisFrm.submit();" value="Update">
+<input type="button" class="button2" onClick="powerToolFrm.VERB.value='ADVANCED-EDITOR-SAVE'; jQuery('#powerToolFrm').submit();" value="Update">
 </div>
 ~;
 		}
@@ -651,7 +651,7 @@ push @TABS, { name=>'Create', link=>'/biz/manage/powerprod/index.cgi', selected=
 push @TABS, { name=>'Lookup/Edit', link=>'/biz/manage/powerprod/index.cgi?VERB=LOOKUP', selected=>($VERB eq 'LOOKUP')?1:0 }; 
 
 if ($template_file ne '') {
-	&GTOOLS::output(
+	&GTOOLS::output('*LU'=>$LU,
 	   'title'=>'Product Power Tool',
 		'file'=>$template_file,
   	 	'header'=>'1',

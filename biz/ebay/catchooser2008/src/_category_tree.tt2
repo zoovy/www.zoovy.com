@@ -1,4 +1,4 @@
-<h4><a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories">eBay Categories</a></h4>
+<h4><a class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]">eBay Categories</a></h4>
 [% FOREACH parent_category = parent_categories.reverse -%]
 <div class="parent">
 <p><a id="category-[% parent_category.id %]" class="category" href="/biz/ebay/catchooser2008/index.cgi/get_categories?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]&id=[% parent_category.id %]">[% parent_category.name %] [[%- IF parent_category.leaf %]leaf[% ELSE %][% parent_category.children_count %][% END %][% IF parent_category.item_specifics_enabled %], CS[% END %]]</a></p>

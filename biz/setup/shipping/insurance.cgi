@@ -199,7 +199,7 @@ sub fixup {
 	return($ref);
 	}
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>'Shipping: Insurance',
 	help=>'#50382',
 	file=>$template_file,

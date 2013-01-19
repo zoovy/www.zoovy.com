@@ -14,7 +14,29 @@ effect immediately after saving. Product pages can be edited directly from the p
 </div>
 <br>
 
-<!-- PROFILES -->
+
+<table cellpadding="5" cellspacing="0" width="100%" class="border_top border_right border_bottom border_left divider" style="margin: 0 0 4px 0;">
+	<tr>
+		<td class="bold"><!-- DOMAIN --></td>
+	</tr>
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<div><!-- SITE --></div>
+		</td>
+	</tr>
+</table>
+
+<!-- panel: $panel -->
+<table cellpadding="5" cellspacing="0" width="100%" class="border_top border_right border_bottom border_left divider" style="margin: 0 0 4px 0;">
+	<tr>
+		<td class="bold">Navigation Categories</td>
+	</tr>
+	<tr>
+		<td bgcolor="#FFFFFF">
+			<div><!-- NAVCATS --></div>
+		</td>
+	</tr>
+</table>
 
 </td></tr></table>
 </center>

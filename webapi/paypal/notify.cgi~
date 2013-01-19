@@ -63,7 +63,12 @@ my $username = $dbh->quote($merchant_id);
 my $item_number = '';
 if (defined $params->{'item_number'}) { $item_number = $params->{'item_number'}; }
 if (defined $params->{'item_number1'}) { $item_number = $params->{'item_number1'}; }
+
+if  (($params->{'auction_multi_item'})  && ($params->{'auction_multi_item'}>0)) { $item_number = '**MULTI AUCTION**'; }
+elsif (($params->{'num_cart_items'})  && ($params->{'num_cart_items'}>0)) { $item_number = '**MULTI CART**'; }
+
 $item_number = $dbh->quote($item_number);
+
 my $paypal_id   = $dbh->quote(defined($params->{'txn_id'})?$params->{'txn_id'}:'');
 	$params->{'DEBUG'} = "THIS WAS DELIVERED TO NOTIFY.";
 my $content     = $dbh->quote(&ZTOOLKIT::hashref_to_xmlish($params,'sort'=>1));

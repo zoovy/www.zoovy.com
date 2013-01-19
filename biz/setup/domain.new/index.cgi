@@ -71,4 +71,4 @@ if ($VERB eq '') {
 	}
 
 
-&GTOOLS::output('msgs'=>\@MSGS, 'tabs'=>\@TABS, 'bc'=>\@BC,'file'=>$template_file,'header'=>1,'jquery'=>1);
+&GTOOLS::output('*LU'=>$LU,'msgs'=>\@MSGS, 'tabs'=>\@TABS, 'bc'=>\@BC,'file'=>$template_file,'header'=>1,'jquery'=>1);

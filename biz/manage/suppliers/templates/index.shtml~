@@ -10,6 +10,7 @@
 	<tr class="zoovytableheader">
 		<td ></td>
 		<td >Supplier ID</td>
+		<td >Format</td>
 		<td >Supplier Name</td>
 		<td >Manage</td>
  </tr>

@@ -1,6 +1,6 @@
 <!-- UTILITIES_TAB -->
 
-<form id="thisFrm" name="thisFrm" action="index.cgi">
+<form id="utilityFaqFrm" name="utilityFaqFrm" action="index.cgi">
 <input type="hidden" name="VERB" value="SAVETOPIC">
 <input type="hidden" name="TOPICID" value="<!-- TOPICID -->">
 
@@ -12,8 +12,8 @@
 		Priority: <input type="textbox" size="3" name="priority" value="<!-- PRIORITY -->">
 		<br>
 			<input onClick="
-			window.document.thisFrm.VERB.value='SAVETOPIC';
-			window.document.thisFrm.submit();
+			jQuery('#VERB').attr('value','SAVETOPIC');
+			jQuery('#utilityFaqFrm').submit();
 			" type="button" value="Save Topic" class="button">
 			</td>
 	</tr>

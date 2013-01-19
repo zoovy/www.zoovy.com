@@ -284,90 +284,90 @@ if ($METHOD eq 'POWERLISTER') {
 ##
 ##
 ########################################################################
-if ($METHOD eq 'ORDERS') {
-	require ORDER::BATCH;
-	require ORDER::PANELS;
-	my $PANEL = $dref->{'_panel'};		
-	my $OID = $dref->{'_oid'};
-	if ($OID eq '') { $OID = $dref->{'oid'}; }
-	my $LU = undef;
-	require ORDER::INCOMPLETE;
-	require GTOOLS::Table;
-	$SUB = uc($SUB);
-
-	my ($o) = ORDER->new($USERNAME,$OID);
-	if ($SUB eq 'LOAD') {
-		## we save the panel state here so we don't save each time the user presses save.
-		if (defined $LU) { $LU->set('orders.'.$PANEL,1); $LU->save(); }
-		}
-
-	if (($SUB eq 'SAVE') || ($SUB eq 'CLOSE')) {
-		if (defined $ORDER::PANELS::func{$PANEL}) {
-			$ORDER::PANELS::func{$PANEL}->($USERNAME,$o,'save',$dref,LUSER=>$LUSERNAME);	
-			}
-		else {
-			die("requested save on panel: $PANEL (which does not exist!)");
-			}
-		if ($SUB eq 'CLOSE') {
-			if (defined $LU) { $LU->set('orders.'.$PANEL,0); $LU->save(); }
-			}
-		}
-
-	if (($SUB eq 'LOAD') || ($SUB eq 'SAVE')) {
-		my $html = '';
-		if (not defined $ORDER::PANELS::func{$PANEL}) {
-			$html .= "<font color='red'>Error: panel $PANEL could not be found!</font>";
-			}
-		else {
-			($html) = $ORDER::PANELS::func{$PANEL}->($USERNAME,$o,'',$dref,LUSER=>$LUSERNAME);
-			}
-		# $out = "?m=loadcontent&div=$PANEL!content&html=".&js_encode($html);
-		$out = "?m=loadcontent&div=panel!$PANEL&html=".&js_encode($html);
-		}
-
-
-	if ($SUB eq 'CHANGEPOOL') {
-		$o->set_attrib('pool',$dref->{'pool'});
-		# print STDERR "POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL: ".Dumper($dref,$o)."\n";
-		$o->save();
-		$SUB = 'VIEW';
-		}
-
-	if ($SUB eq 'SAVENOTE') {
-		my $CUSTOMER = undef;
-		if ($ZOOVY::cgiv->{'NOTE'} ne '') {
-			$CUSTOMER->save_note($LUSERNAME,$ZOOVY::cgiv->{'NOTE'});
-			}
-		$SUB = 'VIEW';
-		}
-
-	if ($SUB eq 'VIEW') {
-		$out .= "?m=loadcontent&div=panel!body&html=";
-		# $out .= &js_encode(&ORDER::PANELS::viewOrder($USERNAME,$dref->{'oid'}));
-		$out .= &js_encode(&ORDER::PANELS::viewOrder($USERNAME,$dref->{'oid'},undef,$o));
-		}
-
-#	if ($SUB eq 'TAB') {
-#		## gets passed: tab=
-#		my $STATUS = $dref->{'tab'};
+#if ($METHOD eq 'ORDERS') {
+#	require ORDER::BATCH;
+#	require ORDER::PANELS;
+#	my $PANEL = $dref->{'_panel'};		
+#	my $OID = $dref->{'_oid'};
+#	if ($OID eq '') { $OID = $dref->{'oid'}; }
+#	my $LU = undef;
+#	require ORDER::INCOMPLETE;
+#	require GTOOLS::Table;
+#	$SUB = uc($SUB);
 #
-#		$out = "?m=loadcontent&div=header!tabs&html=".&js_encode(&GTOOLS::generateTabs(undef,ORDER::PANELS::buildTabs($USERNAME,$STATUS),1));
-#		if ($STATUS eq 'INCOMPLETE') {
-#			my ($set,$statusref,$createdref) = &ORDER::INCOMPLETE::list_items($USERNAME,'');
-#			$out .= "?m=loadcontent&div=order_table&html=".&js_encode(&GTOOLS::Table::buildIncompleteTable($USERNAME,$STATUS,$set));
+#	my ($o) = ORDER->new($USERNAME,$OID);
+#	if ($SUB eq 'LOAD') {
+#		## we save the panel state here so we don't save each time the user presses save.
+#		if (defined $LU) { $LU->set('orders.'.$PANEL,1); $LU->save(); }
+#		}
+#
+#	if (($SUB eq 'SAVE') || ($SUB eq 'CLOSE')) {
+#		if (defined $ORDER::PANELS::func{$PANEL}) {
+#			$ORDER::PANELS::func{$PANEL}->($USERNAME,$o,'save',$dref,LUSER=>$LUSERNAME);	
 #			}
 #		else {
-#			my ($orderset,$statusref,$createdref) = &ORDER::BATCH::list_orders($USERNAME, $STATUS ,0,5000);
-#			$out .= "?m=loadcontent&div=order_table&html=".&js_encode(&GTOOLS::Table::buildOrderTable($USERNAME,$STATUS,$orderset));
+#			die("requested save on panel: $PANEL (which does not exist!)");
+#			}
+#		if ($SUB eq 'CLOSE') {
+#			if (defined $LU) { $LU->set('orders.'.$PANEL,0); $LU->save(); }
 #			}
 #		}
-	}
-
-
+#
+#	if (($SUB eq 'LOAD') || ($SUB eq 'SAVE')) {
+#		my $html = '';
+#		if (not defined $ORDER::PANELS::func{$PANEL}) {
+#			$html .= "<font color='red'>Error: panel $PANEL could not be found!</font>";
+#			}
+#		else {
+#			($html) = $ORDER::PANELS::func{$PANEL}->($USERNAME,$o,'',$dref,LUSER=>$LUSERNAME);
+#			}
+#		# $out = "?m=loadcontent&div=$PANEL!content&html=".&js_encode($html);
+#		$out = "?m=loadcontent&div=panel!$PANEL&html=".&js_encode($html);
+#		}
+#
+#
+#	if ($SUB eq 'CHANGEPOOL') {
+#		$o->set_attrib('pool',$dref->{'pool'});
+#		# print STDERR "POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL: ".Dumper($dref,$o)."\n";
+#		$o->save();
+#		$SUB = 'VIEW';
+#		}
+#
+#	if ($SUB eq 'SAVENOTE') {
+#		my $CUSTOMER = undef;
+#		if ($ZOOVY::cgiv->{'NOTE'} ne '') {
+#			$CUSTOMER->save_note($LUSERNAME,$ZOOVY::cgiv->{'NOTE'});
+#			}
+#		$SUB = 'VIEW';
+#		}
+#
+#	if ($SUB eq 'VIEW') {
+#		$out .= "?m=loadcontent&div=panel!body&html=";
+#		# $out .= &js_encode(&ORDER::PANELS::viewOrder($USERNAME,$dref->{'oid'}));
+#		$out .= &js_encode(&ORDER::PANELS::viewOrder($USERNAME,$dref->{'oid'},undef,$o));
+#		}
+#
+###	if ($SUB eq 'TAB') {
+##		## gets passed: tab=
+##		my $STATUS = $dref->{'tab'};
 ##
-##
-##
-########################################################################
+##		$out = "?m=loadcontent&div=header!tabs&html=".&js_encode(&GTOOLS::generateTabs(undef,ORDER::PANELS::buildTabs($USERNAME,$STATUS),1));
+##		if ($STATUS eq 'INCOMPLETE') {
+##			my ($set,$statusref,$createdref) = &ORDER::INCOMPLETE::list_items($USERNAME,'');
+##			$out .= "?m=loadcontent&div=order_table&html=".&js_encode(&GTOOLS::Table::buildIncompleteTable($USERNAME,$STATUS,$set));
+##			}
+##		else {
+##			my ($orderset,$statusref,$createdref) = &ORDER::BATCH::list_orders($USERNAME, $STATUS ,0,5000);
+##			$out .= "?m=loadcontent&div=order_table&html=".&js_encode(&GTOOLS::Table::buildOrderTable($USERNAME,$STATUS,$orderset));
+##			}
+##		}
+#	}
+#
+#
+###
+###
+###
+#########################################################################
 if ($METHOD eq 'PREFERENCE') {
 	$SUB = uc($SUB);
 

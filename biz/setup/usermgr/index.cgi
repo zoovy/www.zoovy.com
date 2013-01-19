@@ -45,6 +45,10 @@ my $template_file = 'index.shtml';
 my @ERRORS = ();
 
 
+if (not $LU->is_admin()) {
+	push @MSGS, "ERROR|+sorry you must be an admin user to access this area.";
+	$VERB = 'NOT-ADMIN';
+	}
 
 
 if ($VERB eq 'REGISTER-DEVICE') {
@@ -530,7 +534,7 @@ if ($FLAGS !~ /,BASIC,/) {
 
 push @TABS, { name=>'User/Device Manager', link=>'/biz/setup/usermgr/index.cgi?VERB=', 'selected'=>($VERB eq '')?1:0, };
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	title=>'Setup: User Manager',
 	file=>$template_file,
 	header=>1,

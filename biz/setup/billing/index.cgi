@@ -669,7 +669,7 @@ if ($VERB eq "") {
 	$template_file = "index.shtml";
 }
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
 	'title'=>'Setup : Billing History',
 	'file'=>$template_file,
 	'header'=>'1',

@@ -45,7 +45,7 @@ Rate Display:<br>
 <table width=800 class="zoovytable">
 <tr><td class="zoovytableheader">FedEx Domestic Settings</td></tr>
 <tr><td>
-<input type="checkbox" <!-- DOM --> name="dom"> Enable FedEx Domestic Shipping Support <a href="http://www.zoovy.com/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom">[general rules]</a><br><br>
+<input type="checkbox" <!-- DOM --> name="dom"> Enable FedEx Domestic Shipping Support <a href="/biz/setup/shipping/rulebuilder.cgi?method=fedexapi_dom">[general rules]</a><br><br>
 
 <br>
 <table width=800 border="0" cellspacing="0" cellpadding="0">

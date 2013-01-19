@@ -39,8 +39,13 @@ function MM_openBrWindow(theURL,winName,features) {
 
 <tr>
 	<td colspan=2 class="zoovytableheader">&nbsp;Attachments:
-	<a href="javascript:MM_openBrWindow('/biz/support/attach.cgi?TICKET=<!-- ID -->', 'Attachments','scrollbars=yes,resizable=yes,width=400,height=400,status=0')">
-	<img src="images/attachment16.gif" align="absmiddle" alt="Add Attachment" border="0" width="16" height="16" hspace='4'>
+	<div id="TICKET_ATTACHED_FILES"></div>
+	<a	href="#" data-uuid="<!-- UUID -->" data-ticketid="<!-- TICKETID -->" 
+		onClick="
+		app.ext.admin_support.a.addSupportFileUploadToID('TICKET_ATTACHED_FILES','<!-- ID -->','<!-- UUID -->');
+		jQuery(this).hide(); return false;
+		">
+	<img src="/biz/support/images/attachment16.gif" align="absmiddle" alt="Add Attachment" border="0" width="16" height="16" hspace='4'>
 	</a>
 	</td>
 </tr>
@@ -70,10 +75,12 @@ function MM_openBrWindow(theURL,winName,features) {
 				</table>
 				<input type='submit' class='button' value='Save'>
 				&nbsp;
-				<input type='button' class='button'
-value='Cancel'onClick="navigateTo('/biz/support/index.cgi');">
+				<button class='button' onClick="navigateTo('/biz/support/index.cgi');">Cancel</button>
+				&nbsp;
+				<button class='button' onClick="navigateTo('/biz/support/index.cgi?VERB=TICKET-CLOSE&ID=<!-- ID -->');">Close</button>
 			</center>
 			</form>
+			
 			<!-- INSTRUCTIONS -->
 			</td>
 		</tr>
