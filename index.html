@@ -1,81 +1,295 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<!DOCTYPE HTML>
 <html>
 <head>
-	<link href="css/style.css" rel="stylesheet" type="text/css"/>
-	<script src="http://webfonts.creativecloud.com/cabin:n4:all;rationale:n4:all;abel:n4:all;montserrat:n4:all;cabin-condensed:n7:all.js" type="text/javascript"></script>
-	<title>HOME</title>
+	<meta charset="utf-8">
+	<link href="/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="/onepageapp.css" rel="stylesheet" type="text/css"/>
+	<!--
+	<script src="https://webfonts.creativecloud.com/cabin:n4:all;rationale:n4:all;abel:n4:all;montserrat:n4:all;cabin-condensed:n7:all.js" type="text/javascript"></script>
+	-->
+	<script src="/font-cabin.js" type="text/javascript"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		$.fn.doesExist = function(){
+			// a doesExist function
+		   return jQuery(this).length > 0;
+			};
+
+		var jqesc = function(str) {
+			// escape a jquery selector
+			return str.replace(/([#;\/&,\.\+\*\~':"\!\^$\[\]\(\)=>\|])/g, "\\$1");
+		}
+
+		var defaultTransIn = function($page){
+			$page.fadeIn(1000);
+			return 1000;
+		}
+		
+		var defaultTransOut = function($page){
+			$page.fadeOut(1000);
+			return 1000;
+		}
+		
+		var defaultInitFunction = function(){
+			//Default Init does nothing, but here for structural symmetry
+		}
+		
+		var defaultDestroyFunction = function(){
+			for(var i=0; i<app.currentIntervals.length; i++){
+				clearInterval(app.currentIntervals[i]);
+			}
+			app.currentIntervals = [];
+		}
+		
+		var app = {
+			//an Object containing any non-default functionality
+			pages : {},
+			//a map of page location strings to template ids to load
+			pageAlias : {},
+			currentIntervals : []
+		};
+		$(function(){
+			var $templates = $("#templates").children();
+			$templates.each(function(){
+				$(this).hide();
+			});
+			$("#mainContentArea").append($templates);
+			
+			//set current template (page handler)
+			if(document.URL.indexOf("#!") !== -1){
+				showFromLocation(document.URL.split("#!")[1]);
+			} else {
+				showFromLocation("/");
+			}
+			
+		});
+
+		var showFromLocation = function(location){
+			//Find page if it exists, else the 404 page
+			// alert(location);
+			console.log("called showFromLocation('"+location+"')");
+			var ourURI = location.toString();
+			if ( ourURI.indexOf('#!') >= 0) {
+				ourURI = ourURI.substring( ourURI.indexOf('#!')+2 );	 // strip up to and after #!
+				}
+
+			if ( $('#'+jqesc(ourURI)).doesExist() ) {
+				console.log('going to div '+ourURI);
+				show($('#'+jqesc(ourURI)) );
+			} else if(typeof app.pageAlias[ourURI] !== "undefined"){
+				console.log("using pageAlias "+ourURI);
+				show($("#"+app.pageAlias[ourURI]));
+			} else {
+				console.log('missed '+ourURI+' going to 404');
+				show($("#404"));
+			}
+			//Use pushstate to change URL
+		}
+
+		var show = function($nextPage){
+			var id=$nextPage.attr("id");
+			//Transition out current page, if it exists
+			var delay = 0;
+			if(typeof app.currentPage !== "undefined"){
+				var transitionOutFunction;
+				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["transitionOut"] !== "undefined")
+					transitionOutFunction = app.pages[id]["transitionOut"];
+				if(typeof transitionOutFunction === "undefined")
+					transitionOutFunction = defaultTransOut;
+				delay = transitionOutFunction(app.currentPage);
+			}
+			
+			var destroyFunction;
+			if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["destroy"] !== "undefined")
+				destroyFunction = app.pages[id]["destroy"];
+			if(typeof destroyFunction === "undefined")
+				destroyFunction = defaultDestroyFunction;
+			destroyFunction();
+			
+			//Transition in next page
+			setTimeout(function(){
+				var transitionInFunction;
+				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["transitionIn"] !== "undefined")
+					transitionInFunction = app.pages[id]["transitionIn"];
+				if(typeof transitionInFunction === "undefined")
+					transitionInFunction = defaultTransIn;
+				var initDelay = transitionInFunction($nextPage);
+				app.currentPage = $nextPage;
+				
+				var initFunction;
+				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["init"] !== "undefined")
+					initFunction = app.pages[id]["init"];
+				if(typeof initFunction === "undefined")
+					initFunction = defaultInitFunction;
+				initFunction();
+			}, delay);
+			
+		};
+		
+		//TESTING SCRIPT
+		
+		//var showRandomPage = function(){
+		//	var index = Math.floor(Math.random() * 5);
+		//	var i = 0;
+		//	var location = "";
+		//	for(l in app.pageAlias){
+		//		if(i === index)
+		//			location = l;
+		//		i++;
+		//	}
+		//	showFromLocation(location);
+		// }
+		
+		//setInterval(function(){
+		//	showRandomPage();
+		//}, 5000);
+	</script>
 </head>
+
+
 <body>
-	<div class="main">
-		<div class="wrapper">
-			<div class="header">
-				<div class="head_top">
-					<div class="logo">
-						<a href="index.html"><img src="images/zoovy_logo.png"/></a>
-					</div>
-					<div class="logo_navi">
+	<div id="content">
+	<div id="header">
+		<div class="head_top">
+			<div class="logo">
+				<a href="/index.html"><img src="/images/zoovy_logo.png"/></a>
+			</div>
+			<div class="logo_navi">
+				<ul>
+					<li><a href="#!/contact.html">Contact</a></li>
+					<li>|</li>
+					<li>
+					<a id="loginlink" href="/biz/admin.html">Customer Login</a>
+					<script type="text/javascript">
+					// need to append a unique non-cachable date time to #loginlink
+					</script>
+					</li>
+					
+					<li>|</li>
+					<li style="color:#000;">1.877.966.8948</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main_nav">
+			<ul>
+				<li><a href="#!/different.html">WE'RE DIFFERENT</a></li>
+				<li>
+					<a href="#!/services.html">SERVICES</a>
+					<ul>
+						<li><a href="#!/building-apps.html">Building Apps</a>
+							<ul>
+								<li><a href="#!/building-apps-design.html">Design</a></li>
+								<li><a href="#!/building-apps-development.html">Development</a></li>
+								<li><a href="#!/building-apps-testing.html">Testing</a></li>
+							</ul>
+						</li>
+						<li><a href="#!/live-training-support.html">Live Training &amp; Support</a></li>
+						<li><a href="#!/marketing-development.html">Marketing Development</a></li>
+						<li><a href="#!/marketplace-optimization.html">Marketplace Optimization</a></li>
+					</ul>
+				</li>
+				<li><a href="#!/features.html">FEATURES</a>
+					<ul>
+						<li><a href="#!/features-amazon.html">Amazon</a></li>
+						<li><a href="#!/features-ebay.html">eBay</a></li>
+						<li><a href="#!/features-order-management.html">Order Management</a></li>
+						<li><a href="#!/features-marketplaces.html">Marketplaces</a></li>
+						<li><a href="#!/features-comparison-shopping.html">Comparison Shopping</a></li>
+						<li><a href="#!/features-multiple-stores.html">Multiple Stores</a></li>
+						<li><a href="#!/features-wholesalesupply-chain.html">Wholesale/Supply Chain</a></li>
+					</ul>
+				</li>
+				<li><a href="#!/clients.html">CLIENTS</a></li>
+				<li>
+					<a href="#!/about-zoovy.html">ABOUT ZOOVY</a>
+					<ul>
+						<li><a href="#!/features-management.html">Management</a></li>
+						<li><a href="#!/features-contact.html">Contact</a></li>
+						<li><a href="#!/features-employment.html">Employment</a></li>
+						<li><a href="#!/features-company.html">Company</a></li>
+					</ul>
+				</li>
+				<li><a href="news-events.html">NEWS &amp; EVENTS</a>
+					<ul>
+						<li><a href="news-events1.html">News &amp; Events</a></li>
+						<li><a href="press-releases.html">Press Releases</a></li>
+						<li><a href="in-the-news.html">In The News</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="mainContentArea">
+	</div>
+	
+	<div id="footer">
+
+				<div class="shortcuts">
+					<p>SHORT CUTS</p>
+					<div class="footer_nav">
 						<ul>
-							<li><a href="contact.html">Contact</a></li>
-							<li>|</li>
-							<li>Customer Login</li>
-							<li>|</li>
-							<li style="color:#000;">1.877.966.8948</li>
+							<li><a href="about-zoovy.html">Company Information</a></li>
+							<li><a href="http://blog.zoovy.com/">Blog</a></li>
+							<li><a href="contact.html">Conatct Information</a></li>
+							<li><a href="#">News &amp; Press</a></li>
+							<li><a href="#">Legal &amp; Privacy</a></li>
 						</ul>
 					</div>
 				</div>
-				<div class="main_nav">
-					<ul>
-						<li><a href="we-re-different.html">WE'RE DIFFERENT</a></li>
-						<li>
-							<a href="services.html">SERVICES</a>
-							<ul>
-								<li><a href="building-apps.html">Building Apps</a>
-									<ul>
-										<li><a href="design.html">Design</a></li>
-										<li><a href="development.html">Development</a></li>
-										<li><a href="testing.html">Testing</a></li>
-									</ul>
-								</li>
-								<li><a href="live-training-support.html">Live Training & Support</a></li>
-								<li><a href="marketing-development.html">Marketing Development</a></li>
-								<li><a href="marketplace-optimization.html">Marketplace Optimization</a></li>
-							</ul>
-						</li>
-						<li><a href="features.html">FEATURES</a>
-							<ul>
-								<li><a href="amazon.html">Amazon</a></li>
-								<li><a href="ebay.html">eBay</a></li>
-								<li><a href="order-management.html">Order Management</a></li>
-								<li><a href="marketplaces.html">Marketplaces</a></li>
-								<li><a href="comparison-shopping.html">Comparison Shopping</a></li>
-								<li><a href="multiple-stores.html">Multiple Stores</a></li>
-								<li><a href="wholesalesupply-chain.html">Wholesale/Supply Chain</a></li>
-							</ul>
-						</li>
-						<li><a href="clients.html">CLIENTS</a></li>
-						<li>
-							<a href="about-zoovy.html">ABOUT ZOOVY</a>
-							<ul>
-								<li><a href="management.html">Management</a></li>
-								<li><a href="contact.html">Contact</a></li>
-								<li><a href="employment.html">Employment</a></li>
-								<li><a href="company.html">Company</a></li>
-							</ul>
-						</li>
-						<li><a href="news-events.html">NEWS & EVENTS</a>
-							<ul>
-								<li><a href="news-events1.html">News & Events</a></li>
-								<li><a href="press-releases.html">Press Releases</a></li>
-								<li><a href="in-the-news.html">In The News</a></li>
-							</ul>
-						</li>
-					</ul>
+				<div class="register_update">
+					<p>REGISTER FOR UPDATES</p>
+					<form>
+						<p>Enter your email address for eCommerce specific<br/> news and Zoovy production info</p>
+						<span>
+							<label>Name:</label>
+							<input type="text" placeholder="Your Name"/>
+						</span>
+						<span>
+							<label>Email:</label>
+							<input type="text" placeholder="name@email.com"/>
+						</span>
+						<div class="submit_btn">
+							<input type="submit"/>
+						</div>
+					</form>
 				</div>
+				<div class="social_icons">
+					<p>WE'RE MOVING FAST. KEEP UP!</p>
+					<div class="s_icons">
+						<span><a href="http://www.twitter.com/zoovylive"><img src="images/twitter_512x512.png"/></a><p>Follow</p></span>
+						<span><img src="images/googleplus-512-red27x27.png"/><p>Join</p></span>
+					</div>
+				</div>
+				<div class="questions">
+					<p>QUESTIONS?</p>
+					<span>
+						<p>For service or product questions, please call us at  877.966.8948 or <a href="mailto:support@zoovy.com">click here</a> to submit a ticket<br/><br/>
+                          Want to work here? <a href="Mailto:careers@zoovy.com">Click here</a></p>
+					</span>
+				</div>
+	</div>
+
+
+
+
+
+	
+	<div id="templates" style="display:none;">
+
+		<div id="test">
+		HELLO TEST
+		</div>
+
+		<div id="home">
+			<script type="text/javascript">
+				app.pageAlias["/"] = "home";
+			</script>
 				<div class="slider">
 					<a href=""><img src="images/slider.jpg"/></a>
 				</div>
-			</div>
-			<div class="content">
 				<div class="stng_standerd">
 					<h3>SETTING THE STANDARD</h3>
 					<span class="stng_details"><p>Our tech team, lead by CEO and Lead Developer Brian Horakh, has worked non-stop for the past 12 months to create the new standard in e-commerce, setting the stage for a revolution in the retail world.<br/>Be on the leading edge of this new technology and leave your competitors behind.</p>
@@ -130,53 +344,501 @@
 						<a style="float:left;margin-top:10px;" target="_blank" href="https://www.zoovy.com/compatible-integration-review/ups/"><img style="width:59px;" src="images/ups_ready.png"/></a>
 					</div>	
 				</div>
+
+
+		</div>
+		<div id="aboutus">
+			<script type="text/javascript">
+				app.pageAlias["/corporate/aboutus.html"] = "aboutus";
+				app.pages.aboutus = {
+					init : function(){
+						app.currentIntervals.push(setInterval(function(){
+							$("#blah").fadeIn(250);
+							setTimeout(function(){
+								$("#blah").fadeOut(250);
+							}, 250);
+						}, 500));
+					}
+				};
+			</script>
+			about us
+			<div id="blah">
+				animation
 			</div>
-			<div class="footer">
-				<div class="shortcuts">
-					<p>SHORT CUTS</p>
-					<div class="footer_nav">
+		</div>
+
+
+		<div class="wrapper" id="different">
+			<script type="text/javascript">
+			app.pageAlias["/different.html"] = "different";
+			</script>
+
+				<div class="wer_differnt">
+					<h3>We're Different</h3>
+					<span class="old_way">
+						<h4>The Old Way</h4>
+						<p>In the past, one of the biggest challenges in growing a successful online business was choosing the appropriate technology for your business needs. For many, it was a difficult choice because merchants had to do it first, locking them into the way that technology worked, not the way the merchant wanted to. Merchants soon found that the solution they chose was either too limited to allow them to grow, or too complicated to get up and running efficiently.<br/><br/>
+						Being locked in to a specific, one-size fits all technology was not very conducive to businesses that needed to set themselves apart and do things differently. They soon found that if they wanted to grow, they would need to spend a lot of time, resources and money to take the next big jump. 
+						</p>
+						<img src="/images/different_img.jpg"/>
+					</span>
+					<span class="apps">
+						<h4>Apps Are Where It's At</h4>
+						<p>With Zoovy's app-based commerce framework, your stores are now custom tailored to your business needs. As your business grows and your needs change, through app updates, your store can change right along with it. And the best part is, you don't have to start over from scratch everytime! Your store is designed to accomodate iterative updates, allowing you more flexibility as your business grows.</p>
+					</span>
+					<span class="apps_provide">
+						<h4>Apps provide:</h4>
 						<ul>
-							<li><a href="about-zoovy.html">Company Information</a></li>
-							<li><a href="http://blog.zoovy.com/">Blog</a></li>
-							<li><a href="contact.html">Conatct Information</a></li>
-							<li><a href="#">News & Press</a></li>
-							<li><a href="#">Legal & Privacy</a></li>
+						<li>an enhanced user experience for your customers</li>
+						<li>lower opperating costs.</li>
+						<li>customization and flexibility (websites have severe limitations).</li>
+						<li>quicker time to market - apps take weeks, websites take months.</li>
+						<li>deployment options and flexibility.</li>
 						</ul>
-					</div>
+					</span>
+					<span class="everything">
+						<h4>Everything is Here</h4>
+						<p>Zoovy incorporates all of the technologies and processes needed to grow successfully, and makes them available through one, easy-to-manage account. Zoovy's long standing partnerships with proven e-commerce industry names ensures the tightest integration and streamlined functionality for your business process. With over 13 years of field-tested input from thousands of successful online merchants, Zoovy is poised to lead the next e-commerce revolution.</p>
+					</span>
 				</div>
-				<div class="register_update">
-					<p>REGISTER FOR UPDATES</p>
-					<form>
-						<p>Enter your email address for eCommerce specific<br/> news and Zoovy production info</p>
-						<span>
-							<label>Name:</label>
-							<input type="text" placeholder="Your Name"/>
+				<div class="review_srvcs">
+					<a href="#!/services.html"><h1>Review our services here!</h1><img src="images/blue_right_arrow.png"/></a>
+				</div>
+
+		</div>
+
+
+		<div class="wrapper" id="services">
+			<script type="text/javascript">
+			app.pageAlias["/services.html"] = "services";
+			</script>
+
+			<div class="header_bg">
+				<img src="/images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="services_app">
+					<h3>From Apps, to Premiere Services to Support,<br/>We have you covered</h3>
+					<p>Here at Zoovy, we have worked diligently to provide our customers with the most all-encompassing and exstensible e-commerce solution out there. Other companies focus on specific areas of e-commerce, leaving you to figure out for yourself how to integrate new features or update current features when your business grows. We have integrated all of the mission-critical components so you can focus on your business and not your e-commerce technology.</p>
+				</div>
+				<div class="develop_apps">
+					<h3>Develop Your Apps</h3>
+					<span class="descrptn">
+						<p>With our emerging app framework, your custom apps will give you unparalleled control over your apps' behavior and business information. You'll need to create your apps and our team is standing by to help. </p>
+					</span>
+					<span class="des_icons">
+						<a href="#!/building-apps.html"><img src="images/service_path.png"/></a>
+					</span>
+					<span class="learn_here">
+						<img src="/images/orange_right_arrow.png"/><a href="!#/building-apps.html">Learn how the process works here</a>
+					</span>
+				</div>
+				<div class="develop_apps">
+					<h3>Consultation & Support</h3>
+					<div class="consultation">
+						<span class="descrptn" style="width:80%;">
+							<p>Need help with creating or updating your DataFair? No problem. Our team invented the DataFair! We are standing by to help you get your vital business information ported and situated properly.</p>
 						</span>
-						<span>
-							<label>Email:</label>
-							<input type="text" placeholder="name@email.com"/>
+						<span class="des_icons">
+							<img src="images/data_fair_circle.png" style="width:68px;margin:0 10px 0 0;"/>
 						</span>
-						<div class="submit_btn">
-							<input type="submit"/>
-						</div>
-					</form>
-				</div>
-				<div class="social_icons">
-					<p>WE'RE MOVING FAST. KEEP UP!</p>
-					<div class="s_icons">
-						<span><a href="http://www.twitter.com/zoovylive"><img src="images/twitter_512x512.png"/></a><p>Follow</p></span>
-						<span><img src="images/googleplus-512-red27x27.png"/><p>Join</p></span>
 					</div>
+					<div class="consultation" style="padding:0;">
+						<span class="descrptn" style="width:80%;">
+							<p>We have also worked very hard to provide custom development for add-on apps like Special Offers and Checkout Intercept, just to name a few. If there's a business idea or initiative that you think an app would be perfect for, our team would love to join forces with you to come up with a solution.</p>
+						</span>
+						<span class="des_icons">
+							<img src="images/sup_circle.png" style="width:68px;margin:0 10px 0 0;"/>
+						</span>
+					</div>
+					<span class="learn_here">
+						<img src="images/orange_right_arrow.png"/><p class="learnsss">Learn more about our support structure here</p>
+					</span>
 				</div>
-				<div class="questions">
-					<p>QUESTIONS?</p>
-					<span>
-						<p>For service or product questions, please call us at  877.966.8948 or <a href="mailto:support@zoovy.com">click here</a> to submit a ticket<br/><br/>
-                          Want to work here? <a href="Mailto:careers@zoovy.com">Click here</a></p>
+				<div class="develop_apps" style="padding:0  0 60px 0;">
+					<h3>Strategies & Solutions</h3>
+					<p>The landscape of e-commerce is changing rapidly. WIth more and more sellers using Marketplaces like Amazon, Ebay, Buy.com, etc., the rules of engagement are in flux. No longer will SEO win the day. Winning the BuyBox will make all the difference.<br/><br/></p>
+					<span class="descrptn" style="width:80%;">
+						<p>Here at Zoovy, we have identified the next critical strategy in e-commerce as it pertains to selling through marketplaces. Winning the BuyBox, or as we call it, Marketplace Optimization™ (MpO), gets your products in the best possible position to be sold. Our MpO Experts will help you identify the areas of your business to improve in order to increase your frequency in the BuyBox.</p>
+					</span>
+					<span class="des_icons">
+						<img src="images/mpo_circle.png" style="width:68px;margin:0 10px 0 0;"/>
+					</span>
+					<span class="learn_here">
+						<img src="images/orange_right_arrow.png"/><p class="learnsss">Learn more about Marketplace Optimization here</p>
 					</span>
 				</div>
 			</div>
 		</div>
+
+		<div class="wrapper" id="building-apps">
+			<script type="text/javascript">
+			app.pageAlias["/building-apps.html"] = "building-apps";
+			</script>			
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="build_apps">
+					<h3>
+						Build It and They Will Buy<br/><span style="font-size:22px;">(... and have a better experience!)</span>
+					</h3>
+					<p>At the center of your e-commerce universe is your DataFair, consisting of your business information and your custom apps. But you need to get your apps built and your business information installed, right? We have you covered. Say go, and our project manager will build a team of experts who will help you get up and running quickly and efficiently.<br/><br/>
+					Our designers, developers and testers are chomping at the bit to work on your apps. Just let us know what you need and we'll get our best and brightest to build it for you. Or, you can have your own team build your apps. We have standards and guides for them to go by. Just know that they will be held to the same standards and will undergo the same vigorous testing as the apps we build do.<br/><br/>
+					Your app will start at the DESIGN stage, move to the DEVELOPMENT stage, and then proceed to the TESTING stage. Expect there to be 2-4 rounds of this process until your app is ready for prime time.
+					</p>
+				</div>
+				<div class="web_icons">
+					<div class="icons_img">
+						<a class="design" href="design.html"></a>
+						<span class="arrow"></span>
+						<a class="develop" href="development.html"></a>
+						<span class="arrow1"></span>
+						<a class="test" href="testing.html"></a>
+					</div>
+					<div class="icons_name">
+						<a class="design" href="design.html">DESIGN</a>
+						<a class="develop" href="development.html">DEVELOPMENT</a>
+						<a class="test" href="testing.html">TESTING</a>
+					</div>
+				</div>
+				<div class="process">
+					<h1>The Process Starts here!</h1><img src="images/blue_right_arrow.png"/>
+					<a href="design.html">Designing your app is the first step...</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper" id="building-apps-design">
+			<script type="text/javascript">
+			app.pageAlias["/building-apps-design.html"] = "building-apps-design";
+			</script>			
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="build_apps">
+					<h3>
+						Design: How do you want that to look?
+					</h3>
+					<p>With the app framework, you have far more freedom in designing your store than you used to have designing for the Web. Our designers are well versed in these expanded capabilities and will design just about anything you can imagine, keeping in mind aspects of good design, user experience, interaction and shopping best practices. 
+					</p>
+				</div>
+				<div class="web_icons">
+					<div class="icons_img">
+						<a class="design_active" href="design.html"></a>
+						<span class="arrow"></span>
+						<a class="develop_nonactive" href="development.html"></a>
+						<span class="arrow1_nonactive"></span>
+						<a class="test_nonactive" href="testing.html"></a>
+					</div>
+					<div class="icons_name">
+						<a class="design" href="design.html">DESIGN</a>
+						<a class="develop" href="development.html">DEVELOPMENT</a>
+						<a class="test" href="testing.html">TESTING</a>
+					</div>
+				</div>
+				<div class="developer_take">
+					<h1><a href="development.html">Developers take over next</a></h1><a href="development.html"><img src="images/blue_right_arrow.png"/>				
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper" id="building-apps-development">
+			<script type="text/javascript">
+			app.pageAlias["/building-apps-development.html"] = "building-apps-development";
+			</script>			
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="build_apps">
+					<h3>
+						Development: Build that App
+					</h3>
+					<p>Our network of developers is bigger than yours. But that's a good thing! It means that we have the appropriate resources to develop your app with all of the functionality and efficiency the app framework affords you. We even make sure that the team members working on your apps are all connected and communicate with one another via a dedicated project management system (Podio). This, along with the development platform known in the industry as GITHUB, your app project stays on track and on time with as many or as few team members necessary.
+					</p>
+				</div>
+				<div class="web_icons">
+					<div class="icons_img">
+						<a class="design_nonactive" href="design.html"></a>
+						<span class="arrow_nonactive"></span>
+						<a class="develop_active" href="development.html"></a>
+						<span class="arrow1"></span>
+						<a class="test_nonactive" href="testing.html "></a>
+					</div>
+					<div class="icons_name">
+						<a class="design" href="design.html">DESIGN</a>
+						<a class="develop" href="development.html">DEVELOPMENT</a>
+						<a class="test" href="testing.html">TESTING</a>
+					</div>
+				</div>
+				<div class="developer_take">
+					<h1><a href="testing.html">Test your app next</a></h1><a href="testing.html"><img src="images/blue_right_arrow.png"/>				
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper" id="building-apps-testing">
+			<script type="text/javascript">
+			app.pageAlias["/building-apps-testing.html"] = "building-apps-testing";
+			</script>			
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="build_apps">
+					<h3>
+						Testing: Is it up to snuff?
+					</h3>
+					<p>After the design and development stage are complete, the app is then subject to our vigorous testing protocol. Does it work on a desktop in a browser? We test for that. Does it work on the 20 different phones and 10 different tablets indicated? Yeah, we test for that too. We make sure it does everything it is supposed to do so that when you deploy it, it works.
+					</p>
+					<span class="qoutes">
+						<h1>"We will release no app before its time"  </h1>
+						<p>–B.R. Hamilton, Master Tester  </p>
+					</span>
+					<p>On the first round, there are always things to be refined, fixed or changed. Items to be addressed will be directed to the appropriate team member to work on. Once that list is complete, it will return to the testing stage for another attempt to pass.</p>
+				</div>
+				<div class="web_icons">
+					<div class="icons_img">
+						<a class="design_nonactive" href="design.html"></a>
+						<span class="arrow_nonactive"></span>
+						<a class="develop_nonactive" href="development.html"></a>
+						<span class="arrow1_nonactive"></span>
+						<a class="test_active" href="testing.html"></a>
+					</div>
+					<div class="icons_name">
+						<a class="design" href="design.html">DESIGN</a>
+						<a class="develop" href="development.html">DEVELOPMENT</a>
+						<a class="test" href="testing.html">TESTING</a>
+					</div>
+				</div>
+				<div class="build_apps">
+					<p>The future is now! The app framework is where the e-commerce world will find itself within the next few years. Contact your Customer Service Representative or email us at <a href="mailto:info@zoovy.com">info@zoovy.com</a> for more information and get started with your new app-based store today!</br></br></br>
+					</p>
+				</div>
+				<!--div class="developer_take">
+					<h1><a href="#">Developers take</a> over next</h1><img src="images/blue_right_arrow.png"/>				
+				</div-->
+			</div>
+		</div>
+
+
+		<div class="wrapper" id="live-training-support">
+			<script type="text/javascript">
+			app.pageAlias["/live-training-support.html"] = "live-training-support";
+			</script>	
+
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+			<div class="container">
+				<div class="live_support">
+					<h3>We're here to help</h3>
+					<span class="live training">
+						<h4>Live Training (by phone)</h4>
+						<p>Live training is provided for Zoovy merchants to assist in setup and ongoing guidance for successful use of the platform and software. Consultants are fully trained Zoovy employees. </p>
+						<ul>
+							<li>Store Settings</li>
+							<li>Shipping</li>
+							<li>Sales Tax</li>
+							<li>Marketplace Syndication</li>
+							<li>Promotions: Coupons/Newsletters/Giftcards </li>
+							<li>Product Catalog</li>
+						</ul>
+				<p>Live training can be scheduled M-F and cost is dependent upon package.</p>
+				<h4>USA Based Tech Support</h4>
+				<p>Tech support is available 6am to 6pm PST, 6 days a week. Zoovy tech support is available through phone, help-desk platform, and live chat. All techs are fully trained on all aspects of Zoovy interface and integrations. </p>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper" id="marketing-development">
+			<script type="text/javascript">
+			app.pageAlias["/marketing-development.html"] = "marketing-development";
+			</script>
+			<div class="header_bg">
+				<img src="images/services.jpg"/>
+			</div>
+
+			<div class="container">
+				<div class="live_support">
+					<h3>Marketing dollars working as hard as they could be?</h3>
+					<span class="live training">
+<p>Zoovy's marketing experts evaluate marketing efforts to ensure that an e-business's budget is being distributed to the best possible areas. </p>
+<p>Work with trained and certified professionals on appropriate 
+white hat
+ suggestions for marketing opportunities on any budget. From pay-per-click advertising to search engine optimization Zoovy's marketing team is available for tasks large or small. Work directly with our marketing professionals just a phone call away.</p>
+<ul>
+	<li>Increase sales</li>
+	<li>Increase brand awareness</li>
+	<li>Maximize return-on-investment</li>
+	<li>Increase organic traffic</li>
+</ul>
+<h4>Marketing Services:</h4>
+<ul>
+	<li>Marketing Overview Analysis</li>
+	<li>Comparison Shopping Engine Setup</li>
+	<li>Pay-Per-Click Audit </li>
+	<li>Google Analytics Tuning / Optimization </li>
+	<li>ROI Tracking</li>
+	<li>Return e-business Management</li>
+	<li>Pay-Per-Click Management</li>
+	<li>Data Feed Management &amp; Optimization</li>
+	<li>Consulting</li>
+	<li>Search Engine Optimization</li>
+	<li>Marketplace Setup &amp; Product Upload</li>
+	<li>Marketplace Optimization</li>
+</ul>
+<p>Zoovy's marketing team has years of experience and proven success with providing top notch marketing service and advice for any e-business selling various products.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper" id="marketplace-optimization">
+			<script type="text/javascript">
+			app.pageAlias["/marketplace-optimization.html"] = "marketplace-optimization";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features">
+			<script type="text/javascript">
+			app.pageAlias["/features.html"] = "features";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="features-amazon">
+			<script type="text/javascript">
+			app.pageAlias["/features-amazon.html"] = "features-amazon";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+
+
+
+		<div id="zoovy">
+			<script type="text/javascript">
+			app.pageAlias["/corporate/zoovy.html"] = "zoovy";
+			</script>
+			zoovy
+		</div>
+		<div id="anycommerce">
+			<script type="text/javascript">
+			app.pageAlias["/corporate/anycommerce.html"] = "anycommerce";
+			</script>
+			anycommerce
+		</div>
+		<div id="someothertestpage">
+			<script type="text/javascript">
+			app.pageAlias["/someothertestpage.html"] = "someothertestpage";
+			</script>
+			someothertestpage
+		</div>
+		<div id="404">
+			PAGE NOT FOUND
+		</div>
 	</div>
+	</div>
+
+<script type="text/javascript">
+
+		// make all links in document clickable
+		var ourURI = document.URL;
+		if (ourURI.indexOf('#') >= 0) { ourURI = ourURI.substring(0,ourURI.indexOf('#')); }	// strip after #
+		for (var ls = document.links, numLinks = ls.length, i=0; i<numLinks; i++){
+			if (ls[i].href  == ourURI) {
+				// this link points at us, skip 
+				}
+			else if (ls[i].href.substring(0,ourURI.length) == ourURI) {
+				console.log('rewrite - '+ls[i].href);
+				ls[i].onclick = function(e) { 
+					showFromLocation(e.currentTarget); 
+					return(false); 
+					};
+				}
+			// console.log(ls[i].href+" "+ls[i].target);
+			}
+
+</script>
+
 </body>
+
 </html>
