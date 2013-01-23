@@ -3,3 +3,11 @@
 	margin: 0 auto;
     width: 960px;
 }
+
+.slider {
+	height: 376px;
+}
+
+.old_way p {
+	float: left;
+}
