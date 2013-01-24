@@ -23,6 +23,7 @@ VERSION: 2013-1-22-11-48-00
     s.parentNode.insertBefore(wf, s);
   })(); </script>
 	<script src="font-cabin.js" type="text/javascript"></script>
+	<script src="mspring.js" type="text/javascript"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -77,8 +78,8 @@ VERSION: 2013-1-22-11-48-00
 			
 			//set current template (page handler)
 			if(document.URL.indexOf("#!") !== -1){
-				showFromLocation(document.URL.split("#!")[1]);
 				path = document.URL.split("#!")[1];
+				showFromLocation(document.URL.split("#!")[1]);
 			} else {
 				showFromLocation("/");
 			}
@@ -115,10 +116,13 @@ VERSION: 2013-1-22-11-48-00
 				show($("#404"));
 			}
 			//Use pushstate to change URL
+			
 			try	{
+				
 				window.history.pushState(app.pageAlias[ourURI], app.pageAlias[ourURI]+" title", path+location);
 			}
 			catch(err)	{
+				
 				console.warn("Pushstate attempt failed!");
 			}
 		}
@@ -1330,6 +1334,53 @@ VERSION: 2013-1-22-11-48-00
 		<div id="404">
 			PAGE NOT FOUND
 		</div>
+		
+		<div id="springtest">
+			<script type="text/javascript">
+				app.pageAlias["/springtest.html"] = "springtest";
+			</script>
+			
+			<div id="springCanvas">
+				<div id="springReactor"></div>
+			</div>
+			
+			
+			
+			<script type="text/javascript">
+				var attrSpring = new mSpring({
+					onSpringStart: function() {
+						$("#springReactor").css("background", "#FFAAAA");
+					},
+					onSpringChange: function(massPos, springData) {
+						$("#springReactor").css("left",massPos + 'px');
+					},
+					onSpringRest: function() {
+						$("#springReactor").css("background", "#FF0000");
+					}	
+				});
+				
+				attrSpring.setSpringParameters(10, 100, 10);
+				
+				attrSpring.start(undefined,undefined,undefined,958);
+				
+				//var engageSpring = function(){
+				//	
+				//}
+				
+				$("#springCanvas").mouseover(function(event){
+					$("#springCanvas").mousemove(function(event){
+						//attrSpring.start(undefined,undefined,undefined, 
+						console.log(event);
+					});
+				});
+				
+				$("#springCanvas").mouseout(function(event){
+					$("#springCanvas").unbind('mousemove');
+				});
+				
+			</script>
+		</div>
+		
 	</div>
 
 <script type="text/javascript">

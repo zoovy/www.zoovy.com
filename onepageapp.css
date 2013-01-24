@@ -11,3 +11,17 @@
 .old_way p {
 	float: left;
 }
+
+#springCanvas {
+	width: 100%;
+	height: 300px;
+	background: grey;
+	position: relative;
+}
+
+#springReactor {
+	height: 100%;
+	width: 100px;
+	background: red;
+	position: absolute;
+}
