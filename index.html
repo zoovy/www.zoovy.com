@@ -65,6 +65,9 @@ VERSION: 2013-1-22-11-48-00
 			pageAlias : {},
 			currentIntervals : []
 		};
+		
+		var path = document.URL;
+		
 		$(function(){
 			var $templates = $("#templates").children();
 			$templates.each(function(){
@@ -75,12 +78,23 @@ VERSION: 2013-1-22-11-48-00
 			//set current template (page handler)
 			if(document.URL.indexOf("#!") !== -1){
 				showFromLocation(document.URL.split("#!")[1]);
+				path = document.URL.split("#!")[1];
 			} else {
 				showFromLocation("/");
 			}
 			
+			if(typeof window.onpopstate == 'object')	{
+				window.onpopstate = function(event) { 
+					handlePopState(event.state);
+				}
+			}
+			
 		});
-
+		
+		var handlePopState = function(state){
+			alert(state);
+		}
+		
 		var showFromLocation = function(location){
 			//Find page if it exists, else the 404 page
 			// alert(location);
@@ -101,6 +115,12 @@ VERSION: 2013-1-22-11-48-00
 				show($("#404"));
 			}
 			//Use pushstate to change URL
+			try	{
+				window.history.pushState(app.pageAlias[ourURI], app.pageAlias[ourURI]+" title", path+location);
+			}
+			catch(err)	{
+				console.warn("Pushstate attempt failed!");
+			}
 		}
 
 		var show = function($nextPage){
