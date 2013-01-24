@@ -12,11 +12,24 @@
 	float: left;
 }
 
-#springCanvas {
+.clear {
+	clear: both;
+}
+
+#springContainer {
 	width: 100%;
 	height: 300px;
+	overflow: visible;
+	display: block;
+}
+
+#springCanvas {
+	width: 100%;
+	height: 100%;
 	background: grey;
 	position: relative;
+	overflow: hidden;
+	display: block;
 }
 
 #springReactor {
@@ -24,4 +37,5 @@
 	width: 100px;
 	background: red;
 	position: absolute;
+	left: 429px;
 }
