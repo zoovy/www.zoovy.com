@@ -11,7 +11,7 @@
 	<b>Customer Email(s):</b><br>
 	<textarea id="EMAILS" cols=65 rows=5 name="EMAILS"></textarea><br>
 
-	<button form="newFrm" class="minibutton" type="submit"
+	<button form="newsFrm" class="minibutton" type="submit"
 		onClick="jQuery('#VERB').val('ADD_SUBLIST_RECIPIENT'); ">Add</button>
 	<button form="newsFrm" class="minibutton"  type="submit"
 		onClick="jQuery('#VERB').val('REMOVE_SUBLIST_RECIPIENT'); ">Remove</button>

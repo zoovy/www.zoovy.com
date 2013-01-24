@@ -89,12 +89,12 @@ if ($VERB eq 'SET-THEME') {
 	$LU->log('SETUP.HOSTING',"Changed Theme","SAVE");
 	}
 
-if ($LU->get('todo.setup')) {
-	require TODO;
-   my $t = TODO->new($USERNAME);
-   my ($NEEDREF,$TASKSREF) = $t->setup_tasks('hosting',webdb=>$webdbref,nsref=>$NSREF);
-	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('hosting',$TASKSREF);
-   }
+#if ($LU->get('todo.setup')) {
+#	require TODO;
+#   my $t = TODO->new($USERNAME);
+#   my ($NEEDREF,$TASKSREF) = $t->setup_tasks('hosting',webdb=>$webdbref,nsref=>$NSREF);
+#	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('hosting',$TASKSREF);
+#   }
 
 
 

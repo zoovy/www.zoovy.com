@@ -569,7 +569,7 @@ if ($VERB eq '') {
 			$c .= qq~
 <tr class="$r">
 	<td valign=top>
-<button class="button" onClick="navigateTo('/biz/setup/shipping/universal.cgi?VERB=EDIT&ID=$m->{'id'}');">Edit</button></td>
+<button class="button" onClick="navigateTo('/biz/setup/shipping/universal.cgi?VERB=EDIT&ID=$m->{'id'}'); return false;">Edit</button></td>
 	<td valign=top>~.$m->{'handler'}.qq~</td>
 	<td valign=top>~.$m->{'region'}.qq~</td>
 	<td valign=top>~.&ZOOVY::incode($m->{'name'}).qq~</td>

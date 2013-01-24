@@ -436,14 +436,6 @@ push @TABS, { name=>"Expert Mode", selected=>($VERB eq 'ADVANCED')?1:0, link=>"?
 push @TABS, { name=>"Test", selected=>($VERB eq 'DEBUG')?1:0, link=>"?VERB=DEBUG", };
 
 
-my %NEED = ();
-if ($LU->get('todo.setup')) {
-	require TODO;
-	my $t = TODO->new($USERNAME);	
-	my ($need,$tasks) = $t->setup_tasks('tax',LU=>$LU,webdb=>$webdbref);
-	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('tax',$tasks);
-   }
-
 
 ##
 ##

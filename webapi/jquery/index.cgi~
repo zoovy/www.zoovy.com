@@ -225,6 +225,11 @@ if ($R) {
 	## preflight error
 	$R->{'_rcmd'} = 'err';
 	($utf8_encoded_json_text) = JSON::XS->new->utf8->allow_blessed(1)->convert_blessed(1)->encode($R);
+	if (&ZOOVY::servername() eq 'newdev') {
+		open F, ">/tmp/trace.log";
+		print F Dumper($VARS,$R)."\n\n";
+		close F;
+		}
 	}
 else {
 	my ($udbh) = &DBINFO::db_user_connect($JSAPI->username());

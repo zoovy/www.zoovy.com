@@ -957,7 +957,7 @@ Changes you make here will also be made to any auction listings.</p>
 	<tr>
 		<td valign="middle" align="center">
 		<img name="invoiceimg" src="$invoice_logo_url" width='$logo_invoice_width' height='$logo_invoice_height'>
-		<input type="button" class="button" onClick="mediaLibrary($('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
+		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
 		</td>
 	</tr>
 	</table>

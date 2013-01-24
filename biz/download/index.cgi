@@ -12,12 +12,12 @@ my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT) = $LU->authinfo();
 if ($MID<=0) { exit; }
 
 my %NEED = ();
-if ($LU->get('todo.setup.download')) {
-	require TODO;
-   my $t = TODO->new($USERNAME);
-  	my ($need,$tasks) = $t->setup_tasks('download',LU=>$LU);
-   $GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('download',$tasks);
-   }
+#if ($LU->get('todo.setup.download')) {
+#	require TODO;
+#   my $t = TODO->new($USERNAME);
+#  	my ($need,$tasks) = $t->setup_tasks('download',LU=>$LU);
+#   $GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('download',$tasks);
+#   }
 
 ##
 ## EDIT THESE VALUES ON A RELEASE

@@ -1177,12 +1177,12 @@ if ($TAB eq 'HELP') {
 	$template_file = 'help.shtml';
 	}
 
-if ($LU->get('todo.setup')) {
-	require TODO;
-	my $t = TODO->new($USERNAME);	
-	my ($need,$tasks) = $t->setup_tasks('payment',LU=>$LU,webdb=>$webdbref);
-	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('payment',$tasks);
-   }
+#if ($LU->get('todo.setup')) {
+#	require TODO;
+#	my $t = TODO->new($USERNAME);	
+#	my ($need,$tasks) = $t->setup_tasks('payment',LU=>$LU,webdb=>$webdbref);
+#	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('payment',$tasks);
+#   }
 
 
 

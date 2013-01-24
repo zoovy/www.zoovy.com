@@ -4,6 +4,7 @@ use utf8 qw();
 use strict;
 use Data::Dumper;
 use JSON::XS;
+use Encode qw();
 use lib "/httpd/modules";
 require ZOOVY;
 require JSONAPI;
@@ -72,15 +73,41 @@ elsif ($ENV{'CONTENT_TYPE'} =~ /^(text|application)\/json/) {
 	## text/json
 	## application/json
 
-#open F, ">/tmp/foo";
-#print F $buffer;
-#close F; 
+	#if (utf8::is_utf8($buffer)) {
+	#	utf8::upgrade($buffer);
+	#	}
+	#open F, ">/dev/shm/api";
+	#print F Dumper(\%ENV);
+	#print F $buffer;
+	#close F; 
 
 	# eval { $VARS = JSON::XS::decode_json($buffer); };
-	eval { $VARS = JSON::XS->new->utf8->decode($buffer); };
+	eval { $VARS = JSON::XS->new->utf8()->decode($buffer); };	# decode json malformed UTF-8 character in JSON string, at character offset 361 (before \"\\x{60732} \\\\r\\\\nEam ...\") at /httpd/htdocs/webapi/jquery/index.cgi line 85.\n"
+
+	##
+	## NOTE: it seems like perl 5.8.7 has a totally different set of rules for encoding.
+	##
+
+	if (($@) && ($@ =~ /malformed UTF\-8/)) {
+		# malformed UTF-8 character in JSON string
+		# $buffer = Encode::decode("UTF-8",$buffer);
+		# $buffer = Encode::decode("UTF-8",$buffer);
+		#utf8::decode($buffer);
+		## NOTE: if no utf8 in decode, then it will strip the content
+		## This should remove any bad characters
+		eval { $VARS = JSON::XS->new->latin1()->decode($buffer); };  # stripped
+		# eval { $VARS = JSON::XS->new->ascii()->decode($buffer); };   # stripped
+		# eval { $VARS = JSON::XS->new->utf8(1)->decode($buffer); };   # malformed utf8
+		# eval { $VARS = JSON::XS->new->utf8(0)->decode($buffer); };   #  stripped
+		# eval { $VARS = JSON::XS->new->decode( Encode::decode "UTF-32LE", $buffer ); };   #  decode json malformed JSON string, neither array, object, number, string or atom, at character offset 0 (before \"\\x{755f227b}\\x{22646975}...\") at /httpd/htdocs/webapi/jquery/index.cgi line 96.
+		# eval { $VARS = JSON::XS->new->decode( Encode::decode "UTF-16BE", $buffer ); };   #  decode json malformed JSON string, neither array, object, number, string or atom, at character offset 0 (before \"\\x{7b22}\\x{5f75}\\x{7569}...\") at /httpd/htdocs/webapi/jquery/index.cgi line 97.\n"
+		# eval { $VARS = JSON::XS->new->decode( Encode::decode "UTF8", $buffer ); };   #   # stripped
+		# eval { $VARS = JSON::XS->new->decode( Encode::decode "iso-8859-1", $buffer ); };   #   stripped
+		# eval { $VARS = JSON::XS->new->decode( Encode::decode "iso-8859-1", $buffer ); };   #  		
+		}
 	if (($@) && ($@ =~ /Wide character/)) {
 		$buffer = &ZTOOLKIT::stripUnicode($buffer);
-		eval { $VARS = JSON::XS->new->utf8->decode($buffer); };
+		eval { $VARS = JSON::XS->new->utf8(0)->decode($buffer); };
 		}
 	if ($@) {
 		&JSONAPI::set_error($R = {}, 'iseerr', 1, "decode json $@"); 

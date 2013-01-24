@@ -50,7 +50,7 @@ my @TABS = ();
 
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'/biz/setup' };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi' };
 
 if (not defined $ZOOVY::cgiv->{'MODE'}) { $ZOOVY::cgiv->{'MODE'} = ''; }
 
@@ -385,7 +385,7 @@ if ($PRT>0) {
 	my @LINKS = ();
 	push @LINKS, { min=>0, link=>'/biz/setup/domain/index.cgi', title=>'Domain Hosting', about=>'Associate Domains to this Partition.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/promotions/index.cgi', title=>'Coupons/Promotions', about=>'Create discounts for special purchases', };
-	push @LINKS, { min=>0, link=>'/biz/setup/tax/idnex.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
+	push @LINKS, { min=>0, link=>'/biz/setup/tax/index.cgi', title=>'Sales Tax', about=>'Configure state and local tax collection amounts.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/shipping/index.cgi', title=>'Shipping', about=>'Determine how shipping will be calculated for your products.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/payment/index.cgi', title=>'Payment Methods', about=>'Configure which payment methods you will accept from customers.', };
 	push @LINKS, { min=>0, link=>'/biz/setup/checkout/index.cgi?MODE=GENERAL', title=>'Checkout Setup', about=>'Specify what info is optional/required during checkout.', };
@@ -427,7 +427,7 @@ $PROPERTIES_DIV
 
 
 
-&GTOOLS::output(
+&GTOOLS::output('*LU'=>$LU,
    'title'=>'Setup',
 	'html'=>$html,
    'header'=>'1',

@@ -25,10 +25,10 @@ $GTOOLS::TAG{'<!-- engine_zoovy -->'} = ($engine eq 'zoovy')?'checked':'';
 $GTOOLS::TAG{'<!-- engine_google -->'} = ($engine eq 'google')?'checked':'';
 
 my $USERNAME = $q->param('USERNAME');
-if ($USERNAME eq '') { 
-	my ($userid) = split(/\@/,$q->cookie('session_id'));
-	($USERNAME,my $login) = split(/\*/,$userid);
-	}
+#if ($USERNAME eq '') { 
+#	my ($userid) = split(/\@/,$q->cookie('session_id'));
+#	($USERNAME,my $login) = split(/\*/,$userid);
+#	}
 
 print STDERR "USERNAME: $USERNAME\n";
 

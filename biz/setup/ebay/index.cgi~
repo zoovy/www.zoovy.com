@@ -1326,7 +1326,8 @@ WARNING: this account shares partition with eBay account $PRT{$act->{'PRT'}} (ea
 		$c .= "<a href=\"/biz/setup/ebay/index.cgi?ACTION=DEACTIVATE&ID=$act->{'ID'}\">[Deactivate]</a><br>";
 		# $c .= "<a href=\"index.cgi?ACTION=FEEDBACK&DBID=$act->{'ID'}\">[Feedback]</a><br>";
 		if ($act->{'HAS_STORE'}) { $c .= "<a href=\"/biz/setup/ebay/index.cgi?ACTION=LOAD-STORE-CATEGORIES&ID=$act->{'ID'}\">[Refresh Store Categories]</a><br>"; }
-		$c .= "<a target=\"_blank\" href=\"/biz/setup/ebay/redirhack.cgi?SignIn&m=$USERNAME&eb=$act->{'EBAY_USERNAME'}&sandbox=".($act->{'IS_SANDBOX'}?'on':'')."\"> [Refresh Authorization Token]</a><br>"; 
+		# $c .= "<a target=\"_blank\" href=\"/biz/setup/ebay/redirhack.cgi?SignIn&m=$USERNAME&eb=$act->{'EBAY_USERNAME'}&sandbox=".($act->{'IS_SANDBOX'}?'on':'')."\"> [Refresh Authorization Token]</a><br>"; 
+		$c .= "<a target=\"_blank\" href=\"/biz/setup/ebay/index.cgi?ACTION=REGISTER\"> [Refresh Authorization Token]</a><br>"; 
 		$c .= "<br>";
 		$c .= "</td>";
 		$c .= "<td valign=top nowrap>";

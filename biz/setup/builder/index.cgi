@@ -728,12 +728,12 @@ if ($ACTION eq 'COMPANYEDIT') {
 	$GTOOLS::TAG{'<!-- NS -->'} = $NS;
 	my $ref = &ZOOVY::fetchmerchantns_ref($USERNAME,$NS);
 
-	if ($LU->get('todo.setup')) {
-		require TODO;
-		my $t = TODO->new($USERNAME);
-		my ($need,$tasks) = $t->setup_tasks('company',webdb=>$webdbref,nsref=>$ref,'LU'=>$LU);
-		$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('company',$tasks);
-		}
+#	if ($LU->get('todo.setup')) {
+#		require TODO;
+#		my $t = TODO->new($USERNAME);
+#		my ($need,$tasks) = $t->setup_tasks('company',webdb=>$webdbref,nsref=>$ref,'LU'=>$LU);
+#		$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('company',$tasks);
+#		}
 
 	$GTOOLS::TAG{"<!-- COMPANY_NAME -->"} = $ref->{'zoovy:company_name'};
 	$GTOOLS::TAG{"<!-- SEO_TITLE -->"} = $ref->{'zoovy:seo_title'};
@@ -957,7 +957,7 @@ Changes you make here will also be made to any auction listings.</p>
 	<tr>
 		<td valign="middle" align="center">
 		<img name="invoiceimg" src="$invoice_logo_url" width='$logo_invoice_width' height='$logo_invoice_height'>
-		<input type="button" class="button" onClick="mediaLibrary($('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
+		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
 		</td>
 	</tr>
 	</table>
