@@ -187,7 +187,7 @@ body{
 .stng_details p{
 	font-size:17px;
 	color:#88cede;
-	font-family:abel,sans-serif;
+	font-family: 'cabin condensed',sans-serif;
 	font-weight: 400;
 	line-height: 1.64;
 	text-align:center;
@@ -202,7 +202,7 @@ body{
 }
 .app_based p{
 	color: rgb(67, 89, 104);
-    font-family: abel,sans-serif;
+    font-family: 'cabin condensed',sans-serif;
     font-size: 17px;
     font-weight: 400;
     line-height: 1.64;
@@ -493,8 +493,8 @@ body{
 }
 .container h3{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 28px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 32px;
     font-weight: 400;
     letter-spacing: -1px;
     line-height: 1.3;
@@ -519,8 +519,8 @@ body{
 }
 .container h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -532,8 +532,8 @@ body{
 }
 .wer_differnt span h4{	
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -574,7 +574,7 @@ body{
 }
 .review_srvcs a h1{
 	color:rgb(0, 93, 134);
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-size: 23px;
     font-weight: 400;
 	line-height: 1.35;
@@ -613,8 +613,8 @@ body{
 }
 .develop_apps h3{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     margin: 10px 0 5px;
@@ -665,7 +665,7 @@ body{
 .develop_apps span.learn_here p {
 	color: rgb(241, 90, 36);
     text-decoration: none;
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-size: 14px;
     font-style: italic;
     font-weight: 400;
@@ -676,7 +676,7 @@ body{
 .develop_apps span.learn_here a {
 	color: rgb(241, 90, 36);
     text-decoration: none;
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-size: 14px;
     font-style: italic;
     font-weight: 400;
@@ -803,12 +803,12 @@ body{
 }
 .process{
 	float: left;
-    padding: 0 130px 20px;
+    padding: 0 170px 20px;
     width: 340px;
 }
 .process h1{
 	color:rgb(0, 93, 134);
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-size: 23px;
     font-weight: 400;
 	line-height: 1.35;
@@ -821,7 +821,7 @@ body{
 .process a{
 	color: rgb(0, 93, 134);
     float: left;
-    font-family: arvo,serif;
+    font-family: 'Puritan', sans-serif;
     font-size: 17px;
     font-weight: 400;
     line-height: 1.35;
@@ -870,12 +870,12 @@ body{
 }
 .developer_take{
 	float: left;
-    padding: 0 130px 20px;
+    padding: 0 165px 20px;
     width: 340px;
 }
 .developer_take h1{
 	color:rgb(0, 93, 134);
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-size: 23px;
     font-weight: 400;
 	line-height: 1.35;
@@ -930,7 +930,33 @@ body{
     width: 44px;
 }
 
-
+.test_app{
+	float: left;
+    padding: 0 185px 20px;
+    width: 340px;
+}
+.test_app h1{
+	color:rgb(0, 93, 134);
+	font-family: 'Puritan', sans-serif;
+    font-size: 23px;
+    font-weight: 400;
+	line-height: 1.35;
+	float:left;
+	margin:0;
+}
+.test_app img{
+	margin: 8px 0 0 10px;
+}
+.test_app a{
+    text-decoration: none;
+	color:rgb(0, 93, 134);
+}
+.test_app a:hover{
+	color: rgb(136, 206, 222);
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+}
 /*----------------Building Apps Development CSS Ends Here---------------*/
 
 
@@ -988,14 +1014,14 @@ body{
 .qoutes h1{
 	color: rgb(241, 90, 36);
     font-size: 19px;
-	font-family: arvo,serif;
+	font-family: 'Puritan', sans-serif;
     font-style: italic;
     font-weight: 400;
 	margin:0;
 }
 .qoutes p{
 	color: rgb(127, 127, 127);
-    font-family: arvo,serif;
+    font-family: 'Puritan', sans-serif;
     font-style: italic;
     font-weight: 400;
 	font-size: 13px;
@@ -1018,6 +1044,7 @@ body{
 }
 .live_support span p{	
 }
+
 .live_support span.live training{
 	float:left;
 }
@@ -1078,8 +1105,8 @@ body{
 }
 .features_main h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1092,8 +1119,8 @@ body{
 }
 .feature_head h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1197,8 +1224,8 @@ body{
 }
 .order_head h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1256,8 +1283,8 @@ body{
 }
 .multistores h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1309,7 +1336,7 @@ body{
 }
 .container_partner h3{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
+    font-family: 'Puritan', sans-serif;
     font-size: 28px;
     font-weight: 400;
     letter-spacing: -1px;
@@ -1399,8 +1426,8 @@ body{
 }
 .mission_stmnt_des h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 24px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1408,8 +1435,8 @@ body{
 }
 .mission_stmnt_des h5{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;
@@ -1450,8 +1477,8 @@ body{
 }
 .zoovy_mangmnt_des h4{
 	color: rgb(0, 93, 134);
-    font-family: arvo,serif;
-    font-size: 15px;
+    font-family: 'Puritan', sans-serif;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.4;
     padding: 0;

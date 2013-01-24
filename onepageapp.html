@@ -4,7 +4,19 @@
 	<meta charset="utf-8">
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="onepageapp.css" rel="stylesheet" type="text/css"/>
-	<script src="http://webfonts.creativecloud.com/cabin:n4:all;rationale:n4:all;abel:n4:all;montserrat:n4:all;cabin-condensed:n7:all.js" type="text/javascript"></script>
+	<script type="text/javascript">
+  WebFontConfig = {
+    google: { families: [ 'Puritan:400,400italic,700,700italic:latin', 'Cabin+Condensed:400,500,600,700:latin' ]  }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })(); </script>
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript">

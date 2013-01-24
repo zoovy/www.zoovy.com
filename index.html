@@ -9,9 +9,19 @@ VERSION: 2013-1-22-11-48-00
 	<meta charset="utf-8">
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="onepageapp.css" rel="stylesheet" type="text/css"/>
-	<!--
-	<script src="https://webfonts.creativecloud.com/cabin:n4:all;rationale:n4:all;abel:n4:all;montserrat:n4:all;cabin-condensed:n7:all.js" type="text/javascript"></script>
-	-->
+	<script type="text/javascript">
+  WebFontConfig = {
+    google: { families: [ 'Puritan:400,400italic,700,700italic:latin', 'Cabin+Condensed:400,500,600,700:latin', 'Abel::latin' ]  }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })(); </script>
 	<script src="font-cabin.js" type="text/javascript"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -207,7 +217,7 @@ VERSION: 2013-1-22-11-48-00
 						<li><a href="#!/features-wholesale-supplychain.html">Wholesale/Supply Chain</a></li>
 					</ul>
 				</li>
-				<li><a href="#!/clients.html">CLIENTS</a></li>
+				<li><a href="#!/follow_us.html">FOLLOW US</a></li>
 				<li>
 					<a href="#!/about-zoovy.html">ABOUT ZOOVY</a>
 					<ul>
@@ -582,7 +592,7 @@ VERSION: 2013-1-22-11-48-00
 						<a class="test" href="#!/building-apps-testing.html">TESTING</a>
 					</div>
 				</div>
-				<div class="developer_take">
+				<div class="test_app">
 					<h1><a href="#!/building-apps-testing.html">Test your app next</a></h1><a href="#!/building-apps-testing.html"><img src="images/blue_right_arrow.png"/></a>				
 				</div>
 			</div>
@@ -671,7 +681,7 @@ VERSION: 2013-1-22-11-48-00
 			</div>
 			<div class="container">
 				<div class="live_support">
-					<h3>Marketing dollars working as hard as they could be?</h3>
+					<h3><span style="font-size:28px;">Marketing dollars working as hard as they could be?</span></h3>
 					<span class="live training">
 					<p>Zoovy's marketing experts evaluate marketing efforts to ensure that an e-business's budget is being distributed to the best possible areas. </p>
 					<p>Work with trained and certified professionals on appropriate 
@@ -712,13 +722,12 @@ VERSION: 2013-1-22-11-48-00
 			</div>
 			<div class="container">
 				<div class="live_support">
-						<h3>Marketplace Optimization (MpO)<br/><span style="font-size:22px;">Improve seller performance with this new strategy</span></h3>
+						<h3>Marketplace Optimization (MpO)<br/><span style="font-size:24px;">Improve seller performance with this new strategy</span></h3>
 				<br>
-				<h4>What is Marketplace Optimization?</h3>
+				<h4>What is Marketplace Optimization?</h4>
 				<p>Marketplace Optimization is a revolutionary new concept in the ever changing online marketplace. Emerging software and services are used to optimize a company's sales strategy in order to increase seller ranking on multiple marketplaces (Amazon, eBay, etc.).</p>
 				<p>A Marketplace Optimization Expert provides insight into the individual ranking algorithms (signals) used by marketplaces to recommend sellers to prospective buyers. By identifying and improving signal performance a company will receive preference, resulting in increased exposure (sales) on a marketplace by winning the "Buy Box".</p>
 				<p>
-				<br>
 				<h4>Increase Sales at:</h4>
 				<div class="center">
 				<br>
@@ -1066,15 +1075,25 @@ VERSION: 2013-1-22-11-48-00
 			</div>
 		</div>
 		
-		<div class="wrapper" id="clients">
+		<div class="wrapper" id="follow_us">
 			<script type="text/javascript">
-			app.pageAlias["/clients.html"] = "clients";
+			app.pageAlias["/follow_us.html"] = "follow_us";
 			</script>			
-			<!--div class="header_bg">
+			<div class="header_bg">
 				<img src="images/services.jpg"/>
-			</div-->
+			</div>
 			<div class="container">
-				<div class="clients_main">
+				<div class="build_apps">
+					<h3>Follow us: It is getting exciting!</h3>
+					<p>With so many exciting developments, you won't want to miss a thing. Join our <a href="https://plus.google.com/communities/108928399105730273026">Google&#43; Community</a>, follow us on <a href="http://www.twitter.com/Zoovyinc" target="_blank">Twitter </a> and keep up with the latest developments on our <a href="http://www.youtube.com/zoovylive" target="_blank">ZoovyLIVE </a>YouTube Channel. </p>
+			  </div>
+				<div class="web_icons">
+					<p><a href="https://plus.google.com/communities/108928399105730273026"><img name="google_plus" src="images/GooglePlus-90x90-Red.png" width="90" height="90" alt=""></a>
+			      </p>
+					<p><a href="http://www.youtube.com/ZOOVYLIVE"><img name="zoovylive" src="images/ZoovyLIVE_90x90.png" width="90" height="90" alt=""></a>
+			      </p>
+                    <a href="https://twitter.com/ZoovyInc"><img name="twitter" src="images/Twitter_90x90.png" width="90" height="90" alt=""></a>
+				 
 				</div>
 			</div>
 		</div>
@@ -1174,6 +1193,9 @@ VERSION: 2013-1-22-11-48-00
 			</div-->
 			<div class="container">
 				<div class="employments">
+				<div class="abt_zoovy_head">
+					<h3>Employment</h3>
+					</div>
 					<!-- Took out Employment(Jobs) replaced with text below-->
 					<span><p> For more information regarding employment, please send us an email. </p><a href="mailto:jobs@zoovy.com">Jobs@zoovy.com</a></span>
 				</div>
