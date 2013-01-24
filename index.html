@@ -1351,12 +1351,18 @@ VERSION: 2013-1-22-11-48-00
 			
 			
 			<script type="text/javascript">
+			
+				var containerWidth = 958;
+				var containerOuterWidth = 960;
+				var pushLength = 200;
+				var outerBuffer = 100;
+				
 				var attrSpring = new mSpring({
 					onSpringStart: function() {
 						$("#springReactor").css("background", "#FFAAAA");
 					},
 					onSpringChange: function(massPos, springData) {
-						$("#springReactor").css("left",massPos-50 + 'px');
+						$("#springReactor").css("left",massPos-($("#springReactor").outerWidth()/2) + 'px');
 					},
 					onSpringRest: function() {
 						$("#springReactor").css("background", "#FF0000");
@@ -1364,7 +1370,7 @@ VERSION: 2013-1-22-11-48-00
 				});
 				
 				attrSpring.setSpringParameters(10, 100, 10);
-				attrSpring.massPos = 958/2;
+				attrSpring.massPos = containerWidth/2;
 				//attrSpring.start(undefined,undefined,undefined,958);
 				
 				//var engageSpring = function(){
@@ -1373,29 +1379,29 @@ VERSION: 2013-1-22-11-48-00
 				
 				$("#springCanvas").mouseover(function(event){
 					$("#springCanvas").mousemove(function(event){
-						var anchorPos = 958/2;
+						var anchorPos = containerWidth/2;
 						var mousePos = event.clientX;
 						//console.log(event.clientX);
-						if($(window).width() > 960){
-							mousePos -= ($(window).width() - 958)/2
+						if($(window).width() > containerOuterWidth){
+							mousePos -= ($(window).width() - containerWidth)/2
 						} 
 						//var currentPos = $("#springReactor").css("left");
 						var currentPos = attrSpring.massPos;
 						//console.log(mousePos+".."+currentPos);
 						if(mousePos < currentPos) {
-							if(mousePos > 958/2-100){
-								anchorPos = mousePos + 200;
+							if(mousePos > containerWidth/2-pushLength){
+								anchorPos = mousePos + pushLength;
 							}
 						} else {
-							if(mousePos < 958/2+100){
-								anchorPos = mousePos - 200;
+							if(mousePos < containerWidth/2+pushLength){
+								anchorPos = mousePos - pushLength;
 							}
 						}
-						
-						if(anchorPos > 958 - 100)
-							anchorPos = 958 - 100;
-						else if(anchorPos < 0 + 100)
-							anchorPos = 0 + 100;
+						console.log(mousePos +".."+anchorPos);
+						if(anchorPos > containerWidth - outerBuffer)
+							anchorPos = containerWidth - outerBuffer;
+						else if(anchorPos < 0 + outerBuffer)
+							anchorPos = 0 + outerBuffer;
 						
 						attrSpring.start(undefined,undefined,undefined, anchorPos);
 					});
@@ -1405,17 +1411,12 @@ VERSION: 2013-1-22-11-48-00
 				
 				$("#springCanvas").mouseout(function(event){
 					var reltg = (event.relatedTarget) ? event.relatedTarget : event.toElement;
-					if(typeof reltg !== "undefined"){
-						while (reltg.tagName != "BODY"){
-							if (reltg.id == this.id){return;}
-							reltg = reltg.parentNode;
-						}
+					while (reltg != null && reltg.tagName != "BODY"){
+						if (reltg.id == this.id){return;}
+						reltg = reltg.parentNode;
 					}
 					$("#springCanvas").unbind('mousemove');
-					console.log("out");
 					attrSpring.start(undefined,undefined,undefined,958/2);
-					
-					
 				});
 				
 			</script>
