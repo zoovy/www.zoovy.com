@@ -26,6 +26,18 @@ VERSION: 2013-1-22-11-48-00
 	<script src="mspring.js" type="text/javascript"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	<script type="text/javascript">
+	/*
+	* FeedEk jQuery RSS/ATOM Feed Plugin 
+	* http://jquery-plugins.net/FeedEk/FeedEk.html
+	* Author : Engin KIZIL 
+	* http://www.enginkizil.com
+	*/
+	(function($){$.fn.FeedEk=function(opt){var def={FeedUrl:'',MaxCount:5,ShowDesc:true,ShowPubDate:true};if(opt){$.extend(def,opt)}var idd=$(this).attr('id');if(def.FeedUrl==null||def.FeedUrl==''){$('#'+idd).empty();return}var pubdt;$('#'+idd).empty().append('<div style="text-align:left; padding:3px;"><img src="feedek-loading.gif" /></div>');$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+def.MaxCount+'&output=json&q='+encodeURIComponent(def.FeedUrl)+'&callback=?',dataType:'json',success:function(data){$('#'+idd).empty();$.each(data.responseData.feed.entries,function(i,entry){$('#'+idd).append('<div class="ItemTitle"><a href="'+entry.link+'" target="_blank" >'+entry.title+'</a></div>');if(def.ShowPubDate){pubdt=new Date(entry.publishedDate);$('#'+idd).append('<div class="ItemDate">'+pubdt.toLocaleDateString()+'</div>')}if(def.ShowDesc)$('#'+idd).append('<div class="ItemContent">'+entry.content+'</div>')})}})}})(jQuery);
+	/* FeedEk */
+	</script>
+
 	<script type="text/javascript">
 
 		$.fn.doesExist = function(){
@@ -1230,12 +1242,21 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="news-events">
 			<script type="text/javascript">
 			app.pageAlias["/news-events.html"] = "news-events";
+
+		   $('#divNewsRss').FeedEk({
+				FeedUrl : 'http://blog.zoovy.com/feeds/posts/default?alt=rss',
+			   MaxCount : 5,
+			   ShowDesc : true,
+			   ShowPubDate: true
+			  });
+
 			</script>
 			<!--div class="header_bg">
 				<img src="images/services.jpg"/>
 			</div-->
 			<div class="container">
 				<div class="clients_main">
+				<div id="divNewsRss"></div>
 				</div>
 			</div>
 		</div>
@@ -1243,7 +1264,32 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="press-releases">
 			<script type="text/javascript">
 			app.pageAlias["/press-releases.html"] = "press-releases";
+
+		   $('#divPressRss').FeedEk({
+				FeedUrl : 'http://blog.zoovy.com/feeds/posts/default/-/Press?alt=rss',
+			   MaxCount : 5,
+			   ShowDesc : true,
+			   ShowPubDate: true
+			  });
+
 			</script>	
+
+				<div class="news_events">
+					<h3>News & Events</h3></br>
+					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
+					</br>
+					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
+					</br>
+					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
+					</br>
+					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
+					
+					</br>
+				</div>
+
+			
+			<div id="divPressRss"></div>
+
 			<!--div class="header_bg">
 				<img src="images/services.jpg"/>
 			</div-->
