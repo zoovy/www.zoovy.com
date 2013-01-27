@@ -216,6 +216,8 @@ VERSION: 2013-1-22-11-48-00
 					<a id="loginlink" href="https://www.zoovy.com/app/latest/admin.html">Customer Login</a>
 					<script type="text/javascript">
 					// need to append a unique non-cachable date time to #loginlink
+					var d = new Date(); 
+					$('#loginlink').attr("href", $('#loginlink').attr("href")+'?v='+d.toString()); 
 					</script>
 					</li>
 					
