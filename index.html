@@ -34,7 +34,7 @@ VERSION: 2013-1-22-11-48-00
 	* Author : Engin KIZIL 
 	* http://www.enginkizil.com
 	*/
-	(function($){$.fn.FeedEk=function(opt){var def={FeedUrl:'',MaxCount:5,ShowDesc:true,ShowPubDate:true};if(opt){$.extend(def,opt)}var idd=$(this).attr('id');if(def.FeedUrl==null||def.FeedUrl==''){$('#'+idd).empty();return}var pubdt;$('#'+idd).empty().append('<div style="text-align:left; padding:3px;"><img src="feedek-loading.gif" /></div>');$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+def.MaxCount+'&output=json&q='+encodeURIComponent(def.FeedUrl)+'&callback=?',dataType:'json',success:function(data){$('#'+idd).empty();$.each(data.responseData.feed.entries,function(i,entry){$('#'+idd).append('<div class="ItemTitle"><a href="'+entry.link+'" target="_blank" >'+entry.title+'</a></div>');if(def.ShowPubDate){pubdt=new Date(entry.publishedDate);$('#'+idd).append('<div class="ItemDate">'+pubdt.toLocaleDateString()+'</div>')}if(def.ShowDesc)$('#'+idd).append('<div class="ItemContent">'+entry.content+'</div>')})}})}})(jQuery);
+	(function($){$.fn.FeedEk=function(opt){var def={FeedUrl:'',MaxCount:5,ShowDesc:true,ShowPubDate:true};if(opt){$.extend(def,opt)}var idd=$(this).attr('id');if(def.FeedUrl==null||def.FeedUrl==''){$('#'+idd).empty();return}var pubdt;$('#'+idd).empty().append('<div style="text-align:left; padding:3px;"><img src="images/feedek-loading.gif" /></div>');$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+def.MaxCount+'&output=json&q='+encodeURIComponent(def.FeedUrl)+'&callback=?',dataType:'json',success:function(data){$('#'+idd).empty();$.each(data.responseData.feed.entries,function(i,entry){$('#'+idd).append('<div class="ItemTitle"><a href="'+entry.link+'" target="_blank" >'+entry.title+'</a></div>');if(def.ShowPubDate){pubdt=new Date(entry.publishedDate);$('#'+idd).append('<div class="ItemDate">'+pubdt.toLocaleDateString()+'</div>')}if(def.ShowDesc)$('#'+idd).append('<div class="ItemContent">'+entry.content+'</div>')})}})}})(jQuery);
 	/* FeedEk */
 	</script>
 
@@ -213,7 +213,7 @@ VERSION: 2013-1-22-11-48-00
 					<li><a href="#!/about-contact.html">Contact</a></li>
 					<li>|</li>
 					<li>
-					<a id="loginlink" href="/biz/app/admin.html">Customer Login</a>
+					<a id="loginlink" href="https://www.zoovy.com/app/latest/admin.html">Customer Login</a>
 					<script type="text/javascript">
 					// need to append a unique non-cachable date time to #loginlink
 					</script>
@@ -265,8 +265,10 @@ VERSION: 2013-1-22-11-48-00
 				<li><a href="#!/news-events.html">NEWS &amp; EVENTS</a>
 					<ul>
 						<li><a href="#!/news-events.html">News &amp; Events</a></li>
+						<!--
 						<li><a href="#!/press-releases.html">Press Releases</a></li>
 						<li><a href="#!/in-the-news.html">In The News</a></li>
+						-->
 					</ul>
 				</li>
 			</ul>
@@ -291,6 +293,7 @@ VERSION: 2013-1-22-11-48-00
 					</div>
 				</div>
 				<div class="register_update">
+				<!--
 					<p>REGISTER FOR UPDATES</p>
 					<form>
 						<p>Enter your email address for eCommerce specific<br/> news and Zoovy production info</p>
@@ -306,6 +309,7 @@ VERSION: 2013-1-22-11-48-00
 							<input type="submit"/>
 						</div>
 					</form>
+				-->
 				</div>
 				<div class="social_icons">
 					<p>WE'RE MOVING FAST. KEEP UP!</p>
@@ -1275,16 +1279,7 @@ VERSION: 2013-1-22-11-48-00
 			</script>	
 
 				<div class="news_events">
-					<h3>News & Events</h3></br>
-					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
-					</br>
-					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
-					</br>
-					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
-					</br>
-					<h7>Date of story</h7> </h4><a href="">Title of Story</a></h4>
-					
-					</br>
+
 				</div>
 
 			
