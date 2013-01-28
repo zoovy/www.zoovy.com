@@ -499,22 +499,13 @@ if ($VERB eq 'SAVEADDR') {
 	$addr->{$TYPE.'_address1'} = $ZOOVY::cgiv->{'address1'};
 	$addr->{$TYPE.'_address2'} = $ZOOVY::cgiv->{'address2'};
 	$addr->{$TYPE.'_city'} = $ZOOVY::cgiv->{'city'};
-	$addr->{$TYPE.'_state'} = $ZOOVY::cgiv->{'state'};
-	
-	if ($ZOOVY::cgiv->{'country'} ne '' && 
-		 $ZOOVY::cgiv->{'country'} !~ m/US/i && 
-		 $ZOOVY::cgiv->{'country'} !~ m/United States/i){
-		$addr->{$TYPE.'_int_zip'} = $ZOOVY::cgiv->{'zip'};
-		$addr->{$TYPE.'_zip'} = '';
+	$addr->{$TYPE.'_region'} = $ZOOVY::cgiv->{'region'};
+	$addr->{$TYPE.'_postal'} = $ZOOVY::cgiv->{'postal'};
+	$addr->{$TYPE.'_countrycode'} = $ZOOVY::cgiv->{'countrycode'};
+
+	if ($TYPE eq 'BILL') {
+		$addr->{$TYPE.'_email'} = $ZOOVY::cgiv->{'email'};
 		}
-	else { 
-		$addr->{$TYPE.'_int_zip'} = '';
-		$addr->{$TYPE.'_zip'} = $ZOOVY::cgiv->{'zip'}; 
-		}
-	
-	$addr->{$TYPE.'_country'} = $ZOOVY::cgiv->{'country'};
-	$addr->{$TYPE.'_email'} = $ZOOVY::cgiv->{'email'};
-	$addr->{$TYPE.'_province'} = $ZOOVY::cgiv->{'province'};
 	
 	if (uc($TYPE) eq 'WS') { 
 		$addr->{'BILLING_CONTACT'} = $ZOOVY::cgiv->{'BILLING_CONTACT'};
@@ -1080,7 +1071,13 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		next if (not defined $O2);
 
 		$out .= "<tr bgcolor='".(($count%2==0)?'EEEEEE':'FFFFFF')."'>";
-		$out .= qq~<td class='order'><a href="#" onClick="jQuery('#ordersContent').empty(); navigateTo('/biz/orders/view.cgi?ID=~.$O2->oid().qq~');">~.$O2->oid().qq~</a></td>~;
+		$out .= sprintf(
+		qq~<td class='order'><a href="#" onClick="
+			var ORDERID = '%s'; 
+			var CID = '%s';
+			app.ext.admin_orders.a.showOrderEditorInDialog(ORDERID,CID);
+			');">%s</a></td>~, $O2->oid(),$C->cid(),$O2->oid() );
+
 		$out .= "<td class='order'>".($O2->pool())."</td>";
 		$out .= "<td class='order'>".($O2->in_get('sum/order_total'))."</td>";
 		$out .= "<td class='order'>".($O2->payment_method())."</td>";

@@ -1071,7 +1071,14 @@ if (($VERB eq 'EDIT') || ($VERB eq 'NUKENOTE')) {
 		next if (not defined $O2);
 
 		$out .= "<tr bgcolor='".(($count%2==0)?'EEEEEE':'FFFFFF')."'>";
-		$out .= qq~<td class='order'><a href="#" onClick="jQuery('#ordersContent').empty(); navigateTo('/biz/orders/view.cgi?ID=~.$O2->oid().qq~');">~.$O2->oid().qq~</a></td>~;
+		$out .= sprintf(
+		qq~<td class='order'><a href="#" onClick="
+			var ORDERID = '%s'; 
+			var CID = '%s';
+			app.ext.admin_orders.a.showOrderEditorInDialog(ORDERID,CID);
+			return(false); 
+			">%s</a></td>~, $O2->oid(),$C->cid(),$O2->oid() );
+
 		$out .= "<td class='order'>".($O2->pool())."</td>";
 		$out .= "<td class='order'>".($O2->in_get('sum/order_total'))."</td>";
 		$out .= "<td class='order'>".($O2->payment_method())."</td>";

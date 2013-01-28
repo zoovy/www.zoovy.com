@@ -728,12 +728,12 @@ if ($ACTION eq 'COMPANYEDIT') {
 	$GTOOLS::TAG{'<!-- NS -->'} = $NS;
 	my $ref = &ZOOVY::fetchmerchantns_ref($USERNAME,$NS);
 
-	if ($LU->get('todo.setup')) {
-		require TODO;
-		my $t = TODO->new($USERNAME);
-		my ($need,$tasks) = $t->setup_tasks('company',webdb=>$webdbref,nsref=>$ref,'LU'=>$LU);
-		$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('company',$tasks);
-		}
+#	if ($LU->get('todo.setup')) {
+#		require TODO;
+#		my $t = TODO->new($USERNAME);
+#		my ($need,$tasks) = $t->setup_tasks('company',webdb=>$webdbref,nsref=>$ref,'LU'=>$LU);
+#		$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('company',$tasks);
+#		}
 
 	$GTOOLS::TAG{"<!-- COMPANY_NAME -->"} = $ref->{'zoovy:company_name'};
 	$GTOOLS::TAG{"<!-- SEO_TITLE -->"} = $ref->{'zoovy:seo_title'};
@@ -899,11 +899,11 @@ Changes you make here will also be made to any auction listings.</p>
 	~;
 		}
 
-
 	
 	my $logo = $ref->{'zoovy:logo_website'};
 	$GTOOLS::TAG{"<!-- LOGO_WEBSITE -->"} = &IMGLIB::Lite::url_to_image($USERNAME,$logo,100,100,'ffffff');
-	$GTOOLS::TAG{"<!-- LOGO_WEBSITE_PIXELMODE -->"} = ($ref->{'zoovy:logo_website_pixelmode'})?'CHECKED':'';
+
+#	$GTOOLS::TAG{"<!-- LOGO_WEBSITE_PIXELMODE -->"} = ($ref->{'zoovy:logo_website_pixelmode'})?'CHECKED':'';
 
 	## NOTE:
 	## LOGOYES 
@@ -919,87 +919,24 @@ Changes you make here will also be made to any auction listings.</p>
 		if ($prtinfo->{'profile'} ne $NS) { $prt = ''; }
 		}
 
-	if ($prt ne '') {
+	## types of logo's:
+	# zoovy:logo_invoice : logo at the top of an invoice (for this sdomain)
+	# zoovy:logo_website : logo that is used for the wrapper
+	# zoovy:logo_market  : logo that will be used for marketplaces (no domain name)
+	# zoovy:logo_email	: logo for emails
+	# zoovy:logo_mobile	: logo for mobile site
 
-		## types of logo's:
-		# zoovy:logo_invoice : logo at the top of an invoice (for this sdomain)
-		# zoovy:logo_website : logo that is used for the wrapper
-		# zoovy:logo_market  : logo that will be used for marketplaces (no domain name)
-		# zoovy:logo_email	: logo for emails
-		# zoovy:logo_mobile	: logo for mobile site
+	# zoovy:company_logo_m
+	# zoovy:company_logo
 
-		# zoovy:company_logo_m
-		# zoovy:company_logo
+	my ($logo_invoice_width,$logo_invoice_height) = split('x',$ref->{'zoovy:logo_invoice_xy'});
+	if ((!defined($logo_invoice_width)) || ($logo_invoice_width>500) || ($logo_invoice_width<1)) { $logo_invoice_width = 300; }
+	if ((!defined($logo_invoice_height)) || ($logo_invoice_height>500) || ($logo_invoice_height<1)) { $logo_invoice_height = 100; }
+	$GTOOLS::TAG{'<!-- LOGO_INVOICE_WIDTH -->'} = $logo_invoice_width;
+	$GTOOLS::TAG{'<!-- LOGO_INVOICE_HEIGHT -->'} = $logo_invoice_height;
 
-		my ($logo_invoice_width,$logo_invoice_height) = split('x',$ref->{'zoovy:logo_invoice_xy'});
-		if ((!defined($logo_invoice_width)) || ($logo_invoice_width>500) || ($logo_invoice_width<1)) { $logo_invoice_width = 300; }
-		if ((!defined($logo_invoice_height)) || ($logo_invoice_height>500) || ($logo_invoice_height<1)) { $logo_invoice_height = 100; }
-		$GTOOLS::TAG{'<!-- LOGO_INVOICE_WIDTH -->'} = $logo_invoice_width;
-		$GTOOLS::TAG{'<!-- LOGO_INVOICE_HEIGHT -->'} = $logo_invoice_height;
-	
-		my $logo = $ref->{'zoovy:logo_invoice'};
-		my $invoice_logo_url = &IMGLIB::Lite::url_to_image($USERNAME,$logo,$logo_invoice_width,$logo_invoice_height,'ffffff');
-
-	$GTOOLS::TAG{'<!-- INVOICE_LOGO -->'} = qq~
-<table class="zoovytable" cellpadding="2" cellspacing="0" border="0" width='100%'>
-<tr>
-	<td colspan=2 class="zoovytableheader">Invoice Logo Configuration (Partition #$prt)</td>
-</tr>
-<tr>
-	<td style="padding:5px;">
-
-<!-- BEGIN INVOICE LOGO TABLE -->
-
-	<table class="table_stroke" cellpadding="2" cellspacing="0" border="0" width='100%'>
-	<tr>
-		<td class="table_head"><span class="header">Invoice Logo @ $logo_invoice_width x $logo_invoice_height:</span></td>
-	</tr>
-	<tr>
-		<td valign="middle" align="center">
-		<img name="invoiceimg" src="$invoice_logo_url" width='$logo_invoice_width' height='$logo_invoice_height'>
-		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
-		</td>
-	</tr>
-	</table>
-<!-- END LOGO GRAPHIC TABLE -->
-	</td>
-
-	<Td valign="top" align="left">
-	<!-- BEGIN LOGO DETAILS & CHECKBOXES -->
-	<table width='100%'>
-	<tr>
-		<td>
-	The logo you select will appear in your checkout, web based printed invoices and more. 
-	Zoovy will automatically size your logo to fit within the theme and layout you have chosen.
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table>
-	<tr>
-		<Td>Width:</td>
-		<td><input type="textbox" value='$logo_invoice_width' size="3" name="width" class="formed"></td>
-		<td>(300 pixels recommended)</td>
-	</tr>
-	<tr>
-		<td>Height:</td>
-		<td><input type="textbox" value='$logo_invoice_height' size="3" name="height" class="formed"></td>
-		<td>(100 pixels recommended)</td>
-	</tr>
-	<tr>
-		<td colspan='3'>Minimum Size 16x16, Maximum Size: 500x300<br></td>
-	</tr>
-	</table>
-	</td>
-</tr>
-</table>
-	<!-- END INVOICE LOGO TABLE -->
-	</td>
-</tr>
-</table>
-	~;
-		}
-
+	my $logo = $ref->{'zoovy:logo_invoice'};
+	my $invoice_logo_url = &IMGLIB::Lite::url_to_image($USERNAME,$logo,$logo_invoice_width,$logo_invoice_height,'ffffff');
 	
 	$template_file = 'company.shtml';
 	}

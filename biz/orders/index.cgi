@@ -158,7 +158,8 @@ if ($VERB eq 'EXEC-SEARCH') {
 		}
 	elsif (&ZTOOLKIT::validate_email($find_text)) {
 		## email shortcut
-		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'BILL_EMAIL'=>$find_text,'WEB_SCOPE'=>1);
+		push @MSGS, "WARN|LEGACY ORDER SEARCH HAS BEEN DISABLED TO INCREASE SYSTEM STABILITY (CHECKOUT/ORDER CREATION ISSUES). PLEASE USE THE SEARCH IN NEW ORDER INTERFACE.";
+		# ($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,'BILL_EMAIL'=>$find_text,'WEB_SCOPE'=>1);
 		}
 	elsif ($ZOOVY::cgiv->{'search_field'} eq 'AMAZON') {
 		require AMAZON3;
@@ -249,7 +250,8 @@ if ($VERB eq 'EXEC-SEARCH') {
 			$SHOW_POOL++;
 			}
 
-		($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,%params);
+		push @MSGS, "WARN|LEGACY ORDER SEARCH HAS BEEN DISABLED TO INCREASE SYSTEM STABILITY (CHECKOUT/ORDER CREATION ISSUES). PLEASE USE THE SEARCH IN NEW ORDER INTERFACE.";
+		# ($r) = ORDER::BATCH::report($USERNAME,DETAIL=>9,%params);
 		}
 	else {
 		die("never reached!");
@@ -261,6 +263,7 @@ if ($VERB eq 'EXEC-SEARCH') {
 
 
 if ($VERB eq 'SEARCH') {
+	push @MSGS, "WARN|LEGACY ORDER SEARCH NO LONGER SUPPORTS TEXT BASED LOOKUPS";
 	$template_file = 'search.shtml';
 	}
 

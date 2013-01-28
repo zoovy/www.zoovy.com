@@ -115,8 +115,6 @@
 </table>
 <!-- End company policies section -->
 
-<!-- LOGOYES -->
-
 <!-- website logo setup -->
 <!-- BEGIN LOGO CONFIG TABLE -->
 <br>
@@ -141,7 +139,7 @@
 	</table><!-- END LOGO GRAPHIC TABLE -->
 	</td>
 	<td style="padding:5px;">
-<!-- BEGIN LOGO DETAILS & CHECKBOXES -->
+
 	<table width='100%'><tr>
 		<td>
 		<div class="hint">
@@ -153,14 +151,70 @@
 	<tr>
 		<td><input type="checkbox" <!-- LOGO_WEBSITE_PIXELMODE --> name="logo_website_pixelmode">Pixel-Mode Scaling<br>Enabling this will make some transparent GIF files look better when scaling is enabled.  Try this if your logo has a black or white spotty outline.</td>
 	</tr>
-	</table><!-- END LOGO DETAILS & CHECKBOXES -->
+	</table>
+
 	</td>
 </tr>
 </table>
 
 <br>
 
-<!-- INVOICE_LOGO -->
+<table class="zoovytable" cellpadding="2" cellspacing="0" border="0" width='100%'>
+<tr>
+	<td colspan=2 class="zoovytableheader">Invoice Logo Configuration (Partition #$prt)</td>
+</tr>
+<tr>
+	<td style="padding:5px;">
+
+<!-- BEGIN INVOICE LOGO TABLE -->
+
+	<table class="table_stroke" cellpadding="2" cellspacing="0" border="0" width='100%'>
+	<tr>
+		<td class="table_head"><span class="header">Invoice Logo @ $logo_invoice_width x $logo_invoice_height:</span></td>
+	</tr>
+	<tr>
+		<td valign="middle" align="center">
+		<img id ="invoiceimg" name="invoiceimg" src="$invoice_logo_url" width='<!-- LOGO_INVOICE_WIDTH -->' height='<!-- LOGO_INVOICE_HEIGHT -->'>
+		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
+		</td>
+	</tr>
+	</table>
+<!-- END LOGO GRAPHIC TABLE -->
+	</td>
+
+	<Td valign="top" align="left">
+	<!-- BEGIN LOGO DETAILS & CHECKBOXES -->
+	<table width='100%'>
+	<tr>
+		<td>
+	The logo you select will appear in your checkout, web based printed invoices and more. 
+	Zoovy will automatically size your logo to fit within the theme and layout you have chosen.
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<table>
+	<tr>
+		<Td>Width:</td>
+		<td><input type="textbox" value='<!-- LOGO_INVOICE_WIDTH -->' size="3" name="width" class="formed"></td>
+		<td>(300 pixels recommended)</td>
+	</tr>
+	<tr>
+		<td>Height:</td>
+		<td><input type="textbox" value='<!-- LOGO_INVOICE_HEIGHT -->' size="3" name="height" class="formed"></td>
+		<td>(100 pixels recommended)</td>
+	</tr>
+	<tr>
+		<td colspan='3'>Minimum Size 16x16, Maximum Size: 500x300<br></td>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+	<!-- END INVOICE LOGO TABLE -->
+	</td>
+</tr>
+</table>
 
 
 
