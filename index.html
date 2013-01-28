@@ -1354,28 +1354,77 @@ VERSION: 2013-1-22-11-48-00
 
 
 
-
-		<div id="zoovy">
-			<script type="text/javascript">
-			app.pageAlias["/corporate/zoovy.html"] = "zoovy";
-			</script>
-			zoovy
-		</div>
-		<div id="anycommerce">
-			<script type="text/javascript">
-			app.pageAlias["/corporate/anycommerce.html"] = "anycommerce";
-			</script>
-			anycommerce
-		</div>
-		<div id="someothertestpage">
-			<script type="text/javascript">
-			app.pageAlias["/someothertestpage.html"] = "someothertestpage";
-			</script>
-			someothertestpage
-		</div>
 		<div id="404">
 			PAGE NOT FOUND
 		</div>
+		
+<!--
+
+BELOW FOLLOWS AN EXAMPLE 'PAGE', INTENDED TO DEMONSTRATE THE PROPER SYNTAX FOR INTEGRATION INTO THE SITE
+
+-->
+		<div id="example">
+			<!-- The 'page' must begin with a script tag designating the pageAlias for URI parsing- this is important for parsing arrival links as well as intrasite links -->
+			<!-- If the 'page' needs any customized transition, init, or destroy functions, they may be defined in this tag as well. -->
+			<script type="text/javascript">
+				//app.pageAlias["/somelocation.html"] = "idOfEnclosingDiv"
+				app.pageAlias["/example.html"] = "example";
+				
+				/*
+				The below object (optional), which must be named the same as the id of the enclosing div, just as the pageAlias is set that way,
+				will contain any custom functions that will need to be specified for the page.  Any of these functions that are not customized
+				will be set to the default functions specified at the top of this file.  There are 4 possible functions that can be defined:
+				
+				init
+					Any code that needs to be executed by the page after it loads.  This includes setting up any animations that will occur on the page,
+					any ajax that needs to be loaded, RSS feeds that need to be set up, etc...
+					NOTE: any intervals that are set can be stored with the syntax app.currentIntervals.push(setInterval(...)); -- This will allow
+					the default destroy function to clean them up appropriately.
+					NOTE: init() will execute every time a page is loaded, regardless of whether it has previously been shown or not. The developer must
+					take care to not re-execute code that does not clean itself up -- for example if an RSS feed is loaded in init and populates a feed viewer
+					on the page, and that feed viewer is not emptied in destroy, the init() should check to see whether it has already been loaded.
+				destroy
+					Any code that needs to be executed to 'destroy' the page- this is mostly intended to clean up any repeating animations that are set
+					in init, so that there are not a growing number of intervals executing, slowing down the JS engine.  In most cases this can be accomplished
+					by simply leaving the default destroy function, as long as any intervals set in init() are pushed to the app.currentIntervals array.
+				transitionIn
+					Custom code to transition the page into view. Takes one parameter, the jquery selected page to be transitioned in.  The default function 
+					fades in the page over the course of 1 second.  The transitionIn function should return the number of milliseconds that the transition process
+					takes in order to properly deal with delays.
+					NOTE: The developer should be careful of any specified transitions in, to specify them within the context of the page.  For example,
+					$('p').slideRight(500);
+					VS.
+					$('p',$page).slideRight(500);
+					The first will make all paragraphs in the entire DOM slide into view from the left, while the second will make all those on the transitioning page
+					slide in instead.
+				transitionOut
+					As with the transitionIn function, except for leaving the page.  The developer much ensure the transitionOut delay is returned accurately, as this
+					can cause major problems if it is not specified.
+				*/
+				app.pages.example = {
+					init : function(){
+						//some init code
+					},
+					destroy : function(){
+						//some destroy code
+					},
+					transitionIn : function($page){
+						//some transitionIn code
+						//return delay
+					},
+					transitionOut : function($page){
+						//some transitionOut code
+						//return delay
+					}
+				};
+			</script>
+			
+			<h1>PAGE CONTENT GOES HERE</h1>
+			
+		
+		</div>
+		<!-- END EXAMPLE 'PAGE' -->
+		
 		
 		<div id="springtest">
 			<script type="text/javascript">
