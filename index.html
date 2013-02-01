@@ -105,7 +105,7 @@ VERSION: 2013-1-22-11-48-00
 		});
 		
 		var handlePopState = function(state){
-			// alert(state);
+			showFromLocation(state);
 		}
 		
 		var showFromLocation = function(location){
@@ -131,7 +131,7 @@ VERSION: 2013-1-22-11-48-00
 			
 			try	{
 
-				window.history.pushState(app.pageAlias[ourURI], app.pageAlias[ourURI]+" title", location);
+				window.history.pushState(location, app.pageAlias[ourURI]+" title", location);
 			}
 			catch(err)	{
 				
