@@ -111,6 +111,7 @@ body{
     display: none;
     height: auto;
     position: absolute;
+	z-index: 100;
     width: 160px;
 	margin: 24px 0 0;
 }

@@ -9,6 +9,8 @@ VERSION: 2013-1-22-11-48-00
 	<meta charset="utf-8">
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="onepageapp.css" rel="stylesheet" type="text/css"/>
+	<!--
+	-->
 	<script type="text/javascript">
   WebFontConfig = {
     google: { families: [ 'Puritan:400,400italic,700,700italic:latin', 'Cabin+Condensed:400,500,600,700:latin', 'Abel::latin' ]  }
@@ -60,11 +62,11 @@ VERSION: 2013-1-22-11-48-00
 			return 1000;
 		}
 		
-		var defaultInitFunction = function(){
+		var defaultInitFunction = function($page){
 			//Default Init does nothing, but here for structural symmetry
 		}
 		
-		var defaultDestroyFunction = function(){
+		var defaultDestroyFunction = function($page){
 			for(var i=0; i<app.currentIntervals.length; i++){
 				clearInterval(app.currentIntervals[i]);
 			}
@@ -140,25 +142,30 @@ VERSION: 2013-1-22-11-48-00
 		}
 
 		var show = function($nextPage){
-			var id=$nextPage.attr("id");
+			var id;
 			//Transition out current page, if it exists
 			var delay = 0;
 			if(typeof app.currentPage !== "undefined"){
+				id=app.currentPage.attr("id");
 				var transitionOutFunction;
 				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["transitionOut"] !== "undefined")
 					transitionOutFunction = app.pages[id]["transitionOut"];
 				if(typeof transitionOutFunction === "undefined")
 					transitionOutFunction = defaultTransOut;
 				delay = transitionOutFunction(app.currentPage);
+				
+				var destroyFunction;
+				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["destroy"] !== "undefined")
+					destroyFunction = app.pages[id]["destroy"];
+				if(typeof destroyFunction === "undefined") {
+					destroyFunction = defaultDestroyFunction;
+					console.log(id);
+				}
+				destroyFunction(app.currentPage);
 			}
 			
-			var destroyFunction;
-			if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["destroy"] !== "undefined")
-				destroyFunction = app.pages[id]["destroy"];
-			if(typeof destroyFunction === "undefined")
-				destroyFunction = defaultDestroyFunction;
-			destroyFunction();
 			
+			id=$nextPage.attr("id");
 			//Transition in next page
 			setTimeout(function(){
 				var transitionInFunction;
@@ -174,7 +181,7 @@ VERSION: 2013-1-22-11-48-00
 					initFunction = app.pages[id]["init"];
 				if(typeof initFunction === "undefined")
 					initFunction = defaultInitFunction;
-				initFunction();
+				initFunction($nextPage);
 			}, delay);
 			
 		};
@@ -197,6 +204,8 @@ VERSION: 2013-1-22-11-48-00
 		//	showRandomPage();
 		//}, 5000);
 	</script>
+	<script type="text/javascript" charset="utf-8" src="Services_animation_edgePreload.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Were_Different_edgePreload.js"></script>
 </head>
 
 
@@ -336,8 +345,12 @@ VERSION: 2013-1-22-11-48-00
 
 	
 	<div id="templates" style="display:none;">
-
-		
+		<div id="servicesBanner" class="header_bg">
+			<div class="EDGE-11710536"></div>
+		</div>
+		<div id="differentBanner" class="header_bg">
+			<div class="EDGE-1205631013"></div>
+		</div>
 
 		<div id="home">
 			<script type="text/javascript">
@@ -431,10 +444,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="different">
 			<script type="text/javascript">
 			app.pageAlias["/different.html"] = "different";
+			app.pages.different= {
+				init : function($page){
+					$("#differentBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#differentBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="Animations/Were_Different/images/different_back.png"/>
-			</div>
 			<div class="container">
 				<div class="wer_differnt">
 					<h3>We're Different</h3>
@@ -474,10 +492,19 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="services">
 			<script type="text/javascript">
 			app.pageAlias["/services.html"] = "services";
+			app.pages.services = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
 
 			<div class="header_bg">
-				<img src="images/services.jpg"/>
+				
+				
 			</div>
 			<div class="container">
 				<div class="services_app">
@@ -537,10 +564,17 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps.html"] = "building-apps";
+			
+			app.pages['building-apps'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -575,10 +609,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-design">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-design.html"] = "building-apps-design";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			app.pages['building-apps-design'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -610,10 +649,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-development">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-development.html"] = "building-apps-development";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			app.pages['building-apps-development'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -645,10 +689,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-testing">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-testing.html"] = "building-apps-testing";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['building-apps-testing'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -690,11 +740,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="live-training-support">
 			<script type="text/javascript">
 			app.pageAlias["/live-training-support.html"] = "live-training-support";
-			</script>	
-
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['live-training-support'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="live_support">
 					<h3>We're here to help</h3>
@@ -719,10 +774,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="marketing-development">
 			<script type="text/javascript">
 			app.pageAlias["/marketing-development.html"] = "marketing-development";
+			
+			app.pages['marketing-development'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="live_support">
 					<h3><span style="font-size:28px;">Marketing dollars working as hard as they could be?</span></h3>
@@ -760,10 +821,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="marketplace-optimization">
 			<script type="text/javascript">
 			app.pageAlias["/marketplace-optimization.html"] = "marketplace-optimization";
+			
+			app.pages['marketplace-optimization'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-					<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="live_support">
 						<h3>Marketplace Optimization (MpO)<br/><span style="font-size:24px;">Improve seller performance with this new strategy</span></h3>
@@ -808,10 +875,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features">
 			<script type="text/javascript">
 			app.pageAlias["/features.html"] = "features";
-			</script>			
-			<div class="header_bg">
-					<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages.features = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="features_main">
 					<h3>Features - We have 'em all</h3>
@@ -896,10 +969,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-amazon">
 			<script type="text/javascript">
 			app.pageAlias["/features-amazon.html"] = "features-amazon";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-amazon'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_amazon">
 					<h3>Amazon Payments</h3>
@@ -980,10 +1059,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-ebay">
 			<script type="text/javascript">
 			app.pageAlias["/features-ebay.html"] = "features-ebay";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
+			
+			app.pages['features-ebay'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_ebay">
 				<h3>eBay Integration</h3>
@@ -1004,10 +1089,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-order-management">
 			<script type="text/javascript">
 			app.pageAlias["/features-order-management.html"] = "features-order-management";
+			
+			app.pages['features-order-management'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
 			<div class="container">
 				<div class="order_manage">
 					<h3>Order Management</h3>
@@ -1049,10 +1140,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-marketplaces">
 			<script type="text/javascript">
 			app.pageAlias["/features-marketplaces.html"] = "features-marketplaces";
+			
+			app.pages['features-marketplaces'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
 			<div class="container">
 				<div class="feature_market">
 					<h3>Marketplaces</h3>
@@ -1066,10 +1163,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-comparison-shopping">
 			<script type="text/javascript">
 			app.pageAlias["/features-comparison-shopping.html"] = "features-comparison-shopping";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-comparison-shopping'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_market">
 					<h3>Comparison Shopping</h3>
@@ -1082,10 +1185,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-multiple-stores">
 			<script type="text/javascript">
 			app.pageAlias["/features-multiple-stores.html"] = "features-multiple-stores";
+			
+			app.pages['features-multiple-stores'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="multistores">
 					<h3>Multiple Stores</h3>
@@ -1104,10 +1213,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-wholesale-supplychain">
 			<script type="text/javascript">
 			app.pageAlias["/features-wholesale-supplychain.html"] = "features-wholesale-supplychain";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-wholesale-supplychain'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="multistores">
 					<h3>Wholesale functionality</h3>
@@ -1122,10 +1237,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="follow_us">
 			<script type="text/javascript">
 			app.pageAlias["/follow_us.html"] = "follow_us";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['follow_us'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>Join the Conversation:</h3>
@@ -1165,10 +1286,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="about-management">
 			<script type="text/javascript">
 			app.pageAlias["/about-management.html"] = "about-management";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['about-management'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container_partner">
 				<div class="abt_zoovy_head">
 					<h3>Zoovy Management Team</h3>
