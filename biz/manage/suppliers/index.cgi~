@@ -1070,7 +1070,7 @@ if ($VERB eq 'NON_CONF_ORDERS') {
 		$c .= qq~<td><a href="?VERB=ORDERS&CODE=$orderref->{'SUPPLIERCODE'}">$orderref->{'SUPPLIERCODE'}</a></td>~;
 
 		if ($orderref->{'FORMAT'} ne 'STOCK') {
-			$c .= qq~<td><a target=_new href="https://www.zoovy.com/biz/orders/view.cgi?ID=$orderref->{'OUR_ORDERID'}">$orderref->{'OUR_ORDERID'}</a></td>~;
+			$c .= qq~<td><a href="#" onClick="jQuery('#ordersContent').empty(); return navigateTo('/biz/orders/view.cgi?ID=$orderref->{'OUR_ORDERID'}');">$orderref->{'OUR_ORDERID'}</a></td>~;
 			}
 		else {
 			$c .= qq~<td><a target=_new href="?VERB=STOCK_ORDER&CODE=$orderref->{'SUPPLIERCODE'}&ID=$orderref->{'ID'}">$orderref->{'ID'}</a> </td> ~;
@@ -1156,7 +1156,7 @@ if ($VERB eq 'ORDERS') {
 		my $VERBS = '';
 		$c .= qq~<tr class="$class">~;
 		$c .= qq~<td></td>~;
-		$c .= qq~<td><a target=_new href="https://www.zoovy.com/biz/orders/view.cgi?ID=$row->{'OUR_ORDERID'}">$row->{'OUR_ORDERID'}</a></td>~;
+		$c .= qq~<td><a href="#" onClick="jQuery('#ordersContent').empty(); return navigateTo('/biz/orders/view.cgi?ID=$row->{'OUR_ORDERID'}');">$row->{'OUR_ORDERID'}</a></td>~;
 		$c .= qq~<td>$row->{'SKU'}</td>~;
 		$c .= qq~<td>$row->{'QTY'}</td>~;
 		$c .= qq~<td></td>~;
@@ -1211,7 +1211,7 @@ if ($VERB eq 'ORDERS') {
 		$c .= qq~<td><input type="checkbox" name="$line->{'OUR_ORDERID'}:$line->{'ID'}_ID"></td>~;
 
 		## Store order
-		$c .= qq~<td valign=top nowrap><a target=_new href="https://www.zoovy.com/biz/orders/view.cgi?ID=$line->{'OUR_ORDERID'}">$line->{'OUR_ORDERID'}</a> ~;
+		$c .= qq~<td valign=top nowrap><a href="#" onClick="jQuery('#ordersContent').empty(); return navigateTo('/biz/orders/view.cgi?ID=$line->{'OUR_ORDERID'}');">$line->{'OUR_ORDERID'}</a> ~;
 		if ($pool ne '') { $c .= "($pool)"; }
 
 		# $c .= Dumper( $somap{ $line->{'OUR_ORDERID'} }->{'POOL'} );

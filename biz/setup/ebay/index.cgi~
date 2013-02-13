@@ -1409,13 +1409,13 @@ if ($ACTION eq 'REGISTER') {
 	$GTOOLS::TAG{'<!-- PRT -->'} = $PRT;
 	$GTOOLS::TAG{'<!-- PROFILE -->'} = &ZWEBSITE::checkout_profile($USERNAME,$PRT);
 
-	my %NEED = ();
-	if ($LU->get('todo.setup.ebay')) {
-		require TODO;
-	   my $t = TODO->new($USERNAME);
-   	my ($need,$tasks) = $t->setup_tasks('ebay',LU=>$LU);
-	   $GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('ebay',$tasks);
-	   }
+#	my %NEED = ();
+#	if ($LU->get('todo.setup.ebay')) {
+#		require TODO;
+#	   my $t = TODO->new($USERNAME);
+#   	my ($need,$tasks) = $t->setup_tasks('ebay',LU=>$LU);
+#	   $GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('ebay',$tasks);
+#	   }
 
 	push @BC, { name=>'Register eBay Account', target=>'_top' },
 	}

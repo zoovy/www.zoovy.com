@@ -565,8 +565,8 @@ push @TABS, { name=>'Products', link=>'/biz/manage/giftcard/index.cgi?VERB=PRODU
 
 
 &GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,file=>$template_file,bc=>[
-	{ name=>'Utilities' },
-	{ name=>'Gift Cards' }
+	{ name=>'Utilities', link=>'/biz/utilities/index.cgi' },
+	{ name=>'Gift Cards', link=>'/biz/utilities/giftcard/index.cgi' }
 	],
 	msgs=>\@MSGS,
 	tabs=>\@TABS,

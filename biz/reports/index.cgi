@@ -143,6 +143,8 @@ if ($VERB =~ /SALES-/) {
 		$vars{'.start_gmt'} = $begints;
 		$vars{'.end_gmt'} = $endts;
 		$vars{'.include_deleted'} = $include_deleted;
+		$vars{'.key'} = $ZOOVY::cgiv->{'key'};
+
 		$vars{'REPORT'} = $ZOOVY::cgiv->{'REPORT'},
 
 		my ($bj) = BATCHJOB->new($USERNAME,0,

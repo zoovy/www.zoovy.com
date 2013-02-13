@@ -74,6 +74,7 @@ if ($ENV{'SCRIPT_NAME'} =~ /nextag/) {
 	($DST,$MARKETPLACE) = ('NXT','Nextag.com');
 	push @BC, { name=>'Nextag.com',link=>"$PATH",'target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1, hint=>'example: upload.nextag.com' };
@@ -106,6 +107,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /buycom/) {
 	push @BC, { name=>'Buy.com',link=>'/biz/syndication/buycom/index.cgi','target'=>'_top', };
 	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>"$PATH?VERB=FILES&PROFILE=$PROFILE" };
 	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>"$PATH?VERB=DBMAP&PROFILE=$PROFILE" };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Seller ID', id=>'.sellerid', required=>1 };
@@ -118,6 +120,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bestbuy/) {
 	push @BC, { name=>'Best Buy Marketplace',link=>'/biz/syndication/bestbuy/index.cgi','target'=>'_top', };
 	push @TABS, { selected=>($VERB eq 'FILES')?1:0, 'name'=>'Files', 'link'=>"$PATH?VERB=FILES&PROFILE=$PROFILE" };
 	push @TABS, { selected=>($VERB eq 'DBMAP')?1:0, 'name'=>'DB Maps', 'link'=>"$PATH?VERB=DBMAP&PROFILE=$PROFILE" };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP Username', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Seller ID', id=>'.sellerid', required=>1 };
@@ -130,6 +133,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /pricegrabber/) {
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	## NOTE: even though this is type FTP, it uses the .user and .pass fields
 	##			because pricegrabber doesn't separate the fields.
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Username', id=>'.user', required=>1, hint=>'hint: uploaded filename is always username.csv',};
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Password', id=>'.pass', required=>1 };
 	}
@@ -139,6 +143,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /amazonpa/) {
 	push @BC, { name=>'Amazon Product Ads',link=>'/biz/syndication/amazonpa/index.cgi','target'=>'_top', };
 	## NOTE: even though this is type FTP, it uses the .user and .pass fields
 	##			because pricegrabber doesn't separate the fields.
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Username', id=>'.ftp_user', required=>1, hint=>'hint: uploaded filename is always username.csv',};
 	push @FIELDS, { type=>'textbox', name=>'FTP/Web Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -199,6 +204,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /shareasale/) {
 	($DST,$MARKETPLACE) = ('SAS','ShareASale.com');
 	push @BC, { name=>'ShareASale.com',link=>'/biz/syndication/shareasale/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'Merchant ID', id=>'.merchantid', required=>1 };
 	}
 elsif ($ENV{'SCRIPT_NAME'} =~ /shoppingcom/) {
@@ -206,6 +212,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /shoppingcom/) {
 	($DST,$MARKETPLACE) = ('SHO','Shopping.com');
 	push @BC, { name=>'Shopping.com',link=>'/biz/syndication/shoppingcom/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -215,6 +222,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /thefind/) {
 	($DST,$MARKETPLACE) = ('FND','TheFind.com');
 	push @BC, { name=>'TheFind.com',link=>'/biz/syndication/thefind/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -224,6 +232,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bing/) {
 	($DST,$MARKETPLACE) = ('BIN','Bing.com');
 	push @BC, { name=>'Bing.com',link=>'/biz/syndication/bing/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -234,6 +243,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /googlebase/) {
 	push @BC, { name=>'GoogleBase.com',link=>'/biz/syndication/googlebase/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
 	push @FIELDS, { type=>'checkbox', name=>'Google Shopping Account has Unique Identifer Exemption', id=>'.upc_exempt' };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -250,6 +260,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /bizrate/) {
 	($DST,$MARKETPLACE) = ('BZR','Shopzilla');
 	push @BC, { name=>'Shopzilla',link=>'/biz/syndication/bizrate/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'Web Login Username', id=>'.user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Web Login Password', id=>'.pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
@@ -261,6 +272,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /pronto/) {
 	($DST,$MARKETPLACE) = ('PTO','Pronto.com');
 	push @BC, { name=>'Pronto.com',link=>'/biz/syndication/pronto/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -270,6 +282,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /become/) {
 	($DST,$MARKETPLACE) = ('BCM','Become.com');
 	push @BC, { name=>'Become.com',link=>'/biz/syndication/become/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -279,6 +292,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /smarter/) {
 	($DST,$MARKETPLACE) = ('SMT','Smarter.com');
 	push @BC, { name=>'Smarter.com',link=>'/biz/syndication/smarter/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -287,6 +301,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /dijipop/) {
 	$WEBDOC = 51556;
 	($DST,$MARKETPLACE) = ('DIJ','Dijipop.com');
 	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/dijipop/index.cgi','target'=>'_top', };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -295,6 +310,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /linkshare/) {
 	$WEBDOC = 51557;
 	($DST,$MARKETPLACE) = ('LNK','Linkshare.com');
 	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/linkshare/index.cgi','target'=>'_top', };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -307,6 +323,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /hsn/) {
 	($DST,$MARKETPLACE) = ('HSN','HSN.com');
 	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/hsn/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -319,6 +336,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /sears/) {
 	$WEBDOC = 51583;
 	($DST,$MARKETPLACE) = ('SRS','Sears');
 	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/sears/index.cgi','target'=>'_top', };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'API User', id=>'.user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'API Password', id=>'.pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'Location ID', id=>'.location_id', required=>1, hint=>"This ID is created when a location is configured in the Sears UI." };
@@ -345,6 +363,7 @@ elsif ($ENV{'SCRIPT_NAME'} =~ /newegg/) {
 	($DST,$MARKETPLACE) = ('EGG','Newegg');
 	push @BC, { name=>$MARKETPLACE,link=>'/biz/syndication/newegg/index.cgi','target'=>'_top', };
 	push @TABS, { name=>"Categories", selected=>($VERB eq 'CATEGORIES')?1:0, link=>"$PATH?VERB=CATEGORIES&PROFILE=$PROFILE", };
+	push @FIELDS, { align=>'left', type=>'checkbox', name=>'Is Active', id=>'.enable', default=>1, hint=>"Checkbox must be selected or syndication will not be attempted." };
 	push @FIELDS, { type=>'textbox', name=>'FTP User', id=>'.ftp_user', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Password', id=>'.ftp_pass', required=>1 };
 	push @FIELDS, { type=>'textbox', name=>'FTP Server', id=>'.ftp_server', required=>1 };
@@ -610,6 +629,9 @@ if (($VERB eq 'SAVE') || ($VERB eq 'SAVE-AND-PUBLISH')) {
 
 	my $ERROR = '';
 
+	$so->{'IS_SUSPENDED'} = 0;
+	$so->{'IS_ACTIVE'} = 1;
+
 	## (almost!!) all syndication use FTP settings to push feeds
 	foreach my $fref (@FIELDS) {
 		my $user_data = $ZOOVY::cgiv->{ $fref->{'id'} };
@@ -630,10 +652,9 @@ if (($VERB eq 'SAVE') || ($VERB eq 'SAVE-AND-PUBLISH')) {
 		elsif ($fref->{'id'} eq '.linkshare_mid') {
 			if ($user_data==0) { $ERROR = "Linkshare Merchant ID is required"; }
 			}
-
-
+		
 		if ($fref->{'id'} eq '.enable') {
-			$so->{'IS_ACTIVE'}++;
+			$so->{'IS_ACTIVE'} = $user_data;
 			}
 
 		$s{ $fref->{'id'} } = $user_data;

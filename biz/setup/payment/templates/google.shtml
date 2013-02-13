@@ -37,6 +37,15 @@ Extra Security, and "XML" in the Settings | Integration tab at http://checkout.g
 	<td valign="top"><input type="textbox" name="google_key" value="<!-- GOOGLE_KEY -->"></td>
 </tr>
 <tr>
+	<td valign="top">Tax Calculations:</td>
+	<td valign="top">
+	<select name="google_tax_tables">
+		<option <!-- GOOGLE_TAX_TABLES_0 --> value="0">Use Partition Tax Tables</option>
+		<option <!-- GOOGLE_TAX_TABLES_1 --> value="1">Use Googles Tax tables (*Must be enabled at Google)</option>
+	</select>
+	</td>
+</tr>
+<tr>
 	<td valign="top">Environment:</td>
 	<td valign="top">
 	<select name="google_api_env">

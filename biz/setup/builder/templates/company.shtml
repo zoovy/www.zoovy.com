@@ -166,20 +166,19 @@
 <tr>
 	<td style="padding:5px;">
 
-<!-- BEGIN INVOICE LOGO TABLE -->
 
 	<table class="table_stroke" cellpadding="2" cellspacing="0" border="0" width='100%'>
 	<tr>
-		<td class="table_head"><span class="header">Invoice Logo @ $logo_invoice_width x $logo_invoice_height:</span></td>
+		<td class="table_head"><span class="header">Invoice Logo @ <!-- LOGO_INVOICE_WIDTH --> x <!-- LOGO_INVOICE_HEIGHT -->:</span></td>
 	</tr>
 	<tr>
 		<td valign="middle" align="center">
-		<img id ="invoiceimg" name="invoiceimg" src="$invoice_logo_url" width='<!-- LOGO_INVOICE_WIDTH -->' height='<!-- LOGO_INVOICE_HEIGHT -->'>
-		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=$NS','Choose Invoice Logo');" value=" Change ">
+		<img id ="invoiceimg" name="invoiceimg" src="<!-- LOGO_INVOICE_URL -->" width='<!-- LOGO_INVOICE_WIDTH -->' height='<!-- LOGO_INVOICE_HEIGHT -->'>
+		<input type="button" class="button" onClick="mediaLibrary(jQuery('#invoiceimg'),'mode=ilogo&profile=<!-- NS -->','Choose Invoice Logo');" value=" Change ">
 		</td>
 	</tr>
 	</table>
-<!-- END LOGO GRAPHIC TABLE -->
+
 	</td>
 
 	<Td valign="top" align="left">

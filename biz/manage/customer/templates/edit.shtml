@@ -128,7 +128,7 @@ window.open(url,'popupWin','status=yes,resizable=yes,width=638,height=450,menuba
 <td align=center>
 	<input type="submit" class="button" value=" Save "> 
 	&nbsp; 
-	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=EMAIL&CID=<!-- CID -->');">Email</button>
+	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=EMAIL&EMAIL=<!-- EMAIL -->&CID=<!-- CID -->',{'dialog':1});">Email</button>
 	&nbsp; 
 	<button class="button" onClick="
 	openWindow(
@@ -140,7 +140,7 @@ window.open(url,'popupWin','status=yes,resizable=yes,width=638,height=450,menuba
 		);
 	">Login</button>
 	&nbsp; 
-	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=DELETE&CID=<!-- CID -->');">Remove</button>
+	<button class="button" onClick="navigateTo('/biz/manage/customer/index.cgi?VERB=DELETE&CID=<!-- CID -->',{'dialog':1});">Remove</button>
 </td>
 </tr>
 </table>

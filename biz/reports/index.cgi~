@@ -68,7 +68,7 @@ if ($VERB =~ /SALES-/) {
       $begints = &ZTOOLKIT::mysql_to_unixtime(sprintf("%d-%d-01 00:00:00",$year,$month));
       $endts = &ZTOOLKIT::mysql_to_unixtime(sprintf("%d-%d-%d 23:59:59",$year,$month,Date::Calc::Days_in_Month($year,$month)));
  		}
-	elsif ($VERB eq 'SALES-BYPERIOD') {
+	elsif ($VERB eq 'CREATED-SALES-BYPERIOD') {
 		my $begins = $ZOOVY::cgiv->{'begins'};
 		my $ends = $ZOOVY::cgiv->{'ends'};
 
@@ -143,6 +143,8 @@ if ($VERB =~ /SALES-/) {
 		$vars{'.start_gmt'} = $begints;
 		$vars{'.end_gmt'} = $endts;
 		$vars{'.include_deleted'} = $include_deleted;
+		$vars{'.key'} = $ZOOVY::cgiv->{'key'};
+
 		$vars{'REPORT'} = $ZOOVY::cgiv->{'REPORT'},
 
 		my ($bj) = BATCHJOB->new($USERNAME,0,
@@ -246,7 +248,7 @@ if ($VERB eq 'INDEX-BATCH') {
 		$c .= "<tr class=$class>";
 		if (($STATUS eq 'NEW') || ($STATUS eq 'RUNNING')) {
 			# $c .= "<td valign=top><a href=\"/biz/batch/index.cgi?VERB=LOAD&JOB=$ID\">$ID</a></td>";
-			$c .= qq~<td valign=top><button class=\"minibutton\" onClick=\"app.ext.admin_batchJob.a.showBatchJobStatus('$ID'); return false;\">$ID</button></td>~;
+			$c .= qq~<td valign=top><button class=\"minibutton\" onClick=\"app.ext.admin_batchJob.a.showBatchJobStatus('$ID'); return false;\">Running $ID</button></td>~;
 			}
 		else {
 			$c .= "<td valign=top><a href=\"/biz/reports/index.cgi?VERB=BATCH-SEARCH-NOW&JOBID=$ID\">$ID</a></td>";

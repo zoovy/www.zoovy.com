@@ -264,8 +264,8 @@ else {
 	my ($R,$cmdlines);
 	eval { ($R,$cmdlines) = $JSAPI->handle($ENV{'REQUEST_URI'},$VARS); };
 	if ($@) {
-		&JSONAPI::set_error($R = {}, 'iseerr', 1, "Internal Error $@");
-		&ZOOVY::confess( $JSAPI->username(), "JSONAPI $@", justkidding=>1 );
+		&JSONAPI::set_error($R = {}, 'iseerr', 1, "Server[".&ZOOVY::servername()."] Process[$$] got Internal Error $@ ");
+		&ZOOVY::confess( $JSAPI->username(), "JSONAPI ".&ZOOVY::servername()." $@", justkidding=>1 );
 		}
 
 	#if (&ZOOVY::servername() eq 'newdev') {

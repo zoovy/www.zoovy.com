@@ -28,6 +28,10 @@ my @TABS = ();
 my @MSGS = ();
 
 my $template_file = '';
+
+require DOMAIN::TOOLS;
+($NS) = DOMAIN::TOOLS::profileprt_for_domain($USERNAME,$LU->domain());
+
 my ($SITE) = SITE->new($USERNAME,'PROFILE'=>$NS,'PRT'=>$PRT);
 my ($SE) = SITE::EMAILS->new($USERNAME,'*SITE'=>$SITE,RAW=>1);
 

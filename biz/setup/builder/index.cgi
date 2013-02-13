@@ -32,7 +32,8 @@ require LUSER;
 my ($LU) = LUSER->authenticate(flags=>'_S&2');
 if (not defined $LU) { exit; }
 
-my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT,$DOMAIN) = $LU->authinfo();
+my ($MID,$USERNAME,$LUSERNAME,$FLAGS,$PRT,$RESELLER) = $LU->authinfo();
+my $DOMAIN = $LU->domain();
 if ($MID<=0) { exit; }
 
 my @TABS = ();
@@ -527,7 +528,12 @@ if ($ACTION eq 'TOXMLSAVE') {
 ##
 ##
 if ($ACTION eq 'COMPANYSAVE') {
-	my $NS = $ZOOVY::cgiv->{'NS'};
+
+	require DOMAIN::TOOLS;
+	my ($PROFILE,$PRT) = &DOMAIN::TOOLS::profileprt_for_domain($USERNAME,$DOMAIN);
+	print STDERR "PROFILE:$PROFILE PRT:$PRT DOMAIN:$DOMAIN\n";
+
+	my $NS = $PROFILE;
 	my $ref = &ZOOVY::fetchmerchantns_ref($USERNAME,$NS);
 	my ($gref) = &ZWEBSITE::fetch_globalref($USERNAME);
 
@@ -724,7 +730,12 @@ if ($ACTION eq 'SPECIALTYSAVE') {
 
 if ($ACTION eq 'COMPANYEDIT') {
 	# handle general parameters.
-	my $NS = $ZOOVY::cgiv->{'NS'};
+
+	require DOMAIN::TOOLS;
+	my ($PROFILE,$PRT) = &DOMAIN::TOOLS::profileprt_for_domain($USERNAME,$DOMAIN);
+	print STDERR "PROFILE:$PROFILE PRT:$PRT DOMAIN:$DOMAIN\n";
+
+	my $NS = $PROFILE;
 	$GTOOLS::TAG{'<!-- NS -->'} = $NS;
 	my $ref = &ZOOVY::fetchmerchantns_ref($USERNAME,$NS);
 
@@ -936,7 +947,8 @@ Changes you make here will also be made to any auction listings.</p>
 	$GTOOLS::TAG{'<!-- LOGO_INVOICE_HEIGHT -->'} = $logo_invoice_height;
 
 	my $logo = $ref->{'zoovy:logo_invoice'};
-	my $invoice_logo_url = &IMGLIB::Lite::url_to_image($USERNAME,$logo,$logo_invoice_width,$logo_invoice_height,'ffffff');
+	my $logo_invoice_url = &IMGLIB::Lite::url_to_image($USERNAME,$logo,$logo_invoice_width,$logo_invoice_height,'ffffff');
+	$GTOOLS::TAG{'<!-- LOGO_INVOICE_URL -->'} = $logo_invoice_url;
 	
 	$template_file = 'company.shtml';
 	}
@@ -1247,7 +1259,7 @@ if ($ACTION eq '') {
 		push @DEBUG, "WARN|$domain was not shown because it was not properly linked with this account in DNS";
 		}
 	elsif ($DNSINFO->{'PRT'} != $PRT) {
-		push @DEBUG, "WARN|$domain was not shown because configuration is corrupt. DNSINFO PRT=$DNSINFO->{'PRT'} (should be PRT=1)";
+		push @DEBUG, "WARN|$domain was not shown because configuration is corrupt. DNSINFO PRT=$DNSINFO->{'PRT'} (should be PRT=$PRT)";
 		}
 	elsif (($domain ne '') && ($domain ne $domain)) {
 		push @DEBUG, "WARN|$domain was not shown because you are not logged into that domain";

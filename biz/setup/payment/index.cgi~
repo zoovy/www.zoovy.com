@@ -828,6 +828,7 @@ if ($TAB eq 'GOOGLE-SAVE') {
 	$webdbref->{'google_dest_zip'} = $ZOOVY::cgiv->{'google_dest_zip'};
 	$webdbref->{'google_int_shippolicy'} = int($ZOOVY::cgiv->{'google_int_shippolicy'});
 	$webdbref->{'google_pixelurls'} = $ZOOVY::cgiv->{'google_pixelurls'};
+	$webdbref->{'google_tax_tables'} = $ZOOVY::cgiv->{'google_tax_tables'};
 	$LU->log('SETUP.PAYMENT.GOOGLE',"Updated Google Checkout settings","SAVE");
 	&ZWEBSITE::save_website_dbref($USERNAME, $webdbref, $PRT);
 
@@ -850,6 +851,9 @@ if ($TAB eq 'GOOGLE') {
 
 	$GTOOLS::TAG{'<!-- GOOGLE_INT_SHIPPOLICY_0 -->'} = ($webdbref->{'google_int_shippolicy'}==0)?'selected':'';
 	$GTOOLS::TAG{'<!-- GOOGLE_INT_SHIPPOLICY_1 -->'} = ($webdbref->{'google_int_shippolicy'}==1)?'selected':'';
+
+	$GTOOLS::TAG{'<!-- GOOGLE_TAX_TABLES_0 -->'} = ($webdbref->{'google_tax_tables'}==0)?'selected':'';
+	$GTOOLS::TAG{'<!-- GOOGLE_TAX_TABLES_1 -->'} = ($webdbref->{'google_tax_tables'}==1)?'selected':'';
 
 	$GTOOLS::TAG{'<!-- GOOGLE_API_URL -->'} = "https://webapi.zoovy.com/webapi/google/callback.pl/u=$USERNAME/v=1";
 	$GTOOLS::TAG{'<!-- GOOGLE_PIXELURLS -->'} = &ZOOVY::incode($webdbref->{'google_pixelurls'});
@@ -1177,12 +1181,12 @@ if ($TAB eq 'HELP') {
 	$template_file = 'help.shtml';
 	}
 
-if ($LU->get('todo.setup')) {
-	require TODO;
-	my $t = TODO->new($USERNAME);	
-	my ($need,$tasks) = $t->setup_tasks('payment',LU=>$LU,webdb=>$webdbref);
-	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('payment',$tasks);
-   }
+#if ($LU->get('todo.setup')) {
+#	require TODO;
+#	my $t = TODO->new($USERNAME);	
+#	my ($need,$tasks) = $t->setup_tasks('payment',LU=>$LU,webdb=>$webdbref);
+#	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('payment',$tasks);
+#   }
 
 
 

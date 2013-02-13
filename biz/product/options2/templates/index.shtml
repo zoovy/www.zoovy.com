@@ -92,7 +92,7 @@
 	</table>
 	</center>
 	<center>
-		<button class="button" onClick="navigateTo('<!-- EXIT_URL -->');">Exit</button>
+		<button class="button" onClick="app.ext.admin_prodEdit.a.showPanelsFor('<!-- PRODUCT -->');">Exit</button>
 	</center>
 	</td>
 	

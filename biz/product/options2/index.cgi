@@ -953,14 +953,12 @@ if ($VERB eq 'EDITPOG' || $VERB eq 'EDITSOG') {
 				<table bgcolor="CFCFCF">
 					<tr>
 					<td bgcolor="CFCFCF">
-						<img src="/images/image_not_selected.gif" width="75" height="75" name="imgimg">
+						<img id="imgimg" src="/images/image_not_selected.gif" width="75" height="75" name="imgimg">
 					</td>
 					<td bgcolor="CFCFCF">
 						Selected Image: 
-						<input 
-							onChange="document.pogFrm.imgimg.src=imglib(document.pogFrm.img.value,50,50,'FFFFFF',0,'jpg');" 
-						type="textbox" name="img" size="20"><br>
-						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#img'),jQuery('#imgimg'),'Choose Option Image');">
+						<input onChange="document.pogFrm.imgimg.src=imglib(document.pogFrm.img.value,50,50,'FFFFFF',0,'jpg');" type="textbox" id="img" name="img" size="20"><br>
+						<input type="BUTTON" style='width: 100px;' value="Image Library" onClick="mediaLibrary(jQuery('#imgimg'),jQuery('#img'),'Choose Option Image');">
 					</td>
 					</tr>
 				</table>
@@ -1486,17 +1484,18 @@ if ($VERB eq '') {
 		$template_file = 'indexsog.shtml'; 
 		}
 
-	$GTOOLS::TAG{'<!-- EXIT_URL -->'} = '/biz/product/edit.cgi?PID='.$PRODUCT;
+	# $GTOOLS::TAG{'<!-- EXIT_URL -->'} = '/biz/product/edit.cgi?PID='.$PRODUCT;
+	# $GTOOLS::TAG{'<!-- EXIT_URL -->'} = 'app.ext.admin_prodEdit.a.showPanelsFor($(this).closest('[data-pid]').attr('data-pid'));
 	# print STDERR "FLAGS: $FLAGS\n";
-	if ($FLAGS =~ /,TOKENAUTH,/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&VERB=XML_END";
-		}
-	elsif ($::MODE =~ /^XML:/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
-		}
-	elsif ($::MODE =~ /^THASH:/) {
-		$GTOOLS::TAG{'<!-- EXIT_URL -->'} = "/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END";
-		}
+	#if ($FLAGS =~ /,TOKENAUTH,/) {
+	#	$GTOOLS::TAG{'<!-- EXIT_CLICK -->'} = "navigateTo('/biz/product/index.cgi?PRODUCT=$PRODUCT&VERB=XML_END');";
+	#	}
+	#elsif ($::MODE =~ /^XML:/) {
+	#	$GTOOLS::TAG{'<!-- EXIT_CLICK -->'} = "navigateTo('/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END');";
+	#	}
+	#elsif ($::MODE =~ /^THASH:/) {
+	#	$GTOOLS::TAG{'<!-- EXIT_CLICK -->'} = "navivateTo('/biz/product/index.cgi?PRODUCT=$PRODUCT&MODE=$::MODE&VERB=XML_END');";
+	#	}
 	}
 
 $GTOOLS::TAG{'<!-- PRODUCT -->'} = $PRODUCT;

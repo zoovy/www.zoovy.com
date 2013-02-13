@@ -60,7 +60,8 @@
 		<td valign="top">
 		<input type="radio" name="MSGFORMAT" value="WIKI" <!-- MSGFORMAT_WIKI -->>Wiki &nbsp; 
 		<input type="radio" name="MSGFORMAT" value="HTML" <!-- MSGFORMAT_HTML -->>HTML &nbsp; 
-		<input type="radio" name="MSGFORMAT" value="TEXT" <!-- MSGFORMAT_TEXT -->>Text	
+		<input type="radio" name="MSGFORMAT" value="TEXT" <!-- MSGFORMAT_TEXT -->>Text &nbsp;
+		<input type="radio" name="MSGFORMAT" value="DONOTSEND" <!-- MSGFORMAT_DONOTSEND -->>Do Not Send &nbsp;
 		</td>
 	</tr>
 	<tr>

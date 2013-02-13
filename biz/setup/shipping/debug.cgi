@@ -14,9 +14,9 @@ use Data::Dumper;
 my @MSGS = ();
 
 my @BC = ();
-push @BC, { name=>'Setup',link=>'/biz/setup','target'=>'_top', };
-push @BC, { name=>'Shipping',link=>'/biz/setup/shipping','target'=>'_top', };
-push @BC, { name=>'Debugger' };
+push @BC, { name=>'Setup',link=>'/biz/setup/index.cgi','target'=>'_top', };
+push @BC, { name=>'Shipping',link=>'/biz/setup/shipping/index.cgi','target'=>'_top', };
+push @BC, { name=>'Debugger',link=>'/biz/setup/shipping/debug.cgi' };
 
 my %FONTS = (
 	'1'=>'<b><h2>',
@@ -257,13 +257,13 @@ if ($ZOOVY::cgiv->{'ACTION'} eq '') {
 	my $STATE = $ZOOVY::cgiv->{'STATE'};
 	$GTOOLS::TAG{'<!-- STATE -->'} = $STATE;
 	$GTOOLS::TAG{'<!-- ORDER -->'} = $ZOOVY::cgiv->{'ORDER'};
-	my $c = '';
-	foreach my $d (%{$ZOOVY::cookies}) {
-		next if ($d !~ /-cart$/);
-		$c .= "<input type='radio' name='CART' value='$ZOOVY::cookies->{$d}'>$d ($ZOOVY::cookies->{$d})<br>";
-		}
-	if ($c eq '') { $c = '<i>Sorry, no carts were found.</i>'; }
-	$GTOOLS::TAG{'<!-- CARTS -->'} = $c;
+#	my $c = '';
+#	foreach my $d (%{$ZOOVY::cookies}) {
+#		next if ($d !~ /-cart$/);
+#		$c .= "<input type='radio' name='CART' value='$ZOOVY::cookies->{$d}'>$d ($ZOOVY::cookies->{$d})<br>";
+#		}
+#	if ($c eq '') { $c = '<i>Sorry, no carts were found.</i>'; }
+#	$GTOOLS::TAG{'<!-- CARTS -->'} = $c;
 	}
 
 &GTOOLS::output('*LU'=>$LU,'*LU'=>$LU,

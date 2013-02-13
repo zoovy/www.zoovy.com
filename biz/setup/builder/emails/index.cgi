@@ -104,6 +104,7 @@ if ($VERB eq 'MSGEDIT') {
 	$GTOOLS::TAG{'<!-- MSGFORMAT_HTML -->'} = ($msgref->{'MSGFORMAT'} eq 'HTML')?'checked':'';
 	$GTOOLS::TAG{'<!-- MSGFORMAT_WIKI -->'} = ($msgref->{'MSGFORMAT'} eq 'WIKI')?'checked':'';
 	$GTOOLS::TAG{'<!-- MSGFORMAT_TEXT -->'} = ($msgref->{'MSGFORMAT'} eq 'TEXT')?'checked':'';
+	$GTOOLS::TAG{'<!-- MSGFORMAT_DONOTSEND -->'} = ($msgref->{'MSGFORMAT'} eq 'DONOTSEND')?'checked':'';
 
 	$GTOOLS::TAG{'<!-- MSGBODY -->'} = &ZOOVY::incode($msgref->{'MSGBODY'});
 	$GTOOLS::TAG{'<!-- MSGFROM -->'} = &ZOOVY::incode($msgref->{'MSGFROM'});

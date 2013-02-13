@@ -192,16 +192,15 @@ if ($VERB eq 'CHECKUP') {
 			my $nsref = &ZOOVY::fetchmerchantns_ref($USERNAME,$PROFILE);
 
 			my $SKIP = 0;
-			if ($d->{'HOST_TYPE'} eq 'REDIR') {
-				push @DIAGS, "INFO||DOMAIN: $domainname is type REDIRECT, nothing to check";
-				$SKIP++;
-				}
-			if ($d->{'HOST_TYPE'} eq 'MINISITE') {
-				push @DIAGS, "INFO||DOMAIN: $domainname is type MINISITE, nothing to check";
-				$SKIP++;
-				}
-
-			next if ($SKIP);
+			#if ($d->{'HOST_TYPE'} eq 'REDIR') {
+			#	push @DIAGS, "INFO||DOMAIN: $domainname is type REDIRECT, nothing to check";
+			#	$SKIP++;
+			#	}
+			#if ($d->{'HOST_TYPE'} eq 'MINISITE') {
+			#	push @DIAGS, "INFO||DOMAIN: $domainname is type MINISITE, nothing to check";
+			#	$SKIP++;
+			#	}
+			# next if ($SKIP);
 			
 			#elsif ($d->{'HOST_TYPE'} eq 'NEWSLETTER') {
 			#	}
@@ -318,7 +317,7 @@ if ($VERB eq 'CHECKUP') {
 				}
 
 			## lets look at what domains are mapped.
-			my @domains = DOMAIN::TOOLS::domains($USERNAME,PROFILE=>$p,HOST_TYPE=>['PRIMARY','SPECIALTY'],SKIP_VSTORE=>1);
+			my @domains = DOMAIN::TOOLS::domains($USERNAME,PROFILE=>$p,SKIP_VSTORE=>1);
 			if (scalar(@domains)==0) {
 				push @DIAGS, "INFO||Profile $p -- no domains believe they are mapped (that might be okay)";
 				}
@@ -326,7 +325,7 @@ if ($VERB eq 'CHECKUP') {
 				push @DIAGS, "INFO||Profile: $p -- only one domain ($domains[0]) is mapped to profile (that's good)";
 				my $d = DOMAIN->new($USERNAME,$domains[0]);
 				if ($d->{'PRT'} != $nsref->{'prt:id'}) {
-					push @DIAGS, "ERR|domain:$domains[0]?PRT=$nsref->{'prt:id'}|Profile $p says *prt:id=$nsref->{'prt:id'} but domain $domains[0] thinks has PRT=$d->{'PRT'} (HOST_TYPE=$d->{'HOST_TYPE'}) ";
+					push @DIAGS, "ERR|domain:$domains[0]?PRT=$nsref->{'prt:id'}|Profile $p says *prt:id=$nsref->{'prt:id'} but domain $domains[0] thinks has PRT=$d->{'PRT'} ";
 					if ($FIX) {
 						push @DIAGS, "FIX||Profile $p set domain to PRT=$nsref->{'prt:id'} (was $d->{'PRT'})";
 						$d->{'PRT'} = $nsref->{'prt:id'};
@@ -366,7 +365,7 @@ if ($VERB eq 'CHECKUP') {
 			my $fixlink = '';
 			if ($cmd ne '') {
 				$cmd = URI::Escape::uri_escape($cmd);
-				$fixlink .= "<br><a href=\"index.cgi?VERB=FIX&CMD=$cmd";
+				$fixlink .= "<br><a href=\"/biz/sites/index.cgi?VERB=FIX&CMD=$cmd";
 				foreach my $i ('CHECK-GLOBAL','CHECK-DOMAINS','CHECK-PROFILE') {
 					next if (not defined $ZOOVY::cgiv->{$i});
 					$fixlink .= "&$i=".$ZOOVY::cgiv->{$i};
@@ -384,11 +383,7 @@ if ($VERB eq 'CHECKUP') {
 			}
 		}
 
-#	$c = Dumper($ZOOVY::cgiv);
-
 	$GTOOLS::TAG{'<!-- OUTPUT -->'} = $c;
-	
-
 	$GTOOLS::TAG{'<!-- CB_FIX -->'} = ($FIX)?'checked':'';
 	$GTOOLS::TAG{'<!-- CB_CHECK-DOMAINS -->'} = (defined $ZOOVY::cgiv->{'CHECK-DOMAINS'})?'checked':'';
 	$GTOOLS::TAG{'<!-- CB_CHECK-PROFILE -->'} = (defined $ZOOVY::cgiv->{'CHECK-PROFILE'})?'checked':'';
@@ -420,6 +415,7 @@ if ($VERB eq 'DOMAINS') {
 	my $out = '';
 	my $class = 'r1';
 	my $i = 0;
+
 	foreach my $dname (sort @domains) {
 		my ($d) = DOMAIN->new($USERNAME,$dname);
 		my $ns = $d->profile();
@@ -464,18 +460,16 @@ if ($VERB eq 'DOMAINS') {
 		$c .= "</td>";
 
 
-#		$c .= "<td>$d->{'HOST_TYPE'}</td>";
-#		$c .= "<td align=center>";
-#		$c .= "<a target=\"_blank\" href=\"http://$domainname?_sandbox=1\">STAGING</a> | ";
-#		if ($LU->is_zoovy()) {
-#			$c .= " | <a target=\"_blank\" href=\"http://www.$domainname?sbverb=login&code=$d->{'SANDBOX_PASSWORD'}\">sandbox</a>";
-#			}
-#		$c .= "</td>";
 		$c .= "<td valign=top align=center>$prt</td>";
 		$c .= "</tr>";
 
 		$i++;
 		}
+
+	if ($c eq '') {
+		$c .= "<tr><td colspan=4><i>no domains currently configured.</i></td></tr>";
+		}
+
 	$GTOOLS::TAG{'<!-- DOMAINS -->'} = $c;
 	$template_file = 'domains.shtml';
 	}
@@ -547,17 +541,6 @@ if ($VERB eq 'PROFILES') {
 		$c .= "<tr class=\"$class\">";
 		$c .= "<td valign=top><img width=100 height=50 src=\"$imgurl\"></td>";
 		$c .= "<td valign=top>$ns</td>";
-#		$c .= "<a target=\"_blank\" href=\"http://$PROFILES{$ns}->[0]?_sandbox=1\">STAGING</a> |";
-#		$c .= "<a target=\"_blank\" href=\"http://$PROFILES{$ns}->[0]?multivarsite=A&_sandbox=0\">Site-A</a>";
-#		$c .= " | ";
-#		$c .= "<a target=\"_blank\" href=\"http://$PROFILES{$ns}->[0]?multivarsite=B&_sandbox=0\">Site-B</a>";
-#		$c .= "</td>";
-#		if ($ALLOW_EDIT) {
-#			$c .= "<td align=center><a href=\"/biz/setup/builder?PROFILE=$ns\">EDIT</a></td>";
-#			}
-#		else {
-#			$c .= "<td>-</td>";
-#			}
 		$c .= "<td valign=top>";
 		foreach my $set (@{$PROFILES{$ns}}) {
 			my ($domainname,$prt) = @{$set};
@@ -566,157 +549,16 @@ if ($VERB eq 'PROFILES') {
 		$c .= "</td>";
 		# $c .= "<td align=center><a href=\"/biz/sites/index.cgi?VERB=REAUTH-PROFILES&PRT=$nsref->{'prt:id'}\">$nsref->{'prt:id'}</a></td>";
 		$c .= "</tr>";
-
 		$i++;
 		}
 	$GTOOLS::TAG{'<!-- PROFILES -->'} = $c;
+
+	if ($c eq '') {
+		$c .= "<tr><td colspan=4><i>no profiles configured.</i></td></tr>";
+		}
+
 	$template_file = 'profiles.shtml';
 	}
-
-
-
-#if ($VERB eq 'SNAPSHOT-USE') {
-#	my ($focusPRT) = $ZOOVY::cgiv->{'PRT'};
-#
-#	my ($webdb) = &ZWEBSITE::fetch_website_dbref($USERNAME,$focusPRT);
-#	$webdb->{'snapshot'} = $ZOOVY::cgiv->{'FILE'};
-#	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$focusPRT);
-#
-#	my ($udbh) = &DBINFO::db_user_connect($USERNAME);
-#	&DBINFO::insert($udbh,'SNAPSHOT_SITES',{
-#		USERNAME=>$USERNAME,
-#		MID=>$MID,
-#		PRT=>$focusPRT,
-#		SNAPSHOT_FILE=>$ZOOVY::cgiv->{'FILE'},
-#		CREATED_GMT=>time(),
-#		},key=>['MID','PRT'],update=>1);
-#	&DBINFO::db_user_close();
-#	$VERB = 'SNAPSHOTS';
-#	}
-#
-#if ($VERB eq 'SNAPSHOT-UNDO') {
-#	my ($focusPRT) = $ZOOVY::cgiv->{'PRT'};
-#	my ($webdb) = &ZWEBSITE::fetch_website_dbref($USERNAME,$focusPRT);
-#	$webdb->{'snapshot'} = '';
-#	&ZWEBSITE::save_website_dbref($USERNAME,$webdb,$focusPRT);
-#
-#	my ($udbh) = &DBINFO::db_user_connect($USERNAME);
-#	my $pstmt = "delete from SNAPSHOT_SITES where MID=$MID and PRT=".int($focusPRT);
-#	print STDERR $pstmt."\n";
-#	$udbh->do($pstmt);
-#	&DBINFO::db_user_close();
-#	$VERB = 'SNAPSHOTS';
-#	}
-#
-#
-#
-#if ($VERB eq 'SNAPSHOTS') {
-#	$template_file = 'snapshots.shtml';
-#
-#	## Build a list of available files.
-#	require LUSER::FILES;
-#	my ($lf) = LUSER::FILES->new($USERNAME);
-#	my $files = $lf->list('type'=>'SNAPSHOT');
-#	my %prts = ();
-#	foreach my $fileref (@{$files}) {
-#		my $PRT = $fileref->{'%META'}->{'prt'};
-#		if (not defined $prts{ $PRT }) {
-#			$prts{ $PRT } = [];
-#			}
-#		push @{$prts{ $PRT }}, [ $fileref->{'TITLE'}, $fileref->{'FILENAME'}, $fileref->{'CREATED'}, $fileref->{'SIZE'} ];
-#		}
-#	
-#	## Grab a list of active snapshots
-##mysql> desc SNAPSHOT_SITES;
-##+---------------+------------------+------+-----+---------+----------------+
-##| Field         | Type             | Null | Key | Default | Extra          |
-##+---------------+------------------+------+-----+---------+----------------+
-##| ID            | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-##| USERNAME      | varchar(20)      | NO   |     | NULL    |                |
-##| MID           | int(10) unsigned | NO   | MUL | 0       |                |
-##| PRT           | int(10) unsigned | NO   |     | 0       |                |
-##| SNAPSHOT_FILE | varchar(45)      | NO   |     | NULL    |                |
-##| CREATED_GMT   | int(10) unsigned | NO   |     | 0       |                |
-##+---------------+------------------+------+-----+---------+----------------+
-##6 rows in set (0.00 sec)
-#
-#	my $udbh = &DBINFO::db_user_connect($USERNAME);
-#	my @ACTIVEFILE = ();
-#	my $pstmt = "select PRT,SNAPSHOT_FILE,CREATED_GMT from SNAPSHOT_SITES where MID=$MID";
-#	my $sth = $udbh->prepare($pstmt);
-#	$sth->execute();
-#	while ( my ($PRT,$FILE,$CREATED) = $sth->fetchrow() ) {
-#		$ACTIVEFILE[ $PRT ] = $FILE;
-#		}
-#	$sth->finish();
-#	&DBINFO::db_user_close();
-#
-#	my $c = '';
-#	foreach my $prttxt (@{ZWEBSITE::list_partitions($USERNAME)}) {
-#		my ($PRT) = split(/:/,$prttxt);
-#
-#		$c .= "<tr class=\"zoovysub1header\"><td>Partition: $prttxt</td></tr>";
-#		$c .= "<tr><td>";
-#			
-#		if (not defined $prts{$PRT}) {
-#			$c .= "<i>There are no snapshots available for this partition.</i>";
-#			}
-#		else {
-#			$c .= "<table>";
-#			$c .= "<tr class=\"zoovysub2header\">";
-#			$c .= "<td width=100></td>\n";
-#			$c .= "<td width=300>File Title</td>\n";
-#			$c .= "<td width=150>Created</td>\n";
-#			$c .= "<td width=100>Size</td>\n";
-#			$c .= "</tr>";
-#			my $r = '';
-#			my $found = 0;
-#			foreach my $prtinfo (@{$prts{$PRT}}) {
-#				my ($title,$filename,$created,$size) = @{$prtinfo};
-#				$r = ($r eq 'r0')?'r1':'r0';
-#				my $active = '';
-#				if ($filename eq $ACTIVEFILE[$PRT]) { 
-#					$r = 'rs'; $active = 'Active';  $found++;
-#					}
-#				else {
-#					$active = qq~<input type="button" class="button" value=" Select " onClick="
-#document.thisFrm.VERB.value='SNAPSHOT-USE';
-#document.thisFrm.PRT.value='$PRT'; 
-#document.thisFrm.FILE.value='$filename';
-#document.thisFrm.submit();
-#">~;
-#					}
-#				$c .= "<tr class=\"$r\"><td>$active</td><td>$title</td><td>$created</td><td>$size</td></tr>";
-#				# $c .= "<tr><td colspan=3>".Dumper($prtinfo)."</td></tr>";
-#				}
-#
-#			if ($found) {
-#				## alls good.
-#				$c .= qq~<tr><td><input type="button" class="button" value=" Remove Snapshot " onClick="
-#document.thisFrm.VERB.value='SNAPSHOT-UNDO'; 
-#document.thisFrm.PRT.value='$PRT'; 
-#document.thisFrm.submit();
-#"></td></tr>~;
-#				}
-#			elsif ((not $found) && ($ACTIVEFILE[$PRT] ne '')) {
-#				$c .= "<tr><td colspan=4>OH NO! SELECTED SNAPSHOT FILE: $ACTIVEFILE[$PRT] COULD NOT BE LOCATED IN PRIVATE FILES!</td></tr>";
-#				}
-#			elsif (not $found) {
-#				$c .= "<tr><td colspan=4>No active snapshot has been selected.</td></tr>";
-#				}
-#			
-#
-#			$c .= "</table>";
-#			}
-#
-#		# $c .= '<pre>'.Dumper($prts{$prt}).'</pre>';
-#
-#		$c .= "</td></tr>";
-#		}
-#	$GTOOLS::TAG{'<!-- PARTITIONS -->'} = $c;
-#
-#	}
-
 
 
 

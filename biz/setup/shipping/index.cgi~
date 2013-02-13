@@ -636,13 +636,6 @@ if ($VERB eq '') {
 		} 
 	}
 
-if ($LU->get('todo.setup')) {
-	require TODO;
-	my $t = TODO->new($USERNAME);	
-	my ($need,$tasks) = $t->setup_tasks('shipping',LU=>$LU,webdb=>$webdbref);
-	$GTOOLS::TAG{'<!-- MYTODO -->'} = $t->mytodo_box('shipping',$tasks);
-   }
-
 
 my @TABS = ();
 push @TABS, { name=>'General', selected=>($VERB eq '')?1:0, link=>'/biz/setup/shipping/index.cgi?ACTION=' };

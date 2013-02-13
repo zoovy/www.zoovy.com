@@ -5,7 +5,6 @@ use lib "/httpd/modules";
 use ZOOVY;
 use ZWEBSITE;
 use ORDER::BATCH;
-use ORDER;
 use POSIX; 
 
 my $USERNAME = 'zephyrsports';

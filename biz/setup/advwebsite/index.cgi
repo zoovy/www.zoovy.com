@@ -444,6 +444,9 @@ if ($VERB eq 'GENERAL') {
 	$GTOOLS::TAG{'<!-- CHECKOUT_20130111A -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111a')?'checked':'';
 	$GTOOLS::TAG{'<!-- CHECKOUT_20130111P -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111p')?'checked':'';
 	$GTOOLS::TAG{'<!-- CHECKOUT_20130111R -->'} = ($webdbref->{'checkout'} eq 'checkout-20130111r')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130131A -->'} = ($webdbref->{'checkout'} eq 'checkout-20130131a')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130131P -->'} = ($webdbref->{'checkout'} eq 'checkout-20130131p')?'checked':'';
+	$GTOOLS::TAG{'<!-- CHECKOUT_20130131R -->'} = ($webdbref->{'checkout'} eq 'checkout-20130131r')?'checked':'';
 
 	my $chkout_phone = $webdbref->{'chkout_phone'};
 	if (!defined($chkout_phone)) { $chkout_phone = 'REQUIRED'; }
@@ -478,12 +481,12 @@ if ($VERB eq 'GENERAL') {
 
 	$GTOOLS::TAG{'<!-- CHKOUT_ROI_DISPLAY -->'} = ($webdbref->{'chkout_roi_display'})?'checked':'';
 
+	my $DOMAIN = $LU->domain();
 	if ($LU->is_anycom()) { # different checkout preferences 
 		$template_file = 'checkout-anycom.shtml';
 		}
 	else {
 		$template_file = 'checkout-zoovy.shtml';
-		my $DOMAIN = &DOMAIN::TOOLS::domain_for_prt($USERNAME,$PRT);
 		$GTOOLS::TAG{'<!-- DOMAIN -->'} = $DOMAIN;
 		$GTOOLS::TAG{'<!-- CHECKOUTLINK -->'} = sprintf("http://www.$DOMAIN/checkout");
 		}

@@ -1,5 +1,1 @@
-XSym
-0008
-35af4f748f5cfc5f89ea3e36e971c941
 sync.cgi
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

@@ -30,15 +30,32 @@ The shipping rate debugger will display the internal logic that is used to compu
 <b>Rating Info:</b><br>
 <table>
 	<tr>
-		<td valign='top' colspan='2' bgcolor='E0E0E0'><input type='radio' name='SRC' value='ORDER'> Load products from order</td>
+		<td class='zoovytableheader' valign='top' colspan='2' bgcolor='E0E0E0'><h2><input type='radio' name='SRC' value='ORDER'> Load products from order</h2></td>
 	</tr>
 	<tr>
 		<td valign='top'>
 			Order Number: <input type='textbox' name='ORDER' value='<!-- ORDER -->'><br>
 		</td>
 	</tr>
+
 	<tr>
-		<td valign='top' colspan='2' bgcolor='E0E0E0'><input type='radio' name='SRC' value='DEST'> Specify Products / Destination</td>
+		<td class='zoovytableheader' valign='top' colspan='2' bgcolor='E0E0E0'><h2><input type='radio' name='SRC' value='CART'> Use Cart</h2></td>
+	</tr>
+	<tr>
+		<td valign='top' colspan='2'>
+		Instructions: Place items into your cart, proceed into checkout and provide address information, but do not complete checkout.
+			Your cart will appear in the list below.
+		</td>
+	</tr>
+	<tr>
+		<td valign='top'>
+		Cart: <input type="textbox" size=32 name="REAL-CART"><br>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td class='zoovytableheader' valign='top' colspan='2' bgcolor='E0E0E0'><h2><input type='radio' name='SRC' value='DEST'> Specify Products / Destination</h2></td>
 	</tr>
 	<tr>
 		<td valign='top'>
@@ -76,26 +93,6 @@ The shipping rate debugger will display the internal logic that is used to compu
 				</tr>
 			</table>
 
-		</td>
-	</tr>
-	<tr>
-		<td valign='top' colspan='2' bgcolor='E0E0E0'><input type='radio' name='SRC' value='CART'> Use Cart</td>
-	</tr>
-	<tr>
-		<td valign='top' colspan='2'>
-		Instructions: Place items into your cart, proceed into checkout and provide address information, but do not complete checkout.
-			Your cart will appear in the list below.
-		</td>
-	</tr>
-	<tr>
-		<td valign='top'>
-			Cart: <input type="textbox" size=32 name="REAL-CART"><br>
-			<div class="hint">
-			If the cart is on a domain other than .zoovy.com then you'll need
-to specify the cart id.
-			</div>
-			<br>
-			<!-- CARTS -->
 		</td>
 	</tr>
 </table>

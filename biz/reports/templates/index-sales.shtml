@@ -8,7 +8,7 @@
 <input type="hidden" id="VERB" name="VERB" value="">
 
 <table width=500 class="zoovytable">
-<tr><td class="zoovytableheader">Report Type:<br></td></tr>
+<tr><td class="zoovytableheader"><h2>Report Type:</h2></td></tr>
 <tr><td>
 Output Format:
 <br>
@@ -46,10 +46,20 @@ However if an item was out of stock during the report period, and in stock today
 because the Zoovy platform does not maintain a database table of historical inventory levels.
 </span>
 -->
+<br>
+<br>
 
 </td></tr>
-<tr><td class="zoovytableheader">Report Options:</td></tr>
+<tr><td class="zoovytableheader"><h2>Report Options:</h2></td></tr>
 <tr><td>
+
+Date Range: <select name="key">
+<option value="CREATED">Created Date</option>
+<option value="PAID">Paid Date</option>
+<option value="SHIP">Shipped Date</option>
+</select>
+<br>
+<br>
 
 <input type="checkbox" name="include_deleted"> Gross Sales: Include Cancelled Orders<br>
 <br>

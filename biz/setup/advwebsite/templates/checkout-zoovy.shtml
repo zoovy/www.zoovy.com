@@ -51,6 +51,27 @@ on January 1st, 2013 - giving clients a full year to transition.  Update: This d
 		<td>Newest (Auto-Upgrades)</td>
 	</tr>
 	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130131A --> value='checkout-20130131a'></td>
+		<td>One Page Checkout w/Active Customer Accounts</td>
+		<td>Release: 2013.01.31a</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131a&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131a&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130131P --> value='checkout-20130131p'></td>
+		<td>One Page Checkout w/Passive Customer Accounts</td>
+		<td>Release: 2013.01.31p</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131p&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131p&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
+		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130131R --> value='checkout-20130131r'></td>
+		<td>One Page Checkout Private - Customer Account Required</td>
+		<td>Release: 2013.01.31r</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131r&sender=CHECKOUT-TEST&_testharness=1">Check</td>
+		<td><a target="checkout" href="<!-- CHECKOUTLINK -->?fl=checkout-20130131r&sender=CHECKOUT-TEST">Try It</a></td>
+	</tr>
+	<tr>
 		<td><input type='radio' name='checkout' <!-- CHECKOUT_20130111A --> value='checkout-20130111a'></td>
 		<td>One Page Checkout w/Active Customer Accounts</td>
 		<td>Release: 2013.01.11a</td>

@@ -1118,7 +1118,7 @@ if ($ACTION eq 'PROFILES') {
 		$c .= qq~<td nowrap>
 				<button class="minibutton" type="button" 
 				onClick="app.ext.admin_batchJob.a.adminBatchJobCreate({'type':'UTILITY',
-					'%vars':{'APP':'EBAY_UPDATE','function':'refresh','profile':'$code'}}); return false;">Refresh Listings</button>
+					'%vars':{'APP':'EBAY_UPDATE','function':'refresh','.profile':'$code'}}); return false;">Refresh Listings</button>
 				</td>
 				~;
 #			}

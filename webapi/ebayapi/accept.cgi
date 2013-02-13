@@ -16,7 +16,7 @@ if ($QUERY_STRING =~ /reject/) {
 	print "eBay sent a rejection. Please close this window.\n\n";
 	}
 else {
-	print "Location: https://www.zoovy.com/biz/app/?$QUERY_STRING&partner=EBAY&trigger=adminPartnerSet#/biz/setup/ebay/index.cgi\n\n";
+	print "Location: https://www.zoovy.com/app/latest/?$QUERY_STRING&partner=EBAY&trigger=adminPartnerSet#/biz/setup/ebay/index.cgi\n\n";
 	}
 
 #$uri = $ENV{'REQUEST_URI'};

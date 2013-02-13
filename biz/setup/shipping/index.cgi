@@ -487,7 +487,7 @@ if ($VERB eq 'COUNTRIES') {
 
 if (($VERB eq 'COUNTRIES') || ($VERB eq 'BANNED')) {
 	if ($webdbref->{'paypal_email'}) {
-		push @MSGS, "WARN|Paypal Express checkout, Google Checkout, and Checkout by Amazon, and Checkout Applications (One Page Checkout) will be able to place orders that avoid this block list.";
+		push @MSGS, "WARN|Paypal Express checkout, Google Checkout, and Checkout by Amazon use the respective fraud filters for each payment type, purchasers will be able to place orders that avoid this block list (refer to each payment types individual fraud policies.)";
 		}
 	}
 
