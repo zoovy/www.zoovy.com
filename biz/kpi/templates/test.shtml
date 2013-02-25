@@ -1,9 +1,0 @@
-<!-- SETUP_TAB -->
-
-<div id="xyz" style="background-color: #CCCCFF; height:300px; width:100%">
-hello
-</div>
-
-<input value="show" type="button" onClick="jQuery('#xyz').showLoading();");
-<input value="hide" type="button" onClick="jQuery('#xyz').hideLoading();");
-

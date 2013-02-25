@@ -1,3 +1,0 @@
-<p>You can search for similar items with ProductFinder (request to eBay takes some time):</p>
-[% product_finder_html %]
-<p>Or simply continue with <a class="describe" href="/biz/ebay/catchooser2008/index.cgi/describe_item?_userid=[% userid %]&_authtoken=[% authtoken %]&_deviceid=[% deviceid %]&_domain=[% domain %]&id=[% selected_category.id %]">Describe Your Item</a> form to enter specifics manually</p>

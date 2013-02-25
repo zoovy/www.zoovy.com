@@ -1,5 +1,0 @@
-[%- INSERT '_round_corners_top.tt2' %]
-[% FOREACH key = param.keys %]
-<p>[% key %] - [% param.$key %]</p>
-[% END %]
-[%- INSERT '_round_corners_bottom.tt2' %]

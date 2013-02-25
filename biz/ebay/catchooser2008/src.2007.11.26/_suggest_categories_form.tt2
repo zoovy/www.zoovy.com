@@ -1,8 +1,0 @@
-<p>Category Suggest.</p>
-<form id="suggest-form" action="/biz/ebay/catchooser2008/index.cgi/get_suggested_categories">
-  <p><label for="query">Enter 2-5 words about your item. For example: Harry Potter</label></p>
-  </p>
-    <input type="text" id="query" name="query" value="[% query %]" />
-    <input type="submit" value="Start Selling">
-  </p>
-</form>

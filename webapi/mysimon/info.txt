@@ -1,3 +1,0 @@
-price	msrp	mfr_name	product	in_stock	shipping	category	product_description
-ImageURL	mfr_sku	isbn	upc	condition	reseller_category	reseller_prod_id
-url

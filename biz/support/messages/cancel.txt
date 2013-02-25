@@ -1,4 +1,0 @@
-Hello %USERNAME%,
-
-Your appointment on %BEGINS% to discuss %TOPIC% has been cancelled.
-

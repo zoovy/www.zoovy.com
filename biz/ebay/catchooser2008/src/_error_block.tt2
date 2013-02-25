@@ -1,7 +1,0 @@
-[%- IF error %]
-[%- INSERT '_round_corners_top.tt2' %]
-<div id="error-block">
-  <p class="error" style="text-align:center">Error happened. [% error %]</p>
-</div>
-[%- INSERT '_round_corners_bottom.tt2' %]
-[%- END %]
