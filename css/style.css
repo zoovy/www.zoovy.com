@@ -302,12 +302,14 @@ body{
 	float:left;
 	width:100%;
 	background:#005d86;
-	padding:18px 0 10px 0;
-}
+	margin: 0 auto;
+	overflow: hidden;
+	padding:15px 0 10px 0;
+} 
 .shortcuts{
 	float:left;
-	width:110px;
-	margin: 0 0 0 50px;
+	width:325px;
+	margin: 0 0 0 50px; 
 }
 .shortcuts p{
 	color:#fff;
@@ -335,13 +337,14 @@ body{
 }
 .footer_nav ul li a{
 	color: rgb(136, 206, 222);
-    font-family: cabin,sans-serif;
-    font-size: 10px;
+    font-family: 'Cabin Condensed',sans-serif;
+    font-size: 12px;
     font-weight: 400;
 	float:left;
 	text-decoration:none;
-	line-height:1.4;
+	line-height:1.1;
 }
+/* Inactive Register CSS
 .register_update{
 	float:left;
 	width:250px;
@@ -396,7 +399,7 @@ body{
 .register_update form input:hover{
 	color: rgb(79, 79, 79);
     font-style:normal;
-}
+} 
 .submit_btn{
 	float: right;
     margin: 10px 30px 0 0;
@@ -410,10 +413,11 @@ body{
     text-indent: -311px;
     width: 58px !important;
 }
+End of inactive register CSS  */
 .social_icons{
 	float:left;
-	width:185px;
-	margin: 0 0 0 15px;
+	width:340px;
+/*	margin: 0 0 0 15px; */
 }
 .social_icons p{
 	color:#fff;
@@ -422,6 +426,23 @@ body{
     font-weight: 400;
 	margin:0;
 }
+.socialLink{
+	display: block;
+	float: left;
+	text-decoration: none;
+	margin: 15px 11px;
+}
+.socialLink img{
+	display: block;
+}
+.socialLink div{
+	display: block;
+    font-family: 'Cabin Condensed',sans-serif;
+    font-size: 13px;
+	color: #88D0DF;
+	text-align: center;
+}
+    /* Old Social CSS
 .s_icons{
 	float:left;
 	margin:8px 0 0 0;
@@ -440,13 +461,16 @@ body{
 .s_icons p{
 	float:left;
 	color: rgb(136, 206, 222);
-    font-family: cabin,sans-serif;
-    font-size: 10px;
     font-weight: 400;
+	font-family: 'Cabin Condensed',sans-serif;
+    font-size: 11px;
 	text-decoration:none;
-	line-height:1.4;
 	margin:5px 0 0 10px;
+	line-height:1.4;
+	font-family: cabin,sans-serif;
+    font-size: 10px; 
 }
+	*/
 .questions{
 	float:left;
 	margin:0 0 0 50px;
@@ -462,11 +486,12 @@ body{
 .questions span p{
 	float:left;
 	color: rgb(136, 206, 222);
-    font-family: cabin,sans-serif;
-    font-size: 10px;
+    font-weight: 400;
+	font-family: 'Cabin Condensed',sans-serif;
+    font-size: 12px;
     font-weight: 400;
 	text-decoration:none;
-	line-height:1.4;
+	line-height:1.2;
 	margin:5px 0 0 0px;
 }
 .questions span a{
@@ -476,6 +501,17 @@ body{
 .questions span a:hover{
 	color: rgb(247, 147, 30);
 	text-decoration:none;
+}
+.copyright {
+    color: #88D0DF;
+    font-family: 'Cabin Condensed', sans-serif;
+    padding: 3px 0px;
+	float: left;
+    text-align: center;
+	font-size: 10px;
+	width: 100%;
+	margin-left: -12px;
+
 }
 
 
