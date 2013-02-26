@@ -79,3 +79,28 @@ a img {
 	border-left: 1px solid #000000;
 	border-right: 1px solid #000000;
 }
+.legal{
+	float:left;
+	width:100%;
+	min-height:285px;
+}
+.legal ul{
+	list-style: none;
+}
+.legal ul li a{
+    font-family: 'Cabin Condensed',sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+	text-decoration:none;
+	color: #005D86;
+	line-height: 1.5;
+}
+.legal span.legalInfo{
+	float:left;
+}
+.legalLink a{
+	color: #005D86;
+	font-family: 'Cabin Condensed',sans-serif;
+    font-size: 20px;
+	line-height: 2.5;
+}
