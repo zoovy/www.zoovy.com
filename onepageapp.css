@@ -95,6 +95,9 @@ a img {
 	color: #005D86;
 	line-height: 1.5;
 }
+.legal ul li a:hover {
+	color:#88CEDE;
+}
 .legal span.legalInfo{
 	float:left;
 }
@@ -103,4 +106,12 @@ a img {
 	font-family: 'Cabin Condensed',sans-serif;
     font-size: 20px;
 	line-height: 2.5;
+}
+.MPOlink  a{
+	color: #005D86;
+	line-height: 1.8;
+	text-decoration: none;
+}
+.MPOlink a:hover{
+	color:#88CEDE;
 }

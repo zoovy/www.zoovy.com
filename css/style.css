@@ -344,6 +344,9 @@ body{
 	text-decoration:none;
 	line-height:1.1;
 }
+.footer_nav ul li a:hover{
+	color:#F7931E;
+}
 /* Inactive Register CSS
 .register_update{
 	float:left;
@@ -441,6 +444,9 @@ End of inactive register CSS  */
     font-size: 13px;
 	color: #88D0DF;
 	text-align: center;
+}
+.socialLink div:hover{
+	color:#F7931E;
 }
     /* Old Social CSS
 .s_icons{
