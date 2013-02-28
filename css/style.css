@@ -1227,7 +1227,12 @@ End of inactive register CSS  */
 	width:100%;
 	min-height:285px;
 }
-
+.amazonLink a{
+	color: #005D86;
+}
+.amazonLink a:hover{
+	color:#F7931E;
+}
 
 
 /*----------------Features Amazon CSS Ends Here---------------*/
