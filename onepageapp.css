@@ -107,6 +107,13 @@ a img {
     font-size: 20px;
 	line-height: 2.5;
 }
+.legalList{
+	font-family: abel,sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.35;
+    text-align: justify;
+}
 .MPOlink  a{
 	color: #005D86;
 	line-height: 1.8;
