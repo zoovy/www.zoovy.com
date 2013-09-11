@@ -1,9 +1,0 @@
-20120613201907	4720	ERROR|+Domain name not set	
-20120613202208	4770	ERROR|+account org.first must be set/not blank	
-20120613202208	4770	ERROR|+account org.last must be set/not blank	
-20120613202208	4770	ERROR|+account org.coutnry must be set/not blank	
-20120613202352	4794	SUCCESS|+Waiting order #814486	
-20120613203122	4876	SUCCESS|+new order #814487	
-20120613203122	4876	INFO|DOMAIN:charliemarsstore.com|+billing id: 0	
-20121220063921	31803	ERROR|+Unknown Response $VAR1 = {;           'item.~response_text' => 'Invalid XML',;           'item.~is_success' => '0',;           'item.~protocol' => 'XCP',;           'item.~response_code' => 400;         };; 	
-20121220063921	31803	INFO|DOMAIN:coltondixonstore.com|+billing id: 0	

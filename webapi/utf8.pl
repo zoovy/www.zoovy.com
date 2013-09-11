@@ -1,5 +1,0 @@
-XSym
-0008
-864ff7fb7ed6c0199bed09ea31c15e57
-utf8.cgi
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

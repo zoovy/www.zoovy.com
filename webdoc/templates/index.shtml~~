@@ -1,8 +1,0 @@
-<html>
-Main Webdoc Page<br>
-<br>
-<form action="/search">
-Search String: <input type="textbox" name="text"><br>
-<br>
-<input type="submit">
-</form>

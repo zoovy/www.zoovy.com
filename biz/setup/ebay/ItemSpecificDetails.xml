@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<GeteBayDetailsResponse xmlns="urn:ebay:apis:eBLBaseComponents"><Timestamp>2008-07-28T06:07:23.232Z</Timestamp><Ack>Success</Ack><Version>573</Version><Build>e573_core_Bundled_6894805_R1</Build><ItemSpecificDetails><MaxItemSpecificsPerItem>15</MaxItemSpecificsPerItem><MaxValuesPerName>10</MaxValuesPerName><MaxCharactersPerValue>50</MaxCharactersPerValue><MaxCharactersPerName>30</MaxCharactersPerName></ItemSpecificDetails></GeteBayDetailsResponse>

@@ -1,3 +1,0 @@
-eBay Accounts|/biz/utilities/ebay/index.cgi?ACTION=SETUP
-Profiles|/biz/utilities/ebay/index.cgi?ACTION=PROFILES
-Gallery|/biz/utilities/ebay/gallery.cgi

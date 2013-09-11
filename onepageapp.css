@@ -1,3 +1,6 @@
+a img {
+	border: none;
+}
 #content {
 	background: white;
 	margin: 0 auto;
@@ -18,7 +21,7 @@
 
 #springContainer {
 	width: 100%;
-	height: 300px;
+	height: 100px;
 	overflow: visible;
 	display: block;
 }
@@ -34,8 +37,88 @@
 
 #springReactor {
 	height: 100%;
-	width: 100px;
+	width: 400px;
 	background: red;
 	position: absolute;
-	left: 429px;
+}
+
+/* FeedEK for RSS/Press Release */
+/* Press Releases / News Events */
+
+#divRss { width:600px; padding: 0px 3px 3px 5px; background-color:#FFF; border:1px solid #D3CAD7; margin-top:3px; }
+.ItemTitle{ 
+	font-weight: bold; margin:5px 0px 0px 0px; padding-top:10px; 
+	font-family: 'Puritan', sans-serif; 
+	font-size: 18px; line-height: 1.4;  margin: 10px 0 5px; 
+	}
+.ItemTitle a{ color:#4EBAFF; text-decoration:none }
+.ItemTitle a:hover{ text-decoration:underline }
+.ItemContent{ 
+	padding:1px 3px 3px 3px; border-bottom:1px solid #D3CAD7; color:#3E3E3E; 
+	color: rgb(0, 10, 10);
+	font-family: 'Puritan', sans-serif;
+	font-size: 10pt;
+	font-weight: 400;
+	font-style: italic
+	line-height: 1.4;
+	padding: 0;
+	}
+.ItemDate { 
+	font-size:11px; color:#AAA; 
+	color: rgb(0, 93, 134);
+	font-family: 'Puritan', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	font-style: italic
+	line-height: 1.4;
+	padding: 0;
+	}
+
+.header_bg {
+	float: left;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+.legal{
+	float:left;
+	width:100%;
+	min-height:285px;
+}
+.legal ul{
+	list-style: none;
+}
+.legal ul li a{
+    font-family: 'Cabin Condensed',sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+	text-decoration:none;
+	color: #005D86;
+	line-height: 1.5;
+}
+.legal ul li a:hover {
+	color:#88CEDE;
+}
+.legal span.legalInfo{
+	float:left;
+}
+.legalLink a{
+	color: #005D86;
+	font-family: 'Cabin Condensed',sans-serif;
+    font-size: 20px;
+	line-height: 2.5;
+}
+.legalList{
+	font-family: abel,sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.35;
+    text-align: justify;
+}
+.MPOlink  a{
+	color: #005D86;
+	line-height: 1.8;
+	text-decoration: none;
+}
+.MPOlink a:hover{
+	color:#88CEDE;
 }

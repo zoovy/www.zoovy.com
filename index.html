@@ -3,12 +3,14 @@
 <head>
 <!--
 
-VERSION: 2013-1-22-11-48-00
+VERSION: 2013-3-21-12-18-00
 
 -->
 	<meta charset="utf-8">
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="onepageapp.css" rel="stylesheet" type="text/css"/>
+	<!--
+	-->
 	<script type="text/javascript">
   WebFontConfig = {
     google: { families: [ 'Puritan:400,400italic,700,700italic:latin', 'Cabin+Condensed:400,500,600,700:latin', 'Abel::latin' ]  }
@@ -26,6 +28,18 @@ VERSION: 2013-1-22-11-48-00
 	<script src="mspring.js" type="text/javascript"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	<script type="text/javascript">
+	/*
+	* FeedEk jQuery RSS/ATOM Feed Plugin 
+	* http://jquery-plugins.net/FeedEk/FeedEk.html
+	* Author : Engin KIZIL 
+	* http://www.enginkizil.com
+	*/
+	(function($){$.fn.FeedEk=function(opt){var def={FeedUrl:'',MaxCount:5,ShowDesc:true,ShowPubDate:true};if(opt){$.extend(def,opt)}var idd=$(this).attr('id');if(def.FeedUrl==null||def.FeedUrl==''){$('#'+idd).empty();return}var pubdt;$('#'+idd).empty().append('<div style="text-align:left; padding:3px;"><img src="images/feedek-loading.gif" /></div>');$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='+def.MaxCount+'&output=json&q='+encodeURIComponent(def.FeedUrl)+'&callback=?',dataType:'json',success:function(data){$('#'+idd).empty();$.each(data.responseData.feed.entries,function(i,entry){$('#'+idd).append('<div class="ItemTitle"><a href="'+entry.link+'" target="_blank" >'+entry.title+'</a></div>');if(def.ShowPubDate){pubdt=new Date(entry.publishedDate);$('#'+idd).append('<div class="ItemDate">'+pubdt.toLocaleDateString()+'</div>')}if(def.ShowDesc)$('#'+idd).append('<div class="ItemContent">'+entry.content+'</div>')})}})}})(jQuery);
+	/* FeedEk */
+	</script>
+
 	<script type="text/javascript">
 
 		$.fn.doesExist = function(){
@@ -48,11 +62,11 @@ VERSION: 2013-1-22-11-48-00
 			return 1000;
 		}
 		
-		var defaultInitFunction = function(){
+		var defaultInitFunction = function($page){
 			//Default Init does nothing, but here for structural symmetry
 		}
 		
-		var defaultDestroyFunction = function(){
+		var defaultDestroyFunction = function($page){
 			for(var i=0; i<app.currentIntervals.length; i++){
 				clearInterval(app.currentIntervals[i]);
 			}
@@ -93,7 +107,7 @@ VERSION: 2013-1-22-11-48-00
 		});
 		
 		var handlePopState = function(state){
-			// alert(state);
+			showFromLocation(state);
 		}
 		
 		var showFromLocation = function(location){
@@ -119,7 +133,7 @@ VERSION: 2013-1-22-11-48-00
 			
 			try	{
 
-				window.history.pushState(app.pageAlias[ourURI], app.pageAlias[ourURI]+" title", location);
+				window.history.pushState(location, app.pageAlias[ourURI]+" title", location);
 			}
 			catch(err)	{
 				
@@ -128,25 +142,30 @@ VERSION: 2013-1-22-11-48-00
 		}
 
 		var show = function($nextPage){
-			var id=$nextPage.attr("id");
+			var id;
 			//Transition out current page, if it exists
 			var delay = 0;
 			if(typeof app.currentPage !== "undefined"){
+				id=app.currentPage.attr("id");
 				var transitionOutFunction;
 				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["transitionOut"] !== "undefined")
 					transitionOutFunction = app.pages[id]["transitionOut"];
 				if(typeof transitionOutFunction === "undefined")
 					transitionOutFunction = defaultTransOut;
 				delay = transitionOutFunction(app.currentPage);
+				
+				var destroyFunction;
+				if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["destroy"] !== "undefined")
+					destroyFunction = app.pages[id]["destroy"];
+				if(typeof destroyFunction === "undefined") {
+					destroyFunction = defaultDestroyFunction;
+					console.log(id);
+				}
+				destroyFunction(app.currentPage);
 			}
 			
-			var destroyFunction;
-			if(typeof app.pages[id] !== "undefined" && typeof app.pages[id]["destroy"] !== "undefined")
-				destroyFunction = app.pages[id]["destroy"];
-			if(typeof destroyFunction === "undefined")
-				destroyFunction = defaultDestroyFunction;
-			destroyFunction();
 			
+			id=$nextPage.attr("id");
 			//Transition in next page
 			setTimeout(function(){
 				var transitionInFunction;
@@ -162,7 +181,7 @@ VERSION: 2013-1-22-11-48-00
 					initFunction = app.pages[id]["init"];
 				if(typeof initFunction === "undefined")
 					initFunction = defaultInitFunction;
-				initFunction();
+				initFunction($nextPage);
 			}, delay);
 			
 		};
@@ -185,6 +204,8 @@ VERSION: 2013-1-22-11-48-00
 		//	showRandomPage();
 		//}, 5000);
 	</script>
+	<script type="text/javascript" charset="utf-8" src="Services_animation_edgePreload.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Were_Different_edgePreload.js"></script>
 </head>
 
 
@@ -201,9 +222,11 @@ VERSION: 2013-1-22-11-48-00
 					<li><a href="#!/about-contact.html">Contact</a></li>
 					<li>|</li>
 					<li>
-					<a id="loginlink" href="/biz/app/admin.html">Customer Login</a>
+					<a id="loginlink" href="https://www.zoovy.com/app/latest/app-admin.html">Customer Login</a>
 					<script type="text/javascript">
 					// need to append a unique non-cachable date time to #loginlink
+					var d = new Date(); 
+					$('#loginlink').attr("href", $('#loginlink').attr("href")+'?v='+d.toString()); 
 					</script>
 					</li>
 					
@@ -251,11 +274,13 @@ VERSION: 2013-1-22-11-48-00
 					</ul>
 				</li>
 				<li><a href="#!/news-events.html">NEWS &amp; EVENTS</a>
+						<!--
 					<ul>
 						<li><a href="#!/news-events.html">News &amp; Events</a></li>
 						<li><a href="#!/press-releases.html">Press Releases</a></li>
 						<li><a href="#!/in-the-news.html">In The News</a></li>
 					</ul>
+						-->
 				</li>
 			</ul>
 		</div>
@@ -263,7 +288,6 @@ VERSION: 2013-1-22-11-48-00
 	
 	<div id="mainContentArea">
 	</div>
-	
 	<div id="footer" class="footer">
 
 				<div class="shortcuts">
@@ -271,14 +295,15 @@ VERSION: 2013-1-22-11-48-00
 					<div class="footer_nav">
 						<ul>
 							<li><a href="#!/about-zoovy.html">Company Information</a></li>
+							<li><a href="#!/about-contact.html">Contact</a></li>
 							<li><a href="http://blog.zoovy.com/" target="_blank">Blog</a></li>
-							<li><a href="#!/about-contact.html">Conatct Information</a></li>
 							<li><a href="#!/news-events.html">News &amp; Press</a></li>
-							<li><a href="#!/legal-privacy.html">Legal &amp; Privacy</a></li>
+							<li><a href="#!/legal.html">Legal &amp; Privacy</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="register_update">
+				<!--
 					<p>REGISTER FOR UPDATES</p>
 					<form>
 						<p>Enter your email address for eCommerce specific<br/> news and Zoovy production info</p>
@@ -294,12 +319,29 @@ VERSION: 2013-1-22-11-48-00
 							<input type="submit"/>
 						</div>
 					</form>
+				-->
 				</div>
 				<div class="social_icons">
 					<p>WE'RE MOVING FAST. KEEP UP!</p>
-					<div class="s_icons">
-						<span><a href="https://plus.google.com/communities/108928399105730273026" target="_blank"><img src="images/googleplus-512-red27x27.png"/><p>Join</p></a></span>
-						<span><a href="https://twitter.com/ZoovyInc" target="_blank"><img src="images/twitter_512x512.png"/><p>Follow</p></a></span>
+					<div>
+						<a class="socialLink" href="https://plus.google.com/communities/108928399105730273026" target="_blank">
+							<img src="images/googleplus-512-red27x27.png" width="36" height="36"/>
+							<div>
+								Join
+							</div>							
+						</a>	
+						<a class="socialLink" href="https://www.youtube.com/ZoovyLive" target="_blank">
+							<img src="images/youtube.png" width="36" height="36" />
+							<div>
+								Watch
+							</div>
+						</a>
+						<a class="socialLink" href="https://twitter.com/ZoovyInc" target="_blank">
+							<img src="images/twitter_512x512.png" width="36" height="36"/>
+							<div>
+								Follow
+							</div>
+						</a>
 					</div>
 				</div>
 				<div class="questions">
@@ -309,6 +351,7 @@ VERSION: 2013-1-22-11-48-00
                           Want to work here? <a href="Mailto:careers@zoovy.com">Click here</a></p>
 					</span>
 				</div>
+				<div class="copyright">&copy; 2013 Zoovy, Inc. All right reserved. All symbols and logos are the property of their respective owners.</div>
 	</div>
 	</div>
 	</div>
@@ -318,8 +361,12 @@ VERSION: 2013-1-22-11-48-00
 
 	
 	<div id="templates" style="display:none;">
-
-		
+		<div id="servicesBanner" class="header_bg">
+			<div class="EDGE-11710536"></div>
+		</div>
+		<div id="differentBanner" class="header_bg">
+			<div class="EDGE-1205631013"></div>
+		</div>
 
 		<div id="home">
 			<script type="text/javascript">
@@ -356,34 +403,34 @@ VERSION: 2013-1-22-11-48-00
 				</div>
 				<div class="partners">
 					<div class="amazonsss">
-						<a target="_blank" href="#!/features-amazon.html" style="float:left;margin-left:3px;margin-top:10px;"><img style="width:73px;" src="images/amazon.png"/></a>	
+						<a target="_blank" style="float:left;margin-left:3px;margin-top:10px;"><img style="width:73px;" src="images/amazon.png"/></a>	
 						<img style="margin-top:10px;width:75px;" src="images/symantec_verisign2.png"/>
-						<a style="float:left;margin-top:11px;margin-left:2px;" target="_blank" href=""><img style="width:57px;" src="images/fedex2.png"/></a></a>	
+						<a style="float:left;margin-top:11px;margin-left:2px;" target="_blank" href=""><img style="width:57px;" src="images/fedex2.png"/></a>	
 					</div>
 					<div class="ebaysss">
-						<a style="float:left;margin-left:19px;" target="_blank" href="#!/features-eBay.html"><img style="width:55px;" src="images/ebay.png"/></a>
-						<a style="float:left;margin-top:14px;margin-left:12px;" target="_blank" href=""><img style="width:59px;" src="images/buysafe2.png"/></a>
-						<a style="float:left;margin-top:15px;" target="_blank" href=""><img style="width:79px;" src="images/google_analytics2.png"/></a>
+						<a style="float:left;margin-left:19px;" target="_blank" ><img style="width:55px;" src="images/ebay.png"/></a>
+						<a style="float:left;margin-top:14px;margin-left:12px;" target="_blank"><img style="width:59px;" src="images/buysafe2.png"/></a>
+						<a style="float:left;margin-top:15px;" target="_blank"><img style="width:79px;" src="images/google_analytics2.png"/></a>
 					</div>	
 					<div class="shopzilasss">
-						<a style="float:left;margin-left:14px;" target="_blank" href=""><img style="width:97px;" src="images/shopzilla2.png"/></a>
+						<a style="float:left;margin-left:14px;" target="_blank" ><img style="width:97px;" src="images/shopzilla2.png"/></a>
 						<img style="margin-top:13px;width:107px;" src="images/authorizenet2.png"/>
-						<a style="float:left;margin-top:6px;margin-left:16px;" target="_blank" href=""><img style="width:82px;" src="images/powerreviews2.png"/></a>
+						<a style="float:left;margin-top:6px;margin-left:16px;" target="_blank"><img style="width:82px;" src="images/powerreviews2.png"/></a>
 					</div>
 					<div class="bingsss">
 						<img style="margin-left:21px;width:62px;" src="images/bing2.png"/>
-						<a style="float:left;margin-top:11px;" target="_blank" href=""><img style="width:79px;" src="images/quickbooks2.png"/></a>
-						<a style="float:left;margin-top:19px;margin-left:14px;" target="_blank" href=""><img style="width:68px;" src="images/shipwire2.png"/></a>
+						<a style="float:left;margin-top:11px;" target="_blank" ><img style="width:79px;" src="images/quickbooks2.png"/></a>
+						<a style="float:left;margin-top:19px;margin-left:14px;" target="_blank"><img style="width:68px;" src="images/shipwire2.png"/></a>
 					</div>	
 					<div class="amazonsss222">
-						<a style="float:left;margin-top:1px;" target="_blank" href=""><img style="width:111px;" src="images/amazon_payments2.png"/></a>
-						<a style="float:left;margin-top:10px;" target="_blank" href=""><img style="width:69px;" src="images/googlecheckout_.png"/></a>
-						<a style="float:left;margin-top:10px;" target="_blank" href=""><img style="width:80px;" src="images/ispeakvideo2.png"/></a>
+						<a style="float:left;margin-top:1px;" target="_blank"><img style="width:111px;" src="images/amazon_payments2.png"/></a>
+						<a style="float:left;margin-top:10px;" target="_blank"><img style="width:69px;" src="images/googlecheckout_.png"/></a>
+						<a style="float:left;margin-top:10px;" target="_blank"><img style="width:80px;" src="images/ispeakvideo2.png"/></a>
 					</div>	
 					<div class="paypalsss">
-						<a style="float:left;" target="_blank" href=""><img style="width:64px;" src="images/paypal2.png"/></a>
-						<a style="float:left;margin-top:10px;" target="_blank" href=""><img style="width:102px;" src="images/endicia_and_dymo2.png"/>
-						<a style="float:left;margin-top:10px;" target="_blank" href=""><img style="width:59px;" src="images/ups_ready.png"/></a>
+						<a style="float:left;" target="_blank"><img style="width:64px;" src="images/paypal2.png"/></a>
+						<a style="float:left;margin-top:10px;" target="_blank"><img style="width:102px;" src="images/endicia_and_dymo2.png"/></a>
+						<a style="float:left;margin-top:10px;" target="_blank"><img style="width:59px;" src="images/ups_ready.png"/></a>
 					</div>	
 				</div>
 
@@ -413,10 +460,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="different">
 			<script type="text/javascript">
 			app.pageAlias["/different.html"] = "different";
+			app.pages.different= {
+				init : function($page){
+					$("#differentBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#differentBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="Animations/Were_Different/images/different_back.png"/>
-			</div>
 			<div class="container">
 				<div class="wer_differnt">
 					<h3>We're Different</h3>
@@ -435,7 +487,7 @@ VERSION: 2013-1-22-11-48-00
 						<h4>Apps provide:</h4>
 						<ul>
 						<li>an enhanced user experience for your customers</li>
-						<li>lower opperating costs.</li>
+						<li>lower operating costs.</li>
 						<li>customization and flexibility (websites have severe limitations).</li>
 						<li>quicker time to market - apps take weeks, websites take months.</li>
 						<li>deployment options and flexibility.</li>
@@ -456,10 +508,19 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="services">
 			<script type="text/javascript">
 			app.pageAlias["/services.html"] = "services";
+			app.pages.services = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
 
 			<div class="header_bg">
-				<img src="images/services.jpg"/>
+				
+				
 			</div>
 			<div class="container">
 				<div class="services_app">
@@ -497,7 +558,7 @@ VERSION: 2013-1-22-11-48-00
 						</span>
 					</div>
 					<span class="learn_here">
-						<a href="#!/live-training-support.html"><img src="images/orange_right_arrow.png"/><p class="learnsss">Learn more about our support structure here</p></a>
+						<a href="#!/live-training-support.html"><img src="images/orange_right_arrow.png"/>Learn more about our support structure here</a>
 					</span>
 				</div>
 				<div class="develop_apps" style="padding:0  0 60px 0;">
@@ -510,7 +571,7 @@ VERSION: 2013-1-22-11-48-00
 						<img src="images/mpo_circle.png" style="width:68px;margin:0 10px 0 0;"/>
 					</span>
 					<span class="learn_here">
-						<a href="#!/marketplace-optimization.html"><img src="images/orange_right_arrow.png"/><p class="learnsss">Learn more about Marketplace Optimization here</p></a>
+						<a href="#!/marketplace-optimization.html"><img src="images/orange_right_arrow.png"/>Learn more about Marketplace Optimization here</a>
 					</span>
 				</div>
 			</div>
@@ -519,10 +580,17 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps.html"] = "building-apps";
+			
+			app.pages['building-apps'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -557,10 +625,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-design">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-design.html"] = "building-apps-design";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			app.pages['building-apps-design'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -592,10 +665,15 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-development">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-development.html"] = "building-apps-development";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			app.pages['building-apps-development'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -627,10 +705,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="building-apps-testing">
 			<script type="text/javascript">
 			app.pageAlias["/building-apps-testing.html"] = "building-apps-testing";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['building-apps-testing'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>
@@ -672,11 +756,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="live-training-support">
 			<script type="text/javascript">
 			app.pageAlias["/live-training-support.html"] = "live-training-support";
-			</script>	
-
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['live-training-support'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="live_support">
 					<h3>We're here to help</h3>
@@ -701,10 +790,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="marketing-development">
 			<script type="text/javascript">
 			app.pageAlias["/marketing-development.html"] = "marketing-development";
+			
+			app.pages['marketing-development'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="live_support">
 					<h3><span style="font-size:28px;">Marketing dollars working as hard as they could be?</span></h3>
@@ -742,10 +837,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="marketplace-optimization">
 			<script type="text/javascript">
 			app.pageAlias["/marketplace-optimization.html"] = "marketplace-optimization";
+			
+			app.pages['marketplace-optimization'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-					<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="live_support">
 						<h3>Marketplace Optimization (MpO)<br/><span style="font-size:24px;">Improve seller performance with this new strategy</span></h3>
@@ -755,33 +856,36 @@ VERSION: 2013-1-22-11-48-00
 				<p>A Marketplace Optimization Expert provides insight into the individual ranking algorithms (signals) used by marketplaces to recommend sellers to prospective buyers. By identifying and improving signal performance a company will receive preference, resulting in increased exposure (sales) on a marketplace by winning the "Buy Box".</p>
 				<p>
 				<h4>Increase Sales at:</h4>
-				<div class="center">
-				<br>
-				<h4>Ranking Signals</h4>
-				<p>Below is a sample of the signals a marketplace could use to rank sellers: </p>
-				<ul>
-					<li>Total Cost to Buyer (including shipping)</li>
-					<li>Overall Order Cancellation Rate of the Seller</li>
-					<li>Shipping Latency</li>
-					<li>History and Experience of the Seller on the Marketplace</li>
-					<li>Overall Customer Feedback</li>
-					<li>Available Inventory for Purchase</li>
-					<li>Order Defect Rate as a % of Gross Sales</li>
-					<li>Late Shipments as a % of Total Shipments</li>
-					<li>Gross Sales</li>
-					<li>Total # of Sales on Marketplace</li>
-				</ul>
-				<p></p>
-				<h4>Zoovy: The Complete MpO Solution</h4>
-				<p>The Zoovy e-Commerce platform is the best Marketplace Optimization Solution available to businesses. Our award winning software delivers improvements in all 5 functional areas of marketplace optimization, along with trained professionals who can advise how to use it.</p>
-				<p>
-				<a class="pdf" target="corpPDF" href="/pdfs/marketplace_optimization.pdf">Learn more about Zoovy's Marketplace Optimization services</a>
-				</br>
-				</br>
-				<a target="mpo" href="http://www.marketplaceoptimization.com">Learn more about Marketplace Optimization</a>
-				</br>
-				</br>		
-				</p>
+					<div class="center">
+					<br>
+					<h4>Ranking Signals</h4>
+					<p>Below is a sample of the signals a marketplace could use to rank sellers: </p>
+					<ul>
+						<li>Total Cost to Buyer (including shipping)</li>
+						<li>Overall Order Cancellation Rate of the Seller</li>
+						<li>Shipping Latency</li>
+						<li>History and Experience of the Seller on the Marketplace</li>
+						<li>Overall Customer Feedback</li>
+						<li>Available Inventory for Purchase</li>
+						<li>Order Defect Rate as a % of Gross Sales</li>
+						<li>Late Shipments as a % of Total Shipments</li>
+						<li>Gross Sales</li>
+						<li>Total # of Sales on Marketplace</li>
+					</ul>
+					<p></p>
+					<h4>Zoovy: The Complete MpO Solution</h4>
+					<p>The Zoovy e-Commerce platform is the best Marketplace Optimization Solution available to businesses. Our award winning software delivers improvements in all 5 functional areas of marketplace optimization, along with trained professionals who can advise how to use it.</p>
+
+				<div>
+					<div class="MPOlink">
+						<a target="corpPDF" href="/pdfs/marketplace_optimization.pdf">Learn more about Zoovy's Marketplace Optimization services</a>
+					</div>
+				</div>
+				<div>
+				</div>
+					<div class="MPOlink">
+						<a target="mpo" href="http://www.marketplaceoptimization.com">Learn more about Marketplace Optimization</a>
+					</div>	
 						</div>
 				</div>
 			</div>			
@@ -790,10 +894,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features">
 			<script type="text/javascript">
 			app.pageAlias["/features.html"] = "features";
-			</script>			
-			<div class="header_bg">
-					<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages.features = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="features_main">
 					<h3>Features - We have 'em all</h3>
@@ -878,10 +988,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-amazon">
 			<script type="text/javascript">
 			app.pageAlias["/features-amazon.html"] = "features-amazon";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-amazon'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_amazon">
 					<h3>Amazon Payments</h3>
@@ -889,7 +1005,7 @@ VERSION: 2013-1-22-11-48-00
                     <h3>Checkout by Amazon</h3>
                         <p>Checkout by Amazon&trade; is a   complete e-commerce checkout solution that provides your customers with the same   secure and trusted checkout experience available on Amazon.com today. It offers   unique features including Amazon's 1-Click&reg; and tools for businesses to manage   shipping charges, sales tax, promotions, and post-sale activities including   refunds, cancellations, and chargebacks. </p>
 
-                <div style='font-size:14px; font-weight:bold;'><a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/o" target="_blank">Learn more</a> or <a href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough%2Fsource=AmazonCheckout&amp;passthrough%2Fld=AP&amp;passthrough%2Faccount=cba&amp;passthrough%2FsuperSource=OAR&amp;passthrough%2FmarketplaceID=AZ4B0ZS3LGLX" target="_blank">Sign up now</a>
+                <div class="amazonLink" style='font-size:14px; font-weight:bold;'><a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/o" target="_blank">Learn more</a> or <a href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough%2Fsource=AmazonCheckout&amp;passthrough%2Fld=AP&amp;passthrough%2Faccount=cba&amp;passthrough%2FsuperSource=OAR&amp;passthrough%2FmarketplaceID=AZ4B0ZS3LGLX" target="_blank">Sign up now</a>
                 </div>
                 <br />
 
@@ -900,18 +1016,19 @@ VERSION: 2013-1-22-11-48-00
 	                        <li><strong>Reduced  	bad debt:</strong> Amazon's proven fraud detection capabilities, chargeback controls,  	and risk management processes reduce bad debt.</li>
 	                        <li><strong>Easy  	integration:</strong> Simple-to-implement copy and paste code makes it easy to integrate  	Checkout by Amazon into your website.</li>
 	                        <li><strong>Cart  	up-sell:</strong> Checkout by Amazon enables you to up-sell your products within the  	checkout pipeline. At your option, you can also earn Amazon.com  	Associate commissions for up-selling Amazon products during  	checkout.</li>
-	                        <li><strong>Works  	seamlessly with Fulfillment by Amazon:</strong> Checkout by Amazon combined with <a href="http://www.amazon.com/gp/seller/fba/fulfillment-by-amazon.html" target="_blank"><U>Fulfillment  	by Amazon (FBA)</U></a> enables you to outsource both transaction processing and  	fulfillment. **</li>
+	                        <li><strong>Works  	seamlessly with Fulfillment by Amazon:</strong> Checkout by Amazon combined with <div class="amazonLink"><a href="http://www.amazon.com/gp/seller/fba/fulfillment-by-amazon.html" target="_blank"><U>Fulfillment  	by Amazon (FBA)</U></a></div> enables you to outsource both transaction processing and  	fulfillment. **</li>
                         </ul>
                         <h4>Key Benefits to Your Customers</strong></h4>
                         <ul>
 	                        <li><strong>Convenience:</strong> Customers can use the information in their Amazon.com account to  	complete purchases on your website without having to re-enter their  	shipping address or payment information. Customers can also place  	orders instantly using Amazon's patented 1-Click feature.</li>
 	                        <li><strong>Trusted  	checkout experience:</strong> The secure and familiar checkout experience customers enjoy at  	Amazon.com is now available on your website.</li>
-	                        <li><strong>Purchase  	protection for your customers: </strong>Your  	customers will feel more confident buying from your site knowing  	that they have the same protection under the <a href="https://payments.amazon.com/sdui/sdui/about?nodeId=6120" target="_blank"><U>Amazon  	A-to-z Guarantee</U></a> that they have when they shop on Amazon.com.</li>
+	                        <li><strong>Purchase  	protection for your customers: </strong>Your  	customers will feel more confident buying from your site knowing  	that they have the same protection under the <div class="amazonLink"><a href="https://payments.amazon.com/sdui/sdui/about?nodeId=6120" target="_blank"><U>Amazon  	A-to-z Guarantee</U></a></div> that they have when they shop on Amazon.com.</li>
                         </ul>
 
-                        <div style='font-size:14px; font-weight:bold; margin-bottom:20px;' align='center' ><a href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough/source=RPZOOVYA3U8OHMI7N1JUB&passthrough/ld=HOSTED&passthrough/account=cba&passthrough/superSource=OAR&passthrough/marketplaceID=AZ4B0ZS3LGLX" target="_blank">Sign Up Now</a></div>
+                        <div class="amazonLink" style='font-size:14px; font-weight:bold; margin-bottom:20px;' align='center' ><a href="https://sellercentral.amazon.com/gp/on-board/workflow/Registration/login.html/902-0586098-4611057?passthrough/source=RPZOOVYA3U8OHMI7N1JUB&passthrough/ld=HOSTED&passthrough/account=cba&passthrough/superSource=OAR&passthrough/marketplaceID=AZ4B0ZS3LGLX" target="_blank">Sign Up Now</a></div>
 
                         <h4>Key Features of Checkout by Amazon</h4>
+						<div class="amazonLink">
                         <ul>
 	                        <li><strong>Low  	friction for Amazon customers:</strong> Customers can use the information from their Amazon.com account and  	other websites powered by Amazon.com to complete purchases on your website without having to re-enter their shipping address or payment  	information.</li>
                             <li><strong>Familiar  	checkout experience:</strong> Checkout by Amazon provides the familiar checkout experience  	available on Amazon.com today on your website.</li>
@@ -925,11 +1042,13 @@ VERSION: 2013-1-22-11-48-00
                             <li><strong>Works  	seamlessly with Fulfillment by Amazon: </strong>Checkout  	by Amazon combined with <a href="http://www.amazon.com/gp/seller/fba/fulfillment-by-amazon.html" target="_blank"><U>Fulfillment  	by Amazon (FBA)</U></a> enables you to outsource both transaction processing and  	fulfillment. ** </li>
                             <li><strong>Co-branded  	payment pages: </strong>You  	can co-brand the checkout pipeline hosted by Amazon Payments with  	your own logo.</li>
                         </ul>
-                        <p>To  learn more about how Checkout by Amazon works, visit <a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/what" target="_blank"><U>What  Your Customers See</U></a> and <a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/how" target="_blank"><U>How  Checkout by Amazon Works for You</U></a>. </p>
+						</div>
+                        <p>To  learn more about how Checkout by Amazon works, visit <div class="amazonLink"><a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/what" target="_blank"><U>What  Your Customers See</U></a> and <a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/how" target="_blank"><U>How  Checkout by Amazon Works for You</U></a>.</div> </p>
                     </div>
 
+				<div class="amazonLink">
                     <h4>NEW!</h4>
-                        <p><a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/what#cartUpsellExperience" target="_blank"><U><strong>Cart Up-sell now available:</strong></U></a>&nbsp;<br />There are no start-up charges, monthly charges, hidden fees, or long-term contracts when using Checkout by Amazon.</p>
+                        <p><a href="https://payments.amazon.com/sdui/sdui/business?sn=cba/what#cartUpsellExperience" target="_blank"><U><strong>Cart Up-sell now available:</strong></U></a>&nbsp;There are no start-up charges, monthly charges, hidden fees, or long-term contracts when using Checkout by Amazon.</p>
                     <h4>Pricing</h4>
                         <p>There are no start-up charges, monthly charges, hidden fees, or long-term contracts when using Checkout by Amazon. </p>
                         <p>Fees are assessed on a per-transaction basis and vary depending on the transaction amount. They are based on a percentage of the transaction amount plus a per transaction fee. </p>
@@ -956,16 +1075,23 @@ VERSION: 2013-1-22-11-48-00
                             <li>Offer is void in the event of fraud, mistake or any failure to satisfy any terms of the Offer.</li>
                             <li>Amazon Payments reserves the right, in its sole discretion, to terminate or modify this Offer at any time.</li>
                         </ul>
+				</div>
 			</div>
 		</div>
 
 		<div class="wrapper" id="features-ebay">
 			<script type="text/javascript">
 			app.pageAlias["/features-ebay.html"] = "features-ebay";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
+			
+			app.pages['features-ebay'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_ebay">
 				<h3>eBay Integration</h3>
@@ -986,10 +1112,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-order-management">
 			<script type="text/javascript">
 			app.pageAlias["/features-order-management.html"] = "features-order-management";
+			
+			app.pages['features-order-management'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
 			<div class="container">
 				<div class="order_manage">
 					<h3>Order Management</h3>
@@ -1031,10 +1163,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-marketplaces">
 			<script type="text/javascript">
 			app.pageAlias["/features-marketplaces.html"] = "features-marketplaces";
+			
+			app.pages['features-marketplaces'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg">
-			</div>
 			<div class="container">
 				<div class="feature_market">
 					<h3>Marketplaces</h3>
@@ -1048,10 +1186,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-comparison-shopping">
 			<script type="text/javascript">
 			app.pageAlias["/features-comparison-shopping.html"] = "features-comparison-shopping";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-comparison-shopping'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="feature_market">
 					<h3>Comparison Shopping</h3>
@@ -1064,10 +1208,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-multiple-stores">
 			<script type="text/javascript">
 			app.pageAlias["/features-multiple-stores.html"] = "features-multiple-stores";
+			
+			app.pages['features-multiple-stores'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
 			</script>
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
 			<div class="container">
 				<div class="multistores">
 					<h3>Multiple Stores</h3>
@@ -1086,10 +1236,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="features-wholesale-supplychain">
 			<script type="text/javascript">
 			app.pageAlias["/features-wholesale-supplychain.html"] = "features-wholesale-supplychain";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['features-wholesale-supplychain'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="multistores">
 					<h3>Wholesale functionality</h3>
@@ -1104,10 +1260,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="follow_us">
 			<script type="text/javascript">
 			app.pageAlias["/follow_us.html"] = "follow_us";
-			</script>			
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['follow_us'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container">
 				<div class="build_apps">
 					<h3>Join the Conversation:</h3>
@@ -1147,10 +1309,16 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="about-management">
 			<script type="text/javascript">
 			app.pageAlias["/about-management.html"] = "about-management";
-			</script>	
-			<div class="header_bg">
-				<img src="images/services.jpg"/>
-			</div>
+			
+			app.pages['about-management'] = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
 			<div class="container_partner">
 				<div class="abt_zoovy_head">
 					<h3>Zoovy Management Team</h3>
@@ -1230,12 +1398,21 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="news-events">
 			<script type="text/javascript">
 			app.pageAlias["/news-events.html"] = "news-events";
+
+		   $('#divNewsRss').FeedEk({
+				FeedUrl : 'http://blog.zoovy.com/feeds/posts/default?alt=rss',
+			   MaxCount : 5,
+			   ShowDesc : true,
+			   ShowPubDate: true
+			  });
+
 			</script>
 			<!--div class="header_bg">
 				<img src="images/services.jpg"/>
 			</div-->
 			<div class="container">
 				<div class="clients_main">
+				<div id="divNewsRss"></div>
 				</div>
 			</div>
 		</div>
@@ -1243,7 +1420,23 @@ VERSION: 2013-1-22-11-48-00
 		<div class="wrapper" id="press-releases">
 			<script type="text/javascript">
 			app.pageAlias["/press-releases.html"] = "press-releases";
+
+		   $('#divPressRss').FeedEk({
+				FeedUrl : 'http://blog.zoovy.com/feeds/posts/default/-/Press?alt=rss',
+			   MaxCount : 5,
+			   ShowDesc : true,
+			   ShowPubDate: true
+			  });
+
 			</script>	
+
+				<div class="news_events">
+
+				</div>
+
+			
+			<div id="divPressRss"></div>
+
 			<!--div class="header_bg">
 				<img src="images/services.jpg"/>
 			</div-->
@@ -1266,73 +1459,472 @@ VERSION: 2013-1-22-11-48-00
 			</div>
 		</div>
 
-		<!-- Need to add infomation here, but should link up-->
-		<div class="wrapper" id="legal-privacy">
+		<div class="wrapper" id="legal">
 			<script type="text/javascript">
-			app.pageAlias["/legal-privacy.html"] = "legal-privacy";
+			app.pageAlias["/legal.html"] = "legal";
 			</script>	
 			<div class="container">
-				<div class="clients_main">
-				<span><p> For more information regarding our Legal &amp; Privacy, please send us an email. </p><a href="mailto:info@zoovy.com">Info@zoovy.com</a></span>
+				<div class="abt_zoovy_head">
+					<h3>Legal Information Resource Center</h3>
+				</div>
+				<div style="font-family: abel,sans-serif">For more information regarding our Legal & Privacy, please view the links below.</div>
+				<div class="legal">
+					<ul>
+						<li><a href="#!/legal-copyright.html">Website Copyright</a></li>
+						<li><a href="#!/legal-terms.html">Terms of Service</a></li>
+						<li><a href="#!/legal-privacy.html">Privacy Statement</a></li>
+						<li><a href="#!/legal-IPPolicy.html">Intellectual Property Policy</a></li>
+					</ul>
 				</div>
 			</div>
 			
 		</div>
 
-		<div class="wrapper" id="stub">
+		<div class="wrapper" id="legal-copyright">
 			<script type="text/javascript">
-			app.pageAlias["/stub.html"] = "stub";
-			</script>			
-		</div>
-
-		<div class="wrapper" id="stub">
+			app.pageAlias["/legal-copyright.html"] = "legal-copyright";
+			</script>	
+			<div class="container">
+				<div class="legal">
+					<h3>Zoovy, Inc. Important Notices</h3>
+					<span class="legalInfo">
+						<h4>All Contents Copyright: Zoovy Inc. All Rights Reserved.</h4>
+							<p>No portion of this service may be reproduced in any form, or by any means, without prior written permission from Zoovy, Inc.</p>
+						<h4>1. Rules and Regulations.</h4>
+							<p>The following rules and regulations apply to all visitors to or users of this Web Site. By accessing this Web Site, user acknowledges acceptance of these terms and conditions. Zoovy, Inc. ("Zoovy") reserves the right to change these rules and regulations from time to time at its sole discretion. In the case of any violation of these rules and regulations, Zoovy reserves the right to seek all remedies available by law and in equity for such violations. These rules and regulations apply to all visits to the Zoovy Web Site, both now and in the future.</p>
+						<h4>2. Limited License.</h4>
+							<p>Zoovy hereby authorizes you to copy materials published by Zoovy on this Web Site solely for use within your organization (or if you are a Zoovy Partner, your customer's organization) in support of Zoovy services. No other use of the information is authorized. In consideration of this authorization, you agree that any copy of these materials which you make shall retain all copyright and other proprietary notices in the same form and manner as on the original. Except as specified above, nothing contained herein shall be construed as conferring by implication, estoppel or otherwise any license or right under any patent, trademark or copyright of Zoovy or any third party.</p>
+							<p>ALL CONTENTS ON THIS SITE ARE PROTECTED BY COPYRIGHT. EXCEPT AS SPECIFICALLY PERMITTED HEREIN, NO PORTION OF THE INFORMATION ON THIS WEB SITE MAY BE REPRODUCED IN ANY FORM, OR BY ANY MEANS, WITHOUT PRIOR WRITTEN PERMISSION FROM ZOOVY. VISITORS OR USERS ARE NOT PERMITTED TO MODIFY, DISTRIBUTE, PUBLISH, TRANSMIT OR CREATE DERIVATIVE WORKS OF ANY MATERIAL FOUND ON THIS SITE FOR ANY PUBLIC OR COMMERCIAL PURPOSES.</p>
+						<h4>3. Compliance With Applicable Laws; Export Control Laws.</h4>
+							<p>User access to this Web Site is governed by all applicable federal, state and local laws. All information available on the Web Site is subject to U.S. export control laws and may also be subject to the laws of the country where you reside.</p>
+							<p>All Zoovy products and publications are commercial in nature. Use, duplication, or disclosure by the United States Government is subject to the restrictions set forth in DFARS 252.227-7015 and FAR 52.227-19.</p>
+						<h4>4. Trademarks.</h4>
+							<p>The trademarks, logos and service marks ("Marks") displayed on this Web Site are the property of Zoovy or other third parties. Users are not permitted to use these Marks without the prior written consent of Zoovy or such third party which may own the Mark. "Zoovy" is a registered trademark of Zoovy, Inc.</p>
+						<h4>5. General Disclaimer</h4>
+							<p>Although Zoovy has attempted to provide accurate information on the Web Site, Zoovy assumes no responsibility for the accuracy of the information. Zoovy may change the programs or products mentioned at any time without notice. Mention of non-Zoovy products or services is for information purposes only and constitutes neither an endorsement nor a recommendation.</p>
+							<p>ALL INFORMATION PROVIDED ON THIS WEB SITE IS PROVIDED "AS IS" WITH ALL FAULTS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED. ZOOVY AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EXPRESSED OR IMPLIED INCLUDING, WITHOUT LIMITATION, THOSE OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OR ARISING FROM A COURSE OF DEALING, USAGE, OR TRADE PRACTICE.</p>
+							<p>ZOOVY AND ITS SUPPLIERS SHALL NOT BE LIABLE FOR ANY INDIRECT, SPECIAL, CONSEQUENTIAL, OR INCIDENTAL DAMAGES INCLUDING, WITHOUT LIMITATION, LOST PROFITS OR REVENUES, COSTS OF REPLACEMENT GOODS, LOSS OR DAMAGE TO DATA ARISING OUT OF THE USE OR INABILITY TO USE THIS SITE OR ANY ZOOVY PRODUCT, DAMAGES RESULTING FROM USE OF OR RELIANCE ON THE INFORMATION PRESENT, EVEN IF ZOOVY OR ITS SUPPLIERS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+						<h4>6. Links to Third Party Sites.</h4>
+							<p>This Web Site may contain links to third party sites. Access to any other Internet site linked to this Web Site is at the user's own risk and Zoovy is not responsible for the accuracy or reliability of any information, data, opinions, advice or statements made on these sites. Zoovy provides these links merely as a convenience and the inclusion of such links does not imply an endorsement.</p>
+						<h4>7. Access to Password Protected/Secure Areas.</h4>
+							<p>Access to and use of password protected and/or secure areas of the Web Site is restricted to authorized users only. Unauthorized individuals attempting to access these areas of the Web Site may be subject to prosecution.</p>
+						<h4>8. Software License Agreement.</h4>
+							<p>Any software which you download is governed in accordance with (i) the license terms accompanying the file or (ii) if no license terms accompany the file, the terms of the license agreement which accompanied the original product licensed by you which you are updating or (iii) the license terms pursuant to this Software License Agreement.</p>
+							
+					</span>
+					<div class="legalLink">
+						<a href="#!/legal.html">Click to Return to the Legal Information Center</a>
+					</div>
+				</div>
+			</div>			
+		</div>		
+		
+		<div class="wrapper" id="legal-terms">
 			<script type="text/javascript">
-			app.pageAlias["/stub.html"] = "stub";
-			</script>			
-		</div>
-
-		<div class="wrapper" id="stub">
-			<script type="text/javascript">
-			app.pageAlias["/stub.html"] = "stub";
-			</script>			
-		</div>
-
-		<div class="wrapper" id="stub">
-			<script type="text/javascript">
-			app.pageAlias["/stub.html"] = "stub";
-			</script>			
-		</div>
-
-		<div class="wrapper" id="stub">
-			<script type="text/javascript">
-			app.pageAlias["/stub.html"] = "stub";
-			</script>			
-		</div>
-
-
-
-
-		<div id="zoovy">
-			<script type="text/javascript">
-			app.pageAlias["/corporate/zoovy.html"] = "zoovy";
+			app.pageAlias["/legal-terms.html"] = "legal-terms";
 			</script>
-			zoovy
+			<div class="container">
+				<div class="legal">
+					<h3>Zoovy Terms of Service</h3>
+					<span class="legalInfo">
+						<h4>Last Updated: Jun 28<span style=" font-variant:small-caps;">th</span>, 2008</h4>
+						<h4>1. ACCEPTANCE OF TERMS</h4>
+							<p>Welcome to Zoovy. Zoovy provides its service to you, subject to the following Terms of Service ("TOS"), which may be updated by us from time to time without notice to you. </p>
+							<p>In addition, when using particular Zoovy services, you and Zoovy shall be subject to any posted guidelines or rules applicable to such services, which may be posted from time to time. All such guidelines or rules are hereby incorporated by reference into the TOS.</p>
+
+						<h4>2. DESCRIPTION OF SERVICE</h4>
+							<p>Zoovy currently provides users with access to a rich collection of on-line resources, including, various communications tools, software, online forums, shopping services, personalized content and branded programming through its network of properties (the "Service"). Unless explicitly stated otherwise, any new features that augment or enhance the current Service, including the release of new Zoovy properties, shall be subject to the TOS.</p>
+							<p>You understand and agree that the Service is provided "AS-IS" and that Zoovy assumes no responsibility for the timeliness, deletion, mis-delivery or failure to store any communications or data unless explicitly stated elsewhere. </p> 
+							<p>In order to use the Service, you must obtain access to the World Wide Web, either directly or through devices that access web-based content, and pay any service fees associated with such access. In addition, you must provide all equipment necessary to make such connection to the World Wide Web, including a computer and modem or other access device. You must be at least 18 years of age to access and use Zoovy services.  </p>
+						<h4>3. YOUR REGISTRATION OBLIGATIONS</h4>
+							<p>In consideration of your use of the Service, you agree to: (a) provide true, accurate, current and complete information about yourself and your company as prompted by the Service's registration form (such information being the "Registration Data") and (b) maintain and promptly update the Registration Data to keep it true, accurate, current and complete. If you provide any information that is untrue, inaccurate, not current or incomplete, or Zoovy has reasonable grounds to suspect that such information is untrue, inaccurate, not current or incomplete, Zoovy has the right to suspend or terminate your account and refuse any and all current or future use of the Service (or any portion thereof). Zoovy is not liable for any resulting loss of service due to untruthful or incomplete information.</p>
+							<p>Zoovy is concerned about the safety and privacy of all its users, particularly minors. For this reason, parents, or the legal guardian of minors who wish to allow their children access to Zoovy must agree to supervise, and otherwise completely indemnify Zoovy of any content the minor may come into contact with during operation of the Zoovy service. Please remember that the Service is designed to appeal to a mature business audience. Accordingly, as the legal guardian, it is your responsibility to determine whether any of the Services and/or Content (as defined in Section 6 below) are appropriate for your child. </p>
+						<h4>4. ZOOVY PRIVACY POLICY</h4>
+							<p>Registration Data and certain other information about you is subject to our Privacy Policy. For more information, please see our full privacy policy at our <a href="#!/legal-privacy.html">Privacy page</a>.</p>
+						<h4>5. MEMBER ACCOUNT, PASSWORD AND SECURITY</h4>
+							<p>You will receive a password and account designation upon completing the Service's registration process. You are responsible for maintaining the confidentiality of the password and account, and are fully responsible for all activities that occur under your password or account. You agree to: (a) immediately notify Zoovy of any unauthorized use of your password or account or any other breach of security. (b) ensure that you exit from your account at the end of each session.</p>
+							<p>Zoovy cannot and will not be liable for any loss or damage arising from your failure to comply with this Section 5. Furthermore Zoovy is not responsible for any damages, which may occur to you, your community standing, or your business in the event of a known or unknown person(s) gain unauthorized access to your account.</p>
+						<h4>6. MEMBER CONDUCT</h4>
+							<p>You understand that all information, data, text, software, music, sound, photographs, graphics, video, messages or other materials ("Content"), whether publicly posted or privately transmitted, are the sole responsibility of the person from which such Content originated. This means that you, and not Zoovy, are entirely responsible for all Content that you upload, post, email or otherwise transmit via the Service. Zoovy does not control the Content posted via the Service and, as such, does not guarantee the accuracy, integrity or quality of such Content. You understand that by using the Service, you may be exposed to Content that is offensive, indecent or objectionable. Under no circumstances will Zoovy be liable in any way for any Content, including, but not limited to, for any errors or omissions in any Content, or for any loss or damage of any kind incurred as a result of the use of any Content posted, emailed or otherwise transmitted via the Service.</p>
+							<p>You agree to not use the Service to:
+							<ol class="legalList">
+								<li>Upload, post, email or otherwise transmit any Content that is unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable</li>
+								<li>Harm minors in any way</li>
+								<li>Impersonate any person or entity,; including, but not limited to, a Zoovy official, forum leader, guide or host, or falsely state or otherwise misrepresent your affiliation with a person or entity</li>
+								<li>Forge headers or otherwise manipulate identifiers in order to disguise the origin of any Content transmitted through the Service</li>
+								<li>Upload, post, email or otherwise transmit any Content that you do not have a right to transmit under any law or under contractual or fiduciary relationships (such as inside information, proprietary and confidential information learned or disclosed as part of employment relationships or under nondisclosure agreements)</li>
+								<li>Upload, post, email or otherwise transmit any Content that infringes any patent, trademark, trade secret, copyright or other proprietary rights ("Rights") of any party</li>
+								<li>Upload, post, email or otherwise transmit any unsolicited or unauthorized advertising, promotional materials, "junk mail," "spam," "chain letters," "pyramid schemes," or any other form of solicitation, except in those areas (such as shopping rooms) that are designated for such purpose</li>
+								<li>Upload, post, email or otherwise transmit any material that contains software viruses or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer software or hardware or telecommunications equipment; or that may interfere with or disrupt the normal flow and operation of any system.</li>
+								<li>Interfere with or disrupt the Service or servers or networks connected to the Service, or disobey any requirements, procedures, policies or regulations of networks connected to the Service</li>
+								<li>Intentionally or unintentionally violate any applicable local, state, national or international law, including, but not limited to, regulations promulgated be the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, including, without limitation, the New York Stock Exchange, the American Stock Exchange or the NASDAQ, and any regulations having the force of law</li>
+								<li>"Stalk" or otherwise harass another individual</li>
+								<li>Collect or store personal data about other users of this service</li>
+							</ol>
+							<p>You acknowledge that Zoovy does not pre-screen Content, but that Zoovy and its designees shall have the right (but not the obligation) in their sole discretion to refuse or move any Content that is available via the Service. Without limiting the foregoing, Zoovy and its designees shall have the right to remove any Content that violates the TOS or is otherwise objectionable. You agree that you must evaluate, and bear all risks associated with, the use of any Content, including any reliance on the accuracy, completeness, or usefulness of such Content. In this regard, you acknowledge that you may not rely on any Content created by Zoovy or submitted to Zoovy, including without limitation information in Zoovy and in all parts of the Service.</p>
+							<p>You acknowledge and agree that Zoovy may preserve Content and may also disclose Content if required to do so by law or in the good faith belief that such preservation or disclosure is reasonably necessary to:<ul>
+								(a) comply with legal process;<br>
+								(b) enforce the TOS;<br>
+								(c) respond to claims that any Content violates the rights of third-parties;<br>
+								(d) protect the rights, property, or personal safety of Zoovy, its users and the public.</ul></p>
+							<p>You understand that the technical processing and transmission of the Service, including your Content, may involve (a) transmissions over various networks; and (b) changes to conform and adapt to technical requirements of connecting networks or devices.</p>
+						<h4>7. SPECIAL ADMONITIONS FOR INTERNATIONAL USE</h4>
+							<p>Recognizing the global nature of the Internet, you agree to comply with all local rules in your jurisdiction regarding online conduct and acceptable Content.  Specifically, you agree to comply with all applicable laws regarding the transmission of technical data exported from or to the United States or the country in which you reside. </p>
+						<h4>8. INDEMNITY</h4>
+							<p>You agree to indemnify and hold Zoovy, and its subsidiaries, affiliates, officers, agents, co-branders or other partners, and employees, harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of Content you submit, post to or transmit through the Service, your use of the Service, your connection to the Service, your violation of the TOS, or your violation of any rights of another.</p>
+						<h4>9. NO RESALE OF SERVICE</h4>
+							<p>You agree not to reproduce, duplicate, copy, sell, resell or exploit for any commercial purposes, any portion of the Service, use of the Service, or access to the Service. </p>
+						<h4>10. GENERAL PRACTICES REGARDING USE AND STORAGE</h4>
+							<p>You acknowledge that Zoovy may establish general practices and limits concerning use of the Service, including without limitation the maximum number of days that email messages, maximum sizes of images, total number of products, sales history, or other uploaded Content will be retained by the Service, the maximum number of email messages that may be sent from or received by an account on the Service, the maximum size of any email message that may be sent from or received by an account on the Service, the maximum disk space that will be allotted on Zoovy's servers on your behalf, and the maximum number of times (and the maximum duration for which) you may access the Service in a given period of time. You agree that Zoovy has no responsibility or liability for the deletion or failure to store any communications or other Content maintained or transmitted by the Service.  You acknowledge that Zoovy reserves the right to log off accounts that are inactive for an extended period of time. You further acknowledge that Zoovy reserves the right to change these general practices and limits at any time, in its sole discretion, with or without notice. </p> 
+						<h4>11. MODIFICATIONS TO SERVICE</h4>
+							<p>Zoovy reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice. You agree that Zoovy shall not be liable to you or to any third party for any modification, suspension or discontinuance of the Service. </p>
+						<h4>12. TERMINATION</h4>
+							<p>You agree that Zoovy, in its sole discretion, may terminate your password, account (or any part thereof) or use of the Service, and remove and discard any Content within the Service, for any reason, including, without limitation, for lack of use or if Zoovy believes that you have violated or acted inconsistently with the letter or spirit of the TOS. Zoovy may also in its sole discretion and at any time discontinue providing the Service, or any part thereof, with or without notice. You agree that any termination of your access to the Service under any provision of this TOS may be effected without prior notice, and acknowledge and agree that Zoovy may immediately deactivate or delete your account and all related information and files in your account and/or bar any further access to such files or the Service. Further, you agree that Zoovy shall not be liable to you or any third-party for any termination of your access to the Service.</p>
+						<h4>13. DEALINGS WITH ADVERTISERS</h4>
+							<p>Your correspondence or business dealings with, or participation in promotions of, advertisers found on or through the Service, including payment and delivery of related goods or services, and any other terms, conditions, warranties or representations associated with such dealings, are solely between you and such advertiser. You agree that Zoovy shall not be responsible or liable for any loss or damage of any sort incurred as the result of any such dealings or as the result of the presence of such advertisers on the Service.  </p>
+						<h4>14. LINKS</h4>
+							<p>The Service may provide, or third parties may provide, links to other World Wide Web sites or resources. Because Zoovy has no control over such sites and resources, you acknowledge and agree that Zoovy is not responsible for the availability of such external sites or resources, and does not endorse and is not responsible or liable for any Content, advertising, products, or other materials on or available from such sites or resources. You further acknowledge and agree that Zoovy shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such Content, goods or services available on or through any such site or resource.</p>
+						<h4>15. ZOOVY'S PROPRIETARY RIGHTS</h4>
+							<p>You acknowledge and agree that the Service and any necessary software used in connection with the Service ("Software") may contain proprietary and confidential information that is protected by applicable intellectual property and other laws. You further acknowledge and agree that Content contained in sponsor advertisements or information presented to you through the Service or advertisers is protected by copyrights, trademarks, service marks, patents or other proprietary rights and laws. Except as expressly authorized by Zoovy or advertisers, you agree not to modify, rent, lease, loan, sell, distribute or create derivative works based on the Service or the Software, in whole or in part.  </p>
+							<p>Zoovy grants you a personal, non-transferable and non-exclusive right and license to use the object code of its Software on a single computer; provided that you do not (and do not allow any third party to) copy, modify, create a derivative work of, reverse engineer, reverse assemble or otherwise attempt to discover any source code, sell, assign, sublicense, grant a security interest in or otherwise transfer any right in the Software. You agree not to modify the Software in any manner or form, or to use modified versions of the Software, including (without limitation) for the purpose of obtaining unauthorized access to the Service. You agree not to access the Service by any means other than through the interface that is provided by Zoovy for use in accessing the Service, or by through interfaces which have been appropriately licensed and endorsed by Zoovy, Inc. </p>
+						<h4>16. DISCLAIMER OF WARRANTIES</h4>
+							<p>YOU EXPRESSLY UNDERSTAND AND AGREE THAT: <ol class="legalList">
+								<li>YOUR USE OF THE SERVICE IS AT YOUR SOLE RISK. THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS.  ZOOVY EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.</li>
+								<li>ZOOVY MAKES NO WARRANTY THAT (i) THE SERVICE WILL MEET YOUR REQUIREMENTS, (ii) THE SERVICE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE, (iii) THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE SERVICE WILL BE ACCURATE OR RELIABLE, (iv)
+								THE QUALITY OF ANY PRODUCTS, SERVICES, INFORMATION, OR OTHER MATERIAL PURCHASED OR OBTAINED BY YOU THROUGH THE SERVICE WILL MEET YOUR EXPECTATIONS, AND (V) ANY ERRORS IN THE SOFTWARE WILL BE CORRECTED.</li>
+								<li>ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE SERVICE IS DONE AT YOUR OWN DISCRETION AND
+								RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH MATERIAL.</li>
+								<li>NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM ZOOVY OR THROUGH OR FROM THE SERVICE SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THE TOS.</li>
+							</ol></p>
+						<h4>17. LIMITATION OF LIABILITY</h4>
+							<p>YOU EXPRESSLY UNDERSTAND AND AGREE THAT ZOOVY SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE LOSSES (EVEN IF ZOOVY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES), RESULTING FROM: (i) THE USE OR THE INABILITY TO USE THE SERVICE; (ii) THE COST OF PROCUREMENT OF SUBSTITUTE GOODS AND SERVICES RESULTING FROM ANY GOODS, DATA, INFORMATION OR SERVICES PURCHASED OR OBTAINED OR MESSAGES RECEIVED OR TRANSACTIONS ENTERED INTO THROUGH OR FROM THE SERVICE; (iii) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR TRANSMISSIONS OR DATA; (iv) STATEMENTS OR CONDUCT OF ANY THIRD PARTY ON THE SERVICE; OR (v) ANY OTHER MATTER RELATING TO THE SERVICE.</p>
+						<h4>18. INDEMNIFICATION OF ILLEGAL ACTIONS</h4>
+							<p>By using Zoovy services you represent that the goods or services you promote on Zoovy belong to you, and that such items were obtained legally, through sanctioned reputable channels, and that such goods or services are legal in your jurisdiction, and that you have the authorization by all necessary government or regulatory boards to sell, issue, authorize, or otherwise transfer said goods and services. Furthermore you represent that you will take all necessary measures to insure said goods or services do not reach areas, or individuals who are not allowed to own, handle, or otherwise poses such goods or services. Furthermore you represent you will take reasonable steps to insure that said goods or services do not transit an area where said goods and services are illegal or prohibited, unless explicitly allowed through other applicable laws such as in the case of interstate commerce. And that in the case of dangerous goods, all necessary preparations were made to avoid any accidental release, leakage, discharge, or other action which may expose persons responsible for shipping, transporting, or receiving goods any harm. You further agree to indemnify Zoovy, and its subsidiaries, affiliates, officers, agents, co-branders or other partners, and employees, harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your sale and transportation of goods and or services.</p>
+						<h4>19. NOTICE</h4>
+							<p>Notices to you may be made via either email or regular mail. The Service may also provide notices of changes to the TOS or other matters by displaying notices or links to notices to you generally on the Service.</p>
+						<h4>20. TRADEMARK INFORMATION</h4>
+							<p>Zoovy, the Zoovy "Z" and Zoovy, Inc. are trademarks of Zoovy, Inc. all rights reserved. </p>
+						<h4>21. COPYRIGHTS and COPYRIGHT AGENTS</h4>
+							<p>Zoovy respects the intellectual property of others, and we ask our users to do the same. If you believe that your work has been copied in a way that constitutes copyright infringement, please provide Zoovy's Copyright Agent the following information:<ul>
+								<li>An electronic or physical signature of the person authorized to act on behalf of the owner of the copyright interest.</li>
+								<li>A description of the copyrighted work that you claim has been infringed.</li> 
+								<li>A description of where the material that you claim is infringing is located on the site.</li>
+								<li>Your address, telephone number, and email address.</li>
+								<li>A statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law.</li>
+								<li>A statement by you, made under penalty of perjury, that the above information in your Notice is accurate and that you are the copyright owner or authorized to act on the copyright owner's behalf. </li>
+							</ul></p>
+
+						<h4>22. UNLIMITED TRAFFIC POLICY</h4>
+							<p>We are pleased to offer our clients unlimited Web page traffic. 
+							To maintain the integrity of our service the following limitations apply: <ul>
+								<li> Sites which offer offsite links to purchase products/services which are 
+								considered "non-trackable" sales.
+								<li> Sites which attempt to circumvent Zoovy's ability to record and track sales.
+								<li> Sites housing multiple directories with unrelated information not directly related to the sale of a product.</li>
+								<li> Multiple hosts resolving at an ip or domain name that we provide.</li>
+								<li> Sites with Banners, graphics or cgi's running from their domain used on other domains. </li>
+								<li> Sites with large graphic archives or galleries (non-product related)</li>
+								<li> Sites offering downloads or archives, such as .mp3, .wmf, .avi, .zip, .tar, .ra and .GZ. </li>
+								<li> Sites using more than 5% of system resources </li>
+								<li> For those that do not qualify for the unlimited service, will be invoiced at a rate of 
+								$50 gigabyte. with a minimum of 2 gigabytes of traffic.
+							</ul></p>
+							<p>Zoovy will be the sole arbiter as to what constitutes a violation of this provision.</p>
+
+						<h4>23. SEARCH ENGINE POLICY</h4>
+							<p>Zoovy test sites are all hosted under the "ZOOVY.COM" domain name, and using IP addresses assigned to Zoovy by the American Registry for Internet Numbers (ARIN). 
+							Some search engines may not distinquish that each site is separate and therefore the actions of one customer, can affect all customers. For this reason Zoovy has developed a 
+							strict policy regarding Search Engine "Spamming" techniques. 
+							Customers are explicitly prohibited from:<ul>
+								 <li>Cloaking - creating deceptive pages which attempt to trick search engines into giving higher ranking.</li>
+								 <li>Writing text or creating links that can be seen by search engines but not by visitors.</li>
+								 <li>Participating in link exchanges for the sole purpose of increasing your ranking in search engines.</li>
+								 <li>Sending automated queries to Google in an attempt to monitor your site's ranking.</li>
+								 <li>Use programs that generate lots of generic doorway pages.</li>
+							</ul></p>
+						<h4>24. COMMERCIAL EMAIL - SPAMMERS BEWARE</h4>
+							<p>The Zoovy system routinely sends commercial email on our customers behalf. Email sent by Zoovy is compliant with all Internet mail standards, and clearly designates "ZOOVY.COM" as the MTA (Message Transfer Agent). Zoovy has agreements with several major ISPs to ensure email originating from our mail servers is not treated as UCE (Unsolicited Commercial Email/SPAM).</p>
+							<p>While Zoovy does not monitor the actual content of messages, Zoovy does dictate the possible origins, and formatting of messages transmitted - including both the header and body content. This includes (but is not limited to) how opt-out and unsubscribe links are presented to recipients, along with what merchant identifiable information is transmitted to recipients. Zoovy has taken steps to ensure our email formats are compliant with the guidelines set forth by both the Federal CAN-SPAM ACT of 2004 and the postmaster guidelines for the respective ISPs we work with. </p>
+							<p>In accordance with our polices Merchants must agree that any written, electronic, or verbal request by a customer to be unsubscribed must be acted upon within 24 hours - across all merchants marketing campaigns - even those not hosted by Zoovy. Merchants agree not to auto re-subscribe customers who have requested to be removed unless they can prove they have received an authentic request to opt-in the customer. </p>
+							<p>In addition any attempt to tamper with the email formats developed by Zoovy such as (but not limited to) including concealing information, including deceptive information (such as false addresses / phone numbers), re-opting in customers who have opted-out, or ignoring opt-out requests will be result in immediate, irrevocable termination of the merchants account, along with complete forfeiture of the merchants data, forfeiture of any dues paid to Zoovy, in addition to any fees later assessed by Zoovy for disruption of service. Upon such an event Zoovy may (in it's sole discretion) share the merchants contact information, sales history, and any other information it deems relevant with any requesting ISP, or government agency upon written or electronic request.</p>
+
+						<h4>25. GENERAL INFORMATION</h4>
+							<p>The TOS constitute the entire agreement between you and Zoovy and govern your use of the Service, superceding any prior agreements between you and Zoovy. You also may be subject to additional terms and conditions that may apply when you use affiliate services, third-party content or third-party software. The TOS and the relationship between you and Zoovy shall be governed by the laws of the State of California without regard to its conflict of law provisions. You and Zoovy agree to submit to the personal and exclusive jurisdiction of the courts located within the county of San Diego, California. The failure of Zoovy to exercise or enforce any right or provision of the TOS shall not constitute a waiver of such right or provision. If any provision of the TOS is found by a court of competent jurisdiction to be invalid, the parties nevertheless agree that the court should endeavor to give effect to the parties' intentions as reflected in the provision, and the other provisions of the TOS remain in full force and effect. You agree that regardless of any statute or law to the contrary, any claim or cause of action arising out of or related to use of the Service or the TOS must be filed within one (1) year after such claim or cause of action arose or be forever barred. </p>
+							<p>The section titles in the TOS are for convenience only and have no legal or contractual effect.  
+
+						<h4>26. VIOLATIONS</h4>
+							<p>Please report any violations of the TOS to our Customer Care group at <a href="mailto:billing@zoovy.com">billing@zoovy.com</a>.</p>
+						<h4>27. POLICIES</h4>
+							<p>Zoovy has developed documented policies to describe how we will handle and ultimately resolve a variety of situations which may occur regarding topics such as (but not limited to) billing, customer service, system outages, site modifications, and third-party integrations. Any usage of the Zoovy.com website is considered receiving service from Zoovy and therefore, when applicable, is subject to those policies which may be found at <a href="http://webdoc.zoovy.com/doc/51610">http://webdoc.zoovy.com/doc/51610</a>.</p>
+						<h4>28. TERMINATION (CANCELLING SERVICES)</h4>
+							<p> Usage of this service consitutes acceptance of the Zoovy Cancellation Policy in order to terminate this service. The cancellation policy and form is located at http://www.zoovy.com/biz/support/cancel/ </p>
+
+						<h4>29. LIMITATION OF DAMAGES</h4>
+							<p>Under no circumstances shall any court award damages exceeding the actual amount invoiced [if by Zoovy], or paid [if by client], plus $1.00.</p>
+
+						<h4>30. BINDING ARBITRATION</h2>
+							<p>In the event a dispute arises between two parties that are subject to this Terms of Service, it is hereby agreed that both parties will submit to mediation, and failing an acceptable result, both parties shall submit to binding arbitration. All mediation and arbitration shall be performed in the County of San Diego, State of California and either party may choose to electronically attend.</p>
+							<p>The mediation and arbitration shall be conducted in accordance with the applicable United States Arbitration and Mediation Rules of Arbitration. The arbitrator's decision shall be final and legally binding and judgment may be entered thereon.</p>
+							<p>Each party shall be responsible for its share of the mediation, and arbitration fees in accordance with the applicable Rules of Arbitration. In the event a party fails to proceed with arbitration, unsuccessfully challenges the arbitrator's award, or fails to comply with the arbitrator's award, the other party is entitled to costs of suit, including a reasonable attorney's fee for having to compel arbitration or defend or enforce the award.</p>
+					</span>
+					<div class="legalLink">
+						<a href="#!/legal.html">Click to Return to the Legal Information Center</a>
+					</div>
+				</div>
+			</div>			
 		</div>
-		<div id="anycommerce">
+		
+		<div class="wrapper" id="legal-privacy">
 			<script type="text/javascript">
-			app.pageAlias["/corporate/anycommerce.html"] = "anycommerce";
-			</script>
-			anycommerce
+			app.pageAlias["/legal-privacy.html"] = "legal-privacy";
+			</script>			
+			<div class="container">
+				<div class="legal">
+					<h3>Privacy Policy</h3>
+					<span class="legalInfo">
+						<h4>1. PRIVACY STATEMENT </h4>
+							<p>Zoovy, Inc. has created this privacy statement in order to demonstrate our firm commitment to privacy. The following discloses our information gathering and dissemination practices for the website zoovy.com. This policy does not address the individual websites that may be hosted by Zoovy. Zoovy recommends, but does not require that these individual sites poses an individual privacy statement. You should contact the owner of the individual site, regarding their privacy policy and information disclosure practices. </p>
+						<h4>2. GATHERING OF SYSTEM INFORMATION</h4>
+							<p>We use your IP address and browser type to help diagnose problems with our server, and to administer our website. Your IP address is used to broad demographic information, and to establish a historical security pattern to detect unauthorized access to your account. </p>
+						<h4>3. TRACKING OF COOKIES</h4>
+							<p>A "cookie" is a small piece of data that is sent to your browser from a web server and stored on your computer's hard drive. Cookies do not damage your computer. We use cookies to help us provide personal services and to allow you to sign-in to our site without having to enter your name and password each time. Our site uses cookies to keep track of logins, and shopping carts, we may also periodically use cookies as a placeholder for a specific method or process in our system. We use cookies to deliver content specific to your interests and to save your password so you don't have to enter your password on every page. We track how often you are given cookies, to help diagnose problems with our servers, and to determine if authorized access has been granted. Furthermore we also allow our partners to use cookies to make sure you don't see the same dadvertisement repeatedly. </p>
+						<h4>4. CUSTOMER IDENTIFABLE INFORMATION </h4>
+							<p>Our site's registration form requires users to give us in depth contact information, this information is used to help us serve you better, it is not shared with third parties, except when you specifically authorize us. See section (5) below. Furthermore our site requires many unique identifiers such as social security number, federal tax identification, and financial information such as bank accounts and credit cards. This information is strictly between you and us; we do not share this information with our partners, unless you explicitly authorize us to. The customer's contact information is also used to contact the visitor, by our staff when necessary. The majority of our system is based on opt-in lists, which provide users the ability to opt-out of receiving future mailings; see the choice/opt-out section below. Financial information that is collected is used to check the users' qualifications for registration and to bill the user for products and services. Unique identifiers are used for internal verification to verify the user's identity, and in some cases are used when reporting to government agencies for purposes required by law. </p>
+						<h4>5. FOREIGN SYSTEMS</h4>
+							<p>This site contains links to other, non Zoovy Partner sites. We are not responsible for the privacy practices or the content of such Web sites. Zoovy will only transmit your information to Zoovy partners when you have elected to sign up for a co-branded service that is linked with the Zoovy system. For your convenience we will then transmit only the information required by the partner, through a secure channel to avoid you needing to re-enter the information. However it is your responsibility to ensure that you agree to the third parties privacy policy, and relevant licensing statements prior to authorizing us to transmit your information. For your convenience a link may be provided allowing you to review any privacy policies and licensing statements prior to data transmission. </p>
+						<h4>6. INTERNAL USE OF INFORMATION</h4>
+							<p>Our site provides a mechanism for people to send feedback and request more information. This information is not uniquely stored, but may be aggregated with other data to insure that we properly meet customers' expectations and have the necessary resources planned to accommodate future growth. The customer's contact information is also used to get in touch with the visitor when necessary and shared with other companies who may want to contact our visitors. Users may opt-out of receiving future mailings; see the choice/opt-out section below. Financial information that is collected is used to check the users' qualifications and bill the user for products and services. Features of our site provide a form for customers to request information about products, and services from other vendors. Contact information from the order form is handed to the responsible organization; you should contact the organization that is listed on the form to ensure their privacy policy is acceptable to you. </p>
+						<h4>7. CONTESTS AND SURVEYS</h4>
+							<p>From time to time we may have optional online surveys in conjunction with; or exclusive of contests. These forms will ask visitors for contact information such as email address and broad demographic information including but not limited to zip code, age, or income level. We use contact data from our surveys to send the user information about our company and promotional material from some of our partners. The customer's contact information is also used to contact the visitor when necessary and shared with other companies who may want to contact our visitors. Users may opt-out of receiving future mailings; see the choice/opt-out section below. Demographic and profile data is also collected at our site. We use this data to tailor our visitor's experience at our site, showing them content that we think they might be interested in, and displaying the content according to their preferences. This information is shared with advertisers on an aggregate basis. </p>
+						<h4>8. PUBLIC INFORMATION</h4>
+							<p>This site may make chat rooms, forums, message boards, and/or news groups available to its users. Please remember that any information that is disclosed in these areas becomes public information and you should exercise caution when deciding to disclose your personal information. </p>
+						<h4>9. SECURITY</h4>
+							<p>This site has security measures in place to protect the loss, misuse and alteration of the information under our control. This site uses a combination of firewalls, packet filters, security patches, monitoring software, and advanced cryptographic software in conjunction with secure sockets layer to ensure you personal data is secure from unauthorized access. Unless you explicitly request that we do not use advanced security, by default advanced security will always be on. Only certain employees have access to the information you provide us. For example, we impose strict rules on our employees who have access either to the databases that store user information or to the servers that host our services. While we cannot guarantee that loss, misuse or alteration to data will not occur, we try to prevent such unfortunate occurrences. </p>
+						<h4>10. DATA SHARING PRACTICES</h4>
+							<p>As part of the service we provide we routinely collect and store information from customers who buy from a user of our service. Any data which is collected and stored on our servers along with sales data, product information, is property of the user - with the following exceptions: <ul>
+								<li>We routinely inspect the data to verify integrity of the information.</li>
+								<li>We share information about customers with an ISP provided the ISP has demonstrated they have a pre-existing relationship.</li>
+								<li>We share information about customers with a marketplace provided the marketplace has demonstrated they already have a pre-existing relationship with the customer. </li>
+								<li>We routinely compile aggregate sales statistics information.</li>
+							</ul></p>
+						<h4>11. CHOICE OPT-OUT</h4>
+							<p>Our site provides users the opportunity to opt-out of receiving communications from our partners at the point where we request information about the visitor. This site gives users the following options for removing their information from our database to not receive future communications or to no longer receive our service. <ul>
+								You can send email to <a href="mailto:info@zoovy.com">info@zoovy.com</a> <br><br>
+								You can send mail to the following postal address:
+									Zoovy, Inc.
+									5868 Owens Ave.
+									Suite #150
+									Carlsbad, CA. 92008
+			
+									You can call the following telephone number: <ul>
+									760-944-7660<br>
+									877-ZOOVY4U (toll free)</ul><br>
+									You may send us a facsimile at 425-699-7859 </ul></p>
+						<h4>12. COPYRIGHT POLICY</h4>
+							<p>Copyright. Without limiting any other remedies, Zoovy may suspend or terminate your account if you are found to be infringing upon the copyright, trademark or other rights of third parties. Copyright, or Trademark owners can report infringing items, and have such items removed. Once the identity of a copyright or trademark owner is established, the owners may have limited access to some of your personally identifiable information as described in the Zoovy Privacy Policy. </p>
+
+						<h4>13. UPDATE POLICY</h4>
+							<p>This site gives users the following options for changing and modifying information previously provided. Customers of a user may do this by going to the users respective website. Zoovy users may do this by visiting http://www.zoovy.com/ and supplying a system assigned username and password. </p>
+						<h4>14. CONTACTING ZOOVY</h4>
+							<p>If you have any questions about this privacy statement, the practices of this site, or your dealings with this Web site, you can <a href="http://www.zoovy.com/company/contact">click here</a> or  contact:</p>
+								<div class="legalList" style='margin-left:25px;'>
+								Zoovy, Inc.<br>
+								Customer Care<br>
+								5868 Owens Ave.<br>
+								Suite #150<br>
+								Carlsbad, CA. 92008<br>
+									<a href="mailto:info@zoovy.com">info@zoovy.com</a>
+								</div>
+					</span>
+					<div class="legalLink">
+						<a href="#!/legal.html">Click to Return to the Legal Information Center</a>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div id="someothertestpage">
+		
+		<div class="wrapper" id="legal-IPPolicy">
 			<script type="text/javascript">
-			app.pageAlias["/someothertestpage.html"] = "someothertestpage";
+			app.pageAlias["/legal-IPPolicy.html"] = "legal-IPPolicy";
 			</script>
-			someothertestpage
+			<div class="container">
+				<div class="legal">
+					<h3>Zoovy Inc. Intellectual Property Policy</h3>
+					<span class="legalInfo">
+						<h4>INTELLECTUAL PROPERTY POLICY</h4>
+							<p>Zoovy respects the intellectual property rights of others. This Policy specifies conditions of use for web sites hosted on Zoovy servers regarding: copyright; trademark; and rights of publicity and use of name or likeness.</p>
+						<h3>Copyright Policy</h3>
+							<p>Zoovy will comply with the Digital Millennium Copyright Act (“DMCA”). The DMCA text is available at the U.S. Copyright Office website: www.copyright.gov/legislation/dmca.pdf. Zoovy will respond expeditiously to notices of alleged infringement that are reported to Zoovy Inc.</p>
+						<h4>Notice to Copyright Owners</h4>
+							<p>If you are a copyright owner, authorized to act on behalf of one, or authorized to act under any exclusive right under copyright, please report alleged copyright infringements on websites hosted by Zoovy, Inc. by providing the notice required by the DMCA, 17 U.S.C. §512.</p>
+							<p>Notice and Declaration Pursuant to the Digital Millennium Copyright Act (17 U.S.C. §512) - Elements of notification:<ol class="legalList">
+								<li>A physical or electronic signature of a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+								<li>Identification of the copyrighted work claimed to have been infringed, or, if multiple copyrighted works at a single online site are covered by a single notification, a representative list of such works at that site.</li>
+								<li>Identification of the material that is claimed to be infringing or to be the subject of infringing activity and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit the service provider to locate the material.</li>
+								<li>Information reasonably sufficient to permit the service provider to contact the complaining party, such as an address, telephone number, and, if available, an electronic mail address at which the complaining party may be contacted.</li>
+								<li>A statement that the complaining party has a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.</li>
+								<li>A statement that the information in the notification is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+							</ol></p>
+							<p>Zoovy desires to comply with the Notice and clearly identify the web pages that require action on Zoovy’s part. To enable Zoovy to act expeditiously, please send copies of the web pages which are claimed to be infringing and copies of the copyright owner’s web pages which are claimed to be infringed.</p>
+							<p>Deliver this Notice, with all items completed, to Zoovy’s Designated Copyright Agent:</p>
+								<div class="legalList" style='margin-left:25px;'>
+								Zoovy, Inc.<br>
+								Copyright Agent<br>
+								5868 Owens Ave.<br>
+								Suite #150<br>
+								Carlsbad, CA. 92008<br>
+								<a href="mailto:info@zoovy.com">info@zoovy.com</a>
+								</div>
+						<h4>Notice to Zoovy Customers</h4>
+							<p>Zoovy will, if properly notified that content infringes, remove or disable access to such content. Zoovy reserves the right to remove or disable access to content without prior notice. In appropriate circumstances, Zoovy will also terminate users whom it determines to be repeat infringers.</p>
+							<p>A poster of allegedly infringing material may make a counter notice pursuant to the DMCA, 17 U.S.C. §§ 512(g)(2) and 512(g)(3). When Zoovy receives a counter notice, it may reinstate the material in question. To provide a counter notice to us, please return the following form to the Zoovy Copyright Agent.</p>
+							<p>Counter Notice Pursuant to the Digital Millennium Copyright Act (17 U.S.C. §512) - To be effective under this subsection, a counter notification must be a written communication provided to the service provider’s designated agent that includes substantially the following:<ol class="legalList">
+								<li>A physical or electronic signature of the subscriber.</li>
+								<li>Identification of the material that has been removed or to which access has been disabled and the location at which the material appeared before it was removed or access to it was disabled.</li>
+								<li>A statement under penalty of perjury that the subscriber has a good faith belief that the material was removed or disabled as a result of mistake or misidentification of the material to be removed or disabled.</li>
+								<li>The subscriber’s name, address, and telephone number, email address, and a statement that the subscriber consents to the jurisdiction of Federal District Court for the judicial district in which the address is located, or if the subscriber’s address is outside of the United States, for any judicial district in which the service provider may be found, and that the subscriber will accept service of process from the person who provided notification under subsection (c)(1)(C) or an agent of such person</li>
+							</ol></p>
+							<p>The Counter Notice should be delivered to the following Designated Copyright Agent of Zoovy:</p>
+								<div class="legalList" style='margin-left:25px;'>
+								Zoovy, Inc.<br>
+								Copyright Agent<br>
+								5868 Owens Ave.<br>
+								Suite #150<br>
+								Carlsbad, CA. 92008<br>
+								<a href="mailto:info@zoovy.com">info@zoovy.com</a>
+								</div>
+						<h4>Subpoenas</h4>
+							<p>Zoovy may be required to disclose information to individuals asserting rights under the DMCA. The Zoovy customer hereby authorizes Zoovy to release information about you (the customer) if required by law or subpoena, without notice to you.</p>
+							<p>The Zoovy customer agrees that you (the customer), and not Zoovy, are responsible for any violations of any intellectual property rights in any content that you upload to your site on Zoovy’s host.</p>
+						<h3>Trademark Policy</h3>
+						<h4>Notice to Trademark Owners </h4>
+							<p>If you believe that your trademark (the “Accused Mark”) is being used by a user in a way that constitutes trademark infringement, please provide Zoovy’s Copyright Agent (specified above) with the following information:<ol class="legalList">
+								<li>Your physical or electronic signature, or a physical or electronic signature of a person authorized to act on your behalf;</li>
+								<li>Information reasonably sufficient to permit Zoovy to contact you or your authorized agent, including a name, address, telephone number and, if available, an email address;</li>
+								<li>Identification of the Accused Mark(s) claimed to have been Accused, including (1) for registered Accused Marks, a copy of each relevant federal trademark registration certificate or (2) for common law Accused Marks, evidence sufficient to establish the time period and geographic area in which the Accused Mark has been used by you;</li>
+								<li>Information reasonably sufficient to permit Zoovy to identify the use being challenged; </li>
+								<li>A statement that you have not authorized the challenged use, and that you have a good-faith belief that the challenged use is not authorized by law; and</li>
+								<li>A statement that the information in the notification is accurate and, under penalty of perjury, that you are the Accused Mark owner, or are authorized to act on behalf of the Accused Mark owner.</li>
+							</ol></p>
+						<h4>Notice to Zoovy Customers</h4>
+							<p>Upon receipt of notice as described above, Zoovy will confirm the existence of the Accused Mark on the Site, notify the Zoovy customer who posted the Accused Mark, and take whatever action, in its sole discretion, it deems appropriate, including removal of the Accused Mark from the Site. </p>
+							<p>Notwithstanding the foregoing, Zoovy will comply as appropriate with the terms of any court order relating to alleged trademark infringement on the Site.</p>
+						<h3 style="font-size: 28px;">Rights of Publicity and Use of Name or Likeness Policy</h3>
+						<h4>Notice to Rights Owner</h4>
+							<p>Zoovy prohibits its users from posting content that would otherwise misappropriate a third party’s right of publicity, name, voice, signature, photograph or likeness. If you think that you are a Party whose right of publicity is being misappropriated as a result of the content on the Site, please provide Zoovy’s Copyright Agent (specified above) with the following information:<ol class="legalList">
+								<li>Information reasonably sufficient to permit Zoovy to identify the content containing your likeness;</li>
+								<li>Your name, address, telephone number and, if available, your email address;</li>
+								<li>A statement that you, or in the case of a minor, your parent or legal guardian, has not authorized the challenged use, and that the use is not otherwise authorized by law; and</li>
+								<li>A statement that the information in the notification is accurate and, under penalty of perjury, that you are the Party or that you are authorized to act on behalf of the Party.</li>
+							</ol></p>
+						<h4>Notice to Zoovy Customers</h4>
+							<p>Upon receipt of notice as described above, Zoovy will take whatever action, in its sole discretion, it deems appropriate, including removal of the challenged use from the Site, without notice to the Zoovy customer in question, unless, prior to such removal, the Zoovy customer in question sufficiently demonstrates that he or she has appropriate authorization or consent to use a Party’s right of publicity, name, voice, signature, photograph or likeness.</p>
+							<p>Notwithstanding the foregoing, Zoovy will comply as appropriate with the terms of any court order relating to the behavior of the challenged party identified in such court order.</p>
+					</span>
+					<div class="legalLink">
+						<a href="#!/legal.html">Click to Return to the Legal Information Center</a>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+		<div class="wrapper" id="stub">
+			<script type="text/javascript">
+			app.pageAlias["/stub.html"] = "stub";
+			</script>			
+		</div>
+
+
+
 		<div id="404">
 			PAGE NOT FOUND
 		</div>
+		
+<!--
+
+BELOW FOLLOWS AN EXAMPLE 'PAGE', INTENDED TO DEMONSTRATE THE PROPER SYNTAX FOR INTEGRATION INTO THE SITE
+
+-->
+		<div id="example">
+			<!-- The 'page' must begin with a script tag designating the pageAlias for URI parsing- this is important for parsing arrival links as well as intrasite links -->
+			<!-- If the 'page' needs any customized transition, init, or destroy functions, they may be defined in this tag as well. -->
+			<script type="text/javascript">
+				//app.pageAlias["/somelocation.html"] = "idOfEnclosingDiv"
+				app.pageAlias["/example.html"] = "example";
+				
+				/*
+				The below object (optional), which must be named the same as the id of the enclosing div, just as the pageAlias is set that way,
+				will contain any custom functions that will need to be specified for the page.  Any of these functions that are not customized
+				will be set to the default functions specified at the top of this file.  There are 4 possible functions that can be defined:
+				
+				init
+					Any code that needs to be executed by the page after it loads.  This includes setting up any animations that will occur on the page,
+					any ajax that needs to be loaded, RSS feeds that need to be set up, etc...
+					NOTE: any intervals that are set can be stored with the syntax app.currentIntervals.push(setInterval(...)); -- This will allow
+					the default destroy function to clean them up appropriately.
+					NOTE: init() will execute every time a page is loaded, regardless of whether it has previously been shown or not. The developer must
+					take care to not re-execute code that does not clean itself up -- for example if an RSS feed is loaded in init and populates a feed viewer
+					on the page, and that feed viewer is not emptied in destroy, the init() should check to see whether it has already been loaded.
+				destroy
+					Any code that needs to be executed to 'destroy' the page- this is mostly intended to clean up any repeating animations that are set
+					in init, so that there are not a growing number of intervals executing, slowing down the JS engine.  In most cases this can be accomplished
+					by simply leaving the default destroy function, as long as any intervals set in init() are pushed to the app.currentIntervals array.
+				transitionIn
+					Custom code to transition the page into view. Takes one parameter, the jquery selected page to be transitioned in.  The default function 
+					fades in the page over the course of 1 second.  The transitionIn function should return the number of milliseconds that the transition process
+					takes in order to properly deal with delays.
+					NOTE: The developer should be careful of any specified transitions in, to specify them within the context of the page.  For example,
+					$('p').slideRight(500);
+					VS.
+					$('p',$page).slideRight(500);
+					The first will make all paragraphs in the entire DOM slide into view from the left, while the second will make all those on the transitioning page
+					slide in instead.
+				transitionOut
+					As with the transitionIn function, except for leaving the page.  The developer much ensure the transitionOut delay is returned accurately, as this
+					can cause major problems if it is not specified.
+				*/
+				app.pages.example = {
+					init : function(){
+						//some init code
+					},
+					destroy : function(){
+						//some destroy code
+					},
+					transitionIn : function($page){
+						//some transitionIn code
+						//return delay
+					},
+					transitionOut : function($page){
+						//some transitionOut code
+						//return delay
+					}
+				};
+			</script>
+			
+			<h1>PAGE CONTENT GOES HERE</h1>
+			
+		
+		</div>
+		<!-- END EXAMPLE 'PAGE' -->
+		
 		
 		<div id="springtest">
 			<script type="text/javascript">
@@ -1353,7 +1945,7 @@ VERSION: 2013-1-22-11-48-00
 				var containerWidth = 958;
 				var containerOuterWidth = 960;
 				var pushLength = 200;
-				var outerBuffer = 100;
+				var outerBuffer = 300;
 				
 				var attrSpring = new mSpring({
 					onSpringStart: function() {
@@ -1367,8 +1959,9 @@ VERSION: 2013-1-22-11-48-00
 					}	
 				});
 				
-				attrSpring.setSpringParameters(10, 100, 10);
+				attrSpring.setSpringParameters(10, 200, 15);
 				attrSpring.massPos = containerWidth/2;
+				$("#springReactor").css("left",attrSpring.massPos-($("#springReactor").outerWidth()/2) + 'px');
 				//attrSpring.start(undefined,undefined,undefined,958);
 				
 				//var engageSpring = function(){
@@ -1384,6 +1977,7 @@ VERSION: 2013-1-22-11-48-00
 							mousePos -= ($(window).width() - containerWidth)/2
 						} 
 						//var currentPos = $("#springReactor").css("left");
+						/*
 						var currentPos = attrSpring.massPos;
 						//console.log(mousePos+".."+currentPos);
 						if(mousePos < currentPos) {
@@ -1395,7 +1989,9 @@ VERSION: 2013-1-22-11-48-00
 								anchorPos = mousePos - pushLength;
 							}
 						}
-						console.log(mousePos +".."+anchorPos);
+						*/
+						anchorPos = mousePos;
+						//console.log(mousePos +".."+anchorPos);
 						if(anchorPos > containerWidth - outerBuffer)
 							anchorPos = containerWidth - outerBuffer;
 						else if(anchorPos < 0 + outerBuffer)
