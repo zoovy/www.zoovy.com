@@ -221,6 +221,7 @@ VERSION: 2013-3-21-12-18-00
 				<ul>
 					<li><a href="#!/about-contact.html">Contact</a></li>
 					<li>|</li>
+					<!--
 					<li>
 					<a id="loginlink"
 					href="https://www.zoovy.com/app/latest/app-domainlookup.html">Customer Login</a>
@@ -230,7 +231,9 @@ VERSION: 2013-3-21-12-18-00
 					$('#loginlink').attr("href", $('#loginlink').attr("href")+'?v='+d.toString()); 
 					</script>
 					</li>
-					
+					<li>|</li>
+					-->
+					<li><a id="loginlink" href="#!/login.html">Login</a></li>
 					<li>|</li>
 					<li style="color:#000;">1.877.966.8948</li>
 				</ul>
@@ -504,6 +507,39 @@ VERSION: 2013-3-21-12-18-00
 				</div>
 			</div>
 		</div>
+
+		<div class="wrapper" id="login">
+			<script type="text/javascript">
+			app.pageAlias["/login.html"] = "login";
+			app.pages.login = {
+				init : function($page){
+					$("#servicesBanner").fadeIn(1000);
+				},
+				destroy : function($page){
+					$("#servicesBanner").fadeOut(1000);
+				}
+			};
+			</script>
+			
+			<div class="container">
+			<h1>Login Instructions</h1>
+			
+			<h2>please go to http://admin.YOUR-DOMAIN.com</h2>
+			(replace YOUR-DOMAIN with any domain associated on the account)
+			<br>
+			<br>
+			<h3>When did this change?</h3>
+			The login process changed in Oct 2013 as part of a migration to the Amazon Cloud.
+			A backward compatibility login app was added to the Zoovy.com
+			homepage to minimize disruption through holiday shopping season.
+			
+			<h3>Why did this change?</h3>
+			It is no longer possible for the actions of one client to impact the performance
+			or stability of the whole service. Each server is completely
+			decentralized and isolated from all other servers.
+			</div>
+		</div>
+		
 
 
 		<div class="wrapper" id="services">
