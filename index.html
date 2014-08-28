@@ -522,21 +522,31 @@ VERSION: 2013-3-21-12-18-00
 			</script>
 			
 			<div class="container">
+			<span>
 			<h1>Login Instructions</h1>
 			
-			<h2>please go to http://admin.YOUR-DOMAIN.com</h2>
-			(replace YOUR-DOMAIN with any domain associated on the account)
+			<h2>please go to https://www.YOUR-DOMAIN.com:9000/</h2>
+			(replace YOUR-DOMAIN with any domain associated on the account with
+			valid DNS)
 			<br>
 			<br>
 			<h3>When did this change?</h3>
 			The login process changed in Oct 2013 as part of a migration to the Amazon Cloud.
-			A backward compatibility login app was added to the Zoovy.com
-			homepage to minimize disruption through holiday shopping season.
+			<br>
 			
 			<h3>Why did this change?</h3>
-			It is no longer possible for the actions of one client to impact the performance
-			or stability of the whole service. Each server is completely
-			decentralized and isolated from all other servers.
+			Servers were decentralized and security was improved.
+			This login approach offers increased reliability, and also enhanced security.
+			The server which hosts this page cannot provide login credentials, each backend is completely autonomous.
+		
+			<h3>Why is this more secure?</h3>
+			
+			Clients with servers on private clouds can filter administrative access using
+			cloud TCP/IP firewall rules (tcp port 9000). Thereby limiting
+			remote access to only allowed internal IP addresses.  Using this
+			approach it is possible to lock out all access including Zoovy Support.
+		
+			</span>
 			</div>
 		</div>
 		
